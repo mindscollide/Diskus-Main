@@ -171,6 +171,10 @@ const ViewMeetingModal = ({
     (state) => state.settingReducer.webNotificationDataVideoIntimination
   );
 
+  const getJoinMeetingParticipantorHostrequest = useSelector(
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+  );
+
   console.log(
     {
       agendaContributors,
@@ -466,17 +470,82 @@ const ViewMeetingModal = ({
 
   useEffect(() => {
     // Handler for beforeunload event
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     const handleBeforeUnload = async (event) => {
+      let newName = localStorage.getItem("newName");
+      let newRoomId = localStorage.getItem("newRoomId");
+      let participantRoomId = localStorage.getItem("participantRoomId");
+      let isGuid = localStorage.getItem("isGuid");
+      let participantUID = localStorage.getItem("participantUID");
+      let meetingVideoID = localStorage.getItem("currentMeetingID");
+      let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
       if (isMeeting) {
-        dispatch(presenterViewGlobalState(0, false, false, false));
-
         console.log("cacacacacacacacacc");
+        let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
+        let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+        if (isWaiting || isMeetingVideo) {
+   
+          let Data = {
+            RoomID: String(
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+            ),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(newName),
+            IsHost: isMeetingVideoHostCheck ? true : false,
+            MeetingID: Number(meetingVideoID),
+          };
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+
+          localStorage.removeItem("currentHostUserID");
+          localStorage.removeItem("isHost");
+          localStorage.removeItem("isNewHost");
+          localStorage.setItem("isCaller", false);
+          localStorage.setItem("isMeetingVideo", false);
+          const emptyArray = [];
+          localStorage.setItem(
+            "callerStatusObject",
+            JSON.stringify(emptyArray)
+          );
+          sessionStorage.removeItem("StopPresenterViewAwait");
+          sessionStorage.removeItem("participantUID");
+          sessionStorage.removeItem("participantRoomId");
+          sessionStorage.removeItem("isGuid");
+          sessionStorage.removeItem("newRoomId");
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          localStorage.setItem("activeCall", false);
+          localStorage.setItem("isCaller", false);
+          localStorage.setItem("acceptedRoomID", 0);
+          localStorage.setItem("activeRoomID", 0);
+          dispatch(normalizeVideoPanelFlag(false));
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(false));
+          dispatch(leaveCallModal(false));
+          dispatch(participantPopup(false));
+          localStorage.setItem("MicOff", true);
+          localStorage.setItem("VidOff", true);
+        } else {
+        }
+        dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(setAudioControlHost(false));
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
+        localStorage.setItem("isMeeting", false);
+        setMeetingMaterial(false);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(false);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setPolls(false);
+        setAttendees(false);
+        setactionsPage(false);
+        setRecording(false);
         localStorage.setItem("isMeeting", false);
         callBeforeLeave();
       }
@@ -487,25 +556,6 @@ const ViewMeetingModal = ({
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("cacacacacacacacacc");
-      dispatch(presenterViewGlobalState(0, false, false, false));
-      dispatch(setAudioControlHost(false));
-      dispatch(setVideoControlHost(false));
-      dispatch(cleareAllState());
-      setEditorRole({ status: null, role: null });
-      setAdvanceMeetingModalID(null);
-      localStorage.setItem("isMeeting", false);
-      setMeetingMaterial(false);
-      setAgendaContributors(false);
-      setorganizers(false);
-      setmeetingDetails(false);
-      setMinutes(false);
-      setAttendance(false);
-      setAgenda(false);
-      setParticipants(false);
-      setPolls(false);
-      setAttendees(false);
-      setactionsPage(false);
-      setRecording(false);
     };
   }, [dispatch]);
 
@@ -914,13 +964,14 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className='position-relative'>
-        <Row className='my-2'>
+      <section className="position-relative">
+        <Row className="my-2">
           <Col
             lg={12}
             md={12}
             sm={12}
-            className='d-flex justify-content-between'>
+            className="d-flex justify-content-between"
+          >
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -945,10 +996,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className='mb-4'>
+          <Col lg={12} md={12} sm={12} className="mb-4">
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
+                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
                   <Button
                     text={t("Meeting-details")}
                     className={
