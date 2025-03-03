@@ -845,6 +845,84 @@ const ViewMeetingModal = ({
     console.log(flag, flag2, "mqtt mqmqmqmqmqmq");
 
     let currentMeeting = localStorage.getItem("currentMeetingID");
+    let newName = localStorage.getItem("newName");
+    let newRoomId = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    let meetingVideoID = localStorage.getItem("currentMeetingID");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting) {
+      console.log("cacacacacacacacacc");
+      let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      if (isWaiting || isMeetingVideo) {
+ 
+        let Data = {
+          RoomID: String(
+            isMeetingVideoHostCheck ? newRoomId : participantRoomId
+          ),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(meetingVideoID),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+
+        localStorage.removeItem("currentHostUserID");
+        localStorage.removeItem("isHost");
+        localStorage.removeItem("isNewHost");
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("isMeetingVideo", false);
+        const emptyArray = [];
+        localStorage.setItem(
+          "callerStatusObject",
+          JSON.stringify(emptyArray)
+        );
+        sessionStorage.removeItem("StopPresenterViewAwait");
+        sessionStorage.removeItem("participantUID");
+        sessionStorage.removeItem("participantRoomId");
+        sessionStorage.removeItem("isGuid");
+        sessionStorage.removeItem("newRoomId");
+        sessionStorage.removeItem("alreadyInMeetingVideo");
+        localStorage.setItem("activeCall", false);
+        localStorage.setItem("isCaller", false);
+        localStorage.setItem("acceptedRoomID", 0);
+        localStorage.setItem("activeRoomID", 0);
+        dispatch(normalizeVideoPanelFlag(false));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(false));
+        dispatch(leaveCallModal(false));
+        dispatch(participantPopup(false));
+        localStorage.setItem("MicOff", true);
+        localStorage.setItem("VidOff", true);
+      } else {
+      }
+      dispatch(presenterViewGlobalState(0, false, false, false));
+      dispatch(setAudioControlHost(false));
+      dispatch(setVideoControlHost(false));
+      dispatch(cleareAllState());
+      setEditorRole({ status: null, role: null });
+      setAdvanceMeetingModalID(null);
+      localStorage.setItem("isMeeting", false);
+      setMeetingMaterial(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(false);
+      setMinutes(false);
+      setAttendance(false);
+      setAgenda(false);
+      setParticipants(false);
+      setPolls(false);
+      setAttendees(false);
+      setactionsPage(false);
+      setRecording(false);
+      localStorage.setItem("isMeeting", false);
+      callBeforeLeave();
+    }
     let leaveMeetingData = {
       FK_MDID: Number(currentMeeting),
       DateTime: getCurrentDateTimeUTC(),
