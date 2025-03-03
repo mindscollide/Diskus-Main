@@ -201,6 +201,8 @@ import MobileAppPopUpModal from "../pages/UserMangement/ModalsUserManagement/Mob
 import LeaveVideoIntimationModal from "../../components/layout/talk/videoCallScreen/LeaveVideoIntimationModal/LeaveVideoIntimationModal";
 import {
   admitGuestUserRequest,
+  hideUnhideSelfMainApi,
+  muteUnMuteSelfMainApi,
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
@@ -622,6 +624,30 @@ const Dashboard = () => {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
             if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
+              dispatch(setAudioControlHost(false));
+              let dataAudio = {
+                RoomID: String(
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                ),
+                IsMuted: false, // Ensuring it's a boolean
+                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+                MeetingID: payload?.meetingID,
+              };
+
+              // Dispatch the API request with the data
+              dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
+              let dataVideo = {
+                RoomID: String(
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                ),
+                HideVideo: true, // Ensuring it's a boolean
+                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+                MeetingID: Number(payload?.meetingID),
+              };
+
+              // Dispatch the API request with the data
+              dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+              dispatch(setVideoControlHost(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(true));
@@ -636,6 +662,8 @@ const Dashboard = () => {
               localStorage.removeItem("acceptedRoomID");
               localStorage.removeItem("newRoomId");
               localStorage.removeItem("acceptedRoomID");
+              dispatch(setAudioControlHost(false));
+              dispatch(setVideoControlHost(false));
               dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(false));
@@ -1293,7 +1321,6 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
             ) {
-              
               // dispatch(maxParticipantVideoCallPanel(false));
               // dispatch(maximizeVideoPanelFlag(true));
               dispatch(globalNavigatorVideoStream(2));
@@ -1396,7 +1423,7 @@ const Dashboard = () => {
                 // change room id for host
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
-                console.log("mqtt check 22",participantRoomId);
+                console.log("mqtt check 22", participantRoomId);
                 localStorage.setItem("newRoomId", participantRoomId);
                 // remove room id of participant
                 localStorage.removeItem("participantRoomId");
@@ -1412,7 +1439,7 @@ const Dashboard = () => {
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
                 let newRoomId = localStorage.getItem("newRoomId");
-                console.log("mqtt check 22",newRoomId);
+                console.log("mqtt check 22", newRoomId);
                 let Data = {
                   RoomID: String(newRoomId),
                 };
@@ -2877,7 +2904,8 @@ const Dashboard = () => {
           let newRoomID = localStorage.getItem("newRoomId");
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let RoomID =
-            presenterViewFlag && (presenterViewHostFlag||presenterViewJoinFlag)
+            presenterViewFlag &&
+            (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
               ? localStorage.getItem("activeRoomID") != 0 &&

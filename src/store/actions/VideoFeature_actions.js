@@ -17,6 +17,7 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { LeaveMeetingVideo } from "./NewMeetingActions";
 import { VideoCallResponse } from "./VideoMain_actions";
+import { hideUnhideSelfMainApi, muteUnMuteSelfMainApi } from "./Guest_Video";
 
 const videoChatPanel = (response) => {
   return {
@@ -1657,13 +1658,54 @@ const stopPresenterViewMainApi = (
                 dispatch(
                   presenterFlagForAlreadyInParticipantMeetingVideo(false)
                 );
-                sessionStorage.removeItem("alreadyInMeetingVideo");
+                console.log("Check Presenter");
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
                 );
+                console.log("Check Presenter");
+                let isMeetingVideoHostCheck = localStorage.getItem(
+                  "isMeetingVideoHostCheck"
+                )
+                  ? JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+                  : false;
+                console.log("Check Presenter", isMeetingVideoHostCheck);
+                let isGuid = localStorage.getItem("isGuid");
+                console.log("Check Presenter");
+                let participantUID = localStorage.getItem("participantUID");
+                console.log("Check Presenter");
+
+                let dataAudio = {
+                  RoomID: String(data.RoomID),
+                  IsMuted: false, // Ensuring it's a boolean
+                  UID: String(
+                    isMeetingVideoHostCheck ? isGuid : participantUID
+                  ),
+                  MeetingID: data.MeetingID,
+                };
+                console.log("Check Presenter", dataAudio);
+
+                // Dispatch the API request with the data
+                dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
+                console.log("Check Presenter");
+                let dataVideo = {
+                  RoomID: String(data.RoomID),
+                  HideVideo: true, // Ensuring it's a boolean
+                  UID: String(
+                    isMeetingVideoHostCheck ? isGuid : participantUID
+                  ),
+                  MeetingID: Number(data.MeetingID),
+                };
+
+                // Dispatch the API request with the data
+                console.log("Check Presenter", dataVideo);
+                dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+                dispatch(setVideoControlHost(true));
+                dispatch(setAudioControlHost(false));
+
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
+                sessionStorage.removeItem("alreadyInMeetingVideo");
               } else {
                 dispatch(setAudioControlHost(false));
                 dispatch(setVideoControlHost(false));
