@@ -1232,7 +1232,8 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            presenterViewFlag &&(presenterViewHostFlag||presenterViewJoinFlag)
+                            presenterViewFlag &&
+                            (presenterViewHostFlag || presenterViewJoinFlag)
                               ? "normal-Presenter-avatar-large"
                               : NormalizeVideoFlag === true &&
                                 MinimizeVideoFlag === false &&
@@ -1313,6 +1314,7 @@ const VideoPanelNormal = () => {
                                 </Row>
                                 {allParticipant.length > 0 &&
                                   allParticipant.map((participant, index) => {
+                                    console.log(participant, "checkcheck");
                                     return (
                                       <>
                                         <Row
@@ -1335,31 +1337,42 @@ const VideoPanelNormal = () => {
                                             sm={12}
                                             className="d-flex justify-content-end gap-2"
                                           >
-                                            {participant.hideCamera ? (
-                                              <img
-                                                src={VideoOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Video Off"
-                                              />
-                                            ) : null}
+                                            <img
+                                              src={VideoOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Video Off"
+                                              style={{
+                                                visibility:
+                                                  participant.hideCamera
+                                                    ? "visible"
+                                                    : "hidden",
+                                              }}
+                                            />
 
-                                            {participant.mute ? (
-                                              <img
-                                                src={MicOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Mic Mute"
-                                              />
-                                            ) : null}
-                                            {participant.raiseHand ? (
-                                              <img
-                                                src={Raisehandselected}
-                                                width="20px"
-                                                height="20px"
-                                                alt="raise hand"
-                                              />
-                                            ) : null}
+                                            <img
+                                              src={MicOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Mic Mute"
+                                              style={{
+                                                visibility: participant.mute
+                                                  ? "visible"
+                                                  : "hidden",
+                                              }}
+                                            />
+                                            <img
+                                              src={Raisehandselected}
+                                              width="20px"
+                                              height="20px"
+                                              alt="raise hand"
+                                              style={{
+                                                visibility:
+                                                  participant.raiseHand
+                                                    ? "visible"
+                                                    : "hidden",
+                                              }}
+                                            />
                                           </Col>
                                         </Row>
                                       </>

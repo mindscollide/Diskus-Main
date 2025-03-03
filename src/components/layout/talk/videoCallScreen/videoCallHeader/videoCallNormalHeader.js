@@ -1188,19 +1188,21 @@ const VideoCallNormalHeader = ({
           sm={12}
           className="d-flex justify-content-center align-items-center mt-1"
         >
-          {MaximizeVideoFlag === true && showNotification === true && (
-            <div className="Notification-maximize">
-              <p className="Notification-text">
-                {t("Minimize-call-to-see-the-screen")}
-              </p>
-              <img
-                className="cursor-pointer"
-                src={CloseNotification}
-                onClick={closeNotification}
-                alt="Close Notification"
-              />
-            </div>
-          )}
+          {MaximizeVideoFlag === true &&
+            showNotification === true &&
+            !presenterViewFlag && (
+              <div className="Notification-maximize">
+                <p className="Notification-text">
+                  {t("Minimize-call-to-see-the-screen")}
+                </p>
+                <img
+                  className="cursor-pointer"
+                  src={CloseNotification}
+                  onClick={closeNotification}
+                  alt="Close Notification"
+                />
+              </div>
+            )}
         </Col>
         <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
           <div
