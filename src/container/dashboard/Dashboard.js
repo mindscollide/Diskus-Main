@@ -70,6 +70,7 @@ import {
   clearPresenterParticipants,
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
+  unansweredOneToOneCall,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -2938,6 +2939,7 @@ const Dashboard = () => {
             if (data.payload.callTypeID === 1) {
               sessionStorage.setItem("NonMeetingVideoCall", false);
               console.log("mqtt");
+              dispatch(unansweredOneToOneCall(true))
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));

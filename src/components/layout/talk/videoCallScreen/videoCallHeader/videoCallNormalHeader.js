@@ -59,6 +59,7 @@ import {
   maxParticipantVideoCallPanel,
   openPresenterViewMainApi,
   incomingVideoCallFlag,
+  unansweredOneToOneCall,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import {
@@ -226,6 +227,10 @@ const VideoCallNormalHeader = ({
 
   const newJoinPresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+  );
+
+  const unansweredFlagForOneToOneCall = useSelector(
+    (state) => state.videoFeatureReducer.unansweredFlagForOneToOneCall
   );
 
   console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
@@ -831,7 +836,11 @@ const VideoCallNormalHeader = ({
       console.log("mqtt mqmqmqmqmqmq", flag);
       if (flag === 1) {
         console.log("mqtt mqmqmqmqmqmq", flag);
-        setJoinMeetingVideoParticipant(true);
+        if (!unansweredFlagForOneToOneCall) {
+          setJoinMeetingVideoParticipant(true);
+        }else{
+          dispatch(unansweredOneToOneCall(false))
+        }
         setLeaveOneToOne(false);
       } else if (flag === 2) {
         setLeaveOneToOne(false);
@@ -1561,7 +1570,9 @@ const VideoCallNormalHeader = ({
             getMeetingHostInfo?.isDashboardVideo ? (
             <Tooltip
               placement="topRight"
-              title={isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")}
+              title={
+                isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
+              }
             >
               <div className="inactive-state">
                 <img
@@ -1575,7 +1586,9 @@ const VideoCallNormalHeader = ({
           ) : LeaveCallModalFlag === false && callerID !== currentUserID ? (
             <Tooltip
               placement="topRight"
-              title={isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")}
+              title={
+                isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
+              }
             >
               <img
                 className="inactive-state"
