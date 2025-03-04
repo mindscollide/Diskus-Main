@@ -1326,7 +1326,7 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {getMeetingHostInfo?.isDashboardVideo && (
+          {(getMeetingHostInfo?.isDashboardVideo && !presenterViewHostFlag)&&(
             <div
               className={
                 LeaveCallModalFlag === true ||

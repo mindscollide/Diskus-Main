@@ -4967,7 +4967,9 @@ body[dir="rtl"]
 .Resolution_table .ant-table table {
   border-spacing: 0 10px;
 }
-
+.ant-table table .ant-table-measure-row {
+  visibility: collapse !important;
+}
 .Resolution_table tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 0px !important;
   border-top: 1px solid #e1e1e1 !important;
