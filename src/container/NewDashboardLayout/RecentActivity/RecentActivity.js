@@ -79,25 +79,25 @@ const RecentActivity = () => {
               <>
                 <div className="d-flex justify-content-start align-items-start gap-3">
                   {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : (
-                    <img src={DemoIcon} width={45} height={45} alt="" />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   )}
                   {recentActivityData.notificationTypes.description}
                 </div>

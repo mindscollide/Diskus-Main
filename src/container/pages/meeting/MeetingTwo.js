@@ -1860,7 +1860,16 @@ const NewMeeting = () => {
   };
 
   const handleClickChevron = () => {
+    if (visibleMeetingType) {
+      setVisibleMeetingType(false);
+    }
     setVisible((prevVisible) => !prevVisible);
+  };
+  const handleClickChevronMeetingType = () => {
+    if (visible) {
+      setVisible(false);
+    }
+    setVisibleMeetingType((prevVisible) => !prevVisible);
   };
 
   const menu = (
@@ -2066,7 +2075,8 @@ const NewMeeting = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -2160,7 +2170,8 @@ const NewMeeting = () => {
       filterIcon: (filtered) => (
         <ChevronDown
           className='filter-chevron-icon-todolist'
-          onClick={() => setVisibleMeetingType(!visibleMeetingType)}
+          onClick={handleClickChevronMeetingType}
+          // onClick={() => setVisibleMeetingType(!visibleMeetingType)}
           defaultChecked
         />
       ),
@@ -2168,7 +2179,8 @@ const NewMeeting = () => {
         <Dropdown
           overlay={filterMenu}
           visible={visibleMeetingType}
-          onVisibleChange={(open) => setVisibleMeetingType(open)}>
+          onVisibleChange={(open) => setVisibleMeetingType(!open)}
+        >
           <div />
         </Dropdown>
       ),
