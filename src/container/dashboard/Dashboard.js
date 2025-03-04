@@ -541,6 +541,7 @@ const Dashboard = () => {
             }
             sessionStorage.setItem("alreadyInMeetingVideo", true);
             dispatch(participantWaitingListBox(false));
+            dispatch(toggleParticipantsVisibility(false));
             await dispatch(
               presenterViewGlobalState(meetingVideoID, true, false, true)
             );

@@ -2205,6 +2205,15 @@ const acceptHostTransferAccessGlobalFunc = (response) => {
   };
 };
 
+// unanswered one To one call to close participant modal
+const unansweredOneToOneCall = (response) => {
+  console.log("UNANSWERED_ONE_TO_ONE_CALL_FLAG", response);
+  return {
+    type: actions.UNANSWERED_ONE_TO_ONE_CALL_FLAG,
+    response: response,
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -2308,4 +2317,5 @@ export {
   clearPresenterParticipants,
   leavePresenterJoinOneToOneOrOtherCall,
   acceptHostTransferAccessGlobalFunc,
+  unansweredOneToOneCall,
 };

@@ -99,6 +99,7 @@ const initialState = {
   closeVideoStreamForParticipant: false,
   leavePresenterOrJoinOtherCalls: false,
   accpetAccessOfHostTransfer: false,
+  unansweredFlagForOneToOneCall: false,
   // startOrStopPresenter: false,
 };
 
@@ -1119,6 +1120,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         accpetAccessOfHostTransfer: action.response,
+      };
+    }
+
+    // unanswered one To one call to close participant modal
+    case actions.UNANSWERED_ONE_TO_ONE_CALL_FLAG: {
+      console.log(action, "UNANSWERED_ONE_TO_ONE_CALL_FLAG");
+      return {
+        ...state,
+        unansweredFlagForOneToOneCall: action.response,
       };
     }
 

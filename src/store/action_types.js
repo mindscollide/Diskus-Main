@@ -3665,3 +3665,7 @@ export const MEETING_TRANSCRIPT_DOWNLOADED = "MEETING_TRANSCRIPT_DOWNLOADED";
 
 // accept host Transfer access global state
 export const ACCEPT_HOST_TRANSFER_ACCESS = "ACCEPT_HOST_TRANSFER_ACCESS";
+
+// unanswered one To one call to close participant modal
+export const UNANSWERED_ONE_TO_ONE_CALL_FLAG =
+  "UNANSWERED_ONE_TO_ONE_CALL_FLAG";
