@@ -1551,6 +1551,15 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterFail(t("Presentation-is-already-underway"))
               );
+              let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let data = {
+                VideoCallURL: String(currentMeetingVideoURL),
+                WasInVideo: isMeetingVideo ? true : false,
+              };
+              dispatch(joinPresenterViewMainApi(navigate, t, data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1558,6 +1567,10 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                   "Meeting_MeetingServiceManager_StartPresenterView_03".toLowerCase()
                 )
             ) {
+              await dispatch(presenterViewGlobalState(0, false, false, false));
+              dispatch(maximizeVideoPanelFlag(false));
+              dispatch(normalizeVideoPanelFlag(false));
+              dispatch(minimizeVideoPanelFlag(false));
               await dispatch(
                 startPresenterFail(t("Error-while-starting-presentation"))
               );

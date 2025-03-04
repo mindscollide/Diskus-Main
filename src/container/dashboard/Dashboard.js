@@ -2936,6 +2936,7 @@ const Dashboard = () => {
             setNotificationID(id);
             if (data.payload.callTypeID === 1) {
               sessionStorage.setItem("NonMeetingVideoCall", false);
+              console.log("mqtt");
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
