@@ -838,8 +838,8 @@ const VideoCallNormalHeader = ({
         console.log("mqtt mqmqmqmqmqmq", flag);
         if (!unansweredFlagForOneToOneCall) {
           setJoinMeetingVideoParticipant(true);
-        }else{
-          dispatch(unansweredOneToOneCall(false))
+        } else {
+          dispatch(unansweredOneToOneCall(false));
         }
         setLeaveOneToOne(false);
       } else if (flag === 2) {
@@ -1327,7 +1327,7 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {getMeetingHostInfo?.isDashboardVideo && (
+          {(getMeetingHostInfo?.isDashboardVideo && !presenterViewHostFlag)&&(
             <div
               className={
                 LeaveCallModalFlag === true ||
