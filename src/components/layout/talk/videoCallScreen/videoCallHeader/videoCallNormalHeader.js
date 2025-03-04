@@ -887,6 +887,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   }, [leavePresenterViewToJoinOneToOne]);
+  
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
