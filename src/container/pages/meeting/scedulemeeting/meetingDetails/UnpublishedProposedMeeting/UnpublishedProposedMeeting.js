@@ -108,6 +108,7 @@ const UnpublishedProposedMeeting = ({
     setDeleteMeetingConfirmationModal,
     setEditorRole,
     setEndMeetingConfirmationModal,
+    setDeleteMeetingRecord,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -154,9 +155,9 @@ const UnpublishedProposedMeeting = ({
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -313,16 +314,9 @@ const UnpublishedProposedMeeting = ({
       MeetingID: record.pK_MDID,
       StatusID: 4,
     };
-    await dispatch(
-      endMeetingStatusApi(
-        navigate,
-        t,
-        Data,
-        false,
-        setEndMeetingConfirmationModal,
-        1
-      )
-    );
+
+    setDeleteMeetingRecord(Data);
+    setDeleteMeetingConfirmationModal(true);
   };
 
   const menu = (
@@ -330,15 +324,14 @@ const UnpublishedProposedMeeting = ({
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {t(filter.text)}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className='d-flex  align-items-center justify-content-between p-1'>
         <Button
           text={t("Reset")}
           className={styles["FilterResetBtn"]}
@@ -357,13 +350,13 @@ const UnpublishedProposedMeeting = ({
   const MeetingColoumns = [
     {
       title: (
-        <span className="d-flex gap-2 align-items-center">
+        <span className='d-flex gap-2 align-items-center'>
           {" "}
           {t("Title")}{" "}
           {meetingTitleSort === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </span>
       ),
@@ -460,8 +453,7 @@ const UnpublishedProposedMeeting = ({
                 dispatch(attendanceGlobalFlag(false));
                 dispatch(uploadGlobalFlag(false));
               }
-            }}
-          >
+            }}>
             {truncateString(text, 35)}
           </span>
         );
@@ -488,7 +480,7 @@ const UnpublishedProposedMeeting = ({
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -496,8 +488,7 @@ const UnpublishedProposedMeeting = ({
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -507,12 +498,12 @@ const UnpublishedProposedMeeting = ({
     },
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-center">
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
           {t("Organizer")}
           {meetingOrganizerSort === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </span>
       ),
@@ -541,12 +532,12 @@ const UnpublishedProposedMeeting = ({
     },
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-center">
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
           {t("Date-time")}
           {meetingDateTimeSort === "descend" ? (
-            <img src={ArrowDownIcon} alt="" />
+            <img src={ArrowDownIcon} alt='' />
           ) : (
-            <img src={ArrowUpIcon} alt="" />
+            <img src={ArrowUpIcon} alt='' />
           )}
         </span>
       ),
@@ -567,7 +558,7 @@ const UnpublishedProposedMeeting = ({
       render: (text, record) => {
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
           return (
-            <span className="text-truncate d-block ">
+            <span className='text-truncate d-block '>
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime,
                 currentLanguage
@@ -589,7 +580,7 @@ const UnpublishedProposedMeeting = ({
     {
       title: (
         <>
-          <span className="d-flex justify-content-center">{t("Polls")}</span>
+          <span className='d-flex justify-content-center'>{t("Polls")}</span>
         </>
       ),
       dataIndex: "getAllMeetingDetails",
@@ -603,7 +594,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
+                <Col lg={12} md={12} sm={12} className='text-center'>
                   {value === maxValue &&
                   value === 0 &&
                   maxValue === 0 ? null : record.meetingPoll
@@ -611,10 +602,10 @@ const UnpublishedProposedMeeting = ({
                     record.meetingPoll?.totalNoOfDirectorsVoted ? (
                     <img
                       src={rspvGreenIcon}
-                      height="17.06px"
-                      width="17.06px"
-                      alt=""
-                      draggable="false"
+                      height='17.06px'
+                      width='17.06px'
+                      alt=''
+                      draggable='false'
                     />
                   ) : (
                     <>
@@ -625,8 +616,7 @@ const UnpublishedProposedMeeting = ({
                           sm={12}
                           className={
                             "d-flex justify-content-center flex-column"
-                          }
-                        >
+                          }>
                           <span className={styles["RatioClass"]}>
                             {currentLanguage === "en"
                               ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
@@ -657,7 +647,7 @@ const UnpublishedProposedMeeting = ({
     {
       title: (
         <>
-          <span className="d-flex justify-content-center">
+          <span className='d-flex justify-content-center'>
             {t("Send-reponse-by")}
           </span>
         </>
@@ -670,7 +660,7 @@ const UnpublishedProposedMeeting = ({
         return (
           <>
             {record.status === "12" ? (
-              <span className="d-flex justify-content-center">
+              <span className='d-flex justify-content-center'>
                 {changeDateStartHandler2(record.responseDeadLine)}
               </span>
             ) : (
@@ -693,17 +683,16 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center justify-content-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.isAgendaContributor ? (
-                  <Tooltip placement="bottomLeft" title={t("Edit")}>
+                  <Tooltip placement='bottomLeft' title={t("Edit")}>
                     <img
                       src={EditIcon}
-                      className="cursor-pointer"
-                      width="17.03px"
-                      height="17.03px"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      width='17.03px'
+                      height='17.03px'
+                      alt=''
+                      draggable='false'
                       onClick={() => {
                         handleEditMeeting(
                           record.pK_MDID,
@@ -744,14 +733,14 @@ const UnpublishedProposedMeeting = ({
                   </Tooltip>
                 ) : record.isOrganizer ? (
                   <>
-                    <Tooltip placement="bottomLeft" title={t("Edit")}>
+                    <Tooltip placement='bottomLeft' title={t("Edit")}>
                       <img
                         src={EditIcon}
-                        className="cursor-pointer"
-                        width="17.03px"
-                        height="17.03px"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        width='17.03px'
+                        height='17.03px'
+                        alt=''
+                        draggable='false'
                         onClick={() => {
                           handleEditMeeting(
                             record.pK_MDID,
@@ -798,25 +787,28 @@ const UnpublishedProposedMeeting = ({
         );
       },
     },
-    // {
-    //   dataIndex: "Delete",
-    //   key: "Delete",
-    //   align: "center",
-    //   width: "33px",
-    //   render: (text, record) => {
-    //     console.log(record, "deleteIcon");
-    //     if (record.status === "11" && record.isPrimaryOrganizer) {
-    //       return (
-    //         <img
-    //           src={deleteIcon}
-    //           style={{ cursor: "pointer" }}
-    //           onClick={() => handleClickDeleteMeeting(record)}
-    //           // onClick={() => setDeleteMeetingConfirmationModal(true)}
-    //         />
-    //       );
-    //     }
-    //   },
-    // },
+    {
+      dataIndex: "Delete",
+      key: "Delete",
+      align: "center",
+      width: "33px",
+      render: (text, record) => {
+        console.log(record, "deleteIcon");
+        if (
+          (record.status === "12" || record.status === "11") &&
+          record.isPrimaryOrganizer
+        ) {
+          return (
+            <img
+              src={deleteIcon}
+              style={{ cursor: "pointer" }}
+              onClick={() => handleClickDeleteMeeting(record)}
+              // onClick={() => setDeleteMeetingConfirmationModal(true)}
+            />
+          );
+        }
+      },
+    },
     {
       dataIndex: "Edit",
       key: "Edit",
@@ -844,8 +836,7 @@ const UnpublishedProposedMeeting = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex  align-items-center justify-content-center gap-4"
-              >
+                className='d-flex  align-items-center justify-content-center gap-4'>
                 {record.status === "11" ? (
                   record.isParticipant ? null : record.isAgendaContributor ? null : (
                     <Button
@@ -1198,12 +1189,12 @@ const UnpublishedProposedMeeting = ({
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
             column={MeetingColoumns}
             scroll={{ y: "54vh", x: false }}
             pagination={false}
-            className="newMeetingTable"
+            className='newMeetingTable'
             rows={rows}
             locale={{
               emptyText: emptyText(), // Set your custom empty text here

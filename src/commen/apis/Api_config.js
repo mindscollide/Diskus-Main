@@ -1983,7 +1983,12 @@ const GetMeetingRecordingFilesRM = {
 const RequestMeetingRecordingTranscriptRM = {
   RequestMethod: "ServiceManager.RequestMeetingRecordingTranscript"
 }
+
+const ValidateUserPasswordRM = {
+  RequestMethod: "ServiceManager.ValidateUserPassword"
+}
 export {
+  ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
   GetMeetingRecordingFilesRM,
   ValidateEncryptedStringSignatureDataRM,

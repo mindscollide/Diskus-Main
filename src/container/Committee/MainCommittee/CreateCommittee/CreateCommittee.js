@@ -70,6 +70,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     label: "",
     value: 0,
   });
+
+  console.log(committeeMembersRolesVal, "committeeMembersRolesValcommitteeMembersRolesVal")
   const [committeeMembersRolesOptions, setCommitteeMembersRolesOptions] =
     useState([]);
 
@@ -216,7 +218,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     let newMeetingAttendees = [...meetingAttendees];
     let newGroupMembers = [...groupMembers];
     let findRegularRole = committeeMembersRolesOptions.find(
-      (roleOpt) => roleOpt.label === "Regular"
+      (roleOpt) => roleOpt.label === "Regular Members"
     );
     if (taskAssignedTo !== 0 && attendees.length > 0) {
       showMessage(
@@ -1418,7 +1420,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               <Select
                                 options={committeeMembersRolesOptions}
                                 value={
-                                  committeeMembersRolesVal.value !== 0
+                                  committeeMembersRolesVal?.value !== 0
                                     ? committeeMembersRolesVal
                                     : null
                                 }
