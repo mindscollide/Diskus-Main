@@ -838,8 +838,8 @@ const VideoCallNormalHeader = ({
         console.log("mqtt mqmqmqmqmqmq", flag);
         if (!unansweredFlagForOneToOneCall) {
           setJoinMeetingVideoParticipant(true);
-        }else{
-          dispatch(unansweredOneToOneCall(false))
+        } else {
+          dispatch(unansweredOneToOneCall(false));
         }
         setLeaveOneToOne(false);
       } else if (flag === 2) {
@@ -1133,10 +1133,8 @@ const VideoCallNormalHeader = ({
     }
   };
 
-  const raiseUnRaiseForParticipant = () => {
+  const raiseUnRaiseForParticipant = (flag) => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
-      const flag = !raisedUnRaisedParticipant;
-
       let data = {
         RoomID: String(RoomID),
         UID: String(UID),
@@ -1144,6 +1142,7 @@ const VideoCallNormalHeader = ({
       };
       localStorage.setItem("handStatus", flag);
       setHandStatus(flag);
+      dispatch(setRaisedUnRaisedParticiant(flag));
       dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
     } else {
       console.log("Check");
@@ -1351,10 +1350,12 @@ const VideoCallNormalHeader = ({
                 }
               >
                 <img
-                  onClick={
+                  onClick={() =>
                     getMeetingHostInfo?.isHost
                       ? raiseHandFunction
-                      : raiseUnRaiseForParticipant
+                      : raiseUnRaiseForParticipant(
+                          raisedUnRaisedParticipant ? false : true
+                        )
                   }
                   src={
                     getMeetingHostInfo?.isHost
@@ -1587,7 +1588,7 @@ const VideoCallNormalHeader = ({
             <Tooltip
               placement="topRight"
               title={
-                isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
+                isMeetingVideo ? t("Leave-meeting-video-call") : t("Leave-call")
               }
             >
               <img
