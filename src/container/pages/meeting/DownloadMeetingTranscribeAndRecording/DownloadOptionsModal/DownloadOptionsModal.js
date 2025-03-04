@@ -83,9 +83,6 @@ const DownloadOptionsModal = ({
                     MeetingRecord?.isVideoCall &&
                     MeetingRecord?.isRecordingAvailable
                       ? styles["Download___Button_recording"]
-                      : MeetingRecord?.isVideoCall ||
-                        MeetingRecord?.isRecordingAvailable
-                      ? styles["Download___Button_recording_disabled"]
                       : styles["Download___Button_recording_disabled"]
                   }
                   // className={styles["Download___Button_recording_disabled"]}

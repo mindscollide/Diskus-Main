@@ -74,6 +74,7 @@ export const MeetingProvider = ({ children }) => {
   const [confirmationModal, setConfirmationModal] = useState(false);
   const [deleteMeetingConfirmationModal, setDeleteMeetingConfirmationModal] =
     useState(false);
+  const [deleteMeetingRecord, setDeleteMeetingRecord] = useState(null);
 
   // this is the state of isMeeting which is used For create Meeting and Videos
   const [meetingId, setMeetingId] = useState(0);
@@ -271,7 +272,9 @@ export const MeetingProvider = ({ children }) => {
     stepDownloadModal,
     downloadMeetinModal,
     setDownloadMeeting,
-    isRecording, setRecording
+    isRecording,
+    setRecording,
+    deleteMeetingRecord, setDeleteMeetingRecord
   };
 
   // Provide the state data to the context

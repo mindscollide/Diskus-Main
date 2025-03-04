@@ -34,10 +34,33 @@ const initialState = {
   getInvoiceHTML: null,
   downloadInvoice: null,
   validateStringOtpEmail: null,
+  validatePassword: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.VALIDATEPASSWORD_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.VALIDATEPASSWORD_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        validatePassword: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.VALIDATEPASSWORD_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        validatePassword: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.PAYMENTCOMPLETE_INIT: {
       return {
         ...state,

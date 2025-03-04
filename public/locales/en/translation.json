@@ -2443,5 +2443,12 @@
   "Meeting-recording": "Meeting Recording",
   "Owned-by": "Owned by",
   "You": "You",
-  "Shared-with": "Shared with"
+  "Shared-with": "Shared with",
+  "Password-is-required": "Password is required",
+  "Password-not-verified": "Password not verified",
+  "Expired": "Expired",
+  "Spreadsheets": "Spreadsheets",
+  "Presentation": "Presentation",
+  "PDF": "PDF",
+  "Audio":"Audio"
 }

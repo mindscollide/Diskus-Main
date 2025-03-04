@@ -21,6 +21,7 @@ const NewDashobard = () => {
   const getALlMeetingTypes = useSelector(
     (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+  const calendarSpinner = useSelector((state) => state.calendarReducer.Spinner);
 
   const [activateBlur, setActivateBlur] = useState(false);
   let Blur = localStorage.getItem("blur");
@@ -56,7 +57,6 @@ const NewDashobard = () => {
     ) {
       dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
     }
- 
   }, []);
 
   const closeModal = () => {
@@ -77,8 +77,13 @@ const NewDashobard = () => {
         </section>
         <section className={styles["Dashbaords"]}>
           <Row>
-            <Col sm={12} md={4} lg={4} className="d-flex flex-column">
-              <section className={styles["CalendarBox"]}>
+            <Col sm={12} md={4} lg={4} className='d-flex flex-column'>
+              <section
+                className={
+                  calendarSpinner
+                    ? styles["CalendarBox"]
+                    : styles["CalendarBox__hasdata"]
+                }>
                 <NewCalendar />
               </section>
               <section className={styles["EventBox"]}>
@@ -90,12 +95,12 @@ const NewDashobard = () => {
                 </section>
               </section>
             </Col>
-            <Col sm={12} md={4} lg={4} className="d-flex ">
+            <Col sm={12} md={4} lg={4} className='d-flex '>
               <section className={styles["Tasks"]}>
                 <Task />
               </section>
             </Col>
-            <Col sm={12} md={4} lg={4} className="d-flex flex-column gap-2">
+            <Col sm={12} md={4} lg={4} className='d-flex flex-column gap-2'>
               <section className={styles["RecentActivity"]}>
                 <RecentActivity />
               </section>
@@ -113,25 +118,25 @@ const NewDashobard = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName="d-none"
+          modalHeaderClassName='d-none'
           ModalBody={
             <>
               <>
-                <Row className="mb-1">
+                <Row className='mb-1'>
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className="d-flex justify-content-center">
+                      <Col className='d-flex justify-content-center'>
                         <img
                           src={VerificationFailedIcon}
                           width={60}
                           className={"allowModalIcon"}
-                          alt=""
-                          draggable="false"
+                          alt=''
+                          draggable='false'
                         />
                       </Col>
                     </Row>
                     <Row>
-                      <Col className="text-center mt-4">
+                      <Col className='text-center mt-4'>
                         <label className={"allow-limit-modal-p"}>
                           {t(
                             "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -147,13 +152,12 @@ const NewDashobard = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
