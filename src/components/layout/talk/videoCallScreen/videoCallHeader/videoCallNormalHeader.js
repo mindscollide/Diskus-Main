@@ -887,7 +887,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   }, [leavePresenterViewToJoinOneToOne]);
-  
+
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
@@ -1559,7 +1559,10 @@ const VideoCallNormalHeader = ({
             </div>
           ) : (LeaveCallModalFlag === false && callerID === currentUserID) ||
             getMeetingHostInfo?.isDashboardVideo ? (
-            <Tooltip placement="topRight" title={t("Leave-call")}>
+            <Tooltip
+              placement="topRight"
+              title={isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")}
+            >
               <div className="inactive-state">
                 <img
                   className="cursor-pointer"
@@ -1570,7 +1573,10 @@ const VideoCallNormalHeader = ({
               </div>
             </Tooltip>
           ) : LeaveCallModalFlag === false && callerID !== currentUserID ? (
-            <Tooltip placement="topRight" title={t("End-call")}>
+            <Tooltip
+              placement="topRight"
+              title={isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")}
+            >
               <img
                 className="inactive-state"
                 src={CallEndRedIcon}
@@ -1649,7 +1655,9 @@ const VideoCallNormalHeader = ({
                         ? t("Stop-presentation")
                         : presenterViewFlag && presenterViewJoinFlag
                         ? t("Leave-presentation")
-                        : t("Leave-call")
+                        : isMeetingVideo
+                        ? t("Leave-meeting-video-call")
+                        : t("End-call")
                     }
                     onClick={() => leaveCall(false, false, false, false)}
                   />
@@ -1668,7 +1676,9 @@ const VideoCallNormalHeader = ({
                         ? t("Stop-presentation")
                         : presenterViewFlag && presenterViewJoinFlag
                         ? t("Leave-presentation")
-                        : t("Leave-call")
+                        : isMeetingVideo
+                        ? t("Leave-meeting-video-call")
+                        : t("End-call")
                     }
                     onClick={participantLeaveCall}
                   />
