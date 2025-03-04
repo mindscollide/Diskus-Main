@@ -26,6 +26,7 @@ import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
+import { js2xml } from "xml-js";
 
 const VideoNewParticipantList = () => {
   const navigate = useNavigate();
@@ -63,6 +64,9 @@ const VideoNewParticipantList = () => {
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
   const presenterViewFlag = useSelector(
@@ -218,11 +222,33 @@ const VideoNewParticipantList = () => {
 
   const muteUnmuteByHost = (usersData, flag) => {
     if (usersData) {
+      let roomID = localStorage.getItem("acceptedRoomID");
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      let newRoomID = localStorage.getItem("newRoomId");
+      let participantRoomId = localStorage.getItem("participantRoomId");
+      let RoomID =
+        presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
+          ? roomID
+          : isMeetingVideoHostCheck
+          ? newRoomID
+          : participantRoomId;
       // Mute/Unmute a specific participant
-      if (!usersData.isHost) {
+      setFilteredParticipants((prev) =>
+        prev.map((participant) =>
+          participant.guid === usersData.guid
+            ? { ...participant, mute: flag }
+            : participant
+        )
+      );
+      if (
+        presenterViewFlag &&
+        (presenterViewHostFlag || presenterViewJoinFlag)
+      ) {
         // Exclude hosts from muting
         const data = {
-          RoomID: roomID,
+          RoomID: RoomID,
           IsMuted: flag,
           isForAll: false,
           MuteUnMuteList: [
@@ -233,10 +259,10 @@ const VideoNewParticipantList = () => {
           MeetingID: currentMeetingID,
         };
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      } else if (presenterViewFlag) {
+      } else if (!usersData.isHost) {
         // Exclude hosts from muting
         const data = {
-          RoomID: roomID,
+          RoomID: RoomID,
           IsMuted: flag,
           isForAll: false,
           MuteUnMuteList: [
@@ -246,9 +272,8 @@ const VideoNewParticipantList = () => {
           ],
           MeetingID: currentMeetingID,
         };
+      
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      } else {
-        console.log("Cannot mute/unmute host.");
       }
     }
   };
@@ -307,11 +332,21 @@ const VideoNewParticipantList = () => {
   };
 
   const hideUnHideVideoParticipantByHost = (usersData, flag) => {
-    console.log("hell");
-    console.log(usersData, "akasdaskhdvasdv");
+    let roomID = localStorage.getItem("acceptedRoomID");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let newRoomID = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let RoomID =
+      presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
+        ? roomID
+        : isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId;
 
     let data = {
-      RoomID: roomID,
+      RoomID: RoomID,
       HideVideo: flag,
       UIDList: [usersData.guid],
       MeetingID: currentMeetingID,
