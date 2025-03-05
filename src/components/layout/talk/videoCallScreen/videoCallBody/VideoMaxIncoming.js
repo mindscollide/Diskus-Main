@@ -53,14 +53,12 @@ const VideoMaxIncoming = () => {
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
- const presenterViewJoinFlag = useSelector(
+  const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
   let currentUserId = Number(localStorage.getItem("userID"));
 
   let incomingRoomID = localStorage.getItem("NewRoomID");
-
-  let activeRoomID = localStorage.getItem("activeRoomID");
 
   let acceptedRoomID = localStorage.getItem("acceptedRoomID");
 
@@ -69,7 +67,26 @@ const VideoMaxIncoming = () => {
   let currentOrganization = Number(localStorage.getItem("organizationID"));
 
   let callTypeID = Number(localStorage.getItem("callTypeID"));
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
+  let newRoomID = localStorage.getItem("newRoomId");
+  let participantRoomId = localStorage.getItem("participantRoomId");
+  let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+  let activeRoomID = localStorage.getItem("activeRoomID");
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
+  let RoomID =
+    presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
+      ? roomID
+      : isMeetingVideo
+      ? isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId
+      : initiateCallRoomID
+      ? initiateCallRoomID
+      : activeRoomID;
   const [isVisible, setIsVisible] = useState(true);
 
   const [incomingCallerData, setIncomingCallerData] = useState([]);
@@ -108,7 +125,7 @@ const VideoMaxIncoming = () => {
       // Dispatch action to update global state
       let Data = {
         ReciepentID: currentUserId,
-        RoomID: incomingRoomID,
+        RoomID: RoomID,
         CallStatusID: 3,
         CallTypeID: callTypeID,
       };
@@ -142,7 +159,7 @@ const VideoMaxIncoming = () => {
   const acceptCall = () => {
     console.log("busyCall");
 
-    if (presenterViewFlag&&(presenterViewHostFlag||presenterViewJoinFlag)) {
+    if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
       dispatch(nonMeetingVideoGlobalModal(true));
       dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
     } else {
@@ -154,7 +171,7 @@ const VideoMaxIncoming = () => {
       localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
       let Data = {
         ReciepentID: currentUserId,
-        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        RoomID: RoomID,
         CallStatusID: 1,
         CallTypeID: callTypeID,
       };
@@ -176,7 +193,7 @@ const VideoMaxIncoming = () => {
       localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
       let Data = {
         ReciepentID: currentUserId,
-        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        RoomID: RoomID,
         CallStatusID: 1,
         CallTypeID: callTypeID,
       };
@@ -187,9 +204,9 @@ const VideoMaxIncoming = () => {
       setIsTimerRunning(false);
     }
   }, [joiningOneToOneAfterLeavingPresenterView]);
+
   const endAndAccept = async () => {
     console.log("busyCall");
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
     if (isMeeting) {
@@ -199,7 +216,10 @@ const VideoMaxIncoming = () => {
           await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
           setIsTimerRunning(false);
         } else {
-          if (presenterViewFlag) {
+          if (
+            presenterViewFlag &&
+            (presenterViewHostFlag || presenterViewJoinFlag)
+          ) {
             dispatch(nonMeetingVideoGlobalModal(true));
             dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
           } else {
@@ -209,16 +229,14 @@ const VideoMaxIncoming = () => {
             let currentMeetingID = JSON.parse(
               localStorage.getItem("currentMeetingID")
             );
-            let newRoomID = meetinHostInfo?.isHost
-              ? localStorage.getItem("newRoomId")
-              : localStorage.getItem("activeRoomID");
+
             let newUserGUID = meetinHostInfo?.isHost
               ? localStorage.getItem("isGuid")
               : localStorage.getItem("participantUID");
             let newName = localStorage.getItem("name");
 
             let Data = {
-              RoomID: String(newRoomID),
+              RoomID: String(RoomID),
               UserGUID: String(newUserGUID),
               Name: String(newName),
               IsHost: meetinHostInfo?.isHost ? true : false,
@@ -248,7 +266,7 @@ const VideoMaxIncoming = () => {
 
             let Data2 = {
               ReciepentID: currentUserId,
-              RoomID: activeRoomID,
+              RoomID: RoomID,
               CallStatusID: 1,
               CallTypeID: callTypeID,
             };
@@ -261,7 +279,7 @@ const VideoMaxIncoming = () => {
         console.log("Check kr");
         let Data = {
           OrganizationID: currentOrganization,
-          RoomID: acceptedRoomID,
+          RoomID: RoomID,
           IsCaller: callerID === currentUserId ? true : false,
           CallTypeID: callTypeID,
         };
@@ -281,7 +299,7 @@ const VideoMaxIncoming = () => {
         localStorage.removeItem("CallType");
         let Data2 = {
           ReciepentID: currentUserId,
-          RoomID: activeRoomID,
+          RoomID: RoomID,
           CallStatusID: 1,
           CallTypeID: callTypeID,
         };
@@ -293,7 +311,7 @@ const VideoMaxIncoming = () => {
       console.log("Check kr");
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: acceptedRoomID,
+        RoomID: RoomID,
         IsCaller: callerID === currentUserId ? true : false,
         CallTypeID: callTypeID,
       };
@@ -301,7 +319,7 @@ const VideoMaxIncoming = () => {
       localStorage.setItem("isCaller", false);
       let Data2 = {
         ReciepentID: currentUserId,
-        RoomID: activeRoomID,
+        RoomID: RoomID,
         CallStatusID: 1,
         CallTypeID: callTypeID,
       };
@@ -317,7 +335,7 @@ const VideoMaxIncoming = () => {
 
     let Data = {
       ReciepentID: currentUserId,
-      RoomID: incomingRoomID,
+      RoomID: RoomID,
       CallStatusID: 2,
       CallTypeID: callTypeID,
     };
@@ -332,7 +350,7 @@ const VideoMaxIncoming = () => {
     console.log("busyCall");
     let Data = {
       ReciepentID: currentUserId,
-      RoomID: activeRoomID,
+      RoomID: RoomID,
       CallStatusID: 5,
       CallTypeID: callTypeID,
     };
