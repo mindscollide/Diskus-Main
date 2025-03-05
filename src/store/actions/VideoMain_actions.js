@@ -13,6 +13,7 @@ import {
 } from "../../commen/apis/Api_config";
 import {
   getParticipantMeetingJoinMainApi,
+  incomingVideoCallFlag,
   leavePresenterJoinOneToOneOrOtherCall,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
@@ -680,7 +681,7 @@ const leaveCallAction = (message) => {
   };
 };
 
-const LeaveCall = (Data, navigate, t) => {
+const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     let form = new FormData();
@@ -697,7 +698,7 @@ const LeaveCall = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveCall(Data, navigate, t));
+          dispatch(LeaveCall(Data, navigate, t, flag, setIsTimerRunning));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -715,6 +716,39 @@ const LeaveCall = (Data, navigate, t) => {
               localStorage.setItem("newCallerID", 0);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
+              if (flag === 1) {
+                let NewRoomID = localStorage.getItem("NewRoomID");
+                let userID = localStorage.getItem("userID");
+                let incommingCallTypeID = localStorage.getItem(
+                  "incommingCallTypeID"
+                );
+                let incommingCallType =
+                  localStorage.getItem("incommingCallType");
+                let incommingNewCallerID = localStorage.getItem(
+                  "incommingNewCallerID"
+                );
+
+                localStorage.setItem("callTypeID", incommingCallTypeID);
+                localStorage.setItem("callType", incommingCallType);
+                localStorage.setItem("newCallerID", incommingNewCallerID);
+                localStorage.setItem("isCaller", false);
+                localStorage.setItem("activeRoomID", NewRoomID);
+
+                let Data2 = {
+                  ReciepentID: userID,
+                  RoomID: NewRoomID,
+                  CallStatusID: 1,
+                  CallTypeID: Number(incommingCallTypeID),
+                };
+                await dispatch(VideoCallResponse(Data2, navigate, t));
+                localStorage.removeItem("NewRoomID");
+
+                localStorage.removeItem("incommingCallTypeID");
+                localStorage.removeItem("incommingCallType");
+                localStorage.removeItem("incommingNewCallerID");
+                dispatch(incomingVideoCallFlag(false));
+                setIsTimerRunning(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -723,6 +757,39 @@ const LeaveCall = (Data, navigate, t) => {
                 )
             ) {
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
+              if (flag === 1) {
+                let NewRoomID = localStorage.getItem("NewRoomID");
+                let incommingCallTypeID = localStorage.getItem(
+                  "incommingCallTypeID"
+                );
+                let incommingCallType =
+                  localStorage.getItem("incommingCallType");
+                let incommingNewCallerID = localStorage.getItem(
+                  "incommingNewCallerID"
+                );
+                let userID = localStorage.getItem("userID");
+
+                localStorage.setItem("callTypeID", incommingCallTypeID);
+                localStorage.setItem("callType", incommingCallType);
+                localStorage.setItem("newCallerID", incommingNewCallerID);
+                localStorage.setItem("isCaller", false);
+                localStorage.setItem("activeRoomID", NewRoomID);
+
+                let Data2 = {
+                  ReciepentID: userID,
+                  RoomID: NewRoomID,
+                  CallStatusID: 1,
+                  CallTypeID: Number(incommingCallTypeID),
+                };
+                await dispatch(VideoCallResponse(Data2, navigate, t));
+                localStorage.removeItem("NewRoomID");
+
+                localStorage.removeItem("incommingCallTypeID");
+                localStorage.removeItem("incommingCallType");
+                localStorage.removeItem("incommingNewCallerID");
+                dispatch(incomingVideoCallFlag(false));
+                setIsTimerRunning(false);
+              }
               await dispatch(
                 leaveCallAction(t("Call-disconnected-by-recipient"))
               );

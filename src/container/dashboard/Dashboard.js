@@ -2590,31 +2590,27 @@ const Dashboard = () => {
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
         ) {
           console.log("Check active");
-          localStorage.setItem("activeCall", false);
-          let callStatus = JSON.parse(localStorage.getItem("activeCall"));
-          localStorage.setItem("RingerCallCheckFlag", true);
-          localStorage.setItem("callType", data.payload.callType);
-          localStorage.setItem("callTypeID", data.payload.callTypeID);
-          localStorage.setItem("newCallerID", data.payload.callerID);
+          // localStorage.setItem("activeCall", false);
+          let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+          // localStorage.setItem("RingerCallCheckFlag", true);
+          // localStorage.setItem("callType", data.payload.callType);
+          // localStorage.setItem("callTypeID", data.payload.callTypeID);
+          // localStorage.setItem("newCallerID", data.payload.callerID);
 
+          localStorage.setItem("incommingCallType", data.payload.callType);
+          localStorage.setItem("incommingCallTypeID", data.payload.callTypeID);
+          localStorage.setItem("incommingNewCallerID", data.payload.callerID);
           let Dataa = {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
           };
-          // const meetingHost = {
-          //   isHost: false,
-          //   isHostId: 0,
-          //   isDashboardVideo: false,
-          // };
-          // localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
           dispatch(CallRequestReceived(Dataa, navigate, t));
-          if (callStatus === true) {
-            console.log(callStatus, "Check active");
+          if (activeCall === true) {
+            console.log(activeCall, "Check active");
             console.log("Check active");
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             dispatch(incomingVideoCallFlag(true));
             let timeValue = Number(localStorage.getItem("callRingerTimeout"));
-            let callTypeID = Number(localStorage.getItem("callTypeID"));
             localStorage.setItem("NewRoomID", data.payload.roomID);
             timeValue = timeValue * 1000;
             const timeoutId = setTimeout(() => {
@@ -2624,7 +2620,7 @@ const Dashboard = () => {
                 ReciepentID: Number(createrID),
                 RoomID: data.payload.roomID,
                 CallStatusID: 3,
-                CallTypeID: callTypeID,
+                CallTypeID: data.payload.callTypeID,
               };
               if (IncomingVideoCallFlagReducer === true) {
                 console.log("Check active");
@@ -2633,10 +2629,9 @@ const Dashboard = () => {
                 localStorage.setItem("NewRoomID", 0);
               }
             }, timeValue);
-            localStorage.setItem("activeRoomID", data.payload.roomID);
             return () => clearTimeout(timeoutId);
           } else if (
-            callStatus === false &&
+            activeCall === false &&
             IncomingVideoCallFlagReducer === false
           ) {
             console.log("Check active");
