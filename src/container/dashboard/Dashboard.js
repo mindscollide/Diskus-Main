@@ -2594,7 +2594,6 @@ const Dashboard = () => {
           localStorage.setItem("callType", data.payload.callType);
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           localStorage.setItem("newCallerID", data.payload.callerID);
-          localStorage.removeItem("meetingTitle");
 
           let Dataa = {
             OrganizationID: Number(currentOrganization),

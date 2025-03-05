@@ -148,6 +148,13 @@ export const MeetingProvider = ({ children }) => {
     setLeaveMeetingVideoForOneToOneOrGroup,
   ] = useState(false);
 
+  // state for ShareScreenTrue
+  const [shareScreenTrue, setShareScreenTrue] = useState(false);
+
+  // state For Open Presenter Participant List
+  const [presenterParticipantList, setPresenterParticipantList] =
+    useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -321,7 +328,12 @@ export const MeetingProvider = ({ children }) => {
     setLeavePresenterViewToJoinOneToOne,
     leaveMeetingVideoForOneToOneOrGroup,
     setLeaveMeetingVideoForOneToOneOrGroup,
-    deleteMeetingRecord, setDeleteMeetingRecord
+    deleteMeetingRecord,
+    setDeleteMeetingRecord,
+    presenterParticipantList,
+    setPresenterParticipantList,
+    shareScreenTrue,
+    setShareScreenTrue,
   };
 
   // Provide the state data to the context
