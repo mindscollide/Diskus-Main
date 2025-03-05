@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Dropdown } from "react-bootstrap";
 import { Button } from "./../../../../elements";
 import { Tooltip } from "antd";
 import "./videoCallHeader.css";
@@ -42,7 +42,11 @@ import MicOffHost from "../../../../../assets/images/Recent Activity Icons/Video
 import VideoOffHost from "../../../../../assets/images/Recent Activity Icons/Video/VideoOff.png";
 import StopMinPresenter from "../../../../../assets/images/Recent Activity Icons/Video/StopMinPresenter.png";
 import CopyLinkWhite from "../../../../../assets/images/Recent Activity Icons/Video/CopyLinkWhite.png";
+import Raisehandselected from "../../../../../assets/images/Recent Activity Icons/Video/Raisehandselected.png";
 import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
+import Menu from "./../../talk-Video/video-images/Menu.png";
+import GoldenHandRaised from "./../../talk-Video/video-images/GoldenHandRaised.png";
+import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
 
 import VideoOff from "./../../talk-Video/video-images/Video Disabled Purple.svg";
 import ChatIcon from "./../../talk-Video/video-images/Chat Purple.svg";
@@ -75,7 +79,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     (state) => state.NewMeetingreducer.getmeetingURL
   );
 
-  const { setShareScreenTrue } = useMeetingContext();
+  const {
+    editorRole,
+    presenterParticipantList,
+    setPresenterParticipantList,
+    setShareScreenTrue,
+  } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
   // state for participants
@@ -593,6 +602,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     }, 3000);
   };
 
+  const openPresenterParticipantsList = () => {
+    setPresenterParticipantList(!presenterParticipantList);
+  };
+
   const handleScreenShareButton = async () => {
     setShareScreenTrue(true);
   };
@@ -792,13 +805,106 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 </div>
               )}
-              {presenterViewFlag && presenterViewHostFlag && (
-                <Tooltip placement="topRight" title={t("Participants")}>
-                  <div className={"grayScaleImage"}>
-                    <img src={ParticipantIcon} alt="Participants" />
-                  </div>
-                </Tooltip>
-              )}
+              {presenterViewFlag &&
+                !JSON.parse(localStorage.getItem("activeCall")) && (
+                  <Tooltip placement="topRight" title={t("Participants")}>
+                    <div className={"grayScaleImage"}>
+                      <img
+                        src={ParticipantIcon}
+                        alt="Participants"
+                        onClick={openPresenterParticipantsList}
+                      />
+                    </div>
+
+                    <div className={"position-relative"}>
+                      {presenterParticipantList && (
+                        <>
+                          <div
+                            className={"presenter-participants-minimize-list"}
+                          >
+                            <div className="background-color-for-list">
+                              <Row>
+                                <Col lg={6} md={6} sm={12}>
+                                  <p className="Waiting-New-Participant-Hosts-Title">
+                                    {t("Participants")}
+                                  </p>
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={12}
+                                  className="d-flex justify-content-end"
+                                >
+                                  <Button
+                                    text={t("Mute-all")}
+                                    className="Waiting-New-Participant-muteAll"
+                                  />
+                                </Col>
+                              </Row>
+
+                              <Row className="mt-4">
+                                <Col
+                                  lg={9}
+                                  md={9}
+                                  sm={12}
+                                  className="d-flex justify-content-start gap-2"
+                                >
+                                  <p>Asad Jaffri</p>
+
+                                  <img
+                                    src={Raisehandselected}
+                                    alt="Mic"
+                                    width="19px"
+                                    height="21px"
+                                  />
+                                </Col>
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={12}
+                                  className="d-flex justify-content-end gap-2"
+                                >
+                                  <img
+                                    src={MicOffHost}
+                                    alt="Mic"
+                                    width="22px"
+                                    height="22px"
+                                  />
+                                  <img
+                                    src={VideoOffHost}
+                                    alt="RaiseHand"
+                                    width="22px"
+                                    height="22px"
+                                  />
+                                  <Dropdown>
+                                    <Dropdown.Toggle className="participant-toggle">
+                                      <img
+                                        draggable="false"
+                                        src={Menu}
+                                        alt=""
+                                      />
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <>
+                                        <Dropdown.Item className="participant-dropdown-item">
+                                          {t("Remove")}
+                                        </Dropdown.Item>
+                                        <Dropdown.Item className="participant-dropdown-item">
+                                          {t("Hide-video")}
+                                        </Dropdown.Item>
+                                      </>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </Col>
+                              </Row>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </Tooltip>
+                )}
 
               {(meetingHostData?.isHost ||
                 (presenterViewFlag && presenterViewHostFlag)) &&
