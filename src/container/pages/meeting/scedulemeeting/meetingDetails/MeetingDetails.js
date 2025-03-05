@@ -1887,11 +1887,13 @@ const MeetingDetails = ({
                       label: meetingDetails.RecurringOptions?.label,
                     }}
                     isDisabled={
-                      (Number(editorRole.status) === 9 ||
-                        Number(editorRole.status) === 8 ||
-                        Number(editorRole.status) === 10) &&
-                      editorRole.role === "Organizer" &&
-                      isEditMeeting === true
+                      process.env.REACT_APP_ENV === "prod"
+                        ? true
+                        : (Number(editorRole.status) === 9 ||
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
                           isEditMeeting === true
