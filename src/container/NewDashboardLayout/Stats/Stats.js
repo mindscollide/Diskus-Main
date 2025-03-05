@@ -143,24 +143,21 @@ const Stats = () => {
             sm={12}
             md={4}
             lg={4}
-            className="d-flex justify-content-center align-items-center"
-          >
+            className='d-flex justify-content-center align-items-center'>
             <UpcomingMeeting meetingValue={counts.upcomingMeetingCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className="d-flex justify-content-center align-items-center"
-          >
+            className='d-flex justify-content-center align-items-center'>
             <PendingTasks taskValue={counts.upComingTaskCount} />
           </Col>
           <Col
             sm={12}
             md={4}
             lg={4}
-            className="d-flex justify-content-center align-items-center"
-          >
+            className='d-flex justify-content-center align-items-center'>
             <PendingApproval pendingAppr={counts.upComingApprovalCount} />
           </Col>
         </Row>
@@ -169,8 +166,7 @@ const Stats = () => {
         sm={12}
         md={6}
         lg={6}
-        className={`d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}
-      >
+        className={`d-flex flex-column gap-3 ${styles["ProgressBarContains"]}`}>
         {progressBarData.map((bar, index) => {
           let nowValue = Number(bar.max) - Number(bar.now);
           let calculateValue = nowValue === 0 ? bar.max : nowValue;
@@ -180,6 +176,8 @@ const Stats = () => {
             nowValue,
             calculateValue,
             bar,
+            typeof bar.max,
+            typeof bar.now,
             "progressBarData"
           );
 
