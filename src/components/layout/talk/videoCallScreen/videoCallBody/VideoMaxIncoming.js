@@ -14,6 +14,8 @@ import videoAttendIcon from "../../../../../assets/images/newElements/VideoAtten
 import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {
   incomingVideoCallFlag,
+  leavePresenterJoinOneToOneOrOtherCall,
+  nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
@@ -24,6 +26,7 @@ import {
   LeaveMeetingVideo,
 } from "../../../../../store/actions/NewMeetingActions";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoMaxIncoming = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -35,11 +38,24 @@ const VideoMaxIncoming = () => {
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
+  const {
+    joiningOneToOneAfterLeavingPresenterView,
+    setJoiningOneToOneAfterLeavingPresenterView,
+  } = useMeetingContext();
   const { VideoMainReducer, videoFeatureReducer } = useSelector(
     (state) => state
   );
 
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+ const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
   let currentUserId = Number(localStorage.getItem("userID"));
 
   let incomingRoomID = localStorage.getItem("NewRoomID");
@@ -77,6 +93,8 @@ const VideoMaxIncoming = () => {
   timeValue = timeValue * 1000;
 
   useEffect(() => {
+    dispatch(incomingVideoCallFlag(true));
+
     // Create the audio element
     const audioElement = new Audio("/IncomingCall.wav");
 
@@ -123,25 +141,52 @@ const VideoMaxIncoming = () => {
 
   const acceptCall = () => {
     console.log("busyCall");
-    const meetingHost = {
-      isHost: false,
-      isHostId: 0,
-      isDashboardVideo: false,
-    };
-    localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-    let Data = {
-      ReciepentID: currentUserId,
-      RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
-      CallStatusID: 1,
-      CallTypeID: callTypeID,
-    };
-    dispatch(VideoCallResponse(Data, navigate, t));
-    dispatch(incomingVideoCallFlag(false));
-    dispatch(normalizeVideoPanelFlag(true));
-    localStorage.setItem("activeCall", true);
-    setIsTimerRunning(false);
-  };
 
+    if (presenterViewFlag&&(presenterViewHostFlag||presenterViewJoinFlag)) {
+      dispatch(nonMeetingVideoGlobalModal(true));
+      dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+    } else {
+      const meetingHost = {
+        isHost: false,
+        isHostId: 0,
+        isDashboardVideo: false,
+      };
+      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      dispatch(normalizeVideoPanelFlag(true));
+      localStorage.setItem("activeCall", true);
+      setIsTimerRunning(false);
+    }
+  };
+  useEffect(() => {
+    if (joiningOneToOneAfterLeavingPresenterView) {
+      setJoiningOneToOneAfterLeavingPresenterView(false);
+      const meetingHost = {
+        isHost: false,
+        isHostId: 0,
+        isDashboardVideo: false,
+      };
+      localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
+        CallStatusID: 1,
+        CallTypeID: callTypeID,
+      };
+      dispatch(VideoCallResponse(Data, navigate, t));
+      dispatch(incomingVideoCallFlag(false));
+      dispatch(normalizeVideoPanelFlag(true));
+      localStorage.setItem("activeCall", true);
+      setIsTimerRunning(false);
+    }
+  }, [joiningOneToOneAfterLeavingPresenterView]);
   const endAndAccept = async () => {
     console.log("busyCall");
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -154,60 +199,66 @@ const VideoMaxIncoming = () => {
           await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
           setIsTimerRunning(false);
         } else {
-          let meetinHostInfo = JSON.parse(
-            localStorage.getItem("meetinHostInfo")
-          );
-          let currentMeetingID = JSON.parse(
-            localStorage.getItem("currentMeetingID")
-          );
-          let newRoomID = meetinHostInfo?.isHost
-            ? localStorage.getItem("newRoomId")
-            : localStorage.getItem("activeRoomID");
-          let newUserGUID = meetinHostInfo?.isHost
-            ? localStorage.getItem("isGuid")
-            : localStorage.getItem("participantUID");
-          let newName = localStorage.getItem("name");
+          if (presenterViewFlag) {
+            dispatch(nonMeetingVideoGlobalModal(true));
+            dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+          } else {
+            let meetinHostInfo = JSON.parse(
+              localStorage.getItem("meetinHostInfo")
+            );
+            let currentMeetingID = JSON.parse(
+              localStorage.getItem("currentMeetingID")
+            );
+            let newRoomID = meetinHostInfo?.isHost
+              ? localStorage.getItem("newRoomId")
+              : localStorage.getItem("activeRoomID");
+            let newUserGUID = meetinHostInfo?.isHost
+              ? localStorage.getItem("isGuid")
+              : localStorage.getItem("participantUID");
+            let newName = localStorage.getItem("name");
 
-          let Data = {
-            RoomID: String(newRoomID),
-            UserGUID: String(newUserGUID),
-            Name: String(newName),
-            IsHost: meetinHostInfo?.isHost ? true : false,
-            MeetingID: Number(currentMeetingID),
-          };
-          await dispatch(LeaveMeetingVideo(Data, navigate, t));
-          await dispatch(setAudioControlHost(false));
-          await dispatch(setAudioControlHost(false));
-          console.log("videoHideUnHideForHost");
-          await dispatch(setVideoControlHost(false));
-          await dispatch(setVideoControlHost(false));
-          localStorage.setItem("isMicEnabled", false);
-          localStorage.setItem("isWebCamEnabled", false);
-          localStorage.setItem("activeOtoChatID", 0);
-          localStorage.setItem("initiateVideoCall", false);
-          localStorage.setItem("activeRoomID", 0);
-          localStorage.setItem("meetingVideoID", 0);
-          localStorage.setItem("newCallerID", 0);
-          localStorage.setItem("callerStatusObject", JSON.stringify([]));
-          localStorage.removeItem("newRoomId");
-          localStorage.removeItem("isHost");
-          localStorage.removeItem("isGuid");
-          localStorage.removeItem("hostUrl");
-          localStorage.removeItem("VideoView");
-          localStorage.removeItem("videoIframe");
-          localStorage.removeItem("CallType");
+            let Data = {
+              RoomID: String(newRoomID),
+              UserGUID: String(newUserGUID),
+              Name: String(newName),
+              IsHost: meetinHostInfo?.isHost ? true : false,
+              MeetingID: Number(currentMeetingID),
+            };
+            await dispatch(LeaveMeetingVideo(Data, navigate, t));
+            await dispatch(setAudioControlHost(false));
+            await dispatch(setAudioControlHost(false));
+            console.log("videoHideUnHideForHost");
+            await dispatch(setVideoControlHost(false));
+            await dispatch(setVideoControlHost(false));
+            localStorage.setItem("isMicEnabled", false);
+            localStorage.setItem("isWebCamEnabled", false);
+            localStorage.setItem("activeOtoChatID", 0);
+            localStorage.setItem("initiateVideoCall", false);
+            localStorage.setItem("activeRoomID", 0);
+            localStorage.setItem("meetingVideoID", 0);
+            localStorage.setItem("newCallerID", 0);
+            localStorage.setItem("callerStatusObject", JSON.stringify([]));
+            localStorage.removeItem("newRoomId");
+            localStorage.removeItem("isHost");
+            localStorage.removeItem("isGuid");
+            localStorage.removeItem("hostUrl");
+            localStorage.removeItem("VideoView");
+            localStorage.removeItem("videoIframe");
+            localStorage.removeItem("CallType");
 
-          let Data2 = {
-            ReciepentID: currentUserId,
-            RoomID: activeRoomID,
-            CallStatusID: 1,
-            CallTypeID: callTypeID,
-          };
-          dispatch(VideoCallResponse(Data2, navigate, t));
-          dispatch(incomingVideoCallFlag(false));
-          setIsTimerRunning(false);
+            let Data2 = {
+              ReciepentID: currentUserId,
+              RoomID: activeRoomID,
+              CallStatusID: 1,
+              CallTypeID: callTypeID,
+            };
+            dispatch(VideoCallResponse(Data2, navigate, t));
+            dispatch(incomingVideoCallFlag(false));
+            setIsTimerRunning(false);
+          }
         }
       } else {
+        console.log("Check kr");
         let Data = {
           OrganizationID: currentOrganization,
           RoomID: acceptedRoomID,
@@ -239,6 +290,7 @@ const VideoMaxIncoming = () => {
         setIsTimerRunning(false);
       }
     } else {
+      console.log("Check kr");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: acceptedRoomID,
@@ -344,7 +396,7 @@ const VideoMaxIncoming = () => {
                       : "avatar-column-max-call"
                   }
                 >
-                  {activeCallState === false && !isMeeting ? (
+                  {activeCallState === false ? (
                     // <img
                     //   src={`data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}`}
                     //   width={150}

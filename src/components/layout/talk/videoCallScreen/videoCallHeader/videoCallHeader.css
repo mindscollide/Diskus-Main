@@ -11,6 +11,17 @@
   text-overflow: ellipsis;
 }
 
+.title-for-presenter {
+  font-size: 22px !important;
+  color: #6172d6 !important;
+  margin: auto;
+  width: 45vw;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* .minimize-screen-on-bottom {
   display: flex;
   align-items: center;
@@ -105,7 +116,9 @@ img.normalize-Icon-Large {
   height: 20px;
   margin-top: 6px;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 .video-menu-popups {
   position: absolute;
   top: 50px;
@@ -125,6 +138,18 @@ img.normalize-Icon-Large {
   justify-content: center;
   align-items: center;
   cursor: not-allowed;
+  margin-right: 10px;
+}
+
+.presenterImage {
+  filter: brightness(0) saturate(100%) invert(80%) sepia(1%) saturate(20%)
+    hue-rotate(0deg) brightness(95%) contrast(85%) !important; /* Applying color instead of grayscale */
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer; /* Adjust cursor if needed */
   margin-right: 10px;
 }
 

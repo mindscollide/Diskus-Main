@@ -13,6 +13,7 @@ import {
 } from "../../commen/apis/Api_config";
 import {
   getParticipantMeetingJoinMainApi,
+  leavePresenterJoinOneToOneOrOtherCall,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   videoOutgoingCallFlag,
@@ -170,8 +171,13 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 JSON.stringify(meetingHost)
               );
               localStorage.setItem("initiateVideoCall", true);
-              localStorage.setItem("isMeeting", false);
               localStorage.setItem("meetingTitle", "");
+              if (Data.CallTypeID === 2) {
+                localStorage.setItem(
+                  "RecipentIDsOninitiateVideoCall",
+                  JSON.stringify(Data.RecipentIDs)
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -704,6 +710,10 @@ const LeaveCall = (Data, navigate, t) => {
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 0);
               sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.setItem("initiateVideoCall", false);
+              localStorage.setItem("NewRoomID", 0);
+              localStorage.setItem("newCallerID", 0);
+              dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
             } else if (
               response.data.responseResult.responseMessage
@@ -712,6 +722,7 @@ const LeaveCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
+              dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(
                 leaveCallAction(t("Call-disconnected-by-recipient"))
               );
