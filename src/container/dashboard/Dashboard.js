@@ -2594,6 +2594,7 @@ const Dashboard = () => {
           localStorage.setItem("callType", data.payload.callType);
           localStorage.setItem("callTypeID", data.payload.callTypeID);
           localStorage.setItem("newCallerID", data.payload.callerID);
+
           let Dataa = {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
@@ -2939,7 +2940,7 @@ const Dashboard = () => {
             if (data.payload.callTypeID === 1) {
               sessionStorage.setItem("NonMeetingVideoCall", false);
               console.log("mqtt");
-              dispatch(unansweredOneToOneCall(true))
+              dispatch(unansweredOneToOneCall(true));
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));

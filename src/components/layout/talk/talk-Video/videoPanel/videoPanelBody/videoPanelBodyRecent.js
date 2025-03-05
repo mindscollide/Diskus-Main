@@ -221,6 +221,7 @@ const VideoPanelBodyRecent = () => {
           isHostId: 0,
           isDashboardVideo: false,
         };
+        localStorage.removeItem("meetingTitle");
         sessionStorage.setItem("NonMeetingVideoCall", true);
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
         localStorage.setItem("CallType", Data.CallTypeID);
@@ -595,11 +596,11 @@ const VideoPanelBodyRecent = () => {
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row>
-            <Col lg={12} md={12} sm={12} className='mt-2'>
+            <Col lg={12} md={12} sm={12} className="mt-2">
               <TextField
                 maxLength={200}
-                applyClass='form-control2'
-                name='Name'
+                applyClass="form-control2"
+                name="Name"
                 change={(e) => {
                   searchChat(e.target.value);
                 }}
@@ -625,36 +626,38 @@ const VideoPanelBodyRecent = () => {
                   display: "flex",
                   justifyContent: "center",
                   marginTop: "10px",
-                }}>
+                }}
+              >
                 {" "}
                 <Spin />
               </span>
-            }>
+            }
+          >
             {recentVideoCalls.map((recentCallData, index) => {
               let recentCallDateTime =
                 recentCallData.callDate + recentCallData.callTime;
               console.log("recentCallDatarecentCallData", recentCallData);
               return (
                 <>
-                  <Row className='single-chat' key={index}>
-                    <Col lg={2} md={2} sm={12} className='bottom-border'>
+                  <Row className="single-chat" key={index}>
+                    <Col lg={2} md={2} sm={12} className="bottom-border">
                       {recentCallData.callType.callTypeID === 1 ? (
                         // One to One And Group Call
-                        <div className='one-to-one-and-group-call-profile'>
+                        <div className="one-to-one-and-group-call-profile">
                           <img
                             src={`data:image/jpeg;base64,${recentCallData.callerDisplayProfilePicture}`}
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 2 ? (
                         // One to One And Group Call
-                        <div className='one-to-one-and-group-call-profile'>
+                        <div className="one-to-one-and-group-call-profile">
                           <img
                             src={`data:image/jpeg;base64,${recentCallData.callerDisplayProfilePicture}`}
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 3 ? (
                         // Meeting
-                        <div className='video-profile-icon'>
+                        <div className="video-profile-icon">
                           <img src={MeetingVideoCallIcon} />
                         </div>
                       ) : null}
@@ -675,26 +678,27 @@ const VideoPanelBodyRecent = () => {
                         />
                       )} */}
                     </Col>
-                    <Col lg={8} md={8} sm={12} className='bottom-border'>
+                    <Col lg={8} md={8} sm={12} className="bottom-border">
                       <div className={"video-block"}>
                         {(recentCallData.callStatus.status === "Unanswered" ||
                           recentCallData.callStatus.status === "Busy") &&
                         recentCallData.callType.callTypeID === 1 ? (
                           <>
-                            <p className='Video-chat-username m-0'>
+                            <p className="Video-chat-username m-0">
                               <Tooltip
-                                placement='top'
+                                placement="top"
                                 title={`${
                                   recentCallData.callerName === currentUserName
                                     ? recentCallData.recipients[0].userName
                                     : recentCallData.callerName
-                                }}`}>
+                                }}`}
+                              >
                                 {recentCallData.callerName === currentUserName
                                   ? recentCallData.recipients[0].userName
                                   : recentCallData.callerName}
                               </Tooltip>
-                              <span className='call-status-icon'>
-                                <img src={MissedCallIcon} alt='' />
+                              <span className="call-status-icon">
+                                <img src={MissedCallIcon} alt="" />
                               </span>
                             </p>
                           </>
@@ -703,24 +707,26 @@ const VideoPanelBodyRecent = () => {
                             recentCallData.callStatus.status === "Busy") &&
                           recentCallData.callType.callTypeID === 2 ? (
                           <Tooltip
-                            placement='top'
+                            placement="top"
                             title={`${formatUserNames(
                               recentCallData.recipients
-                            )}`}>
-                            <p className='Video-chat-username m-0'>
+                            )}`}
+                          >
+                            <p className="Video-chat-username m-0">
                               {formatUserNames(recentCallData.recipients)}
-                              <span className='call-status-icon'>
-                                <img src={MissedCallIcon} alt='' />
+                              <span className="call-status-icon">
+                                <img src={MissedCallIcon} alt="" />
                               </span>
                             </p>
                           </Tooltip>
                         ) : recentCallData.callType.callTypeID === 3 ? (
                           <Tooltip
                             title={recentCallData.meetingTitle}
-                            className='tooltip-videopanel-meetingtitle'
+                            className="tooltip-videopanel-meetingtitle"
                             showArrow={false}
-                            placement='top'>
-                            <p className='Video-chat-username m-0'>
+                            placement="top"
+                          >
+                            <p className="Video-chat-username m-0">
                               {recentCallData.meetingTitle}
                             </p>
                           </Tooltip>
@@ -738,8 +744,9 @@ const VideoPanelBodyRecent = () => {
                                 ? formatUserNames(recentCallData.recipients)
                                 : null
                             }`}
-                            showArrow={false}>
-                            <p className='Video-chat-username m-0'>
+                            showArrow={false}
+                          >
+                            <p className="Video-chat-username m-0">
                               {recentCallData.callerName === currentUserName &&
                               recentCallData.callType.callTypeID === 1
                                 ? recentCallData.recipients[0].userName
@@ -750,18 +757,18 @@ const VideoPanelBodyRecent = () => {
                                 : recentCallData.callType.callTypeID === 2
                                 ? formatUserNames(recentCallData.recipients)
                                 : null}
-                              <span className='call-status-icon'>
+                              <span className="call-status-icon">
                                 {recentCallData.isIncoming === false ? (
-                                  <img src={OutgoingIcon} alt='' />
+                                  <img src={OutgoingIcon} alt="" />
                                 ) : (
-                                  <img src={IncomingIcon} alt='' />
+                                  <img src={IncomingIcon} alt="" />
                                 )}
                               </span>
                             </p>
                           </Tooltip>
                         )}
 
-                        <p className='video-chat-date m-0'>
+                        <p className="video-chat-date m-0">
                           {recentCallData.callDate === currentUtcDate &&
                           recentCallData.callDate !== "" &&
                           recentCallData.callDate !== undefined ? (
@@ -795,23 +802,24 @@ const VideoPanelBodyRecent = () => {
                         </p>
                       </div>
                     </Col>
-                    <Col lg={2} md={2} sm={12} className='video_call_icon'>
+                    <Col lg={2} md={2} sm={12} className="video_call_icon">
                       {recentCallData.isRecordingAvailable ? (
-                        <Tooltip placement='bottomLeft' title={t("Download")}>
+                        <Tooltip placement="bottomLeft" title={t("Download")}>
                           <img
-                            className='cursor-pointer me-2'
+                            className="cursor-pointer me-2"
                             src={VideoDownload}
-                            alt=''
+                            alt=""
                             onClick={() => downloadVideoCall(recentCallData)}
                           />
                         </Tooltip>
                       ) : null}
                       <Tooltip
-                        placement='bottomLeft'
-                        title={t("Start-video-call")}>
+                        placement="bottomLeft"
+                        title={t("Start-video-call")}
+                      >
                         <img
-                          alt=''
-                          className='cursor-pointer'
+                          alt=""
+                          className="cursor-pointer"
                           src={VideoCallIcon}
                           onClick={() => otoVideoCall(recentCallData)}
                         />
@@ -837,26 +845,27 @@ const VideoPanelBodyRecent = () => {
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName='d-none'
+        modalFooterClassName="d-none"
         centered
         size={"md"}
         ModalBody={
           <>
             <Container>
               <Row>
-                <Col lg={12} md={12} sm={12} className='text-center'>
-                  <p className='disconnection-text'>
+                <Col lg={12} md={12} sm={12} className="text-center">
+                  <p className="disconnection-text">
                     {" "}
                     {t("Are-you-sure-you-want-to-disconnect-this-call")}{" "}
                   </p>
                 </Col>
               </Row>
-              <Row className='mt-3 mb-4'>
+              <Row className="mt-3 mb-4">
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className='d-flex justify-content-center gap-2'>
+                  className="d-flex justify-content-center gap-2"
+                >
                   <Button
                     // text={
                     //   callerID === currentUserID || callerID === 0
@@ -866,7 +875,7 @@ const VideoPanelBodyRecent = () => {
                     //     : null
                     // }
                     text={"Confirm"}
-                    className='confirmation-disconnection-button'
+                    className="confirmation-disconnection-button"
                     onClick={
                       isMeetingVideo
                         ? leavecallMeetingVideo
@@ -880,7 +889,7 @@ const VideoPanelBodyRecent = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className='cancellation-disconnection-button'
+                    className="cancellation-disconnection-button"
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>
@@ -896,7 +905,7 @@ const VideoPanelBodyRecent = () => {
           setInitiateVideoModalGroup(false);
         }}
         setShow={setInitiateVideoModalGroup}
-        modalFooterClassName='d-none'
+        modalFooterClassName="d-none"
         centered
         size={"sm"}
         ModalBody={
@@ -907,12 +916,13 @@ const VideoPanelBodyRecent = () => {
                   <p> {t("Group-call-disconnection")}</p>
                 </Col>
               </Row>
-              <Row className='mt-3 mb-4'>
+              <Row className="mt-3 mb-4">
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className='d-flex justify-content-center gap-2'>
+                  className="d-flex justify-content-center gap-2"
+                >
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -921,7 +931,7 @@ const VideoPanelBodyRecent = () => {
                         ? t("End Participant")
                         : null
                     }
-                    className='leave-meeting-options__btn leave-meeting-red-button'
+                    className="leave-meeting-options__btn leave-meeting-red-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHostGroup
@@ -933,7 +943,7 @@ const VideoPanelBodyRecent = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className='leave-meeting-options__btn leave-meeting-gray-button'
+                    className="leave-meeting-options__btn leave-meeting-gray-button"
                     onClick={() => setInitiateVideoModalGroup(false)}
                   />
                 </Col>
