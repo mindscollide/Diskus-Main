@@ -50,6 +50,7 @@ import { useNotesContext } from "../../../context/NotesContext.js";
 import CreateQuickMeeting from "../../../container/QuickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
 import { useMeetingContext } from "../../../context/MeetingContext.js";
 import { locale } from "moment";
+import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -1337,7 +1338,7 @@ const Header2 = ({ isVideo }) => {
                     />
                     {unReadCountNotification !== 0 ? (
                       <span className='NotficationCountSpan'>
-                        {unReadCountNotification}
+                        {convertToArabicNumerals(unReadCountNotification)}
                       </span>
                     ) : null}
                   </span>
