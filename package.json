@@ -96,12 +96,8 @@
     "xregexp": "^5.1.1"
   },
   "scripts": {
-    "start": "cross-env REACT_APP_ENV=dev craco start",
-    "start:uat": "cross-env REACT_APP_ENV=uat craco start",
-    "start:prod": "cross-env REACT_APP_ENV=prod craco start",
-    "build": "cross-env REACT_APP_ENV=dev craco build",
-    "build:uat": "cross-env REACT_APP_ENV=uat craco build",
-    "build:prod": "cross-env REACT_APP_ENV=prod craco build",
+    "start": "craco start",
+    "build": "craco build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -125,7 +121,6 @@
   },
   "devDependencies": {
     "buffer": "^6.0.3",
-    "cross-env": "^7.0.3",
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "process": "^0.11.10",

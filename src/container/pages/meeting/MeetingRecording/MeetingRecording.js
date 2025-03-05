@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  meetingTranscriptDownloaded,
   requestMeetingRecordingTranscriptApi,
   requestMeetingRecordingTranscript_clear,
 } from "../../../../store/actions/NewMeetingActions";
@@ -30,8 +31,11 @@ const MeetingRecording = ({ title }) => {
   const meetingtranscribeResponse = useSelector(
     (state) => state.NewMeetingreducer.meetingTranscriptResponse
   );
-  const meetingTranscriptDownloaded = useSelector(
+  const meetingTranscriptDownload = useSelector(
     (state) => state.NewMeetingreducer.meetingTranscriptDownloaded
+  );
+  const meetingMinutesDownloaded = useSelector(
+    (state) => state.NewMeetingreducer.meetingMinutesDownload
   );
   console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
   const dispatch = useDispatch();
@@ -114,39 +118,55 @@ const MeetingRecording = ({ title }) => {
   }, [meetingtranscribeResponse]);
 
   useEffect(() => {
-    if (meetingTranscriptDownloaded !== null) {
+    if (meetingTranscriptDownload !== null) {
       try {
-        const { transcriptFileDetails, minutesFileDetails, meetingID } =
-          meetingTranscriptDownloaded;
+        const { fileDetails, meetingID } = meetingTranscriptDownload;
         let copyData = [...data];
         copyData[0].transcriptStatus = 4;
-        copyData.push(
-          {
-            fileID: transcriptFileDetails.pK_FileID,
-            fileName: transcriptFileDetails.displayFileName,
-            fileSize: transcriptFileDetails.fileSize,
-            transcriptStatus: 4,
-            meetingID: meetingID,
-          },
-          {
-            fileID: minutesFileDetails.pK_FileID,
-            fileName: minutesFileDetails.displayFileName,
-            fileSize: minutesFileDetails.fileSize,
-            transcriptStatus: 4,
-            meetingID: meetingID,
-          }
-        );
+        copyData.push({
+          fileID: fileDetails.pK_FileID,
+          fileName: fileDetails.displayFileName,
+          fileSize: fileDetails.fileSize,
+          transcriptStatus: 4,
+          meetingID: meetingID,
+        });
         setData(copyData);
         dispatch(meetingTranscriptDownloaded(null));
         console.log(
-          { meetingTranscriptDownloaded, copyData },
+          { meetingTranscriptDownload, copyData },
           "meetingTranscriptDownloaded"
         );
       } catch (error) {
         console.log(error);
       }
     }
-  }, [meetingTranscriptDownloaded]);
+  }, [meetingTranscriptDownload]);
+
+  // meetingMinutesDownloaded
+  useEffect(() => {
+    if (meetingMinutesDownloaded !== null) {
+      try {
+        const { fileDetails, meetingID } = meetingMinutesDownloaded;
+        let copyData = [...data];
+        copyData[0].transcriptStatus = 4;
+        copyData.push({
+          fileID: fileDetails.pK_FileID,
+          fileName: fileDetails.displayFileName,
+          fileSize: fileDetails.fileSize,
+          transcriptStatus: 4,
+          meetingID: meetingID,
+        });
+        setData(copyData);
+        dispatch(meetingMinutesDownloaded(null));
+        console.log(
+          { meetingMinutesDownloaded, copyData },
+          "meetingTranscriptDownloaded"
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [meetingMinutesDownloaded]);
 
   const handleClickTranscribe = (record) => {
     console.log("record", record);

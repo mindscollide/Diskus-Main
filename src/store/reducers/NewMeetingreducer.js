@@ -165,7 +165,8 @@ const initialState = {
   moveFilesandFolders: null,
   meetingRecordingFiles: null,
   meetingTranscriptResponse: null,
-  meetingTranscriptDownloaded: null
+  meetingTranscriptDownloaded: null,
+  meetingMinutesDownload: null
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -174,6 +175,12 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         meetingTranscriptDownloaded: action.payload,
+      }
+    }
+    case actions.MEETING_MINUTES_DOWNLOADED: {
+      return {
+        ...state,
+        meetingMinutesDownload: action.payload
       }
     }
     case actions.GETMEETINGRECORDINGFILES_INIT: {
