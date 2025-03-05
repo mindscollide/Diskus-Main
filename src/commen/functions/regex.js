@@ -61,7 +61,7 @@ export const formatValue = (value, locale) => {
   return formattedValue;
 };
 
-export const convertToArabicNumerals = (input, locale) => {
+export const convertToArabicNumerals = (input) => {
   console.log(input, "convertToArabicNumerals");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -77,13 +77,15 @@ export const convertToArabicNumerals = (input, locale) => {
   }
 
   // Pad the number with a leading zero if it's less than 10
-  const paddedNumber = number < 10 ? `0${number}` : number;
+  const paddedNumber = number < 10 ? `0${number}` : String(number); // Convert to string
 
   // If locale is 'ar', replace digits with Arabic numerals
   if (currentLanguage === "ar") {
-    return paddedNumber.replace(/\d/g, (digit) =>
-      String.fromCharCode(0x0660 + parseInt(digit, 10))
-    );
+    return paddedNumber
+      .toString()
+      .replace(/\d/g, (digit) =>
+        String.fromCharCode(0x0660 + parseInt(digit, 10))
+      );
   }
 
   // Return the padded number as is if locale is not 'ar'

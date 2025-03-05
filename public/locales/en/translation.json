@@ -2460,5 +2460,7 @@
   "Spreadsheets": "Spreadsheets",
   "Presentation": "Presentation",
   "PDF": "PDF",
-  "Audio": "Audio"
+  "Audio": "Audio",
+  "Talk": "Talk",
+  "Try-again": "Try Again"
 }
