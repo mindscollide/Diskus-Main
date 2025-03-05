@@ -62,7 +62,7 @@ const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { shareScreenTrue,setShareScreenTrue } = useMeetingContext();
+  const { shareScreenTrue, setShareScreenTrue } = useMeetingContext();
 
   // Create a ref for the iframe element
   let iframeRef = useRef(null);
@@ -771,11 +771,12 @@ const VideoPanelNormal = () => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           // Post message to iframe
+          sessionStorage.setItem("nonPresenter", true);
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
         }
-        setShareScreenTrue(false)
+        setShareScreenTrue(false);
       }
     } catch {}
   }, [shareScreenTrue]);
@@ -785,6 +786,7 @@ const VideoPanelNormal = () => {
       if (!LeaveCallModalFlag) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
+          sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
@@ -888,8 +890,14 @@ const VideoPanelNormal = () => {
             let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
             );
+            let nonPresenter = JSON.parse(
+              sessionStorage.getItem("nonPresenter")
+            );
+
             setIsScreenActive(true); // Show a modal or perform an action
-            if (alreadyInMeetingVideo) {
+            if (nonPresenter) {
+              sessionStorage.removeItem("nonPresenter")
+            } else if (alreadyInMeetingVideo) {
               if (alreadyInMeetingVideoStartPresenterCheck) {
                 console.log("maximizeParticipantVideoFlag");
                 dispatch(setAudioControlHost(false));
