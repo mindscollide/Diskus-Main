@@ -116,7 +116,9 @@ img.normalize-Icon-Large {
   height: 20px;
   margin-top: 6px;
 }
-
+.cursor-pointer {
+  cursor: pointer;
+}
 .video-menu-popups {
   position: absolute;
   top: 50px;
