@@ -160,13 +160,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
-
+  let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+  let activeRoomID = localStorage.getItem("activeRoomID");
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
-      : isMeetingVideoHostCheck
-      ? newRoomID
-      : participantRoomId;
+      :isMeetingVideo? isMeetingVideoHostCheck
+      ? newRoomID:participantRoomId
+      :initiateCallRoomID?initiateCallRoomID:activeRoomID ;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
 
