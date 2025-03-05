@@ -56,11 +56,13 @@ import {
   initiateVideoCallFail,
   VideoCallResponse,
 } from "../../../../../store/actions/VideoMain_actions";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { shareScreenTrue,setShareScreenTrue } = useMeetingContext();
 
   // Create a ref for the iframe element
   let iframeRef = useRef(null);
@@ -765,7 +767,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
-      if (presenterParticipantAlreadyInMeetingVideo) {
+      if (shareScreenTrue) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           // Post message to iframe
@@ -773,10 +775,11 @@ const VideoPanelNormal = () => {
         } else {
           console.log("share screen Iframe contentWindow is not available.");
         }
+        setShareScreenTrue(false)
       }
     } catch {}
-  }, [presenterParticipantAlreadyInMeetingVideo]);
-  
+  }, [shareScreenTrue]);
+
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
