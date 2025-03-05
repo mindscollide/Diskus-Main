@@ -72,18 +72,17 @@ import { checkFeatureIDAvailability } from "../../../../../commen/functions/util
 const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const participantPopupDisable = useRef(null);
-
-  const meetingUrlData = useSelector(
-    (state) => state.NewMeetingreducer.getmeetingURL
-  );
 
   const {
     editorRole,
     presenterParticipantList,
     setPresenterParticipantList,
     setShareScreenTrue,
+    setToggleMicMinimizeNonMeeting,
+    setToggleVideoMinimizeNonMeeting,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -128,13 +127,18 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantRoomId = localStorage.getItem("participantRoomId");
   let isGuid = localStorage.getItem("isGuid");
+  let newName = localStorage.getItem("name");
+  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
+
   // Prepare data for the API request
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state
   );
 
-  const dispatch = useDispatch();
+  const meetingUrlData = useSelector(
+    (state) => state.NewMeetingreducer.getmeetingURL
+  );
 
   //Audio Control For host
   const audioControl = useSelector(
@@ -174,9 +178,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
-      :isMeetingVideo? isMeetingVideoHostCheck
-      ? newRoomID:participantRoomId
-      :initiateCallRoomID?initiateCallRoomID:activeRoomID ;
+      : isMeetingVideo
+      ? isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId
+      : initiateCallRoomID
+      ? initiateCallRoomID
+      : activeRoomID;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
   const meetingHostData = JSON.parse(localStorage.getItem("meetinHostInfo"));
 
@@ -244,6 +252,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       setCurrentParticipants([]);
     }
   }, [VideoMainReducer.GroupCallRecipientsData]);
+
   function leaveSuccess() {
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
@@ -342,8 +351,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
     leaveSuccess();
   }
-  let newName = localStorage.getItem("name");
-  let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
 
   const minimizeEndCallParticipant = async (flag, flag2, flag3, flag4) => {
     console.log("busyCall");
@@ -444,15 +451,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   };
 
   const toggleMic = (status) => {
-    console.log(status ? "Enable Mic" : "Disable Mic");
-    localStorage.setItem("MicOff", status);
     setLocalMicStatus(status);
+    setToggleMicMinimizeNonMeeting(status);
   };
 
   const toggleVideo = (status) => {
-    console.log("Check Minimize");
-    console.log(status ? "Enable Video" : "Disable Video");
-    localStorage.setItem("VidOff", status);
+    setToggleVideoMinimizeNonMeeting(status);
     setLocalVidStatus(status);
   };
 

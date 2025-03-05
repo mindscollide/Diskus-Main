@@ -62,7 +62,14 @@ const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { shareScreenTrue, setShareScreenTrue } = useMeetingContext();
+  const {
+    shareScreenTrue,
+    setShareScreenTrue,
+    toggleVideoMinimizeNonMeeting,
+    setToggleVideoMinimizeNonMeeting,
+    toggleMicMinimizeNonMeeting,
+    setToggleMicMinimizeNonMeeting,
+  } = useMeetingContext();
 
   // Create a ref for the iframe element
   let iframeRef = useRef(null);
@@ -259,7 +266,6 @@ const VideoPanelNormal = () => {
 
   const [isMicActive, setIsMicActive] = useState(micStatus);
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
-  console.log(isVideoActive, "isVideoActive");
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
@@ -988,6 +994,34 @@ const VideoPanelNormal = () => {
       console.log("Check");
     }
   };
+  useEffect(() => {
+    if (toggleVideoMinimizeNonMeeting) {
+      try {
+        const iframe = iframeRef.current;
+        console.log("videoHideUnHideForHost");
+        if (iframe && iframe.contentWindow) {
+          console.log("videoHideUnHideForHost");
+          iframe.contentWindow.postMessage("VidOff", "*");
+          setIsVideoActive(!isVideoActive);
+          localStorage.setItem("VidOff", !isVideoActive);
+          setToggleVideoMinimizeNonMeeting(false);
+        }
+      } catch {}
+    }
+    if (toggleMicMinimizeNonMeeting) {
+      try {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow && presenterViewFlag) {
+          iframe.contentWindow.postMessage("MicOff", "*");
+          setIsMicActive(!isMicActive);
+          localStorage.setItem("MicOff", !isMicActive);
+          setToggleMicMinimizeNonMeeting(false);
+        }
+      } catch (error) {
+        console.log("disableMicFunction", error);
+      }
+    }
+  }, [toggleVideoMinimizeNonMeeting, toggleMicMinimizeNonMeeting]);
 
   const disableMicFunction = () => {
     console.log("disableMicFunction");
@@ -1102,6 +1136,7 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }, [accpetAccessOfHostTransfer]);
+
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
