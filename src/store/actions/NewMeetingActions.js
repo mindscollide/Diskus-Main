@@ -10488,7 +10488,15 @@ const meetingTranscriptDownloaded = (response) => {
   };
 };
 
+const meetingMinutesDownloaded = (response) => {
+  return {
+    type: actions.MEETING_MINUTES_DOWNLOADED,
+    payload: response
+  }
+}
+
 export {
+  meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,
   moveFilesAndFoldersApi,

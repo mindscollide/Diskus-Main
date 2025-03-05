@@ -188,14 +188,13 @@ const SignInUserManagement = () => {
                   </span>
                   <span
                     className={styles["Free-Trial_btn"]}
-                    onClick={handleClickFreeTrail}
-                  >
+                    onClick={handleClickFreeTrail}>
                     {t("Free-Trial")}
                   </span>
                 </section>
               </Col>
             </Row>
-            <Row className="position-relative">
+            <Row className='position-relative'>
               <Col className={styles["languageSelector"]}>
                 <LanguageSelector />
               </Col>
@@ -209,17 +208,16 @@ const SignInUserManagement = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={DiskusLogo}
-                          alt="diskus_logo"
+                          alt='diskus_logo'
                           width={200}
                         />
                       </Col>
                     </Row>
-                    <Row className="mt-4 mb-4 text-center">
+                    <Row className='mt-4 mb-4 text-center'>
                       <Col>
                         <span className={styles["signIn_heading"]}>
                           {t("Sign-in")}
@@ -227,19 +225,18 @@ const SignInUserManagement = () => {
                       </Col>
                     </Row>
                     <Form onSubmit={loginHandler}>
-                      <Row className="">
+                      <Row className=''>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
-                        >
+                          className='d-flex justify-content-center flex-column'>
                           <Form.Control
                             required
                             className={styles["inputEmailField"]}
                             onChange={emailChangeHandler}
                             value={email || ""}
-                            width="100%"
+                            width='100%'
                             placeholder={t("Email")}
                             maxLength={160}
                             ref={emailRef}
@@ -252,11 +249,10 @@ const SignInUserManagement = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
+                          className='d-flex gap-2 align-items-center'>
                           <Checkbox
                             checked={rememberEmail}
-                            classNameDiv=""
+                            classNameDiv=''
                             onChange={rememberChangeEmail}
                             className={styles["RememberEmail"]}
                           />
@@ -265,13 +261,12 @@ const SignInUserManagement = () => {
                           </span>
                         </Col>
                       </Row>
-                      <Row className="mt-4 mb-1 d-flex justify-content-center">
+                      <Row className='mt-4 mb-1 d-flex justify-content-center'>
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className="d-flex justify-content-center  "
-                        >
+                          className='d-flex justify-content-center  '>
                           <Button
                             text={t("Next")}
                             onClick={loginHandler}
@@ -280,28 +275,33 @@ const SignInUserManagement = () => {
                         </Col>
                       </Row>
                     </Form>
-                    <Row className="mt-3">
-                      <Col sm={12} md={12} lg={12}>
-                        {" "}
-                        <span className={styles["havent-subscribed-text"]}>
-                          {t("Havent-subscribed-yet")}
-                        </span>
-                      </Col>
-                    </Row>
-                    <Row className="d-flex justify-content-center mt-1">
-                      <Col
-                        sm={12}
-                        lg={12}
-                        md={12}
-                        className="w-100 d-flex justify-content-center"
-                      >
-                        <Button
-                          text={t("Subscribe-now")}
-                          onClick={handleSubscribeNowButton}
-                          className={styles["subscribNow_button_EmailVerify"]}
-                        />
-                      </Col>
-                    </Row>
+                    {process.env.REACT_APP_ENV !== "prod" && (
+                      <>
+                        <Row className='mt-3'>
+                          <Col sm={12} md={12} lg={12}>
+                            {" "}
+                            <span className={styles["havent-subscribed-text"]}>
+                              {t("Havent-subscribed-yet")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row className='d-flex justify-content-center mt-1'>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className='w-100 d-flex justify-content-center'>
+                            <Button
+                              text={t("Subscribe-now")}
+                              onClick={handleSubscribeNowButton}
+                              className={
+                                styles["subscribNow_button_EmailVerify"]
+                              }
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    )}
                   </Col>
                 </span>
               </Col>
@@ -309,26 +309,24 @@ const SignInUserManagement = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className="position-relative d-flex overflow-hidden"
-              >
+                className='position-relative d-flex overflow-hidden'>
                 <Col
                   md={8}
                   lg={8}
                   sm={12}
-                  className={styles["Login_page_text"]}
-                >
+                  className={styles["Login_page_text"]}>
                   <h1 className={styles["heading-1"]}>
                     {t("Simplify-management")}
                   </h1>
                   <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
                   <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
                 </Col>
-                <Col md={4} lg={4} sm={12} className="position-relative">
+                <Col md={4} lg={4} sm={12} className='position-relative'>
                   <img
-                    draggable="false"
+                    draggable='false'
                     src={DiskusAuthPageLogo}
-                    alt="auth_icon"
-                    width="600px"
+                    alt='auth_icon'
+                    width='600px'
                     className={styles["Auth_Icon"]}
                   />
                 </Col>
