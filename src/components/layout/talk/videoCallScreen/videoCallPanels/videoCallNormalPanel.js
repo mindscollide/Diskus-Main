@@ -21,6 +21,7 @@ import VideoNewParticipantList from "../videoNewParticipantList/VideoNewParticip
 import { transferMeetingHostSuccess } from "../../../../../store/actions/Guest_Video";
 import { useNavigate } from "react-router-dom";
 import {
+  acceptHostTransferAccessGlobalFunc,
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
   incomingVideoCallFlag,
@@ -29,6 +30,7 @@ import {
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
+  participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterFlagForAlreadyInParticipantMeetingVideo,
@@ -150,17 +152,13 @@ const VideoPanelNormal = () => {
       state.videoFeatureReducer.participantLeaveCallForJoinNonMeetingCall
   );
 
-  const getAllParticipantGuest = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-
   // For acccept Join name participantList
   const getNewParticipantsMeetingJoin = useSelector(
     (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
   );
 
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
+  const getAllParticipantMain = useSelector(
+    (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
   const audioControl = useSelector(
@@ -191,6 +189,10 @@ const VideoPanelNormal = () => {
     (state) => state.GuestVideoReducer.hostTransferFlag
   );
 
+  const accpetAccessOfHostTransfer = useSelector(
+    (state) => state.videoFeatureReducer.accpetAccessOfHostTransfer
+  );
+
   const InitiateVideoCallData = useSelector(
     (state) => state.VideoMainReducer.InitiateVideoCallData
   );
@@ -201,7 +203,7 @@ const VideoPanelNormal = () => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
-  console.log(presenterViewFlag, "presenterViewFlag");
+  console.log(presenterViewFlag, "presenterViewFlagNormal");
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -220,7 +222,14 @@ const VideoPanelNormal = () => {
       state.videoFeatureReducer.presenterParticipantAlreadyInMeetingVideo
   );
 
+  const leavePresenterOrJoinOtherCalls = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
+  );
+
+  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
+
   const [allParticipant, setAllParticipant] = useState([]);
+  console.log(allParticipant, "allParticipant123");
 
   const [participantsList, setParticipantsList] = useState([]);
 
@@ -232,7 +241,7 @@ const VideoPanelNormal = () => {
 
   const [isScreenActive, setIsScreenActive] = useState(false);
 
-  const meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  let meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
   // for make host
   const [isMeetingHost, setIsMeetingHost] = useState(
     meetingHost?.isHost ? true : false
@@ -288,12 +297,15 @@ const VideoPanelNormal = () => {
       isMeetingHost === false &&
       meetingHost?.isDashboardVideo === true
     ) {
-      let Data = {
-        RoomID: String(
-          presenterViewFlag ? callAcceptedRoomID : participantRoomIds
-        ),
-      };
-      dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      console.log("Check new");
+      if (!leavePresenterOrJoinOtherCalls) {
+        let Data = {
+          RoomID: String(
+            presenterViewFlag ? callAcceptedRoomID : participantRoomIds
+          ),
+        };
+        dispatch(getVideoCallParticipantsMainApi(Data, navigate, t));
+      }
       setIsMeetinVideoCeckForParticipant(true);
       if (validateRoomID(refinedParticipantVideoUrl)) {
         console.log("iframeiframe", refinedParticipantVideoUrl !== callerURL);
@@ -425,6 +437,8 @@ const VideoPanelNormal = () => {
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
@@ -433,21 +447,25 @@ const VideoPanelNormal = () => {
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
   }, [audioControl]);
 
   useEffect(() => {
+    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
+    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
     const iframe = iframeRef.current;
-    console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow !== null) {
-      console.log("videoHideUnHideForHost");
       if (videoControl === true) {
-        console.log("videoHideUnHideForHost");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
-        console.log("videoHideUnHideForHost");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
+    // } else {
+    //   localStorage.removeItem("audioVideoHideButton");
+    // }
   }, [videoControl]);
 
   useEffect(() => {
@@ -472,26 +490,10 @@ const VideoPanelNormal = () => {
   }, [iframe]);
 
   useEffect(() => {
-    if (getAllParticipantGuest?.length) {
-      setAllParticipant(getAllParticipantGuest);
-    } else {
-      setAllParticipant([]);
+    if (getAllParticipantMain?.length) {
+      setAllParticipant(getAllParticipantMain);
     }
-  }, [getAllParticipantGuest]);
-
-  useEffect(() => {
-    if (getVideoParticpantListandWaitingList?.length) {
-      setAllParticipant((prev) => {
-        const combined = [...prev, ...getVideoParticpantListandWaitingList];
-        // Filter duplicates by checking the unique identifier, e.g., `guid`
-        const uniqueParticipants = combined.filter(
-          (participant, index, self) =>
-            index === self.findIndex((p) => p.guid === participant.guid)
-        );
-        return uniqueParticipants;
-      });
-    }
-  }, [getVideoParticpantListandWaitingList]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
     if (
@@ -528,6 +530,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi);
               if (urlFormeetingapi !== callerURL) {
+                console.log("iframeiframe", urlFormeetingapi);
                 setCallerURL(urlFormeetingapi);
               }
             }
@@ -545,6 +548,7 @@ const VideoPanelNormal = () => {
               if (validateRoomID(newurl)) {
                 console.log("iframeiframe", newurl);
                 if (newurl !== callerURL) {
+                  console.log("iframeiframe", newurl);
                   setCallerURL(newurl);
                 }
               }
@@ -565,6 +569,7 @@ const VideoPanelNormal = () => {
             if (validateRoomID(newurl)) {
               console.log("iframeiframe", newurl);
               if (newurl !== callerURL) {
+                console.log("iframeiframe", newurl);
                 setCallerURL(newurl);
                 dispatch(initiateVideoCallFail(""));
               }
@@ -577,6 +582,7 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
+      console.log("Check iframe Presenter");
       let dynamicBaseURLCaller = localStorage.getItem(
         "videoBaseURLParticipant"
       );
@@ -624,6 +630,7 @@ const VideoPanelNormal = () => {
             if (newurl !== callerURL) {
               console.log("iframeiframe", newurl !== callerURL);
               console.log("iframeiframe", newurl);
+              console.log("Check iframe Presenter", newurl);
               setCallerURL(newurl);
             }
           }
@@ -756,54 +763,20 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [presenterParticipantAlreadyInMeetingVideo]);
 
-  // Function to trigger the action in the iframe
-  // const handleScreenShareButton = async () => {
-  //   if (!LeaveCallModalFlag) {
-  //     const iframe = iframeRef.current; // Reference to your iframe
-  //     if (iframe) {
-  //       // Post message to iframe
-  //       iframe.contentWindow.postMessage("ScreenShare", "*"); // Use specific origin to improve security
-  //     }
-  //     // window.parent.postMessage("ScreenShareStarted", "*");
-
-  //     // try {
-  //     //   const stream = await navigator.mediaDevices.getDisplayMedia({
-  //     //     video: true,
-  //     //     audio: false,
-  //     //   });
-
-  //     //   // Screen sharing started successfully
-  //     //   console.log("Screen sharing started");
-  //     //   setIsScreenActive(true);
-
-  //     //   // Set screen sharing stream to a video element
-  //     //   const videoElement = document.getElementById("screenShareVideo");
-  //     //   if (videoElement) {
-  //     //     videoElement.srcObject = stream;
-  //     //     videoElement.play(); // Ensure video playback starts
-  //     //   }
-
-  //     //   // Listen for when the stream ends (i.e., user stops sharing)
-  //     //   stream.getVideoTracks()[0].addEventListener("ended", () => {
-  //     //     window.parent.postMessage("ScreenShareEnded", "*");
-  //     //     setIsScreenActive(false);
-  //     //     console.log("Screen sharing ended");
-  //     //     setIsScreenActive(false);
-
-  //     //     // Optionally, stop the video element
-  //     //     if (videoElement) {
-  //     //       videoElement.srcObject = null; // Stop the stream from being displayed
-  //     //     }
-  //     //   });
-  //     // } catch (err) {
-  //     //   // User canceled or failed to get media
-  //     //   window.parent.postMessage("ScreenShareCanceled", "*");
-  //     //   setIsScreenActive(false);
-  //     //   console.log("Screen sharing canceled", err);
-  //     // }
-  //   }
-  // };
-
+  useEffect(() => {
+    try {
+      if (presenterParticipantAlreadyInMeetingVideo) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          // Post message to iframe
+          iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+        } else {
+          console.log("share screen Iframe contentWindow is not available.");
+        }
+      }
+    } catch {}
+  }, [presenterParticipantAlreadyInMeetingVideo]);
+  
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
@@ -848,14 +821,27 @@ const VideoPanelNormal = () => {
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
+    let alreadyInMeetingVideo = JSON.parse(
+      sessionStorage.getItem("alreadyInMeetingVideo")
+    );
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let newRoomID = localStorage.getItem("newRoomId");
+    let activeRoomID = localStorage.getItem("activeRoomID");
     let isGuid = localStorage.getItem("isGuid");
     let participantUID = localStorage.getItem("participantUID");
     // Post message to iframe
     let data = {
       MeetingID: currentMeetingID,
-      RoomID: String(alreadyInMeetingVideo ? newRoomID : callAcceptedRoomID),
+      RoomID: String(
+        alreadyInMeetingVideo
+          ? newRoomID
+            ? newRoomID
+            : activeRoomID
+          : callAcceptedRoomID
+      ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
+    dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
 
@@ -863,7 +849,7 @@ const VideoPanelNormal = () => {
     if (alreadyInMeetingVideo) {
       sessionStorage.removeItem("alreadyInMeetingVideo");
     } else if (presenterViewFlag && presenterViewHostFlag) {
-      let meetingTitle = localStorage.getItem("meetingTitle");
+      let currentName = localStorage.getItem("name");
       let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
       let isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
@@ -874,7 +860,7 @@ const VideoPanelNormal = () => {
       let data = {
         RoomID: String(callAcceptedRoomID),
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
-        Name: String(meetingTitle),
+        Name: String(currentName),
       };
       dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
     }
@@ -932,7 +918,7 @@ const VideoPanelNormal = () => {
               };
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
-              dispatch(stopPresenterViewMainApi(navigate, t, data));
+              dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
             }
 
             break;
@@ -990,9 +976,15 @@ const VideoPanelNormal = () => {
   };
 
   const disableMicFunction = () => {
+    console.log("disableMicFunction");
     try {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow && presenterViewFlag) {
+        console.log("disableMicFunction");
+        iframe.contentWindow.postMessage("MicOff", "*");
+        setIsMicActive(!isMicActive);
+        localStorage.setItem("MicOff", !isMicActive);
+      } else if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
         iframe.contentWindow.postMessage("MicOff", "*");
         setIsMicActive(!isMicActive);
@@ -1074,7 +1066,6 @@ const VideoPanelNormal = () => {
       }
     } catch {}
   }
-
   useEffect(() => {
     try {
       console.log("videoHideUnHideForHost", meetingHost);
@@ -1086,6 +1077,25 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [hostTransferFlag]);
 
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      if (accpetAccessOfHostTransfer) {
+        console.log("videoHideUnHideForHost", hostTransferFlag);
+        setIsMeetingHost(true);
+        dispatch(acceptHostTransferAccessGlobalFunc(false));
+        dispatch(toggleParticipantsVisibility(false));
+      }
+    } catch {}
+  }, [accpetAccessOfHostTransfer]);
+  useEffect(() => {
+    try {
+      console.log("videoHideUnHideForHost", meetingHost);
+      meetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
+      // for make host
+      setIsMeetingHost(meetingHost?.isHost ? true : false);
+    } catch {}
+  }, [participantWaitinglistBox]);
   return (
     <>
       {MaximizeHostVideoFlag ? (
@@ -1124,7 +1134,8 @@ const VideoPanelNormal = () => {
                     MinimizeVideoFlag === false &&
                     MaximizeVideoFlag === true &&
                     VideoChatPanel === false &&
-                    presenterViewFlag
+                    presenterViewFlag &&
+                    (presenterViewHostFlag || presenterViewJoinFlag)
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
               }
@@ -1187,7 +1198,8 @@ const VideoPanelNormal = () => {
                       >
                         <div
                           className={
-                            presenterViewFlag
+                            presenterViewFlag &&
+                            (presenterViewHostFlag || presenterViewJoinFlag)
                               ? "normal-Presenter-avatar-large"
                               : NormalizeVideoFlag === true &&
                                 MinimizeVideoFlag === false &&
@@ -1268,6 +1280,7 @@ const VideoPanelNormal = () => {
                                 </Row>
                                 {allParticipant.length > 0 &&
                                   allParticipant.map((participant, index) => {
+                                    console.log(participant, "checkcheck");
                                     return (
                                       <>
                                         <Row
@@ -1290,31 +1303,42 @@ const VideoPanelNormal = () => {
                                             sm={12}
                                             className="d-flex justify-content-end gap-2"
                                           >
-                                            {participant.hideCamera ? (
-                                              <img
-                                                src={VideoOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Video Off"
-                                              />
-                                            ) : null}
+                                            <img
+                                              src={VideoOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Video Off"
+                                              style={{
+                                                visibility:
+                                                  participant.hideCamera
+                                                    ? "visible"
+                                                    : "hidden",
+                                              }}
+                                            />
 
-                                            {participant.mute ? (
-                                              <img
-                                                src={MicOff}
-                                                width="20px"
-                                                height="20px"
-                                                alt="Mic Mute"
-                                              />
-                                            ) : null}
-                                            {participant.raiseHand ? (
-                                              <img
-                                                src={Raisehandselected}
-                                                width="20px"
-                                                height="20px"
-                                                alt="raise hand"
-                                              />
-                                            ) : null}
+                                            <img
+                                              src={MicOff}
+                                              width="20px"
+                                              height="20px"
+                                              alt="Mic Mute"
+                                              style={{
+                                                visibility: participant.mute
+                                                  ? "visible"
+                                                  : "hidden",
+                                              }}
+                                            />
+                                            <img
+                                              src={Raisehandselected}
+                                              width="20px"
+                                              height="20px"
+                                              alt="raise hand"
+                                              style={{
+                                                visibility:
+                                                  participant.raiseHand
+                                                    ? "visible"
+                                                    : "hidden",
+                                              }}
+                                            />
                                           </Col>
                                         </Row>
                                       </>

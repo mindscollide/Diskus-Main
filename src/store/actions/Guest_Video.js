@@ -185,6 +185,10 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                 )
             ) {
               sessionStorage.setItem("isLeftCheck", false);
+              sessionStorage.setItem(
+                "MeetingId",
+                response.data.responseResult.meetingId
+              );
               dispatch(getValidateString(response.data.responseResult));
               console.log("reponsepreodjfdfds", response.data.responseResult);
               // sessionStorage.setItem("viewState", 1);
@@ -1023,8 +1027,8 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
                   "Meeting_MeetingServiceManager_MuteUnMuteSelf_01".toLowerCase()
                 )
             ) {
-                await dispatch(setAudioControlHost(data.IsMuted));
-              
+              // await dispatch(setAudioControlHost(data.IsMuted));
+
               localStorage.setItem("isMicEnabled", data.IsMuted);
               await dispatch(
                 muteUnmuteSelfSuccess(
@@ -1120,9 +1124,9 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                 )
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
-                console.log("videoHideUnHideForHost", data.HideVideo);
-                await dispatch(setVideoControlHost(data.HideVideo));
-          
+              console.log("videoHideUnHideForHost", data.HideVideo);
+              // await dispatch(setVideoControlHost(data.HideVideo));
+
               await dispatch(
                 hideUnhideSelfSuccess(
                   response.data.responseResult,

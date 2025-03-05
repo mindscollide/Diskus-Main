@@ -72,11 +72,12 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={styles["Download__Heading"]}>
+                className={styles["Download__Heading"]}
+              >
                 {t("Download")}
               </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={
@@ -86,8 +87,9 @@ const DownloadOptionsModal = ({
                       : styles["Download___Button_recording_disabled"]
                   }
                   // className={styles["Download___Button_recording_disabled"]}
-                  onClick={downloadMeetingDetails}>
-                  <img width={35} src={DownloadRecording} />
+                  onClick={downloadMeetingDetails}
+                >
+                  <img width={35} src={DownloadRecording} alt="" />
                   <span>
                     {MeetingRecord?.isVideoCall &&
                     MeetingRecord?.isRecordingAvailable
@@ -107,7 +109,8 @@ const DownloadOptionsModal = ({
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={styles["Download___Button"]}
-                  onClick={boardDeckOnClick}>
+                  onClick={boardDeckOnClick}
+                >
                   <img width={35} src={DownloadBoardDeck} />
                   <span>{t("Download-board-deck")}</span>
                 </div>
@@ -122,7 +125,8 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={"d-flex justify-content-end p-0 m-0"}>
+                className={"d-flex justify-content-end p-0 m-0"}
+              >
                 <Button
                   className={styles["Download___cancelBtn"]}
                   text={t("Cancel")}
