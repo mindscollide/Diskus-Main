@@ -475,25 +475,25 @@ const Polls = ({ committeeStatus }) => {
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-PublishedPolls'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Published")}</p>
+            <div className="d-flex justify-content-center">
+              <span className="userstatus-signal-PublishedPolls"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Published")}</p>
             </div>
           );
         } else if (record.pollStatus?.pollStatusId === 1) {
           return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-Unpublished'></span>
-              <p className='m-0 userName FontArabicRegular'>
+            <div className="d-flex justify-content-center">
+              <span className="userstatus-signal-Unpublished"></span>
+              <p className="m-0 userName FontArabicRegular">
                 {t("Unpublished")}
               </p>
             </div>
           );
         } else if (record.pollStatus?.pollStatusId === 3) {
           return (
-            <div className='d-flex'>
-              <span className='userstatus-signal-disabled'></span>
-              <p className='m-0 userName FontArabicRegular'>{t("Expired")}</p>
+            <div className="d-flex justify-content-center">
+              <span className="userstatus-signal-disabled"></span>
+              <p className="m-0 userName FontArabicRegular">{t("Expired")}</p>
             </div>
           );
         }
@@ -541,6 +541,7 @@ const Polls = ({ committeeStatus }) => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
+      align: "center",
       width: "70px",
       render: (text, record) => {
         const currentDate = new Date();
