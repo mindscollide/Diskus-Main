@@ -9,6 +9,8 @@
 /build
 # misc
 .env
+.env.production
+.env.uat
 .DS_Store
 .env.local
 .env.development.local

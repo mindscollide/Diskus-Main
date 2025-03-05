@@ -99,7 +99,7 @@
     "start": "cross-env REACT_APP_ENV=dev craco start",
     "start:uat": "cross-env REACT_APP_ENV=uat craco start",
     "start:prod": "cross-env REACT_APP_ENV=prod craco start",
-    "build": "ross-env REACT_APP_ENV=dev craco build",
+    "build": "cross-env REACT_APP_ENV=dev craco build",
     "build:uat": "cross-env REACT_APP_ENV=uat craco build",
     "build:prod": "cross-env REACT_APP_ENV=prod craco build",
     "test": "craco test",
