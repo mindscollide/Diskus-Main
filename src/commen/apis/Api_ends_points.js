@@ -1,127 +1,36 @@
-const baseURL = "http://192.168.18.241";
+const baseURL = process.env.REACT_APP_BASE_URL;
 
-//this is our services URL
-const serviceAuthenticationURL = ":11001/ERM_Auth";
+// API Endpoints from Environment Variables
+const authenticationApi = baseURL + process.env.REACT_APP_AUTH_API;
+const toDoListApi = baseURL + process.env.REACT_APP_TODO_LIST_API;
+const settingApi = baseURL + process.env.REACT_APP_SETTING_API;
+const settingDownloadApi = baseURL + process.env.REACT_APP_SETTING_DOWNLOAD_API;
+const meetingApi = baseURL + process.env.REACT_APP_MEETING_API;
+const getAdminURLs = baseURL + process.env.REACT_APP_ADMIN_API;
+const dataRoomApi = baseURL + process.env.REACT_APP_DATA_ROOM_API;
+const getCommitteesApi = baseURL + process.env.REACT_APP_COMMITTEE_API;
+const getGroupsApi = baseURL + process.env.REACT_APP_GROUPS_API;
+const getNotesApi = baseURL + process.env.REACT_APP_NOTES_API;
+const getResolutionApi = baseURL + process.env.REACT_APP_RESOLUTION_API;
+const talkApi = baseURL + process.env.REACT_APP_TALK_API;
+const filesUrlTalk = baseURL + process.env.REACT_APP_TALK_IMAGE_API;
+const talkApiReport = baseURL + process.env.REACT_APP_TALK_REPORT_API;
+const getCalender = baseURL + process.env.REACT_APP_CALENDAR_API;
+const pollApi = baseURL + process.env.REACT_APP_POLL_API;
+const videoApi = baseURL + process.env.REACT_APP_VIDEO_API;
+const reportDownload = baseURL + process.env.REACT_APP_REPORT_DOWNLOAD_API;
+const DataRoomAllFilesDownloads = baseURL + process.env.REACT_APP_DATA_ROOM_FILES_DOWNLOAD_API;
+const userLogOutAuthURL = baseURL + process.env.REACT_APP_LOGOUT_AUTH_API;
+const workflowApi = baseURL + process.env.REACT_APP_WORKFLOW_API;
 
-const toDoListURL = ":11003/ToDoList";
-
-// ali work
-const settingURL = ":11004/Settings";
-
-const settingDownloadURL = ":11004/Report";
-
-// Huzeifa work for Meetings
-// const meetingURL = ":11024/Meeting";
-const meetingURL = ":11002/Meeting";
-
-// huzeifa work
-const getAdminURL = ":11009/Admin";
-
-// DataRoom End Points;
-const getDataRoomURL = ":11017/DataRoom";
-
-const getCommitteeURL = ":11013/Committee";
-
-const getGroupsURL = ":11012/Groups";
-// Notes
-const getNotesURL = ":11011/Notes";
-
-const getResolutionURL = ":11015/Resolution";
-
-// socket url
-const getSocketURL = ":9999";
-
-//talk url
-const talkImageUrl = ":11014";
-const talkURL = ":11014/Talk";
-const talkURLReport = ":11014/Report";
-
-// Calender
-const calenderURL = ":11016/Calender";
-
-// Polls
-const PollURL = ":11018/Polls";
-
-// Video URL
-const videoURL = ":11019/Video";
-
-// Excel Report Download
-const reportExcelUrl = ":11020/ExcelReport";
-
-//File Download Data Room
-
-const DataRoomFilesDownloads = ":11017/Report";
-
-//Logout Auth
-const UserLogoutAuth = ":11009/Auth";
-
-const WorkFlowUrl = ":11021/WorkFlow";
-
-//this is our final api's
-const authenticationApi = baseURL + serviceAuthenticationURL;
-
-const toDoListApi = baseURL + toDoListURL;
-
-const dataRoomApi = baseURL + getDataRoomURL;
-
-// ali work
-const settingApi = baseURL + settingURL;
-
-const settingDownloadApi = baseURL + settingDownloadURL;
-
-const meetingApi = baseURL + meetingURL;
-//const meetingApi = "http://localhost:62520/Meeting";
-
-const getTodoListAPI = baseURL + toDoListURL;
-
-// get Socket connection
-const getSocketConnection = baseURL + getSocketURL;
-
-// get Admin
-const getAdminURLs = baseURL + getAdminURL;
-
-// get Notes
-const getNotesApi = baseURL + getNotesURL;
-
-const getResolutionApi = baseURL + getResolutionURL;
-
-//const getResolutionApi = "http://localhost:37813/Resolution";
-
-// get Talk Api
-const talkApi = baseURL + talkURL;
-
-const talkApiReport = baseURL + talkURLReport;
-
-const filesUrlTalk = baseURL + talkImageUrl;
-
-const getGroupsApi = baseURL + getGroupsURL;
-
-const getCommitteesApi = baseURL + getCommitteeURL;
-
-// get Calender
-const getCalender = baseURL + calenderURL;
-
-const pollApi = baseURL + PollURL;
-//const pollApi = "http://localhost:12777/Polls";
-
-const videoApi = baseURL + videoURL;
-
-// excel download Report
-const reportDownload = baseURL + reportExcelUrl;
-
-const DataRoomAllFilesDownloads = baseURL + DataRoomFilesDownloads;
-
-// Logout API URL
-const userLogOutAuthURL = baseURL + UserLogoutAuth;
-
-const workflowApi = baseURL + WorkFlowUrl;
+// WebSocket Connection
+const getSocketConnection = baseURL + process.env.REACT_APP_SOCKET_API;
 
 export {
   authenticationApi,
   toDoListApi,
   settingApi,
   meetingApi,
-  getTodoListAPI,
   getSocketConnection,
   getAdminURLs,
   getNotesApi,

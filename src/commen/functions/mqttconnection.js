@@ -15,7 +15,10 @@ export const mqttConnection = (subscribeID, dispatch) => {
   const id = min + Math.random() * (max - min);
   const clientId = `${subscribeID}-${id}`;
 
-  newClient = new Paho.Client("192.168.18.241", 8228, clientId);
+// Construct the correct broker URL
+const brokerUrl = `ws://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
+
+  newClient = new Paho.Client(brokerUrl, clientId);
 
   newClient.onConnectionLost = (responseObject) => {
     console.log("Connection lost:", responseObject.errorMessage);
