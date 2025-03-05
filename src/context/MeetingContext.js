@@ -151,6 +151,14 @@ export const MeetingProvider = ({ children }) => {
   // state for ShareScreenTrue
   const [shareScreenTrue, setShareScreenTrue] = useState(false);
 
+  // state for toggle video minimize for not in a meeting
+  const [toggleVideoMinimizeNonMeeting, setToggleVideoMinimizeNonMeeting] =
+    useState(false);
+
+  // state for toggle Mic minimize for not in a meeting
+  const [toggleMicMinimizeNonMeeting, setToggleMicMinimizeNonMeeting] =
+    useState(false);
+
   // state For Open Presenter Participant List
   const [presenterParticipantList, setPresenterParticipantList] =
     useState(false);
@@ -334,6 +342,10 @@ export const MeetingProvider = ({ children }) => {
     setPresenterParticipantList,
     shareScreenTrue,
     setShareScreenTrue,
+    toggleVideoMinimizeNonMeeting,
+    setToggleVideoMinimizeNonMeeting,
+    toggleMicMinimizeNonMeeting,
+    setToggleMicMinimizeNonMeeting,
   };
 
   // Provide the state data to the context
