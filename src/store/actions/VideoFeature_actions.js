@@ -661,6 +661,7 @@ const getParticipantMeetingJoinMainApi = (
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
+              console.log("maximizeParticipantVideoFlag");
               sessionStorage.setItem("alreadyInMeetingVideo", true);
 
               let Data = { RoomID: response.data.responseResult.roomID };
@@ -1398,6 +1399,7 @@ const openPresenterViewMainApi = (
                     );
                     sessionStorage.removeItem("alreadyInMeetingVideo");
                   } else {
+                    console.log("maximizeParticipantVideoFlag");
                     sessionStorage.setItem("alreadyInMeetingVideo", true);
                   }
                 } else {
@@ -1889,6 +1891,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               if (isMeetingVideo) {
                 console.log("Check 12");
 
+                console.log("maximizeParticipantVideoFlag");
                 sessionStorage.setItem("alreadyInMeetingVideo", true);
               } else {
                 console.log("Check 12");

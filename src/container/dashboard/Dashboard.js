@@ -540,6 +540,8 @@ const Dashboard = () => {
             } else {
               localStorage.setItem("acceptedRoomID", activeRoomID);
             }
+
+            console.log("maximizeParticipantVideoFlag");
             sessionStorage.setItem("alreadyInMeetingVideo", true);
             dispatch(participantWaitingListBox(false));
             dispatch(toggleParticipantsVisibility(false));

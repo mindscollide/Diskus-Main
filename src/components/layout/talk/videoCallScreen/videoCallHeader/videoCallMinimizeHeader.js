@@ -30,6 +30,8 @@ import AddParticipant from "./../../talk-Video/video-images/Add Participant Purp
 import ExpandIcon from "./../../talk-Video/video-images/Expand White.svg";
 import MinToNormalIcon from "./../../talk-Video/video-images/Half Video Screen.svg";
 import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
+import ShareScreenWhite from "../../../../../assets/images/Recent Activity Icons/Video/ShareScreenWhite.png";
+
 import videoEndIcon from "./../../talk-Video/video-images/Call End White.svg";
 import TileView from "./../../talk-Video/video-images/Tile View 1 Purple.svg";
 import SidebarView from "./../../talk-Video/video-images/Tile View 3 Purple.svg";
@@ -61,7 +63,10 @@ import {
   hideUnhideSelfMainApi,
   muteUnMuteSelfMainApi,
 } from "../../../../../store/actions/Guest_Video";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
 
 const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
@@ -74,9 +79,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     (state) => state.NewMeetingreducer.getmeetingURL
   );
 
-  const { editorRole, presenterParticipantList, setPresenterParticipantList } =
-    useContext(MeetingContext);
-  // const { isMeeting } = useMeetingContext();
+  const {
+    editorRole,
+    presenterParticipantList,
+    setPresenterParticipantList,
+    setShareScreenTrue,
+  } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
   // state for participants
@@ -573,6 +581,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       }
     }
   };
+
   const copyToClipboardd = () => {
     let data = {
       MeetingId: Number(currentMeetingID),
@@ -594,6 +603,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
   const openPresenterParticipantsList = () => {
     setPresenterParticipantList(!presenterParticipantList);
+  };
+
+  const handleScreenShareButton = async () => {
+    setShareScreenTrue(true);
   };
   return (
     <>
@@ -782,8 +795,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     }
                   >
                     <img
-                      onClick={!presenterViewFlag ? screenShareButton : null}
-                      src={NonActiveScreenShare}
+                      onClick={
+                        !presenterViewHostFlag ? handleScreenShareButton : null
+                      }
+                      src={ShareScreenWhite}
                       alt="Screen Share"
                     />
                   </Tooltip>

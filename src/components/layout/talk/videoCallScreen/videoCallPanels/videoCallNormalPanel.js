@@ -56,11 +56,13 @@ import {
   initiateVideoCallFail,
   VideoCallResponse,
 } from "../../../../../store/actions/VideoMain_actions";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { shareScreenTrue, setShareScreenTrue } = useMeetingContext();
 
   // Create a ref for the iframe element
   let iframeRef = useRef(null);
@@ -765,23 +767,26 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     try {
-      if (presenterParticipantAlreadyInMeetingVideo) {
+      if (shareScreenTrue) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           // Post message to iframe
+          sessionStorage.setItem("nonPresenter", true);
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
         }
+        setShareScreenTrue(false);
       }
     } catch {}
-  }, [presenterParticipantAlreadyInMeetingVideo]);
-  
+  }, [shareScreenTrue]);
+
   const handleScreenShareButton = async () => {
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
       if (!LeaveCallModalFlag) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
+          sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
@@ -798,6 +803,7 @@ const VideoPanelNormal = () => {
     console.log("videoHideUnHideForHost");
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
+      sessionStorage.removeItem("nonPresenter");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
       iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
@@ -807,6 +813,7 @@ const VideoPanelNormal = () => {
   };
 
   const handlePresenterViewForParticipent = async () => {
+    sessionStorage.removeItem("nonPresenter");
     dispatch(setAudioControlHost(true));
     dispatch(setVideoControlHost(true));
   };
@@ -841,6 +848,7 @@ const VideoPanelNormal = () => {
       ),
       Guid: isMeetingVideoHostCheck ? isGuid : participantUID,
     };
+    sessionStorage.removeItem("nonPresenter");
     dispatch(participanMuteUnMuteMeeting(true, true, true, true, 1));
     dispatch(startPresenterViewMainApi(navigate, t, data, 1));
   };
@@ -885,8 +893,14 @@ const VideoPanelNormal = () => {
             let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
             );
+            let nonPresenter = JSON.parse(
+              sessionStorage.getItem("nonPresenter")
+            );
+
             setIsScreenActive(true); // Show a modal or perform an action
-            if (alreadyInMeetingVideo) {
+            if (nonPresenter) {
+              sessionStorage.removeItem("nonPresenter");
+            } else if (alreadyInMeetingVideo) {
               if (alreadyInMeetingVideoStartPresenterCheck) {
                 console.log("maximizeParticipantVideoFlag");
                 dispatch(setAudioControlHost(false));
