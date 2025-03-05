@@ -749,9 +749,9 @@ const Polls = ({ committeeStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={{ y: "40vh" }}
+                        scroll={{ y: "54vh", x: false }}
                         pagination={false}
-                        className="Polling_table"
+                        className="newMeetingTable"
                         locale={{
                           emptyText: (
                             <>

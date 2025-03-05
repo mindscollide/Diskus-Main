@@ -474,7 +474,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "35%",
+      width: "30%",
       align: "start",
       onHeaderCell: () => ({
         onClick: () => {
@@ -519,7 +519,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "5%",
+      width: "10%",
       align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -576,7 +576,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "dueDate",
       key: "dueDate",
-      width: "10%",
+      width: "15%",
       align: "center",
       sorter: (a, b) =>
         new Date(
@@ -643,7 +643,7 @@ const GroupViewPolls = ({ groupStatus }) => {
     {
       title: t("Vote"),
       dataIndex: "Vote",
-      width: "20%",
+      width: "15%",
       align: "center",
       render: (text, record) => {
         const currentDate = new Date();
@@ -855,9 +855,9 @@ const GroupViewPolls = ({ groupStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={scroll}
+                        scroll={{ y: "54vh", x: false }}
                         pagination={false}
-                        className="Polling_table"
+                        className="newMeetingTable"
                         locale={{
                           emptyText: (
                             <>
