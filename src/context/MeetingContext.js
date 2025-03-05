@@ -115,6 +115,46 @@ export const MeetingProvider = ({ children }) => {
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
 
+  // state for leave one to one  and Join Meeting Video
+  const [leaveOneToOne, setLeaveOneToOne] = useState(false);
+  const [joinMeetingVideoParticipant, setJoinMeetingVideoParticipant] =
+    useState(false);
+
+  // Join One To One or Group Call From Presenter View
+  const [joinPresenterForOneToOneOrGroup, setPresenterForOneToOneOrGroup] =
+    useState(false);
+
+  // Start Presenter View Or Leave One To One Call
+  const [
+    startPresenterViewOrLeaveOneToOne,
+    setStartPresenterViewOrLeaveOneToOne,
+  ] = useState(false);
+
+  // state for one To one after Leaving Presenter View
+  const [
+    joiningOneToOneAfterLeavingPresenterView,
+    setJoiningOneToOneAfterLeavingPresenterView,
+  ] = useState(false);
+
+  // state For Leave Presenter View To Join One To One
+  const [
+    leavePresenterViewToJoinOneToOne,
+    setLeavePresenterViewToJoinOneToOne,
+  ] = useState(false);
+
+  // state For Leave Meeting Video To Join One To One Or Group Calls
+  const [
+    leaveMeetingVideoForOneToOneOrGroup,
+    setLeaveMeetingVideoForOneToOneOrGroup,
+  ] = useState(false);
+
+  // state for ShareScreenTrue
+  const [shareScreenTrue, setShareScreenTrue] = useState(false);
+
+  // state For Open Presenter Participant List
+  const [presenterParticipantList, setPresenterParticipantList] =
+    useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -274,7 +314,26 @@ export const MeetingProvider = ({ children }) => {
     setDownloadMeeting,
     isRecording,
     setRecording,
-    deleteMeetingRecord, setDeleteMeetingRecord
+    leaveOneToOne,
+    setLeaveOneToOne,
+    joinMeetingVideoParticipant,
+    setJoinMeetingVideoParticipant,
+    joinPresenterForOneToOneOrGroup,
+    setPresenterForOneToOneOrGroup,
+    startPresenterViewOrLeaveOneToOne,
+    setStartPresenterViewOrLeaveOneToOne,
+    joiningOneToOneAfterLeavingPresenterView,
+    setJoiningOneToOneAfterLeavingPresenterView,
+    leavePresenterViewToJoinOneToOne,
+    setLeavePresenterViewToJoinOneToOne,
+    leaveMeetingVideoForOneToOneOrGroup,
+    setLeaveMeetingVideoForOneToOneOrGroup,
+    deleteMeetingRecord,
+    setDeleteMeetingRecord,
+    presenterParticipantList,
+    setPresenterParticipantList,
+    shareScreenTrue,
+    setShareScreenTrue,
   };
 
   // Provide the state data to the context

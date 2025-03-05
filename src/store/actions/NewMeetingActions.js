@@ -87,6 +87,7 @@ import {
   maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   minimizeVideoPanelFlag,
+  nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   openPresenterViewMainApi,
   participantVideoButtonState,
@@ -114,6 +115,7 @@ import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_g
 import { isFunction } from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
+import NonMeetingVideoModal from "../../container/pages/meeting/viewMeetings/nonMeetingVideoModal/NonMeetingVideoModal";
 
 const boardDeckModal = (response) => {
   return {
@@ -8250,13 +8252,26 @@ const JoinCurrentMeeting = (
               }
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
               await dispatch(currentMeetingStatus(10));
-              if (response.data.responseResult.isPresenterViewStarted) {
+              let activeStatusOneToOne = JSON.parse(
+                localStorage.getItem("activeCall")
+              );
+
+              let presenterViewStatus =
+                response.data.responseResult.isPresenterViewStarted;
+              if (presenterViewStatus && !activeStatusOneToOne) {
+                console.log("busyCall 21");
+
                 let data = {
                   VideoCallURL: String(Data.VideoCallURL),
                   WasInVideo: false,
                 };
                 console.log("onClickStopPresenter", data);
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
+              } else if (presenterViewStatus && activeStatusOneToOne) {
+                console.log("busyCall 21");
+                localStorage.setItem("JoinpresenterForonetoone", true);
+                dispatch(nonMeetingVideoGlobalModal(true));
+                dispatch(presenterViewGlobalState(0, true, false, false));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -9124,7 +9139,15 @@ const leaveMeetingVideoFail = (message) => {
   };
 };
 
-const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
+const LeaveMeetingVideo = (
+  Data,
+  navigate,
+  t,
+  flag,
+  organizerData,
+  setJoiningOneToOneAfterLeavingPresenterView,
+  setLeaveMeetingVideoForOneToOneOrGroup
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     let form = new FormData();
@@ -9141,7 +9164,17 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveMeetingVideo(Data, navigate, t, flag, organizerData));
+          dispatch(
+            LeaveMeetingVideo(
+              Data,
+              navigate,
+              t,
+              flag,
+              organizerData,
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeaveMeetingVideoForOneToOneOrGroup
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -9185,6 +9218,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 console.log("maximizeParticipantVideoFlag");
                 let currentMeeting = localStorage.getItem("currentMeetingID");
                 if (flag === 1) {
+                  console.log("Check Leave");
                   console.log("maximizeParticipantVideoFlag");
                   console.log("maximizeParticipantVideoFlag");
 
@@ -9201,6 +9235,7 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                     )
                   );
                 } else if (flag === 2) {
+                  console.log("Check Leave");
                   let currentMeetingVideoURL =
                     localStorage.getItem("videoCallURL");
                   await dispatch(videoIconOrButtonState(false));
@@ -9214,6 +9249,12 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
                 }
                 dispatch(maxParticipantVideoCallPanel(false));
                 sessionStorage.removeItem("isWaiting");
+                console.log("busyCall", flag);
+                if (flag === 3) {
+                  console.log("busyCall");
+                  await setLeaveMeetingVideoForOneToOneOrGroup(false);
+                  setJoiningOneToOneAfterLeavingPresenterView(true);
+                }
               } catch {}
 
               // dispatch(leaveMeetingVideoSuccess(response, "Successful"));
@@ -9248,12 +9289,14 @@ const LeaveMeetingVideo = (Data, navigate, t, flag, organizerData) => {
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               await dispatch(setAudioControlHost(false));
               await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
+              console.log("Check Leave");
               console.log(getMeetingHostData, "asdadadadadaddda");
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {

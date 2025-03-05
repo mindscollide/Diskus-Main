@@ -35,7 +35,7 @@ export const ErrorFallback = ({ error }) => {
           <CustomButton
             className={"ErrorLogBtn"}
             onClick={resetBoundary}
-            text={"Try Again"}
+            text={t("Try-again")}
           />
         </Col>
       </Row>

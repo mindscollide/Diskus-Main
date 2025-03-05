@@ -40,6 +40,7 @@ const GuestVideoCall = () => {
   const location = useLocation();
 
   let guestUserId = sessionStorage.getItem("GuestUserID");
+  let MeetingId = Number(sessionStorage.getItem("MeetingId"));
 
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
@@ -229,6 +230,7 @@ const GuestVideoCall = () => {
             RoomID: String(roomId),
             UID: String(GuestUserID),
             Name: String(guestName),
+            MeetingID: MeetingId,
           };
           sessionStorage.setItem("isLeftCheck", true);
           await dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
