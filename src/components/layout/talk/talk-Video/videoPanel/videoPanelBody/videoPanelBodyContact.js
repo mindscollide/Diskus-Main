@@ -176,7 +176,11 @@ const VideoPanelBodyContact = () => {
   };
 
   const initiateGroupCall = () => {
-    if (activeCall === false) {
+    if (
+      activeCall === false ||
+      activeCall === undefined ||
+      activeCall === null
+    ) {
       if (groupCallUsers.length <= 1) {
       } else {
         let Data = {
