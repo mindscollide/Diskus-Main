@@ -8,11 +8,9 @@
 # production
 /build
 # misc
-# .env.development
-# .env.production
-# .env.uat
+# .env
 .DS_Store
-.env.local
+# .env.local
 .env.development.local
 .env.test.local
 .env.production.local
