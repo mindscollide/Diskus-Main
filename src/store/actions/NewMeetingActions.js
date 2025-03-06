@@ -9201,6 +9201,7 @@ const LeaveMeetingVideo = (
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
+              localStorage.removeItem("newRoomId")
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
