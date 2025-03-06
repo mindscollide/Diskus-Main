@@ -280,15 +280,15 @@ const DataRoom = () => {
 
   const filters = [
     {
-      text: t("Last-modified"),
+      text: "Last-modified",
       value: "2",
     },
     {
-      text: t("Last-modified-by-me"),
+      text:"Last-modified-by-me",
       value: "3",
     },
     {
-      text: t("Last-open-by-me"),
+      text: "Last-open-by-me",
       value: "4",
     },
   ];
@@ -302,9 +302,10 @@ const DataRoom = () => {
   const [detailView, setDetailView] = useState(false);
 
   const [selectedValue, setSelectValue] = useState({
-    label: t("Last-modified"),
+    label: "Last-modified",
     value: 2,
   });
+
 
   // State to manage popover visibility
   const [isPopoverVisible, setIsPopoverVisible] = useState(false);
@@ -1098,7 +1099,7 @@ const DataRoom = () => {
 
   const resetFilter = () => {
     setSelectValue({
-      label: t("Last-modified"),
+      label: "Last-modified",
       value: 2,
     });
 
@@ -1119,7 +1120,7 @@ const DataRoom = () => {
             handleMenuClick(filter);
           }}>
           <div className='d-flex justify-content-start gap-2'>
-            <span>{filter.text}</span>
+            <span>{t(filter.text)}</span>
             {selectedValue.value !== 0 &&
               Number(selectedValue.value) === Number(filter.value) && (
                 <span className='checkmark'>
@@ -1132,12 +1133,12 @@ const DataRoom = () => {
       <Menu.Divider />
       <div className='d-flex align-items-center justify-content-between mx-2'>
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text='Ok'
+          text={t('Ok')}
           disableBtn={selectedValue === null ? true : false}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -1552,7 +1553,7 @@ const DataRoom = () => {
       title: (
         <span className='d-flex justify-content-center align-items-center gap-2'>
           <span className={styles["datemodifiedfilter"]}>
-            {selectedValue.label}
+            {t(selectedValue.label)}
           </span>
           {allLastModifiedSorter === "descend" ? (
             <img src={ArrowUpIcon} alt='' />
@@ -2009,7 +2010,8 @@ const DataRoom = () => {
     {
       dataIndex: "OtherStuff",
       key: "OtherStuff",
-      width: "180px",
+      width: "20%",
+      sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         const pdfData = {
           taskId: record.id,
@@ -2018,27 +2020,29 @@ const DataRoom = () => {
           attachmentID: record.id,
           isPermission: record.permissionID,
         };
-        let fileExtension = getFileExtension(record.name);
-        const pdfDataJson = JSON.stringify(pdfData);
-        const pdfDataforSignature = {
-          taskId: record.id,
-          commingFrom: 4,
-          fileName: record.name,
-          attachmentID: record.id,
-          isPermission: record.permissionID,
-          isNew: true,
-        };
-        const pdfDataJsonSignature = JSON.stringify(pdfDataforSignature);
 
-        if (record.isShared) {
-          return (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+        let fileExtension = getFileExtension(record.name);
+
+        // Simplify MenuPopover props setup
+        const getMenuPopover = (listData) => (
+          <MenuPopover
+            imageImage={dot}
+            listData={listData}
+            record={record}
+            t={t}
+            listOnClickFunction={fileOptionsSelect}
+          />
+        );
+
+        return (
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+              {record.isShared ? (
+                <>
                   <div className='tablerowFeatures'>
                     {record.permissionID === 1 ||
                     record.permissionID === 3 ? null : (
@@ -2085,147 +2089,30 @@ const DataRoom = () => {
                       </span>
                     </Tooltip>
                   </div>
-
-                  <Tooltip placement='topRight' title={t("More")}>
-                    <span className={styles["threeDot__Icon"]}>
-                      {record.isFolder ? (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}>
-                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
-                            <img
-                              src={dot}
-                              alt=''
-                              width='15.02px'
-                              height='10.71px'
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {record.permissionID === 2
-                              ? optionsforFolderEditor(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(data, record)
-                                      }>
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 1
-                              ? optionsforFolderViewer(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(data, record)
-                                      }>
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 3
-                              ? optionsforFolderEditableNonShareable(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(data, record)
-                                        }>
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      ) : (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}>
-                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
-                            <img
-                              src={dot}
-                              alt=''
-                              width='15.02px'
-                              height='10.71px'
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {record.permissionID === 2
-                              ? optionsforFileEditor(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }>
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 1
-                              ? optionsforFileViewer(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }>
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })
-                              : record.permissionID === 3
-                              ? optionsforFileEditableNonShareable(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(
-                                            data,
-                                            record,
-                                            pdfDataJson
-                                          )
-                                        }>
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      )}
-                    </span>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </>
-          );
-        } else {
-          return (
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className='d-flex justify-content-end gap-2 position-relative otherstuff'>
+                  <span className={styles["threeDot__Icon"]}>
+                    {" "}
+                    {record.isFolder
+                      ? // Folder Logic
+                        record.permissionID === 2
+                        ? getMenuPopover(optionsforFolderEditor)
+                        : record.permissionID === 1
+                        ? getMenuPopover(optionsforFolderViewer)
+                        : record.permissionID === 3
+                        ? getMenuPopover(optionsforFolderEditableNonShareable)
+                        : null
+                      : // File Logic
+                      record.permissionID === 2
+                      ? getMenuPopover(optionsforFileEditor)
+                      : record.permissionID === 1
+                      ? getMenuPopover(optionsforFileViewer)
+                      : record.permissionID === 3
+                      ? getMenuPopover(optionsforFileEditableNonShareable)
+                      : null}{" "}
+                  </span>{" "}
+                </>
+              ) : (
+                <>
+                  {/* Non-Shared Items */}
                   <div className='tablerowFeatures'>
                     <Tooltip placement='topRight' title={t("Share")}>
                       <span className={styles["share__Icon"]}>
@@ -2276,11 +2163,11 @@ const DataRoom = () => {
                           className={styles["delete__Icon_img_hover"]}
                           onClick={() => {
                             if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
+                              setIsFolderDeleteId(record.id);
+                              setIsFolderDelete(true);
                             } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
+                              setIsFileDeleteId(record.id);
+                              setIsFileDelete(true);
                             }
                           }}
                         />
@@ -2292,104 +2179,29 @@ const DataRoom = () => {
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
-                              dispatch(deleteFolder(navigate, record.id, t));
+                              setIsFolderDeleteId(record.id);
+                              setIsFolderDelete(true);
                             } else {
-                              dispatch(
-                                deleteFileDataroom(navigate, record.id, t)
-                              );
+                              setIsFileDeleteId(record.id);
+                              setIsFileDelete(true);
                             }
                           }}
                         />
                       </span>
                     </Tooltip>
                   </div>
-
-                  <Tooltip placement='topRight' title={t("More")}>
-                    <span className={styles["threeDot__Icon"]}>
-                      {record.isFolder ? (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}>
-                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
-                            <img
-                              src={dot}
-                              alt=''
-                              width='15.02px'
-                              height='10.71px'
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {optionsforFolder(t).map((data, index) => {
-                              return (
-                                <BootstrapDropdown.Item
-                                  key={index}
-                                  onClick={() =>
-                                    fileOptionsSelect(data, record)
-                                  }>
-                                  {data.label}
-                                </BootstrapDropdown.Item>
-                              );
-                            })}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      ) : (
-                        <BootstrapDropdown
-                          className={`${
-                            styles["options_dropdown"]
-                          } ${"dataroom_options"}`}>
-                          <BootstrapDropdown.Toggle id='dropdown-autoclose-true'>
-                            <img
-                              src={dot}
-                              alt=''
-                              width='15.02px'
-                              height='10.71px'
-                            />
-                          </BootstrapDropdown.Toggle>
-                          <BootstrapDropdown.Menu>
-                            {fileFormatforSignatureFlow.includes(fileExtension)
-                              ? optionsforPDFandSignatureFlow(t).map(
-                                  (data, index) => {
-                                    return (
-                                      <BootstrapDropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          fileOptionsSelect(
-                                            data,
-                                            record,
-                                            pdfDataJsonSignature
-                                          )
-                                        }>
-                                        {data.label}
-                                      </BootstrapDropdown.Item>
-                                    );
-                                  }
-                                )
-                              : optionsforFile(t).map((data, index) => {
-                                  return (
-                                    <BootstrapDropdown.Item
-                                      key={index}
-                                      onClick={() =>
-                                        fileOptionsSelect(
-                                          data,
-                                          record,
-                                          pdfDataJson
-                                        )
-                                      }>
-                                      {data.label}
-                                    </BootstrapDropdown.Item>
-                                  );
-                                })}
-                          </BootstrapDropdown.Menu>
-                        </BootstrapDropdown>
-                      )}
-                    </span>
-                  </Tooltip>
-                </Col>
-              </Row>
-            </>
-          );
-        }
+                  <span className={styles["threeDot__Icon"]}>
+                    {record.isFolder
+                      ? getMenuPopover(optionsforFolder)
+                      : fileFormatforSignatureFlow.includes(fileExtension)
+                      ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
+                      : getMenuPopover(optionsforFile)}
+                  </span>
+                </>
+              )}
+            </Col>
+          </Row>
+        );
       },
     },
   ];

@@ -17,11 +17,7 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
     const clientId = `${subscribeID}-${id}`;
 
     if (process.env.REACT_APP_ENV === "dev") {
-      newClient = new Paho.Client(
-        process.env.REACT_APP_MQTT,
-        process.env.REACT_APP_MQTT_PORT,
-        clientId
-      );
+      newClient = new Paho.Client("192.168.18.241", 8228, clientId);
     } else {
       const brokerUrl = `wss://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
       newClient = new Paho.Client(brokerUrl, clientId);

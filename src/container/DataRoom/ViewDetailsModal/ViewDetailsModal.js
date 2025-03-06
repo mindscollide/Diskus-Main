@@ -355,7 +355,7 @@ const ViewDetailsModal = ({
                                       </React.Fragment>
                                     )
                                   )
-                                : "No shared users"}
+                                : null}
                             </span>
                           </Col>
                         </Row>
