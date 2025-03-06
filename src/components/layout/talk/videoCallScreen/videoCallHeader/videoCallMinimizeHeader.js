@@ -452,11 +452,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
   const toggleMic = (status) => {
     setLocalMicStatus(status);
-    setToggleMicMinimizeNonMeeting(status);
+    setToggleMicMinimizeNonMeeting(true);
   };
 
   const toggleVideo = (status) => {
-    setToggleVideoMinimizeNonMeeting(status);
+    setToggleVideoMinimizeNonMeeting(true);
     setLocalVidStatus(status);
   };
 

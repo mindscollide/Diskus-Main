@@ -1015,6 +1015,8 @@ const VideoPanelNormal = () => {
       try {
         const iframe = iframeRef.current;
         console.log("videoHideUnHideForHost");
+        console.log("VidOn");
+
         if (iframe && iframe.contentWindow) {
           console.log("videoHideUnHideForHost");
           if (isVideoActive) {
