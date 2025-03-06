@@ -229,6 +229,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   isMulti
+                  placeholder={`${t("Select")}...`}
                   options={dropdowndata}
                   isSearchable={true}
                   filterOption={customFilter}

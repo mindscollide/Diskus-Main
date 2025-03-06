@@ -2806,12 +2806,16 @@ input#Participant::placeholder {
   border-radius: 50px !important;
 }
 
-.ant-table-column-sorters {
-  display: block !important;
+.ant-table-column-sorter {
+  display: none !important;
+}
+.ant-table-column-sorter::after{
+  display: none;
 }
 
 .ant-table-column-sorter-inner {
   gap: 5px !important;
+  display: none !important;
 }
 
 .paper-icon {

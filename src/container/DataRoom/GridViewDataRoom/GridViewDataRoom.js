@@ -77,25 +77,25 @@ const GridViewDataRoom = ({
   const [isDataforGrid, setDataForGrid] = useState([]);
   const [isRenameFolderData, setRenameFolderData] = useState(null);
   const [filterValue, setFilterValue] = useState({
-    label: t("Name"),
+    label: "Name",
     value: 1,
   });
   const [filterShareTabValue, setFilteShareTabrValue] = useState({
-    label: t("Name"),
+    label: "Name",
     value: 2,
   });
   const filterOptionsValues = [
-    { label: t("Name"), value: 1 },
-    { label: t("Last-modifed"), value: 2 },
-    { label: t("Last-modified-by-me"), value: 3 },
-    { label: t("Last-open-by-me"), value: 4 },
+    { label: "Name", value: 1 },
+    { label: "Last-modifed", value: 2 },
+    { label: "Last-modified-by-me", value: 3 },
+    { label: "Last-open-by-me", value: 4 },
   ];
   const filterOptionsShareTab = [
-    { label: t("Share-date"), value: 2 },
-    { label: t("Name"), value: 1 },
-    { label: t("Last-modifed"), value: 3 },
-    { label: t("Last-modified-by-me"), value: 4 },
-    { label: t("Last-open-by-me"), value: 5 },
+    { label:"Share-date", value: 2 },
+    { label: "Name", value: 1 },
+    { label: "Last-modifed", value: 3 },
+    { label: "Last-modified-by-me", value: 4 },
+    { label: "Last-open-by-me", value: 5 },
   ];
 
   const getFolderDocuments = (folderid) => {
@@ -473,7 +473,7 @@ const GridViewDataRoom = ({
                     } ${"dataroom_options"}`}>
                     <Dropdown.Toggle id='dropdown-autoclose-true'>
                       <span className={styles["Name_heading__gridView"]}>
-                        {filterValue.label}
+                        {t(filterValue.label)}
                       </span>
                       {/* {filterValue.label} */}
                     </Dropdown.Toggle>
@@ -483,7 +483,7 @@ const GridViewDataRoom = ({
                           <Dropdown.Item
                             key={index}
                             onClick={() => handleClickFilter(data)}>
-                            {data.label}
+                            {t(data.label)}
                           </Dropdown.Item>
                         );
                       })}
@@ -519,7 +519,7 @@ const GridViewDataRoom = ({
                     } ${"dataroom_options"}`}>
                     <Dropdown.Toggle id='dropdown-autoclose-true'>
                       <span className={styles["Name_heading__gridView"]}>
-                        {filterShareTabValue.label}
+                        {t(filterShareTabValue.label)}
                       </span>
                       {/* {filterValue.label} */}
                     </Dropdown.Toggle>
@@ -529,7 +529,7 @@ const GridViewDataRoom = ({
                           <Dropdown.Item
                             key={index}
                             onClick={() => handleShareTabFilter(data)}>
-                            {data.label}
+                            {t(data.label)}
                           </Dropdown.Item>
                         );
                       })}

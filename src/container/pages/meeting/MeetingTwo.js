@@ -1322,7 +1322,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: t("Quick-meeting"),
+          text: "Quick-meeting",
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -2187,6 +2187,8 @@ const NewMeeting = () => {
         const matchedFilter = isMeetingTypeFilter.find(
           (data) => meetingType === Number(data.value)
         );
+
+        console.log(matchedFilter, "matchedFiltermatchedFilter")
         return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : t(matchedFilter)
@@ -3106,7 +3108,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: t("Quick-meeting"),
+          text: "Quick-meeting",
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {

@@ -16,6 +16,7 @@ import {
 import { useSelector } from "react-redux";
 import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_formater";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { convertToArabicNumerals } from "../../../../../commen/functions/regex";
 
 const Attendees = () => {
   const dispatch = useDispatch();
@@ -162,7 +163,9 @@ const Attendees = () => {
                   : styles["AttendingBox"]
               }>
               <span className={styles["AttendeesCount_Attending"]}>
-                {Attending < 10 ? `0${Attending}` : Attending}
+                {Attending < 10
+                  ? convertToArabicNumerals(`0${Attending}`)
+                  : convertToArabicNumerals(`${Attending}`)}
               </span>
               <span className={styles["AttendeesCount_Attending_tagline"]}>
                 {t("Attending")}
@@ -179,7 +182,7 @@ const Attendees = () => {
               }>
               <span className={styles["AttendeesCount_Maybe"]}>
                 {" "}
-                {mayBe < 10 ? `0${mayBe}` : mayBe}
+                {mayBe < 10 ? convertToArabicNumerals(`0${mayBe}`) : convertToArabicNumerals(mayBe)}
               </span>
               <span className={styles["AttendeesCount_Maybe_tagline"]}>
                 {t("Maybe")}
@@ -197,7 +200,7 @@ const Attendees = () => {
               }>
               <span className={styles["AttendeesCount_NotAttending"]}>
                 {" "}
-                {notAttending < 10 ? `0${notAttending}` : notAttending}
+                {notAttending < 10 ? convertToArabicNumerals(`0${notAttending}`) : convertToArabicNumerals(notAttending)}
               </span>
               <span className={styles["AttendeesCount_NotAttending_tagline"]}>
                 {t("Not-attending")}
@@ -214,7 +217,7 @@ const Attendees = () => {
                   : styles["AttendingBox"]
               }>
               <span className={styles["AttendeesCount_NotResponded"]}>
-                {notResponded < 10 ? `0${notResponded}` : notResponded}
+                {notResponded < 10 ? convertToArabicNumerals(`0${notResponded}`) : convertToArabicNumerals(notResponded)}
               </span>
               <span className={styles["AttendeesCount_NotResponded_tagline"]}>
                 {t("Not-responded")}

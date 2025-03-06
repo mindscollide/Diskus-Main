@@ -130,6 +130,7 @@ const Polls = () => {
   });
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
+  let currentLanguage = localStorage.getItem("i18nextLng")
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -524,7 +525,8 @@ const Polls = () => {
       title: t("Poll-title"),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "300px",
+      width: "25%",
+      align: currentLanguage === "en" ? "left" : "right",
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
@@ -554,7 +556,7 @@ const Polls = () => {
       title: t("Status"),
       dataIndex: "Status",
       key: "Status",
-      width: "120px",
+      width: "15%",
       filters: [
         {
           text: t("Published"),
@@ -590,7 +592,7 @@ const Polls = () => {
       title: t("Due-date"),
       dataIndex: "dueDate",
       key: "dueDate",
-      width: "90px",
+      width: "20%",
       sorter: (a, b) =>
         new Date(
           a.dueDate.slice(0, 4),
@@ -612,7 +614,7 @@ const Polls = () => {
       title: t("Created-by"),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "110px",
+      width: "15%",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => (
         <span className="text-truncate d-block">{text}</span>
@@ -622,7 +624,7 @@ const Polls = () => {
       title: t("Vote"),
       dataIndex: "Vote",
       align: "center",
-      width: "70px",
+      width: "15%",
       render: (text, record) => {
         console.log("votevotevotevote", record);
         console.log("votevotevotevote", record.isVoter);
@@ -685,7 +687,7 @@ const Polls = () => {
     },
     {
       dataIndex: "Edit",
-      width: "50px",
+      width: "10%",
       render: (text, record) => {
         return (
           <>

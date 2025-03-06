@@ -572,18 +572,18 @@ const Resolution = () => {
       width: "76px",
       render: (text) => {
         if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>;
+          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
         } else if (text === "Not Approved") {
           return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
+            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
           );
         } else if (text === "Tie") {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         } else {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         }
       },
@@ -743,18 +743,18 @@ const Resolution = () => {
       width: "76px",
       render: (text) => {
         if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>;
+          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
         } else if (text === "Not Approved") {
           return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
+            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
           );
         } else if (text === "Tie") {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         } else {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         }
       },

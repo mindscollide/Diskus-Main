@@ -472,7 +472,7 @@ const TodoList = () => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "190px",
+      width: "30%",
       ellipsis: true,
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
@@ -514,7 +514,7 @@ const TodoList = () => {
       key: "taskCreator",
       align: "center",
 
-      width: "220px",
+      width: "15%",
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -561,7 +561,7 @@ const TodoList = () => {
           </span>
         </>
       ),
-      width: "220px",
+      width: "15%",
       dataIndex: "taskAssignedTo",
       align: "center",
 
@@ -631,7 +631,7 @@ const TodoList = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "20%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -665,7 +665,7 @@ const TodoList = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "15%",
 
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -745,7 +745,8 @@ const TodoList = () => {
       title: "",
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "120px",
+      align: "center",
+      width: "10%",
       render: (text, record) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
@@ -1045,9 +1046,8 @@ const TodoList = () => {
           <Row>
             <Col sm={12} md={12} lg={12}>
               <TableToDo
-                sortDirections={["descend", "ascend"]}
                 column={columnsToDo}
-                className={"ToDo"}
+                className={"Resolution_table"}
                 pagination={false}
                 rows={rowsToDo}
                 scroll={scroll}

@@ -362,7 +362,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "title",
       key: "title",
       width: "25%",
-      sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
       taskDeadlineSort,
@@ -400,8 +399,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "taskCreator",
       key: "taskCreator",
       width: "10%",
-      align: "left",
-      sortDirections: ["descend", "ascend"],
+      align: "center",
       // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
@@ -449,10 +447,9 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         </>
       ),
       width: "10%",
-      align: "left",
+      align: "center",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
-      sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
           .toLowerCase()
@@ -520,7 +517,6 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       width: "15%",
 
       align: "center",
-      sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
           setDeadlineSort((order) => {
@@ -803,9 +799,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
             <Row className='row-scroll-todolist'>
               <Col className=''>
                 <TableToDo
-                  sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
-                  className={"ToDo"}
+                  className={"Resolution_table"}
                   rows={rowsToDo}
                   scroll={scroll}
                   pagination={false}
