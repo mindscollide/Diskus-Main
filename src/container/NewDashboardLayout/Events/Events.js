@@ -103,25 +103,51 @@ const Events = () => {
   useEffect(() => {
     try {
       if (MQTTUpcomingEvents) {
-        console.log("mqtt", upComingEvents);
-        console.log("mqtt", MQTTUpcomingEvents);
+        console.log("upComingEventsmqtt", upComingEvents);
+        console.log("upComingEventsmqtt", MQTTUpcomingEvents);
 
-        // Ensure MQTTUpcomingEvents is valid
+        // Ensure no duplicates by filtering out any existing record with the same pK_MDID
+        let filteredEvents = upComingEvents.filter(
+          (event) =>
+            event.meetingDetails.pK_MDID !==
+            MQTTUpcomingEvents.meetingDetails.pK_MDID
+        );
+
+        // Add new or replaced MQTT event
+        filteredEvents.push(MQTTUpcomingEvents);
+
+        // Ensure at most 3 records by keeping the earliest start times
+        filteredEvents = filteredEvents
+          .sort(
+            (a, b) =>
+              parseInt(a.meetingEvent.startTime) -
+              parseInt(b.meetingEvent.startTime)
+          )
+          .slice(0, 3); // Keep only the 3 earliest meetings Sort by startTime
+
         if (
           Object.keys(upComingEvents).length < 3 &&
           MQTTUpcomingEvents.meetingDetails &&
           MQTTUpcomingEvents.meetingEvent
         ) {
-          // Add MQTT data to local data
           const newMQTTData = addMQTTData(upComingEvents, MQTTUpcomingEvents);
-
-          // Update the state with new data
-          setUpComingEvents([...upComingEvents, newMQTTData]); // Immutable state update
-          console.log("mqtt updated data:", [...upComingEvents, newMQTTData]);
+          if (
+            !filteredEvents.some(
+              (event) =>
+                event.meetingDetails.pK_MDID ===
+                newMQTTData.meetingDetails.pK_MDID
+            )
+          ) {
+            filteredEvents.push(newMQTTData);
+          }
         }
+
+        // Update state with the final, filtered, sorted events
+        setUpComingEvents(filteredEvents);
+        console.log("Final updated events:", filteredEvents);
       }
     } catch (error) {
-      console.error("Error processing MQTT data:", error); // Log errors for debugging
+      console.error("Error processing MQTT data:", error);
     }
   }, [MQTTUpcomingEvents]);
 
@@ -240,19 +266,24 @@ const Events = () => {
         );
         console.log(isSame, "isSameisSame");
         if (isSame) {
-       
-            flag = true;
-            indexforUndeline = index;
-          }
+          flag = true;
+          indexforUndeline = index;
+        }
       });
     } catch (error) {
       console.log(error);
     }
 
     return upComingEvents.map((upcomingEventsData, index) => {
+      console.log(upcomingEventsData, "upcomingEventsData");
+
+      if (!upcomingEventsData?.meetingEvent) {
+        console.warn("DataIsMissing", upcomingEventsData);
+        return null;
+      }
       let meetingDateTime =
-        upcomingEventsData.meetingEvent.meetingDate +
-        upcomingEventsData.meetingEvent.startTime;
+        upcomingEventsData?.meetingEvent?.meetingDate +
+        upcomingEventsData?.meetingEvent?.startTime;
       const currentDateObj = new Date(
         currentUTCDateTime.substring(0, 4), // Year
         parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
@@ -290,7 +321,8 @@ const Events = () => {
           {isSame ? (
             <>
               <div
-                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}>
+                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}
+              >
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -298,7 +330,8 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : `${styles["event-details-block"]}`
-                  }>
+                  }
+                >
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -384,8 +417,8 @@ const Events = () => {
             </>
           ) : (
             <>
-            {flag &&           <span className={styles["bordertop"]} />}
-    
+              {flag && <span className={styles["bordertop"]} />}
+
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -393,7 +426,8 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                     : ` ${styles["event-details"]}`
-                }>
+                }
+              >
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -401,7 +435,8 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }>
+                  }
+                >
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -533,7 +568,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt='' width={300} draggable='false' />
+              <img src={noTask} alt="" width={300} draggable="false" />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>

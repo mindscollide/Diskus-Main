@@ -1,39 +1,32 @@
 {
-  "MeetingID": 5174,
-  "MeetingTitle": "testing ",
-  "MeetingDescription": "description ",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20250304",
-  "OrganizationId": 561,
-  "MeetingStartTime": "060000",
-  "MeetingEndTime": "060000",
-  "MeetingLocation": "task completed ",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [1],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 5496,
-        "Title": "No Agenda Available",
-        "PresenterName": "SAIF UL ISLAM ",
-        "URLs": "",
-        "FK_MDID": 5174
+  "MeetingDetails": {
+    "MeetingID": 5202,
+    "MeetingTitle": "mehdi meet ",
+    "MeetingType": { "PK_MTID": 498, "Type": "Committee Meeting" },
+    "Location": "asd",
+    "Description": "",
+    "IsVideoChat": true,
+    "IsPublished": true,
+    "IsTalkGroup": false,
+    "OrganizationId": 561,
+    "MeetingDates": [
+      {
+        "MeetingDate": "20250307",
+        "StartTime": "20250307040000",
+        "EndTime": "20250307160000"
       },
-      "MeetingAgendaAttachments": []
-    }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 1351 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 1379 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+      {
+        "MeetingDate": "20250308",
+        "StartTime": "20250308070000",
+        "EndTime": "20250308080000"
+      }
+    ],
+    "MeetingReminders": [2],
+    "Notes": "asd",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "303",
+    "MeetingStatusID": 1
+  }
 }
