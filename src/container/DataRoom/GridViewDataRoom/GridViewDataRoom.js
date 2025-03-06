@@ -757,12 +757,22 @@ const GridViewDataRoom = ({
                                           getFileExtension(fileData.name)
                                         )}
                                         alt=''
+                                        width={"25px"}
+                                        height={"25px"}
                                         draggable='false'
                                       />{" "}
                                       {fileData.name}
                                     </span>
-
-                                    <span
+                                    {fileData.permissionID === 2
+                                      ? getMenuPopover(optionsforFileEditor)
+                                      : fileData.permissionID === 1
+                                      ? getMenuPopover(optionsforFileViewer)
+                                      : fileData.permissionID === 3
+                                      ? getMenuPopover(
+                                          optionsforFileEditableNonShareable
+                                        )
+                                      : null}
+                                    {/* <span
                                       className={styles["three_dot__gridView"]}>
                                       <Dropdown
                                         drop='down'
@@ -834,7 +844,7 @@ const GridViewDataRoom = ({
                                             : null}
                                         </Dropdown.Menu>
                                       </Dropdown>
-                                    </span>
+                                    </span> */}
                                   </div>
                                 </Col>
                               </Row>
@@ -878,8 +888,14 @@ const GridViewDataRoom = ({
                                       />{" "}
                                       {fileData.name}
                                     </span>
-
-                                    <span
+                                    {fileFormatforSignatureFlow.includes(
+                                      getExtension
+                                    )
+                                      ? getMenuPopover(
+                                          optionsforPDFandSignatureFlow
+                                        ) // Example: Adjust as needed
+                                      : getMenuPopover(optionsforFile)}
+                                    {/* <span
                                       className={styles["three_dot__gridView"]}>
                                       <Dropdown
                                         drop='down'
@@ -934,7 +950,7 @@ const GridViewDataRoom = ({
                                               )}
                                         </Dropdown.Menu>
                                       </Dropdown>
-                                    </span>
+                                    </span> */}
                                   </div>
                                 </Col>
                               </Row>

@@ -425,7 +425,7 @@ const ModalShareFolder = ({
 
                     <Col lg={2} md={2} sm={2}>
                       <Button
-                        text="Add"
+                        text={t("Add")}
                         className={styles["shareFolderAddMemberBtn"]}
                         onClick={handleAddMember}
                       />
