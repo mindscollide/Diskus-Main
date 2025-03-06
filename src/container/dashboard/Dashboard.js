@@ -3189,18 +3189,28 @@ const Dashboard = () => {
         ) {
           let roomID = localStorage.getItem("acceptedRoomID");
           let newRoomID = localStorage.getItem("newRoomId");
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          let participantRoomId = localStorage.getItem("participantRoomId");
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          let isMeetingVideoHostCheck = JSON.parse(
+            localStorage.getItem("isMeetingVideoHostCheck")
+          );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let RoomID =
-            presenterViewFlag && !JSON.parse(localStorage.getItem("activeCall"))
+            presenterViewFlagRef.current &&
+            (presenterViewHostFlagFlagRef.current ||
+              presenterViewJoinFlagRef.current)
               ? roomID
-              : JSON.parse(localStorage.getItem("activeCall"))
-              ? localStorage.getItem("activeRoomID") != 0 &&
-                localStorage.getItem("activeRoomID") != null
-                ? localStorage.getItem("activeRoomID")
-                : localStorage.getItem("initiateCallRoomID")
-              : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
-              ? newRoomID
-              : localStorage.getItem("participantRoomId");
+              : isMeetingVideo
+              ? isMeetingVideoHostCheck
+                ? newRoomID
+                : participantRoomId
+              : initiateCallRoomID
+              ? initiateCallRoomID
+              : activeRoomID;
           console.log("mqtt");
           console.log("mqtt", RoomID);
           if (RoomID === data.payload.roomID && activeCall) {

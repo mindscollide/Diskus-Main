@@ -9288,9 +9288,6 @@ const LeaveMeetingVideo = (
               localStorage.setItem("activeCall", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
-              await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
               console.log("Check Leave");
