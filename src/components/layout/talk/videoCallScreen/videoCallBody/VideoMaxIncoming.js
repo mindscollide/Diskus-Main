@@ -309,7 +309,7 @@ const VideoMaxIncoming = () => {
             ReciepentID: currentUserId,
             RoomID: NewRoomID,
             CallStatusID: 1,
-            CallTypeID: Number(callTypeID),
+            CallTypeID: Number(incommingCallTypeID),
           };
           await dispatch(VideoCallResponse(Data, navigate, t));
           localStorage.removeItem("NewRoomID");
