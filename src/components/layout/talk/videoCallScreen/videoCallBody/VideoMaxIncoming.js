@@ -55,9 +55,11 @@ const VideoMaxIncoming = () => {
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
+
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+  
   let currentUserId = Number(localStorage.getItem("userID"));
   let incomingRoomID = localStorage.getItem("NewRoomID");
   let callerID = Number(localStorage.getItem("callerID"));

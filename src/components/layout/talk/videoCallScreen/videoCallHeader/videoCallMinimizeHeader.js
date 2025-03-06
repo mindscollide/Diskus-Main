@@ -911,7 +911,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 )}
 
-              {(meetingHostData?.isHost ||
+              {((meetingHostData?.isHost&&!presenterViewHostFlag&&!presenterViewJoinFlag) ||
                 (presenterViewFlag && presenterViewHostFlag)) &&
                 meetingHostData?.isDashboardVideo && (
                   <Tooltip placement="topRight" title={t("Copy-link")}>
