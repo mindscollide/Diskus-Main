@@ -990,18 +990,19 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     if (toggleMicMinimizeNonMeeting) {
       try {
+        console.log("VidOn", toggleMicMinimizeNonMeeting);
         const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow && presenterViewFlag) {
+        if (iframe && iframe.contentWindow) {
           if (isMicActive) {
+            console.log("VidOn");
             iframe.contentWindow.postMessage("MicOff", "*");
           } else {
+            console.log("VidOn");
             iframe.contentWindow.postMessage("MicOn", "*");
           }
           console.log("VidOn");
           setIsMicActive(!isMicActive);
-          console.log("VidOn");
           localStorage.setItem("MicOff", !isMicActive);
-          console.log("VidOn");
           setToggleMicMinimizeNonMeeting(false);
         }
       } catch (error) {
