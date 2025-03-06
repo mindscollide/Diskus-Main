@@ -119,14 +119,21 @@ const VideoMaxIncoming = () => {
 
     const timer = setTimeout(() => {
       // Dispatch action to update global state
+    let NewRoomID = localStorage.getItem("NewRoomID");
+
       let Data = {
-        ReciepentID: currentUserId,
-        RoomID: RoomID,
+        ReciepentID: Number(currentUserId),
+        RoomID: NewRoomID,
         CallStatusID: 3,
         CallTypeID: Number(callTypeID),
       };
+      console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
 
+      localStorage.setItem("NewRoomID", 0);
+      localStorage.removeItem("incommingCallTypeID");
+      localStorage.removeItem("incommingCallType");
+      localStorage.removeItem("incommingNewCallerID");
       dispatch(incomingVideoCallFlag(false));
       setIsVisible(false);
       audioElement.pause();
@@ -166,6 +173,7 @@ const VideoMaxIncoming = () => {
         CallStatusID: 1,
         CallTypeID: Number(callTypeID),
       };
+      console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
       localStorage.removeItem("NewRoomID");
       dispatch(incomingVideoCallFlag(false));
@@ -311,6 +319,7 @@ const VideoMaxIncoming = () => {
             CallStatusID: 1,
             CallTypeID: Number(incommingCallTypeID),
           };
+          console.log("busyCall");
           await dispatch(VideoCallResponse(Data, navigate, t));
           localStorage.removeItem("NewRoomID");
           localStorage.removeItem("incommingCallTypeID");
@@ -355,6 +364,7 @@ const VideoMaxIncoming = () => {
         CallStatusID: 1,
         CallTypeID: Number(incommingCallTypeID),
       };
+      console.log("busyCall");
       await dispatch(VideoCallResponse(Data, navigate, t));
       localStorage.removeItem("NewRoomID");
       localStorage.removeItem("incommingCallTypeID");
@@ -379,10 +389,11 @@ const VideoMaxIncoming = () => {
       CallStatusID: 2,
       CallTypeID: Number(incommingCallTypeID),
     };
+    console.log("busyCall");
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     console.log("busyCall");
-    localStorage.setItem("activeCall", false);
+    // localStorage.setItem("activeCall", false);
     localStorage.setItem("NewRoomID", 0);
     localStorage.removeItem("incommingCallTypeID");
     localStorage.removeItem("incommingCallType");
@@ -401,6 +412,7 @@ const VideoMaxIncoming = () => {
       CallStatusID: 5,
       CallTypeID: Number(incommingCallTypeID),
     };
+    console.log("busyCall");
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     setIsTimerRunning(false);
