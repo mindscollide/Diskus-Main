@@ -163,6 +163,12 @@ export const MeetingProvider = ({ children }) => {
   const [presenterParticipantList, setPresenterParticipantList] =
     useState(false);
 
+  // state for hold BeforeUnLoad Function For LeaveCall
+  const [
+    holdBeforeUnloadFuncForLeaveCall,
+    setHoldBeforeUnloadFuncForLeaveCall,
+  ] = useState(false);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -346,6 +352,8 @@ export const MeetingProvider = ({ children }) => {
     setToggleVideoMinimizeNonMeeting,
     toggleMicMinimizeNonMeeting,
     setToggleMicMinimizeNonMeeting,
+    holdBeforeUnloadFuncForLeaveCall,
+    setHoldBeforeUnloadFuncForLeaveCall,
   };
 
   // Provide the state data to the context
