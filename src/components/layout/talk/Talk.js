@@ -114,6 +114,16 @@ const Talk = () => {
     (state) => state.MinutesReducer.PendingApprovalCountData
   );
 
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  let currentLang = localStorage.getItem("i18nextLng");
+
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
@@ -124,17 +134,41 @@ const Talk = () => {
   //Current Organization
   let currentOrganizationId = localStorage.getItem("organizationID");
 
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  let isWaiting = JSON.parse(localStorage.getItem("isWaiting"));
+
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(true);
   // const [activeChatBox, setActiveChatBox] = useState(false);
 
   //for video menu
   const [videoIcon, setVideoIcon] = useState(false);
+
   const [activeVideoIcon, setActiveVideoIcon] = useState(false);
+
+  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
+
+  const [missedCallCount, setMissedCallCount] = useState(0);
+
+  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
   // for video Icon Click
   const videoIconClick = () => {
-    if (VideoChatPanelReducer === false) {
+    if (
+      presenterViewHostFlag ||
+      presenterViewJoinFlag ||
+      isMeetingVideo ||
+      isWaiting
+    ) {
+      dispatch(videoChatPanel(false));
+      setActiveVideoIcon(false);
+      dispatch(activeChatBoxGS(false));
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(false));
+      dispatch(globalChatsSearchFlag(false));
+      dispatch(videoChatSearchFlag(false));
+    } else if (VideoChatPanelReducer === false) {
       dispatch(videoChatPanel(true));
       dispatch(contactVideoFlag(false));
       dispatch(recentVideoFlag(true));
@@ -163,6 +197,27 @@ const Talk = () => {
     }
   };
 
+  //Setting state data of global response all chat to chatdata
+  useEffect(
+    () => {
+      if (
+        presenterViewHostFlag ||
+        presenterViewJoinFlag ||
+        isMeetingVideo ||
+        isWaiting
+      ) {
+        dispatch(videoChatPanel(false));
+        setActiveVideoIcon(false);
+        dispatch(activeChatBoxGS(false));
+        dispatch(contactVideoFlag(false));
+        dispatch(recentVideoFlag(false));
+        dispatch(globalChatsSearchFlag(false));
+        dispatch(videoChatSearchFlag(false));
+      }
+    },
+    [presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting],
+    dispatch
+  );
   const handleMeetingPendingApprovals = async () => {
     if (
       (scheduleMeetingPageFlagReducer === true ||
@@ -222,8 +277,6 @@ const Talk = () => {
     // dispatch(openAddNotesModal(true));
   };
 
-  let currentLang = localStorage.getItem("i18nextLng");
-
   const iconClick = () => {
     setActiveVideoIcon(false);
     if (ActiveChatBoxGS === false) {
@@ -273,12 +326,6 @@ const Talk = () => {
       // dispatch(getAllUserChatsSuccess([], ""));
     }
   };
-
-  const [unreadMessageCount, setUnreadMessageCount] = useState(0);
-
-  const [missedCallCount, setMissedCallCount] = useState(0);
-
-  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {

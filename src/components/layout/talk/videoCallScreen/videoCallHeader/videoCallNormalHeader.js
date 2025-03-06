@@ -435,17 +435,16 @@ const VideoCallNormalHeader = ({
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         console.log(data, "presenterViewJoinFlag");
-
+        console.log("busyCall", alreadyInMeetingVideo);
+        setLeavePresenterViewToJoinOneToOne(false);
         await dispatch(
           stopPresenterViewMainApi(
             navigate,
             t,
             data,
             leavePresenterViewToJoinOneToOne ? 3 : 0,
-            leavePresenterViewToJoinOneToOne,
             setLeaveMeetingVideoForOneToOneOrGroup,
-            setJoiningOneToOneAfterLeavingPresenterView,
-            setLeavePresenterViewToJoinOneToOne
+            setJoiningOneToOneAfterLeavingPresenterView
           )
         );
       } else {
@@ -461,11 +460,11 @@ const VideoCallNormalHeader = ({
             t,
             data,
             leavePresenterViewToJoinOneToOne ? 3 : 2,
-            leavePresenterViewToJoinOneToOne &&
-              setLeavePresenterViewToJoinOneToOne,
+            setLeavePresenterViewToJoinOneToOne,
             setJoiningOneToOneAfterLeavingPresenterView
           )
         );
+        await setLeavePresenterViewToJoinOneToOne(false);
       }
     } else {
       console.log("busyCall");
@@ -891,12 +890,20 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leavePresenterViewToJoinOneToOne) {
-        console.log("busyCall");
+        console.log("busyCall", leavePresenterViewToJoinOneToOne);
         participantLeaveCall();
       }
     } catch (error) {}
   }, [leavePresenterViewToJoinOneToOne]);
-
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoForOneToOneOrGroup) {
+        console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup);
+        participantLeaveCall();
+      }
+    } catch (error) {}
+  }, [leaveMeetingVideoForOneToOneOrGroup]);
+  
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
@@ -944,8 +951,25 @@ const VideoCallNormalHeader = ({
           IsHost: isMeetingVideoHostCheck ? true : false,
           MeetingID: Number(currentMeetingID),
         };
-
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        if (leaveMeetingVideoForOneToOneOrGroup) {
+          console.log("busyCall");
+          dispatch(setRaisedUnRaisedParticiant(false));
+          setLeaveMeetingVideoForOneToOneOrGroup(false);
+          await dispatch(
+            LeaveMeetingVideo(
+              Data,
+              navigate,
+              t,
+              3,
+              null,
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeaveMeetingVideoForOneToOneOrGroup
+            )
+          );
+        } else {
+          console.log("busyCall");
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        }
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
@@ -1177,10 +1201,10 @@ const VideoCallNormalHeader = ({
                 : "title-heading"
             }
           >
-            {currentCallType === 2 && callTypeID === 2
-              ? meetingTitle?.trim() || t("Group-call")
-              : meetingTitle?.trim()
-              ? meetingTitle?.trim()
+            {callTypeID === 2
+              ? isMeetingVideo
+                ? meetingTitle?.trim()
+                : t("Group-call")
               : currentUserName !== VideoRecipentData.userName &&
                 Object.keys(VideoRecipentData).length > 0
               ? VideoRecipentData.userName ||
@@ -1326,7 +1350,7 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {(getMeetingHostInfo?.isDashboardVideo && !presenterViewHostFlag)&&(
+          {getMeetingHostInfo?.isDashboardVideo && !presenterViewHostFlag && (
             <div
               className={
                 LeaveCallModalFlag === true ||
@@ -1522,7 +1546,7 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {JSON.parse(localStorage.getItem("activeCall")) && (
+          {currentCallType === 1 && (
             <>
               {currentCallType === 1 && checkFeatureIDAvailability(3) && (
                 <div

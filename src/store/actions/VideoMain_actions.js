@@ -13,7 +13,10 @@ import {
 } from "../../commen/apis/Api_config";
 import {
   getParticipantMeetingJoinMainApi,
+  incomingVideoCallFlag,
   leavePresenterJoinOneToOneOrOtherCall,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   videoOutgoingCallFlag,
@@ -680,7 +683,7 @@ const leaveCallAction = (message) => {
   };
 };
 
-const LeaveCall = (Data, navigate, t) => {
+const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     let form = new FormData();
@@ -697,7 +700,7 @@ const LeaveCall = (Data, navigate, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveCall(Data, navigate, t));
+          dispatch(LeaveCall(Data, navigate, t, flag, setIsTimerRunning));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -715,6 +718,50 @@ const LeaveCall = (Data, navigate, t) => {
               localStorage.setItem("newCallerID", 0);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
+              if (flag === 1) {
+                await dispatch(normalizeVideoPanelFlag(false));
+                await dispatch(maximizeVideoPanelFlag(false));
+                await dispatch(minimizeVideoPanelFlag(false));
+                let NewRoomID = localStorage.getItem("NewRoomID");
+                let userID = localStorage.getItem("userID");
+                let incommingCallTypeID = localStorage.getItem(
+                  "incommingCallTypeID"
+                );
+                let incommingCallType =
+                  localStorage.getItem("incommingCallType");
+                let incommingNewCallerID = localStorage.getItem(
+                  "incommingNewCallerID"
+                );
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeetingVideo", false);
+                localStorage.setItem("acceptedRoomID", 0);
+                localStorage.setItem("activeRoomID", 0);
+                localStorage.removeItem("currentHostUserID");
+                localStorage.removeItem("isHost");
+                localStorage.removeItem("isNewHost");
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
+                localStorage.setItem("callTypeID", incommingCallTypeID);
+                localStorage.setItem("callType", incommingCallType);
+                localStorage.setItem("newCallerID", incommingNewCallerID);
+                localStorage.setItem("isCaller", false);
+                localStorage.setItem("activeRoomID", NewRoomID);
+                let Data2 = {
+                  ReciepentID: Number(userID),
+                  RoomID: NewRoomID,
+                  CallStatusID: 1,
+                  CallTypeID: Number(incommingCallTypeID),
+                };
+                await dispatch(VideoCallResponse(Data2, navigate, t));
+                dispatch(normalizeVideoPanelFlag(true));
+                localStorage.removeItem("NewRoomID");
+
+                localStorage.removeItem("incommingCallTypeID");
+                localStorage.removeItem("incommingCallType");
+                localStorage.removeItem("incommingNewCallerID");
+                dispatch(incomingVideoCallFlag(false));
+                setIsTimerRunning(false);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -723,6 +770,51 @@ const LeaveCall = (Data, navigate, t) => {
                 )
             ) {
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
+              if (flag === 1) {
+                await dispatch(normalizeVideoPanelFlag(false));
+                await dispatch(maximizeVideoPanelFlag(false));
+                await dispatch(minimizeVideoPanelFlag(false));
+                let NewRoomID = localStorage.getItem("NewRoomID");
+                let userID = localStorage.getItem("userID");
+                let incommingCallTypeID = localStorage.getItem(
+                  "incommingCallTypeID"
+                );
+                let incommingCallType =
+                  localStorage.getItem("incommingCallType");
+                let incommingNewCallerID = localStorage.getItem(
+                  "incommingNewCallerID"
+                );
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeetingVideo", false);
+                localStorage.setItem("acceptedRoomID", 0);
+                localStorage.setItem("activeRoomID", 0);
+                localStorage.removeItem("currentHostUserID");
+                localStorage.removeItem("isHost");
+                localStorage.removeItem("isNewHost");
+                localStorage.setItem("MicOff", true);
+                localStorage.setItem("VidOff", true);
+                localStorage.setItem("callTypeID", incommingCallTypeID);
+                localStorage.setItem("callType", incommingCallType);
+                localStorage.setItem("newCallerID", incommingNewCallerID);
+                localStorage.setItem("isCaller", false);
+                localStorage.setItem("activeRoomID", NewRoomID);
+                let Data2 = {
+                  ReciepentID: Number(userID),
+                  RoomID: NewRoomID,
+                  CallStatusID: 1,
+                  CallTypeID: Number(incommingCallTypeID),
+                };
+                await dispatch(VideoCallResponse(Data2, navigate, t));
+                dispatch(normalizeVideoPanelFlag(true));
+
+                localStorage.removeItem("NewRoomID");
+
+                localStorage.removeItem("incommingCallTypeID");
+                localStorage.removeItem("incommingCallType");
+                localStorage.removeItem("incommingNewCallerID");
+                dispatch(incomingVideoCallFlag(false));
+                setIsTimerRunning(false);
+              }
               await dispatch(
                 leaveCallAction(t("Call-disconnected-by-recipient"))
               );

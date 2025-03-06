@@ -7,9 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   getParticipantMeetingJoinMainApi,
-  incomingVideoCallFlag,
-  joinPresenterViewMainApi,
-  leavePresenterViewMainApi,
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   nonMeetingVideoGlobalModal,
@@ -47,21 +44,12 @@ const NonMeetingVideoModal = () => {
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
 
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
   let currentMeeting = localStorage.getItem("currentMeetingID");
-  let acceptedRoomID = localStorage.getItem("acceptedRoomID");
-  let currentUserId = Number(localStorage.getItem("userID"));
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-  let activeRoomID = localStorage.getItem("activeRoomID");
-  let NewRoomID = localStorage.getItem("NewRoomID");
-  let incomingRoomID = localStorage.getItem("NewRoomID");
-  let callTypeID = Number(localStorage.getItem("callTypeID"));
-  let getMeetingHost = JSON.parse(localStorage.getItem("meetinHostInfo"));
-  let isGuid = localStorage.getItem("isGuid");
-  let participantUID = localStorage.getItem("participantUID");
-  let meetingTitle = localStorage.getItem("meetingTitle");
-  let videoCallURL = localStorage.getItem("videoCallURL");
-  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-  let newRoomId = localStorage.getItem("newRoomId");
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let initiateCallRoomID = String(localStorage.getItem("initiateCallRoomID"));
   let currentCallType = Number(localStorage.getItem("CallType"));
@@ -73,11 +61,10 @@ const NonMeetingVideoModal = () => {
     );
 
     dispatch(nonMeetingVideoGlobalModal(false));
-    if(JoinpresenterForonetoone){
-      localStorage.removeItem("JoinpresenterForonetoone")
+    if (JoinpresenterForonetoone) {
+      localStorage.removeItem("JoinpresenterForonetoone");
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
-
-    }else if (joinPresenterForOneToOneOrGroup) {
+    } else if (joinPresenterForOneToOneOrGroup) {
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
     } else if (presenterViewFlag && !presenterViewHostFlag) {
       dispatch(presenterViewGlobalState(currentMeeting, true, false, false));
@@ -92,13 +79,12 @@ const NonMeetingVideoModal = () => {
     );
     let currentCallType = Number(localStorage.getItem("CallType"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-    if(JoinpresenterForonetoone){
-    dispatch(nonMeetingVideoGlobalModal(false));
-    localStorage.removeItem("JoinpresenterForonetoone")
-      setPresenterForOneToOneOrGroup(true)
+    if (JoinpresenterForonetoone) {
+      dispatch(nonMeetingVideoGlobalModal(false));
+      localStorage.removeItem("JoinpresenterForonetoone");
+      setPresenterForOneToOneOrGroup(true);
       setLeaveOneToOne(true);
-
-    }else if (joinPresenterForOneToOneOrGroup) {
+    } else if (joinPresenterForOneToOneOrGroup) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
@@ -106,14 +92,9 @@ const NonMeetingVideoModal = () => {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       setLeaveOneToOne(true);
-    } else if (presenterViewFlag && presenterViewHostFlag && !activeCallState) {
-      console.log("busyCall");
-      setLeavePresenterViewToJoinOneToOne(true);
-      await dispatch(nonMeetingVideoGlobalModal(false));
     } else if (
       presenterViewFlag &&
-      !presenterViewHostFlag &&
-      !activeCallState
+      (presenterViewHostFlag || presenterViewJoinFlag)
     ) {
       console.log("busyCall");
       setLeavePresenterViewToJoinOneToOne(true);
