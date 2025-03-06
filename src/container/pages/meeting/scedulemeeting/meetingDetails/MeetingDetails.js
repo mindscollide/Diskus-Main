@@ -1510,7 +1510,7 @@ const MeetingDetails = ({
                 isEditMeeting === true ? null : (
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
-                    <Button
+                    {/* <Button
                       text={
                         <>
                           <Row className="mt-1">
@@ -1539,7 +1539,7 @@ const MeetingDetails = ({
                       disableBtn={
                         !isValidRow(rows[rows.length - 1]) || rows.length === 5
                       }
-                    />
+                    /> */}
                   </Col>
                 </Row>
               )}

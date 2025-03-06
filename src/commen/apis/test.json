@@ -1,26 +1,32 @@
 {
   "MeetingDetails": {
-    "MeetingID": 5190,
-    "MeetingTitle": "cvb update",
-    "MeetingType": { "PK_MTID": 497, "Type": "Board Meetings" },
-    "Location": "",
-    "Description": "cvb",
-    "IsVideoChat": false,
+    "MeetingID": 5202,
+    "MeetingTitle": "mehdi meet ",
+    "MeetingType": { "PK_MTID": 498, "Type": "Committee Meeting" },
+    "Location": "asd",
+    "Description": "",
+    "IsVideoChat": true,
+    "IsPublished": true,
     "IsTalkGroup": false,
     "OrganizationId": 561,
     "MeetingDates": [
       {
-        "MeetingDate": "20250305",
-        "StartTime": "20250305210000",
-        "EndTime": "20250306110000"
+        "MeetingDate": "20250307",
+        "StartTime": "20250307040000",
+        "EndTime": "20250307160000"
+      },
+      {
+        "MeetingDate": "20250308",
+        "StartTime": "20250308070000",
+        "EndTime": "20250308080000"
       }
     ],
-    "MeetingReminders": [4],
-    "Notes": "",
+    "MeetingReminders": [2],
+    "Notes": "asd",
     "AllowRSVP": true,
     "NotifyOrganizerOnRSVP": true,
     "ReucurringMeetingID": 1,
-    "VideoURL": "",
-    "MeetingStatusID": 11
+    "VideoURL": "303",
+    "MeetingStatusID": 1
   }
 }
