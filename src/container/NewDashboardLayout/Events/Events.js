@@ -275,9 +275,15 @@ const Events = () => {
     }
 
     return upComingEvents.map((upcomingEventsData, index) => {
+      console.log(upcomingEventsData, "upcomingEventsData");
+
+      if (!upcomingEventsData?.meetingEvent) {
+        console.warn("DataIsMissing", upcomingEventsData);
+        return null;
+      }
       let meetingDateTime =
-        upcomingEventsData.meetingEvent.meetingDate +
-        upcomingEventsData.meetingEvent.startTime;
+        upcomingEventsData?.meetingEvent?.meetingDate +
+        upcomingEventsData?.meetingEvent?.startTime;
       const currentDateObj = new Date(
         currentUTCDateTime.substring(0, 4), // Year
         parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
