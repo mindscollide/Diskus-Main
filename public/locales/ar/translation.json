@@ -789,7 +789,7 @@
   "User-email-already-exists": "البريد الإلكتروني للمستخدم موجود بالفعل",
   "Subscription": "الاشتراك",
   "Other-members": "أعضاء آخرون",
-  " New-folder": "ملف جديد",
+  "New-folder": "ملف جديد",
   "File-upload": "تحميل الملف",
   "Folder-upload": "تحميل المجلد",
   "Clear-all": "امسح الكل",
@@ -2410,5 +2410,6 @@
   "PDF": "ملفات PDF",
   "Audio": "صوت",
   "Talk": "مجموعة",
-  "Try-again": "Try Again"
+  "Try-again": "Try Again",
+  "Activity" : "نشاط"
 }

@@ -2075,8 +2075,7 @@ const NewMeeting = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -2179,8 +2178,7 @@ const NewMeeting = () => {
         <Dropdown
           overlay={filterMenu}
           visible={visibleMeetingType}
-          onVisibleChange={(open) => setVisibleMeetingType(!open)}
-        >
+          onVisibleChange={(open) => setVisibleMeetingType(!open)}>
           <div />
         </Dropdown>
       ),
@@ -2580,25 +2578,7 @@ const NewMeeting = () => {
         }
       },
     },
-    {
-      dataIndex: "Delete",
-      key: "Delete",
-      align: "center",
-      width: "10px",
-      render: (text, record) => {
-        console.log(record, "deleteIcon");
-        if (record.isPrimaryOrganizer && Number(record.status) === 1) {
-          return (
-            <img
-              src={deleteIcon}
-              style={{ cursor: "pointer" }}
-              onClick={() => handleClickDeleteMeeting(record)}
-              // onClick={() => setDeleteMeetingConfirmationModal(true)}
-            />
-          );
-        }
-      },
-    },
+
     {
       dataIndex: "Edit",
       key: "Edit",
