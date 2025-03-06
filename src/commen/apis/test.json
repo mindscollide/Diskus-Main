@@ -1,39 +1,26 @@
 {
-  "MeetingID": 5174,
-  "MeetingTitle": "testing ",
-  "MeetingDescription": "description ",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20250304",
-  "OrganizationId": 561,
-  "MeetingStartTime": "060000",
-  "MeetingEndTime": "060000",
-  "MeetingLocation": "task completed ",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [1],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 5496,
-        "Title": "No Agenda Available",
-        "PresenterName": "SAIF UL ISLAM ",
-        "URLs": "",
-        "FK_MDID": 5174
-      },
-      "MeetingAgendaAttachments": []
-    }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 1351 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 1379 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  "MeetingDetails": {
+    "MeetingID": 5190,
+    "MeetingTitle": "cvb update",
+    "MeetingType": { "PK_MTID": 497, "Type": "Board Meetings" },
+    "Location": "",
+    "Description": "cvb",
+    "IsVideoChat": false,
+    "IsTalkGroup": false,
+    "OrganizationId": 561,
+    "MeetingDates": [
+      {
+        "MeetingDate": "20250305",
+        "StartTime": "20250305210000",
+        "EndTime": "20250306110000"
+      }
+    ],
+    "MeetingReminders": [4],
+    "Notes": "",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }

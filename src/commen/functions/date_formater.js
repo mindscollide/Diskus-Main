@@ -487,6 +487,7 @@ export const resolutionResultTable = (dateTime) => {
 };
 
 export const createConvert = (dateTime) => {
+  console.log(dateTime, "DatesDatesDatesDatesDates");
   let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toISOString();
   let utcDate = new Date(convertintoISO).toUTCString();
 
@@ -815,7 +816,6 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
 // this work is create by huzeifa please dont write any thing below thi line
 export const multiDatePickerDateChangIntoUTC = (date) => {
-
   // Extract the year, month, and day components from the UTC time
   const year = date.getUTCFullYear();
   const month = String(date.getUTCMonth() + 1).padStart(2, "0");
@@ -848,6 +848,18 @@ export function formatDateToYYYYMMDD(date) {
   return `${year}${month}${day}`;
 }
 
+//Time formatter
+
+export function formatTimeToHHMMSS(date) {
+  if (!date || isNaN(date.getTime())) {
+    return ""; // Return an empty string for empty or invalid dates
+  }
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+  const seconds = date.getSeconds().toString().padStart(2, "0");
+  return `${hours}${minutes}${seconds}`;
+}
+
 // Example usage: handling both type and convert it into utc using in data room search
 // "15 September, 2023";
 // "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
@@ -871,7 +883,6 @@ export function formatDateToUTC(inputDate, value) {
   } else {
     dateWithTime = formattedDate; // Default to just the date
   }
-
 
   // Extract parts of the date string (yyyyMMddHHmmss)
   const dateString = dateWithTime.toString();
@@ -1133,7 +1144,6 @@ export const get_CurrentDateTime = () => {
   const hours = currentDate.setHours(23);
   const minutes = currentDate.setMinutes(59);
   const seconds = currentDate.setSeconds(58);
-
 
   const currentTime = `${hours}${minutes}${seconds}`;
   const current_Date = `${year}${month}${day}`;
