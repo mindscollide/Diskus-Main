@@ -963,7 +963,6 @@ const VideoPanelNormal = () => {
     }
   };
 
-
   useEffect(() => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
@@ -979,8 +978,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (videoControl === true) {
+        console.log("VidOn");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
+        console.log("VidOn");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
@@ -991,13 +992,16 @@ const VideoPanelNormal = () => {
       try {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow && presenterViewFlag) {
-          // if (isMicActive) {
-          //   iframe.contentWindow.postMessage("MicOff", "*");
-          // } else {
-          //   iframe.contentWindow.postMessage("MicOn", "*");
-          // }
+          if (isMicActive) {
+            iframe.contentWindow.postMessage("MicOff", "*");
+          } else {
+            iframe.contentWindow.postMessage("MicOn", "*");
+          }
+          console.log("VidOn");
           setIsMicActive(!isMicActive);
+          console.log("VidOn");
           localStorage.setItem("MicOff", !isMicActive);
+          console.log("VidOn");
           setToggleMicMinimizeNonMeeting(false);
         }
       } catch (error) {
@@ -1013,12 +1017,13 @@ const VideoPanelNormal = () => {
         console.log("videoHideUnHideForHost");
         if (iframe && iframe.contentWindow) {
           console.log("videoHideUnHideForHost");
-          // if(isVideoActive){
-          //   iframe.contentWindow.postMessage("VidOff", "*");
-
-          // }else{
-          // iframe.contentWindow.postMessage("VidOn", "*");
-          // }
+          if (isVideoActive) {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("VidOff", "*");
+          } else {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("VidOn", "*");
+          }
           setIsVideoActive(!isVideoActive);
           localStorage.setItem("VidOff", !isVideoActive);
           setToggleVideoMinimizeNonMeeting(false);
