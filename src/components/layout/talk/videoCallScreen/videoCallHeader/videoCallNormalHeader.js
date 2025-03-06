@@ -435,17 +435,16 @@ const VideoCallNormalHeader = ({
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         console.log(data, "presenterViewJoinFlag");
-
+        console.log("busyCall", alreadyInMeetingVideo);
+        setLeavePresenterViewToJoinOneToOne(false);
         await dispatch(
           stopPresenterViewMainApi(
             navigate,
             t,
             data,
             leavePresenterViewToJoinOneToOne ? 3 : 0,
-            leavePresenterViewToJoinOneToOne,
             setLeaveMeetingVideoForOneToOneOrGroup,
-            setJoiningOneToOneAfterLeavingPresenterView,
-            setLeavePresenterViewToJoinOneToOne
+            setJoiningOneToOneAfterLeavingPresenterView
           )
         );
       } else {
@@ -461,11 +460,11 @@ const VideoCallNormalHeader = ({
             t,
             data,
             leavePresenterViewToJoinOneToOne ? 3 : 2,
-            leavePresenterViewToJoinOneToOne &&
-              setLeavePresenterViewToJoinOneToOne,
+            setLeavePresenterViewToJoinOneToOne,
             setJoiningOneToOneAfterLeavingPresenterView
           )
         );
+        await setLeavePresenterViewToJoinOneToOne(false);
       }
     } else {
       console.log("busyCall");
@@ -891,12 +890,20 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leavePresenterViewToJoinOneToOne) {
-        console.log("busyCall");
+        console.log("busyCall", leavePresenterViewToJoinOneToOne);
         participantLeaveCall();
       }
     } catch (error) {}
   }, [leavePresenterViewToJoinOneToOne]);
-
+  useEffect(() => {
+    try {
+      if (leaveMeetingVideoForOneToOneOrGroup) {
+        console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup);
+        participantLeaveCall();
+      }
+    } catch (error) {}
+  }, [leaveMeetingVideoForOneToOneOrGroup]);
+  
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
@@ -947,12 +954,13 @@ const VideoCallNormalHeader = ({
         if (leaveMeetingVideoForOneToOneOrGroup) {
           console.log("busyCall");
           dispatch(setRaisedUnRaisedParticiant(false));
+          setLeaveMeetingVideoForOneToOneOrGroup(false);
           await dispatch(
             LeaveMeetingVideo(
               Data,
               navigate,
               t,
-              leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,
+              3,
               null,
               setJoiningOneToOneAfterLeavingPresenterView,
               setLeaveMeetingVideoForOneToOneOrGroup

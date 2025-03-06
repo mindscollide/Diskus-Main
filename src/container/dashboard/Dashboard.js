@@ -2593,6 +2593,7 @@ const Dashboard = () => {
           console.log("Check active");
           // localStorage.setItem("activeCall", false);
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+          let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
           // localStorage.setItem("RingerCallCheckFlag", true);
           // localStorage.setItem("callType", data.payload.callType);
           // localStorage.setItem("callTypeID", data.payload.callTypeID);
@@ -2606,7 +2607,7 @@ const Dashboard = () => {
             RoomID: data.payload.roomID,
           };
           dispatch(CallRequestReceived(Dataa, navigate, t));
-          if (activeCall === true) {
+          if (activeCall || isMeetingVideo || presenterViewHostFlag.current ||presenterViewJoinFlagRef.current) {
             console.log(activeCall, "Check active");
             console.log("Check active");
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
