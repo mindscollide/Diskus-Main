@@ -3273,42 +3273,199 @@ const Dashboard = () => {
         } else if (
           data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
         ) {
-          if (data.payload.recepientID !== Number(createrID)) {
-            localStorage.setItem("ringerRoomId", 0);
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(videoChatMessagesFlag(false));
-            dispatch(maximizeVideoPanelFlag(false));
-            dispatch(minimizeVideoPanelFlag(false));
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `${data.payload.recepientName} is currently Busy`,
-            });
-            setNotificationID(id);
-            let existingData =
-              JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-            let newData = {
-              RecipientName: data.payload.recepientName,
-              RecipientID: data.payload.recepientID,
-              CallStatus: "Busy",
-              RoomID: data.payload.roomID,
-            };
-            let existingObjectIndex = existingData.findIndex(
-              (item) =>
-                item.RecipientName === newData.RecipientName &&
-                item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
-            );
-            if (existingObjectIndex !== -1) {
-              existingData[existingObjectIndex] = newData;
+          // if (data.payload.recepientID !== Number(createrID)) {
+          //   localStorage.setItem("ringerRoomId", 0);
+          //   dispatch(normalizeVideoPanelFlag(false));
+          //   dispatch(videoChatMessagesFlag(false));
+          //   dispatch(maximizeVideoPanelFlag(false));
+          //   dispatch(minimizeVideoPanelFlag(false));
+          //   setNotification({
+          //     ...notification,
+          //     notificationShow: true,
+          //     message: `${data.payload.recepientName} is currently Busy`,
+          //   });
+          //   setNotificationID(id);
+          //   let existingData =
+          //     JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+          //   let newData = {
+          //     RecipientName: data.payload.recepientName,
+          //     RecipientID: data.payload.recepientID,
+          //     CallStatus: "Busy",
+          //     RoomID: data.payload.roomID,
+          //   };
+          //   let existingObjectIndex = existingData.findIndex(
+          //     (item) =>
+          //       item.RecipientName === newData.RecipientName &&
+          //       item.RecipientID === newData.RecipientID &&
+          //       item.RoomID === newData.RoomID
+          //   );
+          //   if (existingObjectIndex !== -1) {
+          //     existingData[existingObjectIndex] = newData;
+          //   } else {
+          //     existingData.push(newData);
+          //   }
+          //   localStorage.setItem(
+          //     "callerStatusObject",
+          //     JSON.stringify(existingData)
+          //   );
+          //   localStorage.setItem("activeCall", false);
+          // }
+          console.log("mqtt");
+          //To make false sessionStorage which is set on VideoCall
+          localStorage.setItem("ringerRoomId", 0);
+          sessionStorage.setItem("NonMeetingVideoCall", false);
+          let userID = Number(localStorage.getItem("userID"));
+          let currentUserName = localStorage.getItem("name");
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          let existingData =
+            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+          let NewRoomID = localStorage.getItem("NewRoomID");
+          let activeRoomID = localStorage.getItem("activeRoomID");
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+          let initiateCallRoomID = JSON.parse(
+            localStorage.getItem("initiateCallRoomID")
+          );
+
+          let roomID = 0;
+          if (activeRoomID) {
+            if (Number(activeRoomID) !== 0 && !isCaller) {
+              roomID = activeRoomID;
             } else {
-              existingData.push(newData);
+              if (!isCaller) {
+                roomID = NewRoomID;
+              } else {
+                roomID = initiateCallRoomID;
+              }
             }
-            localStorage.setItem(
-              "callerStatusObject",
-              JSON.stringify(existingData)
-            );
-            localStorage.setItem("activeCall", false);
+          } else {
+            if (!isCaller) {
+              roomID = NewRoomID;
+            } else {
+              roomID = initiateCallRoomID;
+            }
+          }
+          console.log("mqtt", roomID);
+          let RecipentIDsOninitiateVideoCall =
+            JSON.parse(
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+            ) || [];
+          if (
+            !isMeetingVideo &&
+            Number(data.payload.roomID) === Number(roomID) &&
+            userID !== data.senderID
+          ) {
+            console.log("mqtt", data.payload.callTypeID);
+            if (data.payload.callTypeID === 1) {
+              if (userID !== data.recepientID) {
+                setLeaveOneToOne(true);
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(videoOutgoingCallFlag(false));
+              }
+            } else if (data.payload.callTypeID === 2) {
+              let newData = {
+                RecipientName: data.payload.recepientName,
+                RecipientID: data.payload.recepientID,
+                CallStatus: "Rejected",
+                RoomID: data.payload.roomID,
+              };
+              let RecipentIDsOninitiateVideoCallflag = false;
+              let remainingCount = 0;
+              let existingDataflag = false;
+              let existingDataremainingCount = 0;
+              let existingObjectIndex = [];
+              if (RecipentIDsOninitiateVideoCall.length > 0) {
+                const index = RecipentIDsOninitiateVideoCall.indexOf(
+                  data.payload.recepientID
+                );
+                if (index !== -1) {
+                  // Remove the matching value
+                  RecipentIDsOninitiateVideoCall.splice(index, 1);
+                  localStorage.setItem(
+                    "RecipentIDsOninitiateVideoCall",
+                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                  );
+                  RecipentIDsOninitiateVideoCallflag = true;
+                  remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
+                } else {
+                }
+                console.log("mqtt", RecipentIDsOninitiateVideoCall);
+              } else {
+                if (existingData.length > 0) {
+                  existingObjectIndex = existingData.findIndex(
+                    (item) =>
+                      item.RecipientName === newData.RecipientName &&
+                      item.RecipientID === newData.RecipientID &&
+                      item.RoomID === newData.RoomID
+                  );
+                  if (existingObjectIndex !== -1) {
+                    existingData.splice(existingObjectIndex, 1);
+                    localStorage.setItem(
+                      "callerStatusObject",
+                      JSON.stringify(existingData)
+                    );
+                    existingDataflag = true;
+                    existingDataremainingCount = existingData.length || 0;
+                  }
+                  if (existingDataflag) {
+                    if (existingDataremainingCount === 0) {
+                      if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        setLeaveOneToOne(true);
+                        dispatch(videoChatMessagesFlag(false));
+                        dispatch(videoOutgoingCallFlag(false));
+                      }
+                    }
+                  }
+                }
+              }
+              if (RecipentIDsOninitiateVideoCallflag) {
+                if (remainingCount === 0) {
+                  if (existingData.length === 0) {
+                    setLeaveOneToOne(true);
+                    dispatch(videoChatMessagesFlag(false));
+                    dispatch(videoOutgoingCallFlag(false));
+                  }
+                }
+              } else {
+                if (existingData.length > 0) {
+                  existingObjectIndex = existingData.findIndex(
+                    (item) =>
+                      item.RecipientName === newData.RecipientName &&
+                      item.RecipientID === newData.RecipientID &&
+                      item.RoomID === newData.RoomID
+                  );
+                  if (existingObjectIndex !== -1) {
+                    existingData.splice(existingObjectIndex, 1);
+                    localStorage.setItem(
+                      "callerStatusObject",
+                      JSON.stringify(existingData)
+                    );
+                    existingDataflag = true;
+                    existingDataremainingCount = existingData.length || 0;
+                  }
+                  if (existingDataflag) {
+                    if (existingDataremainingCount === 0) {
+                      if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        setLeaveOneToOne(true);
+                        dispatch(videoChatMessagesFlag(false));
+                        dispatch(videoOutgoingCallFlag(false));
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (currentUserName !== data.payload.recepientName) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `${data.payload.recepientName} has declined the call`,
+              });
+              setNotificationID(id);
+            }
+            dispatch(callRequestReceivedMQTT({}, ""));
           }
         }
       }
@@ -3673,28 +3830,29 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className='sidebar_layout' width={"4%"}>
+            <Sider className="sidebar_layout" width={"4%"}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <Outlet />
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -3711,8 +3869,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -3738,25 +3896,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -3772,12 +3930,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
