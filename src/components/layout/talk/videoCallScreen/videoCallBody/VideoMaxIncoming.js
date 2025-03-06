@@ -120,12 +120,13 @@ const VideoMaxIncoming = () => {
     const timer = setTimeout(() => {
       // Dispatch action to update global state
     let NewRoomID = localStorage.getItem("NewRoomID");
+    let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
 
       let Data = {
         ReciepentID: Number(currentUserId),
         RoomID: NewRoomID,
         CallStatusID: 3,
-        CallTypeID: Number(callTypeID),
+        CallTypeID: Number(incommingCallTypeID),
       };
       console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
