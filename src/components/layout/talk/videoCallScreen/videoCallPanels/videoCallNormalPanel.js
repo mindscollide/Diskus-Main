@@ -1015,9 +1015,6 @@ const VideoPanelNormal = () => {
     if (toggleVideoMinimizeNonMeeting) {
       try {
         const iframe = iframeRef.current;
-        console.log("videoHideUnHideForHost");
-        console.log("VidOn");
-
         if (iframe && iframe.contentWindow) {
           console.log("videoHideUnHideForHost");
           if (isVideoActive) {
@@ -1039,14 +1036,15 @@ const VideoPanelNormal = () => {
     console.log("disableMicFunction");
     try {
       const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow && presenterViewFlag) {
+      if (iframe && iframe.contentWindow ) {
         console.log("disableMicFunction");
-        iframe.contentWindow.postMessage("MicOff", "*");
-        setIsMicActive(!isMicActive);
-        localStorage.setItem("MicOff", !isMicActive);
-      } else if (iframe && iframe.contentWindow) {
-        console.log("disableMicFunction");
-        iframe.contentWindow.postMessage("MicOff", "*");
+        if (isMicActive) {
+          console.log("VidOn");
+          iframe.contentWindow.postMessage("MicOff", "*");
+        } else {
+          console.log("VidOn");
+          iframe.contentWindow.postMessage("MicOn", "*");
+        }
         setIsMicActive(!isMicActive);
         localStorage.setItem("MicOff", !isMicActive);
       }
@@ -1061,7 +1059,11 @@ const VideoPanelNormal = () => {
       console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow) {
         console.log("videoHideUnHideForHost");
-        iframe.contentWindow.postMessage("VidOff", "*");
+        if (isVideoActive) {
+          iframe.contentWindow.postMessage("VidOff", "*");
+        } else {
+          iframe.contentWindow.postMessage("VidOn", "*");
+        }
         setIsVideoActive(!isVideoActive);
         localStorage.setItem("VidOff", !isVideoActive);
       }
