@@ -1674,6 +1674,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_LEFT: {
+      //update the reducer here if removed or any CRUD happens
       return {
         ...state,
         MqttGroupLeftData: action.response,

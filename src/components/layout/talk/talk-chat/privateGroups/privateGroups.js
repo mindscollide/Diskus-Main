@@ -123,6 +123,29 @@ const PrivateGroups = () => {
     };
   }, [talkStateData.talkSocketGroupCreation.groupCreatedData]);
 
+  // to Automatically Remvoe the Group from the user if he has left the private group
+  useEffect(() => {
+    if (
+      talkStateData.MqttGroupLeftData !== undefined &&
+      talkStateData.MqttGroupLeftData !== null &&
+      talkStateData.MqttGroupLeftData.length !== 0
+    ) {
+      console.log(talkStateData.MqttGroupLeftData, "MqttGroupLeftData");
+      let leaveGroupData = talkStateData.MqttGroupLeftData.data[0];
+      const indexToRemove = privateGroupsData.findIndex(
+        (item) => item.id === leaveGroupData.groupID
+      );
+      console.log(leaveGroupData, "MqttGroupLeftData");
+      console.log(privateGroupsData, "MqttGroupLeftData");
+      // Check if the object was found
+      if (indexToRemove !== -1) {
+        // Remove the object from allChatData
+        privateGroupsData.splice(indexToRemove, 1);
+      }
+    }
+    // dispatch(mqttGroupLeft([]))
+  }, [talkStateData.MqttGroupLeftData]);
+
   //Search Chats
   const searchChat = (e) => {
     setSearchChatValue(e);

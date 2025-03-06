@@ -2,12 +2,22 @@
   font-size: 12px !important;
   color: #5a5a5a;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100% !important;
+  display: block;
+  text-overflow: ellipsis;
 }
 
 .participant_designation {
   font-size: 10px !important;
   color: #5a5a5a;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 100% !important;
+  display: block;
+  text-overflow: ellipsis;
 }
 
 .Space_limit {
