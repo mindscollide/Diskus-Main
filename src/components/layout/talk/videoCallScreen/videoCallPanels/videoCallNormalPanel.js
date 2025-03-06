@@ -445,38 +445,6 @@ const VideoPanelNormal = () => {
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
-    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
-    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (audioControl === true) {
-        iframe.contentWindow.postMessage("MicOn", "*");
-      } else {
-        iframe.contentWindow.postMessage("MicOff", "*");
-      }
-    }
-    // } else {
-    //   localStorage.removeItem("audioVideoHideButton");
-    // }
-  }, [audioControl]);
-
-  useEffect(() => {
-    // let audioVideoHideButton = localStorage.getItem("audioVideoHideButton");
-    // if (audioVideoHideButton === null || audioVideoHideButton === undefined) {
-    const iframe = iframeRef.current;
-    if (iframe && iframe.contentWindow !== null) {
-      if (videoControl === true) {
-        iframe.contentWindow.postMessage("VidOn", "*");
-      } else {
-        iframe.contentWindow.postMessage("VidOff", "*");
-      }
-    }
-    // } else {
-    //   localStorage.removeItem("audioVideoHideButton");
-    // }
-  }, [videoControl]);
-
-  useEffect(() => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
@@ -994,25 +962,40 @@ const VideoPanelNormal = () => {
       console.log("Check");
     }
   };
+
+
   useEffect(() => {
-    if (toggleVideoMinimizeNonMeeting) {
-      try {
-        const iframe = iframeRef.current;
-        console.log("videoHideUnHideForHost");
-        if (iframe && iframe.contentWindow) {
-          console.log("videoHideUnHideForHost");
-          iframe.contentWindow.postMessage("VidOff", "*");
-          setIsVideoActive(!isVideoActive);
-          localStorage.setItem("VidOff", !isVideoActive);
-          setToggleVideoMinimizeNonMeeting(false);
-        }
-      } catch {}
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (audioControl === true) {
+        iframe.contentWindow.postMessage("MicOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("MicOff", "*");
+      }
     }
+  }, [audioControl]);
+
+  useEffect(() => {
+    const iframe = iframeRef.current;
+    if (iframe && iframe.contentWindow !== null) {
+      if (videoControl === true) {
+        iframe.contentWindow.postMessage("VidOn", "*");
+      } else {
+        iframe.contentWindow.postMessage("VidOff", "*");
+      }
+    }
+  }, [videoControl]);
+
+  useEffect(() => {
     if (toggleMicMinimizeNonMeeting) {
       try {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow && presenterViewFlag) {
-          iframe.contentWindow.postMessage("MicOff", "*");
+          // if (isMicActive) {
+          //   iframe.contentWindow.postMessage("MicOff", "*");
+          // } else {
+          //   iframe.contentWindow.postMessage("MicOn", "*");
+          // }
           setIsMicActive(!isMicActive);
           localStorage.setItem("MicOff", !isMicActive);
           setToggleMicMinimizeNonMeeting(false);
@@ -1021,7 +1004,28 @@ const VideoPanelNormal = () => {
         console.log("disableMicFunction", error);
       }
     }
-  }, [toggleVideoMinimizeNonMeeting, toggleMicMinimizeNonMeeting]);
+  }, [toggleMicMinimizeNonMeeting]);
+
+  useEffect(() => {
+    if (toggleVideoMinimizeNonMeeting) {
+      try {
+        const iframe = iframeRef.current;
+        console.log("videoHideUnHideForHost");
+        if (iframe && iframe.contentWindow) {
+          console.log("videoHideUnHideForHost");
+          // if(isVideoActive){
+          //   iframe.contentWindow.postMessage("VidOff", "*");
+
+          // }else{
+          // iframe.contentWindow.postMessage("VidOn", "*");
+          // }
+          setIsVideoActive(!isVideoActive);
+          localStorage.setItem("VidOff", !isVideoActive);
+          setToggleVideoMinimizeNonMeeting(false);
+        }
+      } catch {}
+    }
+  }, [toggleVideoMinimizeNonMeeting]);
 
   const disableMicFunction = () => {
     console.log("disableMicFunction");
