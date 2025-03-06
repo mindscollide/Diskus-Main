@@ -23,6 +23,9 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import moment from "moment";
 import {
+  createConvert,
+  formatDateToYYYYMMDD,
+  formatTimeToHHMMSS,
   forRecentActivity,
   multiDatePickerDateChangIntoUTC,
   resolutionResultTable,
@@ -670,32 +673,42 @@ const ProposedNewMeeting = ({
 
       rows.forEach((data, index) => {
         Dates.push({
-          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-            0,
-            8
+          MeetingDate: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
+          ).slice(0, 8),
+          StartTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
           ),
-          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
-            8,
-            14
+          EndTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.endTime)
           ),
-          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
         });
       });
+
+      console.log(Dates, "ProposedDatesProposedDatesProposedDates");
 
       let ProposedDates = [];
       rows.forEach((data, index) => {
         ProposedDates.push({
-          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-            0,
-            8
+          ProposedDate: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
+          ).slice(0, 8),
+          StartTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
           ),
-          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
-            8,
-            14
+          EndTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.endTime)
           ),
-          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
         });
       });
+
+      console.log(ProposedDates, "ProposedDatesProposedDatesProposedDates");
 
       // Sorting the Dates array
       let sortedDates = ProposedDates.sort((a, b) => {
@@ -775,35 +788,46 @@ const ProposedNewMeeting = ({
       }
     } else {
       let Dates = [];
+      console.log(rows, "DatesDatesDatesDatesDates");
 
       rows.forEach((data, index) => {
         Dates.push({
-          MeetingDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-            0,
-            8
+          MeetingDate: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
+          ).slice(0, 8),
+          StartTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
           ),
-          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
-            8,
-            14
+          EndTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.endTime)
           ),
-          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
         });
       });
+
+      console.log(Dates, "DatesDatesDatesDatesDates");
 
       let ProposedDates = [];
       rows.forEach((data, index) => {
         ProposedDates.push({
-          ProposedDate: multiDatePickerDateChangIntoUTC(data.dateSelect).slice(
-            0,
-            8
+          ProposedDate: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
+          ).slice(0, 8),
+          StartTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.startTime)
           ),
-          StartTime: multiDatePickerDateChangIntoUTC(data.startTime).slice(
-            8,
-            14
+          EndTime: createConvert(
+            formatDateToYYYYMMDD(data.dateSelect) +
+              formatTimeToHHMMSS(data.endTime)
           ),
-          EndTime: multiDatePickerDateChangIntoUTC(data.endTime).slice(8, 14),
         });
       });
+
+      console.log(ProposedDates, "DatesDatesDatesDatesDatesDates");
 
       // Sorting the Dates array
       let sortedDates = ProposedDates.sort((a, b) => {
