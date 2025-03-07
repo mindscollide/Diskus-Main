@@ -729,7 +729,13 @@ const AgendaViewer = () => {
       // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
       if (!participantEnableVideoState) {
         console.log("onClickVideoIconOpenVideo");
-        dispatch(maxParticipantVideoCallPanel(true));
+        // if(isMeetingVideoHostCheck){
+
+        // }else{
+        //   dispatch(maxParticipantVideoCallPanel(true));
+
+        // }
+        onClickVideoIconOpenVideo()
         setJoinMeetingVideoParticipant(false);
       }
     }
@@ -740,13 +746,10 @@ const AgendaViewer = () => {
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
-
-    console.log("onClickVideoIconOpenVideo");
     let nonMeetingCheck = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
 
-    console.log("onClickVideoIconOpenVideo");
     if (nonMeetingCheck) {
       console.log("onClickVideoIconOpenVideo");
       dispatch(nonMeetingVideoGlobalModal(true));
@@ -787,7 +790,7 @@ const AgendaViewer = () => {
     let currentCallType = JSON.parse(localStorage.getItem("CallType"));
     dispatch(participantWaitingListBox(false));
     dispatch(toggleParticipantsVisibility(false));
-    if (activeCallState && currentCallType === 1) {
+    if (activeCallState && !isMeetingVideo) {
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {

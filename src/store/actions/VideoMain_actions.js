@@ -281,6 +281,8 @@ const VideoCallResponse = (Data, navigate, t) => {
                 )
             ) {
               console.log(Data, "responsedataresponseResult");
+              sessionStorage.setItem("NonMeetingVideoCall", true);
+
               // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               if (Data.CallStatusID === 1) {
                 const meetingHost = {
@@ -823,6 +825,14 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 .toLowerCase()
                 .includes(
                   "Video_VideoServiceManager_LeaveCall_03".toLowerCase()
+                )
+            ) {
+              await dispatch(leaveCallAction(t("Something-went-wrong")));
+            }else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_LeaveCall_04".toLowerCase()
                 )
             ) {
               await dispatch(leaveCallAction(t("Something-went-wrong")));
