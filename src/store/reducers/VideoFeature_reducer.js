@@ -559,12 +559,17 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
+      console.log("MQTT onMessageArrived");
       let { payload } = action;
+      console.log("MQTT onMessageArrived", payload);
       let updateParticipantHideUnHide = state.getAllParticipantMain.map(
         (hideUnHideParticipant) => {
+          console.log("MQTT onMessageArrived", hideUnHideParticipant);
           let hideUnHideVideoPayload =
             payload.uid === hideUnHideParticipant.guid ? true : false;
+          console.log("MQTT onMessageArrived", hideUnHideVideoPayload);
           if (hideUnHideVideoPayload) {
+            console.log("MQTT onMessageArrived", hideUnHideVideoPayload);
             return {
               ...hideUnHideParticipant,
               hideCamera: payload.isVideoHidden,
@@ -573,6 +578,8 @@ const videoFeatureReducer = (state = initialState, action) => {
           return hideUnHideParticipant;
         }
       );
+      console.log("MQTT onMessageArrived", updateParticipantHideUnHide);
+
       return {
         ...state,
         getAllParticipantMain: updateParticipantHideUnHide,

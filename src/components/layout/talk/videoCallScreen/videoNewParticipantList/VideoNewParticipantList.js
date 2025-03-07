@@ -272,7 +272,7 @@ const VideoNewParticipantList = () => {
           ],
           MeetingID: currentMeetingID,
         };
-      
+
         dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
       }
     }
@@ -545,7 +545,18 @@ const VideoNewParticipantList = () => {
                               </span>
                             </p>
                           </>
-                        ) : null
+                        ) : (
+                          presenterViewJoinFlag === false &&
+                          usersData.isHost && (
+                            <>
+                              <p className={styles["Host-name"]}>
+                                <span className={styles["Host-title-name"]}>
+                                  {t("(Host)")}
+                                </span>
+                              </p>
+                            </>
+                          )
+                        )
                       ) : (
                         usersData.isHost && (
                           <>
@@ -577,7 +588,9 @@ const VideoNewParticipantList = () => {
                           className="handraised-participant"
                         />
                       )}
-                      {usersData.isHost ? (
+                      {!presenterViewHostFlag &&
+                      !presenterViewJoinFlag &&
+                      usersData.isHost ? (
                         JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
                           <img
                             draggable="false"
@@ -629,7 +642,9 @@ const VideoNewParticipantList = () => {
                       md={5}
                       sm={12}
                     >
-                      {usersData.isHost ? (
+                      {!presenterViewHostFlag &&
+                      !presenterViewJoinFlag &&
+                      usersData.isHost ? (
                         JSON.parse(localStorage.getItem("isMicEnabled")) ? (
                           <img
                             draggable="false"

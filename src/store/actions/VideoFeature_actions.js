@@ -295,7 +295,7 @@ const participanRaisedUnRaisedHand = (response) => {
 };
 
 const participantHideUnhideVideo = (response) => {
-  console.log(response, "responseresponse");
+  console.log("MQTT onMessageArrived");
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
     payload: response,
