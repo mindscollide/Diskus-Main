@@ -174,7 +174,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 JSON.stringify(meetingHost)
               );
               localStorage.setItem("initiateVideoCall", true);
-              localStorage.setItem("meetingTitle", "");
+              // localStorage.setItem("meetingTitle", "");
               if (Data.CallTypeID === 2) {
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
