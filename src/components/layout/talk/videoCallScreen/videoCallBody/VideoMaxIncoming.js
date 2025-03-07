@@ -133,7 +133,7 @@ const VideoMaxIncoming = () => {
       console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
 
-      localStorage.setItem("NewRoomID", 0);
+      localStorage.removeItem("NewRoomID");
       localStorage.removeItem("incommingCallTypeID");
       localStorage.removeItem("incommingCallType");
       localStorage.removeItem("incommingNewCallerID");
@@ -406,7 +406,7 @@ const VideoMaxIncoming = () => {
     dispatch(incomingVideoCallFlag(false));
     console.log("busyCall");
     // localStorage.setItem("activeCall", false);
-    localStorage.setItem("NewRoomID", 0);
+    localStorage.removeItem("NewRoomID");
     localStorage.removeItem("incommingCallTypeID");
     localStorage.removeItem("incommingCallType");
     localStorage.removeItem("incommingNewCallerID");
@@ -428,6 +428,7 @@ const VideoMaxIncoming = () => {
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     setIsTimerRunning(false);
+    localStorage.removeItem("NewRoomID");
     localStorage.removeItem("incommingCallTypeID");
     localStorage.removeItem("incommingCallType");
     localStorage.removeItem("incommingNewCallerID");

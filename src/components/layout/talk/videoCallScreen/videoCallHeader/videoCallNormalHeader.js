@@ -42,15 +42,12 @@ import {
   leaveMeetingVideoOnlogout,
   leaveMeetingOnlogout,
   makeParticipantHost,
-  closeQuickMeetingVideo,
-  closeQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
   leaveMeetingOnEndStatusMqtt,
   leavePresenterViewMainApi,
   stopPresenterViewMainApi,
-  presenterViewGlobalState,
   videoIconOrButtonState,
   participantVideoButtonState,
   setVideoControlHost,
@@ -58,14 +55,10 @@ import {
   joinPresenterViewMainApi,
   maxParticipantVideoCallPanel,
   openPresenterViewMainApi,
-  incomingVideoCallFlag,
   unansweredOneToOneCall,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
-import {
-  LeaveCall,
-  VideoCallResponse,
-} from "../../../../../store/actions/VideoMain_actions";
+import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { useTranslation } from "react-i18next";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import { participantWaitingListBox } from "../../../../../store/actions/VideoFeature_actions";
@@ -80,8 +73,6 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
-import { useGroupsContext } from "../../../../../context/GroupsContext";
-import { webnotificationGlobalFlag } from "../../../../../store/actions/UpdateUserNotificationSetting";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -845,41 +836,50 @@ const VideoCallNormalHeader = ({
       localStorage.setItem("VidOff", true);
       sessionStorage.setItem("NonMeetingVideoCall", false);
       console.log("mqtt mqmqmqmqmqmq", flag);
-      if (flag === 1) {
-        console.log("mqtt mqmqmqmqmqmq", flag);
-        if (!unansweredFlagForOneToOneCall) {
-          setJoinMeetingVideoParticipant(true);
-        } else {
-          dispatch(unansweredOneToOneCall(false));
-        }
-        setLeaveOneToOne(false);
-      } else if (flag === 2) {
-        setLeaveOneToOne(false);
-        console.log("mqtt mqmqmqmqmqmq", flag);
-        setPresenterForOneToOneOrGroup(false);
-        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL),
-          WasInVideo: false,
-        };
-        console.log("onClickStopPresenter", data);
-        dispatch(joinPresenterViewMainApi(navigate, t, data));
-      } else if (flag === 3) {
-        setLeaveOneToOne(false);
-        let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-        let currentMeeting = localStorage.getItem("currentMeetingID");
-        console.log("mqtt mqmqmqmqmqmq", flag);
-        setStartPresenterViewOrLeaveOneToOne(false);
-        dispatch(maxParticipantVideoCallPanel(false));
-        let data = {
-          VideoCallURL: String(currentMeetingVideoURL || ""),
-          Guid: "",
-          WasInVideo: false,
-        };
+      let onlyLeaveCall = JSON.parse(localStorage.getItem("onlyLeaveCall"));
+      if (
+        onlyLeaveCall === null ||
+        onlyLeaveCall === undefined ||
+        onlyLeaveCall === false
+      ) {
+        if (flag === 1) {
+          console.log("mqtt mqmqmqmqmqmq", flag);
+          if (!unansweredFlagForOneToOneCall) {
+            setJoinMeetingVideoParticipant(true);
+          } else {
+            dispatch(unansweredOneToOneCall(false));
+          }
+          setLeaveOneToOne(false);
+        } else if (flag === 2) {
+          setLeaveOneToOne(false);
+          console.log("mqtt mqmqmqmqmqmq", flag);
+          setPresenterForOneToOneOrGroup(false);
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL),
+            WasInVideo: false,
+          };
+          console.log("onClickStopPresenter", data);
+          dispatch(joinPresenterViewMainApi(navigate, t, data));
+        } else if (flag === 3) {
+          setLeaveOneToOne(false);
+          let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
+          let currentMeeting = localStorage.getItem("currentMeetingID");
+          console.log("mqtt mqmqmqmqmqmq", flag);
+          setStartPresenterViewOrLeaveOneToOne(false);
+          dispatch(maxParticipantVideoCallPanel(false));
+          let data = {
+            VideoCallURL: String(currentMeetingVideoURL || ""),
+            Guid: "",
+            WasInVideo: false,
+          };
 
-        dispatch(
-          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
-        );
+          dispatch(
+            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+          );
+        }
+      } else {
+        localStorage.removeItem("onlyLeaveCall");
       }
     } catch (error) {}
   };
