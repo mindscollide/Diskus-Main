@@ -68,6 +68,7 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useResolutionContext } from "../../context/ResolutionContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import SpinComponent from "../../components/elements/mainLoader/loader";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -1757,14 +1758,14 @@ const Resolution = () => {
                     className="Resolution_table"
                     scroll={scroll}
                     pagination={false}
-                    // loading={{
-                    //   indicator: (
-                    //     <div className={styles["resolution_spinner"]}>
-                    //       <Spin />
-                    //     </div>
-                    //   ),
-                    //   spinning: ResolutionReducerLoading,
-                    // }}
+                    loading={{
+                      indicator: (
+                        <div className={styles["resolution_spinner"]}>
+                          <Spin />
+                        </div>
+                      ),
+                      spinning: ResolutionReducerLoading,
+                    }}
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (
@@ -1810,7 +1811,8 @@ const Resolution = () => {
                                 />
                               )}
                               <div>
-                                <Spin />
+                                <SpinComponent />
+                                {/* <Spin /> */}
                               </div>
                             </Col>
                           </Row>

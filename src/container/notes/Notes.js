@@ -42,6 +42,7 @@ import CustomAccordion from "../../components/elements/accordian/CustomAccordion
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
+import SpinComponent from "../../components/elements/mainLoader/loader";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -1035,7 +1036,8 @@ const Notes = () => {
                     sm={12}
                     className={styles["Notes_spinner"]}
                   >
-                    <Spin />
+                    <SpinComponent />
+                    {/* <Spin /> */}
                   </Col>
                 </Row>
               </>
