@@ -83,14 +83,17 @@ const NonMeetingVideoModal = () => {
       dispatch(nonMeetingVideoGlobalModal(false));
       localStorage.removeItem("JoinpresenterForonetoone");
       setPresenterForOneToOneOrGroup(true);
+      console.log("setLeaveOneToOne");
       setLeaveOneToOne(true);
     } else if (joinPresenterForOneToOneOrGroup) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
+      console.log("setLeaveOneToOne");
       setLeaveOneToOne(true);
     } else if (startPresenterViewOrLeaveOneToOne) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
+      console.log("setLeaveOneToOne");
       setLeaveOneToOne(true);
     } else if (
       presenterViewFlag &&
@@ -102,6 +105,7 @@ const NonMeetingVideoModal = () => {
     } else if (activeCallState && currentCallType === 1) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
+      console.log("setLeaveOneToOne");
       setLeaveOneToOne(true);
     } else {
       console.log("busyCall");
@@ -111,7 +115,7 @@ const NonMeetingVideoModal = () => {
       localStorage.setItem("activeCall", false);
       localStorage.setItem("initiateVideoCall", false);
       // localStorage.setItem("isCaller", false);
-      localStorage.setItem("isMeeting", true);
+      // localStorage.setItem("isMeeting", true);
 
       //Before Joining the Meeting Video we should need to make a LeaveCall for Dashboard Video
 

@@ -59,7 +59,7 @@ const VideoMaxIncoming = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
-  
+
   let currentUserId = Number(localStorage.getItem("userID"));
   let incomingRoomID = localStorage.getItem("NewRoomID");
   let callerID = Number(localStorage.getItem("callerID"));
@@ -121,8 +121,8 @@ const VideoMaxIncoming = () => {
 
     const timer = setTimeout(() => {
       // Dispatch action to update global state
-    let NewRoomID = localStorage.getItem("NewRoomID");
-    let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
+      let NewRoomID = localStorage.getItem("NewRoomID");
+      let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
 
       let Data = {
         ReciepentID: Number(currentUserId),
@@ -133,7 +133,7 @@ const VideoMaxIncoming = () => {
       console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
 
-      localStorage.setItem("NewRoomID", 0);
+      localStorage.removeItem("NewRoomID");
       localStorage.removeItem("incommingCallTypeID");
       localStorage.removeItem("incommingCallType");
       localStorage.removeItem("incommingNewCallerID");
@@ -167,18 +167,27 @@ const VideoMaxIncoming = () => {
         isDashboardVideo: false,
       };
       localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+      let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
+      let incommingCallType = localStorage.getItem("incommingCallType");
+      let incommingNewCallerID = localStorage.getItem("incommingNewCallerID");
+      localStorage.setItem("callTypeID", incommingCallTypeID);
+      localStorage.setItem("callType", incommingCallType);
+      localStorage.setItem("newCallerID", incommingNewCallerID);
       let NewRoomID = localStorage.getItem("NewRoomID");
       localStorage.setItem("activeRoomID", NewRoomID);
 
       let Data = {
-        ReciepentID: currentUserId,
+        ReciepentID: Number(currentUserId),
         RoomID: NewRoomID,
         CallStatusID: 1,
-        CallTypeID: Number(callTypeID),
+        CallTypeID: Number(incommingCallTypeID),
       };
       console.log("busyCall");
       dispatch(VideoCallResponse(Data, navigate, t));
       localStorage.removeItem("NewRoomID");
+      localStorage.removeItem("incommingCallTypeID");
+      localStorage.removeItem("incommingCallType");
+      localStorage.removeItem("incommingNewCallerID");
       dispatch(incomingVideoCallFlag(false));
       dispatch(normalizeVideoPanelFlag(true));
       localStorage.setItem("activeCall", true);
@@ -397,7 +406,7 @@ const VideoMaxIncoming = () => {
     dispatch(incomingVideoCallFlag(false));
     console.log("busyCall");
     // localStorage.setItem("activeCall", false);
-    localStorage.setItem("NewRoomID", 0);
+    localStorage.removeItem("NewRoomID");
     localStorage.removeItem("incommingCallTypeID");
     localStorage.removeItem("incommingCallType");
     localStorage.removeItem("incommingNewCallerID");
@@ -419,6 +428,7 @@ const VideoMaxIncoming = () => {
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     setIsTimerRunning(false);
+    localStorage.removeItem("NewRoomID");
     localStorage.removeItem("incommingCallTypeID");
     localStorage.removeItem("incommingCallType");
     localStorage.removeItem("incommingNewCallerID");

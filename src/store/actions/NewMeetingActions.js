@@ -9210,9 +9210,7 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
-              await dispatch(setVideoControlHost(false));
               await dispatch(setVideoControlHost(false));
 
               try {
@@ -9281,14 +9279,16 @@ const LeaveMeetingVideo = (
             ) {
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
+              localStorage.removeItem("newRoomId")
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
+              localStorage.removeItem("participantRoomId");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
-              localStorage.setItem("isMeetingVideoHostCheck", false);
               await dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
               console.log("Check Leave");

@@ -2593,7 +2593,9 @@ const Dashboard = () => {
           console.log("Check active");
           // localStorage.setItem("activeCall", false);
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-          let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
           // localStorage.setItem("RingerCallCheckFlag", true);
           // localStorage.setItem("callType", data.payload.callType);
           // localStorage.setItem("callTypeID", data.payload.callTypeID);
@@ -2607,7 +2609,12 @@ const Dashboard = () => {
             RoomID: data.payload.roomID,
           };
           dispatch(CallRequestReceived(Dataa, navigate, t));
-          if (activeCall || isMeetingVideo || presenterViewHostFlag.current ||presenterViewJoinFlagRef.current) {
+          if (
+            activeCall ||
+            isMeetingVideo ||
+            presenterViewHostFlag.current ||
+            presenterViewJoinFlagRef.current
+          ) {
             console.log(activeCall, "Check active");
             console.log("Check active");
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
@@ -2628,7 +2635,7 @@ const Dashboard = () => {
                 console.log("Check active");
 
                 dispatch(VideoCallResponse(Data, navigate, t));
-                localStorage.setItem("NewRoomID", 0);
+                localStorage.removeItem("NewRoomID");
               }
             }, timeValue);
             return () => clearTimeout(timeoutId);
@@ -2790,6 +2797,9 @@ const Dashboard = () => {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
+                localStorage.setItem("onlyLeaveCall", true);
+                console.log("setLeaveOneToOne");
+
                 setLeaveOneToOne(true);
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
@@ -2842,6 +2852,9 @@ const Dashboard = () => {
                   if (existingDataflag) {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        localStorage.setItem("onlyLeaveCall", true);
+
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -2853,6 +2866,9 @@ const Dashboard = () => {
               if (RecipentIDsOninitiateVideoCallflag) {
                 if (remainingCount === 0) {
                   if (existingData.length === 0) {
+                    localStorage.setItem("onlyLeaveCall", true);
+
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -2878,6 +2894,9 @@ const Dashboard = () => {
                   if (existingDataflag) {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        localStorage.setItem("onlyLeaveCall", true);
+
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -2940,6 +2959,8 @@ const Dashboard = () => {
               sessionStorage.setItem("NonMeetingVideoCall", false);
               console.log("mqtt");
               dispatch(unansweredOneToOneCall(true));
+              localStorage.setItem("onlyLeaveCall", true);
+              console.log("setLeaveOneToOne");
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
@@ -2971,6 +2992,8 @@ const Dashboard = () => {
                     existingData.length === 0
                   ) {
                     sessionStorage.setItem("NonMeetingVideoCall", false);
+                    localStorage.setItem("onlyLeaveCall", true);
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -3222,6 +3245,8 @@ const Dashboard = () => {
                 message: `${data.payload.recipientName} has left the call`,
               });
               setNotificationID(id);
+              localStorage.setItem("onlyLeaveCall", true);
+              console.log("setLeaveOneToOne");
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
@@ -3263,6 +3288,8 @@ const Dashboard = () => {
                   RecipentIDsOninitiateVideoCall.length === 0 &&
                   existingData.length === 0
                 ) {
+                  localStorage.setItem("onlyLeaveCall", true);
+                  console.log("setLeaveOneToOne");
                   setLeaveOneToOne(true);
                   dispatch(videoChatMessagesFlag(false));
                   dispatch(videoOutgoingCallFlag(false));
@@ -3370,6 +3397,8 @@ const Dashboard = () => {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
+                localStorage.setItem("onlyLeaveCall", true);
+                console.log("setLeaveOneToOne");
                 setLeaveOneToOne(true);
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
@@ -3422,6 +3451,8 @@ const Dashboard = () => {
                   if (existingDataflag) {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        localStorage.setItem("onlyLeaveCall", true);
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -3433,6 +3464,8 @@ const Dashboard = () => {
               if (RecipentIDsOninitiateVideoCallflag) {
                 if (remainingCount === 0) {
                   if (existingData.length === 0) {
+                    localStorage.setItem("onlyLeaveCall", true);
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -3458,6 +3491,8 @@ const Dashboard = () => {
                   if (existingDataflag) {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
+                        localStorage.setItem("onlyLeaveCall", true);
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));

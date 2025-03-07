@@ -426,6 +426,7 @@ const VideoPanelNormal = () => {
         localStorage.removeItem("VideoView");
         localStorage.removeItem("videoIframe");
         localStorage.removeItem("CallType");
+        localStorage.removeItem("NewRoomID");
         let currentUserId = Number(localStorage.getItem("userID"));
         let callTypeID = Number(localStorage.getItem("callTypeID"));
         let Data2 = {
@@ -499,7 +500,28 @@ const VideoPanelNormal = () => {
             : "";
         }
         if (isMeeting) {
-          if (isMeetingHost) {
+          if (!isMeetingVideo) {
+            console.log("iframeiframe", InitiateVideoCallData);
+            console.log("iframeiframe", extractedBaseURLCaller);
+            console.log("iframeiframe", initiateCallRoomID);
+            if (initiateCallRoomID) {
+              let newurl = generateURLCaller(
+                extractedBaseURLCaller,
+                currentUserName,
+                initiateCallRoomID,
+                InitiateVideoCallData?.guid
+              );
+              console.log("iframeiframe", newurl);
+              if (validateRoomID(newurl)) {
+                console.log("iframeiframe", newurl);
+                if (newurl !== callerURL) {
+                  console.log("iframeiframe", newurl);
+                  setCallerURL(newurl);
+                  dispatch(initiateVideoCallFail(""));
+                }
+              }
+            }
+          } else if (isMeetingHost) {
             console.log("iframeiframe");
             console.log("iframeiframe", urlFormeetingapi);
             console.log("iframeiframe", validateRoomID(urlFormeetingapi));
@@ -1036,7 +1058,7 @@ const VideoPanelNormal = () => {
     console.log("disableMicFunction");
     try {
       const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow ) {
+      if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
         if (isMicActive) {
           console.log("VidOn");

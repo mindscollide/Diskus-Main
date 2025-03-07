@@ -295,7 +295,7 @@ const participanRaisedUnRaisedHand = (response) => {
 };
 
 const participantHideUnhideVideo = (response) => {
-  console.log(response, "responseresponse");
+  console.log("MQTT onMessageArrived");
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
     payload: response,
@@ -1625,9 +1625,9 @@ const stopPresenterViewMainApi = (
   t,
   data,
   flag,
-  leavePresenterViewToJoinOneToOne,
   setLeaveMeetingVideoForOneToOneOrGroup,
-  setJoiningOneToOneAfterLeavingPresenterView
+  setJoiningOneToOneAfterLeavingPresenterView,
+  setLeavePresenterViewToJoinOneToOne
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
@@ -1660,9 +1660,9 @@ const stopPresenterViewMainApi = (
               t,
               data,
               flag,
-              leavePresenterViewToJoinOneToOne,
               setLeaveMeetingVideoForOneToOneOrGroup,
-              setJoiningOneToOneAfterLeavingPresenterView
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeavePresenterViewToJoinOneToOne
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1686,6 +1686,7 @@ const stopPresenterViewMainApi = (
                 dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
               } else if (flag === 3) {
+                await setLeavePresenterViewToJoinOneToOne(false);
                 if (alreadyInMeetingVideo) {
                   console.log("busyCall");
                   await setLeaveMeetingVideoForOneToOneOrGroup(true);
@@ -1998,8 +1999,9 @@ const leavePresenterViewMainApi = (
   t,
   data,
   flag,
-  setLeavePresenterViewToJoinOneToOne,
-  setJoiningOneToOneAfterLeavingPresenterView
+  setLeaveMeetingVideoForOneToOneOrGroup,
+  setJoiningOneToOneAfterLeavingPresenterView,
+  setLeavePresenterViewToJoinOneToOne
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -2025,8 +2027,9 @@ const leavePresenterViewMainApi = (
               t,
               data,
               flag,
-              setLeavePresenterViewToJoinOneToOne,
-              setJoiningOneToOneAfterLeavingPresenterView
+              setLeaveMeetingVideoForOneToOneOrGroup,
+              setJoiningOneToOneAfterLeavingPresenterView,
+              setLeavePresenterViewToJoinOneToOne
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2050,9 +2053,14 @@ const leavePresenterViewMainApi = (
                 localStorage.removeItem("newRoomId");
                 localStorage.removeItem("presenterViewvideoURL");
               }
+
+              let currentMeetingID = localStorage.getItem("currentMeetingID");
+
               if (flag === 1) {
                 console.log("Check");
-                dispatch(presenterViewGlobalState(0, true, false, false));
+                dispatch(
+                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                );
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2061,7 +2069,9 @@ const leavePresenterViewMainApi = (
               } else if (flag === 2) {
                 dispatch(participantVideoButtonState(false));
                 console.log("Check");
-                dispatch(presenterViewGlobalState(0, false, false, false));
+                dispatch(
+                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                );
                 if (alreadyInMeetingVideo) {
                   console.log("Check");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -2080,6 +2090,7 @@ const leavePresenterViewMainApi = (
                     t("Successful")
                   )
                 );
+                await setLeavePresenterViewToJoinOneToOne(false);
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2087,8 +2098,13 @@ const leavePresenterViewMainApi = (
                 dispatch(setVideoControlHost(false));
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 sessionStorage.removeItem("alreadyInMeetingVideo");
-                setLeavePresenterViewToJoinOneToOne(false);
-                setJoiningOneToOneAfterLeavingPresenterView(true);
+                // if (alreadyInMeetingVideo) {
+                //   console.log("busyCall");
+                //   await setLeaveMeetingVideoForOneToOneOrGroup(true);
+                // } else {
+                console.log("busyCall");
+                await setJoiningOneToOneAfterLeavingPresenterView(true);
+                // }
               }
             } else if (
               response.data.responseResult.responseMessage
