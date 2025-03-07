@@ -1597,7 +1597,7 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {currentCallType === 1 && (
+          {currentCallType === 1 && !presenterViewFlag && (
             <>
               {currentCallType === 1 && checkFeatureIDAvailability(3) && (
                 <div

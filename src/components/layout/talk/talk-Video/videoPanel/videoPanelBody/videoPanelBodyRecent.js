@@ -221,7 +221,7 @@ const VideoPanelBodyRecent = () => {
           isHostId: 0,
           isDashboardVideo: false,
         };
-        localStorage.removeItem("meetingTitle");
+        // localStorage.removeItem("meetingTitle");
         sessionStorage.setItem("NonMeetingVideoCall", true);
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
         localStorage.setItem("CallType", Data.CallTypeID);
