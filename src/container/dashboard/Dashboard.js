@@ -2798,6 +2798,7 @@ const Dashboard = () => {
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
                 localStorage.setItem("onlyLeaveCall", true);
+                console.log("setLeaveOneToOne");
 
                 setLeaveOneToOne(true);
                 dispatch(videoChatMessagesFlag(false));
@@ -2853,6 +2854,7 @@ const Dashboard = () => {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
                         localStorage.setItem("onlyLeaveCall", true);
 
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -2866,6 +2868,7 @@ const Dashboard = () => {
                   if (existingData.length === 0) {
                     localStorage.setItem("onlyLeaveCall", true);
 
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -2893,6 +2896,7 @@ const Dashboard = () => {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
                         localStorage.setItem("onlyLeaveCall", true);
 
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -2956,6 +2960,7 @@ const Dashboard = () => {
               console.log("mqtt");
               dispatch(unansweredOneToOneCall(true));
               localStorage.setItem("onlyLeaveCall", true);
+              console.log("setLeaveOneToOne");
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
@@ -2988,6 +2993,7 @@ const Dashboard = () => {
                   ) {
                     sessionStorage.setItem("NonMeetingVideoCall", false);
                     localStorage.setItem("onlyLeaveCall", true);
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -3240,6 +3246,7 @@ const Dashboard = () => {
               });
               setNotificationID(id);
               localStorage.setItem("onlyLeaveCall", true);
+              console.log("setLeaveOneToOne");
               setLeaveOneToOne(true);
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
@@ -3282,6 +3289,7 @@ const Dashboard = () => {
                   existingData.length === 0
                 ) {
                   localStorage.setItem("onlyLeaveCall", true);
+                  console.log("setLeaveOneToOne");
                   setLeaveOneToOne(true);
                   dispatch(videoChatMessagesFlag(false));
                   dispatch(videoOutgoingCallFlag(false));
@@ -3390,6 +3398,7 @@ const Dashboard = () => {
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
                 localStorage.setItem("onlyLeaveCall", true);
+                console.log("setLeaveOneToOne");
                 setLeaveOneToOne(true);
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
@@ -3443,6 +3452,7 @@ const Dashboard = () => {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
                         localStorage.setItem("onlyLeaveCall", true);
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));
@@ -3455,6 +3465,7 @@ const Dashboard = () => {
                 if (remainingCount === 0) {
                   if (existingData.length === 0) {
                     localStorage.setItem("onlyLeaveCall", true);
+                    console.log("setLeaveOneToOne");
                     setLeaveOneToOne(true);
                     dispatch(videoChatMessagesFlag(false));
                     dispatch(videoOutgoingCallFlag(false));
@@ -3481,6 +3492,7 @@ const Dashboard = () => {
                     if (existingDataremainingCount === 0) {
                       if (RecipentIDsOninitiateVideoCall.length === 0) {
                         localStorage.setItem("onlyLeaveCall", true);
+                        console.log("setLeaveOneToOne");
                         setLeaveOneToOne(true);
                         dispatch(videoChatMessagesFlag(false));
                         dispatch(videoOutgoingCallFlag(false));

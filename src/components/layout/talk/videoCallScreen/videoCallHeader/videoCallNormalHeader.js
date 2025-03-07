@@ -880,6 +880,7 @@ const VideoCallNormalHeader = ({
         }
       } else {
         localStorage.removeItem("onlyLeaveCall");
+        setLeaveOneToOne(false);
       }
     } catch (error) {}
   };
@@ -908,8 +909,8 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
   }, [leavePresenterViewToJoinOneToOne]);
 
-  console.log("busyCall", leavePresenterViewToJoinOneToOne);
-  console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup);
+  // console.log("busyCall", leavePresenterViewToJoinOneToOne);
+  // console.log("busyCall", leaveMeetingVideoForOneToOneOrGroup);
 
   useEffect(() => {
     try {

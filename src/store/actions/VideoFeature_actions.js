@@ -2053,9 +2053,14 @@ const leavePresenterViewMainApi = (
                 localStorage.removeItem("newRoomId");
                 localStorage.removeItem("presenterViewvideoURL");
               }
+
+              let currentMeetingID = localStorage.getItem("currentMeetingID");
+
               if (flag === 1) {
                 console.log("Check");
-                dispatch(presenterViewGlobalState(0, true, false, false));
+                dispatch(
+                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                );
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -2064,7 +2069,9 @@ const leavePresenterViewMainApi = (
               } else if (flag === 2) {
                 dispatch(participantVideoButtonState(false));
                 console.log("Check");
-                dispatch(presenterViewGlobalState(0, false, false, false));
+                dispatch(
+                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                );
                 if (alreadyInMeetingVideo) {
                   console.log("Check");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
