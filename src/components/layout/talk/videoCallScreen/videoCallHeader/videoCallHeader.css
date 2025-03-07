@@ -696,3 +696,7 @@ img.shade-style {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
+
+.zindexing-for-presenter-tooltip {
+  z-index: 9999 !important;
+}

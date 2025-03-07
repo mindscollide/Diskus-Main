@@ -903,7 +903,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
   }, [leaveMeetingVideoForOneToOneOrGroup]);
-  
+
   // For Participant Leave Call
   const participantLeaveCall = async () => {
     if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
@@ -1249,7 +1249,7 @@ const VideoCallNormalHeader = ({
             }
           >
             <Tooltip
-              placement="topRight"
+              placement={presenterViewFlag ? "bottom" : "topRight"}
               title={
                 getMeetingHostInfo?.isDashboardVideo
                   ? audioControl
@@ -1258,6 +1258,9 @@ const VideoCallNormalHeader = ({
                   : isMicActive
                   ? t("Disable-mic")
                   : t("Enable-mic")
+              }
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
               }
             >
               <img
@@ -1290,7 +1293,10 @@ const VideoCallNormalHeader = ({
             }
           >
             <Tooltip
-              placement="topRight"
+              placement={presenterViewFlag ? "bottom" : "topRight"}
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
               title={
                 getMeetingHostInfo?.isDashboardVideo
                   ? videoControl
@@ -1334,7 +1340,6 @@ const VideoCallNormalHeader = ({
               }
             >
               <Tooltip
-                placement="topRight"
                 title={
                   isScreenActive || (presenterViewFlag && presenterViewHostFlag)
                     ? t("Stop-sharing")
@@ -1405,7 +1410,13 @@ const VideoCallNormalHeader = ({
                   : "screenShare-Toggle inactive-state"
               }
             >
-              <Tooltip placement="topRight" title={t("Copy-link")}>
+              <Tooltip
+                placement={presenterViewFlag ? "bottom" : "topRight"}
+                overlayClassName={
+                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                }
+                title={t("Copy-link")}
+              >
                 <img
                   onClick={copyToClipboardd}
                   src={CopyLink}
