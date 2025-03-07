@@ -813,17 +813,20 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     try {
+      let activeRoomID = localStorage.getItem("activeRoomID");
+      let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+
       localStorage.removeItem("currentHostUserID");
       localStorage.removeItem("isHost");
       localStorage.removeItem("isNewHost");
       console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: initiateRoomID,
-        IsCaller: true,
+        RoomID: activeRoomID,
+        IsCaller: isCaller,
         CallTypeID: callTypeID,
       };
-      dispatch(LeaveCall(Data, navigate, t));
+      await dispatch(LeaveCall(Data, navigate, t));
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];
