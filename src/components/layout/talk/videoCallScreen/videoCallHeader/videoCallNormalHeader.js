@@ -1354,6 +1354,10 @@ const VideoCallNormalHeader = ({
               }
             >
               <Tooltip
+                placement={presenterViewFlag ? "bottom" : "topRight"}
+                overlayClassName={
+                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                }
                 title={
                   isScreenActive || (presenterViewFlag && presenterViewHostFlag)
                     ? t("Stop-sharing")
@@ -1612,7 +1616,13 @@ const VideoCallNormalHeader = ({
             </>
           )}
 
-          <Tooltip placement="topRight" title={t("Minimize")}>
+          <Tooltip
+            placement={presenterViewFlag ? "bottom" : "topRight"}
+            overlayClassName={
+              presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+            }
+            title={t("Minimize")}
+          >
             <div
               onClick={minimizeVideoPanel}
               className={
@@ -1627,7 +1637,7 @@ const VideoCallNormalHeader = ({
 
           {LeaveCallModalFlag === true && callerID === currentUserID ? (
             <div className="active-state-end">
-              <Tooltip placement="topRight" title={t("Cancel")}>
+              <Tooltip title={t("Cancel")}>
                 <img
                   onClick={cancelLeaveCallOption}
                   src={videoEndIcon}
@@ -1638,7 +1648,6 @@ const VideoCallNormalHeader = ({
           ) : (LeaveCallModalFlag === false && callerID === currentUserID) ||
             getMeetingHostInfo?.isDashboardVideo ? (
             <Tooltip
-              placement="topRight"
               title={
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
               }
@@ -1654,7 +1663,10 @@ const VideoCallNormalHeader = ({
             </Tooltip>
           ) : LeaveCallModalFlag === false && callerID !== currentUserID ? (
             <Tooltip
-              placement="topRight"
+              placement={presenterViewFlag ? "bottom" : "topRight"}
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
               title={
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("Leave-call")
               }
@@ -1670,7 +1682,10 @@ const VideoCallNormalHeader = ({
 
           {(NormalizeVideoFlag || MaximizeVideoFlag) && (
             <Tooltip
-              placement="topRight"
+              placement={presenterViewFlag ? "bottom" : "topRight"}
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
               title={
                 NormalizeVideoFlag
                   ? t("Expand")
