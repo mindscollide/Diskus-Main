@@ -1381,7 +1381,14 @@ const VideoCallNormalHeader = ({
               }
             >
               <Tooltip
-                placement="topRight"
+                placement={
+                  presenterViewFlag && !presenterViewHostFlag
+                    ? "bottom"
+                    : "topRight"
+                }
+                overlayClassName={
+                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                }
                 title={
                   getMeetingHostInfo?.isHost
                     ? handStatus
@@ -1451,7 +1458,13 @@ const VideoCallNormalHeader = ({
                   : "screenShare-Toggle"
               }
             >
-              <Tooltip placement="topRight" title={t("Layout")}>
+              <Tooltip
+                placement={presenterViewFlag ? "bottom" : "topRight"}
+                overlayClassName={
+                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                }
+                title={t("Layout")}
+              >
                 <img
                   className={"cursor-pointer"}
                   onClick={
@@ -1532,7 +1545,13 @@ const VideoCallNormalHeader = ({
                   </div>
                 </>
               ) : (
-                <Tooltip placement="topRight" title={t("Participants")}>
+                <Tooltip
+                  placement={presenterViewFlag ? "bottom" : "topRight"}
+                  overlayClassName={
+                    presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                  }
+                  title={t("Participants")}
+                >
                   <div
                     className={
                       LeaveCallModalFlag === true
