@@ -2091,13 +2091,13 @@ const leavePresenterViewMainApi = (
                 dispatch(setVideoControlHost(false));
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 sessionStorage.removeItem("alreadyInMeetingVideo");
-                if (alreadyInMeetingVideo) {
-                  console.log("busyCall");
-                  await setLeaveMeetingVideoForOneToOneOrGroup(true);
-                } else {
-                  console.log("busyCall");
-                  await setJoiningOneToOneAfterLeavingPresenterView(true);
-                }
+                // if (alreadyInMeetingVideo) {
+                //   console.log("busyCall");
+                //   await setLeaveMeetingVideoForOneToOneOrGroup(true);
+                // } else {
+                console.log("busyCall");
+                await setJoiningOneToOneAfterLeavingPresenterView(true);
+                // }
               }
             } else if (
               response.data.responseResult.responseMessage
