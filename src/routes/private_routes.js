@@ -1,18 +1,11 @@
 import React, { useEffect } from "react";
 import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { getActionValue } from "../commen/functions/utils";
-import { validateEncryptedStringViewCommitteeDetailLinkApi } from "../store/actions/Committee_actions";
-import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
 
-  let enCOdeUrl = decodeURIComponent(currentUrl);
-  console.log(enCOdeUrl, "enCOdeUrlenCOdeUrlenCOdeUrl");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const t = useTranslation();
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {

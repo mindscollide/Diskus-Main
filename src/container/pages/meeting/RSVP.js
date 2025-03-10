@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./RSVP.module.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ThumbsUp from "../../../assets/images/RSVPThumsUp.svg";
 import RedChair from "../../../assets/images/RSVPRedChair.svg";
 import Clock from "../../../assets/images/RSVPClockIcon.svg";
@@ -9,7 +9,10 @@ import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { TextField } from "../../../components/elements";
 import { useDispatch } from "react-redux";
-import { validateEmptyStringUserAvailibilityFailed, validateEncryptedStringUserAvailibilityForMeetingApi } from "../../../store/actions/NewMeetingActions";
+import {
+  validateEmptyStringUserAvailibilityFailed,
+  validateEncryptedStringUserAvailibilityForMeetingApi,
+} from "../../../store/actions/NewMeetingActions";
 import { useSelector } from "react-redux";
 import {
   convertDateTimeRangeToGMT,
@@ -19,6 +22,7 @@ const RSVP = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const [rsvpData, setrsvpData] = useState({
     meetingTitle: "",
     meetingDate: "",
@@ -34,18 +38,28 @@ const RSVP = () => {
   const UserAvalibilityState = useSelector(
     (state) => state.NewMeetingreducer.userAvailibilityData
   );
-  let getRSVP = localStorage.getItem("RSVP");
 
-  console.log(getRSVP, "getRSVPgetRSVP");
   useEffect(() => {
-    if (getRSVP !== null) {
-      let Data = { EncryptedString: getRSVP };
-      dispatch(
-        validateEncryptedStringUserAvailibilityForMeetingApi(navigate, Data, t)
-      );
-    }
-    return () => {
-      localStorage.removeItem("RSVP");
+    if (
+      location.search !== null &&
+      location.search !== undefined &&
+      location.search !== ""
+    ) {
+      let actionKey = location.search.split("=")[1];
+      if (actionKey !== null) {
+        const callRSVP = async () => {
+          let Data = { EncryptedString: actionKey };
+          await dispatch(
+            validateEncryptedStringUserAvailibilityForMeetingApi(
+              navigate,
+              Data,
+              t
+            )
+          );
+          localStorage.removeItem("RSVP");
+        };
+        callRSVP();
+      }
     }
   }, []);
 
@@ -64,7 +78,7 @@ const RSVP = () => {
           userResponseStatus: UserAvalibilityState.userResponseStatus || 0,
           meetingLocation: UserAvalibilityState.meetingLocation || "",
         }));
-      } 
+      }
     } catch (error) {
       console.log(error, "errorerrorerrorerror");
     }
