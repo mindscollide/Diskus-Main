@@ -140,6 +140,8 @@ import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuic
 import { useResolutionContext } from "../../../context/ResolutionContext";
 import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
 import DeleteMeetingConfirmationModal from "./deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import SpinComponent from "../../../components/elements/mainLoader/loader";
+import EmptyTableComponent from "./EmptyTableComponent/EmptyTableComponent";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -2188,7 +2190,7 @@ const NewMeeting = () => {
           (data) => meetingType === Number(data.value)
         );
 
-        console.log(matchedFilter, "matchedFiltermatchedFilter")
+        console.log(matchedFilter, "matchedFiltermatchedFilter");
         return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : t(matchedFilter)
@@ -3124,24 +3126,6 @@ const NewMeeting = () => {
     } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes]);
 
-  // Empty text data
-  const emptyText = () => {
-    return (
-      <ResultMessage
-        icon={
-          <img
-            src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
-          />
-        }
-        title={t("No-new-meetings")}
-        subTitle={t("Anything-important-thats-needs-discussion")}
-      />
-    );
-  };
-
   const handelChangePagination = async (current, PageSize) => {
     let searchData = {
       Date: searchFields.Date,
@@ -4070,8 +4054,9 @@ const NewMeeting = () => {
                             pagination={false}
                             className='newMeetingTable'
                             rows={rows}
+                            // loading={true}
                             locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
+                              emptyText: <EmptyTableComponent />, // Set your custom empty text here
                             }}
                           />
                           {/* // ) : null} */}

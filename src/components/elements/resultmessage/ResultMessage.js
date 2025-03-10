@@ -10,6 +10,7 @@ const CustomResultMessage = ({
   icon,
   PrefixClas,
   className,
+  extraCode
 }) => {
   return (
     <Row>
@@ -22,6 +23,7 @@ const CustomResultMessage = ({
         className={className}
         prefixCls={PrefixClas}
       />
+      {extraCode}
     </Row>
   );
 };
