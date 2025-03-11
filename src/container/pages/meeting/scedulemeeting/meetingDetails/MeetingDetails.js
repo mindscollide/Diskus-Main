@@ -1500,7 +1500,7 @@ const MeetingDetails = ({
                 </Col>
               </Row>
 
-              {(Number(editorRole.status) === 9 ||
+              {/* {(Number(editorRole.status) === 9 ||
                 Number(editorRole.status) === 8 ||
                 Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
@@ -1540,9 +1540,8 @@ const MeetingDetails = ({
                         !isValidRow(rows[rows.length - 1]) || rows.length === 5
                       }
                     /> */}
-                  </Col>
-                </Row>
-              )}
+                  {/* </Col> */}
+                {/* </Row> */}
             </Col>
             {/* Second Half */}
             <Col lg={5} md={5} sm={12} className="mt-3">

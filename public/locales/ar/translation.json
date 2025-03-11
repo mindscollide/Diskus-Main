@@ -2411,5 +2411,12 @@
   "Audio": "صوت",
   "Talk": "مجموعة",
   "Try-again": "Try Again",
-  "Activity" : "نشاط"
+  "Activity": "نشاط",
+  "Folders": "المجلدات",
+  "Files": "ملفات",
+  "Tie": "Tie",
+  "Primary": "أَوَّليّ",
+  "Role": "الدور",
+  "No-files-attached": "No files attached",
+  "Any-unsaved-changes-will-be-lost-continue": "Any unsaved changes will be lost. Continue?"
 }

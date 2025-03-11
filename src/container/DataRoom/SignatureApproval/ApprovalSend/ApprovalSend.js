@@ -33,6 +33,7 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { Button } from "../../../../components/elements";
+import SpinComponent from "../../../../components/elements/mainLoader/loader";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
@@ -662,7 +663,8 @@ const ApprovalSend = () => {
                           sm={12}
                           className="d-flex justify-content-center"
                         >
-                          <Spin />
+                          <SpinComponent />
+                          {/* <Spin /> */}
                         </Col>
                       </Row>
                     </section>

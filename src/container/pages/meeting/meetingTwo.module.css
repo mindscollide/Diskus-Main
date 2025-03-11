@@ -382,3 +382,10 @@ body[dir="rtl"] .ResetOkBtn {
   font-size: 10px !important;
   border: none !important;
 }
+
+.EmptyTableMeeting {
+  min-height: 55vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

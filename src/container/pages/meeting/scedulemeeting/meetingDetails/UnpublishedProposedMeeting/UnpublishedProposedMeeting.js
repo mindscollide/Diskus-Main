@@ -80,6 +80,7 @@ import ArrowDownIcon from "../../../../../../assets/images/sortingIcons/Arrow-do
 import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.png";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import DeleteMeetingConfirmationModal from "../../../deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import EmptyTableComponent from "../../../EmptyTableComponent/EmptyTableComponent";
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -148,23 +149,7 @@ const UnpublishedProposedMeeting = ({
   const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
   const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
 
-  // Empty text data
-  const emptyText = () => {
-    return (
-      <ResultMessage
-        icon={
-          <img
-            src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
-          />
-        }
-        title={t("No-new-meetings")}
-        subTitle={t("Anything-important-thats-needs-discussion")}
-      />
-    );
-  };
+
 
   const viewProposeDatePollHandler = (
     isParticipant,
@@ -1197,7 +1182,7 @@ const UnpublishedProposedMeeting = ({
             className='newMeetingTable'
             rows={rows}
             locale={{
-              emptyText: emptyText(), // Set your custom empty text here
+              emptyText: <EmptyTableComponent />, // Set your custom empty text here
             }}
           />
         </Col>

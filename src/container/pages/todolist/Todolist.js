@@ -10,7 +10,6 @@ import { Checkbox, Dropdown, Menu, Select, Spin } from "antd";
 import {
   Button,
   TableToDo,
-  CustomDatePicker,
   TextField,
   Notification,
 } from "../../../components/elements";
@@ -19,7 +18,7 @@ import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import del from "../../../assets/images/del.png";
-import { Search, ArrowRight, ArrowLeft } from "react-bootstrap-icons";
+import { Search, ArrowRight } from "react-bootstrap-icons";
 import {
   ViewToDoList,
   SearchTodoListApi,
@@ -52,9 +51,10 @@ import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import moment from "moment";
-import DatePicker, { DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { sortTasksByDeadline } from "../../../commen/functions/utils";
+import SpinComponent from "../../../components/elements/mainLoader/loader";
 
 const TodoList = () => {
   //For Localization
@@ -472,7 +472,7 @@ const TodoList = () => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "190px",
+      width: "30%",
       ellipsis: true,
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
@@ -514,7 +514,7 @@ const TodoList = () => {
       key: "taskCreator",
       align: "center",
 
-      width: "220px",
+      width: "15%",
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -561,7 +561,7 @@ const TodoList = () => {
           </span>
         </>
       ),
-      width: "220px",
+      width: "15%",
       dataIndex: "taskAssignedTo",
       align: "center",
 
@@ -631,7 +631,7 @@ const TodoList = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "20%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -665,7 +665,7 @@ const TodoList = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "15%",
 
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -745,7 +745,8 @@ const TodoList = () => {
       title: "",
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "120px",
+      align: "center",
+      width: "10%",
       render: (text, record) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
@@ -1045,9 +1046,8 @@ const TodoList = () => {
           <Row>
             <Col sm={12} md={12} lg={12}>
               <TableToDo
-                sortDirections={["descend", "ascend"]}
                 column={columnsToDo}
-                className={"ToDo"}
+                className={"Resolution_table"}
                 pagination={false}
                 rows={rowsToDo}
                 scroll={scroll}
@@ -1057,7 +1057,7 @@ const TodoList = () => {
                       <section className="d-flex flex-column align-items-center justify-content-center">
                         <img src={TodoMessageIcon1} width={"250px"} alt="" />
                         <span className="NotaskTodolist">{t("No-Task")}</span>
-                        <Spin />
+                        <SpinComponent />
                       </section>
                     </>
                   ), // Set your custom empty text here

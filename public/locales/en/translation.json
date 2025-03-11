@@ -2463,5 +2463,13 @@
   "Audio": "Audio",
   "Talk": "Talk",
   "Try-again": "Try Again",
-  "Activity": "Activity"
+  "Activity": "Activity",
+  "Folders": "Folders",
+  "Files": "Files",
+  "Tie": "Tie",
+  "Primary": "Primary",
+  "Role": "Role",
+  "No-files-attached": "No files attached",
+  "Options": "Options",
+  "Option":"Option"
 }

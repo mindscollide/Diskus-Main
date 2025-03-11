@@ -137,6 +137,7 @@ import ArrowDownIcon from "../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../assets/images/sortingIcons/Arrow-up.png";
 import Tick from "../../assets/images/Tick-Icon.png";
 import MenuPopover from "../../components/elements/popover";
+import SpinComponent from "../../components/elements/mainLoader/loader";
 
 const DataRoom = () => {
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -3586,7 +3587,8 @@ const DataRoom = () => {
                                       md={12}
                                       sm={12}
                                       className='d-flex justify-content-center'>
-                                      <Spin />
+                                        <SpinComponent />
+                                      {/* <Spin /> */}
                                     </Col>
                                   </Row>
                                 </>
@@ -3654,7 +3656,8 @@ const DataRoom = () => {
                                               md={12}
                                               sm={12}
                                               className='d-flex justify-content-center'>
-                                              <Spin />
+                                                <SpinComponent />
+                                              {/* <Spin /> */}
                                             </Col>
                                           </Row>
                                         </Col>
@@ -3680,15 +3683,7 @@ const DataRoom = () => {
                                           "This-space-is-ready-to-showcase-your-latest-additions-what-will-you-add-next"
                                         )}
                                       </span>
-                                      <Row className='mt-2'>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className='d-flex justify-content-center'>
-                                          <Spin />
-                                        </Col>
-                                      </Row>
+                                  <SpinComponent /> 
                                     </Col>
                                   </Row>
                                 </>
@@ -3841,15 +3836,7 @@ const DataRoom = () => {
                                       />
                                     </Col>
                                   </Row>
-                                  <Row className='mt-2'>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className='d-flex justify-content-center'>
-                                      <Spin />
-                                    </Col>
-                                  </Row>
+                                  <SpinComponent />
                                 </>
                               )}
                             </Col>
