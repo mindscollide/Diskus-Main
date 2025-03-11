@@ -1011,22 +1011,64 @@ const NewMeeting = () => {
       try {
         validateStringEmailApi(MtAgUpdate, navigate, t, 3, dispatch)
           .then(async (result) => {
+            const {
+              isQuickMeeting,
+              attendeeId,
+              meetingStatusId,
+              videoCallURL,
+              meetingID,
+            } = result;
             // Handle the result here
-            if (result.isQuickMeeting === false) {
-              await setAdvanceMeetingModalID(Number(result.meetingID));
-              await setViewAdvanceMeetingModalUnpublish(true);
-              await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            if (isQuickMeeting === false) {
               setEditorRole({
                 ...editorRole,
                 isPrimaryOrganizer: false,
                 role:
-                  Number(result.attendeeId) === 2
+                  Number(attendeeId) === 2
                     ? "Participant"
-                    : Number(result.attendeeId) === 4
+                    : Number(attendeeId) === 4
                     ? "Agenda Contributor"
                     : "Organizer",
-                status: Number(result.meetingStatusId),
+                status: Number(meetingStatusId),
               });
+              setVideoTalk({
+                isChat: result.isChat,
+                isVideoCall: result.isVideoCall,
+                talkGroupID: result.talkGroupID,
+              });
+              if (meetingStatusId === "10" || meetingStatusId === 10) {
+                let joinMeetingData = {
+                  VideoCallURL: videoCallURL,
+                  FK_MDID: meetingID,
+                  DateTime: getCurrentDateTimeUTC(),
+                };
+
+                await dispatch(
+                  JoinCurrentMeeting(
+                    isQuickMeeting,
+                    navigate,
+                    t,
+                    joinMeetingData,
+                    setViewFlag,
+                    setEditFlag,
+                    setSceduleMeeting, // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
+                    1,
+                    setAdvanceMeetingModalID,
+                    setViewAdvanceMeetingModal
+                  )
+                );
+              } else {
+                setAdvanceMeetingModalID(meetingID);
+                setViewAdvanceMeetingModal(true);
+                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                dispatch(viewMeetingFlag(true));
+                dispatch(scheduleMeetingPageFlag(false));
+                dispatch(viewProposeDateMeetingPageFlag(false));
+                dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                dispatch(viewProposeOrganizerMeetingPageFlag(false));
+                dispatch(proposeNewMeetingPageFlag(false));
+                localStorage.setItem("currentMeetingID", meetingID);
+              }
             }
 
             localStorage.removeItem("mtAgUpdate");
