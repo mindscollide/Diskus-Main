@@ -452,8 +452,8 @@ const ParentAgenda = ({
                                       <span
                                         className={styles["NoFiles_Heading"]}
                                       >
-                                        No Files Attached
-                                      </span>
+                                        {t("No-files-attached")}
+)                                      </span>
                                     ) : null}
 
                                     {data.selectedRadio === 2 && (

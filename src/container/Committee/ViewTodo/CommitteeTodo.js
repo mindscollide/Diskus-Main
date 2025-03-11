@@ -355,7 +355,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "25%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -393,7 +393,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "220px",
+      width: "15%",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       onHeaderCell: () => ({
@@ -441,7 +441,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           </span>
         </>
       ),
-      width: "220px",
+      width: "15%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -463,7 +463,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className='m-0 MontserratRegular text-center  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -509,7 +509,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "25%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -542,7 +542,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "15%",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -618,7 +618,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       title: "",
       dataIndex: "",
       key: "taskCreator",
-      width: "120px",
+      width: "5%",
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
@@ -762,9 +762,8 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
             <Row className='row-scroll-todolist'>
               <Col className=''>
                 <TableToDo
-                  sortDirections={["descend", "ascend"]}
                   column={columnsToDo}
-                  className={"ToDo"}
+                  className={"Resolution_table"}
                   rows={rowsToDo}
                   scroll={scroll}
                   pagination={false}

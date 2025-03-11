@@ -648,3 +648,55 @@ img.shade-style {
   border-radius: 50%;
   border: none;
 }
+
+.presenter-participants-minimize-list {
+  background: #fff;
+  border-radius: 4px;
+  padding: 10px 10px;
+  position: absolute;
+  width: 345px;
+  bottom: 50px;
+  height: 170px;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  left: -160px;
+  overflow: hidden;
+}
+
+.Waiting-New-Participant-hosttab {
+  position: absolute;
+  background-color: #f6f9fc;
+  margin: 15px 0 5px 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  padding: 10px 15px;
+}
+
+.Waiting-New-Participant-Hosts-Title {
+  /* background-color: #f6f9fc; */
+  color: #6127d6;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0px !important;
+}
+
+.Waiting-New-Participant-muteAll {
+  background: transparent !important;
+  color: #6127d6 !important;
+  font-size: 8px !important;
+  font-weight: 600 !important;
+  padding: 2px 20px !important;
+  border: 1px solid #6127d6 !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+}
+
+.background-color-for-list {
+  background-color: #f6f9fc;
+  padding: 7px 14px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.zindexing-for-presenter-tooltip {
+  z-index: 9999 !important;
+}

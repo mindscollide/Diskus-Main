@@ -38,9 +38,9 @@ const Card = ({
   const { t } = useTranslation();
   let Currentlanguage = localStorage.getItem("i18nextLng");
   const [editItems, setEditItems] = useState([
-    { key: t("In-active"), value: 1 },
-    { key: t("Archive"), value: 2 },
-    { key: t("Active"), value: 3 },
+    { key: "In-active", value: 1 },
+    { key: "Archive", value: 2 },
+    { key: "Active", value: 3 },
   ]);
 
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
@@ -251,7 +251,7 @@ const Card = ({
                                       )
                                     }
                                   >
-                                    {editItem.key}
+                                    {t(editItem.key)}
                                   </span>
                                 </Col>
                               </Row>

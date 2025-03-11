@@ -385,7 +385,7 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
-      console.log("Handling PARTICIPANT_HIDEUNHIDE_VIDEO:", action.payload);
+      console.log("MQTT onMessageArrived", action.payload);
 
       // Safely handle null `getAllParticipantGuest`
       const updatedParticipants =

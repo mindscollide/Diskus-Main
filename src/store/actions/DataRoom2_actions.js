@@ -266,7 +266,7 @@ const getDataAnalyticsApi = (
             setActivityState(false);
             setDetailsState(true);
 
-            dispatch(getDataAnalytics_Fail(""));
+            dispatch(getDataAnalytics_Fail(t("No-record-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

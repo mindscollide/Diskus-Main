@@ -49,6 +49,7 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
 import { Spin } from "antd";
+import SpinComponent from "../../components/elements/mainLoader/loader";
 
 const Committee = () => {
   const { t } = useTranslation();
@@ -771,7 +772,8 @@ const Committee = () => {
                               md={12}
                               sm={12}
                               className={styles["committee_spinner"]}>
-                              <Spin />
+                              {/* <Spin /> */}
+                              <SpinComponent />
                             </Col>
                           </Row>
                           <Row>

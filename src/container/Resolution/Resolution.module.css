@@ -463,40 +463,27 @@ body[dir="rtl"] .Resolution-heading-size {
 body[dir="rtl"] .voterCountStyle {
   display: flex !important;
   justify-content: center !important;
-  margin-right: 30px !important;
+  /* margin-right: 30px !important; */
   font-weight: 600;
 }
 
-body[dir="rtl"] .Result_icon {
-  margin-right: 30px !important;
-  cursor: pointer !important;
-}
+
 
 .Result_icon {
-  margin-right: 17px !important;
   cursor: pointer !important;
 }
 
-.Result_icon_disabled {
-  margin-right: 17px !important;
-}
 
-body[dir="rtl"] .Result_icon_disabled {
-  margin-right: 30px !important;
-}
 
 body[dir="rtl"] .resolution_date {
-  margin-right: 15px !important;
   font-weight: 600;
 }
 
 body[dir="rtl"] .resolution_date_Decision_date {
-  margin-right: 20px !important;
   font-weight: 600;
 }
 
 body[dir="rtl"] .Edit_Icon_moderator {
-  margin-right: 20px !important;
   cursor: pointer !important;
 }
 
@@ -516,7 +503,7 @@ body[dir="rtl"] .Edit_Icon_moderator {
 }
 
 .Circulation_date {
-  font-size: 12pt !important;
+  font-size: 12px !important;
   font-weight: 600;
 
   color: #6172d6;
