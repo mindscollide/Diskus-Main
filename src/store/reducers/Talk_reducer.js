@@ -1674,9 +1674,30 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_LEFT: {
-      //update the reducer here if removed or any CRUD happens
+      // Update the reducer here if removed or any CRUD happens
+
+      console.log(state, action.response, "talkStateDatatalkStateData");
+      let copyAllMessages = [...state.AllUserChats.AllUserChatsData];
+
+      let newData = copyAllMessages.allMessages.filter((stateData) => {
+        console.log(stateData, action.response, "talkStateDatatalkStateData");
+        return stateData.id !== action.response.data[0].groupgroupID;
+      });
+
+      console.log(
+        state,
+        action.response,
+        newData,
+        "talkStateDatatalkStateData"
+      );
+
       return {
         ...state,
+        AllUserChats: {
+          Loading: false,
+          AllUserChatsData: newData,
+          ResponseMessage: action.message,
+        },
         MqttGroupLeftData: action.response,
       };
     }
