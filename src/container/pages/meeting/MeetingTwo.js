@@ -1015,60 +1015,88 @@ const NewMeeting = () => {
               isQuickMeeting,
               attendeeId,
               meetingStatusId,
-              videoCallURL,
+              videoCallUrl,
               meetingID,
+              isChat,
+              isVideo,
+              talkGroupId,
+              isMinutePublished,
             } = result;
-            // Handle the result here
-            if (isQuickMeeting === false) {
+
+            console.log(
+              isQuickMeeting,
+              attendeeId,
+              meetingStatusId,
+              videoCallUrl,
+              meetingID,
+              isChat,
+              isVideo,
+              talkGroupId,
+              isMinutePublished,
+              "isMinutePublishedisMinutePublished"
+            );
+            if (meetingStatusId === "10" || meetingStatusId === 10) {
+              let joinMeetingData = {
+                VideoCallURL: videoCallUrl,
+                FK_MDID: meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+
+              dispatch(
+                JoinCurrentMeeting(
+                  isQuickMeeting,
+                  navigate,
+                  t,
+                  joinMeetingData,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
               setEditorRole({
-                ...editorRole,
-                isPrimaryOrganizer: false,
+                status: String(meetingStatusId),
                 role:
-                  Number(attendeeId) === 2
+                  attendeeId === 2
                     ? "Participant"
-                    : Number(attendeeId) === 4
+                    : attendeeId === 4
                     ? "Agenda Contributor"
                     : "Organizer",
-                status: Number(meetingStatusId),
+                isPrimaryOrganizer: false,
               });
               setVideoTalk({
-                isChat: result.isChat,
-                isVideoCall: result.isVideoCall,
-                talkGroupID: result.talkGroupID,
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
               });
-              if (meetingStatusId === "10" || meetingStatusId === 10) {
-                let joinMeetingData = {
-                  VideoCallURL: videoCallURL,
-                  FK_MDID: meetingID,
-                  DateTime: getCurrentDateTimeUTC(),
-                };
+              localStorage.setItem("videoCallURL", videoCallUrl);
 
-                await dispatch(
-                  JoinCurrentMeeting(
-                    isQuickMeeting,
-                    navigate,
-                    t,
-                    joinMeetingData,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting, // Fixed typo here, assuming it should be setScheduleMeeting instead of setSceduleMeeting
-                    1,
-                    setAdvanceMeetingModalID,
-                    setViewAdvanceMeetingModal
-                  )
-                );
-              } else {
-                setAdvanceMeetingModalID(meetingID);
-                setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                dispatch(viewMeetingFlag(true));
-                dispatch(scheduleMeetingPageFlag(false));
-                dispatch(viewProposeDateMeetingPageFlag(false));
-                dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-                dispatch(viewProposeOrganizerMeetingPageFlag(false));
-                dispatch(proposeNewMeetingPageFlag(false));
-                localStorage.setItem("currentMeetingID", meetingID);
-              }
+              dispatch(viewMeetingFlag(true));
+              localStorage.setItem("isMinutePublished", isMinutePublished);
+            } else {
+              setEditorRole({
+                status: String(meetingStatusId),
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              setAdvanceMeetingModalID(meetingID);
+              setViewAdvanceMeetingModal(true);
+              dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              dispatch(scheduleMeetingPageFlag(false));
+              localStorage.setItem("currentMeetingID", meetingID);
+              localStorage.setItem("isMinutePublished", isMinutePublished);
             }
 
             localStorage.removeItem("mtAgUpdate");
@@ -1084,6 +1112,44 @@ const NewMeeting = () => {
       }
     }
   }, [MtAgUpdate]);
+
+  const ViewMeetingThroughEmailFunc = (result) => {
+    const {
+      attendeeId,
+      isQuickMeeting,
+      meetingID,
+      meetingStatusId,
+      organizationID,
+      userID,
+      isChat,
+      talkGroupId,
+      isVideo,
+      videoCallUrl,
+      isMinutePublished,
+    } = result;
+    setEditorRole({
+      status: String(meetingStatusId),
+      role:
+        attendeeId === 2
+          ? "Participant"
+          : attendeeId === 4
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: false,
+    });
+    setVideoTalk({
+      isChat: isChat,
+      isVideoCall: isVideo,
+      talkGroupID: talkGroupId,
+    });
+    dispatch(emailRouteID(5));
+    setAdvanceMeetingModalID(meetingID);
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+    localStorage.setItem("currentMeetingID", meetingID);
+    localStorage.setItem("isMinutePublished", isMinutePublished);
+  };
 
   useEffect(() => {
     if (AgCont !== null) {
