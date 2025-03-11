@@ -134,7 +134,7 @@ const VideoCallNormalHeader = ({
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
   );
-
+  console.log(audioControl, "audioControl");
   console.log(videoControl, "videoControl");
 
   // For Participant Raise Un Raised Hand
@@ -307,9 +307,12 @@ const VideoCallNormalHeader = ({
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
 
-  console.log(getAllParticipantMain.length, "participantWaitingListCounter");
+  console.log(getAllParticipantMain, "participantWaitingListCounter");
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
+
+  //Hand Raise Counter To show on Participant Counter in presenter View
+  const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
   const [open, setOpen] = useState({
     flag: false,
@@ -320,6 +323,15 @@ const VideoCallNormalHeader = ({
     if (Object.keys(getAllParticipantMain)?.length > 0) {
       setParticipantCounterList(getAllParticipantMain?.length);
     }
+  }, [getAllParticipantMain]);
+
+  //Hand Raise Counter To show on Participant Counter in presenter View
+  useEffect(() => {
+    const raisedHandCounter = getAllParticipantMain.filter(
+      (participant) => participant.raiseHand === true
+    );
+
+    setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
   useEffect(() => {
@@ -659,6 +671,17 @@ const VideoCallNormalHeader = ({
         priticipantListModalFlagForNonHost
       );
       dispatch(toggleParticipantsVisibility(check));
+    }
+
+    if (!isMeetingVideo) {
+      console.log("Check it");
+      if (LeaveCallModalFlag === false) {
+        if (ParticipantPopupFlag === false) {
+          dispatch(participantPopup(true));
+        } else {
+          dispatch(participantPopup(false));
+        }
+      }
     }
     // if (LeaveCallModalFlag === false) {
     //   if (ParticipantPopupFlag === false) {
@@ -1514,6 +1537,15 @@ const VideoCallNormalHeader = ({
                     currentParticipants !== null &&
                     currentParticipants.length > 0
                       ? currentParticipants.map((participantData, index) => {
+                          console.log(
+                            "participantStatus",
+                            participantStatus[0]
+                          );
+                          const matchingStatus = participantStatus[0].find(
+                            (status) =>
+                              status.RecipientID === participantData.userID &&
+                              status.RoomID === initiateRoomID
+                          );
                           return (
                             <Row className="m-0" key={index}>
                               <Col className="p-0" lg={7} md={7} sm={12}>
@@ -1522,29 +1554,16 @@ const VideoCallNormalHeader = ({
                                 </p>
                               </Col>
                               <Col
-                                className="d-flex justify-content-end align-items-canter gap-3 p-0"
+                                className="d-flex justify-content-end align-items-baseline gap-3 p-0"
                                 lg={5}
                                 md={5}
                                 sm={12}
                               >
-                                <img src={MenuRaiseHand} alt="MenuRaiseHand" />
-
-                                <Dropdown>
-                                  <Dropdown.Toggle className="participant-toggle">
-                                    <img src={Menu} alt="Menu" />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Remove")}
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Mute")}
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Hide-video")}
-                                    </Dropdown.Item>
-                                  </Dropdown.Menu>
-                                </Dropdown>
+                                <p className="participant-state">
+                                  {matchingStatus
+                                    ? matchingStatus.CallStatus
+                                    : "Calling..."}
+                                </p>
                               </Col>
                             </Row>
                           );
@@ -1553,13 +1572,7 @@ const VideoCallNormalHeader = ({
                   </div>
                 </>
               ) : (
-                <Tooltip
-                  placement={presenterViewFlag ? "bottom" : "topRight"}
-                  overlayClassName={
-                    presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                  }
-                  title={t("Participants")}
-                >
+                <Tooltip placement="topRight" title={t("Participants")}>
                   <div
                     className={
                       LeaveCallModalFlag === true
@@ -1587,13 +1600,26 @@ const VideoCallNormalHeader = ({
                   </div>
                 </Tooltip>
               )}
-              <span className="participants-counter-For-Host">
-                {convertNumbersInString(participantCounterList, lan)}
-              </span>
-              {participantWaitingListCounter > 0 && (
-                <span className="participants-counter-For-Host-waiting-counter">
-                  {convertNumbersInString(participantWaitingListCounter, lan)}
+
+              {presenterViewFlag && presenterViewHostFlag ? (
+                <span className="participants-counter-For-Host">
+                  {convertNumbersInString(handRaiseCounter, lan)}
                 </span>
+              ) : (
+                <>
+                  <span className="participants-counter-For-Host">
+                    {getMeetingHostInfo.isDashboardVideo &&
+                      convertNumbersInString(participantCounterList, lan)}
+                  </span>
+                  {participantWaitingListCounter > 0 && (
+                    <span className="participants-counter-For-Host-waiting-counter">
+                      {convertNumbersInString(
+                        participantWaitingListCounter,
+                        lan
+                      )}
+                    </span>
+                  )}
+                </>
               )}
             </div>
           ) : null}

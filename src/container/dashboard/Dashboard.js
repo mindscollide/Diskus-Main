@@ -2811,6 +2811,12 @@ const Dashboard = () => {
                 CallStatus: "Rejected",
                 RoomID: data.payload.roomID,
               };
+
+              existingData.push(newData);
+              localStorage.setItem(
+                "callerStatusObject",
+                JSON.stringify(existingData)
+              );
               let RecipentIDsOninitiateVideoCallflag = false;
               let remainingCount = 0;
               let existingDataflag = false;
@@ -2976,6 +2982,7 @@ const Dashboard = () => {
               let existingData =
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               console.log("mqtt", checkCallStatus(existingData));
+
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
                   data.payload.recepientID
