@@ -1023,18 +1023,6 @@ const NewMeeting = () => {
               isMinutePublished,
             } = result;
 
-            console.log(
-              isQuickMeeting,
-              attendeeId,
-              meetingStatusId,
-              videoCallUrl,
-              meetingID,
-              isChat,
-              isVideo,
-              talkGroupId,
-              isMinutePublished,
-              "isMinutePublishedisMinutePublished"
-            );
             if (meetingStatusId === "10" || meetingStatusId === 10) {
               let joinMeetingData = {
                 VideoCallURL: videoCallUrl,
