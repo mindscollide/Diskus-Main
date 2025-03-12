@@ -786,7 +786,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           <Col lg={12} md={12} sm={12} className='d-flex justify-content-end '>
             {groupStatus === 3 && (
               <Button
-                text={t("Create-a-Task")}
+                text={t("Create-a-task")}
                 onClick={modalHandler}
                 icon={<Plus width={20} height={20} fontWeight={800} />}
                 className={"Create_TodoBtn_Button"}

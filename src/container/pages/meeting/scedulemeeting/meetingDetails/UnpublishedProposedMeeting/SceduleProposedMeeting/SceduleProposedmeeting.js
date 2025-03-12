@@ -441,7 +441,7 @@ const SceduleProposedmeeting = ({
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail_disabled"]
             }>
-            {t("None-of-above")}
+            {t("None-of-the-above")}
           </span>
         );
       },

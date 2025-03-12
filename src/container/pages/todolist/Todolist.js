@@ -964,7 +964,7 @@ const TodoList = () => {
               className={"btn btn-primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               variant={"Primary"}
-              text={t("Create-a-Task")}
+              text={t("Create-a-task")}
               onClick={modalHandler}
             />
           </Col>
