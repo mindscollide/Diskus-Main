@@ -131,14 +131,11 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
-                  {flag
-                    ? t("Any-unsaved-changes-will-be-lost-continue")
-                    : t(
-                        "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
-                      )}
+                  {t(
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                  )}
                 </span>
               </Col>
             </Row>
@@ -151,8 +148,7 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2"
-              >
+                className='d-flex justify-content-center gap-2'>
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

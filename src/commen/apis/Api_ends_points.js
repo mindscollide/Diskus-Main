@@ -8,6 +8,7 @@ const settingDownloadApi = baseURL + process.env.REACT_APP_SETTING_DOWNLOAD_API;
 const meetingApi = baseURL + process.env.REACT_APP_MEETING_API;
 //const meetingApi = "http://localhost:62520/Meeting";
 const getAdminURLs = baseURL + process.env.REACT_APP_ADMIN_API;
+//const getAdminURLs = "http://localhost:42406/Admin";
 const dataRoomApi = baseURL + process.env.REACT_APP_DATA_ROOM_API;
 const getCommitteesApi = baseURL + process.env.REACT_APP_COMMITTEE_API;
 const getGroupsApi = baseURL + process.env.REACT_APP_GROUPS_API;

@@ -1011,22 +1011,80 @@ const NewMeeting = () => {
       try {
         validateStringEmailApi(MtAgUpdate, navigate, t, 3, dispatch)
           .then(async (result) => {
-            // Handle the result here
-            if (result.isQuickMeeting === false) {
-              await setAdvanceMeetingModalID(Number(result.meetingID));
-              await setViewAdvanceMeetingModalUnpublish(true);
-              await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            const {
+              isQuickMeeting,
+              attendeeId,
+              meetingStatusId,
+              videoCallUrl,
+              meetingID,
+              isChat,
+              isVideo,
+              talkGroupId,
+              isMinutePublished,
+            } = result;
+
+            if (meetingStatusId === "10" || meetingStatusId === 10) {
+              let joinMeetingData = {
+                VideoCallURL: videoCallUrl,
+                FK_MDID: meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+
+              dispatch(
+                JoinCurrentMeeting(
+                  isQuickMeeting,
+                  navigate,
+                  t,
+                  joinMeetingData,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
               setEditorRole({
-                ...editorRole,
-                isPrimaryOrganizer: false,
+                status: String(meetingStatusId),
                 role:
-                  Number(result.attendeeId) === 2
+                  attendeeId === 2
                     ? "Participant"
-                    : Number(result.attendeeId) === 4
+                    : attendeeId === 4
                     ? "Agenda Contributor"
                     : "Organizer",
-                status: Number(result.meetingStatusId),
+                isPrimaryOrganizer: false,
               });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              localStorage.setItem("videoCallURL", videoCallUrl);
+
+              dispatch(viewMeetingFlag(true));
+              localStorage.setItem("isMinutePublished", isMinutePublished);
+            } else {
+              setEditorRole({
+                status: String(meetingStatusId),
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              setAdvanceMeetingModalID(meetingID);
+              setViewAdvanceMeetingModal(true);
+              dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              dispatch(scheduleMeetingPageFlag(false));
+              localStorage.setItem("currentMeetingID", meetingID);
+              localStorage.setItem("isMinutePublished", isMinutePublished);
             }
 
             localStorage.removeItem("mtAgUpdate");
@@ -1042,6 +1100,44 @@ const NewMeeting = () => {
       }
     }
   }, [MtAgUpdate]);
+
+  const ViewMeetingThroughEmailFunc = (result) => {
+    const {
+      attendeeId,
+      isQuickMeeting,
+      meetingID,
+      meetingStatusId,
+      organizationID,
+      userID,
+      isChat,
+      talkGroupId,
+      isVideo,
+      videoCallUrl,
+      isMinutePublished,
+    } = result;
+    setEditorRole({
+      status: String(meetingStatusId),
+      role:
+        attendeeId === 2
+          ? "Participant"
+          : attendeeId === 4
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: false,
+    });
+    setVideoTalk({
+      isChat: isChat,
+      isVideoCall: isVideo,
+      talkGroupID: talkGroupId,
+    });
+    dispatch(emailRouteID(5));
+    setAdvanceMeetingModalID(meetingID);
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+    localStorage.setItem("currentMeetingID", meetingID);
+    localStorage.setItem("isMinutePublished", isMinutePublished);
+  };
 
   useEffect(() => {
     if (AgCont !== null) {

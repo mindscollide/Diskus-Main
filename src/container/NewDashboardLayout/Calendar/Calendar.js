@@ -48,6 +48,7 @@ const NewCalendar = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [events, setEvents] = useState([]);
+  console.log(events, "eventseventseventsevents");
   const [eventModal, setEventsModal] = useState(false);
   const [startDataUpdate, setStartDataUpdate] = useState("");
   const [endDataUpdate, setEndDataUpdate] = useState("");
@@ -56,7 +57,7 @@ const NewCalendar = () => {
     message: "",
     severity: "error",
   });
-  console.log(open, "openopen")
+  console.log(open, "openopen");
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") !== undefined &&
     localStorage.getItem("calenderMonthsSpan") !== null
@@ -189,10 +190,12 @@ const NewCalendar = () => {
         let newList = calenderData;
         Data.map((cData, index) => {
           if (flag) {
+            // if flag true then remove the date from the list
             if (cData.pK_MDID === meetingID) {
               let date = startDateTimeMeetingCalendar(
                 cData.eventDate + cData.startTime
               );
+
               // just remove the  data from list and add it to first position of
               // at there we needs to remove the date field.
 
@@ -637,8 +640,10 @@ const NewCalendar = () => {
             .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
         ) {
           let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
+          console.log("upComingEvents", meetingID);
+
           updateCalendarData(true, meetingID);
-          console.log("upComingEvents");
+          console.log("upComingEvents", events);
 
           setEvents((event) =>
             event.filter((eventData, index) => {
