@@ -314,7 +314,7 @@ const Participants = () => {
                             sm={12}
                             className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_heading"]}>
-                              {t("No-Participant")}
+                              {t("No-participant")}
                             </span>
                           </Col>
                         </Row>
@@ -325,7 +325,7 @@ const Participants = () => {
                             sm={12}
                             className='d-flex justify-content-center'>
                             <span className={styles["Empty_state_Subheading"]}>
-                              {t("There-are-no-Participants")}
+                              {t("There-are-no-participants")}
                             </span>
                           </Col>
                         </Row>

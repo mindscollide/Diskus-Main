@@ -79,15 +79,8 @@ const NewCancelAgendaBuilderModal = ({ setSceduleMeeting }) => {
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["UnsavedHeading"]}>
                     {t(
-                      "You-have-unsaved-changes-if-you-leave-this-page-your-changes"
+                      "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
                     )}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["UnsavedHeading"]}>
-                    {t("will-be-lost-do-you-want-to-continue-without-saving")}
                   </span>
                 </Col>
               </Row>
