@@ -74,12 +74,6 @@ const RecentChats = () => {
 
   const [newGroupData, setNewGroupData] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(
-  //     GetAllUserChats(navigate, currentUserId, currentOrganizationId, t)
-  //   );
-  // }, []);
-  console.log(talkStateData, "talkStateDatatalkStateData");
   useEffect(() => {
     if (
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
