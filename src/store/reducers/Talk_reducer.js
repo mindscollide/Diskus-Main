@@ -1674,28 +1674,31 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_LEFT: {
-      // Update the reducer here if removed or any CRUD happens
+      console.log(action.response, "talkStateDatatalkStateData");
 
-      console.log(state, action.response, "talkStateDatatalkStateData");
-      let copyAllMessages = [...state.AllUserChats.AllUserChatsData];
+      let copyAllUserChatsData = { ...state.AllUserChats.AllUserChatsData };
 
-      let newData = copyAllMessages.allMessages.filter((stateData) => {
-        console.log(stateData, action.response, "talkStateDatatalkStateData");
-        return stateData.id !== action.response.data[0].groupgroupID;
-      });
+      console.log(copyAllUserChatsData, "talkStateDatatalkStateData");
 
-      console.log(
-        state,
-        action.response,
-        newData,
-        "talkStateDatatalkStateData"
+      const groupIDToRemove = action.response.data[0].groupID;
+
+      // Filter the allMessages array to remove the matching record
+      let filteredAllMessages = copyAllUserChatsData.allMessages.filter(
+        (message) => {
+          return message.id !== groupIDToRemove; // Compare message.id with groupIDToRemove
+        }
       );
 
+      console.log(filteredAllMessages, "talkStateDatatalkStateData");
+
+      copyAllUserChatsData.allMessages = filteredAllMessages;
+
+      // Return the updated state
       return {
         ...state,
         AllUserChats: {
-          Loading: false,
-          AllUserChatsData: newData,
+          ...state.AllUserChats,
+          AllUserChatsData: copyAllUserChatsData,
           ResponseMessage: action.message,
         },
         MqttGroupLeftData: action.response,
