@@ -6,9 +6,12 @@ import { useLocation } from "react-router-dom";
 import DikusGIF from "../../../assets/images/Loader.gif";
 import { useSelector } from "react-redux";
 import ProgressLoader from "../ProgressLoader/ProgressLoader";
+import { Spin } from "antd";
+import SpinComponent from "../mainLoader/loader";
 
 const Loader = ({ progress }) => {
   const { t } = useTranslation();
+  const location = window.location.href;
   const downloadMessageIndex = useSelector(
     (state) => state.DataRoomReducer.downloadMessage
   );
@@ -52,6 +55,16 @@ const Loader = ({ progress }) => {
             alt="My GIF Icon"
             draggable="false"
           /> */}
+          {!location.toLowerCase().includes("/Diskus/".toLowerCase()) &&
+          !location.toLowerCase().includes("/Admin/".toLowerCase()) ? (
+            <>
+              <Row>
+                <Col lg={12} md={12} sm={12} className={styles["MainSpinner"]}>
+                  <SpinComponent />
+                </Col>
+              </Row>
+            </>
+          ) : null}
           <ProgressLoader progress={progress} />
           {/* <Row>
             <Col lg={12} md={12} sm={12}>
