@@ -169,6 +169,10 @@ export const MeetingProvider = ({ children }) => {
     setHoldBeforeUnloadFuncForLeaveCall,
   ] = useState(false);
 
+  // state for accept video Call for group
+  const [groupVideoCallAccepted, setGroupVideoCallAccepted] = useState([]);
+  const [groupCallParticipantList, setGroupCallParticipantList] = useState([]);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -354,6 +358,10 @@ export const MeetingProvider = ({ children }) => {
     setToggleMicMinimizeNonMeeting,
     holdBeforeUnloadFuncForLeaveCall,
     setHoldBeforeUnloadFuncForLeaveCall,
+    groupVideoCallAccepted,
+    setGroupVideoCallAccepted,
+    groupCallParticipantList,
+    setGroupCallParticipantList,
   };
 
   // Provide the state data to the context
