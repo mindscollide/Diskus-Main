@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import SpinComponent from "../../../../../../components/elements/mainLoader/loader";
 const ModalOrganizor = ({ currentMeeting }) => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();
@@ -619,6 +620,16 @@ const ModalOrganizor = ({ currentMeeting }) => {
                       className={styles["ADD_Btn_CreatePool_Modal"]}
                       onClick={handleAddUsers}
                     />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center align-items-center mt-3"
+                  >
+                    <SpinComponent />
                   </Col>
                 </Row>
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
