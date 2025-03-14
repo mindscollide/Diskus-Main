@@ -22,6 +22,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../DataRoom/SearchFunctionality/option";
+import SpinComponent from "../../../../components/elements/mainLoader/loader";
 
 const MeetingRecording = ({ title }) => {
   const { setStepDownloadModal } = useMeetingContext();
@@ -187,8 +188,8 @@ const MeetingRecording = ({ title }) => {
           <span className={styles["RecordingTable___title"]}>
             <img
               src={getIconSource(getFileExtension(text))}
-              alt=''
-              className='me-2'
+              alt=""
+              className="me-2"
               width={"17px"}
               height={"17px"}
             />
@@ -230,7 +231,8 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-end gap-3'>
+                className="d-flex justify-content-end gap-3"
+              >
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Transcribe")}
@@ -254,7 +256,8 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-end gap-3'>
+                className="d-flex justify-content-end gap-3"
+              >
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Download")}
@@ -270,7 +273,8 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className='d-flex justify-content-center align-items-center gap-3'>
+                className="d-flex justify-content-center align-items-center gap-3"
+              >
                 <span className={styles["TranscibingLabel"]}>
                   {`${t("Transcribing")}...`}
                 </span>
@@ -308,7 +312,7 @@ const MeetingRecording = ({ title }) => {
                 <img
                   src={BackArrow}
                   onClick={() => setStepDownloadModal(1)}
-                  className='cursor-pointer'
+                  className="cursor-pointer"
                 />{" "}
                 {t("Meeting-recording")}
               </span>
@@ -321,6 +325,9 @@ const MeetingRecording = ({ title }) => {
                 pagination={false}
               />
             </Col>
+            <div className="d-flex justify-content-center align-items-center">
+              <SpinComponent />
+            </div>
           </Row>
         </>
       }
@@ -331,7 +338,8 @@ const MeetingRecording = ({ title }) => {
               sm={12}
               md={12}
               lg={12}
-              className={"d-flex justify-content-end p-0 m-0"}>
+              className={"d-flex justify-content-end p-0 m-0"}
+            >
               <Button
                 className={styles["Download___cancelBtn"]}
                 text={t("Cancel")}
