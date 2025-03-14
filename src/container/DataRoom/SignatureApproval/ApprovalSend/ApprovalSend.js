@@ -646,6 +646,8 @@ const ApprovalSend = () => {
                       <img
                         className="d-flex justify-content-center"
                         src={EmtpyImage}
+                        alt=""
+                        width={250}
                       />
                       <span className={styles["emptyState_title"]}>
                         {t("Submit-document-for-approval")}
@@ -661,7 +663,7 @@ const ApprovalSend = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
+                          className="d-flex justify-content-center align-items-center"
                         >
                           <SpinComponent />
                           {/* <Spin /> */}
