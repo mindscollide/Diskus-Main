@@ -65,7 +65,6 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useResolutionContext } from "../../context/ResolutionContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 import SpinComponent from "../../components/elements/mainLoader/loader";
@@ -1712,7 +1711,7 @@ const Resolution = () => {
                                   />
                                 )}
                                 <div>
-                                  <Spin />
+                                  <SpinComponent />
                                 </div>
                               </Col>
                             </Row>
@@ -1758,14 +1757,14 @@ const Resolution = () => {
                     className="Resolution_table"
                     scroll={scroll}
                     pagination={false}
-                    loading={{
-                      indicator: (
-                        <div className={styles["resolution_spinner"]}>
-                          <Spin />
-                        </div>
-                      ),
-                      spinning: ResolutionReducerLoading,
-                    }}
+                    // loading={{
+                    //   indicator: (
+                    //     <div className={styles["resolution_spinner"]}>
+                    //       <SpinComponent />
+                    //     </div>
+                    //   ),
+                    //   spinning: ResolutionReducerLoading,
+                    // }}
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (
@@ -1812,7 +1811,6 @@ const Resolution = () => {
                               )}
                               <div>
                                 <SpinComponent />
-                                {/* <Spin /> */}
                               </div>
                             </Col>
                           </Row>
