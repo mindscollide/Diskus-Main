@@ -313,6 +313,7 @@ const MeetingRecording = ({ title }) => {
                   src={BackArrow}
                   onClick={() => setStepDownloadModal(1)}
                   className="cursor-pointer"
+                  alt=""
                 />{" "}
                 {t("Meeting-recording")}
               </span>
