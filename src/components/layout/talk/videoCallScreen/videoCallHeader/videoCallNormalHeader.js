@@ -343,7 +343,7 @@ const VideoCallNormalHeader = ({
 
   // API for check getGroupVideoCall Participants Data
   useEffect(() => {
-    if (currentCallType === 2) {
+    if (currentCallType === 2 && isCaller) {
       let data = {
         RoomID: String(initiateRoomID),
       };
@@ -1244,7 +1244,10 @@ const VideoCallNormalHeader = ({
   };
 
   const raiseUnRaiseForParticipant = (flag) => {
+    console.log("Check 1333");
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      console.log("Check 1333");
+
       let data = {
         RoomID: String(RoomID),
         UID: String(UID),
@@ -1624,35 +1627,10 @@ const VideoCallNormalHeader = ({
                                       {isMatchingParticipant ? (
                                         <>
                                           <Row>
-                                            <Col className="d-flex justify-content-center gap-2">
-                                              <img
-                                                draggable="false"
-                                                src={RaiseHand}
-                                                width="18px"
-                                                height="19px"
-                                                alt="Raise Hand"
-                                              />
-
-                                              <Dropdown>
-                                                <Dropdown.Toggle className="participant-toggle">
-                                                  <img
-                                                    draggable="false"
-                                                    src={Menu}
-                                                    alt=""
-                                                  />
-                                                </Dropdown.Toggle>
-
-                                                <Dropdown.Menu>
-                                                  <>
-                                                    <Dropdown.Item className="participant-dropdown-item">
-                                                      {t("mute")}
-                                                    </Dropdown.Item>
-                                                    <Dropdown.Item className="participant-dropdown-item">
-                                                      {t("Hide-video")}
-                                                    </Dropdown.Item>
-                                                  </>
-                                                </Dropdown.Menu>
-                                              </Dropdown>
+                                            <Col>
+                                              <p className="participant-state">
+                                                {t("Accepted")}
+                                              </p>
                                             </Col>
                                           </Row>
                                         </>
