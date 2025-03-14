@@ -568,18 +568,17 @@ const VideoNewParticipantList = () => {
                           </>
                         )
                       )}{" "}
-                      {}
-                      {usersData.raiseHand === true ? (
-                        <>
-                          <img
-                            draggable="false"
-                            src={GoldenHandRaised}
-                            alt=""
-                            width={"22px"}
-                            height={"22px"}
-                            className="handraised-participant"
-                          />
-                        </>
+                      {((presenterViewHostFlag && presenterViewFlag) ||
+                        meetinHostInfo.isHost) &&
+                      usersData.raiseHand ? (
+                        <img
+                          draggable="false"
+                          src={GoldenHandRaised}
+                          alt=""
+                          width={"22px"}
+                          height={"22px"}
+                          className="handraised-participant"
+                        />
                       ) : (
                         <img
                           draggable="false"

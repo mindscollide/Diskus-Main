@@ -236,6 +236,10 @@ const Dashboard = () => {
     cancelConfirmationModal,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
+    groupVideoCallAccepted,
+    setGroupVideoCallAccepted,
+    groupCallParticipantList,
+    setGroupCallParticipantList,
   } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
@@ -2670,6 +2674,20 @@ const Dashboard = () => {
           let initiateCallRoomID = JSON.parse(
             localStorage.getItem("initiateCallRoomID")
           );
+          let CallType = Number(localStorage.getItem("CallType"));
+
+          if (CallType === 2) {
+            setGroupVideoCallAccepted((prevState) => {
+              // Check if the user is already in the accepted list
+              const userExists = prevState.some(
+                (user) => user.recepientID === data.payload.recepientID
+              );
+              if (!userExists) {
+                return [...prevState, data.payload];
+              }
+              return prevState;
+            });
+          }
 
           let roomID = 0;
           if (activeRoomID) {
@@ -2766,6 +2784,16 @@ const Dashboard = () => {
           let initiateCallRoomID = JSON.parse(
             localStorage.getItem("initiateCallRoomID")
           );
+
+          let CallType = Number(localStorage.getItem("CallType"));
+
+          if (CallType === 2) {
+            setGroupCallParticipantList((prevState) =>
+              prevState.filter(
+                (user) => user.userID !== data.payload.recepientID
+              )
+            );
+          }
 
           let roomID = 0;
           if (activeRoomID) {
@@ -3245,6 +3273,17 @@ const Dashboard = () => {
               : activeRoomID;
           console.log("mqtt");
           console.log("mqtt", RoomID);
+
+          let CallType = Number(localStorage.getItem("CallType"));
+          if (CallType === 2) {
+            // Also remove the user from groupCallParticipantList
+            setGroupCallParticipantList((prevList) =>
+              prevList.filter(
+                (participant) => participant.userID !== data.payload.recipientID
+              )
+            );
+          }
+
           if (RoomID === data.payload.roomID && activeCall) {
             if (data.payload.callTypeID === 1) {
               setNotification({
