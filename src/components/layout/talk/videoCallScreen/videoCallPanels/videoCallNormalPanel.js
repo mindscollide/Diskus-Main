@@ -451,6 +451,7 @@ const VideoPanelNormal = () => {
     const handleBeforeUnload = async (event) => {
       try {
         dispatch(updatedParticipantListForPresenter([]));
+        console.log("busyCall");
 
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow !== null) {
@@ -466,8 +467,10 @@ const VideoPanelNormal = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+        dispatch(updatedParticipantListForPresenter([]));
+        console.log("busyCall");
     };
-  }, [iframe]);
+  }, []);
 
   useEffect(() => {
     if (getAllParticipantMain?.length) {

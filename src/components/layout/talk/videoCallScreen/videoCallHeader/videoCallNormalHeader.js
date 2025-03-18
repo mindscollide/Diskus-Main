@@ -329,7 +329,7 @@ const VideoCallNormalHeader = ({
   console.log(videoDisable, "videoDisable");
 
   // to show a host participants waiting List Counter
-  const participantWaitingListCounter = waitingParticipantsList?.length;
+  let participantWaitingListCounter = waitingParticipantsList?.length;
 
   console.log(getAllParticipantMain, "getAllParticipantMain");
 
@@ -354,6 +354,8 @@ const VideoCallNormalHeader = ({
 
     const handleBeforeUnload = async (event) => {
       setHandRaiseCounter(0);
+      setParticipantCounterList(0);
+      participantWaitingListCounter = 0;
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
