@@ -757,6 +757,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         videoControlHost: action.response,
       };
     }
+    
     case actions.SET_MQTT_VOICE_CONTROLE_HOST: {
       return {
         ...state,
