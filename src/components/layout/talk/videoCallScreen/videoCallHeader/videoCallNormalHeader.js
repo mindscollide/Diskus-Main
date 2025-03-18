@@ -1330,32 +1330,51 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
     };
   }, []);
+  const getMeetingTitle = () => {
+    const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    const callTypeID = Number(localStorage.getItem("callTypeID"));
 
+    if (isMeetingVideo) {
+      if (
+        callTypeID === 2 &&
+        !presenterViewHostFlag &&
+        !presenterViewJoinFlag
+      ) {
+        return t("Group-call");
+      }
+      return meetingTitle?.trim();
+    }
+    if (presenterViewHostFlag || presenterViewJoinFlag) {
+      return meetingTitle?.trim();
+    }
+    if (
+      currentUserName !== VideoRecipentData.userName &&
+      Object.keys(VideoRecipentData).length > 0
+    ) {
+      return (
+        VideoRecipentData.userName ||
+        VideoRecipentData.recipients?.[0]?.userName
+      );
+    }
+
+    if (Object.keys(VideoRecipentData).length === 0) {
+      return callerName;
+    }
+
+    return null;
+  };
   return (
     <>
       <Row className="mb-4">
         <Col lg={3} md={3} sm={12} className="mt-1">
           <p
             className={
-              presenterViewFlag &&
-              !JSON.parse(localStorage.getItem("activeCall"))
+              presenterViewFlag && isMeetingVideo
                 ? "title-for-presenter"
                 : "title-heading"
             }
           >
-            {JSON.parse(localStorage.getItem("isMeetingVideo"))
-              ? Number(localStorage.getItem("callTypeID")) === 2 &&
-                !presenterViewHostFlag &&
-                !presenterViewJoinFlag
-                ? t("Group-call")
-                : meetingTitle?.trim()
-              : currentUserName !== VideoRecipentData.userName &&
-                Object.keys(VideoRecipentData).length > 0
-              ? VideoRecipentData.userName ||
-                VideoRecipentData.recipients?.[0]?.userName
-              : Object.keys(VideoRecipentData).length === 0
-              ? callerName
-              : null}
+            {getMeetingTitle()}
           </p>
         </Col>
 
