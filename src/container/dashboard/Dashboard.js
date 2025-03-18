@@ -2640,7 +2640,7 @@ const Dashboard = () => {
             }, timeValue);
             return () => clearTimeout(timeoutId);
           } else if (
-            activeCall === false &&
+            (activeCall === false||activeCall===undefined||activeCall===null) &&
             IncomingVideoCallFlagReducer === false
           ) {
             console.log("Check active");
