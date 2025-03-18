@@ -329,7 +329,7 @@ const VideoCallNormalHeader = ({
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
 
-  console.log(getAllParticipantMain, "participantWaitingListCounter");
+  console.log(getAllParticipantMain, "getAllParticipantMain");
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
@@ -365,16 +365,20 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
+      console.log(getAllParticipantMain, "getAllParticipantMain");
       setParticipantCounterList(getAllParticipantMain?.length);
     }
   }, [getAllParticipantMain]);
 
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    const raisedHandCounter = getAllParticipantMain.filter(
+    console.log(getAllParticipantMain, "getAllParticipantMain");
+    let dublicateData = [...getAllParticipantMain];
+    const raisedHandCounter = dublicateData.filter(
       (participant) => participant.raiseHand === true
     );
 
+    console.log(getAllParticipantMain, "getAllParticipantMain");
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
@@ -1679,7 +1683,9 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               )}
 
-              {presenterViewFlag && presenterViewHostFlag ? (
+              {presenterViewFlag &&
+              presenterViewHostFlag &&
+              handRaiseCounter > 0 ? (
                 <span className="participants-counter-For-Host">
                   {convertNumbersInString(handRaiseCounter, lan)}
                 </span>
