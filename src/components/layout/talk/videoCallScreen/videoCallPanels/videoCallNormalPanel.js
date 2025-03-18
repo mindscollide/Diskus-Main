@@ -872,7 +872,7 @@ const VideoPanelNormal = () => {
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
         Name: String(currentName),
       };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+      dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
   // Add event listener for messages

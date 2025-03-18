@@ -2106,6 +2106,23 @@ const leavePresenterViewMainApi = (
                 console.log("busyCall");
                 await setJoiningOneToOneAfterLeavingPresenterView(true);
                 // }
+              }else if (flag === 4) {
+                dispatch(participantVideoButtonState(false));
+                console.log("Check");
+                dispatch(
+                  presenterViewGlobalState(0, false, false, false)
+                );
+                if (alreadyInMeetingVideo) {
+                  console.log("Check");
+                  sessionStorage.removeItem("alreadyInMeetingVideo");
+                  dispatch(maximizeVideoPanelFlag(true));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                } else {
+                  dispatch(maximizeVideoPanelFlag(false));
+                  dispatch(normalizeVideoPanelFlag(false));
+                  dispatch(minimizeVideoPanelFlag(false));
+                }
               }
             } else if (
               response.data.responseResult.responseMessage
