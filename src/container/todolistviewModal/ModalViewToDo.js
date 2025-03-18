@@ -556,7 +556,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               {/* Task Submit */}
               <Col sm={12} md={12} lg={12} className="mb-2">
                 <Form
-                  className="d-flex"
+                  className="d-flex h-100 justify-content-center align-items-center"
                   onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
                 >
                   <Col
@@ -575,7 +575,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                       maxLength={100}
                     />
                   </Col>
-                  <Col sm={1} md={1} lg={1} className="comment-enter-button">
+                  <Col sm={1} md={1} lg={1} className="comment-enter-button d-flex justify-content-center align-items-center">
                     {currentLanguage === "ar" ? (
                       <ChevronLeft
                         width={25}

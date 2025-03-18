@@ -162,7 +162,7 @@ const Events = () => {
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
-              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
+              Number(meetingData?.meetingDetails?.pK_MDID) !== Number(meetingID)
           )
         );
 

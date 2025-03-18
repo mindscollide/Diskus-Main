@@ -68,6 +68,7 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useResolutionContext } from "../../context/ResolutionContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
+import SpinComponent from "../../components/elements/mainLoader/loader";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -572,18 +573,18 @@ const Resolution = () => {
       width: "76px",
       render: (text) => {
         if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>;
+          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
         } else if (text === "Not Approved") {
           return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
+            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
           );
         } else if (text === "Tie") {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         } else {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         }
       },
@@ -743,18 +744,18 @@ const Resolution = () => {
       width: "76px",
       render: (text) => {
         if (text === "Approved") {
-          return <span className={styles["decision_Approved"]}>{text}</span>;
+          return <span className={styles["decision_Approved"]}>{t(text)}</span>;
         } else if (text === "Not Approved") {
           return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
+            <span className={styles["decision_non_Approved"]}>{t(text)}</span>
           );
         } else if (text === "Tie") {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         } else {
           return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
+            <span className={styles["decision_text_Pending"]}>{t(text)}</span>
           );
         }
       },
@@ -1757,14 +1758,14 @@ const Resolution = () => {
                     className="Resolution_table"
                     scroll={scroll}
                     pagination={false}
-                    // loading={{
-                    //   indicator: (
-                    //     <div className={styles["resolution_spinner"]}>
-                    //       <Spin />
-                    //     </div>
-                    //   ),
-                    //   spinning: ResolutionReducerLoading,
-                    // }}
+                    loading={{
+                      indicator: (
+                        <div className={styles["resolution_spinner"]}>
+                          <Spin />
+                        </div>
+                      ),
+                      spinning: ResolutionReducerLoading,
+                    }}
                     rows={isSearchVoter}
                     locale={{
                       emptyText: (
@@ -1810,7 +1811,8 @@ const Resolution = () => {
                                 />
                               )}
                               <div>
-                                <Spin />
+                                <SpinComponent />
+                                {/* <Spin /> */}
                               </div>
                             </Col>
                           </Row>

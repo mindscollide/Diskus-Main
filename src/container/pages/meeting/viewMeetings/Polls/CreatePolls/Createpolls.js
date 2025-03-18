@@ -214,14 +214,13 @@ const Createpolls = ({ setCreatepoll }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
+                        className='d-flex gap-2 align-items-center'>
                         <img
                           src={`data:image/jpeg;base64,${MorganizerData.userProfilePicture.displayProfilePictureName}`}
-                          height="16.45px"
-                          width="18.32px"
-                          draggable="false"
-                          alt=""
+                          height='16.45px'
+                          width='18.32px'
+                          draggable='false'
+                          alt=''
                         />
                         <span className={styles["NameDropDown"]}>
                           {MorganizerData.userName}
@@ -250,14 +249,13 @@ const Createpolls = ({ setCreatepoll }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex gap-2 align-items-center"
-                        >
+                          className='d-flex gap-2 align-items-center'>
                           <img
                             src={`data:image/jpeg;base64,${meetAgendaContributor.userProfilePicture.displayProfilePictureName}`}
-                            height="16.45px"
-                            alt=""
-                            width="18.32px"
-                            draggable="false"
+                            height='16.45px'
+                            alt=''
+                            width='18.32px'
+                            draggable='false'
                           />
                           <span className={styles["NameDropDown"]}>
                             {meetAgendaContributor.userName}
@@ -286,14 +284,13 @@ const Createpolls = ({ setCreatepoll }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex gap-2 align-items-center"
-                      >
+                        className='d-flex gap-2 align-items-center'>
                         <img
                           src={`data:image/jpeg;base64,${meetParticipants.userProfilePicture.displayProfilePictureName}`}
-                          height="16.45px"
-                          width="18.32px"
-                          alt=""
-                          draggable="false"
+                          height='16.45px'
+                          width='18.32px'
+                          alt=''
+                          draggable='false'
                         />
                         <span className={styles["NameDropDown"]}>
                           {meetParticipants.userName}
@@ -519,14 +516,14 @@ const Createpolls = ({ setCreatepoll }) => {
           <section>
             <Row>
               <Col lg={6} md={6} sm={6}>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Title_heading"]}>
                       {t("Title")} <span className={styles["steric"]}>*</span>
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <TextField
                       labelclass={"d-none"}
@@ -537,7 +534,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Title_heading"]}>
                       {t("Options")} <span className={styles["steric"]}>*</span>
@@ -549,22 +546,21 @@ const Createpolls = ({ setCreatepoll }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Meeting_polls"]}
-                  >
+                    className={styles["Scroller_Meeting_polls"]}>
                     {options.length > 0
                       ? options.map((data, index) => {
                           return (
                             <>
                               {index <= 1 ? (
-                                <Row key={index} className="mt-2">
+                                <Row key={index} className='mt-2'>
                                   <Col lg={12} md={12} sm={12}>
-                                    <span className="position-relative">
+                                    <span className='position-relative'>
                                       <TextField
-                                        placeholder={`${"Option"}  ${parseInt(
-                                          index + 1
-                                        )}`}
+                                        placeholder={`${t(
+                                          "Option"
+                                        )}  ${parseInt(index + 1)}`}
                                         applyClass={"PollingCreateModal"}
-                                        labelclass="d-none"
+                                        labelclass='d-none'
                                         name={data.name}
                                         maxLength={100}
                                         value={data.value}
@@ -574,15 +570,15 @@ const Createpolls = ({ setCreatepoll }) => {
                                   </Col>
                                 </Row>
                               ) : (
-                                <Row key={index} className="mt-2">
+                                <Row key={index} className='mt-2'>
                                   <Col lg={12} md={12} sm={12}>
-                                    <span className="position-relative">
+                                    <span className='position-relative'>
                                       <TextField
-                                        placeholder={
-                                          "Option" + " " + parseInt(index + 1)
-                                        }
+                                        placeholder={`${t(
+                                          "Option"
+                                        )}  ${parseInt(index + 1)}`}
                                         applyClass={"PollingCreateModal"}
-                                        labelclass="d-none"
+                                        labelclass='d-none'
                                         name={data.name}
                                         value={data.value}
                                         maxLength={100}
@@ -591,9 +587,9 @@ const Createpolls = ({ setCreatepoll }) => {
                                           <img
                                             draggable={false}
                                             src={WhiteCrossIcon}
-                                            width="31.76px"
-                                            height="31.76px"
-                                            alt=""
+                                            width='31.76px'
+                                            height='31.76px'
+                                            alt=''
                                             onClick={() =>
                                               HandleCancelFunction(index)
                                             }
@@ -616,24 +612,23 @@ const Createpolls = ({ setCreatepoll }) => {
                       : null}
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} sm={12}>
                     <Button
                       text={
                         <>
-                          <Row className="mt-1">
+                          <Row className='mt-1'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-2"
-                            >
+                              className='d-flex gap-2'>
                               <img
                                 draggable={false}
                                 src={plusFaddes}
-                                width="15.87px"
-                                height="15.87px"
-                                alt=""
+                                width='15.87px'
+                                height='15.87px'
+                                alt=''
                               />
                               <span className={styles["Add_Button_Heading"]}>
                                 {t("Add-another-field")}
@@ -647,13 +642,12 @@ const Createpolls = ({ setCreatepoll }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex align-items-start flex-column justify-content-start"
-                  >
+                    className='d-flex align-items-start flex-column justify-content-start'>
                     <span className={styles["Title_heading"]}>
                       {t("Due-date") + "*"}
                     </span>
@@ -661,17 +655,17 @@ const Createpolls = ({ setCreatepoll }) => {
                       value={meetingDate}
                       format={"DD/MM/YYYY"}
                       minDate={moment().toDate()}
-                      placeholder="DD/MM/YYYY"
+                      placeholder='DD/MM/YYYY'
                       render={
                         <InputIcon
-                          placeholder="DD/MM/YYYY"
-                          className="datepicker_input"
+                          placeholder='DD/MM/YYYY'
+                          className='datepicker_input'
                         />
                       }
                       editable={false}
-                      className="datePickerTodoCreate2"
+                      className='datePickerTodoCreate2'
                       onOpenPickNewDate={true}
-                      inputMode=""
+                      inputMode=''
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
@@ -684,15 +678,13 @@ const Createpolls = ({ setCreatepoll }) => {
                     lg={6}
                     md={6}
                     sm={6}
-                    className="d-flex justify-content-end"
-                  >
-                    <Row className="mt-2">
+                    className='d-flex justify-content-end'>
+                    <Row className='mt-2'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex align-items-center gap-2"
-                      >
+                        className='d-flex align-items-center gap-2'>
                         <Checkbox
                           onChange={HandleCheckMultipleAnswers}
                           checked={pollsData.AllowMultipleAnswer}
@@ -711,15 +703,13 @@ const Createpolls = ({ setCreatepoll }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["MarginSection"]}
-                  >
-                    <Row className="mt-5">
+                    className={styles["MarginSection"]}>
+                    <Row className='mt-5'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="group-fields d-flex align-items-center gap-2"
-                      >
+                        className='group-fields d-flex align-items-center gap-2'>
                         <Select
                           classNamePrefix={"Polls_Meeting"}
                           options={memberSelect}
@@ -727,6 +717,7 @@ const Createpolls = ({ setCreatepoll }) => {
                           closeMenuOnSelect={false}
                           components={animatedComponents}
                           isMulti
+                          placeholder={`${t("Select")}...`}
                           onChange={handleSelectValue}
                           isSearchable={true}
                           filterOption={customFilter}
@@ -745,40 +736,38 @@ const Createpolls = ({ setCreatepoll }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Members"]}
-                  >
+                    className={styles["Scroller_Members"]}>
                     <Row>
                       {members.length > 0
                         ? members.map((data, index) => {
                             console.log(data, "membersmembersmembers");
                             return (
                               <>
-                                <Col lg={6} md={6} sm={6} className="mt-3">
+                                <Col lg={6} md={6} sm={6} className='mt-3'>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <section
-                                        className={styles["Outer_Box_Members"]}
-                                      >
-                                        <Row className="mt-2">
+                                        className={styles["Outer_Box_Members"]}>
+                                        <Row className='mt-2'>
                                           <Col
                                             lg={10}
                                             md={10}
                                             sm={10}
-                                            className="d-flex gap-2 align-items-center"
-                                          >
+                                            className='d-flex gap-2 align-items-center'>
                                             <img
                                               src={`data:image/jpeg;base64,${data?.displayPicture}`}
                                               draggable={false}
-                                              alt=""
-                                              height="33px"
-                                              width="33px"
+                                              alt=''
+                                              height='33px'
+                                              width='33px'
                                               className={
                                                 styles["ProfileStyles"]
                                               }
                                             />
                                             <span
-                                              className={styles["Name_Members"]}
-                                            >
+                                              className={
+                                                styles["Name_Members"]
+                                              }>
                                               {data.userName}
                                             </span>
                                           </Col>
@@ -786,15 +775,14 @@ const Createpolls = ({ setCreatepoll }) => {
                                             lg={2}
                                             md={2}
                                             sm={2}
-                                            className="d-flex align-items-center"
-                                          >
+                                            className='d-flex align-items-center'>
                                             <img
                                               draggable={false}
                                               src={RedCross}
-                                              alt=""
-                                              height="14px"
-                                              width="14px"
-                                              className="cursor-pointer"
+                                              alt=''
+                                              height='14px'
+                                              width='14px'
+                                              className='cursor-pointer'
                                               onClick={() =>
                                                 RemoveMembers(index)
                                               }
@@ -819,8 +807,7 @@ const Createpolls = ({ setCreatepoll }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_Meeting_Creat_Polls"]}

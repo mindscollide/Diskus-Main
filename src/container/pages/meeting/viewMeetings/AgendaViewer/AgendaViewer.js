@@ -127,6 +127,8 @@ const AgendaViewer = () => {
     setPresenterForOneToOneOrGroup,
   } = useMeetingContext();
 
+  console.log(videoTalk, "videoTalkvideoTalk")
+
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");

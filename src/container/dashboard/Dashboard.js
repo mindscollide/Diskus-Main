@@ -2379,6 +2379,7 @@ const Dashboard = () => {
             setNotificationID(id);
             dispatch(mqttGroupLeft(data.payload));
           } else {
+            dispatch(mqttGroupLeft(data.payload));
             setNotification({
               ...notification,
               notificationShow: true,

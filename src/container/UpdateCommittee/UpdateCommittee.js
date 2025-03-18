@@ -949,7 +949,7 @@ const UpdateCommittee = () => {
                                     className={
                                       styles["ADD-Update-Committee-btn"]
                                     }
-                                    text={t(" ADD")}
+                                    text={t("ADD")}
                                   />
                                 </Col>
                               </Row>

@@ -140,6 +140,8 @@ import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuic
 import { useResolutionContext } from "../../../context/ResolutionContext";
 import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
 import DeleteMeetingConfirmationModal from "./deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
+import SpinComponent from "../../../components/elements/mainLoader/loader";
+import EmptyTableComponent from "./EmptyTableComponent/EmptyTableComponent";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -1009,22 +1011,80 @@ const NewMeeting = () => {
       try {
         validateStringEmailApi(MtAgUpdate, navigate, t, 3, dispatch)
           .then(async (result) => {
-            // Handle the result here
-            if (result.isQuickMeeting === false) {
-              await setAdvanceMeetingModalID(Number(result.meetingID));
-              await setViewAdvanceMeetingModalUnpublish(true);
-              await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            const {
+              isQuickMeeting,
+              attendeeId,
+              meetingStatusId,
+              videoCallUrl,
+              meetingID,
+              isChat,
+              isVideo,
+              talkGroupId,
+              isMinutePublished,
+            } = result;
+
+            if (meetingStatusId === "10" || meetingStatusId === 10) {
+              let joinMeetingData = {
+                VideoCallURL: videoCallUrl,
+                FK_MDID: meetingID,
+                DateTime: getCurrentDateTimeUTC(),
+              };
+
+              dispatch(
+                JoinCurrentMeeting(
+                  isQuickMeeting,
+                  navigate,
+                  t,
+                  joinMeetingData,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1,
+                  setAdvanceMeetingModalID,
+                  setViewAdvanceMeetingModal
+                )
+              );
               setEditorRole({
-                ...editorRole,
-                isPrimaryOrganizer: false,
+                status: String(meetingStatusId),
                 role:
-                  Number(result.attendeeId) === 2
+                  attendeeId === 2
                     ? "Participant"
-                    : Number(result.attendeeId) === 4
+                    : attendeeId === 4
                     ? "Agenda Contributor"
                     : "Organizer",
-                status: Number(result.meetingStatusId),
+                isPrimaryOrganizer: false,
               });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              localStorage.setItem("videoCallURL", videoCallUrl);
+
+              dispatch(viewMeetingFlag(true));
+              localStorage.setItem("isMinutePublished", isMinutePublished);
+            } else {
+              setEditorRole({
+                status: String(meetingStatusId),
+                role:
+                  attendeeId === 2
+                    ? "Participant"
+                    : attendeeId === 4
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: false,
+              });
+              setVideoTalk({
+                isChat: isChat,
+                isVideoCall: isVideo,
+                talkGroupID: talkGroupId,
+              });
+              setAdvanceMeetingModalID(meetingID);
+              setViewAdvanceMeetingModal(true);
+              dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              dispatch(scheduleMeetingPageFlag(false));
+              localStorage.setItem("currentMeetingID", meetingID);
+              localStorage.setItem("isMinutePublished", isMinutePublished);
             }
 
             localStorage.removeItem("mtAgUpdate");
@@ -1040,6 +1100,44 @@ const NewMeeting = () => {
       }
     }
   }, [MtAgUpdate]);
+
+  const ViewMeetingThroughEmailFunc = (result) => {
+    const {
+      attendeeId,
+      isQuickMeeting,
+      meetingID,
+      meetingStatusId,
+      organizationID,
+      userID,
+      isChat,
+      talkGroupId,
+      isVideo,
+      videoCallUrl,
+      isMinutePublished,
+    } = result;
+    setEditorRole({
+      status: String(meetingStatusId),
+      role:
+        attendeeId === 2
+          ? "Participant"
+          : attendeeId === 4
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: false,
+    });
+    setVideoTalk({
+      isChat: isChat,
+      isVideoCall: isVideo,
+      talkGroupID: talkGroupId,
+    });
+    dispatch(emailRouteID(5));
+    setAdvanceMeetingModalID(meetingID);
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+    localStorage.setItem("currentMeetingID", meetingID);
+    localStorage.setItem("isMinutePublished", isMinutePublished);
+  };
 
   useEffect(() => {
     if (AgCont !== null) {
@@ -1322,7 +1420,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: t("Quick-meeting"),
+          text: "Quick-meeting",
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -2187,6 +2285,8 @@ const NewMeeting = () => {
         const matchedFilter = isMeetingTypeFilter.find(
           (data) => meetingType === Number(data.value)
         );
+
+        console.log(matchedFilter, "matchedFiltermatchedFilter");
         return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : t(matchedFilter)
@@ -3106,7 +3206,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: t("Quick-meeting"),
+          text: "Quick-meeting",
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -3121,24 +3221,6 @@ const NewMeeting = () => {
       }
     } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes]);
-
-  // Empty text data
-  const emptyText = () => {
-    return (
-      <ResultMessage
-        icon={
-          <img
-            src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
-          />
-        }
-        title={t("No-new-meetings")}
-        subTitle={t("Anything-important-thats-needs-discussion")}
-      />
-    );
-  };
 
   const handelChangePagination = async (current, PageSize) => {
     let searchData = {
@@ -4068,8 +4150,9 @@ const NewMeeting = () => {
                             pagination={false}
                             className='newMeetingTable'
                             rows={rows}
+                            // loading={true}
                             locale={{
-                              emptyText: emptyText(), // Set your custom empty text here
+                              emptyText: <EmptyTableComponent />, // Set your custom empty text here
                             }}
                           />
                           {/* // ) : null} */}

@@ -855,9 +855,9 @@ const GroupViewPolls = ({ groupStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={{ y: "54vh", x: false }}
+                        scroll={{ y: "45vh", x: false }}
                         pagination={false}
-                        className="newMeetingTable"
+                        className="Resolution_table"
                         locale={{
                           emptyText: (
                             <>

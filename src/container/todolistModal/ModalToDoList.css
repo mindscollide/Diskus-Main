@@ -216,3 +216,7 @@ body[dir="rtl"] .ArabicFontSemiBold {
 .datePickerTodoCreate2 .rmdp-calendar {
   padding: 7px !important;
 }
+
+.seletTaskAssginee .css-tr4s17-option {
+  background-color: transparent;
+} 

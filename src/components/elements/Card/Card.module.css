@@ -145,7 +145,6 @@ body[dir="rtl"] .Status-Committee-Group {
 }
 
 body[dir="rtl"] .group-icon-Committee-Group {
-  margin-left: 18px !important;
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 

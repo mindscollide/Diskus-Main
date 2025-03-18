@@ -568,6 +568,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         }
                         placeholder={t("Add-assignee")}
                         applyClass='assigneeFindInCreateToDo'
+                        className="seletTaskAssginee"
                         filterOption={filterFunc}
                       />
                     </Col>

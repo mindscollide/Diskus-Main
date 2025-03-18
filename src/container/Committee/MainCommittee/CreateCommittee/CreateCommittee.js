@@ -751,7 +751,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 ? committeeTypesVal
                                 : null
                             }
-                            placeholder={t("Committee-type-committee")}
+                            placeholder={t("Committee-type")}
                             onChange={CommitteeTypeChangeHandler}
                           />
                         </Col>
