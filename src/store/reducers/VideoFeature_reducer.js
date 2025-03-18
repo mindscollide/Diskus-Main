@@ -100,6 +100,7 @@ const initialState = {
   leavePresenterOrJoinOtherCalls: false,
   accpetAccessOfHostTransfer: false,
   unansweredFlagForOneToOneCall: false,
+  participantUpdatedListForPresenter: [],
   // startOrStopPresenter: false,
 };
 
@@ -757,7 +758,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         videoControlHost: action.response,
       };
     }
-    
+
     case actions.SET_MQTT_VOICE_CONTROLE_HOST: {
       return {
         ...state,
@@ -1140,6 +1141,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         unansweredFlagForOneToOneCall: action.response,
+      };
+    }
+
+    //updated participants List For PRESENTER
+    case actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER: {
+      console.log(action, "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER");
+      return {
+        ...state,
+        participantUpdatedListForPresenter: action.response,
       };
     }
 

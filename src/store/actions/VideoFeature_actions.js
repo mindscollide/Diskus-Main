@@ -2322,6 +2322,14 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
 //   };
 // };
 
+//updated participants List For PRESENTER
+const updatedParticipantListForPresenter = (response) => {
+  return {
+    type: actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -2419,4 +2427,5 @@ export {
   acceptHostTransferAccessGlobalFunc,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
+  updatedParticipantListForPresenter,
 };
