@@ -2164,7 +2164,7 @@ const presenterFlagForAlreadyInParticipantMeetingVideo = (response) => {
 
 // global state for Presenter Participants who joined Presenter Video
 const presenterNewParticipantJoin = (response) => {
-  console.log("hell", response);
+  console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO", response);
 
   return {
     type: actions.PRESENTER_JOIN_PARTICIPANT_VIDEO,

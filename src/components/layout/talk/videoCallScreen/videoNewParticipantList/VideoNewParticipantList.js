@@ -11,6 +11,7 @@ import {
   participantWaitingListBox,
   presenterLeaveParticipant,
   presenterNewParticipantJoin,
+  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -158,14 +159,16 @@ const VideoNewParticipantList = () => {
   }, [leavePresenterParticipant]);
 
   useEffect(() => {
-      console.log("getAllParticipantMain");
+    console.log("getAllParticipantMain");
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
       if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
       presenterViewHostFlag
     ) {
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
       // Step 1: Remove any existing participant with the same userID or guid
-      let dublicateData=[...filteredParticipants]
+      let dublicateData = [...filteredParticipants];
       const updatedParticipants = dublicateData.filter(
         (participant) =>
           participant.userID !== newJoinPresenterParticipant.userID &&
@@ -177,7 +180,7 @@ const VideoNewParticipantList = () => {
 
       // Step 3: Update the state
       console.log("getAllParticipantMain");
-      setFilteredParticipants(updatedParticipants);
+      dispatch(updatedParticipantListForPresenter(updatedParticipants));
       dispatch(presenterNewParticipantJoin([]));
 
       console.log(updatedParticipants);

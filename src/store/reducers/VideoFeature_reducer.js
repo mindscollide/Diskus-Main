@@ -100,7 +100,6 @@ const initialState = {
   leavePresenterOrJoinOtherCalls: false,
   accpetAccessOfHostTransfer: false,
   unansweredFlagForOneToOneCall: false,
-  participantUpdatedListForPresenter: [],
   // startOrStopPresenter: false,
 };
 
@@ -1149,7 +1148,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       console.log(action, "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER");
       return {
         ...state,
-        participantUpdatedListForPresenter: action.response,
+        getAllParticipantMain: action.response,
       };
     }
 

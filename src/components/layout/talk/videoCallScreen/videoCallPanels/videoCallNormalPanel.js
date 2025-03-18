@@ -43,6 +43,7 @@ import {
   startPresenterViewMainApi,
   stopPresenterViewMainApi,
   toggleParticipantsVisibility,
+  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -449,6 +450,8 @@ const VideoPanelNormal = () => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
+        dispatch(updatedParticipantListForPresenter([]));
+
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow !== null) {
           console.log("busyCall");

@@ -57,6 +57,8 @@ import {
   openPresenterViewMainApi,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
+  updatedParticipantListForPresenter,
+  presenterNewParticipantJoin,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -349,6 +351,14 @@ const VideoCallNormalHeader = ({
       };
       dispatch(getGroupCallParticipantsMainApi(navigate, t, data));
     }
+
+    const handleBeforeUnload = async (event) => {
+      setHandRaiseCounter(0);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   useEffect(() => {
@@ -381,6 +391,36 @@ const VideoCallNormalHeader = ({
     console.log(getAllParticipantMain, "getAllParticipantMain");
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
+
+  useEffect(() => {
+    console.log("getAllParticipantMain");
+    console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+    if (
+      Object.keys(newJoinPresenterParticipant).length > 0 &&
+      presenterViewFlag &&
+      presenterViewHostFlag &&
+      priticipantListModalFlagForHost === false
+    ) {
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+      // Step 1: Remove any existing participant with the same userID or guid
+      let dublicateData = [...getAllParticipantMain];
+      const updatedParticipants = dublicateData.filter(
+        (participant) =>
+          participant.userID !== newJoinPresenterParticipant.userID &&
+          participant.guid !== newJoinPresenterParticipant.guid
+      );
+
+      // Step 2: Add the new participant
+      updatedParticipants.push(newJoinPresenterParticipant);
+
+      // Step 3: Update the state
+      console.log("getAllParticipantMain");
+      dispatch(updatedParticipantListForPresenter(updatedParticipants));
+      dispatch(presenterNewParticipantJoin([]));
+
+      console.log(updatedParticipants);
+    }
+  }, [newJoinPresenterParticipant]);
 
   useEffect(() => {
     if (makeHostNow !== null) {
