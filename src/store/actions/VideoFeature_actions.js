@@ -9,6 +9,7 @@ import {
   muteUnMuteParticipant,
   openPresenterView,
   OpenPresenterView,
+  participantOfGroupCall,
   startPresenterView,
   stopPresenterView,
 } from "../../commen/apis/Api_config";
@@ -2220,6 +2221,99 @@ const unansweredOneToOneCall = (response) => {
   };
 };
 
+// Get Participants of Video Group Call
+const getGroupCallParticipantsInit = () => {
+  return {
+    type: actions.GET_PARTICIPANTS_OF_GROUP_CALL_INIT,
+  };
+};
+
+const getGroupCallParticipantsSuccess = (response, message) => {
+  return {
+    type: actions.GET_PARTICIPANTS_OF_GROUP_CALL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getGroupCallParticipantsFail = (message) => {
+  return {
+    type: actions.GET_PARTICIPANTS_OF_GROUP_CALL_FAIL,
+    message: message,
+  };
+};
+
+const getGroupCallParticipantsMainApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getGroupCallParticipantsInit());
+    let form = new FormData();
+    form.append("RequestMethod", participantOfGroupCall.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getGroupCallParticipantsMainApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetGroupCallParticipants_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getGroupCallParticipantsSuccess(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetGroupCallParticipants_02".toLowerCase()
+                )
+            ) {
+              await dispatch(getGroupCallParticipantsFail(t("UnSuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Video_VideoServiceManager_GetGroupCallParticipants_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                getGroupCallParticipantsFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              getGroupCallParticipantsFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            getGroupCallParticipantsFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(getGroupCallParticipantsFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 // For Start and Stop Presenter View
 // const startOrStopPresenterGlobal = (response) => {
 //   return {
@@ -2324,4 +2418,5 @@ export {
   leavePresenterJoinOneToOneOrOtherCall,
   acceptHostTransferAccessGlobalFunc,
   unansweredOneToOneCall,
+  getGroupCallParticipantsMainApi,
 };

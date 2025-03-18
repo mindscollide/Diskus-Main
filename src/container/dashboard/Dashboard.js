@@ -236,6 +236,10 @@ const Dashboard = () => {
     cancelConfirmationModal,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
+    groupVideoCallAccepted,
+    setGroupVideoCallAccepted,
+    groupCallParticipantList,
+    setGroupCallParticipantList,
   } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
@@ -2641,7 +2645,7 @@ const Dashboard = () => {
             }, timeValue);
             return () => clearTimeout(timeoutId);
           } else if (
-            activeCall === false &&
+            (activeCall === false||activeCall===undefined||activeCall===null) &&
             IncomingVideoCallFlagReducer === false
           ) {
             console.log("Check active");
@@ -2670,6 +2674,20 @@ const Dashboard = () => {
           let initiateCallRoomID = JSON.parse(
             localStorage.getItem("initiateCallRoomID")
           );
+          let CallType = Number(localStorage.getItem("CallType"));
+
+          if (CallType === 2) {
+            setGroupVideoCallAccepted((prevState) => {
+              // Check if the user is already in the accepted list
+              const userExists = prevState.some(
+                (user) => user.recepientID === data.payload.recepientID
+              );
+              if (!userExists) {
+                return [...prevState, data.payload];
+              }
+              return prevState;
+            });
+          }
 
           let roomID = 0;
           if (activeRoomID) {
@@ -2767,6 +2785,16 @@ const Dashboard = () => {
             localStorage.getItem("initiateCallRoomID")
           );
 
+          let CallType = Number(localStorage.getItem("CallType"));
+
+          if (CallType === 2) {
+            setGroupCallParticipantList((prevState) =>
+              prevState.filter(
+                (user) => user.userID !== data.payload.recepientID
+              )
+            );
+          }
+
           let roomID = 0;
           if (activeRoomID) {
             if (Number(activeRoomID) !== 0 && !isCaller) {
@@ -2812,6 +2840,12 @@ const Dashboard = () => {
                 CallStatus: "Rejected",
                 RoomID: data.payload.roomID,
               };
+
+              existingData.push(newData);
+              localStorage.setItem(
+                "callerStatusObject",
+                JSON.stringify(existingData)
+              );
               let RecipentIDsOninitiateVideoCallflag = false;
               let remainingCount = 0;
               let existingDataflag = false;
@@ -2977,6 +3011,7 @@ const Dashboard = () => {
               let existingData =
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               console.log("mqtt", checkCallStatus(existingData));
+
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
                   data.payload.recepientID
@@ -3238,6 +3273,17 @@ const Dashboard = () => {
               : activeRoomID;
           console.log("mqtt");
           console.log("mqtt", RoomID);
+
+          let CallType = Number(localStorage.getItem("CallType"));
+          if (CallType === 2) {
+            // Also remove the user from groupCallParticipantList
+            setGroupCallParticipantList((prevList) =>
+              prevList.filter(
+                (participant) => participant.userID !== data.payload.recipientID
+              )
+            );
+          }
+
           if (RoomID === data.payload.roomID && activeCall) {
             if (data.payload.callTypeID === 1) {
               setNotification({

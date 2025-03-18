@@ -728,7 +728,7 @@ const Sidebar = () => {
                         localStorage.getItem("activeCall")
                       );
                       // Explicitly evaluate activeCall
-                      if (activeCall === false) {
+                      if (activeCall === false||activeCall===undefined||activeCall===null) {
                         handleMeetingSidebarClickNoCall();
                       } else {
                         handleMeetingSidebarClick();
@@ -773,7 +773,7 @@ const Sidebar = () => {
                         localStorage.getItem("activeCall")
                       );
                       // Explicitly evaluate activeCall
-                      if (activeCall === false) {
+                      if (activeCall === false||activeCall===undefined||activeCall===null) {
                         handleMeetingSidebarDataroomNoCall();
                       } else {
                         handleMeetingSidebarDataroom();
@@ -821,7 +821,7 @@ const Sidebar = () => {
                         localStorage.getItem("activeCall")
                       );
                       // Explicitly evaluate activeCall
-                      if (activeCall === false) {
+                      if (activeCall === false||activeCall===undefined||activeCall===null) {
                         handleMeetingSidebarResolutionsNoCall();
                       } else {
                         handleMeetingSidebarResolutions();
@@ -869,7 +869,7 @@ const Sidebar = () => {
                         localStorage.getItem("activeCall")
                       );
                       // Explicitly evaluate activeCall
-                      if (activeCall === false) {
+                      if (activeCall === false||activeCall===undefined||activeCall===null) {
                         handleMeetingSidebarCommitteesNoCall();
                       } else {
                         handleMeetingSidebarCommittees();
@@ -921,7 +921,7 @@ const Sidebar = () => {
                           localStorage.getItem("activeCall")
                         );
                         // Explicitly evaluate activeCall
-                        if (activeCall === false) {
+                        if (activeCall === false||activeCall===undefined||activeCall===null) {
                           handleMoreOptions();
                         } else {
                           handleMoreOptionActiveCall();

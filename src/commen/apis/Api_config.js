@@ -1591,7 +1591,8 @@ const CancelTrailandUpdageOrganiztionRM = {
 };
 
 const GetAllSignatureFlowDocumentsForCreatorRM = {
-  RequestMethod: "ServiceManager.GetAllSignatureFlowDocumentsForCreatorWithFilters",
+  RequestMethod:
+    "ServiceManager.GetAllSignatureFlowDocumentsForCreatorWithFilters",
 };
 
 const ListOfPendingForApprovalSignaturesRM = {
@@ -1975,18 +1976,23 @@ const ValidateEncryptedStringMinuteReviewDataRM = {
 };
 
 const ValidateEncryptedStringSignatureDataRM = {
-  RequestMethod: "ServiceManager.ValidateEncryptedStringSignatureData"
-}
+  RequestMethod: "ServiceManager.ValidateEncryptedStringSignatureData",
+};
 const GetMeetingRecordingFilesRM = {
-  RequestMethod: "ServiceManager.GetMeetingRecordingFiles"
-}
+  RequestMethod: "ServiceManager.GetMeetingRecordingFiles",
+};
 const RequestMeetingRecordingTranscriptRM = {
-  RequestMethod: "ServiceManager.RequestMeetingRecordingTranscript"
-}
+  RequestMethod: "ServiceManager.RequestMeetingRecordingTranscript",
+};
 
 const ValidateUserPasswordRM = {
-  RequestMethod: "ServiceManager.ValidateUserPassword"
-}
+  RequestMethod: "ServiceManager.ValidateUserPassword",
+};
+
+const participantOfGroupCall = {
+  RequestMethod: "ServiceManager.GetGroupCallParticipants",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2507,4 +2513,5 @@ export {
   stopPresenterView,
   joinPresenterView,
   leavePresenterView,
+  participantOfGroupCall,
 };

@@ -8,6 +8,7 @@ import { checkFeatureIDAvailability } from "../../../../../commen/functions/util
 import { Tooltip } from "antd";
 import ExpandIcon from "./../../talk-Video/video-images/Expand.svg";
 import MinimizeIcon from "./../../talk-Video/video-images/Minimize Purple.svg";
+import Menu from "./../../talk-Video/video-images/Menu.png";
 import NonActiveScreenShare from "./../../talk-Video/video-images/Screen Share Purple.svg";
 import videoEndIcon from "./../../talk-Video/video-images/Call End White.svg";
 import TileView from "./../../talk-Video/video-images/Tile View 1 Purple.svg";
@@ -27,7 +28,6 @@ import CloseNotification from "../../../../../assets/images/Close-Notification.p
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
 import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
-import Menu from "./../../talk-Video/video-images/Menu.png";
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
   maximizeVideoPanelFlag,
@@ -56,6 +56,7 @@ import {
   maxParticipantVideoCallPanel,
   openPresenterViewMainApi,
   unansweredOneToOneCall,
+  getGroupCallParticipantsMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -93,7 +94,13 @@ const VideoCallNormalHeader = ({
 
   const location = useLocation();
 
-  const { editorRole } = useContext(MeetingContext);
+  const {
+    editorRole,
+    groupVideoCallAccepted,
+    setGroupVideoCallAccepted,
+    groupCallParticipantList,
+    setGroupCallParticipantList,
+  } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
 
@@ -134,7 +141,7 @@ const VideoCallNormalHeader = ({
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
   );
-
+  console.log(audioControl, "audioControl");
   console.log(videoControl, "videoControl");
 
   // For Participant Raise Un Raised Hand
@@ -224,7 +231,21 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.unansweredFlagForOneToOneCall
   );
 
-  console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
+  const inCallParticipantList = useSelector(
+    (state) => state.videoFeatureReducer.inCallParticipantList
+  );
+
+  const pendingCallParticipantList = useSelector(
+    (state) => state.videoFeatureReducer.pendingCallParticipantList
+  );
+
+  console.log(
+    { inCallParticipantList, pendingCallParticipantList },
+    "inCallParticipantList"
+  );
+
+  console.log(groupVideoCallAccepted, "groupVideoCallAccepted");
+  console.log(groupCallParticipantList, "groupCallParticipantList");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -258,6 +279,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
@@ -307,19 +329,53 @@ const VideoCallNormalHeader = ({
   // to show a host participants waiting List Counter
   const participantWaitingListCounter = waitingParticipantsList?.length;
 
-  console.log(getAllParticipantMain.length, "participantWaitingListCounter");
+  console.log(getAllParticipantMain, "participantWaitingListCounter");
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
+
+  //Hand Raise Counter To show on Participant Counter in presenter View
+  const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
 
+  // API for check getGroupVideoCall Participants Data
+  useEffect(() => {
+    if (currentCallType === 2 && isCaller) {
+      let data = {
+        RoomID: String(initiateRoomID),
+      };
+      dispatch(getGroupCallParticipantsMainApi(navigate, t, data));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      pendingCallParticipantList !== undefined &&
+      pendingCallParticipantList !== null &&
+      pendingCallParticipantList.length !== 0
+    ) {
+      setGroupCallParticipantList(pendingCallParticipantList);
+    } else {
+      setGroupCallParticipantList([]);
+    }
+  }, [pendingCallParticipantList]);
+
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
       setParticipantCounterList(getAllParticipantMain?.length);
     }
+  }, [getAllParticipantMain]);
+
+  //Hand Raise Counter To show on Participant Counter in presenter View
+  useEffect(() => {
+    const raisedHandCounter = getAllParticipantMain.filter(
+      (participant) => participant.raiseHand === true
+    );
+
+    setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
   useEffect(() => {
@@ -381,6 +437,7 @@ const VideoCallNormalHeader = ({
   };
 
   function leaveSuccess() {
+    console.log("busyCall");
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
     const emptyArray = [];
@@ -660,6 +717,17 @@ const VideoCallNormalHeader = ({
       );
       dispatch(toggleParticipantsVisibility(check));
     }
+
+    if (!isMeetingVideo && isCaller) {
+      console.log("Check it");
+      if (LeaveCallModalFlag === false) {
+        if (ParticipantPopupFlag === false) {
+          dispatch(participantPopup(true));
+        } else {
+          dispatch(participantPopup(false));
+        }
+      }
+    }
     // if (LeaveCallModalFlag === false) {
     //   if (ParticipantPopupFlag === false) {
     //     // dispatch(participantPopup(true));
@@ -811,6 +879,8 @@ const VideoCallNormalHeader = ({
       localStorage.removeItem("isHost");
       localStorage.removeItem("isNewHost");
       console.log("busyCall");
+      setGroupCallParticipantList([]);
+      setGroupVideoCallAccepted([]);
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: activeRoomID,
@@ -1174,7 +1244,10 @@ const VideoCallNormalHeader = ({
   };
 
   const raiseUnRaiseForParticipant = (flag) => {
+    console.log("Check 1333");
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      console.log("Check 1333");
+
       let data = {
         RoomID: String(RoomID),
         UID: String(UID),
@@ -1204,6 +1277,13 @@ const VideoCallNormalHeader = ({
       }
     } catch {}
   }, [makeParticipantAsHost]);
+
+  useEffect(() => {
+    return () => {
+      setGroupVideoCallAccepted([]); // Clear list when component unmounts
+      setGroupCallParticipantList([]);
+    };
+  }, []);
 
   return (
     <>
@@ -1510,56 +1590,67 @@ const VideoCallNormalHeader = ({
                     />
                   </div>
                   <div className="participants-list">
-                    {currentParticipants !== undefined &&
-                    currentParticipants !== null &&
-                    currentParticipants.length > 0
-                      ? currentParticipants.map((participantData, index) => {
-                          return (
-                            <Row className="m-0" key={index}>
-                              <Col className="p-0" lg={7} md={7} sm={12}>
-                                <p className="participant-name">
-                                  {participantData.userName}
-                                </p>
-                              </Col>
-                              <Col
-                                className="d-flex justify-content-end align-items-canter gap-3 p-0"
-                                lg={5}
-                                md={5}
-                                sm={12}
-                              >
-                                <img src={MenuRaiseHand} alt="MenuRaiseHand" />
+                    {isCaller && (
+                      <>
+                        {groupCallParticipantList !== null &&
+                        groupCallParticipantList.length > 0
+                          ? groupCallParticipantList.map(
+                              (participantData, index) => {
+                                const displayStatus =
+                                  participantData.callStatusID === 4
+                                    ? t("Calling")
+                                    : participantData.callStatus;
 
-                                <Dropdown>
-                                  <Dropdown.Toggle className="participant-toggle">
-                                    <img src={Menu} alt="Menu" />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Remove")}
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Mute")}
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="participant-dropdown-item">
-                                      {t("Hide-video")}
-                                    </Dropdown.Item>
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </Col>
-                            </Row>
-                          );
-                        })
-                      : null}
+                                // Check if participant is in the accepted list
+                                const isMatchingParticipant =
+                                  groupVideoCallAccepted.some(
+                                    (user) =>
+                                      user.recepientID ===
+                                        participantData.userID &&
+                                      user.recepientName ===
+                                        participantData.name
+                                  );
+
+                                return (
+                                  <Row className="m-0" key={index}>
+                                    <Col className="p-0" lg={7} md={7} sm={12}>
+                                      <p className="participant-name">
+                                        {participantData.name}
+                                      </p>
+                                    </Col>
+                                    <Col
+                                      className="d-flex justify-content-end align-items-baseline gap-3 p-0"
+                                      lg={5}
+                                      md={5}
+                                      sm={12}
+                                    >
+                                      {isMatchingParticipant ? (
+                                        <>
+                                          <Row>
+                                            <Col>
+                                              <p className="participant-state">
+                                                {t("Accepted")}
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : (
+                                        <p className="participant-state">
+                                          {displayStatus}
+                                        </p>
+                                      )}
+                                    </Col>
+                                  </Row>
+                                );
+                              }
+                            )
+                          : null}
+                      </>
+                    )}
                   </div>
                 </>
               ) : (
-                <Tooltip
-                  placement={presenterViewFlag ? "bottom" : "topRight"}
-                  overlayClassName={
-                    presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                  }
-                  title={t("Participants")}
-                >
+                <Tooltip placement="topRight" title={t("Participants")}>
                   <div
                     className={
                       LeaveCallModalFlag === true
@@ -1587,13 +1678,26 @@ const VideoCallNormalHeader = ({
                   </div>
                 </Tooltip>
               )}
-              <span className="participants-counter-For-Host">
-                {convertNumbersInString(participantCounterList, lan)}
-              </span>
-              {participantWaitingListCounter > 0 && (
-                <span className="participants-counter-For-Host-waiting-counter">
-                  {convertNumbersInString(participantWaitingListCounter, lan)}
+
+              {presenterViewFlag && presenterViewHostFlag ? (
+                <span className="participants-counter-For-Host">
+                  {convertNumbersInString(handRaiseCounter, lan)}
                 </span>
+              ) : (
+                <>
+                  <span className="participants-counter-For-Host">
+                    {getMeetingHostInfo?.isDashboardVideo &&
+                      convertNumbersInString(participantCounterList, lan)}
+                  </span>
+                  {participantWaitingListCounter > 0 && (
+                    <span className="participants-counter-For-Host-waiting-counter">
+                      {convertNumbersInString(
+                        participantWaitingListCounter,
+                        lan
+                      )}
+                    </span>
+                  )}
+                </>
               )}
             </div>
           ) : null}

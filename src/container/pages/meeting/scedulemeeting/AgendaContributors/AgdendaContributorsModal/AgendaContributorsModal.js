@@ -21,6 +21,7 @@ import committeeicon from "../../../../../../assets/images/committeedropdown.svg
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import SpinComponent from "../../../../../../components/elements/mainLoader/loader";
 
 const AgendaContributorsModal = ({
   SelectedRSVP,
@@ -387,6 +388,17 @@ const AgendaContributorsModal = ({
                       className={styles["ADD_Btn_CreatePool_Modal"]}
                       onClick={handleAddUsers}
                     />
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center align-items-center mt-3"
+                  >
+                    <SpinComponent />
                   </Col>
                 </Row>
 
