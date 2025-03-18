@@ -1335,17 +1335,13 @@ const VideoCallNormalHeader = ({
     const callTypeID = Number(localStorage.getItem("callTypeID"));
 
     if (isMeetingVideo) {
-      if (
-        callTypeID === 2 &&
-        !presenterViewHostFlag &&
-        !presenterViewJoinFlag
-      ) {
-        return t("Group-call");
-      }
       return meetingTitle?.trim();
     }
     if (presenterViewHostFlag || presenterViewJoinFlag) {
       return meetingTitle?.trim();
+    }
+    if (callTypeID === 2 && !presenterViewHostFlag && !presenterViewJoinFlag) {
+      return t("Group-call");
     }
     if (
       currentUserName !== VideoRecipentData.userName &&
