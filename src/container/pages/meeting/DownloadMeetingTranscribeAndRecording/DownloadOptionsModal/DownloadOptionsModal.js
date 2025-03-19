@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import MeetingRecording from "../../MeetingRecording/MeetingRecording";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import SpinComponent from "../../../../../components/elements/mainLoader/loader";
 
 const DownloadOptionsModal = ({
   isDownloadAvailable,
@@ -102,7 +103,7 @@ const DownloadOptionsModal = ({
                   </span>
                   {!MeetingRecord?.isVideoCall ||
                     (!MeetingRecord?.isRecordingAvailable && (
-                      <img src={WarningIcon} />
+                      <img src={WarningIcon} alt="" />
                     ))}
                 </div>
               </Col>
@@ -111,9 +112,19 @@ const DownloadOptionsModal = ({
                   className={styles["Download___Button"]}
                   onClick={boardDeckOnClick}
                 >
-                  <img width={35} src={DownloadBoardDeck} />
+                  <img width={35} src={DownloadBoardDeck} alt="" />
                   <span>{t("Download-board-deck")}</span>
                 </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-center align-items-center"
+              >
+                <SpinComponent />
               </Col>
             </Row>
           </>
