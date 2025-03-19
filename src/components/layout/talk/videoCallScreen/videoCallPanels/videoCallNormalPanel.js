@@ -467,8 +467,8 @@ const VideoPanelNormal = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-        dispatch(updatedParticipantListForPresenter([]));
-        console.log("busyCall");
+      dispatch(updatedParticipantListForPresenter([]));
+      console.log("busyCall");
     };
   }, []);
 
@@ -882,8 +882,8 @@ const VideoPanelNormal = () => {
       console.log(event.data, "eventevent");
       // Check the origin for security
       console.log("handlePostMessage", event.data);
-      if (event.origin === "https://portal.letsdiskus.com:9414") {
-        // if (event.origin === "http://localhost:5500") {
+      // if (event.origin === "https://portal.letsdiskus.com:9414") {
+      if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
@@ -995,8 +995,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
