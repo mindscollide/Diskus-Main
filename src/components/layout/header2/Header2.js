@@ -601,7 +601,7 @@ const Header2 = ({ isVideo }) => {
                               localStorage.getItem("activeCall")
                             );
                             // Explicitly evaluate activeCall
-                            if (activeCall === false) {
+                            if (activeCall === false||activeCall===undefined||activeCall===null) {
                               handleMeetingPendingApprovalsNoCall();
                             } else {
                               handleMeetingPendingApprovals();
@@ -715,7 +715,7 @@ const Header2 = ({ isVideo }) => {
                             localStorage.getItem("activeCall")
                           );
                           // Explicitly evaluate activeCall
-                          if (activeCall === false) {
+                          if (activeCall === false||activeCall===undefined||activeCall===null) {
                             handleMeetingSidebarSettingsNoCall();
                           } else {
                             handleMeetingSidebarSettings();
@@ -751,7 +751,7 @@ const Header2 = ({ isVideo }) => {
                             localStorage.getItem("activeCall")
                           );
                           // Explicitly evaluate activeCall
-                          if (activeCall === false) {
+                          if (activeCall === false||activeCall===undefined||activeCall===null) {
                             handleMeetingSidebarFAQNoCall();
                           } else {
                             handleMeetingSidebarFAQ();
@@ -806,7 +806,7 @@ const Header2 = ({ isVideo }) => {
                     localStorage.getItem("activeCall")
                   );
                   // Explicitly evaluate activeCall
-                  if (activeCall === false) {
+                  if (activeCall === false||activeCall===undefined||activeCall===null) {
                     handleMeetingSidebarFAQNoCall();
                   } else {
                     handleMeetingSidebarFAQ();
@@ -1032,7 +1032,7 @@ const Header2 = ({ isVideo }) => {
                                       localStorage.getItem("activeCall")
                                     );
                                     // Explicitly evaluate activeCall
-                                    if (activeCall === false) {
+                                    if (activeCall === false||activeCall===undefined||activeCall===null) {
                                       RecentFilesTabNoCall();
                                     } else {
                                       RecentFilesTab();
@@ -1070,7 +1070,7 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false) {
+                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
                                     handleMeetingPendingApprovalsNoCall();
                                   } else {
                                     handleMeetingPendingApprovals();
@@ -1252,7 +1252,7 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false) {
+                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
                                     handleMeetingSidebarSettingsNoCall();
                                   } else {
                                     handleMeetingSidebarSettings();
@@ -1290,7 +1290,7 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false) {
+                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
                                     handleMeetingSidebarFAQNoCall();
                                   } else {
                                     handleMeetingSidebarFAQ();
@@ -1382,7 +1382,7 @@ const Header2 = ({ isVideo }) => {
                           localStorage.getItem("activeCall")
                         );
                         // Explicitly evaluate activeCall
-                        if (activeCall === false) {
+                        if (activeCall === false||activeCall===undefined||activeCall===null) {
                           handleMeetingSidebarFAQNoCall();
                         } else {
                           handleMeetingSidebarFAQ();

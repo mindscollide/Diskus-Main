@@ -276,7 +276,7 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false) {
+            if (activeCall === false||activeCall===undefined||activeCall===null) {
               handleMeetingSidebarCalendarNoCall();
             } else {
               handleMeetingSidebarCalendar();
@@ -321,7 +321,7 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false) {
+            if (activeCall === false||activeCall===undefined||activeCall===null) {
               handleMeetingSidebarGroupsNoCall();
             } else {
               handleMeetingSidebarGroups();
@@ -367,7 +367,7 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false) {
+            if (activeCall === false||activeCall===undefined||activeCall===null) {
               handleMeetingSidebarTodoNoCall();
             } else {
               handleMeetingSidebarTodo();
@@ -412,7 +412,7 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false) {
+            if (activeCall === false||activeCall===undefined||activeCall===null) {
               handleMeetingSidebarNotesNoCall();
             } else {
               handleMeetingSidebarNotes();
@@ -457,7 +457,7 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false) {
+            if (activeCall === false||activeCall===undefined||activeCall===null) {
               handleMeetingSidebarPollsNoCall();
             } else {
               handleMeetingSidebarPolls();
