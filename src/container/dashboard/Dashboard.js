@@ -1309,14 +1309,33 @@ const Dashboard = () => {
               "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
             ) {
               dispatch(participantVideoButtonState(false));
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
+              let currentMeetingID = 0;
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
               );
+              if (isZoomEnabled) {
+                currentMeetingID = String(
+                  localStorage.getItem("currentMeetingID")
+                );
+              } else {
+                currentMeetingID = Number(
+                  localStorage.getItem("currentMeetingID")
+                );
+              }
+
               let userIDCurrent = Number(localStorage.getItem("userID"));
               let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+              let flagForZoom1 = false;
+              if (isZoomEnabled) {
+                flagForZoom1 =
+                  String(currentMeetingID) === String(data.payload.meetingID);
+              } else {
+                flagForZoom1 =
+                  Number(currentMeetingID) === Number(data.payload.meetingID);
+              }
               if (
                 isMeetingVideo &&
-                Number(currentMeetingID) === Number(data.payload.meetingID) &&
+                flagForZoom1 &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
                 localStorage.setItem("isMeetingVideo", false);
