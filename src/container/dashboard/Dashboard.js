@@ -2852,7 +2852,7 @@ const Dashboard = () => {
           let falgCheck2 = false;
           if (isZoomEnabled) {
             console.log("mqtt", falgCheck2);
-            falgCheck2 = String(data.payload.roomID) === Number(roomID);
+            falgCheck2 = String(data.payload.roomID) === String(roomID);
           } else {
             console.log("mqtt", falgCheck1);
             falgCheck2 = Number(data.payload.roomID) === Number(roomID);
