@@ -1330,6 +1330,7 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
     };
   }, []);
+
   const getMeetingTitle = () => {
     const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     const callTypeID = Number(localStorage.getItem("callTypeID"));
@@ -1359,6 +1360,7 @@ const VideoCallNormalHeader = ({
 
     return null;
   };
+  
   return (
     <>
       <Row className="mb-4">
