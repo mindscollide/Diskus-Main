@@ -281,7 +281,10 @@ const VideoCallResponse = (Data, navigate, t) => {
                 )
             ) {
               console.log(Data, "responsedataresponseResult");
-              sessionStorage.setItem("NonMeetingVideoCall", true);
+              let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+              if (activeCall === false) {
+                sessionStorage.setItem("NonMeetingVideoCall", false);
+              }
 
               // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               if (Data.CallStatusID === 1) {
@@ -771,12 +774,12 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
-              console.log("leavecallMeetingVideo",flag);
+              console.log("leavecallMeetingVideo", flag);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
               if (flag === 1) {
-              console.log("leavecallMeetingVideo");
-              await dispatch(normalizeVideoPanelFlag(false));
+                console.log("leavecallMeetingVideo");
+                await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
                 let NewRoomID = localStorage.getItem("NewRoomID");
