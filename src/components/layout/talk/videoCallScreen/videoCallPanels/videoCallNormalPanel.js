@@ -888,6 +888,7 @@ const VideoPanelNormal = () => {
       console.log(event.data, "eventevent");
       // Check the origin for security
       console.log("disableZoomBeforeJoinSession", event.data);
+      // if (event.origin === "https://secure.letsdiskus.com:9414") {
       // if (event.origin === "https://portal.letsdiskus.com:9414") {
       if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
