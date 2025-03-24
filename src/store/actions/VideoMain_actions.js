@@ -771,9 +771,12 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
+              console.log("leavecallMeetingVideo",flag);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
+              sessionStorage.setItem("NonMeetingVideoCall", false);
               if (flag === 1) {
-                await dispatch(normalizeVideoPanelFlag(false));
+              console.log("leavecallMeetingVideo");
+              await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
                 let NewRoomID = localStorage.getItem("NewRoomID");
@@ -828,7 +831,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 )
             ) {
               await dispatch(leaveCallAction(t("Something-went-wrong")));
-            }else if (
+            } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
