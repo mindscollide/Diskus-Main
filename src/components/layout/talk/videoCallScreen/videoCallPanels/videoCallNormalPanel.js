@@ -790,6 +790,7 @@ const VideoPanelNormal = () => {
         if (iframe && iframe.contentWindow) {
           sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
+          console.log("handlePostMessage");
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
@@ -808,7 +809,10 @@ const VideoPanelNormal = () => {
       sessionStorage.removeItem("nonPresenter");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
-      iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+      console.log("videoHideUnHideForHost");
+      setTimeout(() => {
+        iframe?.contentWindow?.postMessage("ScreenShare", "*");
+      }, 1000); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
     }
@@ -875,13 +879,15 @@ const VideoPanelNormal = () => {
       dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
+  console.log("disableZoomBeforeJoinSession", disableBeforeJoinZoom);
+
   // Add event listener for messages
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");
       // Check the origin for security
-      console.log("handlePostMessage", event.data);
+      console.log("disableZoomBeforeJoinSession", event.data);
       // if (event.origin === "https://portal.letsdiskus.com:9414") {
       if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
@@ -940,6 +946,7 @@ const VideoPanelNormal = () => {
             break;
 
           case "StreamConnected":
+            console.log("disableZoomBeforeJoinSession", event.data);
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();

@@ -51,9 +51,16 @@ export const generateURLParticipant = (
   console.log("iframeiframe", roomID);
   console.log("iframeiframe", participantFullName);
   if (isZoomEnabled) {
+    let presenterViewvideoURL = localStorage.getItem("presenterViewvideoURL");
+    console.log("iframeiframe", presenterViewvideoURL);
+    if (presenterViewvideoURL) {
+      return presenterViewvideoURL;
+    } else {
+      queryParams = `userName=${participantFullName}&sessionKey=${roomID}&userGuid=${UserGuid}&isHideCamera=false&isMute=false`;
+      console.log("iframeiframe", queryParams);
+    }
     console.log("iframeiframe", isZoomEnabled);
 
-    queryParams = `userName=${participantFullName}&sessionKey=${roomID}&userGuid=${UserGuid}&isHideCamera=false&isMute=false`;
     console.log("iframeiframe", queryParams);
   } else {
     console.log("iframeiframe");

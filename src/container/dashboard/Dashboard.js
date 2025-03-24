@@ -2645,7 +2645,9 @@ const Dashboard = () => {
             }, timeValue);
             return () => clearTimeout(timeoutId);
           } else if (
-            (activeCall === false||activeCall===undefined||activeCall===null) &&
+            (activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null) &&
             IncomingVideoCallFlagReducer === false
           ) {
             console.log("Check active");
@@ -2671,12 +2673,12 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
-          let initiateCallRoomID = JSON.parse(
-            localStorage.getItem("initiateCallRoomID")
-          );
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          
           let CallType = Number(localStorage.getItem("CallType"));
 
           if (CallType === 2) {
+            console.log("mqtt");
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
@@ -2688,23 +2690,35 @@ const Dashboard = () => {
               return prevState;
             });
           }
-
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let falgCheck1 = false;
+          if (isZoomEnabled) {
+            falgCheck1 = String(activeRoomID) !== "" && !isCaller;
+          } else {
+            falgCheck1 = Number(activeRoomID) !== 0 && !isCaller;
+          }
           let roomID = 0;
+          console.log("mqtt", activeRoomID);
           if (activeRoomID) {
-            if (Number(activeRoomID) !== 0 && !isCaller) {
+            console.log("mqtt");
+            if (falgCheck1) {
               roomID = activeRoomID;
             } else {
               if (!isCaller) {
                 roomID = NewRoomID;
               } else {
-                roomID = initiateCallRoomID;
+                roomID = isZoomEnabled
+                  ? String(initiateCallRoomID)
+                  : initiateCallRoomID;
               }
             }
           } else {
             if (!isCaller) {
               roomID = NewRoomID;
             } else {
-              roomID = initiateCallRoomID;
+              roomID = isZoomEnabled
+                ? String(initiateCallRoomID)
+                : initiateCallRoomID;
             }
           }
           console.log("mqtt", roomID);
@@ -2712,11 +2726,17 @@ const Dashboard = () => {
             JSON.parse(
               localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
-          if (
-            !isMeetingVideo &&
-            Number(data.payload.roomID) === Number(roomID) &&
-            userID !== data.senderID
-          ) {
+          let falgCheck2 = false;
+          if (isZoomEnabled) {
+            console.log("mqtt", falgCheck2);
+            falgCheck2 = String(data.payload.roomID) === String(roomID);
+          } else {
+            console.log("mqtt", falgCheck2);
+            falgCheck2 = Number(data.payload.roomID) === Number(roomID);
+          }
+          console.log("mqtt", falgCheck2);
+          if (!isMeetingVideo && falgCheck2 && userID !== data.senderID) {
+            console.log("mqtt", roomID);
             dispatch(videoOutgoingCallFlag(false));
             dispatch(videoCallAccepted(data.payload, data.payload.message));
             localStorage.setItem("ringerRoomId", 0);
