@@ -43,6 +43,7 @@ import {
   startPresenterViewMainApi,
   stopPresenterViewMainApi,
   toggleParticipantsVisibility,
+  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -449,6 +450,9 @@ const VideoPanelNormal = () => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
+        dispatch(updatedParticipantListForPresenter([]));
+        console.log("busyCall");
+
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow !== null) {
           console.log("busyCall");
@@ -463,8 +467,10 @@ const VideoPanelNormal = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      dispatch(updatedParticipantListForPresenter([]));
+      console.log("busyCall");
     };
-  }, [iframe]);
+  }, []);
 
   useEffect(() => {
     if (getAllParticipantMain?.length) {
@@ -784,6 +790,7 @@ const VideoPanelNormal = () => {
         if (iframe && iframe.contentWindow) {
           sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
+          console.log("handlePostMessage");
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
@@ -802,7 +809,10 @@ const VideoPanelNormal = () => {
       sessionStorage.removeItem("nonPresenter");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
-      iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+      console.log("videoHideUnHideForHost");
+      setTimeout(() => {
+        iframe?.contentWindow?.postMessage("ScreenShare", "*");
+      }, 1000); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
     }
@@ -866,18 +876,21 @@ const VideoPanelNormal = () => {
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
         Name: String(currentName),
       };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+      dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
+  console.log("disableZoomBeforeJoinSession", disableBeforeJoinZoom);
+
   // Add event listener for messages
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");
       // Check the origin for security
-      console.log("handlePostMessage", event.data);
-      if (event.origin === "https://portal.letsdiskus.com:9414") {
-        // if (event.origin === "http://localhost:5500") {
+      console.log("disableZoomBeforeJoinSession", event.data);
+      // if (event.origin === "https://secure.letsdiskus.com:9414") {
+      // if (event.origin === "https://portal.letsdiskus.com:9414") {
+      if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
@@ -934,6 +947,7 @@ const VideoPanelNormal = () => {
             break;
 
           case "StreamConnected":
+            console.log("disableZoomBeforeJoinSession", event.data);
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
@@ -989,8 +1003,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }

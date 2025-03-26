@@ -100,8 +100,6 @@ const initialState = {
   leavePresenterOrJoinOtherCalls: false,
   accpetAccessOfHostTransfer: false,
   unansweredFlagForOneToOneCall: false,
-  inCallParticipantList: [],
-  pendingCallParticipantList: [],
   // startOrStopPresenter: false,
 };
 
@@ -143,6 +141,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ],
       };
     }
+
     case actions.GUEST_PARTICIPANT_LEAVE_VIDEO: {
       console.log(action, "actionactionactionactionaction");
       let copyState = [...state.getAllParticipantMain];
@@ -707,6 +706,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         ...state,
         participantRemovedFromVideobyHost: action.response,
       };
+
     case actions.PARTICIPANT_LEAVE_CALL_FOR_JOIN_NON_MEETING_CALL:
       return {
         ...state,
@@ -757,6 +757,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         videoControlHost: action.response,
       };
     }
+
     case actions.SET_MQTT_VOICE_CONTROLE_HOST: {
       return {
         ...state,
@@ -781,6 +782,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         videoControlForParticipant: action.response,
       };
     }
+
     case actions.SET_MQTT_VOICE_PARTICIPANT: {
       console.log("SET_MQTT_VOICE_PARTICIPANT", action.response);
       return {
@@ -1141,30 +1143,12 @@ const videoFeatureReducer = (state = initialState, action) => {
       };
     }
 
-    // For Get Group Call Participants List
-    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_INIT: {
+    //updated participants List For PRESENTER
+    case actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER: {
+      console.log(action, "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER");
       return {
         ...state,
-        Loading: false,
-      };
-    }
-
-    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        inCallParticipantList: action.response.inCallParticipants,
-        pendingCallParticipantList: action.response.pendingParticipantList,
-      };
-    }
-
-    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_FAIL: {
-      return {
-        ...state,
-        Loading: false,
-        inCallParticipantList: [],
-        pendingCallParticipantList: [],
-        ResponseMessage: action.message,
+        getAllParticipantMain: action.response,
       };
     }
 

@@ -57,6 +57,8 @@ import {
   openPresenterViewMainApi,
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
+  updatedParticipantListForPresenter,
+  presenterNewParticipantJoin,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -327,9 +329,9 @@ const VideoCallNormalHeader = ({
   console.log(videoDisable, "videoDisable");
 
   // to show a host participants waiting List Counter
-  const participantWaitingListCounter = waitingParticipantsList?.length;
+  let participantWaitingListCounter = waitingParticipantsList?.length;
 
-  console.log(getAllParticipantMain, "participantWaitingListCounter");
+  console.log(getAllParticipantMain, "getAllParticipantMain");
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
@@ -349,6 +351,16 @@ const VideoCallNormalHeader = ({
       };
       dispatch(getGroupCallParticipantsMainApi(navigate, t, data));
     }
+
+    const handleBeforeUnload = async (event) => {
+      setHandRaiseCounter(0);
+      setParticipantCounterList(0);
+      participantWaitingListCounter = 0;
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
   }, []);
 
   useEffect(() => {
@@ -365,18 +377,52 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
+      console.log(getAllParticipantMain, "getAllParticipantMain");
       setParticipantCounterList(getAllParticipantMain?.length);
     }
   }, [getAllParticipantMain]);
 
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    const raisedHandCounter = getAllParticipantMain.filter(
+    console.log(getAllParticipantMain, "getAllParticipantMain");
+    let dublicateData = [...getAllParticipantMain];
+    const raisedHandCounter = dublicateData.filter(
       (participant) => participant.raiseHand === true
     );
 
+    console.log(getAllParticipantMain, "getAllParticipantMain");
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
+
+  useEffect(() => {
+    console.log("getAllParticipantMain");
+    console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+    if (
+      Object.keys(newJoinPresenterParticipant).length > 0 &&
+      presenterViewFlag &&
+      presenterViewHostFlag &&
+      priticipantListModalFlagForHost === false
+    ) {
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+      // Step 1: Remove any existing participant with the same userID or guid
+      let dublicateData = [...getAllParticipantMain];
+      const updatedParticipants = dublicateData.filter(
+        (participant) =>
+          participant.userID !== newJoinPresenterParticipant.userID &&
+          participant.guid !== newJoinPresenterParticipant.guid
+      );
+
+      // Step 2: Add the new participant
+      updatedParticipants.push(newJoinPresenterParticipant);
+
+      // Step 3: Update the state
+      console.log("getAllParticipantMain");
+      dispatch(updatedParticipantListForPresenter(updatedParticipants));
+      dispatch(presenterNewParticipantJoin([]));
+
+      console.log(updatedParticipants);
+    }
+  }, [newJoinPresenterParticipant]);
 
   useEffect(() => {
     if (makeHostNow !== null) {
@@ -1285,31 +1331,48 @@ const VideoCallNormalHeader = ({
     };
   }, []);
 
+  const getMeetingTitle = () => {
+    const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    const callTypeID = Number(localStorage.getItem("callTypeID"));
+
+    if (isMeetingVideo) {
+      return meetingTitle?.trim();
+    }
+    if (presenterViewHostFlag || presenterViewJoinFlag) {
+      return meetingTitle?.trim();
+    }
+    if (callTypeID === 2 && !presenterViewHostFlag && !presenterViewJoinFlag) {
+      return t("Group-call");
+    }
+    if (
+      currentUserName !== VideoRecipentData.userName &&
+      Object.keys(VideoRecipentData).length > 0
+    ) {
+      return (
+        VideoRecipentData.userName ||
+        VideoRecipentData.recipients?.[0]?.userName
+      );
+    }
+
+    if (Object.keys(VideoRecipentData).length === 0) {
+      return callerName;
+    }
+
+    return null;
+  };
+  
   return (
     <>
       <Row className="mb-4">
         <Col lg={3} md={3} sm={12} className="mt-1">
           <p
             className={
-              presenterViewFlag &&
-              !JSON.parse(localStorage.getItem("activeCall"))
+              presenterViewFlag && isMeetingVideo
                 ? "title-for-presenter"
                 : "title-heading"
             }
           >
-            {JSON.parse(localStorage.getItem("isMeetingVideo"))
-              ? Number(localStorage.getItem("callTypeID")) === 2 &&
-                !presenterViewHostFlag &&
-                !presenterViewJoinFlag
-                ? t("Group-call")
-                : meetingTitle?.trim()
-              : currentUserName !== VideoRecipentData.userName &&
-                Object.keys(VideoRecipentData).length > 0
-              ? VideoRecipentData.userName ||
-                VideoRecipentData.recipients?.[0]?.userName
-              : Object.keys(VideoRecipentData).length === 0
-              ? callerName
-              : null}
+            {getMeetingTitle()}
           </p>
         </Col>
 
@@ -1679,7 +1742,9 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               )}
 
-              {presenterViewFlag && presenterViewHostFlag ? (
+              {presenterViewFlag &&
+              presenterViewHostFlag &&
+              handRaiseCounter > 0 ? (
                 <span className="participants-counter-For-Host">
                   {convertNumbersInString(handRaiseCounter, lan)}
                 </span>
