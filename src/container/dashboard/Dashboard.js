@@ -3239,10 +3239,16 @@ const Dashboard = () => {
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
-              let acceptedRoomID = Number(
-                localStorage.getItem("acceptedRoomID")
-              );
-              let activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              let acceptedRoomID = "";
+              let activeRoomID = "";
+              if (isZoomEnabled) {
+                acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
+                activeRoomID = String(localStorage.getItem("activeRoomID"));
+              } else {
+                acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+                activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              }
+
               dispatch(incomingVideoCallFlag(false));
               if (activeRoomID !== acceptedRoomID) {
                 console.log("Check 123");
@@ -3290,9 +3296,17 @@ const Dashboard = () => {
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
                 dispatch(incomingVideoCallFlag(false));
-                let acceptedRoomID = Number(
-                  localStorage.getItem("acceptedRoomID")
-                );
+                let acceptedRoomID = "";
+                if (isZoomEnabled) {
+                  acceptedRoomID = String(
+                    localStorage.getItem("acceptedRoomID")
+                  );
+                } else {
+                  acceptedRoomID = Number(
+                    localStorage.getItem("acceptedRoomID")
+                  );
+                }
+
                 localStorage.setItem("newCallerID", callerID);
                 localStorage.setItem("activeCall", true);
                 localStorage.setItem("activeRoomID", acceptedRoomID);
@@ -3325,18 +3339,36 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideoHostCheck")
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-          let RoomID =
-            presenterViewFlagRef.current &&
-            (presenterViewHostFlagFlagRef.current ||
-              presenterViewJoinFlagRef.current)
-              ? roomID
-              : isMeetingVideo
-              ? isMeetingVideoHostCheck
-                ? newRoomID
-                : participantRoomId
-              : initiateCallRoomID
-              ? initiateCallRoomID
-              : activeRoomID;
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let RoomID = "";
+          if (isZoomEnabled) {
+            RoomID =
+              presenterViewFlagRef.current &&
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
+                ? String(roomID)
+                : isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? String(newRoomID)
+                  : String(participantRoomId)
+                : String(initiateCallRoomID)
+                ? String(initiateCallRoomID)
+                : String(activeRoomID);
+          } else {
+            RoomID =
+              presenterViewFlagRef.current &&
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
+                ? Number(roomID)
+                : isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? Number(newRoomID)
+                  : Number(participantRoomId)
+                : Number(initiateCallRoomID)
+                ? Number(initiateCallRoomID)
+                : Number(activeRoomID);
+          }
+
           console.log("mqtt");
           console.log("mqtt", RoomID);
 
