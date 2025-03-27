@@ -1078,16 +1078,30 @@ const VideoPanelNormal = () => {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
-
-        if (isMicActive) {
-          console.log("CheckIsZoom false");
-          iframe.contentWindow.postMessage("MicOff", "*");
+        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+        if (isZoomEnabled) {
+          if (isMicActive) {
+            console.log("VidOn");
+            setIsMicActive(false);
+            localStorage.setItem("MicOff", false);
+            iframe.contentWindow.postMessage("MicOn", "*");
+          } else {
+            console.log("VidOn");
+            setIsMicActive(true);
+            localStorage.setItem("MicOff", true);
+            iframe.contentWindow.postMessage("MicOff", "*");
+          }
         } else {
-          iframe.contentWindow.postMessage("MicOn", "*");
+          if (isMicActive) {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("MicOff", "*");
+          } else {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("MicOn", "*");
+          }
+          setIsMicActive(!isMicActive);
+          localStorage.setItem("MicOff", !isMicActive);
         }
-
-        setIsMicActive(!isMicActive);
-        localStorage.setItem("MicOff", !isMicActive);
       }
     } catch (error) {
       console.log("disableMicFunction", error);
@@ -1100,18 +1114,28 @@ const VideoPanelNormal = () => {
       console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow) {
         console.log("videoHideUnHideForHost");
-
-        if (isVideoActive) {
-          console.log("CheckIsZoom false");
-          iframe.contentWindow.postMessage("VidOff", "*");
+        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+        if (isZoomEnabled) {
+          if (isVideoActive) {
+            console.log("VidOn");
+            setIsVideoActive(false);
+            localStorage.setItem("VidOff", false);
+            iframe.contentWindow.postMessage("VidOn", "*");
+          } else {
+            console.log("VidOn");
+            setIsVideoActive(true);
+            localStorage.setItem("VidOff", true);
+            iframe.contentWindow.postMessage("VidOff", "*");
+          }
         } else {
-          iframe.contentWindow.postMessage("VidOn", "*");
+          if (isVideoActive) {
+            iframe.contentWindow.postMessage("VidOff", "*");
+          } else {
+            iframe.contentWindow.postMessage("VidOn", "*");
+          }
+          setIsVideoActive(!isVideoActive);
+          localStorage.setItem("VidOff", !isVideoActive);
         }
-
-        setIsVideoActive(!isVideoActive);
-        localStorage.setItem("VidOff", !isVideoActive);
-        // setIsVideoActive(!isVideoActive);
-        // localStorage.setItem("VidOff", !isVideoActive);
       }
     } catch {}
   };
