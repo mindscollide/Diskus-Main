@@ -102,6 +102,8 @@ const VideoCallNormalHeader = ({
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    unansweredCallParticipant,
+    setUnansweredCallParticipant,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -248,6 +250,7 @@ const VideoCallNormalHeader = ({
 
   console.log(groupVideoCallAccepted, "groupVideoCallAccepted");
   console.log(groupCallParticipantList, "groupCallParticipantList");
+  console.log(unansweredCallParticipant, "unansweredCallParticipant");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -611,7 +614,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
 
-    if (getDashboardVideo.isDashboardVideo === false) {
+    if (getDashboardVideo?.isDashboardVideo === false) {
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: roomID,
@@ -848,7 +851,7 @@ const VideoCallNormalHeader = ({
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
       }
-    } else if (getDashboardVideo.isDashboardVideo === false) {
+    } else if (getDashboardVideo?.isDashboardVideo === false) {
       console.log("leaveCallleaveCallleaveCallleaveCall");
       let Data = {
         OrganizationID: currentOrganization,
@@ -927,6 +930,7 @@ const VideoCallNormalHeader = ({
       console.log("busyCall");
       setGroupCallParticipantList([]);
       setGroupVideoCallAccepted([]);
+      setUnansweredCallParticipant([]);
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: activeRoomID,
@@ -1174,7 +1178,10 @@ const VideoCallNormalHeader = ({
         console.log("busyCall");
         leaveCallForNonMeating(0);
       }
-    } else if (isMeeting === false && meetHostFlag.isDashboardVideo === false) {
+    } else if (
+      isMeeting === false &&
+      meetHostFlag?.isDashboardVideo === false
+    ) {
       console.log("busyCall");
       leaveCallForNonMeating(0);
     }
@@ -1328,6 +1335,7 @@ const VideoCallNormalHeader = ({
     return () => {
       setGroupVideoCallAccepted([]); // Clear list when component unmounts
       setGroupCallParticipantList([]);
+      setUnansweredCallParticipant([]);
     };
   }, []);
 
@@ -1360,7 +1368,7 @@ const VideoCallNormalHeader = ({
 
     return null;
   };
-  
+
   return (
     <>
       <Row className="mb-4">
@@ -1674,6 +1682,16 @@ const VideoCallNormalHeader = ({
                                         participantData.name
                                   );
 
+                                // Check if participant is in the accepted list
+                                const isMatchingParticipantUnanswered =
+                                  unansweredCallParticipant.some(
+                                    (user) =>
+                                      user.recepientID ===
+                                        participantData.userID &&
+                                      user.recepientName ===
+                                        participantData.name
+                                  );
+
                                 return (
                                   <Row className="m-0" key={index}>
                                     <Col className="p-0" lg={7} md={7} sm={12}>
@@ -1693,6 +1711,16 @@ const VideoCallNormalHeader = ({
                                             <Col>
                                               <p className="participant-state">
                                                 {t("Accepted")}
+                                              </p>
+                                            </Col>
+                                          </Row>
+                                        </>
+                                      ) : isMatchingParticipantUnanswered ? (
+                                        <>
+                                          <Row>
+                                            <Col>
+                                              <p className="participant-state">
+                                                {t("Unanswered")}
                                               </p>
                                             </Col>
                                           </Row>

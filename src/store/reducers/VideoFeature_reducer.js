@@ -100,6 +100,8 @@ const initialState = {
   leavePresenterOrJoinOtherCalls: false,
   accpetAccessOfHostTransfer: false,
   unansweredFlagForOneToOneCall: false,
+  inCallParticipantList: [],
+  pendingCallParticipantList: [],
   // startOrStopPresenter: false,
 };
 
@@ -1149,6 +1151,34 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         getAllParticipantMain: action.response,
+      };
+    }
+
+    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_SUCCESS: {
+      console.log("API Response:", action.response);
+
+      return {
+        ...state,
+        Loading: false,
+        inCallParticipantList: action.response.inCallParticipants,
+        pendingCallParticipantList: action.response.pendingParticipantList,
+      };
+    }
+
+    case actions.GET_PARTICIPANTS_OF_GROUP_CALL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        inCallParticipantList: [],
+        pendingCallParticipantList: [],
+        ResponseMessage: action.message,
       };
     }
 

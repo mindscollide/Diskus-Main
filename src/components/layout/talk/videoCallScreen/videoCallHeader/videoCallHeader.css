@@ -141,6 +141,17 @@ img.normalize-Icon-Large {
   margin-right: 10px;
 }
 
+.grayScaleImage-forminimize {
+  filter: grayscale(1);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
 .presenterImage {
   filter: brightness(0) saturate(100%) invert(80%) sepia(1%) saturate(20%)
     hue-rotate(0deg) brightness(95%) contrast(85%) !important; /* Applying color instead of grayscale */
@@ -660,6 +671,7 @@ img.shade-style {
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   left: -160px;
   overflow: hidden;
+  overflow-y: auto !important;
 }
 
 .Waiting-New-Participant-hosttab {
@@ -699,4 +711,10 @@ img.shade-style {
 
 .zindexing-for-presenter-tooltip {
   z-index: 9999 !important;
+}
+
+.Host-title-name {
+  color: #6127d6 !important;
+  font-weight: 600 !important;
+  margin-left: 3px !important;
 }

@@ -81,6 +81,8 @@ const VideoPanelNormal = () => {
 
   let newRoomID = localStorage.getItem("newRoomId");
 
+  let NewRoomID = localStorage.getItem("NewRoomID");
+
   let activeRoomID = localStorage.getItem("activeRoomID");
 
   let currentUserName = localStorage.getItem("name");
@@ -1016,10 +1018,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (videoControl === true) {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
@@ -1076,13 +1078,14 @@ const VideoPanelNormal = () => {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
+
         if (isMicActive) {
-          console.log("VidOn");
+          console.log("CheckIsZoom false");
           iframe.contentWindow.postMessage("MicOff", "*");
         } else {
-          console.log("VidOn");
           iframe.contentWindow.postMessage("MicOn", "*");
         }
+
         setIsMicActive(!isMicActive);
         localStorage.setItem("MicOff", !isMicActive);
       }
@@ -1097,13 +1100,18 @@ const VideoPanelNormal = () => {
       console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow) {
         console.log("videoHideUnHideForHost");
+
         if (isVideoActive) {
+          console.log("CheckIsZoom false");
           iframe.contentWindow.postMessage("VidOff", "*");
         } else {
           iframe.contentWindow.postMessage("VidOn", "*");
         }
+
         setIsVideoActive(!isVideoActive);
         localStorage.setItem("VidOff", !isVideoActive);
+        // setIsVideoActive(!isVideoActive);
+        // localStorage.setItem("VidOff", !isVideoActive);
       }
     } catch {}
   };

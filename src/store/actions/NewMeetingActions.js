@@ -9201,7 +9201,7 @@ const LeaveMeetingVideo = (
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
-              localStorage.removeItem("newRoomId")
+              localStorage.removeItem("newRoomId");
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
@@ -9279,7 +9279,7 @@ const LeaveMeetingVideo = (
             ) {
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
-              localStorage.removeItem("newRoomId")
+              localStorage.removeItem("newRoomId");
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
@@ -10489,9 +10489,9 @@ const meetingTranscriptDownloaded = (response) => {
 const meetingMinutesDownloaded = (response) => {
   return {
     type: actions.MEETING_MINUTES_DOWNLOADED,
-    payload: response
-  }
-}
+    payload: response,
+  };
+};
 
 export {
   meetingMinutesDownloaded,
