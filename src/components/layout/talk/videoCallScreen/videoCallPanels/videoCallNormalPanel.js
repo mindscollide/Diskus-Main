@@ -621,7 +621,25 @@ const VideoPanelNormal = () => {
         }
       } else if (isMeeting === true) {
         console.log("iframeiframe", isMeeting);
-        if (presenterViewFlag) {
+        // if (presenterViewFlag) {
+        //   console.log("iframeiframe", isMeeting);
+        //   let newurl = generateURLParticipant(
+        //     extractedBaseURLCaller,
+        //     currentUserName,
+        //     callAcceptedRoomID
+        //   );
+        //   if (validateRoomID(newurl)) {
+        //     console.log("iframeiframe", validateRoomID(newurl));
+
+        //     if (newurl !== callerURL) {
+        //       console.log("iframeiframe", newurl !== callerURL);
+        //       console.log("iframeiframe", newurl);
+        //       console.log("Check iframe Presenter", newurl);
+        //       setCallerURL(newurl);
+        //     }
+        //   }
+        // }
+        if (presenterViewJoinFlag||presenterViewHostFlag) {
           console.log("iframeiframe", isMeeting);
           let newurl = generateURLParticipant(
             extractedBaseURLCaller,
