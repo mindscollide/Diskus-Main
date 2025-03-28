@@ -921,6 +921,8 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     try {
+      let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+      let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
       let activeRoomID = localStorage.getItem("activeRoomID");
       let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
@@ -933,7 +935,7 @@ const VideoCallNormalHeader = ({
       setUnansweredCallParticipant([]);
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: activeRoomID,
+        RoomID: isZoomEnabled ? String(initiateCallRoomID) : activeRoomID,
         IsCaller: isCaller,
         CallTypeID: callTypeID,
       };

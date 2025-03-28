@@ -449,7 +449,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       ) {
         console.log("busyCall");
         handlePresenterViewFunc();
-      } else if (meetingHostData.isDashboardVideo) {
+      } else if (meetingHostData?.isDashboardVideo) {
         console.log("busyCall");
         let Data = {
           RoomID: String(RoomID),
@@ -463,7 +463,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
         leaveSuccess();
-      } else if (meetingHostData.isDashboardVideo === false) {
+      } else if (meetingHostData?.isDashboardVideo === false) {
         console.log("busyCall");
         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
         let Data = {
@@ -475,7 +475,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         await dispatch(LeaveCall(Data, navigate, t));
         leaveSuccess();
       }
-    } else if (meetingHostData.isDashboardVideo === false) {
+    } else if (meetingHostData?.isDashboardVideo === false) {
       console.log("busyCall");
       let isCaller = JSON.parse(localStorage.getItem("isCaller"));
       let Data = {

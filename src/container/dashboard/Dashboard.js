@@ -3031,7 +3031,9 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           console.log("mqtt");
-          console.log("mqtt", RoomID);
+          console.log("mqtt", typeof RoomID);
+          console.log("mqtt", typeof data.payload.roomID);
+
           if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
             //To make false sessionStorage which is set on VideoCall
             if (Number(data.senderID) !== Number(createrID)) {
