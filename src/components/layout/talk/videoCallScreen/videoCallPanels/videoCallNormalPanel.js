@@ -309,7 +309,7 @@ const VideoPanelNormal = () => {
       meetingHost?.isDashboardVideo === true
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls) {
+      if (!leavePresenterOrJoinOtherCalls && presenterViewHostFlag) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds
@@ -641,7 +641,7 @@ const VideoPanelNormal = () => {
         //     }
         //   }
         // }
-        if (presenterViewJoinFlag||presenterViewHostFlag) {
+        if (presenterViewJoinFlag || presenterViewHostFlag) {
           console.log("iframeiframe", isMeeting);
           let newurl = generateURLParticipant(
             extractedBaseURLCaller,
