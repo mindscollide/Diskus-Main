@@ -240,6 +240,8 @@ const Dashboard = () => {
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    unansweredCallParticipant,
+    setUnansweredCallParticipant,
   } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
@@ -3029,7 +3031,9 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           console.log("mqtt");
-          console.log("mqtt", RoomID);
+          console.log("mqtt", typeof RoomID);
+          console.log("mqtt", typeof data.payload.roomID);
+
           if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
             //To make false sessionStorage which is set on VideoCall
             if (Number(data.senderID) !== Number(createrID)) {
@@ -3057,6 +3061,21 @@ const Dashboard = () => {
                 callRequestReceivedMQTT(data.payload, data.payload.message)
               );
             } else {
+              let CallType = Number(localStorage.getItem("CallType"));
+              if (CallType === 2) {
+                console.log("mqtt");
+                setUnansweredCallParticipant((prevState) => {
+                  // Check if the user is already in the accepted list
+                  const userExists = prevState.some(
+                    (user) => user.recepientID === data.payload.recepientID
+                  );
+                  if (!userExists) {
+                    return [...prevState, data.payload];
+                  }
+                  return prevState;
+                });
+              }
+
               let RecipentIDsOninitiateVideoCall =
                 JSON.parse(
                   localStorage.getItem("RecipentIDsOninitiateVideoCall")

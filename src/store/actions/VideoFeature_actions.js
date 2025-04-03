@@ -2060,6 +2060,7 @@ const leavePresenterViewMainApi = (
                   presenterViewGlobalState(currentMeetingID, true, false, false)
                 );
                 if (!alreadyInMeetingVideo) {
+                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2074,17 +2075,18 @@ const leavePresenterViewMainApi = (
                 dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
                 dispatch(participantVideoButtonState(false));
-                console.log("Check");
+                console.log("Check is participant Uid Removed?");
                 dispatch(
                   presenterViewGlobalState(currentMeetingID, true, false, false)
                 );
                 if (alreadyInMeetingVideo) {
-                  console.log("Check");
+                  console.log("Check is participant Uid Removed?");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                 } else {
+                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
@@ -2097,7 +2099,8 @@ const leavePresenterViewMainApi = (
                 }
               } else if (flag === 3) {
                 if (!alreadyInMeetingVideo) {
-                  localStorage.removeItem("participantUID");
+                  console.log("Check is participant Uid Removed?");
+                  // localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");
                   localStorage.removeItem("acceptedRoomID");
@@ -2136,6 +2139,7 @@ const leavePresenterViewMainApi = (
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                 } else {
+                  console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("isGuid");
                   localStorage.removeItem("videoIframe");

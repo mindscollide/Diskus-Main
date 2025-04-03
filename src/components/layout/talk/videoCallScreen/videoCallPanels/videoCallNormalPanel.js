@@ -81,6 +81,8 @@ const VideoPanelNormal = () => {
 
   let newRoomID = localStorage.getItem("newRoomId");
 
+  let NewRoomID = localStorage.getItem("NewRoomID");
+
   let activeRoomID = localStorage.getItem("activeRoomID");
 
   let currentUserName = localStorage.getItem("name");
@@ -307,7 +309,7 @@ const VideoPanelNormal = () => {
       meetingHost?.isDashboardVideo === true
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls) {
+      if (!leavePresenterOrJoinOtherCalls && presenterViewHostFlag) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds
@@ -639,7 +641,7 @@ const VideoPanelNormal = () => {
         //     }
         //   }
         // }
-        if (presenterViewJoinFlag||presenterViewHostFlag) {
+        if (presenterViewJoinFlag || presenterViewHostFlag) {
           console.log("iframeiframe", isMeeting);
           let newurl = generateURLParticipant(
             extractedBaseURLCaller,
@@ -906,6 +908,7 @@ const VideoPanelNormal = () => {
       console.log(event.data, "eventevent");
       // Check the origin for security
       console.log("disableZoomBeforeJoinSession", event.data);
+      // if (event.origin === "https://secure.letsdiskus.com:9414") {
       // if (event.origin === "https://portal.letsdiskus.com:9414") {
       if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
@@ -1020,8 +1023,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
@@ -1031,10 +1036,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (videoControl === true) {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
