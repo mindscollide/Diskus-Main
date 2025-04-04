@@ -184,6 +184,9 @@ const NewMeeting = () => {
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
   );
+  const VideoMainReducerResponseMessage = useSelector(
+    (state) => state.VideoMainReducer.ResponseMessage
+  );
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
@@ -3519,6 +3522,27 @@ const NewMeeting = () => {
       console.log(error);
     }
   }, [ResponseMessage]);
+  useEffect(() => {
+    try {
+      if (
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("No-record-found") &&
+        VideoMainReducerResponseMessage !== t("No-records-found") &&
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
+        VideoMainReducerResponseMessage !== t("No-data-available") &&
+        VideoMainReducerResponseMessage !== t("Successful") &&
+        VideoMainReducerResponseMessage !== t("Record-updated") &&
+        VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
+        VideoMainReducerResponseMessage !== undefined
+      ) {
+        showMessage(VideoMainReducerResponseMessage, "success", setOpen);
+        dispatch(clearResponseNewMeetingReducerMessage(""));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [VideoMainReducerResponseMessage]);
 
   useEffect(() => {
     try {

@@ -200,9 +200,27 @@ const InitiateVideoCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase()
                 )
             ) {
+              console.log("NonMeetingVideoCall");
+              sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.removeItem("CallType");
+              localStorage.removeItem("callTypeID");
+              localStorage.setItem("isCaller", false);
+              localStorage.setItem("callerID", 0);
+              localStorage.setItem("activeCall", false);
+              await dispatch(videoOutgoingCallFlag(false));
+              await dispatch(normalizeVideoPanelFlag(false));
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
             }
           } else {
+            console.log("NonMeetingVideoCall");
+            sessionStorage.setItem("NonMeetingVideoCall", false);
+            localStorage.removeItem("CallType");
+            localStorage.removeItem("callTypeID");
+            localStorage.setItem("isCaller", false);
+            localStorage.setItem("callerID", 0);
+            localStorage.setItem("activeCall", false);
+            await dispatch(videoOutgoingCallFlag(false));
+            await dispatch(normalizeVideoPanelFlag(false));
             await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
           }
         } else {
