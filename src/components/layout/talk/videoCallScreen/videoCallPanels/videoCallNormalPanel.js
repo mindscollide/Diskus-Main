@@ -304,12 +304,13 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (
-      isMeeting &&
-      isMeetingHost === false &&
-      meetingHost?.isDashboardVideo === true
+      (isMeeting &&
+        isMeetingHost === false &&
+        meetingHost?.isDashboardVideo === true) ||
+      (presenterViewFlag && presenterViewHostFlag)
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls && presenterViewHostFlag) {
+      if (!leavePresenterOrJoinOtherCalls) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds
