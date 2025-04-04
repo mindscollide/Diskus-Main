@@ -309,7 +309,7 @@ const VideoPanelNormal = () => {
       meetingHost?.isDashboardVideo === true
     ) {
       console.log("Check new");
-      if (!leavePresenterOrJoinOtherCalls && presenterViewHostFlag) {
+      if (!leavePresenterOrJoinOtherCalls) {
         let Data = {
           RoomID: String(
             presenterViewFlag ? callAcceptedRoomID : participantRoomIds
