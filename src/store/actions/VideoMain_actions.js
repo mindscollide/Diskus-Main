@@ -200,9 +200,27 @@ const InitiateVideoCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase()
                 )
             ) {
+              console.log("NonMeetingVideoCall");
+              sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.removeItem("CallType");
+              localStorage.removeItem("callTypeID");
+              localStorage.setItem("isCaller", false);
+              localStorage.setItem("callerID", 0);
+              localStorage.setItem("activeCall", false);
+              await dispatch(videoOutgoingCallFlag(false));
+              await dispatch(normalizeVideoPanelFlag(false));
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
             }
           } else {
+            console.log("NonMeetingVideoCall");
+            sessionStorage.setItem("NonMeetingVideoCall", false);
+            localStorage.removeItem("CallType");
+            localStorage.removeItem("callTypeID");
+            localStorage.setItem("isCaller", false);
+            localStorage.setItem("callerID", 0);
+            localStorage.setItem("activeCall", false);
+            await dispatch(videoOutgoingCallFlag(false));
+            await dispatch(normalizeVideoPanelFlag(false));
             await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
           }
         } else {
@@ -435,6 +453,7 @@ const ScrollRecentCalls = (response) => {
     response: response,
   };
 };
+
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -878,6 +897,11 @@ const LeaveInitmationMessegeVideoMeetAction = (response) => {
   };
 };
 
+const cleareResponceMessage = () => {
+  return {
+    type: actions.CLEARE_MESSAGE_RESPONCE,
+  };
+};
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -896,4 +920,5 @@ export {
   groupCallRecipients,
   LeaveInitmationMessegeVideoMeetAction,
   initiateVideoCallFail,
+  cleareResponceMessage,
 };
