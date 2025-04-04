@@ -106,6 +106,7 @@ import {
   GetUserMissedCallCount,
   missedCallCount,
   LeaveCall,
+  cleareResponceMessage,
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
@@ -265,6 +266,10 @@ const Dashboard = () => {
   );
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+
+  const VideoMainReducerResponseMessage = useSelector(
+    (state) => state.VideoMainReducer.ResponseMessage
   );
 
   console.log(IncomingVideoCallFlagReducer, "IncomingVideoCallFlagReducer");
@@ -3961,6 +3966,28 @@ const Dashboard = () => {
     NormalizeVideoFlag,
     MaximizeVideoFlag,
   ]);
+
+  useEffect(() => {
+    try {
+      if (
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("No-record-found") &&
+        VideoMainReducerResponseMessage !== t("No-records-found") &&
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
+        VideoMainReducerResponseMessage !== t("No-data-available") &&
+        VideoMainReducerResponseMessage !== t("Successful") &&
+        VideoMainReducerResponseMessage !== t("Record-updated") &&
+        VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
+        VideoMainReducerResponseMessage !== undefined
+      ) {
+        showMessage(VideoMainReducerResponseMessage, "success", setOpen);
+        dispatch(cleareResponceMessage(""));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [VideoMainReducerResponseMessage]);
 
   useEffect(() => {
     if (Blur !== null) {

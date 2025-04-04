@@ -453,6 +453,7 @@ const ScrollRecentCalls = (response) => {
     response: response,
   };
 };
+
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -896,6 +897,11 @@ const LeaveInitmationMessegeVideoMeetAction = (response) => {
   };
 };
 
+const cleareResponceMessage = () => {
+  return {
+    type: actions.CLEARE_MESSAGE_RESPONCE,
+  };
+};
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -914,4 +920,5 @@ export {
   groupCallRecipients,
   LeaveInitmationMessegeVideoMeetAction,
   initiateVideoCallFail,
+  cleareResponceMessage,
 };

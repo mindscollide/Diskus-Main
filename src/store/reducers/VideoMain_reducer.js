@@ -73,6 +73,12 @@ const VideoMainReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+    case actions.CLEARE_MESSAGE_RESPONCE: {
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
+    }
 
     case actions.INCOMING_VIDEO_CALL_MQTT: {
       return {
