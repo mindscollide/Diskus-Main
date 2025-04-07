@@ -1,3 +1,7 @@
+.classOfMeetingModal {
+  z-index: 99999 !important;
+}
+
 .EndMeetingTextStyles {
   color: #6172d6 !important;
   font-size: 16px !important;

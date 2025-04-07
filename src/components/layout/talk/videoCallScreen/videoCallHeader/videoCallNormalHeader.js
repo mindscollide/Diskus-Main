@@ -214,6 +214,10 @@ const VideoCallNormalHeader = ({
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+  console.log(
+    { presenterViewFlag, presenterViewHostFlag },
+    "presenterViewFlag"
+  );
 
   const presenterMeetingId = useSelector(
     (state) => state.videoFeatureReducer.presenterMeetingId
@@ -248,7 +252,11 @@ const VideoCallNormalHeader = ({
     "inCallParticipantList"
   );
 
-  console.log(groupVideoCallAccepted, "groupVideoCallAccepted");
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
+  );
+  console.log(leavePresenterParticipant, "leavePresenterParticipant");
+
   console.log(groupCallParticipantList, "groupCallParticipantList");
   console.log(unansweredCallParticipant, "unansweredCallParticipant");
 
@@ -340,6 +348,7 @@ const VideoCallNormalHeader = ({
 
   //Hand Raise Counter To show on Participant Counter in presenter View
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
+  console.log(handRaiseCounter, "handRaiseCounter");
 
   const [open, setOpen] = useState({
     flag: false,
@@ -387,15 +396,22 @@ const VideoCallNormalHeader = ({
 
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    console.log(getAllParticipantMain, "getAllParticipantMain");
-    let dublicateData = [...getAllParticipantMain];
-    const raisedHandCounter = dublicateData.filter(
+    let filteredParticipants = [...getAllParticipantMain];
+
+    // If a participant left, remove them by uid
+    if (leavePresenterParticipant?.payload?.uid) {
+      const leavingUID = leavePresenterParticipant.payload.uid;
+      filteredParticipants = filteredParticipants.filter(
+        (participant) => participant.guid !== leavingUID
+      );
+    }
+
+    const raisedHandCounter = filteredParticipants.filter(
       (participant) => participant.raiseHand === true
     );
 
-    console.log(getAllParticipantMain, "getAllParticipantMain");
     setHandRaiseCounter(raisedHandCounter.length);
-  }, [getAllParticipantMain]);
+  }, [getAllParticipantMain, leavePresenterParticipant]);
 
   useEffect(() => {
     console.log("getAllParticipantMain");
@@ -1772,9 +1788,7 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               )}
 
-              {presenterViewFlag &&
-              presenterViewHostFlag &&
-              handRaiseCounter > 0 ? (
+              {presenterViewFlag && presenterViewHostFlag ? (
                 <span className="participants-counter-For-Host">
                   {convertNumbersInString(handRaiseCounter, lan)}
                 </span>
