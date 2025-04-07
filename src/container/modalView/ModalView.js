@@ -745,7 +745,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     const handleBeforeUnload = async (event) => {
-      alert("heloo")
+      alert("heloo");
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
         console.log("cacacacacacacacacc");
