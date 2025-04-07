@@ -166,7 +166,7 @@ const WebNotificationCard = ({
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 24) {
           message = `${NotificationMessege.NotifierName} ${t(
-            "Has-activated-the-committee"
+            "Has-inactivated-the-committee"
           )} ${NotificationMessege.CommitteeTitle}`;
         } else if (NotificaitonID === 25) {
           message = `${NotificationMessege.NotifierName} ${t(
