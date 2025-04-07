@@ -486,7 +486,6 @@ const ViewMeetingModal = ({
         let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
         let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
         if (isWaiting || isMeetingVideo) {
-   
           let Data = {
             RoomID: String(
               isMeetingVideoHostCheck ? newRoomId : participantRoomId
@@ -860,7 +859,6 @@ const ViewMeetingModal = ({
       let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       if (isWaiting || isMeetingVideo) {
- 
         let Data = {
           RoomID: String(
             isMeetingVideoHostCheck ? newRoomId : participantRoomId
@@ -878,10 +876,7 @@ const ViewMeetingModal = ({
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
         const emptyArray = [];
-        localStorage.setItem(
-          "callerStatusObject",
-          JSON.stringify(emptyArray)
-        );
+        localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
         sessionStorage.removeItem("StopPresenterViewAwait");
         sessionStorage.removeItem("participantUID");
         sessionStorage.removeItem("participantRoomId");

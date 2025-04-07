@@ -757,7 +757,29 @@ const Dashboard = () => {
       }
     }
   };
-
+  async function joinRequestForMeetingVideo(mqttData) {
+    try {
+      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      const isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+        if (isMeetingVideo) {
+          if (presenterViewJoinFlag) {
+          } else {
+            if (isMeetingVideoHostCheck) {
+              if (mqttData.payload.isGuest) {
+                dispatch(admitGuestUserRequest(mqttData.payload));
+              } else {
+                dispatch(participantWaitingList(mqttData.payload));
+              }
+              dispatch(guestJoinPopup(true));
+            }
+          }
+        }
+    } catch {}
+  }
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1160,14 +1182,16 @@ const Dashboard = () => {
                 data.payload.participantGuid === isParticipantGuid,
                 "checkchekc"
               );
-              if (
-                data.payload.isHandRaised &&
-                data.payload.participantGuid === isParticipantGuid
-              ) {
-                dispatch(setRaisedUnRaisedParticiant(true));
-              } else {
-                dispatch(setRaisedUnRaisedParticiant(false));
-              }
+              // if (
+              //   data.payload.isHandRaised &&
+              //   data.payload.participantGuid === isParticipantGuid
+              // ) {
+              //   console.log("handStatus");
+              //   dispatch(setRaisedUnRaisedParticiant(true));
+              // } else {
+              //   console.log("handStatus");
+              //   dispatch(setRaisedUnRaisedParticiant(false));
+              // }
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
@@ -3928,22 +3952,6 @@ const Dashboard = () => {
       console.log(error);
     }
   };
-
-  async function joinRequestForMeetingVideo(mqttData) {
-    try {
-      const currentMeetingID = localStorage.getItem("currentMeetingID");
-      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
-        if (isMeetingVideo) {
-          if (mqttData.payload.isGuest) {
-            dispatch(admitGuestUserRequest(mqttData.payload));
-          } else {
-            dispatch(participantWaitingList(mqttData.payload));
-          }
-          dispatch(guestJoinPopup(true));
-        }
-    } catch {}
-  }
 
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);

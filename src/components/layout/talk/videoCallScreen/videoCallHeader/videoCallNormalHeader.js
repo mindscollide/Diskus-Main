@@ -1313,6 +1313,8 @@ const VideoCallNormalHeader = ({
       console.log("Check");
     }
   };
+  console.log("handStatus", handStatus);
+  console.log("handStatus", raisedUnRaisedParticipant);
 
   const raiseUnRaiseForParticipant = (flag) => {
     console.log("Check 1333");
@@ -1324,9 +1326,10 @@ const VideoCallNormalHeader = ({
         UID: String(UID),
         IsHandRaised: flag,
       };
-      localStorage.setItem("handStatus", flag);
-      setHandStatus(flag);
-      dispatch(setRaisedUnRaisedParticiant(flag));
+      console.log("handStatus", flag);
+      // localStorage.setItem("handStatus", flag);
+      // setHandStatus(flag);
+      // dispatch(setRaisedUnRaisedParticiant(flag));
       dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
     } else {
       console.log("Check");
@@ -1552,6 +1555,14 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag === true ||
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
+                  : presenterViewJoinFlag
+                  ? !raisedUnRaisedParticipant
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
+                  : getMeetingHostInfo?.isHost === false
+                  ? !raisedUnRaisedParticipant
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
                   : !handStatus
                   ? "inactive-state"
                   : "cursor-pointer active-state"
@@ -1559,16 +1570,20 @@ const VideoCallNormalHeader = ({
             >
               <Tooltip
                 placement={
-                  presenterViewFlag && !presenterViewHostFlag
+                  presenterViewJoinFlag && !presenterViewHostFlag
                     ? "bottom"
                     : "topRight"
                 }
                 overlayClassName={
-                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                  presenterViewJoinFlag ? "zindexing-for-presenter-tooltip" : ""
                 }
                 title={
                   getMeetingHostInfo?.isHost
-                    ? handStatus
+                    ? presenterViewJoinFlag
+                      ? raisedUnRaisedParticipant
+                        ? t("Lower-hand")
+                        : t("Raise-hand")
+                      : handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
                     : raisedUnRaisedParticipant
@@ -1579,18 +1594,26 @@ const VideoCallNormalHeader = ({
                 <img
                   onClick={() =>
                     getMeetingHostInfo?.isHost
-                      ? raiseHandFunction
+                      ? presenterViewJoinFlag
+                        ? raiseUnRaiseForParticipant(
+                            raisedUnRaisedParticipant ? false : true
+                          )
+                        : raiseHandFunction
                       : raiseUnRaiseForParticipant(
                           raisedUnRaisedParticipant ? false : true
                         )
                   }
                   src={
                     getMeetingHostInfo?.isHost
-                      ? handStatus
+                      ? presenterViewJoinFlag
+                        ? raisedUnRaisedParticipant === true
+                          ? LowerHand
+                          : RaiseHand
+                        : handStatus
                         ? LowerHand
                         : RaiseHand
                       : raisedUnRaisedParticipant === true
-                      ? Raisehandselected
+                      ? LowerHand
                       : RaiseHand
                   }
                   alt="Raise Hand"
