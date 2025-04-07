@@ -208,8 +208,82 @@ const VideoMaxIncoming = () => {
         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
         if (isZoomEnabled) {
           console.log("busyCall");
-          await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
-          setIsTimerRunning(false);
+          // await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
+          // setIsTimerRunning(false);
+          if (
+            presenterViewFlag &&
+            (presenterViewHostFlag || presenterViewJoinFlag)
+          ) {
+            console.log("busyCall");
+            dispatch(nonMeetingVideoGlobalModal(true));
+            dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
+          } else {
+            console.log("busyCall");
+            let meetinHostInfo = JSON.parse(
+              localStorage.getItem("meetinHostInfo")
+            );
+            let currentMeetingID = JSON.parse(
+              localStorage.getItem("currentMeetingID")
+            );
+
+            let newUserGUID = meetinHostInfo?.isHost
+              ? localStorage.getItem("isGuid")
+              : localStorage.getItem("participantUID");
+            let newName = localStorage.getItem("name");
+            let Data = {
+              RoomID: String(RoomID),
+              UserGUID: String(newUserGUID),
+              Name: String(newName),
+              IsHost: meetinHostInfo?.isHost ? true : false,
+              MeetingID: Number(currentMeetingID),
+            };
+            dispatch(setRaisedUnRaisedParticiant(false));
+            await dispatch(
+              LeaveMeetingVideo(
+                Data,
+                navigate,
+                t,
+                3,
+                null,
+                setJoiningOneToOneAfterLeavingPresenterView,
+                setLeaveMeetingVideoForOneToOneOrGroup
+              )
+            );
+
+            const emptyArray = [];
+            localStorage.setItem(
+              "callerStatusObject",
+              JSON.stringify(emptyArray)
+            );
+            await dispatch(setAudioControlHost(false));
+            await dispatch(setVideoControlHost(false));
+            dispatch(normalizeVideoPanelFlag(false));
+            dispatch(maximizeVideoPanelFlag(false));
+            dispatch(minimizeVideoPanelFlag(false));
+            dispatch(leaveCallModal(false));
+            dispatch(participantPopup(false));
+            localStorage.setItem("activeCall", false);
+            localStorage.setItem("acceptedRoomID", 0);
+            localStorage.setItem("activeRoomID", 0);
+            localStorage.setItem("isCaller", false);
+            localStorage.setItem("isMeetingVideo", false);
+            localStorage.setItem("MicOff", true);
+            localStorage.setItem("VidOff", true);
+            localStorage.setItem("isMicEnabled", false);
+            localStorage.setItem("isWebCamEnabled", false);
+            localStorage.setItem("activeOtoChatID", 0);
+            localStorage.setItem("initiateVideoCall", false);
+            localStorage.setItem("meetingVideoID", 0);
+            localStorage.setItem("newCallerID", 0);
+            localStorage.setItem("callerStatusObject", JSON.stringify([]));
+            localStorage.removeItem("newRoomId");
+            localStorage.removeItem("isHost");
+            localStorage.removeItem("isGuid");
+            localStorage.removeItem("hostUrl");
+            localStorage.removeItem("VideoView");
+            localStorage.removeItem("videoIframe");
+            localStorage.removeItem("CallType");
+          }
         } else {
           console.log("busyCall");
           if (

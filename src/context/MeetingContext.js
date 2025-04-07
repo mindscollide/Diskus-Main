@@ -172,6 +172,9 @@ export const MeetingProvider = ({ children }) => {
   // state for accept video Call for group
   const [groupVideoCallAccepted, setGroupVideoCallAccepted] = useState([]);
   const [groupCallParticipantList, setGroupCallParticipantList] = useState([]);
+  const [unansweredCallParticipant, setUnansweredCallParticipant] = useState(
+    []
+  );
 
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
@@ -362,6 +365,8 @@ export const MeetingProvider = ({ children }) => {
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    unansweredCallParticipant,
+    setUnansweredCallParticipant,
   };
 
   // Provide the state data to the context
