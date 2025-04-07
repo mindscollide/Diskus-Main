@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./ModalUpdateNote.module.css";
 import Form from "react-bootstrap/Form";
 import {
-  deleteNotesApi,
+  DeleteNotesDocumentsAPI,
   saveFilesNotesApi,
   SaveNotesDocumentAPI,
   UpdateNotesAPI,
@@ -533,7 +533,19 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     if (flag) {
       setUpdateNotes(false);
     }
-    dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes, id));
+
+    let DelNotesAttachmentData = {
+      NoteID: Number(id),
+    };
+    dispatch(
+      DeleteNotesDocumentsAPI(
+        navigate,
+        DelNotesAttachmentData,
+        t,
+        setUpdateNotes,
+        id
+      )
+    );
   };
 
   return (
