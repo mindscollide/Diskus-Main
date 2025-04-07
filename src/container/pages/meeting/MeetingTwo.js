@@ -184,6 +184,7 @@ const NewMeeting = () => {
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
   );
+
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
@@ -921,6 +922,7 @@ const NewMeeting = () => {
       actionFunc();
     }
   }, [viewPublishMinutesLink]);
+
   useEffect(() => {
     if (
       location.state !== null &&

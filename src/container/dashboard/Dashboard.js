@@ -106,6 +106,7 @@ import {
   GetUserMissedCallCount,
   missedCallCount,
   LeaveCall,
+  cleareResponceMessage,
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
@@ -240,6 +241,8 @@ const Dashboard = () => {
     setGroupVideoCallAccepted,
     groupCallParticipantList,
     setGroupCallParticipantList,
+    unansweredCallParticipant,
+    setUnansweredCallParticipant,
   } = useMeetingContext();
 
   let i18nextLng = localStorage.getItem("i18nextLng");
@@ -263,6 +266,10 @@ const Dashboard = () => {
   );
   const IncomingVideoCallFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+
+  const VideoMainReducerResponseMessage = useSelector(
+    (state) => state.VideoMainReducer.ResponseMessage
   );
 
   console.log(IncomingVideoCallFlagReducer, "IncomingVideoCallFlagReducer");
@@ -1309,14 +1316,33 @@ const Dashboard = () => {
               "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
             ) {
               dispatch(participantVideoButtonState(false));
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
+              let currentMeetingID = 0;
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
               );
+              if (isZoomEnabled) {
+                currentMeetingID = String(
+                  localStorage.getItem("currentMeetingID")
+                );
+              } else {
+                currentMeetingID = Number(
+                  localStorage.getItem("currentMeetingID")
+                );
+              }
+
               let userIDCurrent = Number(localStorage.getItem("userID"));
               let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+              let flagForZoom1 = false;
+              if (isZoomEnabled) {
+                flagForZoom1 =
+                  String(currentMeetingID) === String(data.payload.meetingID);
+              } else {
+                flagForZoom1 =
+                  Number(currentMeetingID) === Number(data.payload.meetingID);
+              }
               if (
                 isMeetingVideo &&
-                Number(currentMeetingID) === Number(data.payload.meetingID) &&
+                flagForZoom1 &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
                 localStorage.setItem("isMeetingVideo", false);
@@ -2645,7 +2671,9 @@ const Dashboard = () => {
             }, timeValue);
             return () => clearTimeout(timeoutId);
           } else if (
-            (activeCall === false||activeCall===undefined||activeCall===null) &&
+            (activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null) &&
             IncomingVideoCallFlagReducer === false
           ) {
             console.log("Check active");
@@ -2671,12 +2699,12 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
-          let initiateCallRoomID = JSON.parse(
-            localStorage.getItem("initiateCallRoomID")
-          );
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+
           let CallType = Number(localStorage.getItem("CallType"));
 
           if (CallType === 2) {
+            console.log("mqtt");
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
@@ -2688,23 +2716,35 @@ const Dashboard = () => {
               return prevState;
             });
           }
-
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let falgCheck1 = false;
+          if (isZoomEnabled) {
+            falgCheck1 = String(activeRoomID) !== "" && !isCaller;
+          } else {
+            falgCheck1 = Number(activeRoomID) !== 0 && !isCaller;
+          }
           let roomID = 0;
+          console.log("mqtt", activeRoomID);
           if (activeRoomID) {
-            if (Number(activeRoomID) !== 0 && !isCaller) {
+            console.log("mqtt");
+            if (falgCheck1) {
               roomID = activeRoomID;
             } else {
               if (!isCaller) {
                 roomID = NewRoomID;
               } else {
-                roomID = initiateCallRoomID;
+                roomID = isZoomEnabled
+                  ? String(initiateCallRoomID)
+                  : initiateCallRoomID;
               }
             }
           } else {
             if (!isCaller) {
               roomID = NewRoomID;
             } else {
-              roomID = initiateCallRoomID;
+              roomID = isZoomEnabled
+                ? String(initiateCallRoomID)
+                : initiateCallRoomID;
             }
           }
           console.log("mqtt", roomID);
@@ -2712,11 +2752,17 @@ const Dashboard = () => {
             JSON.parse(
               localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
-          if (
-            !isMeetingVideo &&
-            Number(data.payload.roomID) === Number(roomID) &&
-            userID !== data.senderID
-          ) {
+          let falgCheck2 = false;
+          if (isZoomEnabled) {
+            console.log("mqtt", falgCheck2);
+            falgCheck2 = String(data.payload.roomID) === String(roomID);
+          } else {
+            console.log("mqtt", falgCheck2);
+            falgCheck2 = Number(data.payload.roomID) === Number(roomID);
+          }
+          console.log("mqtt", falgCheck2);
+          if (!isMeetingVideo && falgCheck2 && userID !== data.senderID) {
+            console.log("mqtt", roomID);
             dispatch(videoOutgoingCallFlag(false));
             dispatch(videoCallAccepted(data.payload, data.payload.message));
             localStorage.setItem("ringerRoomId", 0);
@@ -2769,6 +2815,8 @@ const Dashboard = () => {
         ) {
           console.log("mqtt");
           //To make false sessionStorage which is set on VideoCall
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
           localStorage.setItem("ringerRoomId", 0);
           sessionStorage.setItem("NonMeetingVideoCall", false);
           let userID = Number(localStorage.getItem("userID"));
@@ -2781,9 +2829,7 @@ const Dashboard = () => {
           let NewRoomID = localStorage.getItem("NewRoomID");
           let activeRoomID = localStorage.getItem("activeRoomID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-          let initiateCallRoomID = JSON.parse(
-            localStorage.getItem("initiateCallRoomID")
-          );
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
           let CallType = Number(localStorage.getItem("CallType"));
 
@@ -2794,23 +2840,34 @@ const Dashboard = () => {
               )
             );
           }
-
+          let falgCheck1 = false;
+          if (isZoomEnabled) {
+            console.log("mqtt", falgCheck1);
+            falgCheck1 = String(activeRoomID) !== "" && !isCaller;
+          } else {
+            console.log("mqtt", falgCheck1);
+            falgCheck1 = Number(activeRoomID) !== 0 && !isCaller;
+          }
           let roomID = 0;
           if (activeRoomID) {
-            if (Number(activeRoomID) !== 0 && !isCaller) {
+            if (falgCheck1) {
               roomID = activeRoomID;
             } else {
               if (!isCaller) {
-                roomID = NewRoomID;
+                roomID = isZoomEnabled ? String(NewRoomID) : Number(NewRoomID);
               } else {
-                roomID = initiateCallRoomID;
+                roomID = isZoomEnabled
+                  ? String(initiateCallRoomID)
+                  : Number(initiateCallRoomID);
               }
             }
           } else {
             if (!isCaller) {
-              roomID = NewRoomID;
+              roomID = isZoomEnabled ? String(NewRoomID) : Number(NewRoomID);
             } else {
-              roomID = initiateCallRoomID;
+              roomID = isZoomEnabled
+                ? String(initiateCallRoomID)
+                : Number(initiateCallRoomID);
             }
           }
           console.log("mqtt", roomID);
@@ -2818,11 +2875,15 @@ const Dashboard = () => {
             JSON.parse(
               localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
-          if (
-            !isMeetingVideo &&
-            Number(data.payload.roomID) === Number(roomID) &&
-            userID !== data.senderID
-          ) {
+          let falgCheck2 = false;
+          if (isZoomEnabled) {
+            console.log("mqtt", falgCheck2);
+            falgCheck2 = String(data.payload.roomID) === String(roomID);
+          } else {
+            console.log("mqtt", falgCheck1);
+            falgCheck2 = Number(data.payload.roomID) === Number(roomID);
+          }
+          if (!isMeetingVideo && falgCheck2 && userID !== data.senderID) {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
@@ -2975,7 +3036,9 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideo")
           );
           console.log("mqtt");
-          console.log("mqtt", RoomID);
+          console.log("mqtt", typeof RoomID);
+          console.log("mqtt", typeof data.payload.roomID);
+
           if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
             //To make false sessionStorage which is set on VideoCall
             if (Number(data.senderID) !== Number(createrID)) {
@@ -3003,6 +3066,21 @@ const Dashboard = () => {
                 callRequestReceivedMQTT(data.payload, data.payload.message)
               );
             } else {
+              let CallType = Number(localStorage.getItem("CallType"));
+              if (CallType === 2) {
+                console.log("mqtt");
+                setUnansweredCallParticipant((prevState) => {
+                  // Check if the user is already in the accepted list
+                  const userExists = prevState.some(
+                    (user) => user.recepientID === data.payload.recepientID
+                  );
+                  if (!userExists) {
+                    return [...prevState, data.payload];
+                  }
+                  return prevState;
+                });
+              }
+
               let RecipentIDsOninitiateVideoCall =
                 JSON.parse(
                   localStorage.getItem("RecipentIDsOninitiateVideoCall")
@@ -3094,12 +3172,19 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let roomID = 0;
+          let flagCheck1 = false;
+          if (isZoomEnabled) {
+            flagCheck1 = String(activeRoomID) !== "";
+          } else {
+            flagCheck1 = Number(activeRoomID) !== 0;
+          }
           if (activeRoomID) {
-            if (Number(activeRoomID) !== 0 && !isCaller) {
+            if (flagCheck1 && !isCaller) {
               roomID = activeRoomID;
             } else {
               if (!isCaller) {
@@ -3116,11 +3201,13 @@ const Dashboard = () => {
             }
           }
           console.log("mqtt", roomID);
-
-          if (
-            Number(roomID) === Number(data.payload.roomID) &&
-            !isMeetingVideo
-          ) {
+          let flagCheck2 = 0;
+          if (isZoomEnabled) {
+            flagCheck2 = String(roomID) === String(data.payload.roomID);
+          } else {
+            flagCheck2 = Number(roomID) === Number(data.payload.roomID);
+          }
+          if (flagCheck2 && !isMeetingVideo) {
             let callerID = JSON.parse(localStorage.getItem("callerID"));
             let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
             if (IncomingVideoCallFlagReducer === true && callStatus === false) {
@@ -3131,9 +3218,12 @@ const Dashboard = () => {
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
-              let acceptedRoomID = Number(
-                localStorage.getItem("acceptedRoomID")
-              );
+              let acceptedRoomID = 0;
+              if (isZoomEnabled) {
+                acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
+              } else {
+                acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+              }
 
               dispatch(incomingVideoCallFlag(false));
               if (activeRoomID !== acceptedRoomID) {
@@ -3173,10 +3263,16 @@ const Dashboard = () => {
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
-              let acceptedRoomID = Number(
-                localStorage.getItem("acceptedRoomID")
-              );
-              let activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              let acceptedRoomID = "";
+              let activeRoomID = "";
+              if (isZoomEnabled) {
+                acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
+                activeRoomID = String(localStorage.getItem("activeRoomID"));
+              } else {
+                acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+                activeRoomID = Number(localStorage.getItem("activeRoomID"));
+              }
+
               dispatch(incomingVideoCallFlag(false));
               if (activeRoomID !== acceptedRoomID) {
                 console.log("Check 123");
@@ -3224,9 +3320,17 @@ const Dashboard = () => {
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
                 dispatch(incomingVideoCallFlag(false));
-                let acceptedRoomID = Number(
-                  localStorage.getItem("acceptedRoomID")
-                );
+                let acceptedRoomID = "";
+                if (isZoomEnabled) {
+                  acceptedRoomID = String(
+                    localStorage.getItem("acceptedRoomID")
+                  );
+                } else {
+                  acceptedRoomID = Number(
+                    localStorage.getItem("acceptedRoomID")
+                  );
+                }
+
                 localStorage.setItem("newCallerID", callerID);
                 localStorage.setItem("activeCall", true);
                 localStorage.setItem("activeRoomID", acceptedRoomID);
@@ -3259,18 +3363,36 @@ const Dashboard = () => {
             localStorage.getItem("isMeetingVideoHostCheck")
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-          let RoomID =
-            presenterViewFlagRef.current &&
-            (presenterViewHostFlagFlagRef.current ||
-              presenterViewJoinFlagRef.current)
-              ? roomID
-              : isMeetingVideo
-              ? isMeetingVideoHostCheck
-                ? newRoomID
-                : participantRoomId
-              : initiateCallRoomID
-              ? initiateCallRoomID
-              : activeRoomID;
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let RoomID = "";
+          if (isZoomEnabled) {
+            RoomID =
+              presenterViewFlagRef.current &&
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
+                ? String(roomID)
+                : isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? String(newRoomID)
+                  : String(participantRoomId)
+                : String(initiateCallRoomID)
+                ? String(initiateCallRoomID)
+                : String(activeRoomID);
+          } else {
+            RoomID =
+              presenterViewFlagRef.current &&
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
+                ? Number(roomID)
+                : isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? Number(newRoomID)
+                  : Number(participantRoomId)
+                : Number(initiateCallRoomID)
+                ? Number(initiateCallRoomID)
+                : Number(activeRoomID);
+          }
+
           console.log("mqtt");
           console.log("mqtt", RoomID);
 
@@ -3409,10 +3531,7 @@ const Dashboard = () => {
           let NewRoomID = localStorage.getItem("NewRoomID");
           let activeRoomID = localStorage.getItem("activeRoomID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-          let initiateCallRoomID = JSON.parse(
-            localStorage.getItem("initiateCallRoomID")
-          );
-
+          let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let roomID = 0;
           if (activeRoomID) {
             if (Number(activeRoomID) !== 0 && !isCaller) {
@@ -3847,6 +3966,28 @@ const Dashboard = () => {
     NormalizeVideoFlag,
     MaximizeVideoFlag,
   ]);
+
+  useEffect(() => {
+    try {
+      if (
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("No-record-found") &&
+        VideoMainReducerResponseMessage !== t("No-records-found") &&
+        VideoMainReducerResponseMessage !== "" &&
+        VideoMainReducerResponseMessage !== t("List-updated-successfully") &&
+        VideoMainReducerResponseMessage !== t("No-data-available") &&
+        VideoMainReducerResponseMessage !== t("Successful") &&
+        VideoMainReducerResponseMessage !== t("Record-updated") &&
+        VideoMainReducerResponseMessage !== t("MISSED_CALLS_COUNT") &&
+        VideoMainReducerResponseMessage !== undefined
+      ) {
+        showMessage(VideoMainReducerResponseMessage, "success", setOpen);
+        dispatch(cleareResponceMessage(""));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [VideoMainReducerResponseMessage]);
 
   useEffect(() => {
     if (Blur !== null) {

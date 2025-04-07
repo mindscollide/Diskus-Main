@@ -43,6 +43,7 @@ import {
   startPresenterViewMainApi,
   stopPresenterViewMainApi,
   toggleParticipantsVisibility,
+  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
@@ -79,6 +80,8 @@ const VideoPanelNormal = () => {
   let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
   let newRoomID = localStorage.getItem("newRoomId");
+
+  let NewRoomID = localStorage.getItem("NewRoomID");
 
   let activeRoomID = localStorage.getItem("activeRoomID");
 
@@ -301,9 +304,10 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (
-      isMeeting &&
-      isMeetingHost === false &&
-      meetingHost?.isDashboardVideo === true
+      (isMeeting &&
+        isMeetingHost === false &&
+        meetingHost?.isDashboardVideo === true) ||
+      (presenterViewFlag && presenterViewHostFlag)
     ) {
       console.log("Check new");
       if (!leavePresenterOrJoinOtherCalls) {
@@ -449,6 +453,9 @@ const VideoPanelNormal = () => {
     // Define the leave function to clean up the session
     const handleBeforeUnload = async (event) => {
       try {
+        dispatch(updatedParticipantListForPresenter([]));
+        console.log("busyCall");
+
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow !== null) {
           console.log("busyCall");
@@ -463,8 +470,10 @@ const VideoPanelNormal = () => {
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      dispatch(updatedParticipantListForPresenter([]));
+      console.log("busyCall");
     };
-  }, [iframe]);
+  }, []);
 
   useEffect(() => {
     if (getAllParticipantMain?.length) {
@@ -615,7 +624,25 @@ const VideoPanelNormal = () => {
         }
       } else if (isMeeting === true) {
         console.log("iframeiframe", isMeeting);
-        if (presenterViewFlag) {
+        // if (presenterViewFlag) {
+        //   console.log("iframeiframe", isMeeting);
+        //   let newurl = generateURLParticipant(
+        //     extractedBaseURLCaller,
+        //     currentUserName,
+        //     callAcceptedRoomID
+        //   );
+        //   if (validateRoomID(newurl)) {
+        //     console.log("iframeiframe", validateRoomID(newurl));
+
+        //     if (newurl !== callerURL) {
+        //       console.log("iframeiframe", newurl !== callerURL);
+        //       console.log("iframeiframe", newurl);
+        //       console.log("Check iframe Presenter", newurl);
+        //       setCallerURL(newurl);
+        //     }
+        //   }
+        // }
+        if (presenterViewJoinFlag || presenterViewHostFlag) {
           console.log("iframeiframe", isMeeting);
           let newurl = generateURLParticipant(
             extractedBaseURLCaller,
@@ -784,6 +811,7 @@ const VideoPanelNormal = () => {
         if (iframe && iframe.contentWindow) {
           sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
+          console.log("handlePostMessage");
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
@@ -802,7 +830,10 @@ const VideoPanelNormal = () => {
       sessionStorage.removeItem("nonPresenter");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
-      iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+      console.log("videoHideUnHideForHost");
+      setTimeout(() => {
+        iframe?.contentWindow?.postMessage("ScreenShare", "*");
+      }, 1000); // Replace with actual origin
     } else {
       console.log("share screen Iframe contentWindow is not available.");
     }
@@ -866,18 +897,21 @@ const VideoPanelNormal = () => {
         UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
         Name: String(currentName),
       };
-      dispatch(leavePresenterViewMainApi(navigate, t, data, 2));
+      dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
+  console.log("disableZoomBeforeJoinSession", disableBeforeJoinZoom);
+
   // Add event listener for messages
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
     const messageHandler = (event) => {
       console.log(event.data, "eventevent");
       // Check the origin for security
-      console.log("handlePostMessage", event.data);
-      if (event.origin === "https://portal.letsdiskus.com:9414") {
-        // if (event.origin === "http://localhost:5500") {
+      console.log("disableZoomBeforeJoinSession", event.data);
+      // if (event.origin === "https://secure.letsdiskus.com:9414") {
+      // if (event.origin === "https://portal.letsdiskus.com:9414") {
+      if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
@@ -934,6 +968,7 @@ const VideoPanelNormal = () => {
             break;
 
           case "StreamConnected":
+            console.log("disableZoomBeforeJoinSession", event.data);
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
@@ -989,8 +1024,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (audioControl === true) {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
+        console.log("audioControl Check");
         iframe.contentWindow.postMessage("MicOff", "*");
       }
     }
@@ -1000,10 +1037,10 @@ const VideoPanelNormal = () => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
       if (videoControl === true) {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOn", "*");
       } else {
-        console.log("VidOn");
+        console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOff", "*");
       }
     }
@@ -1060,15 +1097,30 @@ const VideoPanelNormal = () => {
       const iframe = iframeRef.current;
       if (iframe && iframe.contentWindow) {
         console.log("disableMicFunction");
-        if (isMicActive) {
-          console.log("VidOn");
-          iframe.contentWindow.postMessage("MicOff", "*");
+        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+        if (isZoomEnabled) {
+          if (isMicActive) {
+            console.log("VidOn");
+            setIsMicActive(false);
+            localStorage.setItem("MicOff", false);
+            iframe.contentWindow.postMessage("MicOn", "*");
+          } else {
+            console.log("VidOn");
+            setIsMicActive(true);
+            localStorage.setItem("MicOff", true);
+            iframe.contentWindow.postMessage("MicOff", "*");
+          }
         } else {
-          console.log("VidOn");
-          iframe.contentWindow.postMessage("MicOn", "*");
+          if (isMicActive) {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("MicOff", "*");
+          } else {
+            console.log("VidOn");
+            iframe.contentWindow.postMessage("MicOn", "*");
+          }
+          setIsMicActive(!isMicActive);
+          localStorage.setItem("MicOff", !isMicActive);
         }
-        setIsMicActive(!isMicActive);
-        localStorage.setItem("MicOff", !isMicActive);
       }
     } catch (error) {
       console.log("disableMicFunction", error);
@@ -1081,13 +1133,28 @@ const VideoPanelNormal = () => {
       console.log("videoHideUnHideForHost");
       if (iframe && iframe.contentWindow) {
         console.log("videoHideUnHideForHost");
-        if (isVideoActive) {
-          iframe.contentWindow.postMessage("VidOff", "*");
+        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+        if (isZoomEnabled) {
+          if (isVideoActive) {
+            console.log("VidOn");
+            setIsVideoActive(false);
+            localStorage.setItem("VidOff", false);
+            iframe.contentWindow.postMessage("VidOn", "*");
+          } else {
+            console.log("VidOn");
+            setIsVideoActive(true);
+            localStorage.setItem("VidOff", true);
+            iframe.contentWindow.postMessage("VidOff", "*");
+          }
         } else {
-          iframe.contentWindow.postMessage("VidOn", "*");
+          if (isVideoActive) {
+            iframe.contentWindow.postMessage("VidOff", "*");
+          } else {
+            iframe.contentWindow.postMessage("VidOn", "*");
+          }
+          setIsVideoActive(!isVideoActive);
+          localStorage.setItem("VidOff", !isVideoActive);
         }
-        setIsVideoActive(!isVideoActive);
-        localStorage.setItem("VidOff", !isVideoActive);
       }
     } catch {}
   };

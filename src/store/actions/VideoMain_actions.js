@@ -200,9 +200,27 @@ const InitiateVideoCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase()
                 )
             ) {
+              console.log("NonMeetingVideoCall");
+              sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.removeItem("CallType");
+              localStorage.removeItem("callTypeID");
+              localStorage.setItem("isCaller", false);
+              localStorage.setItem("callerID", 0);
+              localStorage.setItem("activeCall", false);
+              await dispatch(videoOutgoingCallFlag(false));
+              await dispatch(normalizeVideoPanelFlag(false));
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
             }
           } else {
+            console.log("NonMeetingVideoCall");
+            sessionStorage.setItem("NonMeetingVideoCall", false);
+            localStorage.removeItem("CallType");
+            localStorage.removeItem("callTypeID");
+            localStorage.setItem("isCaller", false);
+            localStorage.setItem("callerID", 0);
+            localStorage.setItem("activeCall", false);
+            await dispatch(videoOutgoingCallFlag(false));
+            await dispatch(normalizeVideoPanelFlag(false));
             await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
           }
         } else {
@@ -281,7 +299,10 @@ const VideoCallResponse = (Data, navigate, t) => {
                 )
             ) {
               console.log(Data, "responsedataresponseResult");
-              sessionStorage.setItem("NonMeetingVideoCall", true);
+              let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+              if (activeCall === false) {
+                sessionStorage.setItem("NonMeetingVideoCall", false);
+              }
 
               // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               if (Data.CallStatusID === 1) {
@@ -432,6 +453,7 @@ const ScrollRecentCalls = (response) => {
     response: response,
   };
 };
+
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -771,8 +793,11 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
+              console.log("leavecallMeetingVideo", flag);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
+              sessionStorage.setItem("NonMeetingVideoCall", false);
               if (flag === 1) {
+                console.log("leavecallMeetingVideo");
                 await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
@@ -828,7 +853,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 )
             ) {
               await dispatch(leaveCallAction(t("Something-went-wrong")));
-            }else if (
+            } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
@@ -872,6 +897,11 @@ const LeaveInitmationMessegeVideoMeetAction = (response) => {
   };
 };
 
+const cleareResponceMessage = () => {
+  return {
+    type: actions.CLEARE_MESSAGE_RESPONCE,
+  };
+};
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -890,4 +920,5 @@ export {
   groupCallRecipients,
   LeaveInitmationMessegeVideoMeetAction,
   initiateVideoCallFail,
+  cleareResponceMessage,
 };

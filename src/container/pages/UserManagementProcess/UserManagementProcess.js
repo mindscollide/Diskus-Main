@@ -24,7 +24,7 @@ import { LoginFlowRoutes } from "../../../store/actions/UserManagementActions";
 import VerificationCodeThree from "../organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import Helper from "../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import VerificationIphone from "../organizationRegister/2FA/VerificationIphone/VerificationIphone";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 
@@ -33,6 +33,7 @@ const UserManagementProcess = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
   const currentUrl = window.location.href.split("?verifyOTPaction=")[1];
   let userManagementRoute = localStorage.getItem("LoginFlowPageRoute");
 
@@ -65,9 +66,12 @@ const UserManagementProcess = () => {
   const [storedStep, setStoredStep] = useState(
     Number(localStorage.getItem("LoginFlowPageRoute"))
   );
+  useEffect(() => {
+    if (window.location.pathname !== "/") {
+      navigate("*");
+    }
+  }, []);
 
-  // Retrieve currentStep value from localStorage, default to 1 if not found
-  // let storedStep = Number(localStorage.getItem("LoginFlowPageRoute"));
   useEffect(() => {
     if (currentUrl === undefined) {
       // Retrieve current step from local storage
