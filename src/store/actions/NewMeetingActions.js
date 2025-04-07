@@ -8393,6 +8393,10 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(showEndMeetingModal(false));
@@ -8632,6 +8636,10 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(currentMeetingStatus(0));
