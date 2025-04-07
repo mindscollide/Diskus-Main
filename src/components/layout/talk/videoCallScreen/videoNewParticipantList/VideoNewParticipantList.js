@@ -11,6 +11,7 @@ import {
   participantWaitingListBox,
   presenterLeaveParticipant,
   presenterNewParticipantJoin,
+  updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -53,6 +54,7 @@ const VideoNewParticipantList = () => {
   );
 
   console.log(getAllParticipantMain.length, "getAllParticipantMain");
+  console.log(getAllParticipantMain, "getAllParticipantMain");
 
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
@@ -107,11 +109,13 @@ const VideoNewParticipantList = () => {
   const handleChangeSearchParticipant = (e) => {
     const { value } = e.target;
     setSearchValue(value);
+    let dublicateData = [...getAllParticipantMain];
 
     // Filter participants based on the search value
-    const filtered = getAllParticipantMain.filter((participant) =>
+    const filtered = dublicateData.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
+    console.log("getAllParticipantMain");
 
     setFilteredParticipants(filtered);
   };
@@ -128,9 +132,10 @@ const VideoNewParticipantList = () => {
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain).length) {
-      console.log("hell");
+      console.log("getAllParticipantMain");
       setFilteredParticipants(getAllParticipantMain);
     } else {
+      console.log("getAllParticipantMain");
       setFilteredParticipants([]);
     }
   }, [getAllParticipantMain]);
@@ -147,19 +152,24 @@ const VideoNewParticipantList = () => {
       );
       // Update the state with the filtered list
       setFilteredParticipants(updatedParticipants);
-      console.log("hell", leavePresenterParticipant);
+      console.log("getAllParticipantMain");
+      console.log("filteredParticipants", leavePresenterParticipant);
       dispatch(presenterLeaveParticipant([]));
     }
   }, [leavePresenterParticipant]);
 
   useEffect(() => {
-    if (
+    console.log("getAllParticipantMain");
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+      if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
       presenterViewHostFlag
     ) {
+      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
       // Step 1: Remove any existing participant with the same userID or guid
-      const updatedParticipants = filteredParticipants.filter(
+      let dublicateData = [...filteredParticipants];
+      const updatedParticipants = dublicateData.filter(
         (participant) =>
           participant.userID !== newJoinPresenterParticipant.userID &&
           participant.guid !== newJoinPresenterParticipant.guid
@@ -169,7 +179,8 @@ const VideoNewParticipantList = () => {
       updatedParticipants.push(newJoinPresenterParticipant);
 
       // Step 3: Update the state
-      setFilteredParticipants(updatedParticipants);
+      console.log("getAllParticipantMain");
+      dispatch(updatedParticipantListForPresenter(updatedParticipants));
       dispatch(presenterNewParticipantJoin([]));
 
       console.log(updatedParticipants);
@@ -235,6 +246,8 @@ const VideoNewParticipantList = () => {
           ? newRoomID
           : participantRoomId;
       // Mute/Unmute a specific participant
+      console.log("filteredParticipants");
+      console.log("getAllParticipantMain");
       setFilteredParticipants((prev) =>
         prev.map((participant) =>
           participant.guid === usersData.guid
@@ -353,6 +366,8 @@ const VideoNewParticipantList = () => {
     };
 
     // Update the specific participant's hideCamera state in `newParticipants`
+    console.log("getAllParticipantMain");
+    console.log("filteredParticipants");
     setFilteredParticipants((prev) =>
       prev.map((participant) =>
         participant.guid === usersData.guid
@@ -372,6 +387,8 @@ const VideoNewParticipantList = () => {
       MeetingID: currentMeetingID,
     };
 
+    console.log("getAllParticipantMain");
+    console.log("filteredParticipants");
     setFilteredParticipants((prev) =>
       prev.filter((participant) => participant.guid !== usersData.guid)
     );

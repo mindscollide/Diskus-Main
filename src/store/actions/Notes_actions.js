@@ -463,7 +463,10 @@ const deleteNotes_Fail = (message) => {
 };
 const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
-
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let notesPage = parseInt(localStorage.getItem("notesPage"));
+  let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
   let deleteNotData = {
     PK_NotesID: JSON.parse(ID),
   };
@@ -500,18 +503,27 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
                   t("Notes-deleted-successfully")
                 )
               );
-              //Delete Notes Documents Api
-              let DelNotesAttachmentData = {
-                NoteID: Number(id),
+              let searchData = {
+                UserID: parseInt(createrID),
+                OrganizationID: JSON.parse(OrganizationID),
+                Title: "",
+                PageNumber: notesPage,
+                Length: notesPagesize,
               };
-              dispatch(
-                DeleteNotesDocumentsAPI(
-                  navigate,
-                  DelNotesAttachmentData,
-                  t,
-                  setUpdateNotes
-                )
-              );
+              dispatch(GetNotes(navigate, searchData, t));
+              setUpdateNotes(false);
+              //Delete Notes Documents Api
+              // let DelNotesAttachmentData = {
+              //   NoteID: Number(id),
+              // };
+              // dispatch(
+              //   DeleteNotesDocumentsAPI(
+              //     navigate,
+              //     DelNotesAttachmentData,
+              //     t,
+              //     setUpdateNotes
+              //   )
+              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1176,10 +1188,10 @@ const DeleteNotesDocumentsFailed = (message) => {
 
 const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = parseInt(localStorage.getItem("notesPage"));
-  let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
+  // let createrID = localStorage.getItem("userID");
+  // let OrganizationID = localStorage.getItem("organizationID");
+  // let notesPage = parseInt(localStorage.getItem("notesPage"));
+  // let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
   return (dispatch) => {
     dispatch(DeleteNotesDocumentsInit());
     let form = new FormData();
@@ -1213,15 +1225,15 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
                 )
               );
 
-              let searchData = {
-                UserID: parseInt(createrID),
-                OrganizationID: JSON.parse(OrganizationID),
-                Title: "",
-                PageNumber: notesPage,
-                Length: notesPagesize,
-              };
-              dispatch(GetNotes(navigate, searchData, t));
-              setUpdateNotes(false);
+              // let searchData = {
+              //   UserID: parseInt(createrID),
+              //   OrganizationID: JSON.parse(OrganizationID),
+              //   Title: "",
+              //   PageNumber: notesPage,
+              //   Length: notesPagesize,
+              // };
+              // dispatch(GetNotes(navigate, searchData, t));
+              // setUpdateNotes(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
