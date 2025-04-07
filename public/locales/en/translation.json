@@ -2253,7 +2253,7 @@
   "GROUP_STATUS_EDITED_ACTIVE": "Group [Group Title] in which you are a member has been set as Active",
   "View-your-vote": "View your vote",
   "At-least-one-organizer-is-must": "At least one organizer is must",
- 
+
   "Continue": "Continue",
   "Unsaved-changes": "Unsaved Changes",
   "The-organizer-has-removed-you-from-the-meeting-click-here-to-request-permission-to-rejoin": "The organizer has removed you from the meeting click here to request permission to rejoin.",
@@ -2401,7 +2401,7 @@
   "Has-deleted-the-poll": " has deleted the Meeting Poll",
   "Has-deleted-the-Resolution": "has deleted the Resolution",
   "Has-given-his-vote-on-a-poll": "has voted on a poll",
-  "Has-given-his-vote-on-a-poll-in-the-meeting": "has given his vote on a poll in the meeting",
+  "Has-given-his-vote-on-a-poll-in-the-meeting": "has given the vote on the meeting poll",
   "Send-response-date-for-the-proposed-meeting": "Send response date for the Proposed Meeting has passed. Schedule the Meeting",
   "Vote-updated": "Vote Updated",
   "No-vote-updated": "No Vote Updated",
@@ -2409,7 +2409,7 @@
   "Access-this": "access this",
   "Access-denied": "Access Denied",
   "has-assigned-a-task-to-you-in-the-meeting": "has assigned a Task to you in the meeting:",
-  "Has-changed-his-vote-in": " has changed his Vote in:",
+  "Has-changed-his-vote-in": "has changed the Vote in",
   "Start-presentation": "Start Presentation",
   "Stop-presentation": "Stop Presentation",
   "Leave-presentation": "Leave presentation view",
@@ -2466,5 +2466,5 @@
   "Role": "Role",
   "No-files-attached": "No files attached",
   "Options": "Options",
-  "Option":"Option"
+  "Option": "Option"
 }

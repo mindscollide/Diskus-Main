@@ -335,7 +335,7 @@ const ViewMeetingModal = ({
       setMeetingMaterial(false);
       setAgendaContributors(false);
       setorganizers(false);
-      setmeetingDetails(true);
+      setmeetingDetails(false);
       setMinutes(false);
       setAttendance(false);
       setAgenda(false);
