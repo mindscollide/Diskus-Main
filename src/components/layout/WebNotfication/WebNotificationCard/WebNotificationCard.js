@@ -259,7 +259,7 @@ const WebNotificationCard = ({
         } else if (NotificaitonID === 48) {
           message = `${t("Send-response-date-for-the-proposed-meeting")} ${
             NotificationMessege.MeetingTitle
-          }`;
+          }${t("Scedule-the-meeting")}`;
         } else if (NotificaitonID === 49) {
           message = `${NotificationMessege.NotifierName} ${t(
             "has-assigned-a-task-to-you-in-the-meeting"
