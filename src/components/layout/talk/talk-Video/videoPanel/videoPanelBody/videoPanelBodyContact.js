@@ -147,7 +147,11 @@ const VideoPanelBodyContact = () => {
 
   const otoVideoCall = (userData) => {
     setGroupCallUsers([userData.userID]);
-    if (activeCall === false||activeCall===undefined||activeCall===null) {
+    if (
+      activeCall === false ||
+      activeCall === undefined ||
+      activeCall === null
+    ) {
       let Data = {
         RecipentIDs: [userData.userID],
         CallTypeID: 1,

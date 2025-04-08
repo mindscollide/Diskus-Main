@@ -176,6 +176,9 @@ export const MeetingProvider = ({ children }) => {
     []
   );
 
+  // state for handRaise Counter
+  const [handRaiseCounter, setHandRaiseCounter] = useState(0);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -372,6 +375,8 @@ export const MeetingProvider = ({ children }) => {
     setGroupCallParticipantList,
     unansweredCallParticipant,
     setUnansweredCallParticipant,
+    handRaiseCounter,
+    setHandRaiseCounter,
   };
 
   // Provide the state data to the context

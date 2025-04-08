@@ -54,6 +54,7 @@ const NewEndMeetingModal = () => {
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationClickTaskID");
     localStorage.removeItem("viewadvanceMeetingTask");
+    localStorage.removeItem("isMeeting");
   };
   const handleClickDiscard = () => {
     dispatch(showEndMeetingModal(false));
@@ -65,6 +66,7 @@ const NewEndMeetingModal = () => {
         setShow={dispatch(showEndMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
+        className={styles["classOfMeetingModal"]}
         onHide={() => {
           dispatch(showEndMeetingModal(false));
         }}
