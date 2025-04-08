@@ -23,6 +23,7 @@ const countryNamesReducer = (state = initialState, action) => {
     case actions.COUNTRYNAMES_FAIL:
       return {
         ...state,
+        Loading: false,
         CountryNamesData: [],
         ResponseMessage: action.message,
       };

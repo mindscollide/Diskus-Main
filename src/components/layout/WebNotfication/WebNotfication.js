@@ -1042,7 +1042,7 @@ const WebNotfication = ({
             PollID: Number(PayLoadData.PollID),
             UserID: parseInt(userID),
           };
-          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+          dispatch(getPollsByPollIdApi(navigate, data, 5, t));
         } else {
           //Notification for Poll has been Created submit your response
           navigate("/Diskus/polling");
@@ -1051,7 +1051,7 @@ const WebNotfication = ({
             PollID: Number(PayLoadData.PollID),
             UserID: parseInt(userID),
           };
-          dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+          dispatch(getPollsByPollIdApi(navigate, data, 5, t));
         }
       } else if (NotificationData.notificationActionID === 30) {
         if (currentURL.includes("/Diskus/polling")) {
