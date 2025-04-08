@@ -503,6 +503,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
                   t("Notes-deleted-successfully")
                 )
               );
+
               let searchData = {
                 UserID: parseInt(createrID),
                 OrganizationID: JSON.parse(OrganizationID),
@@ -512,18 +513,6 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
               };
               dispatch(GetNotes(navigate, searchData, t));
               setUpdateNotes(false);
-              //Delete Notes Documents Api
-              // let DelNotesAttachmentData = {
-              //   NoteID: Number(id),
-              // };
-              // dispatch(
-              //   DeleteNotesDocumentsAPI(
-              //     navigate,
-              //     DelNotesAttachmentData,
-              //     t,
-              //     setUpdateNotes
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1186,12 +1175,9 @@ const DeleteNotesDocumentsFailed = (message) => {
   };
 };
 
-const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
+const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  // let createrID = localStorage.getItem("userID");
-  // let OrganizationID = localStorage.getItem("organizationID");
-  // let notesPage = parseInt(localStorage.getItem("notesPage"));
-  // let notesPagesize = parseInt(localStorage.getItem("notesPageSize"));
+
   return (dispatch) => {
     dispatch(DeleteNotesDocumentsInit());
     let form = new FormData();
@@ -1208,7 +1194,9 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(DeleteNotesDocumentsAPI(navigate, Data, t, setUpdateNotes));
+          dispatch(
+            DeleteNotesDocumentsAPI(navigate, Data, t, setUpdateNotes, id)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1224,16 +1212,7 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes) => {
                   t("Notes-attachment-deleted-successfully")
                 )
               );
-
-              // let searchData = {
-              //   UserID: parseInt(createrID),
-              //   OrganizationID: JSON.parse(OrganizationID),
-              //   Title: "",
-              //   PageNumber: notesPage,
-              //   Length: notesPagesize,
-              // };
-              // dispatch(GetNotes(navigate, searchData, t));
-              // setUpdateNotes(false);
+              dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes, id));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
