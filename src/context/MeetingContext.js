@@ -200,8 +200,13 @@ export const MeetingProvider = ({ children }) => {
     }
   }, [UserProfileData]);
 
+  const joinMeetingFunction = (propValue) => {
+    console.log(propValue, "propValuepropValuepropValue");
+  };
+
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
+    joinMeetingFunction,
     setGoBackCancelModal,
     goBackCancelModal,
     editorRole,

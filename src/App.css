@@ -4966,10 +4966,12 @@ body[dir="rtl"]
 
 .Resolution_table {
   height: 58vh !important;
+  width: 100%;
 }
 
 .Resolution_table .ant-table table {
   border-spacing: 0 10px;
+  width: 100%;
 }
 .ant-table table .ant-table-measure-row {
   visibility: collapse !important;

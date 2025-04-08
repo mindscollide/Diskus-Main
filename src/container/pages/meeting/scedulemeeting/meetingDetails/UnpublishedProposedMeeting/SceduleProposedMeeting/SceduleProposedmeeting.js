@@ -4,7 +4,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button, Table } from "../../../../../../../components/elements";
+import {
+  Modal,
+  Button,
+  Table,
+  Notification,
+} from "../../../../../../../components/elements";
 import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
@@ -22,6 +27,7 @@ import {
 } from "../../../../../../../commen/functions/date_formater";
 import { convertToArabicNumerals } from "../../../../../../../commen/functions/regex";
 import BlackCrossIcon from "../../../../../../../assets/images/BlackCrossIconModals.svg";
+import { showMessage } from "../../../../../../../components/elements/snack_bar/utill";
 const SceduleProposedmeeting = ({
   setDataroomMapFolderId,
   setCurrentMeetingID,
@@ -37,7 +43,11 @@ const SceduleProposedmeeting = ({
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
-
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   // const getUserProposedOrganizerData = useSelector(
   //   (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   // );
@@ -236,7 +246,7 @@ const SceduleProposedmeeting = ({
       setProposedDatesData((newData) =>
         newData.map((proposedData) => ({
           ...proposedData,
-          isSelected:
+          isChecked:
             proposedData.proposedDateID === record.proposedDateID
               ? true
               : false,
@@ -279,7 +289,7 @@ const SceduleProposedmeeting = ({
       "ProposedMeetingOrganizerMeetingID"
     );
     let findIsSelected = proposedDatesData.find(
-      (propsedData, index) => propsedData.isSelected === true
+      (propsedData, index) => propsedData?.isChecked === true
     );
 
     if (findIsSelected) {
@@ -304,6 +314,8 @@ const SceduleProposedmeeting = ({
           NotificationClickOrganizerProposedMeetingID
         )
       );
+    } else {
+      showMessage(t("Please-select-a-date"), "error", setOpen);
     }
   };
 
@@ -369,7 +381,7 @@ const SceduleProposedmeeting = ({
             className={
               checkisPassed
                 ? styles["Date-Object-Detail_disabled"]
-                : isFind !== undefined && isFind.isSelected
+                : isFind !== undefined && isFind?.isChecked
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
@@ -408,13 +420,15 @@ const SceduleProposedmeeting = ({
             );
             if (proposedDate?.isSelected) {
               return (
-                <img
-                  src={BlueTick}
-                  className={styles["TickIconClass"]}
-                  width='20.7px'
-                  height='14.21px'
-                  alt=''
-                />
+                <span className='d-flex justify-content-center'>
+                  <img
+                    src={BlueTick}
+                    className={styles["TickIconClass"]}
+                    width='20.7px'
+                    height='14.21px'
+                    alt=''
+                  />
+                </span>
               );
             }
           }
@@ -506,6 +520,7 @@ const SceduleProposedmeeting = ({
                 <img
                   src={BlackCrossIcon}
                   alt=''
+                  className="cursor-pointer"
                   width={15}
                   onClick={handleCrossIconClass}
                 />
@@ -546,6 +561,7 @@ const SceduleProposedmeeting = ({
           </>
         }
       />
+      <Notification open={open} setOpen={setOpen} />
     </section>
   );
 };

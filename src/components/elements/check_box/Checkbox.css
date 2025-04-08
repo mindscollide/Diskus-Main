@@ -68,6 +68,7 @@ body[dir="rtl"] .ant-checkbox-checked .ant-checkbox-inner {
   border: 1px solid #1677ff;
   background-color: #fff;
   position: relative;
+  cursor: pointer;
 }
 
 /* Checked state */

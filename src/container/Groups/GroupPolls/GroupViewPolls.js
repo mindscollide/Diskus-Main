@@ -474,7 +474,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollTitle",
       key: "pollTitle",
-      width: "30%",
+      width: "20%",
       align: "start",
       onHeaderCell: () => ({
         onClick: () => {
@@ -624,7 +624,7 @@ const GroupViewPolls = ({ groupStatus }) => {
       ),
       dataIndex: "pollCreator",
       key: "pollCreator",
-      width: "20%",
+      width: "10%",
       align: "center",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       onHeaderCell: () => ({
@@ -855,7 +855,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                       <Table
                         column={PollsColoumn}
                         rows={pollsRows}
-                        scroll={{ y: "45vh", x: false }}
+                        scroll={{ y: "45vh", x: "hidden" }}
                         pagination={false}
                         className="Resolution_table"
                         locale={{
