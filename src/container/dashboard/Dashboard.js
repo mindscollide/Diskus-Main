@@ -1574,6 +1574,7 @@ const Dashboard = () => {
             ) {
               dispatch(setAudioControlHost(false));
               dispatch(setVideoControlHost(false));
+              dispatch(setRaisedUnRaisedParticiant(false));
               dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
             } else if (

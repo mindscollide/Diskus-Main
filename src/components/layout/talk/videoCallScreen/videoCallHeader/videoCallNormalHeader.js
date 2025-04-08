@@ -104,6 +104,8 @@ const VideoCallNormalHeader = ({
     setGroupCallParticipantList,
     unansweredCallParticipant,
     setUnansweredCallParticipant,
+    handRaiseCounter,
+    setHandRaiseCounter,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -152,6 +154,8 @@ const VideoCallNormalHeader = ({
   const raisedUnRaisedParticipant = useSelector(
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
   );
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
@@ -346,10 +350,6 @@ const VideoCallNormalHeader = ({
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
-  //Hand Raise Counter To show on Participant Counter in presenter View
-  const [handRaiseCounter, setHandRaiseCounter] = useState(0);
-  console.log(handRaiseCounter, "handRaiseCounter");
-
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -394,24 +394,38 @@ const VideoCallNormalHeader = ({
     }
   }, [getAllParticipantMain]);
 
+  useEffect(() => {
+    if (leavePresenterParticipant !== null) {
+      const leftUID = leavePresenterParticipant.uid;
+
+      // Filter out the leaving participant from current list
+      const updatedList = getAllParticipantMain.filter(
+        (participant) => participant.guid !== leftUID
+      );
+      console.log(updatedList, "updatedList");
+
+      // Count how many are still raising hands
+      const updatedRaisedHands = updatedList.filter(
+        (participant) => participant.raiseHand === true
+      );
+      console.log(updatedRaisedHands, "updatedRaisedHands");
+
+      setHandRaiseCounter(updatedRaisedHands.length);
+      dispatch(updatedParticipantListForPresenter(updatedList));
+    }
+  }, [leavePresenterParticipant]);
+
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    let filteredParticipants = [...getAllParticipantMain];
-
-    // If a participant left, remove them by uid
-    if (leavePresenterParticipant?.payload?.uid) {
-      const leavingUID = leavePresenterParticipant.payload.uid;
-      filteredParticipants = filteredParticipants.filter(
-        (participant) => participant.guid !== leavingUID
-      );
-    }
-
-    const raisedHandCounter = filteredParticipants.filter(
+    console.log(getAllParticipantMain, "getAllParticipantMain");
+    let dublicateData = [...getAllParticipantMain];
+    const raisedHandCounter = dublicateData.filter(
       (participant) => participant.raiseHand === true
     );
 
+    console.log(raisedHandCounter, "raisedHandCounter");
     setHandRaiseCounter(raisedHandCounter.length);
-  }, [getAllParticipantMain, leavePresenterParticipant]);
+  }, [getAllParticipantMain]);
 
   useEffect(() => {
     console.log("getAllParticipantMain");
