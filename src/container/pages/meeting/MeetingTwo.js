@@ -776,12 +776,12 @@ const NewMeeting = () => {
                 ? false
                 : true,
           };
-          // if (
-          //   getALlMeetingTypes.length === 0 &&
-          //   Object.keys(getALlMeetingTypes).length === 0
-          // ) {
-          //   await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
-          // }
+          if (
+            getALlMeetingTypes.length === 0 &&
+            Object.keys(getALlMeetingTypes).length === 0
+          ) {
+            await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+          }
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
           //Notification Trigger of Quick Meeting published
           if (
@@ -2415,12 +2415,7 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      record?.videoCallUR &&
-                        console.log("end meeting chaek call", record);
-                      console.log(
-                        "end meeting chaek call",
-                        startMeetingRequest
-                      );
+                   
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
@@ -2504,8 +2499,8 @@ const NewMeeting = () => {
                       localStorage.setItem("meetingTitle", record.title);
                       setAdvanceMeetingModalID(record.pK_MDID);
                       dispatch(viewMeetingFlag(true));
-                      setViewAdvanceMeetingModal(true);
-                      dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                      // setViewAdvanceMeetingModal(true);
+                      // dispatch(viewAdvanceMeetingPublishPageFlag(true));
                       dispatch(scheduleMeetingPageFlag(false));
                       setEditorRole({
                         status: 10,
@@ -2544,7 +2539,7 @@ const NewMeeting = () => {
                     });
                     localStorage.setItem("videoCallURL", record.videoCallURL);
 
-                    dispatch(viewMeetingFlag(true));
+                    // dispatch(viewMeetingFlag(true));
                     localStorage.setItem(
                       "isMinutePublished",
                       record.isMinutePublished
@@ -2925,8 +2920,8 @@ const NewMeeting = () => {
     localStorage.setItem("meetingTitle", dashboardEventData.title);
     setAdvanceMeetingModalID(Number(dashboardEventData.pK_MDID));
     dispatch(viewMeetingFlag(true));
-    setViewAdvanceMeetingModal(true);
-    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    // setViewAdvanceMeetingModal(true);
+    // dispatch(viewAdvanceMeetingPublishPageFlag(true));
     dispatch(scheduleMeetingPageFlag(false));
   };
 
@@ -3641,8 +3636,8 @@ const NewMeeting = () => {
                 );
                 setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
                 // dispatch(viewMeetingFlag(true));
-                setViewAdvanceMeetingModal(true);
-                dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                // setViewAdvanceMeetingModal(true);
+                // dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 dispatch(scheduleMeetingPageFlag(false));
                 setEditorRole({
                   status: 10,
