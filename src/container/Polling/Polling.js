@@ -582,7 +582,11 @@ const Polling = () => {
         console.log(text, "recordrecordrecord");
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        if (currentDate < convertIntoGmt && record.isVoter) {
+        if (
+          currentDate < convertIntoGmt &&
+          record.isVoter &&
+          record.pollStatus.status === "Published"
+        ) {
           return (
             <span
               className={styles["Ellipses_Class"]}

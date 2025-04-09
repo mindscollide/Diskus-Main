@@ -492,7 +492,8 @@ const GroupViewPolls = ({ groupStatus }) => {
         if (
           currentDate < convertIntoGmt &&
           record.isVoter &&
-          groupStatus === 3
+          groupStatus === 3 &&
+          record.pollStatus.status === "Published"
         ) {
           return (
             <span
