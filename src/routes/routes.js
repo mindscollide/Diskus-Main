@@ -2,6 +2,7 @@ import {
   Route,
   createRoutesFromElements,
   createHashRouter,
+  createBrowserRouter,
 } from "react-router-dom";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import React, { lazy } from "react";

@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import styles from "./ForgotPasswordUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "./../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import LanguageSelector from "./../../../../components/elements/languageSelector/Language-selector";
-import {
-  Button,
-  Notification,
-} from "./../../../../components/elements";
+import { Button, Notification } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { changePasswordRequest } from "../../../../store/actions/Auth_Forgot_Password";
@@ -80,50 +78,50 @@ const ForgotPasswordUM = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span className={styles["Forgotpasswordloginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["ForgotPassword_EmailVerifyBox"]}
-              >
+                className={styles["ForgotPassword_EmailVerifyBox"]}>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <img
-                      draggable="false"
-                      src={DiskusLogo}
+                      draggable='false'
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       width={220}
-                      alt="diskus_logo"
+                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
-                <Row className="text-center mt-5">
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                <Row className='text-center mt-5'>
+                  <Col sm={12} md={12} lg={12} className='m-0 p-0'>
                     <span className={styles["ForgotPassword_heading1"]}>
                       {t("Forgot")}
                     </span>
                   </Col>
-                  <Col sm={12} md={12} lg={12} className="m-0 p-0">
+                  <Col sm={12} md={12} lg={12} className='m-0 p-0'>
                     <span className={styles["ForgotPassword_heading1"]}>
                       {t("Password")}?
                     </span>
                   </Col>
                 </Row>
                 <Form onSubmit={submitForm}>
-                  <Row className="mt-5">
+                  <Row className='mt-5'>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className={styles["forgotpassword_label"]}
-                    >
+                      className={styles["forgotpassword_label"]}>
                       {/*Email */}
                       {t("Email-address")}
                     </Col>
@@ -133,16 +131,15 @@ const ForgotPasswordUM = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center flex-column  "
-                    >
+                      className='d-flex justify-content-center flex-column  '>
                       <Form.Control
                         required
-                        type="email"
+                        type='email'
                         className={styles["Forgot_Password_Email_Field"]}
                         onChange={handleChange}
                         value={email}
-                        name="forgotEmail"
-                        width="100%"
+                        name='forgotEmail'
+                        width='100%'
                         placeholder={t("Email")}
                         maxLength={160}
                       />
@@ -150,13 +147,12 @@ const ForgotPasswordUM = () => {
                     </Col>
                   </Row>
 
-                  <Row className="mt-4">
+                  <Row className='mt-4'>
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center  "
-                    >
+                      className='d-flex justify-content-center  '>
                       <Button
                         text={t("Next")}
                         onClick={submitForm}
@@ -167,13 +163,12 @@ const ForgotPasswordUM = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["Forgot_passwordforogt_email_link"]}
-                  >
+                    className={styles["Forgot_passwordforogt_email_link"]}>
                     <Link onClick={handleGoBackFunction}>{t("Go-back")}</Link>
                   </Col>
                 </Row>
@@ -184,8 +179,7 @@ const ForgotPasswordUM = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex overflow-hidden"
-          >
+            className='position-relative d-flex overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -193,12 +187,12 @@ const ForgotPasswordUM = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Forgot_Password_Auth_Icon"]}
               />
             </Col>

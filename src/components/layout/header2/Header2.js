@@ -5,7 +5,7 @@ import { Tooltip } from "antd";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
-import DiskusLogoArabic from "../../../assets/images/Diskus_Arabic_logo.png";
+import DiskusLogoArabic from "../../../assets/images/Diskus Arabic Logo/Diskus Arabic-Header.png";
 
 import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
 import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
@@ -900,7 +900,7 @@ const Header2 = ({ isVideo }) => {
                   currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
                 }
                 alt='Logo'
-                width={120}
+                width={140}
                 draggable='false'
               />
             </Navbar.Brand>

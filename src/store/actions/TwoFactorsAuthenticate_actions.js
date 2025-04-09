@@ -114,7 +114,9 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
               );
               if (response.data.responseResult.userDevices.length === 1) {
                 dispatch(LoginFlowRoutes(8));
+                localStorage.setItem("isMultiDevice", false);
               } else {
+                localStorage.setItem("isMultiDevice", true);
                 dispatch(LoginFlowRoutes(13));
               }
             } else if (

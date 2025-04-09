@@ -178,6 +178,7 @@ const NewMeeting = () => {
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
+    joinMeetingFunction,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -1746,7 +1747,7 @@ const NewMeeting = () => {
             FK_MDID: id,
             DateTime: getCurrentDateTimeUTC(),
           };
-
+          
           dispatch(
             JoinCurrentMeeting(
               isQuickMeeting,

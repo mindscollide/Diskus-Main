@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import "./VerificationIphone.css";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import img2 from "../../../../../assets/images/2.png";
 import img10 from "../../../../../assets/images/10.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -115,15 +116,20 @@ const VerificationIphone = () => {
 
   //handle Go back Functionality
   const handleGoback = () => {
-    localStorage.setItem("LoginFlowPageRoute", 13);
-    dispatch(LoginFlowRoutes(13));
+    if (localStorage.getItem("isMultiDevice")) {
+      localStorage.setItem("LoginFlowPageRoute", 13);
+      dispatch(LoginFlowRoutes(13));
+    } else {
+      localStorage.setItem("LoginFlowPageRoute", 8);
+      dispatch(LoginFlowRoutes(8));
+    }
   };
 
   return (
     <>
-      <Container fluid className="auth_container">
-        <Row className="position-relative">
-          <Col className="languageSelectors">
+      <Container fluid className='auth_container'>
+        <Row className='position-relative'>
+          <Col className='languageSelectors'>
             <LanguageSelector />
           </Col>
         </Row>
@@ -132,58 +138,58 @@ const VerificationIphone = () => {
             lg={5}
             md={5}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
-            <span className="loginbox_auth_paperForiphone">
+            className='d-flex justify-content-center align-items-center min-vh-100'>
+            <span className='loginbox_auth_paperForiphone'>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className="EmailVerifyBoxVerificationIphone"
-              >
+                className='EmailVerifyBoxVerificationIphone'>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center "
-                  >
+                    className='d-flex justify-content-center '>
                     <img
-                      draggable="false"
-                      src={img1}
+                      draggable='false'
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : img1
+                      }
                       width={220}
-                      alt="diskus_logo"
+                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
 
                 <Form>
-                  <Row className="mt-5">
+                  <Row className='mt-5'>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-start flex-column"
-                    >
-                      <h3 className="VerifyHeadingIphone">
+                      className='d-flex justify-content-start flex-column'>
+                      <h3 className='VerifyHeadingIphone'>
                         {t("2fa-verification")}
                       </h3>
-                      <span className="SelectLineIphone">
+                      <span className='SelectLineIphone'>
                         {t("Select-any-device")}
                       </span>
                     </Col>
                   </Row>
 
-                  <Row className="Scroll_bar_For_devices mt-3">
+                  <Row className='Scroll_bar_For_devices mt-3'>
                     {devices && devices.length > 0
                       ? devices.map((data, index) => {
                           console.log(data, "lengthlengthlength");
                           return (
-                            <Col sm={12} lg={12} md={12} className="mx-2">
-                              <Row key={index} className="my-2">
+                            <Col sm={12} lg={12} md={12} className='mx-2'>
+                              <Row key={index} className='my-2'>
                                 <Col sm={12} md={1} lg={1}>
                                   <img
-                                    draggable="false"
+                                    draggable='false'
                                     width={"15px"}
                                     className={
                                       selectDevice?.UserDeviceID ===
@@ -192,7 +198,7 @@ const VerificationIphone = () => {
                                         : "two_fac_image"
                                     }
                                     src={img10}
-                                    alt=""
+                                    alt=''
                                   />
                                 </Col>
                                 <Col sm={12} md={9} lg={9}>
@@ -202,15 +208,14 @@ const VerificationIphone = () => {
                                       data?.UserDeviceID
                                         ? "verificationIphoneLabels"
                                         : "verificationIphoneLabels_active"
-                                    }
-                                  >
+                                    }>
                                     {data.DeviceName}
                                   </span>
                                 </Col>
                                 <Col sm={12} md={2} lg={2}>
                                   <Form.Check
-                                    type="radio"
-                                    name="2faVerificationIphone"
+                                    type='radio'
+                                    name='2faVerificationIphone'
                                     value={JSON.stringify(data)}
                                     onChange={
                                       onChangeHandlerVerificationIphone1
@@ -223,25 +228,24 @@ const VerificationIphone = () => {
                         })
                       : null}
                   </Row>
-                  <Row className="mt-4 d-flex justify-content-center">
+                  <Row className='mt-4 d-flex justify-content-center'>
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center "
-                    >
+                      className='d-flex justify-content-center '>
                       <Button
                         disableBtn={selectDevice !== null ? false : true}
                         text={t("Send-code").toUpperCase()}
-                        className="Next_button_EmailVerifyVerificationIphone"
+                        className='Next_button_EmailVerifyVerificationIphone'
                         onClick={onClickIphone}
                       />
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-1">
-                  <Col sm={12} md={12} lg={12} className="forogt_email_link">
-                    <span className="cursor-pointer" onClick={handleGoback}>
+                <Row className='mt-1'>
+                  <Col sm={12} md={12} lg={12} className='forogt_email_link'>
+                    <span className='cursor-pointer' onClick={handleGoback}>
                       {t("Go-back")}
                     </span>
                   </Col>
@@ -249,23 +253,23 @@ const VerificationIphone = () => {
               </Col>
             </span>
           </Col>
-          <Col md={7} lg={7} sm={12} className="">
+          <Col md={7} lg={7} sm={12} className=''>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
-                  className="phone-image"
+                  alt='auth_icon'
+                  className='phone-image'
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
-                  width="600px"
-                  className="Auth_Icon"
+                  alt='auth_icon'
+                  width='600px'
+                  className='Auth_Icon'
                 />
               </Col>
             </Row>

@@ -3,6 +3,7 @@ import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_
 import styles from "./TapOptions.module.css";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import img9 from "../../../../../assets/images/9.png";
 import img10 from "../../../../../assets/images/10.png";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
@@ -13,7 +14,7 @@ const TapOptions = () => {
   const { t } = useTranslation();
   return (
     <Container fluid className={styles["VerificationCodeThree"]}>
-      <Row className="position-relative">
+      <Row className='position-relative'>
         <Col className={styles["languageSelector"]}>
           <LanguageSelector />
         </Col>
@@ -23,36 +24,36 @@ const TapOptions = () => {
           lg={5}
           md={5}
           sm={12}
-          className="d-flex justify-content-center align-items-center min-vh-100"
-        >
+          className='d-flex justify-content-center align-items-center min-vh-100'>
           <span
-            className={styles["loginbox_auth_paper_for_openyourrealmextra"]}
-          >
+            className={styles["loginbox_auth_paper_for_openyourrealmextra"]}>
             <Col
               sm={12}
               lg={12}
               md={12}
-              className={styles["EmailVerifyBox_for_openyourrealmextra"]}
-            >
+              className={styles["EmailVerifyBox_for_openyourrealmextra"]}>
               <Row>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className="d-flex justify-content-center "
-                >
+                  className='d-flex justify-content-center '>
                   <img
-                    draggable="false"
-                    src={img1}
-                    width="220px"
-                    height="69px"
-                    alt=""
+                    draggable='false'
+                    src={
+                      localStorage.getItem("i18nextLng") === "ar"
+                        ? DiskusLogoArabic
+                        : img1
+                    }
+                    width='220px'
+                    height='69px'
+                    alt=''
                   />
                 </Col>
               </Row>
 
-              <Row className="mt-4 ">
-                <Col sm={12} md={12} lg={12} className="text-cemter-ur pe-1">
+              <Row className='mt-4 '>
+                <Col sm={12} md={12} lg={12} className='text-cemter-ur pe-1'>
                   <p className={styles["Heading-Style"]}>
                     {t("Open-your")}
                     <span className={styles["deviceName"]}>Iphone 12</span>
@@ -65,20 +66,19 @@ const TapOptions = () => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className="mt-2 d-flex justify-content-center"
-                >
+                  className='mt-2 d-flex justify-content-center'>
                   <img
-                    draggable="false"
-                    width="47.2px"
-                    height="65.76px"
+                    draggable='false'
+                    width='47.2px'
+                    height='65.76px'
                     src={img10}
-                    alt=""
+                    alt=''
                   />
                 </Col>
               </Row>
 
               <Row>
-                <Col sm={12} md={12} lg={12} className="mt-4">
+                <Col sm={12} md={12} lg={12} className='mt-4'>
                   <ul>
                     <li className={styles["List_Components-verification"]}>
                       {t("Tap-on")}
@@ -101,20 +101,19 @@ const TapOptions = () => {
               </Row>
 
               <Row>
-                <Col sm={12} lg={12} md={12} className="text-center mt-3">
+                <Col sm={12} lg={12} md={12} className='text-center mt-3'>
                   <span className={styles["OTPCounter_for_openrealmextra"]}>
                     0:0
                   </span>
                 </Col>
               </Row>
 
-              <Row className="mt-1 d-flex justify-content-center">
+              <Row className='mt-1 d-flex justify-content-center'>
                 <Col
                   sm={12}
                   lg={12}
                   md={12}
-                  className="d-flex justify-content-center "
-                >
+                  className='d-flex justify-content-center '>
                   <Button
                     text={t("Send-again").toUpperCase()}
                     className={
@@ -123,13 +122,12 @@ const TapOptions = () => {
                   />
                 </Col>
               </Row>
-              <Row className="mt-1">
+              <Row className='mt-1'>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className={styles["forogt_email_link_for_openrealmextra"]}
-                >
+                  className={styles["forogt_email_link_for_openrealmextra"]}>
                   <Link>{t("Go-back")}</Link>
                 </Col>
               </Row>
@@ -137,22 +135,22 @@ const TapOptions = () => {
           </span>
         </Col>
 
-        <Col md={7} lg={7} sm={12} className="">
+        <Col md={7} lg={7} sm={12} className=''>
           <Row>
-            <Col sm={12} md={6} lg={6} className="position-relative">
+            <Col sm={12} md={6} lg={6} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={img9}
-                alt="auth_icon"
+                alt='auth_icon'
                 className={styles["phone-image"]}
-                height="417px"
+                height='417px'
               />
             </Col>
-            <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+            <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
+                alt='auth_icon'
                 className={styles["Verification_Code_Three_Auth_Icon"]}
               />
             </Col>
