@@ -66,6 +66,7 @@ const NewEndMeetingModal = () => {
         setShow={dispatch(showEndMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
+        className={styles["classOfMeetingModal"]}
         onHide={() => {
           dispatch(showEndMeetingModal(false));
         }}

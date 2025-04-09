@@ -104,6 +104,8 @@ const VideoCallNormalHeader = ({
     setGroupCallParticipantList,
     unansweredCallParticipant,
     setUnansweredCallParticipant,
+    handRaiseCounter,
+    setHandRaiseCounter,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -152,6 +154,8 @@ const VideoCallNormalHeader = ({
   const raisedUnRaisedParticipant = useSelector(
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
   );
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
@@ -214,6 +218,10 @@ const VideoCallNormalHeader = ({
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+  console.log(
+    { presenterViewFlag, presenterViewHostFlag },
+    "presenterViewFlag"
+  );
 
   const presenterMeetingId = useSelector(
     (state) => state.videoFeatureReducer.presenterMeetingId
@@ -248,7 +256,11 @@ const VideoCallNormalHeader = ({
     "inCallParticipantList"
   );
 
-  console.log(groupVideoCallAccepted, "groupVideoCallAccepted");
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
+  );
+  console.log(leavePresenterParticipant, "leavePresenterParticipant");
+
   console.log(groupCallParticipantList, "groupCallParticipantList");
   console.log(unansweredCallParticipant, "unansweredCallParticipant");
 
@@ -338,9 +350,6 @@ const VideoCallNormalHeader = ({
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
-  //Hand Raise Counter To show on Participant Counter in presenter View
-  const [handRaiseCounter, setHandRaiseCounter] = useState(0);
-
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -385,6 +394,27 @@ const VideoCallNormalHeader = ({
     }
   }, [getAllParticipantMain]);
 
+  useEffect(() => {
+    if (leavePresenterParticipant !== null) {
+      const leftUID = leavePresenterParticipant.uid;
+
+      // Filter out the leaving participant from current list
+      const updatedList = getAllParticipantMain.filter(
+        (participant) => participant.guid !== leftUID
+      );
+      console.log(updatedList, "updatedList");
+
+      // Count how many are still raising hands
+      const updatedRaisedHands = updatedList.filter(
+        (participant) => participant.raiseHand === true
+      );
+      console.log(updatedRaisedHands, "updatedRaisedHands");
+
+      setHandRaiseCounter(updatedRaisedHands.length);
+      dispatch(updatedParticipantListForPresenter(updatedList));
+    }
+  }, [leavePresenterParticipant]);
+
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
     console.log(getAllParticipantMain, "getAllParticipantMain");
@@ -393,7 +423,7 @@ const VideoCallNormalHeader = ({
       (participant) => participant.raiseHand === true
     );
 
-    console.log(getAllParticipantMain, "getAllParticipantMain");
+    console.log(raisedHandCounter, "raisedHandCounter");
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
@@ -1297,6 +1327,8 @@ const VideoCallNormalHeader = ({
       console.log("Check");
     }
   };
+  console.log("handStatus", handStatus);
+  console.log("handStatus", raisedUnRaisedParticipant);
 
   const raiseUnRaiseForParticipant = (flag) => {
     console.log("Check 1333");
@@ -1308,9 +1340,10 @@ const VideoCallNormalHeader = ({
         UID: String(UID),
         IsHandRaised: flag,
       };
-      localStorage.setItem("handStatus", flag);
-      setHandStatus(flag);
-      dispatch(setRaisedUnRaisedParticiant(flag));
+      console.log("handStatus", flag);
+      // localStorage.setItem("handStatus", flag);
+      // setHandStatus(flag);
+      // dispatch(setRaisedUnRaisedParticiant(flag));
       dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
     } else {
       console.log("Check");
@@ -1536,6 +1569,14 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag === true ||
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
+                  : presenterViewJoinFlag
+                  ? !raisedUnRaisedParticipant
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
+                  : getMeetingHostInfo?.isHost === false
+                  ? !raisedUnRaisedParticipant
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
                   : !handStatus
                   ? "inactive-state"
                   : "cursor-pointer active-state"
@@ -1543,16 +1584,20 @@ const VideoCallNormalHeader = ({
             >
               <Tooltip
                 placement={
-                  presenterViewFlag && !presenterViewHostFlag
+                  presenterViewJoinFlag && !presenterViewHostFlag
                     ? "bottom"
                     : "topRight"
                 }
                 overlayClassName={
-                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                  presenterViewJoinFlag ? "zindexing-for-presenter-tooltip" : ""
                 }
                 title={
                   getMeetingHostInfo?.isHost
-                    ? handStatus
+                    ? presenterViewJoinFlag
+                      ? raisedUnRaisedParticipant
+                        ? t("Lower-hand")
+                        : t("Raise-hand")
+                      : handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
                     : raisedUnRaisedParticipant
@@ -1563,18 +1608,26 @@ const VideoCallNormalHeader = ({
                 <img
                   onClick={() =>
                     getMeetingHostInfo?.isHost
-                      ? raiseHandFunction
+                      ? presenterViewJoinFlag
+                        ? raiseUnRaiseForParticipant(
+                            raisedUnRaisedParticipant ? false : true
+                          )
+                        : raiseHandFunction
                       : raiseUnRaiseForParticipant(
                           raisedUnRaisedParticipant ? false : true
                         )
                   }
                   src={
                     getMeetingHostInfo?.isHost
-                      ? handStatus
+                      ? presenterViewJoinFlag
+                        ? raisedUnRaisedParticipant === true
+                          ? LowerHand
+                          : RaiseHand
+                        : handStatus
                         ? LowerHand
                         : RaiseHand
                       : raisedUnRaisedParticipant === true
-                      ? Raisehandselected
+                      ? LowerHand
                       : RaiseHand
                   }
                   alt="Raise Hand"
@@ -1772,9 +1825,7 @@ const VideoCallNormalHeader = ({
                 </Tooltip>
               )}
 
-              {presenterViewFlag &&
-              presenterViewHostFlag &&
-              handRaiseCounter > 0 ? (
+              {presenterViewFlag && presenterViewHostFlag ? (
                 <span className="participants-counter-For-Host">
                   {convertNumbersInString(handRaiseCounter, lan)}
                 </span>

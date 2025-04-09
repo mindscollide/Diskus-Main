@@ -27,6 +27,7 @@ import {
   participantVideoNavigationScreen,
   participantWaitingListBox,
   setAudioControlHost,
+  setRaisedUnRaisedParticiant,
   setVideoControlHost,
   toggleParticipantsVisibility,
 } from "./VideoFeature_actions";
@@ -586,6 +587,9 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_RaiseUnRaiseHand_01".toLowerCase()
                 )
             ) {
+              console.log("handStatus", data.IsHandRaised);
+              localStorage.setItem("handStatus", data.IsHandRaised);
+              await dispatch(setRaisedUnRaisedParticiant(data.IsHandRaised));
               await dispatch(
                 raiseUnRaisedSuccess(
                   response.data.responseResult,

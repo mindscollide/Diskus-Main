@@ -2050,6 +2050,8 @@ const leavePresenterViewMainApi = (
               let alreadyInMeetingVideo = JSON.parse(
                 sessionStorage.getItem("alreadyInMeetingVideo")
               );
+              dispatch(setRaisedUnRaisedParticiant(false));
+              console.log("Check Leave Presener");
               await dispatch(presenterStartedMainFlag(false));
 
               let currentMeetingID = localStorage.getItem("currentMeetingID");
@@ -2368,6 +2370,7 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
 
 //updated participants List For PRESENTER
 const updatedParticipantListForPresenter = (response) => {
+  console.log(response, "responseCheck List");
   return {
     type: actions.UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER,
     response: response,

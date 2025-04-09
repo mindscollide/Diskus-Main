@@ -206,7 +206,11 @@ const VideoPanelBodyRecent = () => {
   const otoVideoCall = (data) => {
     setRecentCallRecipientData(data);
     console.log(data, "datadatadatadata");
-    if (activeCall === false||activeCall===undefined||activeCall===null) {
+    if (
+      activeCall === false ||
+      activeCall === undefined ||
+      activeCall === null
+    ) {
       if (data.callType.callTypeID === 1) {
         let Data = {
           RecipentIDs:

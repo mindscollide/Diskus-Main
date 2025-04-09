@@ -81,7 +81,7 @@ const SceduleMeeting = ({
   const navigate = useNavigate();
 
   console.log(editorRole.role, "navigatenavigate");
-  console.log(editorRole.status, "navigatenavigate");
+  console.log(getALlMeetingTypes, "navigatenavigate");
   const apiCallsForComponentMound = async () => {
     try {
       // // Meeting Type Drop Down API
