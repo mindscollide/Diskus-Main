@@ -6,12 +6,14 @@ import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../components/elements";
 import {
   LeaveCurrentMeeting,
+  LeaveMeetingVideo,
   showEndMeetingModal,
 } from "../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { useMeetingContext } from "../../../../context/MeetingContext";
+import { setRaisedUnRaisedParticiant } from "../../../../store/actions/VideoFeature_actions";
 
 const NewEndMeetingModal = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,45 @@ const NewEndMeetingModal = () => {
 
   const handleClickContinue = async () => {
     // setCancelConfirmationModal(false);
+
+    let isMeeting = localStorage.getItem("isMeeting");
+    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+    let isMeetingVideoHostCheck = localStorage.getItem(
+      "isMeetingVideoHostCheck"
+    );
+    let newRoomID = localStorage.getItem("newRoomId");
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+    let newName = localStorage.getItem("name");
+    let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+    let participantRoomId = localStorage.getItem("participantRoomId");
+
+    if (isMeeting) {
+      if (isMeetingVideo && isMeetingVideoHostCheck) {
+        console.log("busyCall");
+        let Data = {
+          RoomID: String(newRoomID),
+          UserGUID: String(UID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
+      } else if (isMeetingVideo) {
+        console.log("busyCall");
+        let Data = {
+          RoomID: String(participantRoomId),
+          UserGUID: String(UID),
+          Name: String(newName),
+          IsHost: isMeetingVideoHostCheck ? true : false,
+          MeetingID: Number(currentMeetingID),
+        };
+        await dispatch(setRaisedUnRaisedParticiant(false));
+        await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
+      }
+    }
+
     let leaveMeetingData = {
       FK_MDID: Number(advanceMeetingModalID),
       DateTime: getCurrentDateTimeUTC(),
