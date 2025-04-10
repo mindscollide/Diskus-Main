@@ -1833,9 +1833,13 @@ const VideoCallNormalHeader = ({
               )}
 
               {presenterViewFlag && presenterViewHostFlag ? (
-                <span className="participants-counter-For-Host">
-                  {convertNumbersInString(handRaiseCounter, lan)}
-                </span>
+                <>
+                  {handRaiseCounter > 0 && (
+                    <span className="participants-counter-For-Host">
+                      {convertNumbersInString(handRaiseCounter, lan)}
+                    </span>
+                  )}
+                </>
               ) : (
                 <>
                   <span className="participants-counter-For-Host">
