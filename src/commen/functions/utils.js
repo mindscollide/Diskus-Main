@@ -561,7 +561,7 @@ export const openDocumentViewer = (
 ) => {
   if (NewfileFormatforSignatureFlow.includes(ext)) {
     window.open(
-      `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
+      `/Diskus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
       "_blank",
       "noopener noreferrer"
     );

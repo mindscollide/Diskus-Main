@@ -80,7 +80,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
-export const router = createHashRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Video Meeting Route */}

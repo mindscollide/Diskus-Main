@@ -483,7 +483,7 @@ const AgendaWise = ({
       ext === "xlsx"
     ) {
       window.open(
-        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );

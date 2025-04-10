@@ -502,12 +502,12 @@ const Header2 = ({ isVideo }) => {
   };
 
   const openAdminTab = () => {
-    window.open(window.location.origin + "/#/Admin", "_blank");
+    window.open(window.location.origin + "/Admin", "_blank");
   };
 
   // open new dashboard tab in new window for dashboard user
   const openUserTab = () => {
-    window.open(window.location.origin + "/#/Diskus/", "_blank");
+    window.open(window.location.origin + "/Diskus/", "_blank");
   };
 
   const handleWebNotication = () => {

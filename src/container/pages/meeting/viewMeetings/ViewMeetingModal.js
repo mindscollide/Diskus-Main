@@ -332,18 +332,18 @@ const ViewMeetingModal = ({
         }
       }
     } else {
-      setMeetingMaterial(false);
-      setAgendaContributors(false);
-      setorganizers(false);
-      setmeetingDetails(false);
-      setMinutes(false);
-      setAttendance(false);
-      setAgenda(false);
-      setParticipants(false);
-      setPolls(false);
-      setAttendees(false);
-      setactionsPage(false);
-      setRecording(false);
+      // setMeetingMaterial(false);
+      // setAgendaContributors(false);
+      // setorganizers(false);
+      // setmeetingDetails(false);
+      // setMinutes(false);
+      // setAttendance(false);
+      // setAgenda(false);
+      // setParticipants(false);
+      // setPolls(false);
+      // setAttendees(false);
+      // setactionsPage(false);
+      // setRecording(false);
     }
 
     return () => {

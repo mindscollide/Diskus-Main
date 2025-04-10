@@ -55,7 +55,7 @@ export const MeetingProvider = ({ children }) => {
   const [isEditMeeting, setEditMeeting] = useState(false);
 
   // State for managing meeting tabs and their visibility
-  const [meetingDetails, setmeetingDetails] = useState(false);
+  const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);

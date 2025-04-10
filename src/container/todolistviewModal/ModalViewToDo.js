@@ -368,7 +368,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   const handleLinkClick = (data, ext) => {
     if (fileFormatforSignatureFlow.includes(ext)) {
       window.open(
-        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",
         "noopener noreferrer"
       );
