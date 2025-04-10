@@ -2103,6 +2103,8 @@ const leavePresenterViewMainApi = (
                   dispatch(maximizeVideoPanelFlag(false));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
                 }
               } else if (flag === 3) {
                 console.log("Check is participant Uid Removed?");
