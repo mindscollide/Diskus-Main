@@ -5,6 +5,8 @@ import { Tooltip } from "antd";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
+import DiskusLogoArabic from "../../../assets/images/Diskus_Arabic_logo.png";
+
 import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
 import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
 import "./Header.css";
@@ -537,7 +539,9 @@ const Header2 = ({ isVideo }) => {
                   : "/Diskus"
               }>
               <img
-                src={DiskusLogoHeader}
+                src={
+                  currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
+                }
                 alt=''
                 width={120}
                 draggable='false'
@@ -601,7 +605,11 @@ const Header2 = ({ isVideo }) => {
                               localStorage.getItem("activeCall")
                             );
                             // Explicitly evaluate activeCall
-                            if (activeCall === false||activeCall===undefined||activeCall===null) {
+                            if (
+                              activeCall === false ||
+                              activeCall === undefined ||
+                              activeCall === null
+                            ) {
                               handleMeetingPendingApprovalsNoCall();
                             } else {
                               handleMeetingPendingApprovals();
@@ -715,7 +723,11 @@ const Header2 = ({ isVideo }) => {
                             localStorage.getItem("activeCall")
                           );
                           // Explicitly evaluate activeCall
-                          if (activeCall === false||activeCall===undefined||activeCall===null) {
+                          if (
+                            activeCall === false ||
+                            activeCall === undefined ||
+                            activeCall === null
+                          ) {
                             handleMeetingSidebarSettingsNoCall();
                           } else {
                             handleMeetingSidebarSettings();
@@ -751,7 +763,11 @@ const Header2 = ({ isVideo }) => {
                             localStorage.getItem("activeCall")
                           );
                           // Explicitly evaluate activeCall
-                          if (activeCall === false||activeCall===undefined||activeCall===null) {
+                          if (
+                            activeCall === false ||
+                            activeCall === undefined ||
+                            activeCall === null
+                          ) {
                             handleMeetingSidebarFAQNoCall();
                           } else {
                             handleMeetingSidebarFAQ();
@@ -806,7 +822,11 @@ const Header2 = ({ isVideo }) => {
                     localStorage.getItem("activeCall")
                   );
                   // Explicitly evaluate activeCall
-                  if (activeCall === false||activeCall===undefined||activeCall===null) {
+                  if (
+                    activeCall === false ||
+                    activeCall === undefined ||
+                    activeCall === null
+                  ) {
                     handleMeetingSidebarFAQNoCall();
                   } else {
                     handleMeetingSidebarFAQ();
@@ -876,7 +896,9 @@ const Header2 = ({ isVideo }) => {
                 }
               }}>
               <img
-                src={DiskusLogoHeader}
+                src={
+                  currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
+                }
                 alt='Logo'
                 width={120}
                 draggable='false'
@@ -1032,7 +1054,11 @@ const Header2 = ({ isVideo }) => {
                                       localStorage.getItem("activeCall")
                                     );
                                     // Explicitly evaluate activeCall
-                                    if (activeCall === false||activeCall===undefined||activeCall===null) {
+                                    if (
+                                      activeCall === false ||
+                                      activeCall === undefined ||
+                                      activeCall === null
+                                    ) {
                                       RecentFilesTabNoCall();
                                     } else {
                                       RecentFilesTab();
@@ -1070,7 +1096,11 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
+                                  if (
+                                    activeCall === false ||
+                                    activeCall === undefined ||
+                                    activeCall === null
+                                  ) {
                                     handleMeetingPendingApprovalsNoCall();
                                   } else {
                                     handleMeetingPendingApprovals();
@@ -1252,7 +1282,11 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
+                                  if (
+                                    activeCall === false ||
+                                    activeCall === undefined ||
+                                    activeCall === null
+                                  ) {
                                     handleMeetingSidebarSettingsNoCall();
                                   } else {
                                     handleMeetingSidebarSettings();
@@ -1290,7 +1324,11 @@ const Header2 = ({ isVideo }) => {
                                     localStorage.getItem("activeCall")
                                   );
                                   // Explicitly evaluate activeCall
-                                  if (activeCall === false||activeCall===undefined||activeCall===null) {
+                                  if (
+                                    activeCall === false ||
+                                    activeCall === undefined ||
+                                    activeCall === null
+                                  ) {
                                     handleMeetingSidebarFAQNoCall();
                                   } else {
                                     handleMeetingSidebarFAQ();
@@ -1382,7 +1420,11 @@ const Header2 = ({ isVideo }) => {
                           localStorage.getItem("activeCall")
                         );
                         // Explicitly evaluate activeCall
-                        if (activeCall === false||activeCall===undefined||activeCall===null) {
+                        if (
+                          activeCall === false ||
+                          activeCall === undefined ||
+                          activeCall === null
+                        ) {
                           handleMeetingSidebarFAQNoCall();
                         } else {
                           handleMeetingSidebarFAQ();
