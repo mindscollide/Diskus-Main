@@ -396,7 +396,13 @@ const VideoCallNormalHeader = ({
   }, [getAllParticipantMain]);
 
   useEffect(() => {
-    if (leavePresenterParticipant.message === "PRESENTATION_PARTICIPANT_LEFT") {
+    if (
+      // leavePresenterParticipant.message === "PRESENTATION_PARTICIPANT_LEFT" &&
+      presenterViewFlag &&
+      presenterViewHostFlag
+    ) {
+      console.log("updatedListupdatedList");
+
       const leftUID = leavePresenterParticipant.uid;
 
       // Filter out the leaving participant from current list
@@ -413,7 +419,10 @@ const VideoCallNormalHeader = ({
 
       setHandRaiseCounter(updatedRaisedHands.length);
 
-      dispatch(updatedParticipantListForPresenter(updatedList));
+      if (!isMeeting && !isMeetingVideo) {
+        console.log("updatedListupdatedList");
+        dispatch(updatedParticipantListForPresenter(updatedList));
+      }
     }
   }, [leavePresenterParticipant]);
 
@@ -1833,9 +1842,13 @@ const VideoCallNormalHeader = ({
               )}
 
               {presenterViewFlag && presenterViewHostFlag ? (
-                <span className="participants-counter-For-Host">
-                  {convertNumbersInString(handRaiseCounter, lan)}
-                </span>
+                <>
+                  {handRaiseCounter > 0 && (
+                    <span className="HandRaise-Counter-for-Presenter">
+                      {convertNumbersInString(handRaiseCounter, lan)}
+                    </span>
+                  )}
+                </>
               ) : (
                 <>
                   <span className="participants-counter-For-Host">
