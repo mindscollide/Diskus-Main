@@ -127,7 +127,7 @@ const AgendaViewer = () => {
     setPresenterForOneToOneOrGroup,
   } = useMeetingContext();
 
-  console.log(videoTalk, "videoTalkvideoTalk")
+  console.log(videoTalk, "videoTalkvideoTalk");
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -737,7 +737,7 @@ const AgendaViewer = () => {
         //   dispatch(maxParticipantVideoCallPanel(true));
 
         // }
-        onClickVideoIconOpenVideo()
+        onClickVideoIconOpenVideo();
         setJoinMeetingVideoParticipant(false);
       }
     }

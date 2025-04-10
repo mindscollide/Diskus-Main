@@ -219,7 +219,7 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
   console.log(
-    { presenterViewFlag, presenterViewHostFlag },
+    { presenterViewFlag, presenterViewHostFlag, presenterViewJoinFlag },
     "presenterViewFlag"
   );
 
@@ -296,6 +296,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  console.log({ isMeetingVideo, isMeeting }, "visMeetingVideoisMeetingVideo");
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
@@ -395,7 +396,7 @@ const VideoCallNormalHeader = ({
   }, [getAllParticipantMain]);
 
   useEffect(() => {
-    if (leavePresenterParticipant !== null) {
+    if (leavePresenterParticipant.message === "PRESENTATION_PARTICIPANT_LEFT") {
       const leftUID = leavePresenterParticipant.uid;
 
       // Filter out the leaving participant from current list
@@ -411,6 +412,7 @@ const VideoCallNormalHeader = ({
       console.log(updatedRaisedHands, "updatedRaisedHands");
 
       setHandRaiseCounter(updatedRaisedHands.length);
+
       dispatch(updatedParticipantListForPresenter(updatedList));
     }
   }, [leavePresenterParticipant]);
@@ -1375,22 +1377,27 @@ const VideoCallNormalHeader = ({
   }, []);
 
   const getMeetingTitle = () => {
+    console.log("Check Title Meeting");
     const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     const callTypeID = Number(localStorage.getItem("callTypeID"));
 
     if (isMeetingVideo) {
+      console.log("Check Title Meeting");
       return meetingTitle?.trim();
     }
     if (presenterViewHostFlag || presenterViewJoinFlag) {
+      console.log("Check Title Meeting");
       return meetingTitle?.trim();
     }
     if (callTypeID === 2 && !presenterViewHostFlag && !presenterViewJoinFlag) {
+      console.log("Check Title Meeting");
       return t("Group-call");
     }
     if (
       currentUserName !== VideoRecipentData.userName &&
       Object.keys(VideoRecipentData).length > 0
     ) {
+      console.log("Check Title Meeting");
       return (
         VideoRecipentData.userName ||
         VideoRecipentData.recipients?.[0]?.userName

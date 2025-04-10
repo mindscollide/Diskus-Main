@@ -333,7 +333,7 @@ const VideoPanelNormal = () => {
         console.log("iframeiframe");
         setCallerURL("");
       }
-      localStorage.removeItem("refinedVideoUrl");
+      // localStorage.removeItem("refinedVideoUrl");
       localStorage.removeItem("initiateCallRoomID");
       localStorage.removeItem("acceptedRoomID");
     };
@@ -910,8 +910,8 @@ const VideoPanelNormal = () => {
       // Check the origin for security
       console.log("disableZoomBeforeJoinSession", event.data);
       // if (event.origin === "https://secure.letsdiskus.com:9414") {
-      // if (event.origin === "https://portal.letsdiskus.com:9414") {
-      if (event.origin === "http://localhost:5500") {
+      if (event.origin === "https://portal.letsdiskus.com:9414") {
+        // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
@@ -951,14 +951,18 @@ const VideoPanelNormal = () => {
             break;
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
+            console.log("ScreenSharedStopMsgFromIframe");
             if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("ScreenSharedStopMsgFromIframe");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
+              let videoCallURL = Number(localStorage.getItem("videoCallURL"));
               let data = {
                 MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
+                RoomID: String(callAcceptedRoomID),
+                VideoCallUrl: videoCallURL,
               };
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
