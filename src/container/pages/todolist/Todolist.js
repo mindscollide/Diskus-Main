@@ -687,7 +687,7 @@ const TodoList = () => {
               <Select
                 value={t(text.status)}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                popupClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "

@@ -116,8 +116,12 @@ const rootReducer = (state, action) => {
   }
   return AppReducer(state, action);
 };
-const store = configureStore(
-  { reducer: rootReducer },
-  composeWithDevTools(applyMiddleware(thunk))
-);
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      thunk: true,
+      immutableCheck: false, // Disable ImmutableStateInvariantMiddleware
+    }).concat(thunk), // Optional: include if you're using custom thunk logic
+});
 export default store;
