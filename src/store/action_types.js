@@ -3686,3 +3686,7 @@ export const GET_PARTICIPANTS_OF_GROUP_CALL_FAIL =
 //updated participants List For PRESENTER
 export const UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER =
   "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER";
+
+// Global state for stop screen share on presenter view start
+export const Stop_ScreenShare_OnPresenter_ViewStart =
+  "Stop_ScreenShare_OnPresenter_ViewStart";
