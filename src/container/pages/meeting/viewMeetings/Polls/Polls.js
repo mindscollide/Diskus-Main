@@ -130,7 +130,7 @@ const Polls = () => {
   });
   const [totalRecords, setTotalRecords] = useState(0);
   let OrganizationID = localStorage.getItem("organizationID");
-  let currentLanguage = localStorage.getItem("i18nextLng")
+  let currentLanguage = localStorage.getItem("i18nextLng");
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -530,7 +530,11 @@ const Polls = () => {
       render: (text, record) => {
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        if (currentDate < convertIntoGmt && record.isVoter) {
+        if (
+          currentDate < convertIntoGmt &&
+          record.isVoter &&
+          record.pollStatus.status === "Published"
+        ) {
           return (
             <span
               className={styles["DateClass"]}

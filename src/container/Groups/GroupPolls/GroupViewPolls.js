@@ -492,7 +492,8 @@ const GroupViewPolls = ({ groupStatus }) => {
         if (
           currentDate < convertIntoGmt &&
           record.isVoter &&
-          groupStatus === 3
+          groupStatus === 3 &&
+          record.pollStatus.status === "Published"
         ) {
           return (
             <span
@@ -857,7 +858,7 @@ const GroupViewPolls = ({ groupStatus }) => {
                         rows={pollsRows}
                         scroll={{ y: "45vh", x: "hidden" }}
                         pagination={false}
-                        className="Resolution_table"
+                        className="newMeetingTable"
                         locale={{
                           emptyText: (
                             <>

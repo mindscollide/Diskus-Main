@@ -127,7 +127,7 @@ const AgendaViewer = () => {
     setPresenterForOneToOneOrGroup,
   } = useMeetingContext();
 
-  console.log(videoTalk, "videoTalkvideoTalk")
+  console.log(videoTalk, "videoTalkvideoTalk");
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -737,7 +737,7 @@ const AgendaViewer = () => {
         //   dispatch(maxParticipantVideoCallPanel(true));
 
         // }
-        onClickVideoIconOpenVideo()
+        onClickVideoIconOpenVideo();
         setJoinMeetingVideoParticipant(false);
       }
     }
@@ -810,7 +810,7 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
-      console.log("maximizeParticipantVideoFlag");
+      console.log("maximizeParticipantVideoFlag",isWaiting);
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));

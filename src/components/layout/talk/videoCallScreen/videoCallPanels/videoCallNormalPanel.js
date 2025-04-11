@@ -333,7 +333,7 @@ const VideoPanelNormal = () => {
         console.log("iframeiframe");
         setCallerURL("");
       }
-      localStorage.removeItem("refinedVideoUrl");
+      // localStorage.removeItem("refinedVideoUrl");
       localStorage.removeItem("initiateCallRoomID");
       localStorage.removeItem("acceptedRoomID");
     };
@@ -910,13 +910,17 @@ const VideoPanelNormal = () => {
       // Check the origin for security
       console.log("disableZoomBeforeJoinSession", event.data);
       // if (event.origin === "https://secure.letsdiskus.com:9414") {
-      // if (event.origin === "https://portal.letsdiskus.com:9414") {
-      if (event.origin === "http://localhost:5500") {
+      if (event.origin === "https://portal.letsdiskus.com:9414") {
+        // if (event.origin === "http://localhost:5500") {
         // Example actions based on the message received
+
+        console.log("handlePostMessage", presenterViewHostFlag);
+        console.log("handlePostMessage", presenterViewHostFlag);
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
+            console.log("handlePostMessage", event.data);
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo")
             );
@@ -926,39 +930,57 @@ const VideoPanelNormal = () => {
             let nonPresenter = JSON.parse(
               sessionStorage.getItem("nonPresenter")
             );
+            console.log("handlePostMessage", alreadyInMeetingVideo);
+            console.log(
+              "handlePostMessage",
+              alreadyInMeetingVideoStartPresenterCheck
+            );
+            console.log("handlePostMessage", nonPresenter);
 
             setIsScreenActive(true); // Show a modal or perform an action
             if (nonPresenter) {
+              console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
             } else if (alreadyInMeetingVideo) {
+              console.log("handlePostMessage", alreadyInMeetingVideo);
               if (alreadyInMeetingVideoStartPresenterCheck) {
-                console.log("maximizeParticipantVideoFlag");
+                console.log(
+                  "handlePostMessage",
+                  alreadyInMeetingVideoStartPresenterCheck
+                );
                 dispatch(setAudioControlHost(false));
                 dispatch(setVideoControlHost(true));
               } else {
-                console.log("maximizeParticipantVideoFlag");
+                console.log(
+                  "handlePostMessage",
+                  alreadyInMeetingVideoStartPresenterCheck
+                );
+
                 dispatch(setAudioControlHost(true));
                 dispatch(setVideoControlHost(true));
               }
-              console.log("maximizeParticipantVideoFlag");
-
               handlerForStaringPresenterView();
             } else if (presenterViewFlag && presenterViewHostFlag) {
-              console.log("true check");
+              console.log("handlePostMessage", presenterViewHostFlag);
+              console.log("handlePostMessage", presenterViewHostFlag);
               handlerForStaringPresenterView();
             }
 
             break;
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
+            console.log("ScreenSharedStopMsgFromIframe");
             if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("ScreenSharedStopMsgFromIframe");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
+              let videoCallURL = Number(localStorage.getItem("videoCallURL"));
               let data = {
                 MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
+                RoomID: String(callAcceptedRoomID),
+                VideoCallUrl: videoCallURL,
               };
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");

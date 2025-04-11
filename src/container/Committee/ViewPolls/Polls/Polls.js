@@ -428,7 +428,8 @@ const Polls = ({ committeeStatus }) => {
         if (
           currentDate < convertIntoGmt &&
           record.isVoter &&
-          committeeStatus === 3
+          committeeStatus === 3 &&
+          record.pollStatus.status === "Published"
         ) {
           return (
             <span

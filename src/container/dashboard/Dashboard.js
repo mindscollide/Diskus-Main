@@ -766,12 +766,16 @@ const Dashboard = () => {
       );
       if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
         if (isMeetingVideo) {
-          if (presenterViewJoinFlag) {
+          if (presenterViewJoinFlagRef.current) {
+            console.log("Check PresenterIssue Once");
           } else {
+            console.log("Check PresenterIssue Once");
             if (isMeetingVideoHostCheck) {
+              console.log("Check PresenterIssue Once");
               if (mqttData.payload.isGuest) {
                 dispatch(admitGuestUserRequest(mqttData.payload));
               } else {
+                console.log("Check PresenterIssue Once");
                 dispatch(participantWaitingList(mqttData.payload));
               }
               dispatch(guestJoinPopup(true));
@@ -1369,6 +1373,8 @@ const Dashboard = () => {
                 flagForZoom1 &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                sessionStorage.removeItem("isWaiting");
+
                 localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
                 dispatch(globalStateForAudioStream(true));

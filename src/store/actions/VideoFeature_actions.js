@@ -2051,13 +2051,14 @@ const leavePresenterViewMainApi = (
                 sessionStorage.getItem("alreadyInMeetingVideo")
               );
               dispatch(setRaisedUnRaisedParticiant(false));
-              console.log("Check Leave Presener");
+              console.log(flag, "Check is participant Uid Removed?");
+              console.log("Check is participant Uid Removed?");
               await dispatch(presenterStartedMainFlag(false));
 
               let currentMeetingID = localStorage.getItem("currentMeetingID");
 
               if (flag === 1) {
-                console.log("Check");
+                console.log("Check is participant Uid Removed?");
                 dispatch(
                   presenterViewGlobalState(currentMeetingID, true, false, false)
                 );
@@ -2082,11 +2083,15 @@ const leavePresenterViewMainApi = (
                   presenterViewGlobalState(currentMeetingID, true, false, false)
                 );
                 if (alreadyInMeetingVideo) {
+                  dispatch(participantVideoButtonState(true));
+                  dispatch(presenterViewGlobalState(0, false, false, false));
                   console.log("Check is participant Uid Removed?");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
+                  // await dispatch(presenterStartedMainFlag(true));
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
+                  localStorage.setItem("isMeetingVideo", true);
                 } else {
                   console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
@@ -2098,8 +2103,11 @@ const leavePresenterViewMainApi = (
                   dispatch(maximizeVideoPanelFlag(false));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
                 }
               } else if (flag === 3) {
+                console.log("Check is participant Uid Removed?");
                 if (!alreadyInMeetingVideo) {
                   console.log("Check is participant Uid Removed?");
                   // localStorage.removeItem("participantUID");
@@ -2131,10 +2139,12 @@ const leavePresenterViewMainApi = (
                 await setJoiningOneToOneAfterLeavingPresenterView(true);
                 // }
               } else if (flag === 4) {
+                console.log("Check is participant Uid Removed?");
                 dispatch(participantVideoButtonState(false));
                 console.log("Check");
                 dispatch(presenterViewGlobalState(0, false, false, false));
                 if (alreadyInMeetingVideo) {
+                  console.log("Check is participant Uid Removed?");
                   console.log("Check");
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                   dispatch(maximizeVideoPanelFlag(true));

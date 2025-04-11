@@ -77,7 +77,7 @@ const RecentActivity = () => {
           recentActivityData.map((recentActivityData) => {
             return (
               <>
-                <div className="d-flex justify-content-start align-items-start gap-3">
+                <div className={styles["imageNotificationCard"]}>
                   {recentActivityData.notificationTypes.pK_NTID === 1 ? (
                     <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
