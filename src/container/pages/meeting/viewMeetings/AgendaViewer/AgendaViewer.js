@@ -810,7 +810,7 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
-      console.log("maximizeParticipantVideoFlag");
+      console.log("maximizeParticipantVideoFlag",isWaiting);
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));

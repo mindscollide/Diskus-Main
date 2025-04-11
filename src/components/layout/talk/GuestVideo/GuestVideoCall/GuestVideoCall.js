@@ -164,6 +164,7 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
         ) {
+          sessionStorage.removeItem("isWaiting");
           dispatch(guestVideoNavigationScreen(3));
         } else if (
           data.payload.message.toLowerCase() ===
