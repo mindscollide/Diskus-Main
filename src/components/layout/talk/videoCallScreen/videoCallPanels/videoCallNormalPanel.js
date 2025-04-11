@@ -30,11 +30,14 @@ import {
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
   participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterFlagForAlreadyInParticipantMeetingVideo,
   presenterStartedMainFlag,
+  presenterViewGlobalState,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
   setParticipantRemovedFromVideobyHost,
@@ -86,6 +89,8 @@ const VideoPanelNormal = () => {
   let activeRoomID = localStorage.getItem("activeRoomID");
 
   let currentUserName = localStorage.getItem("name");
+
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
@@ -238,6 +243,10 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
   );
 
+  const stopScreenShareOnPresenter = useSelector(
+    (state) => state.videoFeatureReducer.stopScreenShareOnPresenter
+  );
+
   console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [allParticipant, setAllParticipant] = useState([]);
@@ -301,6 +310,41 @@ const VideoPanelNormal = () => {
       return false;
     }
   }
+
+  useEffect(() => {
+    if (stopScreenShareOnPresenter) {
+      if (isScreenActive) {
+        console.log("Chek=ckkkk");
+        try {
+          if (iframe && iframe.contentWindow) {
+            sessionStorage.setItem("nonPresenter", true);
+            // Post message to iframe
+            console.log("handlePostMessage");
+            iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+          } else {
+            console.log("share screen Iframe contentWindow is not available.");
+          }
+        } catch (error) {}
+      }
+      let newRoomID = localStorage.getItem("newRoomId");
+      let activeRoomID = localStorage.getItem("activeRoomID");
+      if (newRoomID) {
+        localStorage.setItem("acceptedRoomID", newRoomID);
+      } else {
+        localStorage.setItem("acceptedRoomID", activeRoomID);
+      }
+      console.log("maximizeParticipantVideoFlag");
+      sessionStorage.setItem("alreadyInMeetingVideo", true);
+      dispatch(participantWaitingListBox(false));
+      dispatch(toggleParticipantsVisibility(false));
+      dispatch(presenterViewGlobalState(currentMeetingID, true, false, true));
+      dispatch(setAudioControlHost(true));
+      dispatch(setVideoControlHost(true));
+      dispatch(maximizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+    }
+  }, [stopScreenShareOnPresenter]);
 
   useEffect(() => {
     if (

@@ -402,9 +402,7 @@ const VideoCallNormalHeader = ({
       presenterViewHostFlag
     ) {
       console.log("updatedListupdatedList");
-
       const leftUID = leavePresenterParticipant.uid;
-
       // Filter out the leaving participant from current list
       const updatedList = getAllParticipantMain.filter(
         (participant) => participant.guid !== leftUID
@@ -419,7 +417,7 @@ const VideoCallNormalHeader = ({
 
       setHandRaiseCounter(updatedRaisedHands.length);
 
-      if (!isMeeting && !isMeetingVideo) {
+      if (!isMeetingVideo) {
         console.log("updatedListupdatedList");
         dispatch(updatedParticipantListForPresenter(updatedList));
       }
@@ -1579,78 +1577,82 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {getMeetingHostInfo?.isDashboardVideo && !presenterViewHostFlag && (
-            <div
-              className={
-                LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom)
-                  ? "grayScaleImage"
-                  : presenterViewJoinFlag
-                  ? !raisedUnRaisedParticipant
+          {!getMeetingHostInfo.isHost &&
+            getMeetingHostInfo?.isDashboardVideo &&
+            !presenterViewHostFlag && (
+              <div
+                className={
+                  LeaveCallModalFlag === true ||
+                  (isZoomEnabled && disableBeforeJoinZoom)
+                    ? "grayScaleImage"
+                    : presenterViewJoinFlag
+                    ? !raisedUnRaisedParticipant
+                      ? "inactive-state"
+                      : "cursor-pointer active-state"
+                    : getMeetingHostInfo?.isHost === false
+                    ? !raisedUnRaisedParticipant
+                      ? "inactive-state"
+                      : "cursor-pointer active-state"
+                    : !handStatus
                     ? "inactive-state"
                     : "cursor-pointer active-state"
-                  : getMeetingHostInfo?.isHost === false
-                  ? !raisedUnRaisedParticipant
-                    ? "inactive-state"
-                    : "cursor-pointer active-state"
-                  : !handStatus
-                  ? "inactive-state"
-                  : "cursor-pointer active-state"
-              }
-            >
-              <Tooltip
-                placement={
-                  presenterViewJoinFlag && !presenterViewHostFlag
-                    ? "bottom"
-                    : "topRight"
-                }
-                overlayClassName={
-                  presenterViewJoinFlag ? "zindexing-for-presenter-tooltip" : ""
-                }
-                title={
-                  getMeetingHostInfo?.isHost
-                    ? presenterViewJoinFlag
-                      ? raisedUnRaisedParticipant
-                        ? t("Lower-hand")
-                        : t("Raise-hand")
-                      : handStatus
-                      ? t("Lower-hand")
-                      : t("Raise-hand")
-                    : raisedUnRaisedParticipant
-                    ? t("Lower-hand")
-                    : t("Raise-hand")
                 }
               >
-                <img
-                  onClick={() =>
+                <Tooltip
+                  placement={
+                    presenterViewJoinFlag && !presenterViewHostFlag
+                      ? "bottom"
+                      : "topRight"
+                  }
+                  overlayClassName={
+                    presenterViewJoinFlag
+                      ? "zindexing-for-presenter-tooltip"
+                      : ""
+                  }
+                  title={
                     getMeetingHostInfo?.isHost
                       ? presenterViewJoinFlag
-                        ? raiseUnRaiseForParticipant(
+                        ? raisedUnRaisedParticipant
+                          ? t("Lower-hand")
+                          : t("Raise-hand")
+                        : handStatus
+                        ? t("Lower-hand")
+                        : t("Raise-hand")
+                      : raisedUnRaisedParticipant
+                      ? t("Lower-hand")
+                      : t("Raise-hand")
+                  }
+                >
+                  <img
+                    onClick={() =>
+                      getMeetingHostInfo?.isHost
+                        ? presenterViewJoinFlag
+                          ? raiseUnRaiseForParticipant(
+                              raisedUnRaisedParticipant ? false : true
+                            )
+                          : raiseHandFunction
+                        : raiseUnRaiseForParticipant(
                             raisedUnRaisedParticipant ? false : true
                           )
-                        : raiseHandFunction
-                      : raiseUnRaiseForParticipant(
-                          raisedUnRaisedParticipant ? false : true
-                        )
-                  }
-                  src={
-                    getMeetingHostInfo?.isHost
-                      ? presenterViewJoinFlag
-                        ? raisedUnRaisedParticipant === true
+                    }
+                    src={
+                      getMeetingHostInfo?.isHost
+                        ? presenterViewJoinFlag
+                          ? raisedUnRaisedParticipant === true
+                            ? LowerHand
+                            : RaiseHand
+                          : handStatus
                           ? LowerHand
                           : RaiseHand
-                        : handStatus
+                        : raisedUnRaisedParticipant === true
                         ? LowerHand
                         : RaiseHand
-                      : raisedUnRaisedParticipant === true
-                      ? LowerHand
-                      : RaiseHand
-                  }
-                  alt="Raise Hand"
-                />
-              </Tooltip>
-            </div>
-          )}
+                    }
+                    alt="Raise Hand"
+                  />
+                </Tooltip>
+              </div>
+            )}
 
           {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
           (presenterViewHostFlag && presenterViewFlag) ? (
