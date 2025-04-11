@@ -9361,6 +9361,9 @@ const LeaveMeetingVideo = (
                 await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
+              } else {
+              console.log("Check Leave");
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {

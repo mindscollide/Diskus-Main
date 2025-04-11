@@ -718,3 +718,32 @@ img.shade-style {
   font-weight: 600 !important;
   margin-left: 3px !important;
 }
+
+span.HandRaise-Counter-for-Presenter {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  background: linear-gradient(to left, #ffc107 0%, #be8f04 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  right: auto;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+  color: #fff;
+  width: 16px;
+  border-radius: 100%;
+  text-align: center;
+  align-items: center !important;
+  font-size: 10px;
+  font-weight: 600;
+}

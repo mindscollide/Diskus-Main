@@ -1373,6 +1373,8 @@ const Dashboard = () => {
                 flagForZoom1 &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                sessionStorage.removeItem("isWaiting");
+
                 localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
                 dispatch(globalStateForAudioStream(true));
