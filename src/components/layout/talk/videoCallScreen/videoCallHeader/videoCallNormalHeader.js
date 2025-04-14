@@ -396,33 +396,31 @@ const VideoCallNormalHeader = ({
   }, [getAllParticipantMain]);
 
   useEffect(() => {
-    if (
-      // leavePresenterParticipant.message === "PRESENTATION_PARTICIPANT_LEFT" &&
-      presenterViewFlag &&
-      presenterViewHostFlag
-    ) {
-      console.log("updatedListupdatedList");
-      const leftUID = leavePresenterParticipant.uid;
-      // Filter out the leaving participant from current list
+    const leftUID = leavePresenterParticipant?.uid;
+
+    // Only proceed if all flags are valid and leftUID is defined
+    if (leftUID && presenterViewFlag && presenterViewHostFlag) {
+      console.log("Participant left:", leftUID);
+
       const updatedList = getAllParticipantMain.filter(
         (participant) => participant.guid !== leftUID
       );
       console.log(updatedList, "updatedList");
 
-      // Count how many are still raising hands
       const updatedRaisedHands = updatedList.filter(
         (participant) => participant.raiseHand === true
       );
-      console.log(updatedRaisedHands, "updatedRaisedHands");
-
       setHandRaiseCounter(updatedRaisedHands.length);
 
-      if (!isMeetingVideo) {
-        console.log("updatedListupdatedList");
-        dispatch(updatedParticipantListForPresenter(updatedList));
-      }
+      const getStopPresenterViewAwait = sessionStorage.getItem(
+        "StopPresenterViewAwait"
+      );
+
+      // if (!isMeetingVideo) {
+      dispatch(updatedParticipantListForPresenter(updatedList));
+      // }
     }
-  }, [leavePresenterParticipant]);
+  }, [leavePresenterParticipant]); // 👈 optional: or just [leavePresenterParticipant]
 
   //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
@@ -454,17 +452,37 @@ const VideoCallNormalHeader = ({
           participant.guid !== newJoinPresenterParticipant.guid
       );
 
-      // Step 2: Add the new participant
-      updatedParticipants.push(newJoinPresenterParticipant);
+      // Add flag to distinguish presentation-only participant
+      const participantWithFlag = {
+        ...newJoinPresenterParticipant,
+        joinedForPresentation: true,
+      };
 
-      // Step 3: Update the state
-      console.log("getAllParticipantMain");
+      updatedParticipants.push(participantWithFlag);
+      console.log(
+        "updatedParticipantsupdatedParticipants",
+        updatedParticipants
+      );
+      console.log("updatedListupdatedList");
+
       dispatch(updatedParticipantListForPresenter(updatedParticipants));
+
       dispatch(presenterNewParticipantJoin([]));
 
       console.log(updatedParticipants);
     }
   }, [newJoinPresenterParticipant]);
+
+  // 3️⃣ Cleanup presentation-only participants after presentation ends
+  useEffect(() => {
+    if (!presenterViewFlag || !presenterViewHostFlag) {
+      const filteredParticipants = getAllParticipantMain.filter(
+        (participant) => !participant.joinedForPresentation
+      );
+
+      dispatch(updatedParticipantListForPresenter(filteredParticipants));
+    }
+  }, [presenterViewFlag, presenterViewHostFlag]);
 
   useEffect(() => {
     if (makeHostNow !== null) {

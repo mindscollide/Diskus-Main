@@ -1151,8 +1151,23 @@ const Dashboard = () => {
               // dispatch(setAudioControlHost(false));
               // dispatch(setVideoControlHost(false));
               if (data.payload.isGuest) {
-                dispatch(guestLeaveVideoMeeting(data.payload.uid));
+                console.log("Is Guest True");
+                // dispatch(guestLeaveVideoMeeting(data.payload.uid));
+                const meetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
+                if (isGuid !== data.payload.uid) {
+                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                }
               } else {
+                console.log("Is Guest True");
+
                 const meetingHost = JSON.parse(
                   localStorage.getItem("meetinHostInfo")
                 );
