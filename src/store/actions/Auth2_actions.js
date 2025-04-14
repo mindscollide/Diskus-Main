@@ -584,7 +584,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           await dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
-              t("Password-verified-admin-user")
+              ""
             )
           );
 
@@ -610,7 +610,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             dispatch(
               enterPasswordSuccess(
                 response.data.responseResult,
-                t("Password-verified-admin")
+                ""
               )
             );
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
@@ -624,7 +624,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(
             enterPasswordSuccess(
               response.data.responseResult,
-              t("Password-verified-admin")
+              ""
             )
           );
           mqttConnection(

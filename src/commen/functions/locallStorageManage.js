@@ -55,7 +55,6 @@ export const localStorageManage = (
     pollExpire: localStorage.getItem("pollExpire"),
     AdOrg: localStorage.getItem("AdOrg"),
     AgCont: localStorage.getItem("AgCont"),
-    meetingCanc: localStorage.getItem("meetingCanc"),
     resVot: localStorage.getItem("resVot"),
     resNonVot: localStorage.getItem("resNonVot"),
     committeeView_Id: localStorage.getItem("committeeView_Id"),
@@ -75,7 +74,6 @@ export const localStorageManage = (
     docSignAction: localStorage.getItem("docSignAction"),
     viewPublishMinutesLink: localStorage.getItem("viewPublishMinutesLink"),
     docSignedAction: localStorage.getItem("docSignedAction"),
-    docSignAction: localStorage.getItem("docSignAction"),
     docSignedCrAction: localStorage.getItem("docSignedCrAction")
 
   };

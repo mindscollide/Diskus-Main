@@ -4,6 +4,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import img2 from "../../../../../assets/images/7.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import DiskusLogo from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import Cookies from "js-cookie";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
@@ -246,7 +247,11 @@ const VerificationEmailAndNumber = () => {
                     className='d-flex justify-content-center mb-3'>
                     <img
                       draggable='false'
-                      src={DiskusLogo}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       alt='diskus_logo'
                       width={220}
                     />

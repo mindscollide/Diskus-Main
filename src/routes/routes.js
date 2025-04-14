@@ -2,6 +2,7 @@ import {
   Route,
   createRoutesFromElements,
   createHashRouter,
+  createBrowserRouter,
 } from "react-router-dom";
 import { getLocalStorageItemNonActiveCheck } from "../commen/functions/utils";
 import React, { lazy } from "react";
@@ -79,7 +80,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
-export const router = createHashRouter(
+export const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* Video Meeting Route */}

@@ -326,7 +326,7 @@ const Actions = ({
       ),
       dataIndex: "title",
       key: "title",
-      width: "260px",
+      width: "25%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -352,7 +352,7 @@ const Actions = ({
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -364,7 +364,8 @@ const Actions = ({
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "220px",
+      width: "25%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       onHeaderCell: () => ({
@@ -402,7 +403,7 @@ const Actions = ({
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -412,9 +413,10 @@ const Actions = ({
           </span>
         </>
       ),
-      width: "220px",
+      width: "25%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -480,7 +482,7 @@ const Actions = ({
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "220px",
+      width: "10%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -510,7 +512,7 @@ const Actions = ({
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "220px",
+      width: "15%",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -533,7 +535,7 @@ const Actions = ({
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                popupClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -586,7 +588,7 @@ const Actions = ({
       title: "",
       dataIndex: "",
       key: "taskCreator",
-      width: "120px",
+      width: "5%",
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (

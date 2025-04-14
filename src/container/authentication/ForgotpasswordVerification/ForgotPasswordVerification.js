@@ -7,6 +7,8 @@ import {
 } from "./../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "./../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+
 import styles from "./ForgotPasswordVerificaiton.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
@@ -196,7 +198,11 @@ const ForgotPasswordVerification = () => {
                     className='d-flex justify-content-center'>
                     <img
                       draggable='false'
-                      src={DiskusLogo}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       width={220}
                       alt='diskus_logo'
                     />

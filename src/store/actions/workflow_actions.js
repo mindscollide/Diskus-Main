@@ -91,7 +91,7 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
               );
 
               window.open(
-                `/#/Diskus/signatureviewer?documentID=${encodeURIComponent(
+                `/Diskus/signatureviewer?documentID=${encodeURIComponent(
                   reponseData
                 )}`,
                 "_blank",
@@ -2617,7 +2617,7 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
               );
               if (value === 1) {
                 window.open(
-                  `/#/Diskus/signeddocument?documentID=${encodeURIComponent(
+                  `/Diskus/signeddocument?documentID=${encodeURIComponent(
                     JSON.stringify(response.data.responseResult.data.fileId)
                   )}`,
                   "_blank",
@@ -2626,7 +2626,7 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
                 localStorage.removeItem("docSignAction");
               } else if (value === 2) {
                 window.open(
-                  `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+                  `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
                     JSON.stringify(response.data.responseResult.data.fileId)
                   )}`,
                   "_blank",
@@ -2635,7 +2635,7 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
                 localStorage.removeItem("docSignedAction");
               } else {
                 window.open(
-                  `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+                  `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
                     JSON.stringify(response.data.responseResult.data.fileId)
                   )}`,
                   "_blank",

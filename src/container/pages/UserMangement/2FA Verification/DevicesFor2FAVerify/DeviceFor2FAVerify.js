@@ -3,6 +3,7 @@ import { Button } from "../../../../../components/elements";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import img2 from "../../../../../assets/images/2.png";
 import img5 from "../../../../../assets/images/5.png";
 import img6 from "../../../../../assets/images/6.png";
@@ -183,7 +184,7 @@ const DeviceFor2FAVerify = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="position-relative">
+        <Row className='position-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -195,46 +196,45 @@ const DeviceFor2FAVerify = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center align-items-center min-vh-100"
-              >
+                className='d-flex justify-content-center align-items-center min-vh-100'>
                 <span
-                  className={styles["Send_Email_Realme_sendmailwithdevice"]}
-                >
+                  className={styles["Send_Email_Realme_sendmailwithdevice"]}>
                   <Col
                     sm={12}
                     lg={12}
                     md={12}
-                    className={styles["EmailVerifyBox_sendmailwithdevice"]}
-                  >
+                    className={styles["EmailVerifyBox_sendmailwithdevice"]}>
                     <Row>
                       <Col
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center "
-                      >
+                        className='d-flex justify-content-center '>
                         <img
-                          draggable="false"
-                          src={img1}
+                          draggable='false'
+                          src={
+                            (localStorage.getItem("i18nextLng") === "ar") ===
+                            "ar"
+                              ? DiskusLogoArabic
+                              : img1
+                          }
                           width={220}
-                          alt="diskus_logo"
+                          alt='diskus_logo'
                         />
                       </Col>
                     </Row>
 
                     <Form>
-                      <Row className=" ">
+                      <Row className=' '>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-center flex-column"
-                        >
+                          className='d-flex justify-content-center flex-column'>
                           <h3
                             className={
                               styles["VerifyHeading_sendmailwithdevice"]
-                            }
-                          >
+                            }>
                             {t("2fa-verification")}
                           </h3>
                           <span className={styles["SelectLine"]}>
@@ -243,12 +243,12 @@ const DeviceFor2FAVerify = () => {
                         </Col>
                       </Row>
 
-                      <Row className="">
-                        <Col sm={12} md={12} lg={12} className="mx-2">
+                      <Row className=''>
+                        <Col sm={12} md={12} lg={12} className='mx-2'>
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"15px"}
                                 className={
                                   !xtrazoom
@@ -256,7 +256,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img10}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -265,25 +265,24 @@ const DeviceFor2FAVerify = () => {
                                   !xtrazoom
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-notification-on-device")}{" "}
                                 {currentDevice?.DeviceName}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 onChange={onChangeHandlerSendRealmeXtra1}
                               />
                             </Col>
                           </Row>
 
-                          <Row className="my-2">
+                          <Row className='my-2'>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !codeemail
@@ -291,7 +290,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img5}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -300,15 +299,14 @@ const DeviceFor2FAVerify = () => {
                                   !codeemail
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-email")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 onChange={onChangeHandlerSendRealmeXtra2}
                               />
                             </Col>
@@ -317,7 +315,7 @@ const DeviceFor2FAVerify = () => {
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
-                                draggable="false"
+                                draggable='false'
                                 width={"17px"}
                                 className={
                                   !codesms
@@ -325,7 +323,7 @@ const DeviceFor2FAVerify = () => {
                                     : styles["two_fac_image_active"]
                                 }
                                 src={img6}
-                                alt=""
+                                alt=''
                               />
                             </Col>
                             <Col sm={12} md={9} lg={9}>
@@ -334,15 +332,14 @@ const DeviceFor2FAVerify = () => {
                                   !codesms
                                     ? styles["SendRealmeXtraZoomColor_active"]
                                     : styles["SendRealmeXtraZoomColor"]
-                                }
-                              >
+                                }>
                                 {t("Send-code-on-sms")}
                               </span>
                             </Col>
                             <Col sm={12} md={2} lg={2}>
                               <Form.Check
-                                type="radio"
-                                name="faSendEmailRealmeXtra"
+                                type='radio'
+                                name='faSendEmailRealmeXtra'
                                 value={"SEND CODE ON SMS"}
                                 onChange={onChangeHandlerSendRealmeXtra3}
                               />
@@ -350,7 +347,7 @@ const DeviceFor2FAVerify = () => {
                           </Row>
                         </Col>
                       </Row>
-                      <Row className="d-flex justify-content-center mt-5 mb-1">
+                      <Row className='d-flex justify-content-center mt-5 mb-1'>
                         <Col sm={12} lg={12} md={12}>
                           <Button
                             text={t("Send-code")}
@@ -366,8 +363,8 @@ const DeviceFor2FAVerify = () => {
                       </Row>
                     </Form>
                   </Col>
-                  <Row className="">
-                    <Col sm={12} md={12} lg={12} className="forogt_email_link">
+                  <Row className=''>
+                    <Col sm={12} md={12} lg={12} className='forogt_email_link'>
                       <Link onClick={handleGoBack}>{t("Go-back")}</Link>
                     </Col>
                   </Row>
@@ -375,21 +372,21 @@ const DeviceFor2FAVerify = () => {
               </Col>
             </Row>
           </Col>
-          <Col md={7} lg={7} sm={12} className="">
+          <Col md={7} lg={7} sm={12} className=''>
             <Row>
-              <Col sm={12} md={6} lg={6} className="position-relative">
+              <Col sm={12} md={6} lg={6} className='position-relative'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={img2}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["phone-image"]}
                 />
               </Col>
-              <Col sm={12} md={6} lg={6} className="position-relative vh-100">
+              <Col sm={12} md={6} lg={6} className='position-relative vh-100'>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={DiskusAuthPageLogo}
-                  alt="auth_icon"
+                  alt='auth_icon'
                   className={styles["Auth_Icon1SendEmailRealme"]}
                 />
               </Col>

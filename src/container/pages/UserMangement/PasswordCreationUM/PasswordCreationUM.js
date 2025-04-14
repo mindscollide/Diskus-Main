@@ -5,6 +5,8 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png"
+
 import { useSelector } from "react-redux";
 import PasswordEyeIcon from "../../../../assets/images/newElements/password.svg";
 import PasswordChecklist from "react-password-checklist";
@@ -184,7 +186,11 @@ const PasswordCreationUM = () => {
                   >
                     <img
                       draggable="false"
-                      src={DiskusLogo}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       width={220}
                       alt="diskus_logo"
                     />

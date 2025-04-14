@@ -37,11 +37,12 @@ import {
   updatePollsApi,
 } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const {advanceMeetingModalID} = useMeetingContext()
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const getMeetingusers = useSelector(
@@ -310,7 +311,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
       };
 
       dispatch(
-        updatePollsApi(navigate, data, t, 2, setEditPolls, currentMeeting)
+        updatePollsApi(navigate, data, t, 2, setEditPolls, advanceMeetingModalID)
       );
     } else {
       if (updatePolls.Title === "") {

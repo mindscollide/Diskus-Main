@@ -363,7 +363,10 @@ const App = () => {
   return (
     <>
       {/* Define your routes here */}
-      <RouterProvider router={router} />
+      <RouterProvider
+        router={router}
+        future={{ v7_startTransition: true, v7_fetcherPersist: true }}
+      />
 
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}

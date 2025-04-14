@@ -386,7 +386,7 @@ const ApprovalSend = () => {
     let reponseData = JSON.stringify(record.fileID);
     if (Number(record.workFlowStatusID) === 4) {
       window.open(
-        `/#/Diskus/signatureviewer?documentID=${encodeURIComponent(
+        `/Diskus/signatureviewer?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",
@@ -395,7 +395,7 @@ const ApprovalSend = () => {
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/#/Diskus/viewSignDocument?documentID=${encodeURIComponent(
+        `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
           reponseData
         )}`,
         "_blank",

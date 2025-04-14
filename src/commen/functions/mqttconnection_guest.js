@@ -1,6 +1,6 @@
 import Paho from "paho-mqtt";
 import { setClientGuest } from "../../store/actions/Guest_Video";
-import Helper from "./history_logout";
+import { decrypt } from "./utils";
 
 let newClient;
 
@@ -53,8 +53,14 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
       },
       keepAliveInterval: 30,
       reconnect: true,
-      userName: process.env.REACT_APP_MQTT_User,
-      password: process.env.REACT_APP_MQTT_Pass,
+      userName: decrypt(
+        process.env.REACT_APP_MQTT_User,
+        process.env.REACT_APP_SECERETKEY
+      ),
+      password: decrypt(
+        process.env.REACT_APP_MQTT_Pass,
+        process.env.REACT_APP_SECERETKEY
+      ),
     };
 
     newClient.connect(options);

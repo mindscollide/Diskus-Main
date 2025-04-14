@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { NewJoinCurrentMeeting } from "../store/actions/NewMeetingActions";
+import { UpdateMeetingStatus } from "../store/actions/MeetingOrganizers_action";
 
 // Create the Context
 export const MeetingContext = createContext();
@@ -10,7 +14,7 @@ export const MeetingProvider = ({ children }) => {
   const UserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData
   );
-
+  const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
@@ -51,7 +55,7 @@ export const MeetingProvider = ({ children }) => {
   const [isEditMeeting, setEditMeeting] = useState(false);
 
   // State for managing meeting tabs and their visibility
-  const [meetingDetails, setmeetingDetails] = useState(false);
+  const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
@@ -203,12 +207,19 @@ export const MeetingProvider = ({ children }) => {
     }
   }, [UserProfileData]);
 
-  const joinMeetingFunction = (propValue) => {
+  const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
     console.log(propValue, "propValuepropValuepropValue");
+    // dispatch(NewJoinCurrentMeeting())
+  };
+
+  const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
+    console.log(propValue, "propValuepropValuepropValue");
+    // dispatch(UpdateMeetingStatus())
   };
 
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
+    startMeetingFunction,
     joinMeetingFunction,
     setGoBackCancelModal,
     goBackCancelModal,
