@@ -660,7 +660,9 @@ const GroupViewPolls = ({ groupStatus }) => {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
-                  buttonValue={t("Vote")}
+                  buttonValue={
+                    record.voteStatus === "Not Voted" ? t("Vote") : t("Voted")
+                  }
                   onClick={() => handleClickVoteCast(record)}
                 />
               );
