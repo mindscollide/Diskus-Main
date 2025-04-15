@@ -38,7 +38,6 @@ import {
   USERSPASSWORDCREATION,
 } from "../../commen/functions/responce_message";
 import { changeNewLanguage } from "./Language_actions";
-import { message } from "antd";
 import { endMeetingStatusApi } from "./NewMeetingActions";
 const createOrganizationInit = () => {
   return {
@@ -582,10 +581,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_10:
           await dispatch(
-            enterPasswordSuccess(
-              response.data.responseResult,
-              t("Password-verified-admin-user")
-            )
+            enterPasswordSuccess(response.data.responseResult, "")
           );
 
           handleNavigation(
@@ -607,12 +603,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               dispatch
             );
             navigate("/Admin/ManageUsers");
-            dispatch(
-              enterPasswordSuccess(
-                response.data.responseResult,
-                t("Password-verified-admin")
-              )
-            );
+            dispatch(enterPasswordSuccess(response.data.responseResult, ""));
             clearLocalStorageAtloginresponce(dispatch, 1, navigate);
           } else {
             dispatch(enterPasswordFail(t("User-not-authorised-contact-admin")));
@@ -621,12 +612,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
           }
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_12:
-          dispatch(
-            enterPasswordSuccess(
-              response.data.responseResult,
-              t("Password-verified-admin")
-            )
-          );
+          dispatch(enterPasswordSuccess(response.data.responseResult, ""));
           mqttConnection(
             response.data.responseResult.authToken.userID,
             dispatch
@@ -3525,7 +3511,6 @@ const validatePassword_fail = (message) => {
     type: actions.VALIDATEPASSWORD_FAIL,
     response: null,
     message,
-    message,
   };
 };
 
@@ -3600,7 +3585,7 @@ const validatePasswordActionApi = (
                 )
             ) {
               dispatch(validatePassword_fail(t("Password-not-verified")));
-              setShowError(true)
+              setShowError(true);
               setShowErrorMessage(t("Password-not-verified"));
             } else if (
               response.data.responseResult.responseMessage

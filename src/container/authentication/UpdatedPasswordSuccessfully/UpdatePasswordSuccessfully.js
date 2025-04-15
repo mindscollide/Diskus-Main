@@ -3,6 +3,8 @@ import { Container, Row, Col, Form } from "react-bootstrap";
 import { Button, Notification } from "./../../../components/elements";
 import { useNavigate } from "react-router-dom";
 import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "./../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
+
 import { cleareMessage } from "../../../store/actions/Auth2_actions";
 import styles from "./UpdatePasswordSuccessfully.module.css";
 import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -75,7 +77,11 @@ const UpdatePasswordSuccessfully = () => {
                   >
                     <img
                       draggable="false"
-                      src={DiskusLogo}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       width={220}
                       alt="diskus_logo"
                     />

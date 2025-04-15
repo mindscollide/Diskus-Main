@@ -108,7 +108,7 @@
   border-spacing: 0 10px !important;
   border-radius: 50px !important;
   table-layout: fixed !important;
-  margin-top: -19px !important;
+  /* margin-top: -19px !important; */
 }
 .ToDo::-webkit-scrollbar {
   width: 0.5rem;

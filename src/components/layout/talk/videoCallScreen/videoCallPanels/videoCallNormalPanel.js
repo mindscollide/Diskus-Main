@@ -30,11 +30,14 @@ import {
   makeParticipantHost,
   maximizeVideoPanelFlag,
   maxParticipantVideoRemoved,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
   participanMuteUnMuteMeeting,
   participantListWaitingListMainApi,
   participantWaitingListBox,
   presenterFlagForAlreadyInParticipantMeetingVideo,
   presenterStartedMainFlag,
+  presenterViewGlobalState,
   setAudioControlHost,
   setParticipantLeaveCallForJoinNonMeetingCall,
   setParticipantRemovedFromVideobyHost,
@@ -86,6 +89,8 @@ const VideoPanelNormal = () => {
   let activeRoomID = localStorage.getItem("activeRoomID");
 
   let currentUserName = localStorage.getItem("name");
+
+  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
@@ -238,6 +243,10 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
   );
 
+  const stopScreenShareOnPresenter = useSelector(
+    (state) => state.videoFeatureReducer.stopScreenShareOnPresenter
+  );
+
   console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [allParticipant, setAllParticipant] = useState([]);
@@ -303,6 +312,41 @@ const VideoPanelNormal = () => {
   }
 
   useEffect(() => {
+    if (stopScreenShareOnPresenter) {
+      if (isScreenActive) {
+        console.log("Chek=ckkkk");
+        try {
+          if (iframe && iframe.contentWindow) {
+            sessionStorage.setItem("nonPresenter", true);
+            // Post message to iframe
+            console.log("handlePostMessage");
+            iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
+          } else {
+            console.log("share screen Iframe contentWindow is not available.");
+          }
+        } catch (error) {}
+      }
+      let newRoomID = localStorage.getItem("newRoomId");
+      let activeRoomID = localStorage.getItem("activeRoomID");
+      if (newRoomID) {
+        localStorage.setItem("acceptedRoomID", newRoomID);
+      } else {
+        localStorage.setItem("acceptedRoomID", activeRoomID);
+      }
+      console.log("maximizeParticipantVideoFlag");
+      sessionStorage.setItem("alreadyInMeetingVideo", true);
+      dispatch(participantWaitingListBox(false));
+      dispatch(toggleParticipantsVisibility(false));
+      dispatch(presenterViewGlobalState(currentMeetingID, true, false, true));
+      dispatch(setAudioControlHost(true));
+      dispatch(setVideoControlHost(true));
+      dispatch(maximizeVideoPanelFlag(true));
+      dispatch(normalizeVideoPanelFlag(false));
+      dispatch(minimizeVideoPanelFlag(false));
+    }
+  }, [stopScreenShareOnPresenter]);
+
+  useEffect(() => {
     if (
       (isMeeting &&
         isMeetingHost === false &&
@@ -333,7 +377,7 @@ const VideoPanelNormal = () => {
         console.log("iframeiframe");
         setCallerURL("");
       }
-      localStorage.removeItem("refinedVideoUrl");
+      // localStorage.removeItem("refinedVideoUrl");
       localStorage.removeItem("initiateCallRoomID");
       localStorage.removeItem("acceptedRoomID");
     };
@@ -909,14 +953,16 @@ const VideoPanelNormal = () => {
       console.log(event.data, "eventevent");
       // Check the origin for security
       console.log("disableZoomBeforeJoinSession", event.data);
-      // if (event.origin === "https://secure.letsdiskus.com:9414") {
-      // if (event.origin === "https://portal.letsdiskus.com:9414") {
-      if (event.origin === "http://localhost:5500") {
+      if (event.origin === process.env.REACT_APP_VIDEO_EVENTS) {
         // Example actions based on the message received
+
+        console.log("handlePostMessage", presenterViewHostFlag);
+        console.log("handlePostMessage", presenterViewHostFlag);
         console.log("handlePostMessage", event.data);
         console.log("maximizeParticipantVideoFlag");
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
+            console.log("handlePostMessage", event.data);
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo")
             );
@@ -926,39 +972,57 @@ const VideoPanelNormal = () => {
             let nonPresenter = JSON.parse(
               sessionStorage.getItem("nonPresenter")
             );
+            console.log("handlePostMessage", alreadyInMeetingVideo);
+            console.log(
+              "handlePostMessage",
+              alreadyInMeetingVideoStartPresenterCheck
+            );
+            console.log("handlePostMessage", nonPresenter);
 
             setIsScreenActive(true); // Show a modal or perform an action
             if (nonPresenter) {
+              console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
             } else if (alreadyInMeetingVideo) {
+              console.log("handlePostMessage", alreadyInMeetingVideo);
               if (alreadyInMeetingVideoStartPresenterCheck) {
-                console.log("maximizeParticipantVideoFlag");
+                console.log(
+                  "handlePostMessage",
+                  alreadyInMeetingVideoStartPresenterCheck
+                );
                 dispatch(setAudioControlHost(false));
                 dispatch(setVideoControlHost(true));
               } else {
-                console.log("maximizeParticipantVideoFlag");
+                console.log(
+                  "handlePostMessage",
+                  alreadyInMeetingVideoStartPresenterCheck
+                );
+
                 dispatch(setAudioControlHost(true));
                 dispatch(setVideoControlHost(true));
               }
-              console.log("maximizeParticipantVideoFlag");
-
               handlerForStaringPresenterView();
             } else if (presenterViewFlag && presenterViewHostFlag) {
-              console.log("true check");
+              console.log("handlePostMessage", presenterViewHostFlag);
+              console.log("handlePostMessage", presenterViewHostFlag);
               handlerForStaringPresenterView();
             }
 
             break;
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
+            console.log("ScreenSharedStopMsgFromIframe");
             if (presenterViewFlag && presenterViewHostFlag) {
+              console.log("ScreenSharedStopMsgFromIframe");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
               );
+              let videoCallURL = Number(localStorage.getItem("videoCallURL"));
               let data = {
                 MeetingID: currentMeetingID,
-                RoomID: callAcceptedRoomID,
+                RoomID: String(callAcceptedRoomID),
+                VideoCallUrl: videoCallURL,
               };
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
@@ -1290,8 +1354,7 @@ const VideoPanelNormal = () => {
                     (presenterViewHostFlag || presenterViewJoinFlag)
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
-              }
-            >
+              }>
               {FullLoader === true ? (
                 <>
                   <LoaderPanelVideoScreen
@@ -1346,8 +1409,7 @@ const VideoPanelNormal = () => {
                             participantWaitinglistBox)
                             ? 9
                             : 12
-                        }
-                      >
+                        }>
                         <div
                           className={
                             presenterViewFlag &&
@@ -1362,8 +1424,7 @@ const VideoPanelNormal = () => {
                                 MaximizeVideoFlag === true
                               ? "normal-avatar-large"
                               : ""
-                          }
-                        >
+                          }>
                           {console.log("iframeiframe", isMeetingHost)}
                           {console.log("iframeiframe", callerURL)}
                           <>
@@ -1371,11 +1432,11 @@ const VideoPanelNormal = () => {
                               <iframe
                                 src={callerURL}
                                 ref={iframeRef}
-                                title="Live Video"
-                                width="100%"
-                                height="100%"
-                                frameBorder="0"
-                                allow="camera;microphone;display-capture"
+                                title='Live Video'
+                                width='100%'
+                                height='100%'
+                                frameBorder='0'
+                                allow='camera;microphone;display-capture'
                               />
                             )}
                           </>
@@ -1395,8 +1456,7 @@ const VideoPanelNormal = () => {
                                 participantWaitinglistBox
                                   ? "ParticipantsWaiting_In"
                                   : "ParticipantsWaiting_Out"
-                              } ps-0`}
-                            >
+                              } ps-0`}>
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
@@ -1410,11 +1470,11 @@ const VideoPanelNormal = () => {
                       ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
                         <>
                           {participantsVisible && (
-                            <div className="Participants-Lists">
+                            <div className='Participants-Lists'>
                               <>
                                 <Row>
                                   <Col lg={10} md={10} sm={10}>
-                                    <p className="Participant-name-title">
+                                    <p className='Participant-name-title'>
                                       {t("Participants")}
                                     </p>
                                   </Col>
@@ -1422,10 +1482,10 @@ const VideoPanelNormal = () => {
                                     <img
                                       draggable={false}
                                       src={BlackCrossIcon}
-                                      alt=""
+                                      alt=''
                                       className={"cursor-pointer"}
-                                      width="8px"
-                                      height="8px"
+                                      width='8px'
+                                      height='8px'
                                       onClick={closeParticipantsList}
                                     />
                                   </Col>
@@ -1437,15 +1497,13 @@ const VideoPanelNormal = () => {
                                       <>
                                         <Row
                                           key={participant.guid}
-                                          className="mb-1"
-                                        >
+                                          className='mb-1'>
                                           <Col
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="d-flex justify-content-start"
-                                          >
-                                            <p className="participantModal_name">
+                                            className='d-flex justify-content-start'>
+                                            <p className='participantModal_name'>
                                               {participant.name}
                                             </p>{" "}
                                           </Col>
@@ -1453,13 +1511,12 @@ const VideoPanelNormal = () => {
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className="d-flex justify-content-end gap-2"
-                                          >
+                                            className='d-flex justify-content-end gap-2'>
                                             <img
                                               src={VideoOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Video Off"
+                                              width='20px'
+                                              height='20px'
+                                              alt='Video Off'
                                               style={{
                                                 visibility:
                                                   participant.hideCamera
@@ -1470,9 +1527,9 @@ const VideoPanelNormal = () => {
 
                                             <img
                                               src={MicOff}
-                                              width="20px"
-                                              height="20px"
-                                              alt="Mic Mute"
+                                              width='20px'
+                                              height='20px'
+                                              alt='Mic Mute'
                                               style={{
                                                 visibility: participant.mute
                                                   ? "visible"
@@ -1481,9 +1538,9 @@ const VideoPanelNormal = () => {
                                             />
                                             <img
                                               src={Raisehandselected}
-                                              width="20px"
-                                              height="20px"
-                                              alt="raise hand"
+                                              width='20px'
+                                              height='20px'
+                                              alt='raise hand'
                                               style={{
                                                 visibility:
                                                   participant.raiseHand

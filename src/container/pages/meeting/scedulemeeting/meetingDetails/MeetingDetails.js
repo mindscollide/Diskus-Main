@@ -854,32 +854,11 @@ const MeetingDetails = ({
   // const handleCancelMeetingButton = () => {
   //   dispatch(showCancelModalmeetingDeitals(true));
   // };
+  console.log(
+    getALlMeetingTypes?.meetingTypes,
+    "getALlMeetingTypes?.meetingTypes"
+  );
 
-  //Meeting Type Drop Down Data
-  useEffect(() => {
-    try {
-      if (
-        getALlMeetingTypes?.meetingTypes !== null &&
-        getALlMeetingTypes?.meetingTypes !== undefined
-      ) {
-        let Newdata = [];
-        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
-          Newdata.push({
-            value: data.pK_MTID,
-            label: data.type,
-          });
-          setMeetingDetails({
-            ...meetingDetails,
-            MeetingType: {
-              PK_MTID: getALlMeetingTypes?.meetingTypes[0].pK_MTID,
-              Type: getALlMeetingTypes?.meetingTypes[0].type,
-            },
-          });
-        });
-        setmeetingTypeDropdown(Newdata);
-      }
-    } catch (error) {}
-  }, [getALlMeetingTypes?.meetingTypes]);
 
   //Reminder Frequency Drop Down Data
   useEffect(() => {
@@ -942,6 +921,42 @@ const MeetingDetails = ({
       });
     }
   }, [recurringDropDown, meetingDetails.RecurringOptions]);
+
+    //Meeting Type Drop Down Data
+    useEffect(() => {
+      try {
+        if (
+          getALlMeetingTypes?.meetingTypes !== null &&
+          getALlMeetingTypes.meetingTypes.length > 0
+        ) {
+          let Newdata = [];
+          getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
+            console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+            Newdata.push({
+              value: data.pK_MTID,
+              label: data.type,
+            });
+            if (index === 0) {
+              console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+              let typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+  
+              console.log(typeData, "getALlMeetingTypesgetALlMeetingTypes");
+  
+              setMeetingDetails({
+                ...meetingDetails,
+                MeetingType: typeData,
+              });
+            }
+          });
+          setmeetingTypeDropdown(Newdata);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }, [getALlMeetingTypes]);
 
   // Showing The reposnse messege
   useEffect(() => {
@@ -1083,11 +1098,10 @@ const MeetingDetails = ({
           lg={12}
           md={12}
           sm={12}
-          className={styles["Scroller_meeting_detials"]}
-        >
+          className={styles["Scroller_meeting_detials"]}>
           <Row>
             {/* First Half */}
-            <Col lg={7} md={7} sm={12} className="mt-3">
+            <Col lg={7} md={7} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
@@ -1123,15 +1137,14 @@ const MeetingDetails = ({
                           error && meetingDetails.MeetingTitle === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {t("Please-enter-meeting-title")}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -1173,8 +1186,7 @@ const MeetingDetails = ({
                               error && meetingDetails.MeetingType === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
+                            }>
                             {t("Please-select-meeting-type")}
                           </p>
                         </Col>
@@ -1196,7 +1208,7 @@ const MeetingDetails = ({
                         placeholder={t("Location-Videourl")}
                         applyClass={"meetinInnerSearch"}
                         name={"Location"}
-                        labelclass="d-none"
+                        labelclass='d-none'
                         change={HandleChange}
                         value={meetingDetails.Location}
                         disable={
@@ -1219,23 +1231,22 @@ const MeetingDetails = ({
               </Row>
 
               <Row>
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex flex-column flex-wrap"
-                  >
+                    className='d-flex flex-column flex-wrap'>
                     <TextField
                       label={
                         <span className={styles["Meeting_type_heading"]}>
                           {t("Add-notes")}
                         </span>
                       }
-                      applyClass="text-area-create-meeting"
-                      type="text"
+                      applyClass='text-area-create-meeting'
+                      type='text'
                       as={"textarea"}
-                      rows="5"
+                      rows='5'
                       name={"Notes"}
                       change={HandleChange}
                       placeholder={t("Note-for-this-meeting")}
@@ -1258,7 +1269,7 @@ const MeetingDetails = ({
                   </Col>
                 </Row>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={4} md={4} sm={12}>
                   <span className={styles["Scedule_heading"]}>
                     {t("Scheduled-on")}
@@ -1283,15 +1294,14 @@ const MeetingDetails = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["Scroller_meeting"]}
-                >
+                  className={styles["Scroller_meeting"]}>
                   {rows.length > 0
                     ? rows.map((data, index) => {
                         return (
                           <>
                             <Row key={index}>
                               <Col lg={12} md={12} sm={12} key={index}>
-                                <Row className="mt-2">
+                                <Row className='mt-2'>
                                   <Col lg={4} md={4} sm={12}>
                                     <DatePicker
                                       selected={data.selectedOption}
@@ -1302,17 +1312,17 @@ const MeetingDetails = ({
                                           ? rows[index - 1].selectedOption
                                           : moment().toDate()
                                       }
-                                      placeholder="DD/MM/YYYY"
+                                      placeholder='DD/MM/YYYY'
                                       render={
                                         <InputIcon
-                                          placeholder="DD/MM/YYYY"
-                                          className="datepicker_input"
+                                          placeholder='DD/MM/YYYY'
+                                          className='datepicker_input'
                                         />
                                       }
                                       editable={false}
-                                      className="datePickerTodoCreate2"
+                                      className='datePickerTodoCreate2'
                                       onOpenPickNewDate={true}
-                                      inputMode=""
+                                      inputMode=''
                                       calendar={calendarValue}
                                       locale={localValue}
                                       ref={calendRef}
@@ -1345,8 +1355,7 @@ const MeetingDetails = ({
                                         error && data.selectedOption === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("Scheduled-date-is-required")}
                                     </p>
                                   </Col>
@@ -1354,17 +1363,16 @@ const MeetingDetails = ({
                                     lg={3}
                                     md={3}
                                     sm={3}
-                                    className="timePicker"
-                                  >
+                                    className='timePicker'>
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
                                       selected={data.startDate}
                                       value={data.startTime}
                                       editable={false}
@@ -1398,8 +1406,7 @@ const MeetingDetails = ({
                                         error && data.startDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("start-time-is-required")}
                                     </p>
                                   </Col>
@@ -1407,26 +1414,25 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-center align-items-center"
-                                  >
+                                    className='d-flex justify-content-center align-items-center'>
                                     <img
                                       draggable={false}
                                       src={desh}
-                                      width="19.02px"
-                                      alt=""
+                                      width='19.02px'
+                                      alt=''
                                     />
                                   </Col>
                                   <Col lg={3} md={3} sm={12}>
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
                                       value={data.endTime}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
                                       selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       editable={false}
@@ -1459,8 +1465,7 @@ const MeetingDetails = ({
                                         error && data.endDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("end-time-is-required")}
                                     </p>
                                   </Col>
@@ -1468,8 +1473,7 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-end position-relative align-items-center"
-                                  >
+                                    className='d-flex justify-content-end position-relative align-items-center'>
                                     {index === 0 ? null : Number(
                                         editorRole.status
                                       ) === 9 &&
@@ -1480,9 +1484,9 @@ const MeetingDetails = ({
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
-                                        width="23px"
-                                        alt=""
-                                        height="23px"
+                                        width='23px'
+                                        alt=''
+                                        height='23px'
                                         className={styles["Cross_icon_class"]}
                                         onClick={() => {
                                           HandleCancelFunction(index);
@@ -1540,11 +1544,11 @@ const MeetingDetails = ({
                         !isValidRow(rows[rows.length - 1]) || rows.length === 5
                       }
                     /> */}
-                  {/* </Col> */}
-                {/* </Row> */}
+              {/* </Col> */}
+              {/* </Row> */}
             </Col>
             {/* Second Half */}
-            <Col lg={5} md={5} sm={12} className="mt-3">
+            <Col lg={5} md={5} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
@@ -1660,14 +1664,13 @@ const MeetingDetails = ({
                         error && meetingDetails.ReminderFrequency.value === 0
                           ? ` ${styles["errorMessage-inLogin"]} `
                           : `${styles["errorMessage-inLogin_hidden"]}`
-                      }
-                    >
+                      }>
                       {t("Please-select-reminder-frequency")}
                     </p>
                   </Col>
                 </Row>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     label={
@@ -1675,10 +1678,10 @@ const MeetingDetails = ({
                         {t("Add-description")}
                       </span>
                     }
-                    applyClass="text-area-create-resolution"
-                    type="text"
+                    applyClass='text-area-create-resolution'
+                    type='text'
                     as={"textarea"}
-                    rows="2"
+                    rows='2'
                     placeholder={t("Description")}
                     required={true}
                     name={"Description"}
@@ -1701,10 +1704,10 @@ const MeetingDetails = ({
                 </Col>
               </Row>
 
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleRSPV}
                         checkedValue={meetingDetails.AllowRSPV}
@@ -1733,8 +1736,7 @@ const MeetingDetails = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 justify-content-start"
-                    >
+                      className='d-flex gap-2 justify-content-start'>
                       <Switch
                         onChange={handleNotifyOrganizers}
                         checkedValue={meetingDetails.NotifyMeetingOrganizer}
@@ -1758,10 +1760,10 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleGroupChat}
                         checkedValue={meetingDetails.groupChat}
@@ -1785,8 +1787,8 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleVideoCameraButton}
                         checkedValue={meetingDetails.IsVideoCall}
@@ -1877,14 +1879,14 @@ const MeetingDetails = ({
                   </Row> */}
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["reccurring_heading"]}>
                     {t("Recurring")}
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12}>
                   <Select
                     onChange={handleRecurringSelectoptions}
@@ -1908,7 +1910,7 @@ const MeetingDetails = ({
                         : false
                     }
                     styles={customStyles}
-                    menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                    menuPlacement='top' // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
                     isSearchable={false}
                     // isDisabled={true} THIS IS TO BE DONE, When the build is to be done on production and comment the above isDisabled
@@ -1919,13 +1921,12 @@ const MeetingDetails = ({
           </Row>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex gap-3 justify-content-end"
-        >
+          className='d-flex gap-3 justify-content-end'>
           <Button
             text={t("Cancel")}
             className={styles["Published"]}

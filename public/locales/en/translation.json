@@ -2413,8 +2413,8 @@
   "Has-changed-his-vote-in": "has changed the Vote in",
   "Start-presentation": "Start Presentation",
   "Stop-presentation": "Stop Presentation",
-  "Leave-presentation": "Leave presentation view",
-  "Join-presentation": "Join presentation view",
+  "Leave-presentation": "Leave Presentation",
+  "Join-presentation": "Join Presentation",
   "Start-presenting": "Start Presenting",
   "Stop-presenting": "Stop Presenting",
   "Leave-presenting": "Leave presenting view",
@@ -2467,5 +2467,6 @@
   "Role": "Role",
   "No-files-attached": "No files attached",
   "Options": "Options",
-  "Option": "Option"
+  "Option": "Option",
+  "Please-select-a-date": "Please select a date"
 }

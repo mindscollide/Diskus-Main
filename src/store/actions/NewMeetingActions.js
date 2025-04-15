@@ -95,6 +95,7 @@ import {
   participantWaitingListBox,
   presenterViewGlobalState,
   setAudioControlHost,
+  setRaisedUnRaisedParticiant,
   setVideoControlHost,
   videoChatPanel,
   videoIconOrButtonState,
@@ -8393,6 +8394,10 @@ const LeaveCurrentMeeting = (
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(showEndMeetingModal(false));
@@ -8632,6 +8637,10 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
                   "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
                 )
             ) {
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
               localStorage.setItem("AdvanceMeetingOpen", false);
               localStorage.setItem("isMeetingVideoHostCheck", false);
               dispatch(currentMeetingStatus(0));
@@ -8656,12 +8665,29 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
               localStorage.setItem("meetingVideoID", 0);
               localStorage.setItem("MicOff", true);
               localStorage.setItem("VidOff", true);
+
+              let isMeeting = localStorage.getItem("isMeeting");
+              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
+              let isMeetingVideoHostCheck = localStorage.getItem(
+                "isMeetingVideoHostCheck"
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let newName = localStorage.getItem("name");
+              let currentMeetingID = Number(
+                localStorage.getItem("currentMeetingID")
+              );
+              let participantRoomId = localStorage.getItem("participantRoomId");
+
+              console.log("busyCall");
               let Data = {
-                RoomID: String(newRoomID),
-                UserGUID: String(newUserGUID),
+                RoomID: String(participantRoomId),
+                UserGUID: String(participantUID),
                 Name: String(newName),
+                IsHost: isMeetingVideoHostCheck ? true : false,
+                MeetingID: Number(currentMeetingID),
               };
-              dispatch(LeaveMeetingVideo(Data, navigate, t));
+              await dispatch(setRaisedUnRaisedParticiant(false));
+              await dispatch(LeaveMeetingVideo(Data, navigate, t));
               dispatch(LeaveInitmationMessegeVideoMeetAction(false));
             } else if (
               response.data.responseResult.responseMessage
@@ -9248,6 +9274,11 @@ const LeaveMeetingVideo = (
                   console.log("busyCall");
                   await setLeaveMeetingVideoForOneToOneOrGroup(false);
                   setJoiningOneToOneAfterLeavingPresenterView(true);
+                } else if (flag === 4) {
+                  console.log("busyCall Nothing");
+                  await dispatch(normalizeVideoPanelFlag(false));
+                  await dispatch(maximizeVideoPanelFlag(false));
+                  await dispatch(minimizeVideoPanelFlag(false));
                 }
 
                 sessionStorage.removeItem("isWaiting");
@@ -9325,6 +9356,14 @@ const LeaveMeetingVideo = (
                 console.log("busyCall");
                 await setLeaveMeetingVideoForOneToOneOrGroup(false);
                 setJoiningOneToOneAfterLeavingPresenterView(true);
+              } else if (flag === 4) {
+                console.log("busyCall Nothing");
+                await dispatch(normalizeVideoPanelFlag(false));
+                await dispatch(maximizeVideoPanelFlag(false));
+                await dispatch(minimizeVideoPanelFlag(false));
+              } else {
+              console.log("Check Leave");
+              localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {
@@ -10493,7 +10532,159 @@ const meetingMinutesDownloaded = (response) => {
   };
 };
 
+const NewJoinCurrentMeeting = (
+  isQuickMeeting,
+  navigate,
+  t,
+  Data,
+  setViewFlag,
+  setEditFlag,
+  setSceduleMeeting,
+  no,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return async (dispatch) => {
+    await dispatch(joinMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", joinMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            JoinCurrentMeeting(
+              isQuickMeeting,
+              navigate,
+              t,
+              Data,
+              setViewFlag,
+              setEditFlag,
+              setSceduleMeeting,
+              no,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
+                )
+            ) {
+              dispatch(videoIconOrButtonState(false));
+              localStorage.setItem("isMeeting", true);
+              localStorage.setItem("videoCallURL", Data.VideoCallURL);
+              localStorage.setItem(
+                "AdvanceMeetingOpen",
+                isQuickMeeting ? false : true
+              );
+              localStorage.setItem(
+                "typeOfMeeting",
+                isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting"
+              );
+              localStorage.setItem(
+                "isMeetingVideoHostCheck",
+                response.data.responseResult.isMeetingVideoHost
+              );
+
+              await dispatch(
+                joinMeetingSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+              if (isQuickMeeting === true) {
+                let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
+                await dispatch(
+                  ViewMeeting(
+                    navigate,
+                    viewMeetingData,
+                    t,
+                    setViewFlag,
+                    setEditFlag,
+                    setSceduleMeeting,
+                    no
+                  )
+                );
+              } else {
+                isFunction(setAdvanceMeetingModalID) &&
+                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
+                isFunction(setViewAdvanceMeetingModal) &&
+                  setViewAdvanceMeetingModal(true);
+                await dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                await dispatch(scheduleMeetingPageFlag(false));
+              }
+              localStorage.setItem("currentMeetingID", Data.FK_MDID);
+              await dispatch(currentMeetingStatus(10));
+              let activeStatusOneToOne = JSON.parse(
+                localStorage.getItem("activeCall")
+              );
+
+              let presenterViewStatus =
+                response.data.responseResult.isPresenterViewStarted;
+              if (presenterViewStatus && !activeStatusOneToOne) {
+                console.log("busyCall 21");
+
+                let data = {
+                  VideoCallURL: String(Data.VideoCallURL),
+                  WasInVideo: false,
+                };
+                console.log("onClickStopPresenter", data);
+                dispatch(joinPresenterViewMainApi(navigate, t, data));
+              } else if (presenterViewStatus && activeStatusOneToOne) {
+                console.log("busyCall 21");
+                localStorage.setItem("JoinpresenterForonetoone", true);
+                dispatch(nonMeetingVideoGlobalModal(true));
+                dispatch(presenterViewGlobalState(0, true, false, false));
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(joinMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                )
+            ) {
+              dispatch(joinMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(joinMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(joinMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(joinMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(joinMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
+  NewJoinCurrentMeeting,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,

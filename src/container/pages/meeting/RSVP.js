@@ -60,6 +60,22 @@ const RSVP = () => {
         };
         callRSVP();
       }
+    } else if(localStorage.getItem("RSVP") !== null) {
+      let actionKey = localStorage.getItem("RSVP");
+      if (actionKey !== null) {
+        const callRSVP = async () => {
+          let Data = { EncryptedString: actionKey };
+          await dispatch(
+            validateEncryptedStringUserAvailibilityForMeetingApi(
+              navigate,
+              Data,
+              t
+            )
+          );
+          localStorage.removeItem("RSVP");
+        };
+        callRSVP();
+      }
     }
   }, []);
 

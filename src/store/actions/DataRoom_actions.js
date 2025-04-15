@@ -3498,7 +3498,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                     isPermission: response.data.responseResult.permissionID,
                   };
                   window.open(
-                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    `/DisKus/documentViewer?pdfData=${encodeURIComponent(
                       JSON.stringify(pdfData)
                     )}`,
                     "_blank",
@@ -3548,7 +3548,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                     isPermission: response.data.responseResult.permissionID,
                   };
                   window.open(
-                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    `/DisKus/documentViewer?pdfData=${encodeURIComponent(
                       JSON.stringify(pdfData)
                     )}`,
                     "_blank",
@@ -3599,7 +3599,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                     isPermission: response.data.responseResult.permissionID,
                   };
                   window.open(
-                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    `/DisKus/documentViewer?pdfData=${encodeURIComponent(
                       JSON.stringify(pdfData)
                     )}`,
                     "_blank",
@@ -3648,7 +3648,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
                     isPermission: response.data.responseResult.permissionID,
                   };
                   window.open(
-                    `/#/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                    `/DisKus/documentViewer?pdfData=${encodeURIComponent(
                       JSON.stringify(pdfData)
                     )}`,
                     "_blank",

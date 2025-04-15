@@ -463,6 +463,7 @@ const ViewParticipantsDates = ({
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
                                       classNameCheckBoxP="d-none"
+                                      className={"cursor-pointer"}
                                       disabled={
                                         currentDate > data.startTime
                                           ? true

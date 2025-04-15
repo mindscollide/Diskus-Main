@@ -71,6 +71,7 @@ import {
   nonMeetingVideoGlobalModal,
   acceptHostTransferAccessGlobalFunc,
   unansweredOneToOneCall,
+  stopScreenShareOnPresenterStarting,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -545,26 +546,27 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             dispatch(LeaveMeetingVideo(Data, navigate, t, 2, data));
           } else {
-            let newRoomID = localStorage.getItem("newRoomId");
-            let activeRoomID = localStorage.getItem("activeRoomID");
-            if (newRoomID) {
-              localStorage.setItem("acceptedRoomID", newRoomID);
-            } else {
-              localStorage.setItem("acceptedRoomID", activeRoomID);
-            }
+            dispatch(stopScreenShareOnPresenterStarting(true));
+            // let newRoomID = localStorage.getItem("newRoomId");
+            // let activeRoomID = localStorage.getItem("activeRoomID");
+            // if (newRoomID) {
+            //   localStorage.setItem("acceptedRoomID", newRoomID);
+            // } else {
+            //   localStorage.setItem("acceptedRoomID", activeRoomID);
+            // }
 
-            console.log("maximizeParticipantVideoFlag");
-            sessionStorage.setItem("alreadyInMeetingVideo", true);
-            dispatch(participantWaitingListBox(false));
-            dispatch(toggleParticipantsVisibility(false));
-            await dispatch(
-              presenterViewGlobalState(meetingVideoID, true, false, true)
-            );
-            dispatch(setAudioControlHost(true));
-            dispatch(setVideoControlHost(true));
-            dispatch(maximizeVideoPanelFlag(true));
-            dispatch(normalizeVideoPanelFlag(false));
-            dispatch(minimizeVideoPanelFlag(false));
+            // console.log("maximizeParticipantVideoFlag");
+            // sessionStorage.setItem("alreadyInMeetingVideo", true);
+            // dispatch(participantWaitingListBox(false));
+            // dispatch(toggleParticipantsVisibility(false));
+            // await dispatch(
+            //   presenterViewGlobalState(meetingVideoID, true, false, true)
+            // );
+            // dispatch(setAudioControlHost(true));
+            // dispatch(setVideoControlHost(true));
+            // dispatch(maximizeVideoPanelFlag(true));
+            // dispatch(normalizeVideoPanelFlag(false));
+            // dispatch(minimizeVideoPanelFlag(false));
           }
         } else if (
           !presenterViewFlagRef.current &&
@@ -757,7 +759,33 @@ const Dashboard = () => {
       }
     }
   };
-
+  async function joinRequestForMeetingVideo(mqttData) {
+    try {
+      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      const isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+        if (isMeetingVideo) {
+          if (presenterViewJoinFlagRef.current) {
+            console.log("Check PresenterIssue Once");
+          } else {
+            console.log("Check PresenterIssue Once");
+            if (isMeetingVideoHostCheck) {
+              console.log("Check PresenterIssue Once");
+              if (mqttData.payload.isGuest) {
+                dispatch(admitGuestUserRequest(mqttData.payload));
+              } else {
+                console.log("Check PresenterIssue Once");
+                dispatch(participantWaitingList(mqttData.payload));
+              }
+              dispatch(guestJoinPopup(true));
+            }
+          }
+        }
+    } catch {}
+  }
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1123,8 +1151,23 @@ const Dashboard = () => {
               // dispatch(setAudioControlHost(false));
               // dispatch(setVideoControlHost(false));
               if (data.payload.isGuest) {
-                dispatch(guestLeaveVideoMeeting(data.payload.uid));
+                console.log("Is Guest True");
+                // dispatch(guestLeaveVideoMeeting(data.payload.uid));
+                const meetingHost = JSON.parse(
+                  localStorage.getItem("meetinHostInfo")
+                );
+                let isGuid = "";
+                if (meetingHost?.isHost) {
+                  isGuid = localStorage.getItem("isGuid");
+                } else {
+                  isGuid = localStorage.getItem("participantUID");
+                }
+                if (isGuid !== data.payload.uid) {
+                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
+                }
               } else {
+                console.log("Is Guest True");
+
                 const meetingHost = JSON.parse(
                   localStorage.getItem("meetinHostInfo")
                 );
@@ -1160,14 +1203,16 @@ const Dashboard = () => {
                 data.payload.participantGuid === isParticipantGuid,
                 "checkchekc"
               );
-              if (
-                data.payload.isHandRaised &&
-                data.payload.participantGuid === isParticipantGuid
-              ) {
-                dispatch(setRaisedUnRaisedParticiant(true));
-              } else {
-                dispatch(setRaisedUnRaisedParticiant(false));
-              }
+              // if (
+              //   data.payload.isHandRaised &&
+              //   data.payload.participantGuid === isParticipantGuid
+              // ) {
+              //   console.log("handStatus");
+              //   dispatch(setRaisedUnRaisedParticiant(true));
+              // } else {
+              //   console.log("handStatus");
+              //   dispatch(setRaisedUnRaisedParticiant(false));
+              // }
             } else if (
               data.payload.message.toLowerCase() ===
               "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
@@ -1345,6 +1390,8 @@ const Dashboard = () => {
                 flagForZoom1 &&
                 Number(userIDCurrent) === Number(data.payload.userID)
               ) {
+                sessionStorage.removeItem("isWaiting");
+
                 localStorage.setItem("isMeetingVideo", false);
                 dispatch(globalNavigatorVideoStream(1));
                 dispatch(globalStateForAudioStream(true));
@@ -1550,6 +1597,7 @@ const Dashboard = () => {
             ) {
               dispatch(setAudioControlHost(false));
               dispatch(setVideoControlHost(false));
+              dispatch(setRaisedUnRaisedParticiant(false));
               dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
             } else if (
@@ -3928,22 +3976,6 @@ const Dashboard = () => {
       console.log(error);
     }
   };
-
-  async function joinRequestForMeetingVideo(mqttData) {
-    try {
-      const currentMeetingID = localStorage.getItem("currentMeetingID");
-      const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
-        if (isMeetingVideo) {
-          if (mqttData.payload.isGuest) {
-            dispatch(admitGuestUserRequest(mqttData.payload));
-          } else {
-            dispatch(participantWaitingList(mqttData.payload));
-          }
-          dispatch(guestJoinPopup(true));
-        }
-    } catch {}
-  }
 
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);

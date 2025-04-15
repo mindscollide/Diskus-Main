@@ -1221,6 +1221,7 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
                 )
             ) {
               dispatch(DeleteNotesDocumentsFailed(t("No-attachment-deleted")));
+              dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes, id));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

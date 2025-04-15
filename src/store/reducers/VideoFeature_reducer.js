@@ -102,6 +102,7 @@ const initialState = {
   unansweredFlagForOneToOneCall: false,
   inCallParticipantList: [],
   pendingCallParticipantList: [],
+  stopScreenShareOnPresenter: false,
   // startOrStopPresenter: false,
 };
 
@@ -1151,6 +1152,15 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         getAllParticipantMain: action.response,
+      };
+    }
+
+    //updated participants List For PRESENTER
+    case actions.Stop_ScreenShare_OnPresenter_ViewStart: {
+      console.log(action, "Stop_ScreenShare_OnPresenter_ViewStart");
+      return {
+        ...state,
+        stopScreenShareOnPresenter: action.response,
       };
     }
 

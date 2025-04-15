@@ -12,6 +12,7 @@ import {
   VerificationInputField,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import { useSelector } from "react-redux";
@@ -176,7 +177,11 @@ const VerifyOTPUM = () => {
                   >
                     <img
                       draggable="false"
-                      src={DiskusLogo}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       alt="diskus_logo"
                       width="225px"
                       height="80px"

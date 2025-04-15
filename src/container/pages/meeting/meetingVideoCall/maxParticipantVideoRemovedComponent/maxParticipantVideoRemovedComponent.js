@@ -6,9 +6,16 @@ import { useNavigate } from "react-router-dom";
 import VideoEnd from "../../../../../assets/images/Recent Activity Icons/Video/VideoEnd.png";
 import { Button } from "../../../../../components/elements";
 import {
+  leaveCallModal,
+  maximizeVideoPanelFlag,
   maxParticipantVideoCallPanel,
   maxParticipantVideoRemoved,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+  participantPopup,
   participantVideoNavigationScreen,
+  setAudioControlHost,
+  setVideoControlHost,
 } from "../../../../../store/actions/VideoFeature_actions";
 import "./maxParticipantVideoRemovedComponent.css";
 
@@ -19,6 +26,23 @@ const MaxParticipantVideoRemovedComponent = () => {
 
   const onClickCloseModal = () => {
     dispatch(maxParticipantVideoRemoved(false));
+    dispatch(maxParticipantVideoCallPanel(false));
+    dispatch(setAudioControlHost(false));
+    dispatch(setVideoControlHost(false));
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("isMeetingVideo", false);
+    const emptyArray = [];
+    localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
+    localStorage.setItem("activeCall", false);
+    localStorage.setItem("isCaller", false);
+    localStorage.setItem("acceptedRoomID", 0);
+    localStorage.setItem("activeRoomID", 0);
+    dispatch(normalizeVideoPanelFlag(false));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(false));
+    dispatch(participantPopup(false));
+    localStorage.setItem("MicOff", true);
+    localStorage.setItem("VidOff", true);
   };
 
   const onCLickRejoin = () => {

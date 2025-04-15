@@ -12,6 +12,7 @@ import {
   VerificationInputField,
 } from "../../../../components/elements";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "./../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import DiskusAuthPageLogo from "./../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { verificationEmailOTP } from "../../../../store/actions/Auth2_actions";
 import {
@@ -156,7 +157,7 @@ const ForgotPasswordVerificationUM = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
-        <Row className="posotion-relative">
+        <Row className='posotion-relative'>
           <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
@@ -167,42 +168,43 @@ const ForgotPasswordVerificationUM = () => {
             lg={4}
             md={4}
             sm={12}
-            className="d-flex justify-content-center align-items-center min-vh-100"
-          >
+            className='d-flex justify-content-center align-items-center min-vh-100'>
             <span
               className={
                 styles["Forgot_password_Verification_loginbox_auth_paper"]
-              }
-            >
+              }>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["ForgotPassword_Verification_EmailVerifyBox"]}
-              >
+                className={
+                  styles["ForgotPassword_Verification_EmailVerifyBox"]
+                }>
                 <Row>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <img
-                      draggable="false"
-                      src={DiskusLogo}
+                      draggable='false'
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : DiskusLogo
+                      }
                       width={220}
-                      alt="diskus_logo"
+                      alt='diskus_logo'
                     />
                   </Col>
                 </Row>
                 <Form onSubmit={SubmitOTP}>
-                  <Row className="mt-5 ">
+                  <Row className='mt-5 '>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["OTPHandler"]}
-                    >
+                      className={styles["OTPHandler"]}>
                       <span className={styles["EmailVerifyLabel"]}>
                         {t("Enter-verification-code")}
                       </span>
@@ -212,19 +214,18 @@ const ForgotPasswordVerificationUM = () => {
                     <Col sm={12} md={12} lg={12}>
                       <VerificationInputField
                         fields={6}
-                        applyClass="OTPInput"
+                        applyClass='OTPInput'
                         value={verifyOTP}
                         change={changeHandler}
                       />
                     </Col>
                   </Row>
                   <Row>
-                    <Col className="text-left d-flex justify-content-between">
+                    <Col className='text-left d-flex justify-content-between'>
                       <span
                         className={
                           styles["Forgot_Password_Verification_Tagline"]
-                        }
-                      >
+                        }>
                         {t("Didnt-receiverthe-code")}
                         <Button
                           className={
@@ -234,7 +235,7 @@ const ForgotPasswordVerificationUM = () => {
                           }
                           disableBtn={seconds > 0 || minutes > 0}
                           text={t("Resend-code")}
-                          type="button"
+                          type='button'
                           onClick={sendRequestResend}
                         />
                       </span>
@@ -243,8 +244,7 @@ const ForgotPasswordVerificationUM = () => {
                           styles[
                             "Forgot_password_Verification_update_OTPCounter"
                           ]
-                        }
-                      >
+                        }>
                         0{minutes}: {seconds < 10 ? "0" + seconds : seconds}
                       </span>
                     </Col>
@@ -254,19 +254,17 @@ const ForgotPasswordVerificationUM = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className={styles["OTP_Error_Messege"]}
-                    >
+                      className={styles["OTP_Error_Messege"]}>
                       {errorMessage}
                     </Col>
                   </Row>
 
-                  <Row className="mt-5 d-flex justify-content-center">
+                  <Row className='mt-5 d-flex justify-content-center'>
                     <Col
                       sm={12}
                       lg={12}
                       md={12}
-                      className="d-flex justify-content-center mt-1 "
-                    >
+                      className='d-flex justify-content-center mt-1 '>
                       <Button
                         text={t("Next")}
                         onClick={SubmitOTP}
@@ -279,15 +277,14 @@ const ForgotPasswordVerificationUM = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     className={
                       styles["Forgot_passwordforogt_verification_email_link"]
-                    }
-                  >
+                    }>
                     <Link onClick={handleBacktoSignIn}>{t("Go-back")}</Link>
                   </Col>
                 </Row>
@@ -298,8 +295,7 @@ const ForgotPasswordVerificationUM = () => {
             lg={8}
             md={8}
             sm={8}
-            className="position-relative d-flex overflow-hidden"
-          >
+            className='position-relative d-flex overflow-hidden'>
             <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
               <h1 className={styles["heading-1"]}>
                 {t("Simplify-management")}
@@ -307,12 +303,12 @@ const ForgotPasswordVerificationUM = () => {
               <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
-            <Col md={4} lg={4} sm={12} className="position-relative">
+            <Col md={4} lg={4} sm={12} className='position-relative'>
               <img
-                draggable="false"
+                draggable='false'
                 src={DiskusAuthPageLogo}
-                alt="auth_icon"
-                width="600px"
+                alt='auth_icon'
+                width='600px'
                 className={styles["Forgot_Password_Verification_Auth_Icon"]}
               />
             </Col>

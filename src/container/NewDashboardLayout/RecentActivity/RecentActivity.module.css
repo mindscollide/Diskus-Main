@@ -17,3 +17,13 @@
   place-items: center;
   height: 100%;
 }
+
+.imageNotificationCard {
+  display: flex !important;
+  justify-content: start !important;
+  align-items: center !important;
+  gap: 10px !important;
+  max-width: 95% !important;
+  white-space: break-spaces !important;
+  word-break: break-all;
+}
