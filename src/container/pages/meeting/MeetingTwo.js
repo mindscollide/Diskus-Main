@@ -182,6 +182,14 @@ const NewMeeting = () => {
     joinMeetingFunction,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
+
+  const meetingVideoRecording = useSelector(
+    (state) => state.DataRoomReducer.meetingVideoRecording
+  );
+  console.log(
+    meetingVideoRecording,
+    "meetingVideoRecordingmeetingVideoRecording"
+  );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
@@ -437,6 +445,27 @@ const NewMeeting = () => {
   const reviewSubmittedMinutesLink = localStorage.getItem(
     "reviewSubmittedMinutesLink"
   );
+
+  useEffect(() => {
+    if (meetingVideoRecording !== null) {
+      try {
+        const { meetingID, fileID } = meetingVideoRecording;
+        setRow((prevRows) => {
+          return prevRows.map((meetingRecord) => {
+            if (meetingRecord?.pK_MDID === meetingID) {
+              return {
+                ...meetingRecord,
+                isRecordingAvailable: true,
+              };
+            }
+            return meetingRecord;
+          });
+        });
+
+        console.log(rows, "meetingRecords");
+      } catch (error) {}
+    }
+  }, [meetingVideoRecording]);
 
   useEffect(() => {
     try {
@@ -2105,9 +2134,9 @@ const NewMeeting = () => {
       width: "115px",
       render: (text, record) => {
         console.log(text, record, "ashashkdgahsgashdgh");
-        if (record.isQuickMeeting) {
-          dispatch(viewMeetingFlag(true));
-        }
+        // if (record.isQuickMeeting) {
+        //   dispatch(viewMeetingFlag(true));
+        // }
         return (
           <span
             className={styles["meetingTitle"]}
