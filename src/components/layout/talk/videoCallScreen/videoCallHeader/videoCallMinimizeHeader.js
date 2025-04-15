@@ -1019,7 +1019,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 </div>
               )}
-              {presenterViewFlag &&
+              {presenterViewFlag && presenterViewJoinFlag && presenterViewHostFlag &&
                 !JSON.parse(localStorage.getItem("activeCall")) && (
                   <Tooltip placement="topRight" title={t("Participants")}>
                     <div className={"grayScaleImage-forminimize"}>
