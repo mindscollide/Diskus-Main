@@ -3913,12 +3913,41 @@ const Dashboard = () => {
             "MEETING_VIDEO_RECORDING_RECEIVED".toLowerCase()
           ) {
             dispatch(meetingVideoRecording(data.payload));
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MEETING_VIDEO_RECORDING_RECEIVED"),
+                  "[Meeting Title]",
+                  data.payload.meetingTitle
+                ),
+              });
+              setNotificationID(id);
+            }
           }
           if (
             data.payload.message.toLowerCase() ===
             "VIDEO_RECORDING_RECEIVED".toLowerCase()
           ) {
             dispatch(videoRecording(data.payload));
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message:
+                  data.payload.callTypeID === 1
+                    ? changeMQTTJSONOne(
+                        t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+                        "[Participant Name]",
+                        data.payload?.callReceipents[0]?.name
+                      )
+                    : changeMQTTJSONOne(
+                        t("VIDEO_RECORDING_GROUP_RECEIVED"),
+                        "[Participant Name]",
+                        data.payload?.callReceipents[0]?.name
+                      ),
+              });
+              setNotificationID(id);
+            }
           }
         } catch (error) {
           console.log(error, "errorerrorerror");

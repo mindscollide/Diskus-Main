@@ -452,7 +452,10 @@ const NewMeeting = () => {
         const { meetingID, fileID } = meetingVideoRecording;
         setRow((prevRows) => {
           return prevRows.map((meetingRecord) => {
-            if (meetingRecord?.pK_MDID === meetingID) {
+            if (
+              meetingRecord?.pK_MDID === meetingID &&
+              meetingRecord?.isPrimaryOrganizer === true
+            ) {
               return {
                 ...meetingRecord,
                 isRecordingAvailable: true,
