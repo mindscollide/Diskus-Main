@@ -2387,6 +2387,15 @@ const updatedParticipantListForPresenter = (response) => {
   };
 };
 
+// Global state for stop screen share on presenter view start
+const stopScreenShareOnPresenterStarting = (response) => {
+  console.log(response, "stopScreenShareOnPresenterStarting");
+  return {
+    type: actions.Stop_ScreenShare_OnPresenter_ViewStart,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -2485,4 +2494,5 @@ export {
   unansweredOneToOneCall,
   getGroupCallParticipantsMainApi,
   updatedParticipantListForPresenter,
+  stopScreenShareOnPresenterStarting,
 };

@@ -187,6 +187,11 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
             ) {
               sessionStorage.setItem("isLeftCheck", false);
               sessionStorage.setItem(
+                "roomID",
+                response.data.responseResult.roomID
+              );
+
+              sessionStorage.setItem(
                 "MeetingId",
                 response.data.responseResult.meetingId
               );
@@ -323,6 +328,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
                   t("Successful")
                 )
               );
+              sessionStorage.setItem("hasJoined", true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -933,6 +939,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
               }
               dispatch(setVideoCameraGuest(false));
               dispatch(setVoiceControleGuest(false));
+              sessionStorage.setItem("hasJoined", false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -940,6 +947,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_GuestLeaveMeetingVideo_02".toLowerCase()
                 )
             ) {
+              sessionStorage.setItem("hasJoined", false);
               await dispatch(
                 guestLeaveMeetingVideoFail(t("Invalid-request-data-2"))
               );

@@ -66,7 +66,7 @@ const GuestVideoCall = () => {
   const [actionValue, setActionValue] = useState("");
   //video Url state
   const [videoUrl, setVideoUrl] = useState("");
-  console.log(videoUrl, "videoUrlvideoUrl");
+  console.log(actionValue, "videoUrlvideoUrl");
   // extract meeting ID state
   const [extractMeetingId, setExtractMeetingId] = useState(0);
   // extract Meeting Title
@@ -298,6 +298,32 @@ const GuestVideoCall = () => {
     //   setExtractMeetingTitle("");
     // }
   }, [actionValue]);
+
+  useEffect(() => {
+    const isPageRefresh =
+      window.performance &&
+      performance.getEntriesByType("navigation")[0]?.type === "reload";
+
+    const hasJoined = sessionStorage.getItem("hasJoined");
+
+    if (isPageRefresh && hasJoined && validateData) {
+      const getGuestUid = sessionStorage.getItem("GuestUserID");
+      const getMeetingId = sessionStorage.getItem("MeetingId");
+      const getGuestName = sessionStorage.getItem("guestName");
+      const getRoomId = sessionStorage.getItem("roomID");
+      console.log(getRoomId, "getRoomIdgetRoomId");
+
+      const data = {
+        RoomID: String(getRoomId),
+        UID: String(getGuestUid),
+        Name: String(getGuestName),
+        MeetingID: Number(getMeetingId),
+      };
+
+      dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+      sessionStorage.removeItem("hasJoined");
+    }
+  }, [validateData]);
 
   useEffect(() => {
     if (validateData !== null && validateData !== undefined) {

@@ -405,7 +405,7 @@ export const removeHTMLTagsAndTruncate = (String, maxLength = 500) => {
   return String;
 };
 
-// XOR Encrypt/Decrypt Function
+// utils/crypto.js
 export const xorEncryptDecrypt = (input, key) => {
   let out = "";
   for (let i = 0; i < input.length; i++) {
@@ -416,21 +416,23 @@ export const xorEncryptDecrypt = (input, key) => {
   return out;
 };
 
-// Encrypt Function
 export const encrypt = (data, key) => {
   try {
-    xorEncryptDecrypt(JSON.stringify(data), key);
+    const encrypted = xorEncryptDecrypt(JSON.stringify(data), key);
+    return btoa(encrypted); // base64 encode
   } catch (e) {
-    console.log("ErrorError", e);
+    console.log("Encrypt Error:", e);
+    return null;
   }
 };
 
-// Decrypt Function
 export const decrypt = (data, key) => {
   try {
-    return JSON.parse(xorEncryptDecrypt(data, key));
+    const decoded = atob(data); // base64 decode
+    return JSON.parse(xorEncryptDecrypt(decoded, key));
   } catch (e) {
-    return xorEncryptDecrypt(data, key);
+    console.log("Decrypt Error:", e);
+    return null;
   }
 };
 
@@ -561,7 +563,7 @@ export const openDocumentViewer = (
 ) => {
   if (NewfileFormatforSignatureFlow.includes(ext)) {
     window.open(
-      `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
+      `/Diskus/documentViewer?pdfData=${encodeURIComponent(jsonData)}`,
       "_blank",
       "noopener noreferrer"
     );

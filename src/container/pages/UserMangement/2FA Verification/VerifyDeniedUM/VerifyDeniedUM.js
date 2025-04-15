@@ -3,6 +3,7 @@ import styles from "./VerifyDeniedUM.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import img9 from "../../../../../assets/images/9.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import logo from "../../../../../assets/images/signinlogo.svg";
@@ -52,7 +53,11 @@ const VerifyDeniedUM = () => {
                   >
                     <img
                       draggable="false"
-                      src={img1}
+                      src={
+                        localStorage.getItem("i18nextLng") === "ar"
+                          ? DiskusLogoArabic
+                          : img1
+                      }
                       width="220px"
                       height="69px"
                       alt="diskus_logo"

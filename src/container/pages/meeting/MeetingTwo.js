@@ -170,6 +170,7 @@ const NewMeeting = () => {
     setEditMeeting,
     setPolls,
     boardDeckMeetingID,
+    setmeetingDetails,
     setBoardDeckMeetingID,
     boardDeckMeetingTitle,
     setBoardDeckMeetingTitle,
@@ -178,6 +179,7 @@ const NewMeeting = () => {
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
+    joinMeetingFunction,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -620,6 +622,7 @@ const NewMeeting = () => {
               });
               setAdvanceMeetingModalID(meetingID);
               setViewAdvanceMeetingModal(true);
+              setmeetingDetails(true);
               dispatch(viewAdvanceMeetingPublishPageFlag(true));
               dispatch(scheduleMeetingPageFlag(false));
               localStorage.setItem("currentMeetingID", meetingID);
@@ -636,7 +639,6 @@ const NewMeeting = () => {
   //Notification Click Navigation work for Proposed meeting Participant request
   const callApi = async () => {
     try {
-      console.log(localStorage.getItem("viewMeetingLink"), "callApicallApi");
       if (
         JSON.parse(localStorage.getItem("ProposedMeetingOperations")) === true
       ) {
@@ -714,7 +716,6 @@ const NewMeeting = () => {
         setSearchMeeting(false);
         setSearchText("");
         setentereventIcon(false);
-      } else if (localStorage.getItem("viewMeetingLink") !== null) {
       } else if (localStorage.getItem("reviewSubmittedMinutesLink") !== null) {
         let getURL = localStorage.getItem("reviewSubmittedMinutesLink");
         const getResponse = await dispatch(
@@ -2415,7 +2416,6 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                   
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,

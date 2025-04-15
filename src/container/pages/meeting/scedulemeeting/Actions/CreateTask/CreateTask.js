@@ -131,6 +131,10 @@ const CreateTask = ({
     meetingDateValueFormat2.setMinutes(59)
     meetingDateValueFormat2.setSeconds(58)
     setAgendaDueDate(meetingDateValueFormat2);
+    setcreateTaskDetails({
+      ...createTaskDetails,
+      date: meetingDateValueFormat2
+    })
   };
 
   const actionSaveHandler = () => {
@@ -145,8 +149,8 @@ const CreateTask = ({
           Title: createTaskDetails.ActionsToTake,
           Description: createTaskDetails.Description,
           IsMainTask: true,
-          DeadLineDate: multiDatePickerDateChangIntoUTC(agendaDueDate).slice(0, 8),
-          DeadLineTime: multiDatePickerDateChangIntoUTC(agendaDueDate).slice(8, 14),
+          DeadLineDate: multiDatePickerDateChangIntoUTC(createTaskDetails.date).slice(0, 8),
+          DeadLineTime: multiDatePickerDateChangIntoUTC(createTaskDetails.date).slice(8, 14),
           CreationDateTime: "",
         },
       };

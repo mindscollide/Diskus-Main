@@ -6,6 +6,7 @@ import LanguageSelector from "../../../../../components/elements/languageSelecto
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import img1 from "../../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import img2 from "../../../../../assets/images/2.png";
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import img5 from "../../../../../assets/images/5.png";
@@ -210,7 +211,11 @@ const TwoFactorMultipleDevices = () => {
                       >
                         <img
                           draggable="false"
-                          src={img1}
+                          src={
+                            localStorage.getItem("i18nextLng") === "ar"
+                              ? DiskusLogoArabic
+                              : img1
+                          }
                           width={220}
                           alt="diskus_logo"
                         />

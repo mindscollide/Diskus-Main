@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./TwoFactorVerifyUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Button } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
@@ -133,7 +134,11 @@ const TwoFactorVerifyUM = () => {
                 >
                   <img
                     draggable="false"
-                    src={DiskusLogo}
+                    src={
+                      localStorage.getItem("i18nextLng") === "ar"
+                        ? DiskusLogoArabic
+                        : DiskusLogo
+                    }
                     alt="diskus_logo"
                     width={220}
                   />

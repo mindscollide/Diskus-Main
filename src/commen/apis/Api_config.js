@@ -1347,7 +1347,7 @@ const getUserWiseProposeDateOrganizer = {
   RequestMethod: "ServiceManager.GetUserWiseProposedDates",
 };
 const UserLoginHistoryRM = {
-  RequestMethod: "ServiceManager.GetUserLoginHistory",
+  RequestMethod: "ServiceManager.GetUserLoginHistoryForOA",
 };
 const UserLogout = {
   RequestMethod: "ServiceManager.LogOut",
@@ -1607,10 +1607,6 @@ const LoginHistoryReportExporttoExcel = {
 const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
-const GetDownloadInvoiceRM = {
-  RequestMethod: "ServiceManager.DownloadInvoic",
-};
-
 //Minutes APIs
 
 const listOfDefaultRejectionComments = {
@@ -1712,7 +1708,7 @@ const GetAllPublishedMeetingMinutesRM = {
   RequestMethod: "ServiceManager.GetAllPublishedMinutes",
 };
 const DownloadInvoiceRM = {
-  RequestMethod: "ServiceManager.DownloadInvoice",
+  RequestMethod: "ServiceManager.DownloadInvoiceForOA",
 };
 
 const publishMeetingMinutes = {
@@ -2020,7 +2016,6 @@ export {
   getDashboardTaskStatsRM,
   getDashboardPendingApprovalStatsRM,
   getMinuteAndSignatureApprovalThisWeekRM,
-  GetDownloadInvoiceRM,
   DownloadInvoiceRM,
   GetAllPublishedMeetingMinutesRM,
   PublishMeetingMinutesRM,

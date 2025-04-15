@@ -386,7 +386,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex justify-content-center gap-2 align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -398,9 +398,8 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "10%",
+      width: "20%",
       align: "center",
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
@@ -420,7 +419,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className='m-0 MontserratRegular text-truncate color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
               draggable='false'
@@ -436,7 +435,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex gap-2   justify-content-center align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -446,10 +445,11 @@ const CreateTodoCommittee = ({ groupStatus }) => {
           </span>
         </>
       ),
-      width: "10%",
-      align: "center",
+      width: "20%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
+      align: "center",
+      sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
           .toLowerCase()
@@ -468,7 +468,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className='m-0 MontserratRegular text-truncate  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -514,9 +514,10 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "15%",
+      width: "20%",
 
       align: "center",
+      sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
           setDeadlineSort((order) => {
@@ -546,7 +547,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "10%",
+      width: "15%",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -569,7 +570,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
               <Select
                 value={text.status}
                 bordered={false}
-                dropdownClassName='Status-Todo'
+                popupClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -800,7 +801,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
               <Col className=''>
                 <TableToDo
                   column={columnsToDo}
-                  className={"Resolution_table"}
+                  className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
                   pagination={false}

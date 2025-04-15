@@ -381,7 +381,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex gap-2  justify-content-center align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -393,8 +393,11 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "15%",
+      width: "20%",
+      align: "center",
       sortDirections: ["descend", "ascend"],
+      ellipsis: true,
+
       // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
@@ -415,7 +418,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className='m-0 MontserratRegular text-truncate color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
               draggable='false'
@@ -431,7 +434,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
               <img src={DescendIcon} alt='' />
@@ -441,9 +444,12 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
           </span>
         </>
       ),
-      width: "15%",
+      width: "20%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
+      align: "center",
+      ellipsis: true,
+
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -463,7 +469,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular text-center  color-505050 FontArabicRegular text-nowrap '>
+              <p className='m-0 text-truncate MontserratRegular text-center  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
@@ -509,7 +515,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "25%",
+      width: "20%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -763,7 +769,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
               <Col className=''>
                 <TableToDo
                   column={columnsToDo}
-                  className={"Resolution_table"}
+                  className={"ToDo"}
                   rows={rowsToDo}
                   scroll={scroll}
                   pagination={false}

@@ -160,8 +160,8 @@ const VideoNewParticipantList = () => {
 
   useEffect(() => {
     console.log("getAllParticipantMain");
-      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
-      if (
+    console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+    if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
       presenterViewHostFlag
@@ -585,24 +585,28 @@ const VideoNewParticipantList = () => {
                           </>
                         )
                       )}{" "}
-                      {((presenterViewHostFlag && presenterViewFlag) ||
-                        meetinHostInfo.isHost) &&
-                      usersData.raiseHand ? (
-                        <img
-                          draggable="false"
-                          src={GoldenHandRaised}
-                          alt=""
-                          width={"22px"}
-                          height={"22px"}
-                          className="handraised-participant"
-                        />
-                      ) : (
-                        <img
-                          draggable="false"
-                          src={MenuRaiseHand}
-                          alt=""
-                          className="handraised-participant"
-                        />
+                      {!usersData.isHost && (
+                        <>
+                          {((presenterViewHostFlag && presenterViewFlag) ||
+                            meetinHostInfo.isHost) &&
+                          usersData.raiseHand ? (
+                            <img
+                              draggable="false"
+                              src={GoldenHandRaised}
+                              alt=""
+                              width={"22px"}
+                              height={"22px"}
+                              className="handraised-participant"
+                            />
+                          ) : (
+                            <img
+                              draggable="false"
+                              src={MenuRaiseHand}
+                              alt=""
+                              className="handraised-participant"
+                            />
+                          )}
+                        </>
                       )}
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&

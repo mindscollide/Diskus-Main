@@ -163,7 +163,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
     let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(ext);
     if (fileExtension) {
       window.open(
-        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
         "noopener noreferrer"
       );

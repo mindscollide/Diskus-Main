@@ -62,7 +62,7 @@ const ViewResolution = ({ setViewresolution }) => {
   const handleLinkClick = (data, extension) => {
     if (fileFormatforSignatureFlow.includes(extension)) {
       window.open(
-        `/#/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",
         "noopener noreferrer"
       );

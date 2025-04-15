@@ -275,315 +275,198 @@ const ModalShareFolder = ({
           }}
           setShow={setSharefolder}
           ButtonTitle={ModalTitle}
-          modalFooterClassName="d-block"
+          modalFooterClassName='d-block'
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
           size={showaccessrequest ? "md" : inviteedit === true ? "md" : "lg"}
           ModalBody={
             <>
-              {inviteedit ? (
-                <>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["Share_folder_modal_Heading"]}>
+                    {t("Share")} <span>{folderName}</span>
+                  </span>
+                </Col>
+              </Row>
+              <Row className='mt-2'>
+                <Col lg={7} md={7} sm={12}>
+                  <Select
+                    isSearchable={true}
+                    value={personValue.value !== 0 ? personValue : null}
+                    placeholder={t("Select-members")}
+                    options={getAllAssignees}
+                    onChange={onChangeSearch}
+                  />
+                </Col>
+                <Col lg={3} md={3} sm={3}>
+                  <Select
+                    isSearchable={false}
+                    value={{
+                      value: permissionID.value,
+                      label: permissionID.label,
+                    }}
+                    options={options}
+                    placeholder={t("Editor")}
+                    className={styles["Editor_select"]}
+                    onChange={handlechange}
+                    classNamePrefix={
+                      permissionID.value === 0
+                        ? "shareFolderEditor_Selector_empty"
+                        : "shareFolderEditor_Selector"
+                    }
+                  />
+                </Col>
+
+                <Col lg={2} md={2} sm={2}>
+                  <Button
+                    text={t("Add")}
+                    className={styles["shareFolderAddMemberBtn"]}
+                    onClick={handleAddMember}
+                  />
+                </Col>
+              </Row>
+              <Row className='mt-2'>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Scroller_particiapnt_shared_folder"]}>
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Shared_Document_Heading"]}>
-                        Saad Fudda {t("Shared-a-document")}
-                      </span>
-                    </Col>
-                  </Row>
+                    {ownerInfo !== null && (
+                      <Col sm={4} md={4} lg={4}>
+                        <ParticipantInfoShareFolder
+                          participantname={ownerInfo?.userName}
+                          particiapantdesignation={ownerInfo?.designation}
+                          userPic={ownerInfo?.base64Img}
+                        />{" "}
+                      </Col>
+                    )}
 
-                  <Row className="mt-3">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                      <img
-                        draggable="false"
-                        src={newprofile}
-                        height="40px"
-                        width="41px"
-                        alt=""
-                      />
-                      <Row className="mt-1">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Line-height"]}
-                        >
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["InvitetoEdit_Heading"]}>
-                                Saad Fudda (Saad@gmail.com)
-                                {t("Has-invited-you-to")}
-                                <span className={styles["Edit_options"]}>
-                                  {t("Edit")}
-                                </span>
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["InvitetoEdit_Heading"]}>
-                                {t("The-following-document-until")} 27 Apr 2023,
-                                11:59 GMT
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                  <Row className="mt-4">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Box_for_attachments"]}
-                    >
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <Row>
+                    {isMembers.length > 0
+                      ? isMembers.map((data, index) => {
+                          return (
                             <Col
-                              lg={10}
-                              md={10}
-                              sm={10}
-                              className="d-flex justify-content-start gap-2 "
-                            >
-                              <img
-                                draggable="false"
-                                src={pdf}
-                                height="16px"
-                                alt=""
-                                width="14.23px"
-                              />
-                              <span className={styles["File_name"]}>
-                                Merger proposal for ABC Industries.pdf
-                              </span>
-                            </Col>
-                            <Col
-                              lg={2}
-                              md={2}
-                              sm={2}
-                              className="d-flex justify-content-end gap-2 mt-1"
-                            >
-                              <img
-                                alt=""
-                                draggable="false"
-                                src={download}
-                                height="11px"
-                                width="12.15px"
-                              />
-                              <img
-                                draggable="false"
-                                src={star}
-                                height="10.22px"
-                                alt=""
-                                width="12.07px"
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </>
-              ) : (
-                <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <span className={styles["Share_folder_modal_Heading"]}>
-                        {t("Share")} <span>{folderName}</span>
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row className="mt-2">
-                    <Col lg={7} md={7} sm={12}>
-                      <Select
-                        isSearchable={true}
-                        value={personValue.value !== 0 ? personValue : null}
-                        placeholder={t("Select-members")}
-                        options={getAllAssignees}
-                        onChange={onChangeSearch}
-                      />
-                    </Col>
-                    <Col lg={3} md={3} sm={3}>
-                      <Select
-                        isSearchable={false}
-                        value={{
-                          value: permissionID.value,
-                          label: permissionID.label,
-                        }}
-                        options={options}
-                        placeholder={t("Editor")}
-                        className={styles["Editor_select"]}
-                        onChange={handlechange}
-                        classNamePrefix={
-                          permissionID.value === 0
-                            ? "shareFolderEditor_Selector_empty"
-                            : "shareFolderEditor_Selector"
-                        }
-                      />
-                    </Col>
-
-                    <Col lg={2} md={2} sm={2}>
-                      <Button
-                        text={t("Add")}
-                        className={styles["shareFolderAddMemberBtn"]}
-                        onClick={handleAddMember}
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Scroller_particiapnt_shared_folder"]}
-                    >
-                      <Row>
-                        {ownerInfo !== null && (
-                          <Col sm={4} md={4} lg={4}>
-                            <ParticipantInfoShareFolder
-                              participantname={ownerInfo?.userName}
-                              particiapantdesignation={ownerInfo?.designation}
-                              userPic={ownerInfo?.base64Img}
-                            />{" "}
-                          </Col>
-                        )}
-
-                        {isMembers.length > 0
-                          ? isMembers.map((data, index) => {
-                              return (
-                                <Col
-                                  lg={4}
-                                  md={4}
-                                  sm={4}
-                                  key={data.pK_UID}
-                                  className="position-relative"
-                                >
-                                  <ParticipantInfoShareFolder
-                                    participantname={data.name}
-                                    particiapantdesignation={data.designation}
-                                    userPic={data.displayProfilePictureName}
-                                    icon={
-                                      <img
-                                        draggable="false"
-                                        src={crossIcon}
-                                        height="14px"
-                                        width="14px"
-                                        className={styles["cross_icon_modal"]}
-                                        alt=""
-                                        onClick={() => handleRemoveMember(data)}
-                                      />
-                                    }
+                              lg={4}
+                              md={4}
+                              sm={4}
+                              key={data.pK_UID}
+                              className='position-relative'>
+                              <ParticipantInfoShareFolder
+                                participantname={data.name}
+                                particiapantdesignation={data.designation}
+                                userPic={data.displayProfilePictureName}
+                                icon={
+                                  <img
+                                    draggable='false'
+                                    src={crossIcon}
+                                    height='14px'
+                                    width='14px'
+                                    className={styles["cross_icon_modal"]}
+                                    alt=''
+                                    onClick={() => handleRemoveMember(data)}
                                   />
-                                </Col>
-                              );
-                            })
-                          : null}
-                      </Row>
-                    </Col>
+                                }
+                              />
+                            </Col>
+                          );
+                        })
+                      : null}
                   </Row>
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="CreateMeetingInput "
-                    >
-                      <TextField
-                        applyClass="text-area-sharefolder"
-                        type="text"
-                        as={"textarea"}
-                        rows="4"
-                        value={message}
-                        change={(e) => setMessage(e.target.value)}
-                        placeholder={t("Messege")}
-                        required={true}
-                      />
-                    </Col>
-                  </Row>
-                  <Row className="mt-3">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-3 align-items-center"
-                    >
-                      <Checkbox
-                        checked={notifyPeople}
-                        onChange={() => setNotifyPeople(!notifyPeople)}
-                      />
-                      <span className={styles["Notify_people_styles"]}>
-                        {t("Notify-people")}
-                      </span>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col lg={8} md={8} sm={8}>
-                      <Select
-                        value={{
-                          label:
-                            generalAccess.value === 1 ? (
-                              <>
-                                <Row>
-                                  <Col sm={12} md={12} lg={12}>
-                                    {generalAccess.label}
-                                  </Col>
-                                  <Col
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
-                                    className={styles["generalAccess-value"]}
-                                  >
-                                    ({" "}
-                                    {t(
-                                      "Only-people-with-access-can-open-with-the-link"
-                                    )}
-                                    )
-                                  </Col>
-                                </Row>
-                              </>
-                            ) : generalAccess.value === 2 ? (
-                              generalAccess.label
-                            ) : generalAccess.value === 3 ? (
-                              <>
-                                <Row>
-                                  <Col sm={12} md={12} lg={12}>
-                                    {generalAccess.label}
-                                  </Col>
-                                  <Col
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
-                                    className={styles["generalAccess-value"]}
-                                  >
-                                    (
-                                    {`${t(
-                                      "Anyone-on-the-internet-with-the-link-can-view"
-                                    )}`}
-                                    )
-                                  </Col>
-                                </Row>
-                              </>
-                            ) : (
-                              ""
-                            ),
-                          value: generalAccess.value,
-                        }}
-                        isSearchable={false}
-                        options={optionsgeneralAccess}
-                        placeholder={t("General-access")}
-                        className={styles["Editor_select"]}
-                        classNamePrefix={
-                          generalAccess.value === 0
-                            ? "shareFolderEditor_Selector_empty"
-                            : "shareFolderEditor_Selector"
-                        }
-                        onChange={handleChangeGeneralAccess}
-                      />
-                    </Col>
-                  </Row>
-                </>
-              )}
+                </Col>
+              </Row>
+              <Row className='mt-2'>
+                <Col lg={12} md={12} sm={12} className='CreateMeetingInput '>
+                  <TextField
+                    applyClass='text-area-sharefolder'
+                    type='text'
+                    as={"textarea"}
+                    rows='4'
+                    value={message}
+                    change={(e) => setMessage(e.target.value)}
+                    placeholder={t("Messege")}
+                    required={true}
+                  />
+                </Col>
+              </Row>
+              <Row className='mt-3'>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-3 align-items-center'>
+                  <Checkbox
+                    checked={notifyPeople}
+                    onChange={() => setNotifyPeople(!notifyPeople)}
+                  />
+                  <span className={styles["Notify_people_styles"]}>
+                    {t("Notify-people")}
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={8} md={8} sm={8}>
+                  <Select
+                    value={{
+                      label:
+                        generalAccess.value === 1 ? (
+                          <>
+                            <Row>
+                              <Col sm={12} md={12} lg={12}>
+                                {generalAccess.label}
+                              </Col>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["generalAccess-value"]}>
+                                ({" "}
+                                {t(
+                                  "Only-people-with-access-can-open-with-the-link"
+                                )}
+                                )
+                              </Col>
+                            </Row>
+                          </>
+                        ) : generalAccess.value === 2 ? (
+                          generalAccess.label
+                        ) : generalAccess.value === 3 ? (
+                          <>
+                            <Row>
+                              <Col sm={12} md={12} lg={12}>
+                                {generalAccess.label}
+                              </Col>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["generalAccess-value"]}>
+                                (
+                                {`${t(
+                                  "Anyone-on-the-internet-with-the-link-can-view"
+                                )}`}
+                                )
+                              </Col>
+                            </Row>
+                          </>
+                        ) : (
+                          ""
+                        ),
+                      value: generalAccess.value,
+                    }}
+                    isSearchable={false}
+                    options={optionsgeneralAccess}
+                    placeholder={t("General-access")}
+                    className={styles["Editor_select"]}
+                    classNamePrefix={
+                      generalAccess.value === 0
+                        ? "shareFolderEditor_Selector_empty"
+                        : "shareFolderEditor_Selector"
+                    }
+                    onChange={handleChangeGeneralAccess}
+                  />
+                </Col>
+              </Row>
             </>
           }
           ModalFooter={
@@ -595,8 +478,7 @@ const ModalShareFolder = ({
                       lg={11}
                       md={11}
                       sm={11}
-                      className="d-flex justify-content-end"
-                    >
+                      className='d-flex justify-content-end'>
                       <Button
                         text={t("Open")}
                         className={styles["Open_button"]}
@@ -611,8 +493,7 @@ const ModalShareFolder = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className="d-flex justify-content-start"
-                    >
+                      className='d-flex justify-content-start'>
                       <Button
                         text={t("Copy-link")}
                         className={styles["Copy_Link_btn"]}
@@ -623,8 +504,7 @@ const ModalShareFolder = ({
                       lg={6}
                       md={6}
                       sm={6}
-                      className="d-flex justify-content-end"
-                    >
+                      className='d-flex justify-content-end'>
                       <Button
                         text={t("Send")}
                         className={styles["send_btn"]}
@@ -639,15 +519,13 @@ const ModalShareFolder = ({
                           lg={12}
                           sm={12}
                           md={12}
-                          className={styles["Background_notification"]}
-                        >
-                          <Row className="mt-2">
+                          className={styles["Background_notification"]}>
+                          <Row className='mt-2'>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center"
-                            >
+                              className='d-flex justify-content-center'>
                               <span className={styles["Link_copied"]}>
                                 {t("Link-copied")}
                               </span>
@@ -664,15 +542,13 @@ const ModalShareFolder = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_editNotification"]}
-                        >
+                          className={styles["Back_ground_editNotification"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center mt-2"
-                            >
+                              className='d-flex justify-content-center mt-2'>
                               <span className={styles["Edit_notification"]}>
                                 {t("You-dont-have-permission-to-edit")} "Folder
                                 1"
@@ -690,15 +566,13 @@ const ModalShareFolder = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles["Back_ground_accessupdate"]}
-                        >
+                          className={styles["Back_ground_accessupdate"]}>
                           <Row>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-center mt-2"
-                            >
+                              className='d-flex justify-content-center mt-2'>
                               <span className={styles["Access_updated"]}>
                                 {t("Access-updated")}
                               </span>

@@ -16,6 +16,8 @@ import { CommitteeProvider } from "./context/CommitteeContext";
 import { PollsProvider } from "./context/PollsContext";
 import { NotesProvider } from "./context/NotesContext";
 import { ResolutionProvider } from "./context/ResolutionContext";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./routes/routes";
 
 // Root container
 const container = document.getElementById("root");
@@ -49,7 +51,7 @@ root.render(
               <PollsProvider>
                 <NotesProvider>
                   <ResolutionProvider>
-                    <App />
+                      <App />
                   </ResolutionProvider>
                 </NotesProvider>
               </PollsProvider>
