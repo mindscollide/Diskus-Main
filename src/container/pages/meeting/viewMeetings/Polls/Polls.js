@@ -647,7 +647,9 @@ const Polls = () => {
               return (
                 <Button
                   className={styles["Not_Vote_Button_Polls"]}
-                  text={t("Vote")}
+                  text={
+                    record.voteStatus === "Not Voted" ? t("Vote") : t("Voted")
+                  }
                   onClick={() => voteCastModal(record)}
                 />
               );
