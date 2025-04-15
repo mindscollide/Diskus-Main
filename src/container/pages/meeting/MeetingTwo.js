@@ -450,12 +450,16 @@ const NewMeeting = () => {
     if (meetingVideoRecording !== null) {
       try {
         const { meetingID, fileID } = meetingVideoRecording;
+
+        console.log(meetingVideoRecording, "meetingIDmeetingID");
         setRow((prevRows) => {
           return prevRows.map((meetingRecord) => {
             if (
-              meetingRecord?.pK_MDID === meetingID &&
+              Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
               meetingRecord?.isPrimaryOrganizer === true
             ) {
+              console.log(meetingRecord, "meetingIDmeetingID");
+
               return {
                 ...meetingRecord,
                 isRecordingAvailable: true,
@@ -469,6 +473,7 @@ const NewMeeting = () => {
       } catch (error) {}
     }
   }, [meetingVideoRecording]);
+  console.log(rows, "meetingRecords");
 
   useEffect(() => {
     try {

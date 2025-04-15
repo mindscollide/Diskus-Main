@@ -3,7 +3,7 @@ import CustomModal from "../../../../../components/elements/modal/Modal";
 import styles from "./DownloadOptionsModal.module.css";
 import DownloadRecording from "../../../../../assets/images/Download_video_icon.png";
 import DownloadBoardDeck from "../../../../../assets/images/Download_boarddeck_icon.png";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import WarningIcon from "../../../../../assets/images/WarningIcon.png";
 import { Button } from "../../../../../components/elements";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
@@ -16,6 +16,7 @@ import MeetingRecording from "../../MeetingRecording/MeetingRecording";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SpinComponent from "../../../../../components/elements/mainLoader/loader";
+import { useSelector } from "react-redux";
 
 const DownloadOptionsModal = ({
   isDownloadAvailable,
@@ -32,8 +33,16 @@ const DownloadOptionsModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  console.log(MeetingRecord, "downloadMeetingRecorddownloadMeetingRecord");
+  const meetingVideoRecording = useSelector(
+    (state) => state.DataRoomReducer.meetingVideoRecording
+  );
+  const [meetingData, setMeetingData] = useState(null);
+  console.log(
+    MeetingRecord,
+    meetingData,
+    meetingVideoRecording,
+    "downloadMeetingRecorddownloadMeetingRecord"
+  );
   //Board Deck Onclick function
   const boardDeckOnClick = () => {
     if (MeetingRecord !== null) {
@@ -54,6 +63,34 @@ const DownloadOptionsModal = ({
       );
     }
   };
+  useEffect(() => {
+    if (MeetingRecord !== null) {
+      setMeetingData(MeetingRecord);
+      console.log(
+        MeetingRecord,
+        meetingData,
+        "downloadMeetingRecorddownloadMeetingRecord"
+      );
+    }
+  }, [MeetingRecord]);
+  useEffect(() => {
+    if (meetingVideoRecording !== null) {
+      if (meetingData) {
+        if (meetingData.pK_MDID === meetingVideoRecording?.meetingID) {
+          setMeetingData({
+            ...meetingData,
+            isRecordingAvailable: true,
+          });
+        }
+        // setMeetingData()
+        console.log(
+          MeetingRecord,
+          meetingData,
+          "downloadMeetingRecorddownloadMeetingRecord"
+        );
+      }
+    }
+  }, [meetingVideoRecording]);
   if (stepDownloadModal === 2) {
     return <MeetingRecording title={MeetingRecord?.title} />;
   } else {
@@ -73,46 +110,43 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={styles["Download__Heading"]}
-              >
+                className={styles["Download__Heading"]}>
                 {t("Download")}
               </Col>
             </Row>
-            <Row className="my-3">
+            <Row className='my-3'>
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={
-                    MeetingRecord?.isVideoCall &&
-                    MeetingRecord?.isRecordingAvailable
+                    meetingData?.isVideoCall &&
+                    meetingData?.isRecordingAvailable
                       ? styles["Download___Button_recording"]
                       : styles["Download___Button_recording_disabled"]
                   }
                   // className={styles["Download___Button_recording_disabled"]}
-                  onClick={downloadMeetingDetails}
-                >
-                  <img width={35} src={DownloadRecording} alt="" />
+                  onClick={downloadMeetingDetails}>
+                  <img width={35} src={DownloadRecording} alt='' />
                   <span>
-                    {MeetingRecord?.isVideoCall &&
-                    MeetingRecord?.isRecordingAvailable
+                    {meetingData?.isVideoCall &&
+                    meetingData?.isRecordingAvailable
                       ? t("Download-meeting-recording")
-                      : MeetingRecord?.isVideoCall === false
+                      : meetingData?.isVideoCall === false
                       ? t("Video-was-not-recorded")
-                      : MeetingRecord?.isRecordingAvailable === false
+                      : meetingData?.isRecordingAvailable === false
                       ? t("Video-recording-not-available-yet")
                       : null}
                   </span>
-                  {!MeetingRecord?.isVideoCall ||
-                    (!MeetingRecord?.isRecordingAvailable && (
-                      <img src={WarningIcon} alt="" />
+                  {!meetingData?.isVideoCall ||
+                    (!meetingData?.isRecordingAvailable && (
+                      <img src={WarningIcon} alt='' />
                     ))}
                 </div>
               </Col>
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={styles["Download___Button"]}
-                  onClick={boardDeckOnClick}
-                >
-                  <img width={35} src={DownloadBoardDeck} alt="" />
+                  onClick={boardDeckOnClick}>
+                  <img width={35} src={DownloadBoardDeck} alt='' />
                   <span>{t("Download-board-deck")}</span>
                 </div>
               </Col>
@@ -122,8 +156,7 @@ const DownloadOptionsModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center align-items-center"
-              >
+                className='d-flex justify-content-center align-items-center'>
                 <SpinComponent />
               </Col>
             </Row>
@@ -136,8 +169,7 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={"d-flex justify-content-end p-0 m-0"}
-              >
+                className={"d-flex justify-content-end p-0 m-0"}>
                 <Button
                   className={styles["Download___cancelBtn"]}
                   text={t("Cancel")}

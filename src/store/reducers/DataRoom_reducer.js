@@ -62,13 +62,13 @@ const DataRoomReducer = (state = initialState, action) => {
     case actions.MEETING_VIDEO_RECORDING_RECEIVED: {
       return {
         ...state,
-        meetingVideoRecording: action.payload,
+        meetingVideoRecording: action.response,
       };
     }
     case actions.VIDEO_RECORDING_RECEIVED: {
       return {
         ...state,
-        videRecording: action.payload,
+        videRecording: action.response,
       };
     }
     case actions.DATAROOM_BREADCRUMBS: {
