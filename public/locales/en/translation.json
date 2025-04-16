@@ -2470,5 +2470,8 @@
   "Option": "Option",
   "Please-select-a-date": "Please select a date",
   "Call-initiated-successfully": "Call initiated successfully",
-  "Presenter-view-started": "Presenter view started"
+  "Presenter-view-started": "Presenter view started",
+  "VIDEO_RECORDING_ONETO_ONE_RECEIVED": "Video Recording of Call with [Participant Name] is available now",
+  "VIDEO_RECORDING_GROUP_RECEIVED": "Video Recording of Group Call with [Participant Name] and others is available now",
+  "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available"
 }

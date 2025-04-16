@@ -1134,6 +1134,11 @@ const UpdateMeetingStatus = (
                 updateOrganizerMeetingStatus_fail(t("Record-not-updated"))
               );
               dispatch(setLoaderFalse(false));
+              setEditorRole({
+                status: null,
+                role: null,
+                isPrimaryOrganizer: false,
+              });
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

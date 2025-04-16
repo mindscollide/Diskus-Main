@@ -2692,7 +2692,7 @@ const updatedParticipantListForPresenter = (response) => {
 const stopScreenShareOnPresenterStarting = (response) => {
   console.log(response, "stopScreenShareOnPresenterStarting");
   return {
-    type: actions.Stop_ScreenShare_OnPresenter_ViewStart,
+    type: actions.STOP_SCREENSHARE_ONPRESENTER_VIEWSTART,
     response: response,
   };
 };

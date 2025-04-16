@@ -694,7 +694,22 @@ const validateEncryptedStringViewFolderLinkApi = (
     }
   };
 };
+
+const meetingVideoRecording = (response) => {
+  return {
+    type: actions.MEETING_VIDEO_RECORDING_RECEIVED,
+    response,
+  };
+};
+const videoRecording = (response) => {
+  return {
+    type: actions.VIDEO_RECORDING_RECEIVED,
+    response,
+  };
+};
 export {
+  meetingVideoRecording,
+  videoRecording,
   getDataAnalyticsCountApi,
   getDataAnalyticsApi,
   updateFileandFolderDetailsApi,
