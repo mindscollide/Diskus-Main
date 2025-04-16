@@ -731,7 +731,7 @@ const Polling = () => {
       width: "69px",
       align: "center",
       render: (text, record) => {
-        console.log(record, "recordrecordrecord");
+        console.log(record, "centercentercentercenter");
 
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
@@ -747,7 +747,9 @@ const Polling = () => {
               return (
                 <Button
                   className={styles["voteBtn"]}
-                  text={t("Vote")}
+                  text={
+                    record.voteStatus === "Not Voted" ? t("Vote") : t("Voted")
+                  }
                   onClick={() => {
                     handleVotePolls(record);
                   }}

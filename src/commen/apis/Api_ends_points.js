@@ -16,6 +16,7 @@ const getGroupsApi = baseURL + process.env.REACT_APP_GROUPS_API;
 const getNotesApi = baseURL + process.env.REACT_APP_NOTES_API;
 //const getNotesApi = "http://localhost:37716/Notes";
 const getResolutionApi = baseURL + process.env.REACT_APP_RESOLUTION_API;
+//const getResolutionApi = "http://localhost:37813/Resolution";
 const talkApi = baseURL + process.env.REACT_APP_TALK_API;
 //const talkApi = "http://localhost:29802/Talk";
 const filesUrlTalk = baseURL + process.env.REACT_APP_TALK_IMAGE_API;
