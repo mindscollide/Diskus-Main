@@ -468,6 +468,7 @@ const NewMeeting = () => {
             return meetingRecord;
           });
         });
+        dispatch(meetingVideoRecording(null))
 
         console.log(rows, "meetingRecords");
       } catch (error) {}

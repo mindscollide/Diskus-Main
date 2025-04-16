@@ -45,6 +45,7 @@ import MeetingVideoCallIcon from "../../../../../../assets/images/VideoCall/Meet
 import EmptyRecentCalls from "./emptyRecentCalls";
 import { DownloadCallRecording } from "../../../../../../store/actions/VideoChat_actions";
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
+import { videoRecording } from "../../../../../../store/actions/DataRoom2_actions";
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -214,6 +215,7 @@ const VideoPanelBodyRecent = () => {
       } catch (error) {
         console.error("Error in searchChat:", error);
       }
+      dispatch(videoRecording(null));
     }
   }, [videRecording]);
   const fetchMoreData = async () => {

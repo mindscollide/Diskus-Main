@@ -81,7 +81,9 @@ const DownloadOptionsModal = ({
             ...meetingData,
             isRecordingAvailable: true,
           });
+          dispatch(meetingVideoRecording(null));
         }
+
         // setMeetingData()
         console.log(
           MeetingRecord,
@@ -89,6 +91,7 @@ const DownloadOptionsModal = ({
           "downloadMeetingRecorddownloadMeetingRecord"
         );
       }
+      dispatch(meetingVideoRecording(null));
     }
   }, [meetingVideoRecording]);
   if (stepDownloadModal === 2) {
