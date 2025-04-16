@@ -512,6 +512,11 @@ const Dashboard = () => {
     if (isMeeting) {
       console.log("mqtt mqmqmqmqmqmq", currentCallType);
       if (String(meetingVideoID) === String(payload?.meetingID)) {
+        showMessage(
+          t("Presenter-view-started"),
+          "success",
+          setOpen
+        );
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
