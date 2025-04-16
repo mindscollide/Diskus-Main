@@ -8665,30 +8665,6 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
               localStorage.setItem("meetingVideoID", 0);
               localStorage.setItem("MicOff", true);
               localStorage.setItem("VidOff", true);
-
-              let isMeeting = localStorage.getItem("isMeeting");
-              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-              let isMeetingVideoHostCheck = localStorage.getItem(
-                "isMeetingVideoHostCheck"
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let newName = localStorage.getItem("name");
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
-              );
-              let participantRoomId = localStorage.getItem("participantRoomId");
-
-              console.log("busyCall");
-              let Data = {
-                RoomID: String(participantRoomId),
-                UserGUID: String(participantUID),
-                Name: String(newName),
-                IsHost: isMeetingVideoHostCheck ? true : false,
-                MeetingID: Number(currentMeetingID),
-              };
-              await dispatch(setRaisedUnRaisedParticiant(false));
-              await dispatch(LeaveMeetingVideo(Data, navigate, t));
-              dispatch(LeaveInitmationMessegeVideoMeetAction(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9362,8 +9338,8 @@ const LeaveMeetingVideo = (
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
               } else {
-              console.log("Check Leave");
-              localStorage.setItem("isMeetingVideoHostCheck", false);
+                console.log("Check Leave");
+                localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {

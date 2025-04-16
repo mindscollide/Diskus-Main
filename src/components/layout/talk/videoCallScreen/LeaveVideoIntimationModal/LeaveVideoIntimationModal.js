@@ -14,6 +14,7 @@ import {
   currentMeetingStatus,
   GetMeetingStatusDataAPI,
   LeaveCurrentMeetingOtherMenus,
+  LeaveMeetingVideo,
   meetingDetailsGlobalFlag,
   meetingMaterialGlobalFlag,
   minutesGlobalFlag,
@@ -60,6 +61,7 @@ import {
   leaveMeetingVideoOnEndStatusMqtt,
   leavePresenterViewMainApiTest,
   participantWaitingListBox,
+  setRaisedUnRaisedParticiant,
   stopPresenterViewMainApiTest,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -163,6 +165,81 @@ const LeaveVideoIntimationModal = () => {
     localStorage.setItem("webNotifactionDataRoutecheckFlag", false);
   };
 
+  const functionForMeetingVideoScenario = async () => {
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting) {
+      if (presenterViewFlag && !presenterViewHostFlag && presenterStartedFlag) {
+        console.log("Saif Check Issue");
+        let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+        let currentUserName = localStorage.getItem("name");
+        let isGuid = localStorage.getItem("isGuid");
+        let participantUID = localStorage.getItem("participantUID");
+
+        sessionStorage.removeItem("alreadyInMeetingVideo");
+        let data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          Name: String(currentUserName),
+        };
+        await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 1));
+      }
+      if (isMeetingVideo) {
+        console.log("Saif Check Issue");
+        if (
+          presenterViewFlag &&
+          !presenterViewHostFlag &&
+          presenterStartedFlag
+        ) {
+          console.log("Saif Check Issue");
+          let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+          let currentUserName = localStorage.getItem("name");
+          let isGuid = localStorage.getItem("isGuid");
+          let participantUID = localStorage.getItem("participantUID");
+
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          let data = {
+            RoomID: String(callAcceptedRoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(currentUserName),
+          };
+          await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 1));
+        } else if (!isMeetingVideoHostCheck) {
+          let participantRoomId = localStorage.getItem("participantRoomId");
+          let newMeetingTitle = localStorage.getItem("meetingTitle");
+          let currentMeetingID = Number(
+            localStorage.getItem("currentMeetingID")
+          );
+          let participantUID = localStorage.getItem("participantUID");
+
+          console.log("busyCall");
+          let Data = {
+            RoomID: String(participantRoomId),
+            UserGUID: String(participantUID),
+            Name: String(newMeetingTitle),
+            IsHost: isMeetingVideoHostCheck ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(showCancelModalmeetingDeitals(false));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(false));
+        }
+      }
+    }
+
+    let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+    let Data = {
+      FK_MDID: currentMeeting,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    await dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+    await dispatch(currentMeetingStatus(0));
+  };
+
   //handle Yes button
   const handleYesButtonLeaveVideoMeeting = async () => {
     try {
@@ -236,13 +313,9 @@ const LeaveVideoIntimationModal = () => {
         }
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
+        console.log(NavigationLocation, "Check Where its occur");
+        console.log("Check Where its occur");
+        functionForMeetingVideoScenario();
         if (
           (scheduleMeetingPageFlagReducer === true ||
             viewProposeDateMeetingPageFlagReducer === true ||
@@ -253,7 +326,16 @@ const LeaveVideoIntimationModal = () => {
           viewMeetingFlagReducer === false
         ) {
           navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
+          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          console.log("Check It");
+
+          if (isMeeting && !isMeetingVideo) {
+            console.log("Check It");
+            dispatch(showCancelModalmeetingDeitals(true));
+          }
           dispatch(uploadGlobalFlag(false));
         } else {
           dispatch(showCancelModalmeetingDeitals(false));
