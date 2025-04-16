@@ -53,10 +53,24 @@ const initialState = {
   FolderRemoveMQTT: null,
   BreadCrumbsList: [],
   fileSharePermissionData: null,
+  meetingVideoRecording: null,
+  videRecording: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.MEETING_VIDEO_RECORDING_RECEIVED: {
+      return {
+        ...state,
+        meetingVideoRecording: action.response,
+      };
+    }
+    case actions.VIDEO_RECORDING_RECEIVED: {
+      return {
+        ...state,
+        videRecording: action.response,
+      };
+    }
     case actions.DATAROOM_BREADCRUMBS: {
       const { payload } = action;
 

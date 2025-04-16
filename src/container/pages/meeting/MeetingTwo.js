@@ -182,6 +182,14 @@ const NewMeeting = () => {
     joinMeetingFunction,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
+
+  const meetingVideoRecording = useSelector(
+    (state) => state.DataRoomReducer.meetingVideoRecording
+  );
+  console.log(
+    meetingVideoRecording,
+    "meetingVideoRecordingmeetingVideoRecording"
+  );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
@@ -437,6 +445,36 @@ const NewMeeting = () => {
   const reviewSubmittedMinutesLink = localStorage.getItem(
     "reviewSubmittedMinutesLink"
   );
+
+  useEffect(() => {
+    if (meetingVideoRecording !== null) {
+      try {
+        const { meetingID, fileID } = meetingVideoRecording;
+
+        console.log(meetingVideoRecording, "meetingIDmeetingID");
+        setRow((prevRows) => {
+          return prevRows.map((meetingRecord) => {
+            if (
+              Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
+              meetingRecord?.isPrimaryOrganizer === true
+            ) {
+              console.log(meetingRecord, "meetingIDmeetingID");
+
+              return {
+                ...meetingRecord,
+                isRecordingAvailable: true,
+              };
+            }
+            return meetingRecord;
+          });
+        });
+        dispatch(meetingVideoRecording(null))
+
+        console.log(rows, "meetingRecords");
+      } catch (error) {}
+    }
+  }, [meetingVideoRecording]);
+  console.log(rows, "meetingRecords");
 
   useEffect(() => {
     try {
@@ -2107,9 +2145,9 @@ const NewMeeting = () => {
       width: "115px",
       render: (text, record) => {
         console.log(text, record, "ashashkdgahsgashdgh");
-        if (record.isQuickMeeting) {
-          dispatch(viewMeetingFlag(true));
-        }
+        // if (record.isQuickMeeting) {
+        //   dispatch(viewMeetingFlag(true));
+        // }
         return (
           <span
             className={styles["meetingTitle"]}

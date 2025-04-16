@@ -3688,5 +3688,10 @@ export const UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER =
   "UPDATED_PARTICIPANTS_LIST_FOR_PRESENTER";
 
 // Global state for stop screen share on presenter view start
-export const Stop_ScreenShare_OnPresenter_ViewStart =
-  "Stop_ScreenShare_OnPresenter_ViewStart";
+export const STOP_SCREENSHARE_ONPRESENTER_VIEWSTART =
+  "STOP_SCREENSHARE_ONPRESENTER_VIEWSTART";
+
+export const MEETING_VIDEO_RECORDING_RECEIVED =
+  "MEETING_VIDEO_RECORDING_RECEIVED";
+
+export const VIDEO_RECORDING_RECEIVED = "VIDEO_RECORDING_RECEIVED";

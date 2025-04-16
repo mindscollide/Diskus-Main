@@ -50,7 +50,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetUserLoginHistory_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetUserLoginHistoryForOA_01".toLowerCase()
                 )
             ) {
               dispatch(
@@ -60,7 +60,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetUserLoginHistory_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetUserLoginHistoryForOA_02".toLowerCase()
                 )
             ) {
               dispatch(userLoginHistory_Fail(""));
@@ -68,7 +68,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetUserLoginHistory_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetUserLoginHistoryForOA_03".toLowerCase()
                 )
             ) {
               dispatch(userLoginHistory_Fail(t("Something-went-wrong")));
