@@ -58,6 +58,10 @@ import {
   endMeetingStatusForQuickMeetingVideo,
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingVideoOnEndStatusMqtt,
+  leavePresenterViewMainApiTest,
+  participantWaitingListBox,
+  stopPresenterViewMainApiTest,
+  toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
 
 const LeaveVideoIntimationModal = () => {
@@ -135,7 +139,20 @@ const LeaveVideoIntimationModal = () => {
   const LeaveVideoIntiminationNotificationClickData = useSelector(
     (state) => state.settingReducer.webNotificationDataVideoIntimination
   );
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
 
+  const presenterStartedFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterStartedFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
   console.log(LeaveVideoIntiminationNotificationClickData, "first");
 
   //Local States
@@ -147,13 +164,62 @@ const LeaveVideoIntimationModal = () => {
   };
 
   //handle Yes button
-  const handleYesButtonLeaveVideoMeeting = () => {
+  const handleYesButtonLeaveVideoMeeting = async () => {
     try {
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let typeOfMeeting = localStorage.getItem("typeOfMeeting");
       let webNotifactionDataRoutecheckFlag = JSON.parse(
         localStorage.getItem("webNotifactionDataRoutecheckFlag")
       );
+      if (presenterViewHostFlag || presenterViewJoinFlag) {
+        let participantRoomId = localStorage.getItem("participantRoomId");
+        let newRoomID = localStorage.getItem("newRoomId");
+        let isMeetingVideoHostCheck = JSON.parse(
+          localStorage.getItem("isMeetingVideoHostCheck")
+        );
+        let participantUID = localStorage.getItem("participantUID");
+        let roomID = localStorage.getItem("acceptedRoomID");
+        let currentUserName = localStorage.getItem("name");
+        let isGuid = localStorage.getItem("isGuid");
+        let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+        let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+        let RoomID = presenterViewFlag
+          ? roomID
+          : isMeetingVideoHostCheck
+          ? newRoomID
+          : participantRoomId;
+        let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+        dispatch(participantWaitingListBox(false));
+        dispatch(toggleParticipantsVisibility(false));
+        // if (presenterMeetingId === currentMeeting) {
+        console.log("Check Stop");
+        if (presenterViewHostFlag) {
+          if (presenterStartedFlag) {
+            let data = {
+              MeetingID: currentMeetingID,
+              RoomID: RoomID,
+            };
+            sessionStorage.setItem("StopPresenterViewAwait", true);
+            console.log(data, "presenterViewJoinFlag");
+            await dispatch(stopPresenterViewMainApiTest(navigate, t, data, 0));
+          } else {
+            let data = {
+              RoomID: String(RoomID),
+              UserGUID: String(UID),
+              Name: String(currentUserName),
+            };
+            await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 2));
+          }
+        } else if (presenterViewJoinFlag) {
+          sessionStorage.removeItem("alreadyInMeetingVideo");
+          let data = {
+            RoomID: String(callAcceptedRoomID),
+            UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            Name: String(currentUserName),
+          };
+          await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 1));
+        }
+      }
       if (webNotifactionDataRoutecheckFlag) {
         if (String(typeOfMeeting) === "isQuickMeeting") {
           if (isMeetingVideo) {

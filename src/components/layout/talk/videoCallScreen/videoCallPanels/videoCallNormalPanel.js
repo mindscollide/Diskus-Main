@@ -45,6 +45,7 @@ import {
   setVideoControlHost,
   startPresenterViewMainApi,
   stopPresenterViewMainApi,
+  stopScreenShareOnPresenterStarting,
   toggleParticipantsVisibility,
   updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -319,15 +320,22 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (stopScreenShareOnPresenter) {
+      console.log("mqtt mqmqmqmqmqmq");
       if (isScreenActive) {
-        console.log("Chek=ckkkk");
+        console.log("mqtt mqmqmqmqmqmq");
+
         try {
+          console.log("mqtt mqmqmqmqmqmq");
+
           if (iframe && iframe.contentWindow) {
+            console.log("mqtt mqmqmqmqmqmq");
+            setIsScreenActive(false);
             sessionStorage.setItem("nonPresenter", true);
             // Post message to iframe
-            console.log("handlePostMessage");
+            console.log("mqtt mqmqmqmqmqmq");
             iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
           } else {
+            console.log("mqtt mqmqmqmqmqmq");
             console.log("share screen Iframe contentWindow is not available.");
           }
         } catch (error) {}
@@ -335,11 +343,13 @@ const VideoPanelNormal = () => {
       let newRoomID = localStorage.getItem("newRoomId");
       let activeRoomID = localStorage.getItem("activeRoomID");
       if (newRoomID) {
+        console.log("mqtt mqmqmqmqmqmq");
         localStorage.setItem("acceptedRoomID", newRoomID);
       } else {
+        console.log("mqtt mqmqmqmqmqmq");
         localStorage.setItem("acceptedRoomID", activeRoomID);
       }
-      console.log("maximizeParticipantVideoFlag");
+      console.log("mqtt mqmqmqmqmqmq");
       sessionStorage.setItem("alreadyInMeetingVideo", true);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
@@ -349,6 +359,7 @@ const VideoPanelNormal = () => {
       dispatch(maximizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
+      dispatch(stopScreenShareOnPresenterStarting(false));
     }
   }, [stopScreenShareOnPresenter]);
 
@@ -959,9 +970,10 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     sessionStorage.removeItem("isWaiting");
     const messageHandler = (event) => {
-      console.log(event.data, "eventevent");
       // Check the origin for security
-      console.log("disableZoomBeforeJoinSession", event.data);
+      console.log("handlePostMessage", event.data);
+      console.log("handlePostMessage", process.env.REACT_APP_VIDEO_EVENTS);
+      console.log("handlePostMessage", event.origin);
       if (event.origin === process.env.REACT_APP_VIDEO_EVENTS) {
         // Example actions based on the message received
 

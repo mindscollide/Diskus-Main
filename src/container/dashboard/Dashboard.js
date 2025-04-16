@@ -520,6 +520,7 @@ const Dashboard = () => {
           setPresenterForOneToOneOrGroup(true);
           await dispatch(nonMeetingVideoGlobalModal(true));
         } else if (isMeetingVideo) {
+          console.log("mqtt mqmqmqmqmqmq");
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
           let leaveRoomId =
             getJoinMeetingParticipantorHostrequestRoomIdRef.current;
@@ -528,6 +529,7 @@ const Dashboard = () => {
           let currentMeetingID = localStorage.getItem("currentMeetingID");
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
           if (isWaiting) {
+            console.log("mqtt mqmqmqmqmqmq");
             sessionStorage.removeItem("isWaiting");
             console.log("maximizeParticipantVideoFlag");
             let Data = {
@@ -546,6 +548,7 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             dispatch(LeaveMeetingVideo(Data, navigate, t, 2, data));
           } else {
+            console.log("mqtt mqmqmqmqmqmq");
             dispatch(stopScreenShareOnPresenterStarting(true));
             // let newRoomID = localStorage.getItem("newRoomId");
             // let activeRoomID = localStorage.getItem("activeRoomID");
@@ -572,9 +575,11 @@ const Dashboard = () => {
           !presenterViewFlagRef.current &&
           !presenterViewJoinFlagRef.current
         ) {
+          console.log("mqtt mqmqmqmqmqmq");
           console.log("maximizeParticipantVideoFlag");
           if (maximizeParticipantVideoFlagRef.current) {
             console.log("maximizeParticipantVideoFlag");
+            console.log("mqtt mqmqmqmqmqmq");
 
             console.log("maximizeParticipantVideoFlag");
 
@@ -590,11 +595,13 @@ const Dashboard = () => {
 
             dispatch(joinPresenterViewMainApi(navigate, t, data));
           } else {
+            console.log("mqtt mqmqmqmqmqmq");
             let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
             let data = {
               VideoCallURL: String(currentMeetingVideoURL),
               WasInVideo: isMeetingVideo ? true : false,
             };
+            console.log("mqtt mqmqmqmqmqmq");
             dispatch(participantWaitingListBox(false));
 
             dispatch(joinPresenterViewMainApi(navigate, t, data));
