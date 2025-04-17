@@ -1156,8 +1156,8 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     //updated participants List For PRESENTER
-    case actions.Stop_ScreenShare_OnPresenter_ViewStart: {
-      console.log(action, "Stop_ScreenShare_OnPresenter_ViewStart");
+    case actions.STOP_SCREENSHARE_ONPRESENTER_VIEWSTART: {
+      console.log(action, "STOP_SCREENSHARE_ONPRESENTER_VIEWSTART");
       return {
         ...state,
         stopScreenShareOnPresenter: action.response,

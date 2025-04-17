@@ -2414,5 +2414,8 @@
   "Role": "الدور",
   "No-files-attached": "No files attached",
   "Any-unsaved-changes-will-be-lost-continue": "Any unsaved changes will be lost. Continue?",
-  "Please-select-a-date": "Please select a date"
+  "Please-select-a-date": "Please select a date",
+  "VIDEO_RECORDING_ONETO_ONE_RECEIVED": "Video Recording of Call with [Participant Name] is available now",
+  "VIDEO_RECORDING_GROUP_RECEIVED": "Video Recording of Group Call with [Participant Name] and others is available now",
+  "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available"
 }
