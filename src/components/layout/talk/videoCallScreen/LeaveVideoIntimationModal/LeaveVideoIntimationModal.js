@@ -12,7 +12,6 @@ import {
   agendaGlobalFlag,
   attendanceGlobalFlag,
   currentMeetingStatus,
-  GetMeetingStatusDataAPI,
   LeaveCurrentMeetingOtherMenus,
   meetingDetailsGlobalFlag,
   meetingMaterialGlobalFlag,
@@ -52,7 +51,6 @@ import {
   viewResolutionModal,
 } from "../../../../../store/actions/Resolution_actions";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
-import { ViewMeeting } from "../../../../../store/actions/Get_List_Of_Assignees";
 import {
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
@@ -68,13 +66,6 @@ const LeaveVideoIntimationModal = () => {
   const navigate = useNavigate();
 
   const location = useLocation();
-
-  const {
-    setEditorRole,
-    setViewFlag,
-    setViewAdvanceMeetingModal,
-    setViewProposeDatePoll,
-  } = useMeetingContext();
 
   //LocalStorage Entiites
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -673,6 +664,7 @@ const LeaveVideoIntimationModal = () => {
       console.log(error, "NavigationError");
     }
   };
+
   return (
     <section>
       <Modal
