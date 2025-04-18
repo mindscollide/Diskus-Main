@@ -113,10 +113,31 @@ import {
   ResendUpdatedMinuteForReview,
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
-import { isFunction } from "../../commen/functions/utils";
+import {
+  handleMeetingNavigation,
+  handleNavigationforParticipantVideoFlow,
+  isFunction,
+} from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import NonMeetingVideoModal from "../../container/pages/meeting/viewMeetings/nonMeetingVideoModal/NonMeetingVideoModal";
+import {
+  createResolutionModal,
+  resultResolutionFlag,
+  viewAttachmentFlag,
+  viewResolutionModal,
+  voteResolutionFlag,
+} from "./Resolution_actions";
+import {
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
+} from "./Committee_actions";
+import {
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
+} from "./Groups_actions";
 
 const boardDeckModal = (response) => {
   return {
@@ -8605,12 +8626,49 @@ const LeaveCurrentMeeting = (
   };
 };
 
-const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
+const LeaveCurrentMeetingOtherMenus = (
+  navigate,
+  t,
+  Data,
+  scheduleMeetingsPageFlag,
+  viewProposeDateMeetingsPageFlag,
+  viewAdvanceMeetingsPublishPageFlag,
+  viewAdvanceMeetingsUnpublishPageFlag,
+  viewProposeOrganizerMeetingsPageFlag,
+  proposeNewMeetingsPageFlag,
+  viewMeetingsFlag,
+  scheduleMeetingPageFlagReducer,
+  viewProposeDateMeetingPageFlagReducer,
+  viewAdvanceMeetingPublishPageFlagReducer,
+  viewAdvanceMeetingUnpublishPageFlagReducer,
+  viewProposeOrganizerMeetingPageFlagReducer,
+  proposeNewMeetingPageFlagReducer,
+  viewMeetingFlagReducer,
+  location
+) => {
+  console.log(
+    {
+      scheduleMeetingsPageFlag,
+      viewProposeDateMeetingsPageFlag,
+      viewAdvanceMeetingsPublishPageFlag,
+      viewAdvanceMeetingsUnpublishPageFlag,
+      viewProposeOrganizerMeetingsPageFlag,
+      proposeNewMeetingsPageFlag,
+      viewMeetingsFlag,
+      scheduleMeetingPageFlagReducer,
+      viewProposeDateMeetingPageFlagReducer,
+      viewAdvanceMeetingPublishPageFlagReducer,
+      viewAdvanceMeetingUnpublishPageFlagReducer,
+      viewProposeOrganizerMeetingPageFlagReducer,
+      proposeNewMeetingPageFlagReducer,
+      viewMeetingFlagReducer,
+      location,
+    },
+    "Coming inside this block scopr"
+  );
   let token = JSON.parse(localStorage.getItem("token"));
   let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
-  let newRoomID = localStorage.getItem("newRoomId");
-  let newUserGUID = localStorage.getItem("userGUID");
-  let newName = localStorage.getItem("name");
+  let NavigationLocation = localStorage.getItem("navigateLocation");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8627,7 +8685,28 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+          dispatch(
+            LeaveCurrentMeetingOtherMenus(
+              navigate,
+              t,
+              Data,
+              scheduleMeetingsPageFlag,
+              viewProposeDateMeetingsPageFlag,
+              viewAdvanceMeetingsPublishPageFlag,
+              viewAdvanceMeetingsUnpublishPageFlag,
+              viewProposeOrganizerMeetingsPageFlag,
+              proposeNewMeetingsPageFlag,
+              viewMeetingsFlag,
+              scheduleMeetingPageFlagReducer,
+              viewProposeDateMeetingPageFlagReducer,
+              viewAdvanceMeetingPublishPageFlagReducer,
+              viewAdvanceMeetingUnpublishPageFlagReducer,
+              viewProposeOrganizerMeetingPageFlagReducer,
+              proposeNewMeetingPageFlagReducer,
+              viewMeetingFlagReducer,
+              location
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -8665,6 +8744,757 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
               localStorage.setItem("meetingVideoID", 0);
               localStorage.setItem("MicOff", true);
               localStorage.setItem("VidOff", true);
+              // Navigation Location k according yaha conditions lagein ge
+              // try {
+              //   if (NavigationLocation === "dataroom") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingsPageFlag)) &&
+              //         scheduleMeetingsPageFlag) === true ||
+              //         ((await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           (await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           (await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           viewProposeDateMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewAdvanceMeetingsPublishPageFlag)) &&
+              //           viewAdvanceMeetingsPublishPageFlag === true) ||
+              //         ((await isFunction()) &&
+              //           viewAdvanceMeetingsUnpublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingsPageFlag
+              //         )) &&
+              //           viewProposeOrganizerMeetingsPageFlag === true) ||
+              //         ((await isFunction(proposeNewMeetingsPageFlag)) &&
+              //           proposeNewMeetingsPageFlag === true)) &&
+              //       (await isFunction(viewMeetingsFlag)) &&
+              //       viewMeetingsFlag === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/dataroom");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "resolution") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingsPageFlag)) &&
+              //         scheduleMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           viewProposeDateMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewAdvanceMeetingsPublishPageFlag)) &&
+              //           viewAdvanceMeetingsPublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingsUnpublishPageFlag
+              //         )) &&
+              //           viewAdvanceMeetingsUnpublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingsPageFlag
+              //         )) &&
+              //           viewProposeOrganizerMeetingsPageFlag === true) ||
+              //         ((await isFunction(proposeNewMeetingsPageFlag)) &&
+              //           proposeNewMeetingsPageFlag === true)) &&
+              //       (await isFunction(viewMeetingsFlag)) &&
+              //       viewMeetingsFlag === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/resolution");
+              //       dispatch(resultResolutionFlag(false));
+              //       dispatch(voteResolutionFlag(false));
+              //       dispatch(viewAttachmentFlag(false));
+              //       dispatch(createResolutionModal(false));
+              //       dispatch(viewResolutionModal(false));
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "committee") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingsPageFlag)) &&
+              //         scheduleMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           viewProposeDateMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewAdvanceMeetingsPublishPageFlag)) &&
+              //           viewAdvanceMeetingsPublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingsUnpublishPageFlag
+              //         )) &&
+              //           viewAdvanceMeetingsUnpublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingsPageFlag
+              //         )) &&
+              //           viewProposeOrganizerMeetingsPageFlag === true) ||
+              //         ((await isFunction(proposeNewMeetingsPageFlag)) &&
+              //           proposeNewMeetingsPageFlag === true)) &&
+              //       (await isFunction(viewMeetingsFlag)) &&
+              //       viewMeetingsFlag === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/committee");
+              //       dispatch(createCommitteePageFlag(false));
+              //       dispatch(updateCommitteePageFlag(false));
+              //       dispatch(viewCommitteePageFlag(false));
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "Meeting") {
+              //     let currentView = localStorage.getItem("MeetingCurrentView");
+              //     let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              //     let meetingPageCurrent =
+              //       localStorage.getItem("MeetingPageCurrent");
+              //     let userID = localStorage.getItem("userID");
+              //     if (
+              //       (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //         scheduleMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeDateMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeDateMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingPublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingUnpublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingUnpublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeOrganizerMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //           proposeNewMeetingPageFlagReducer === true)) &&
+              //       (await isFunction(viewMeetingFlagReducer)) &&
+              //       viewMeetingFlagReducer === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       console.log("Check It");
+
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       if (
+              //         meetingpageRow !== null &&
+              //         meetingPageCurrent !== null
+              //       ) {
+              //         console.log("Coming inside this block scopr");
+              //         let searchData = {
+              //           Date: "",
+              //           Title: "",
+              //           HostName: "",
+              //           UserID: Number(userID),
+              //           PageNumber: Number(meetingPageCurrent),
+              //           Length: Number(meetingpageRow),
+              //           PublishedMeetings:
+              //             Number(currentView) === 1 ? true : false,
+              //         };
+              //         dispatch(searchNewUserMeeting(navigate, searchData, t));
+              //       } else {
+              //         let searchData = {
+              //           Date: "",
+              //           Title: "",
+              //           HostName: "",
+              //           UserID: Number(userID),
+              //           PageNumber: 1,
+              //           Length: 50,
+              //           PublishedMeetings:
+              //             Number(currentView) === 1 ? true : false,
+              //         };
+              //         localStorage.setItem("MeetingPageRows", 30);
+              //         localStorage.setItem("MeetingPageCurrent", 1);
+              //         dispatch(searchNewUserMeeting(navigate, searchData, t));
+              //       }
+              //       dispatch(viewMeetingFlag(false));
+              //       dispatch(meetingDetailsGlobalFlag(false));
+              //       dispatch(organizersGlobalFlag(false));
+              //       dispatch(agendaContributorsGlobalFlag(false));
+              //       dispatch(participantsGlobalFlag(false));
+              //       dispatch(agendaGlobalFlag(false));
+              //       dispatch(meetingMaterialGlobalFlag(false));
+              //       dispatch(minutesGlobalFlag(false));
+              //       dispatch(proposedMeetingDatesGlobalFlag(false));
+              //       dispatch(actionsGlobalFlag(false));
+              //       dispatch(pollsGlobalFlag(false));
+              //       dispatch(attendanceGlobalFlag(false));
+              //       dispatch(uploadGlobalFlag(false));
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "groups") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingsPageFlag)) &&
+              //         scheduleMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           viewProposeDateMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewAdvanceMeetingsPublishPageFlag)) &&
+              //           viewAdvanceMeetingsPublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingsUnpublishPageFlag
+              //         )) &&
+              //           viewAdvanceMeetingsUnpublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingsPageFlag
+              //         )) &&
+              //           viewProposeOrganizerMeetingsPageFlag === true) ||
+              //         ((await isFunction(proposeNewMeetingsPageFlag)) &&
+              //           proposeNewMeetingsPageFlag === true)) &&
+              //       (await isFunction(viewMeetingsFlag)) &&
+              //       viewMeetingsFlag === false
+              //     ) {
+              //       console.log("coming in the scope");
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       console.log("coming in the scope");
+              //       navigate("/Diskus/groups");
+              //       dispatch(createGroupPageFlag(false));
+              //       dispatch(updateGroupPageFlag(false));
+              //       dispatch(viewGroupPageFlag(false));
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "todolist") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //         scheduleMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeDateMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeDateMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingPublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingUnpublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingUnpublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeOrganizerMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //           proposeNewMeetingPageFlagReducer === true)) &&
+              //       (await isFunction(viewMeetingFlagReducer)) &&
+              //       viewMeetingFlagReducer === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/todolist");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "calendar") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //         scheduleMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeDateMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeDateMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingPublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingUnpublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingUnpublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeOrganizerMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //           proposeNewMeetingPageFlagReducer === true)) &&
+              //       (await isFunction(viewMeetingFlagReducer)) &&
+              //       viewMeetingFlagReducer === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/calendar");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "Notes") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //         scheduleMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeDateMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeDateMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingPublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingUnpublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingUnpublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeOrganizerMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //           proposeNewMeetingPageFlagReducer === true)) &&
+              //       (await isFunction(viewMeetingFlagReducer)) &&
+              //       viewMeetingFlagReducer === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/Notes");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "polling") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingsPageFlag)) &&
+              //         scheduleMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewProposeDateMeetingsPageFlag)) &&
+              //           viewProposeDateMeetingsPageFlag === true) ||
+              //         ((await isFunction(viewAdvanceMeetingsPublishPageFlag)) &&
+              //           viewAdvanceMeetingsPublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingsUnpublishPageFlag
+              //         )) &&
+              //           viewAdvanceMeetingsUnpublishPageFlag === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingsPageFlag
+              //         )) &&
+              //           viewProposeOrganizerMeetingsPageFlag === true) ||
+              //         ((await isFunction(proposeNewMeetingsPageFlag)) &&
+              //           proposeNewMeetingsPageFlag === true)) &&
+              //       (await isFunction(viewMeetingsFlag)) &&
+              //       viewMeetingsFlag === false
+              //     ) {
+              //       navigate("/Diskus/Meeting");
+              //       let isMeeting = JSON.parse(
+              //         localStorage.getItem("isMeeting")
+              //       );
+              //       let isMeetingVideo = JSON.parse(
+              //         localStorage.getItem("isMeetingVideo")
+              //       );
+              //       if (isMeeting && !isMeetingVideo) {
+              //         console.log("Check It");
+              //         dispatch(showCancelModalmeetingDeitals(true));
+              //       }
+              //       dispatch(uploadGlobalFlag(false));
+              //     } else {
+              //       navigate("/Diskus/polling");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "home") {
+              //     if (location.pathname.includes("/Admin") === false) {
+              //       if (
+              //         (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //           scheduleMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewProposeDateMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeDateMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingPublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingUnpublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingUnpublishPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(
+              //             viewProposeOrganizerMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeOrganizerMeetingPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //             proposeNewMeetingPageFlagReducer === true)) &&
+              //         (await isFunction(viewMeetingFlagReducer)) &&
+              //         viewMeetingFlagReducer === false
+              //       ) {
+              //         navigate("/Diskus/Meeting");
+              //         let isMeeting = JSON.parse(
+              //           localStorage.getItem("isMeeting")
+              //         );
+              //         let isMeetingVideo = JSON.parse(
+              //           localStorage.getItem("isMeetingVideo")
+              //         );
+              //         if (isMeeting && !isMeetingVideo) {
+              //           dispatch(showCancelModalmeetingDeitals(true));
+              //         }
+              //       } else {
+              //         navigate("/Diskus/");
+              //         dispatch(showCancelModalmeetingDeitals(false));
+              //         dispatch(scheduleMeetingPageFlag(false));
+              //         dispatch(viewProposeDateMeetingPageFlag(false));
+              //         dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //         dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //         dispatch(proposeNewMeetingPageFlag(false));
+              //         dispatch(viewMeetingFlag(false));
+              //       }
+              //     }
+              //   } else if (NavigationLocation === "dataroomRecentAddedFiles") {
+              //     if (
+              //       (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //         scheduleMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeDateMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeDateMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingPublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewAdvanceMeetingUnpublishPageFlagReducer
+              //         )) &&
+              //           viewAdvanceMeetingUnpublishPageFlagReducer === true) ||
+              //         ((await isFunction(
+              //           viewProposeOrganizerMeetingPageFlagReducer
+              //         )) &&
+              //           viewProposeOrganizerMeetingPageFlagReducer === true) ||
+              //         ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //           proposeNewMeetingPageFlagReducer === true)) &&
+              //       (await isFunction(viewMeetingFlagReducer)) &&
+              //       viewMeetingFlagReducer === false
+              //     ) {
+              //       dispatch(showCancelModalmeetingDeitals(true));
+              //     } else {
+              //       localStorage.setItem("setTableView", 4);
+              //       navigate("/Diskus/dataroom");
+              //       dispatch(showCancelModalmeetingDeitals(false));
+              //       dispatch(scheduleMeetingPageFlag(false));
+              //       dispatch(viewProposeDateMeetingPageFlag(false));
+              //       dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //       dispatch(proposeNewMeetingPageFlag(false));
+              //       dispatch(viewMeetingFlag(false));
+              //     }
+              //   } else if (NavigationLocation === "setting") {
+              //     if (location.pathname.includes("/Admin") === false) {
+              //       if (
+              //         (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //           scheduleMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewProposeDateMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeDateMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingPublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingUnpublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingUnpublishPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(
+              //             viewProposeOrganizerMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeOrganizerMeetingPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //             proposeNewMeetingPageFlagReducer === true)) &&
+              //         (await isFunction(viewMeetingFlagReducer)) &&
+              //         viewMeetingFlagReducer === false
+              //       ) {
+              //         navigate("/Diskus/Meeting");
+
+              //         let isMeeting = JSON.parse(
+              //           localStorage.getItem("isMeeting")
+              //         );
+              //         let isMeetingVideo = JSON.parse(
+              //           localStorage.getItem("isMeetingVideo")
+              //         );
+              //         if (isMeeting && !isMeetingVideo) {
+              //           console.log("Check It");
+              //           dispatch(showCancelModalmeetingDeitals(true));
+              //         }
+              //       } else {
+              //         navigate("/Diskus/setting");
+              //         dispatch(showCancelModalmeetingDeitals(false));
+              //         dispatch(scheduleMeetingPageFlag(false));
+              //         dispatch(viewProposeDateMeetingPageFlag(false));
+              //         dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //         dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //         dispatch(proposeNewMeetingPageFlag(false));
+              //         dispatch(viewMeetingFlag(false));
+              //       }
+              //     }
+              //   } else if (NavigationLocation === "Minutes") {
+              //     if (location.pathname.includes("/Admin") === false) {
+              //       if (
+              //         (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //           scheduleMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewProposeDateMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeDateMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingPublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingUnpublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingUnpublishPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(
+              //             viewProposeOrganizerMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeOrganizerMeetingPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //             proposeNewMeetingPageFlagReducer === true)) &&
+              //         (await isFunction(viewMeetingFlagReducer)) &&
+              //         viewMeetingFlagReducer === false
+              //       ) {
+              //         navigate("/Diskus/Meeting");
+
+              //         let isMeeting = JSON.parse(
+              //           localStorage.getItem("isMeeting")
+              //         );
+              //         let isMeetingVideo = JSON.parse(
+              //           localStorage.getItem("isMeetingVideo")
+              //         );
+              //         if (isMeeting && !isMeetingVideo) {
+              //           console.log("Check It");
+              //           dispatch(showCancelModalmeetingDeitals(true));
+              //         }
+              //       } else {
+              //         navigate("/Diskus/Minutes");
+              //         dispatch(showCancelModalmeetingDeitals(false));
+              //         dispatch(scheduleMeetingPageFlag(false));
+              //         dispatch(viewProposeDateMeetingPageFlag(false));
+              //         dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //         dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //         dispatch(proposeNewMeetingPageFlag(false));
+              //         dispatch(viewMeetingFlag(false));
+              //       }
+              //     }
+              //   } else if (NavigationLocation === "faq's") {
+              //     if (location.pathname.includes("/Admin") === false) {
+              //       if (
+              //         (((await isFunction(scheduleMeetingPageFlagReducer)) &&
+              //           scheduleMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewProposeDateMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeDateMeetingPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingPublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingPublishPageFlagReducer === true) ||
+              //           ((await isFunction(
+              //             viewAdvanceMeetingUnpublishPageFlagReducer
+              //           )) &&
+              //             viewAdvanceMeetingUnpublishPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(
+              //             viewProposeOrganizerMeetingPageFlagReducer
+              //           )) &&
+              //             viewProposeOrganizerMeetingPageFlagReducer ===
+              //               true) ||
+              //           ((await isFunction(proposeNewMeetingPageFlagReducer)) &&
+              //             proposeNewMeetingPageFlagReducer === true)) &&
+              //         (await isFunction(viewMeetingFlagReducer)) &&
+              //         viewMeetingFlagReducer === false
+              //       ) {
+              //         navigate("/Diskus/Meeting");
+
+              //         let isMeeting = JSON.parse(
+              //           localStorage.getItem("isMeeting")
+              //         );
+              //         let isMeetingVideo = JSON.parse(
+              //           localStorage.getItem("isMeetingVideo")
+              //         );
+              //         if (isMeeting && !isMeetingVideo) {
+              //           console.log("Check It");
+              //           dispatch(showCancelModalmeetingDeitals(true));
+              //         }
+              //       } else {
+              //         navigate("/Diskus/faq's");
+              //         dispatch(showCancelModalmeetingDeitals(false));
+              //         dispatch(scheduleMeetingPageFlag(false));
+              //         dispatch(viewProposeDateMeetingPageFlag(false));
+              //         dispatch(viewAdvanceMeetingPublishPageFlag(false));
+              //         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+              //         dispatch(viewProposeOrganizerMeetingPageFlag(false));
+              //         dispatch(proposeNewMeetingPageFlag(false));
+              //         dispatch(viewMeetingFlag(false));
+              //       }
+              //     }
+              //   }
+              // } catch (error) {
+              //   console.log(error, "errorerrorerrorerror");
+              // }
+              try {
+                await handleNavigationforParticipantVideoFlow({
+                  NavigationLocation,
+                  navigate,
+                  dispatch,
+                  location,
+                  flags: {
+                    scheduleMeetingPageFlagReducer,
+                    viewProposeDateMeetingPageFlagReducer,
+                    viewAdvanceMeetingPublishPageFlagReducer,
+                    viewAdvanceMeetingUnpublishPageFlagReducer,
+                    viewProposeOrganizerMeetingPageFlagReducer,
+                    proposeNewMeetingPageFlagReducer,
+                    viewMeetingFlagReducer,
+                    scheduleMeetingsPageFlag,
+                    viewProposeDateMeetingsPageFlag,
+                    viewAdvanceMeetingsPublishPageFlag,
+                    viewAdvanceMeetingsUnpublishPageFlag,
+                    viewProposeOrganizerMeetingsPageFlag,
+                    proposeNewMeetingsPageFlag,
+                    viewMeetingsFlag,
+                  },
+                  t,
+                });
+              } catch (error) {
+                console.log(error, "Navigation error");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

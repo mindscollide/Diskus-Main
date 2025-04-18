@@ -203,7 +203,28 @@ const LeaveVideoIntimationModal = () => {
       FK_MDID: currentMeeting,
       DateTime: getCurrentDateTimeUTC(),
     };
-    await dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+    await dispatch(
+      LeaveCurrentMeetingOtherMenus(
+        navigate,
+        t,
+        Data,
+        scheduleMeetingsPageFlag,
+        viewProposeDateMeetingsPageFlag,
+        viewAdvanceMeetingsPublishPageFlag,
+        viewAdvanceMeetingsUnpublishPageFlag,
+        viewProposeOrganizerMeetingsPageFlag,
+        proposeNewMeetingsPageFlag,
+        viewMeetingsFlag,
+        scheduleMeetingPageFlagReducer,
+        viewProposeDateMeetingPageFlagReducer,
+        viewAdvanceMeetingPublishPageFlagReducer,
+        viewAdvanceMeetingUnpublishPageFlagReducer,
+        viewProposeOrganizerMeetingPageFlagReducer,
+        proposeNewMeetingPageFlagReducer,
+        viewMeetingFlagReducer,
+        location
+      )
+    );
     await dispatch(currentMeetingStatus(0));
   };
 
@@ -280,535 +301,33 @@ const LeaveVideoIntimationModal = () => {
         }
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          console.log("Check It");
-
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === true
-          ) {
-            if (meetingpageRow !== null && meetingPageCurrent !== null) {
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber: Number(meetingPageCurrent),
-                Length: Number(meetingpageRow),
-                PublishedMeetings: Number(currentView) === 1 ? true : false,
-              };
-              dispatch(searchNewUserMeeting(navigate, searchData, t));
-            } else {
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber: 1,
-                Length: 50,
-                PublishedMeetings: Number(currentView) === 1 ? true : false,
-              };
-              localStorage.setItem("MeetingPageRows", 30);
-              localStorage.setItem("MeetingPageCurrent", 1);
-              dispatch(searchNewUserMeeting(navigate, searchData, t));
-            }
-            dispatch(viewMeetingFlag(false));
-            dispatch(meetingDetailsGlobalFlag(false));
-            dispatch(organizersGlobalFlag(false));
-            dispatch(agendaContributorsGlobalFlag(false));
-            dispatch(participantsGlobalFlag(false));
-            dispatch(agendaGlobalFlag(false));
-            dispatch(meetingMaterialGlobalFlag(false));
-            dispatch(minutesGlobalFlag(false));
-            dispatch(proposedMeetingDatesGlobalFlag(false));
-            dispatch(actionsGlobalFlag(false));
-            dispatch(pollsGlobalFlag(false));
-            dispatch(attendanceGlobalFlag(false));
-            dispatch(uploadGlobalFlag(false));
-          }
-        }
       } else if (NavigationLocation === "todolist") {
-        //If Navigating to Task Tab
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/todolist");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "calendar") {
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/calendar");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "Notes") {
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/Notes");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "dataroom") {
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/dataroom");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "groups") {
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/groups");
-          dispatch(createGroupPageFlag(false));
-          dispatch(updateGroupPageFlag(false));
-          dispatch(viewGroupPageFlag(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "committee") {
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/committee");
-          dispatch(createCommitteePageFlag(false));
-          dispatch(updateCommitteePageFlag(false));
-          dispatch(viewCommitteePageFlag(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "resolution") {
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/resolution");
-          dispatch(resultResolutionFlag(false));
-          dispatch(voteResolutionFlag(false));
-          dispatch(viewAttachmentFlag(false));
-          dispatch(createResolutionModal(false));
-          dispatch(viewResolutionModal(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "polling") {
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-          let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
-          );
-          if (isMeeting && !isMeetingVideo) {
-            console.log("Check It");
-            dispatch(showCancelModalmeetingDeitals(true));
-          }
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/polling");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
       } else if (NavigationLocation === "dataroomRecentAddedFiles") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          dispatch(showCancelModalmeetingDeitals(true));
-        } else {
-          localStorage.setItem("setTableView", 4);
-          navigate("/Diskus/dataroom");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
-      } else if (NavigationLocation === "home") {
-        console.log(NavigationLocation, "Check Where its occur");
-        console.log("Check Where its occur");
         functionForMeetingVideoScenario();
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-
-            let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-            let isMeetingVideo = JSON.parse(
-              localStorage.getItem("isMeetingVideo")
-            );
-            if (isMeeting && !isMeetingVideo) {
-              console.log("Check It");
-              dispatch(showCancelModalmeetingDeitals(true));
-            }
-          } else {
-            navigate("/Diskus/");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
+      } else if (NavigationLocation === "home") {
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "setting") {
         functionForMeetingVideoScenario();
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-
-            let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-            let isMeetingVideo = JSON.parse(
-              localStorage.getItem("isMeetingVideo")
-            );
-            if (isMeeting && !isMeetingVideo) {
-              console.log("Check It");
-              dispatch(showCancelModalmeetingDeitals(true));
-            }
-          } else {
-            navigate("/Diskus/setting");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
       } else if (NavigationLocation === "Minutes") {
         functionForMeetingVideoScenario();
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-
-            let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-            let isMeetingVideo = JSON.parse(
-              localStorage.getItem("isMeetingVideo")
-            );
-            if (isMeeting && !isMeetingVideo) {
-              console.log("Check It");
-              dispatch(showCancelModalmeetingDeitals(true));
-            }
-          } else {
-            navigate("/Diskus/Minutes");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
       } else if (NavigationLocation === "faq's") {
         functionForMeetingVideoScenario();
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-
-            let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-            let isMeetingVideo = JSON.parse(
-              localStorage.getItem("isMeetingVideo")
-            );
-            if (isMeeting && !isMeetingVideo) {
-              console.log("Check It");
-              dispatch(showCancelModalmeetingDeitals(true));
-            }
-          } else {
-            navigate("/Diskus/faq's");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
       }
     } catch (error) {
       console.log(error, "NavigationError");
