@@ -1026,16 +1026,20 @@ const AgendaViewer = () => {
                                   ? styles["disabled-box-agenda-camera"]
                                   : styles["box-agendas-camera"]
                               }
-                              // onClick={joinMeetingCall}
+                              onClick={
+                                presenterViewFlag === false
+                                  ? onClickVideoIconOpenVideo
+                                  : undefined
+                              }
                             >
                               <img
                                 src={VideocameraIcon}
                                 alt=""
-                                onClick={
-                                  presenterViewFlag === false
-                                    ? onClickVideoIconOpenVideo
-                                    : undefined
-                                }
+                                // onClick={
+                                //   presenterViewFlag === false
+                                //     ? onClickVideoIconOpenVideo
+                                //     : undefined
+                                // }
                               />
                             </div>
                           </Tooltip>
