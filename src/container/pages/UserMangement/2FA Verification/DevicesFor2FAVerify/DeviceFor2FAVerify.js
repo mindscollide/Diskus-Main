@@ -215,8 +215,7 @@ const DeviceFor2FAVerify = () => {
                         <img
                           draggable='false'
                           src={
-                            (localStorage.getItem("i18nextLng") === "ar") ===
-                            "ar"
+                            localStorage.getItem("i18nextLng") === "ar"
                               ? DiskusLogoArabic
                               : img1
                           }
