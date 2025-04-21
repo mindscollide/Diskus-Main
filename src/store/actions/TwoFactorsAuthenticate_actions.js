@@ -112,11 +112,14 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
                   t("User-has-saved-devices-along-with-email-and-sms")
                 )
               );
+              console.log(response.data.responseResult.userDevices.length);
               if (response.data.responseResult.userDevices.length === 1) {
                 dispatch(LoginFlowRoutes(8));
+                localStorage.setItem("LoginFlowPageRoute", 8);
                 localStorage.setItem("isMultiDevice", false);
               } else {
                 localStorage.setItem("isMultiDevice", true);
+                localStorage.setItem("LoginFlowPageRoute", 13);
                 dispatch(LoginFlowRoutes(13));
               }
             } else if (

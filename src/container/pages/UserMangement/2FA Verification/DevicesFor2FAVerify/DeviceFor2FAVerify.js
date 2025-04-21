@@ -133,6 +133,8 @@ const DeviceFor2FAVerify = () => {
   };
 
   const handleGoBack = () => {
+    console.log("goback");
+
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
   };
