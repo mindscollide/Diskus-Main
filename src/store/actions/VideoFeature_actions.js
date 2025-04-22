@@ -2245,6 +2245,8 @@ const leavePresenterViewMainApi = (
                   // dispatch(minimizeVideoPanelFlag(false));
                   // localStorage.setItem("isMeetingVideo", true);
 
+                  // Ye jb participant video Meeting ma ho aur presenter view ma join hojae tou jab wo presenter View ma ajaye toh leavePresenter
+                  // krna par wo meetingVideo ma b Join nahi hoga
                   console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("participantRoomId");

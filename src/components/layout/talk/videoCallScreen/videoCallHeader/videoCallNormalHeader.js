@@ -1562,38 +1562,38 @@ const VideoCallNormalHeader = ({
               />
             </Tooltip>
           </div>
-          {checkFeatureIDAvailability(5) && (
-            <div
-              className={
-                LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom)
-                  ? "grayScaleImage"
-                  : presenterViewFlag && presenterViewHostFlag
-                  ? "presenterImage"
-                  : presenterViewFlag && presenterViewJoinFlag
-                  ? "presenterImage"
-                  : "screenShare-Toggle inactive-state"
+          {/* {checkFeatureIDAvailability(5) && ( */}
+          <div
+            className={
+              LeaveCallModalFlag === true ||
+              (isZoomEnabled && disableBeforeJoinZoom)
+                ? "grayScaleImage"
+                : presenterViewFlag && presenterViewHostFlag
+                ? "presenterImage"
+                : presenterViewFlag && presenterViewJoinFlag
+                ? "presenterImage"
+                : "screenShare-Toggle inactive-state"
+            }
+          >
+            <Tooltip
+              placement={presenterViewFlag ? "bottom" : "topRight"}
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
+              title={
+                isScreenActive || (presenterViewFlag && presenterViewHostFlag)
+                  ? t("Stop-sharing")
+                  : t("Screen-share")
               }
             >
-              <Tooltip
-                placement={presenterViewFlag ? "bottom" : "topRight"}
-                overlayClassName={
-                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                }
-                title={
-                  isScreenActive || (presenterViewFlag && presenterViewHostFlag)
-                    ? t("Stop-sharing")
-                    : t("Screen-share")
-                }
-              >
-                <img
-                  onClick={!presenterViewFlag ? screenShareButton : null}
-                  src={NonActiveScreenShare}
-                  alt="Screen Share"
-                />
-              </Tooltip>
-            </div>
-          )}
+              <img
+                onClick={!presenterViewFlag ? screenShareButton : null}
+                src={NonActiveScreenShare}
+                alt="Screen Share"
+              />
+            </Tooltip>
+          </div>
+          {/* )} */}
 
           {!presenterViewHostFlag && getMeetingHostInfo?.isDashboardVideo && (
             <div
@@ -1693,38 +1693,42 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {MaximizeVideoFlag && (
-            <div
-              className={
-                LeaveCallModalFlag === true ||
-                (isZoomEnabled && disableBeforeJoinZoom)
-                  ? "grayScaleImage"
-                  : presenterViewFlag && !presenterViewHostFlag
-                  ? "presenterImage"
-                  : "screenShare-Toggle"
-              }
-            >
-              <Tooltip
-                placement={presenterViewFlag ? "bottom" : "topRight"}
-                overlayClassName={
-                  presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                }
-                title={t("Layout")}
-              >
-                <img
-                  className={"cursor-pointer"}
-                  onClick={
-                    presenterViewFlag &&
-                    !presenterViewHostFlag &&
-                    !JSON.parse(localStorage.getItem("isMeetingVideo"))
-                      ? null
-                      : layoutCurrentChange
+          {!isZoomEnabled && (
+            <>
+              {MaximizeVideoFlag && (
+                <div
+                  className={
+                    LeaveCallModalFlag === true ||
+                    (isZoomEnabled && disableBeforeJoinZoom)
+                      ? "grayScaleImage"
+                      : presenterViewFlag && !presenterViewHostFlag
+                      ? "presenterImage"
+                      : "screenShare-Toggle"
                   }
-                  src={showTile ? TileView : SidebarView}
-                  alt="Layout Change"
-                />
-              </Tooltip>
-            </div>
+                >
+                  <Tooltip
+                    placement={presenterViewFlag ? "bottom" : "topRight"}
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                    title={t("Layout")}
+                  >
+                    <img
+                      className={"cursor-pointer"}
+                      onClick={
+                        presenterViewFlag &&
+                        !presenterViewHostFlag &&
+                        !JSON.parse(localStorage.getItem("isMeetingVideo"))
+                          ? null
+                          : layoutCurrentChange
+                      }
+                      src={showTile ? TileView : SidebarView}
+                      alt="Layout Change"
+                    />
+                  </Tooltip>
+                </div>
+              )}
+            </>
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
