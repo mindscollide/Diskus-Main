@@ -810,15 +810,13 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
-      console.log("maximizeParticipantVideoFlag",isWaiting);
+      console.log("maximizeParticipantVideoFlag", isWaiting);
+      console.log("maximizeParticipantVideoFlag", maximizeParticipantVideoFlag);
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));
       } else if (maximizeParticipantVideoFlag) {
         console.log("maximizeParticipantVideoFlag");
-
-        console.log("maximizeParticipantVideoFlag");
-
         dispatch(videoIconOrButtonState(false));
         dispatch(participantVideoButtonState(false));
         dispatch(maxParticipantVideoCallPanel(false));
@@ -832,6 +830,7 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
         );
       } else {
+        console.log("maximizeParticipantVideoFlag");
         dispatch(maxParticipantVideoCallPanel(false));
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),

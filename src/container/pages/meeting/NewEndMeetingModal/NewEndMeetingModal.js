@@ -13,10 +13,33 @@ import { Col, Row } from "react-bootstrap";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import { useMeetingContext } from "../../../../context/MeetingContext";
-import { setRaisedUnRaisedParticiant } from "../../../../store/actions/VideoFeature_actions";
+import {
+  leavePresenterViewMainApi,
+  leavePresenterViewMainApiTest,
+  participantWaitingListBox,
+  setRaisedUnRaisedParticiant,
+  stopPresenterViewMainApi,
+  stopPresenterViewMainApiTest,
+  toggleParticipantsVisibility,
+} from "../../../../store/actions/VideoFeature_actions";
 
 const NewEndMeetingModal = () => {
   const dispatch = useDispatch();
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
+  );
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterStartedFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterStartedFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
   const {
     setCancelConfirmationModal,
     setEditorRole,
@@ -45,7 +68,53 @@ const NewEndMeetingModal = () => {
     let newName = localStorage.getItem("name");
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let participantRoomId = localStorage.getItem("participantRoomId");
+    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
 
+    if (presenterViewHostFlag || presenterViewJoinFlag) {
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+      let participantUID = localStorage.getItem("participantUID");
+      let roomID = localStorage.getItem("acceptedRoomID");
+      let currentUserName = localStorage.getItem("name");
+      let isGuid = localStorage.getItem("isGuid");
+      let RoomID = presenterViewFlag
+        ? roomID
+        : isMeetingVideoHostCheck
+        ? newRoomID
+        : participantRoomId;
+      let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+      dispatch(participantWaitingListBox(false));
+      dispatch(toggleParticipantsVisibility(false));
+      // if (presenterMeetingId === currentMeeting) {
+      console.log("Check Stop");
+      if (presenterViewHostFlag) {
+        if (presenterStartedFlag) {
+          let data = {
+            MeetingID: currentMeetingID,
+            RoomID: RoomID,
+          };
+          sessionStorage.setItem("StopPresenterViewAwait", true);
+          console.log(data, "presenterViewJoinFlag");
+          await dispatch(stopPresenterViewMainApiTest(navigate, t, data, 0));
+        } else {
+          let data = {
+            RoomID: String(RoomID),
+            UserGUID: String(UID),
+            Name: String(currentUserName),
+          };
+          await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 2));
+        }
+      } else if (presenterViewJoinFlag) {
+        sessionStorage.removeItem("alreadyInMeetingVideo");
+        let data = {
+          RoomID: String(callAcceptedRoomID),
+          UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+          Name: String(currentUserName),
+        };
+        await dispatch(leavePresenterViewMainApiTest(navigate, t, data, 1));
+      }
+    }
     if (isMeeting) {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
@@ -98,6 +167,8 @@ const NewEndMeetingModal = () => {
     localStorage.removeItem("isMeeting");
   };
   const handleClickDiscard = () => {
+    console.log("NewEndLeaveMeeting");
+
     dispatch(showEndMeetingModal(false));
   };
   return (
