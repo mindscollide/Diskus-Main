@@ -225,6 +225,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   };
 
   const maximizePanel = () => {
+    setPresenterParticipantList(false);
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(true));
     dispatch(minimizeVideoPanelFlag(false));
@@ -1020,6 +1021,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                 </div>
               )}
               {presenterViewFlag &&
+                presenterViewJoinFlag &&
+                presenterViewHostFlag &&
                 !JSON.parse(localStorage.getItem("activeCall")) && (
                   <Tooltip placement="topRight" title={t("Participants")}>
                     <div className={"grayScaleImage-forminimize"}>

@@ -113,10 +113,31 @@ import {
   ResendUpdatedMinuteForReview,
 } from "./Minutes_action";
 import { mqttConnectionGuestUser } from "../../commen/functions/mqttconnection_guest";
-import { isFunction } from "../../commen/functions/utils";
+import {
+  handleMeetingNavigation,
+  handleNavigationforParticipantVideoFlow,
+  isFunction,
+} from "../../commen/functions/utils";
 import { type } from "@testing-library/user-event/dist/cjs/utility/type.js";
 import { webnotificationGlobalFlag } from "./UpdateUserNotificationSetting";
 import NonMeetingVideoModal from "../../container/pages/meeting/viewMeetings/nonMeetingVideoModal/NonMeetingVideoModal";
+import {
+  createResolutionModal,
+  resultResolutionFlag,
+  viewAttachmentFlag,
+  viewResolutionModal,
+  voteResolutionFlag,
+} from "./Resolution_actions";
+import {
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
+} from "./Committee_actions";
+import {
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
+} from "./Groups_actions";
 
 const boardDeckModal = (response) => {
   return {
@@ -8605,12 +8626,49 @@ const LeaveCurrentMeeting = (
   };
 };
 
-const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
+const LeaveCurrentMeetingOtherMenus = (
+  navigate,
+  t,
+  Data,
+  scheduleMeetingsPageFlag,
+  viewProposeDateMeetingsPageFlag,
+  viewAdvanceMeetingsPublishPageFlag,
+  viewAdvanceMeetingsUnpublishPageFlag,
+  viewProposeOrganizerMeetingsPageFlag,
+  proposeNewMeetingsPageFlag,
+  viewMeetingsFlag,
+  scheduleMeetingPageFlagReducer,
+  viewProposeDateMeetingPageFlagReducer,
+  viewAdvanceMeetingPublishPageFlagReducer,
+  viewAdvanceMeetingUnpublishPageFlagReducer,
+  viewProposeOrganizerMeetingPageFlagReducer,
+  proposeNewMeetingPageFlagReducer,
+  viewMeetingFlagReducer,
+  location
+) => {
+  console.log(
+    {
+      scheduleMeetingsPageFlag,
+      viewProposeDateMeetingsPageFlag,
+      viewAdvanceMeetingsPublishPageFlag,
+      viewAdvanceMeetingsUnpublishPageFlag,
+      viewProposeOrganizerMeetingsPageFlag,
+      proposeNewMeetingsPageFlag,
+      viewMeetingsFlag,
+      scheduleMeetingPageFlagReducer,
+      viewProposeDateMeetingPageFlagReducer,
+      viewAdvanceMeetingPublishPageFlagReducer,
+      viewAdvanceMeetingUnpublishPageFlagReducer,
+      viewProposeOrganizerMeetingPageFlagReducer,
+      proposeNewMeetingPageFlagReducer,
+      viewMeetingFlagReducer,
+      location,
+    },
+    "Coming inside this block scopr"
+  );
   let token = JSON.parse(localStorage.getItem("token"));
   let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
-  let newRoomID = localStorage.getItem("newRoomId");
-  let newUserGUID = localStorage.getItem("userGUID");
-  let newName = localStorage.getItem("name");
+  let NavigationLocation = localStorage.getItem("navigateLocation");
   return async (dispatch) => {
     await dispatch(leaveMeetingInit());
     let form = new FormData();
@@ -8627,7 +8685,28 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
+          dispatch(
+            LeaveCurrentMeetingOtherMenus(
+              navigate,
+              t,
+              Data,
+              scheduleMeetingsPageFlag,
+              viewProposeDateMeetingsPageFlag,
+              viewAdvanceMeetingsPublishPageFlag,
+              viewAdvanceMeetingsUnpublishPageFlag,
+              viewProposeOrganizerMeetingsPageFlag,
+              proposeNewMeetingsPageFlag,
+              viewMeetingsFlag,
+              scheduleMeetingPageFlagReducer,
+              viewProposeDateMeetingPageFlagReducer,
+              viewAdvanceMeetingPublishPageFlagReducer,
+              viewAdvanceMeetingUnpublishPageFlagReducer,
+              viewProposeOrganizerMeetingPageFlagReducer,
+              proposeNewMeetingPageFlagReducer,
+              viewMeetingFlagReducer,
+              location
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -8665,30 +8744,35 @@ const LeaveCurrentMeetingOtherMenus = (navigate, t, Data) => {
               localStorage.setItem("meetingVideoID", 0);
               localStorage.setItem("MicOff", true);
               localStorage.setItem("VidOff", true);
+              // Navigation Location k according yaha conditions lagein ge
 
-              let isMeeting = localStorage.getItem("isMeeting");
-              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-              let isMeetingVideoHostCheck = localStorage.getItem(
-                "isMeetingVideoHostCheck"
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let newName = localStorage.getItem("name");
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
-              );
-              let participantRoomId = localStorage.getItem("participantRoomId");
-
-              console.log("busyCall");
-              let Data = {
-                RoomID: String(participantRoomId),
-                UserGUID: String(participantUID),
-                Name: String(newName),
-                IsHost: isMeetingVideoHostCheck ? true : false,
-                MeetingID: Number(currentMeetingID),
-              };
-              await dispatch(setRaisedUnRaisedParticiant(false));
-              await dispatch(LeaveMeetingVideo(Data, navigate, t));
-              dispatch(LeaveInitmationMessegeVideoMeetAction(false));
+              try {
+                await handleNavigationforParticipantVideoFlow({
+                  NavigationLocation,
+                  navigate,
+                  dispatch,
+                  location,
+                  flags: {
+                    scheduleMeetingPageFlagReducer,
+                    viewProposeDateMeetingPageFlagReducer,
+                    viewAdvanceMeetingPublishPageFlagReducer,
+                    viewAdvanceMeetingUnpublishPageFlagReducer,
+                    viewProposeOrganizerMeetingPageFlagReducer,
+                    proposeNewMeetingPageFlagReducer,
+                    viewMeetingFlagReducer,
+                    scheduleMeetingsPageFlag,
+                    viewProposeDateMeetingsPageFlag,
+                    viewAdvanceMeetingsPublishPageFlag,
+                    viewAdvanceMeetingsUnpublishPageFlag,
+                    viewProposeOrganizerMeetingsPageFlag,
+                    proposeNewMeetingsPageFlag,
+                    viewMeetingsFlag,
+                  },
+                  t,
+                });
+              } catch (error) {
+                console.log(error, "Navigation error");
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -9362,8 +9446,8 @@ const LeaveMeetingVideo = (
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
               } else {
-              console.log("Check Leave");
-              localStorage.setItem("isMeetingVideoHostCheck", false);
+                console.log("Check Leave");
+                localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
               // if (getMeetingHostData) {
