@@ -116,6 +116,7 @@ const VerificationIphone = () => {
 
   //handle Go back Functionality
   const handleGoback = () => {
+    console.log("goback");
     if (localStorage.getItem("isMultiDevice")) {
       localStorage.setItem("LoginFlowPageRoute", 13);
       dispatch(LoginFlowRoutes(13));

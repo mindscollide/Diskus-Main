@@ -93,10 +93,10 @@ const userLogOutApiFunc = (navigate, t) => {
   };
 };
 
-const signOut = (navigate, message, dispatch) => {
-  logoutChannel.postMessage("Logout");
-  dispatch(initaialStateFun())
-  navigate("/");
+export const signOut = ( message, dispatch) => {
+  // logoutChannel.postMessage("Logout");
+  dispatch(initaialStateFun());
+  window.location.replace = "/";
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")
@@ -149,7 +149,6 @@ const signOut = (navigate, message, dispatch) => {
   }
   localStorage.setItem("LoginFlowPageRoute", 1);
   dispatch(LoginFlowRoutes(1));
-  // navigate("/");
 
   if (message !== "") {
     return {
@@ -176,4 +175,4 @@ const initaialStateFun = () => {
   };
 };
 
-export { signOut, logoutAllTabs, userLogOutApiFunc, initaialStateFun };
+export { logoutAllTabs, userLogOutApiFunc, initaialStateFun };

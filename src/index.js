@@ -18,6 +18,7 @@ import { NotesProvider } from "./context/NotesContext";
 import { ResolutionProvider } from "./context/ResolutionContext";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/routes";
+import { AuthProvider } from "./context/AuthContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -44,21 +45,23 @@ const root = ReactDOM.createRoot(container, {
 root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
-      <MeetingProvider>
-        <GroupsProvider>
-          <CommitteeProvider>
-            <DataroomProvider>
-              <PollsProvider>
-                <NotesProvider>
-                  <ResolutionProvider>
+      <AuthProvider>
+        <MeetingProvider>
+          <GroupsProvider>
+            <CommitteeProvider>
+              <DataroomProvider>
+                <PollsProvider>
+                  <NotesProvider>
+                    <ResolutionProvider>
                       <App />
-                  </ResolutionProvider>
-                </NotesProvider>
-              </PollsProvider>
-            </DataroomProvider>
-          </CommitteeProvider>
-        </GroupsProvider>
-      </MeetingProvider>
+                    </ResolutionProvider>
+                  </NotesProvider>
+                </PollsProvider>
+              </DataroomProvider>
+            </CommitteeProvider>
+          </GroupsProvider>
+        </MeetingProvider>
+      </AuthProvider>
     </Provider>
   </GoogleOAuthProvider>
 );

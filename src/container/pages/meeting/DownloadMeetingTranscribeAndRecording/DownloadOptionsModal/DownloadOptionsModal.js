@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import SpinComponent from "../../../../../components/elements/mainLoader/loader";
 import { useSelector } from "react-redux";
+import { meetingVideoRecording } from "../../../../../store/actions/DataRoom2_actions";
 
 const DownloadOptionsModal = ({
   isDownloadAvailable,
@@ -33,14 +34,14 @@ const DownloadOptionsModal = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const meetingVideoRecording = useSelector(
+  const meetingVideoRecordingState = useSelector(
     (state) => state.DataRoomReducer.meetingVideoRecording
   );
   const [meetingData, setMeetingData] = useState(null);
   console.log(
     MeetingRecord,
     meetingData,
-    meetingVideoRecording,
+    meetingVideoRecordingState,
     "downloadMeetingRecorddownloadMeetingRecord"
   );
   //Board Deck Onclick function
@@ -74,9 +75,9 @@ const DownloadOptionsModal = ({
     }
   }, [MeetingRecord]);
   useEffect(() => {
-    if (meetingVideoRecording !== null) {
+    if (meetingVideoRecordingState !== null) {
       if (meetingData) {
-        if (meetingData.pK_MDID === meetingVideoRecording?.meetingID) {
+        if (meetingData.pK_MDID === meetingVideoRecordingState?.meetingID) {
           setMeetingData({
             ...meetingData,
             isRecordingAvailable: true,
@@ -93,7 +94,7 @@ const DownloadOptionsModal = ({
       }
       dispatch(meetingVideoRecording(null));
     }
-  }, [meetingVideoRecording]);
+  }, [meetingVideoRecordingState]);
   if (stepDownloadModal === 2) {
     return <MeetingRecording title={MeetingRecord?.title} />;
   } else {
@@ -113,11 +114,12 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={styles["Download__Heading"]}>
+                className={styles["Download__Heading"]}
+              >
                 {t("Download")}
               </Col>
             </Row>
-            <Row className='my-3'>
+            <Row className="my-3">
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={
@@ -127,8 +129,9 @@ const DownloadOptionsModal = ({
                       : styles["Download___Button_recording_disabled"]
                   }
                   // className={styles["Download___Button_recording_disabled"]}
-                  onClick={downloadMeetingDetails}>
-                  <img width={35} src={DownloadRecording} alt='' />
+                  onClick={downloadMeetingDetails}
+                >
+                  <img width={35} src={DownloadRecording} alt="" />
                   <span>
                     {meetingData?.isVideoCall &&
                     meetingData?.isRecordingAvailable
@@ -141,15 +144,16 @@ const DownloadOptionsModal = ({
                   </span>
                   {!meetingData?.isVideoCall ||
                     (!meetingData?.isRecordingAvailable && (
-                      <img src={WarningIcon} alt='' />
+                      <img src={WarningIcon} alt="" />
                     ))}
                 </div>
               </Col>
               <Col sm={6} md={6} lg={6}>
                 <div
                   className={styles["Download___Button"]}
-                  onClick={boardDeckOnClick}>
-                  <img width={35} src={DownloadBoardDeck} alt='' />
+                  onClick={boardDeckOnClick}
+                >
+                  <img width={35} src={DownloadBoardDeck} alt="" />
                   <span>{t("Download-board-deck")}</span>
                 </div>
               </Col>
@@ -159,7 +163,8 @@ const DownloadOptionsModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center align-items-center'>
+                className="d-flex justify-content-center align-items-center"
+              >
                 <SpinComponent />
               </Col>
             </Row>
@@ -172,7 +177,8 @@ const DownloadOptionsModal = ({
                 sm={12}
                 md={12}
                 lg={12}
-                className={"d-flex justify-content-end p-0 m-0"}>
+                className={"d-flex justify-content-end p-0 m-0"}
+              >
                 <Button
                   className={styles["Download___cancelBtn"]}
                   text={t("Cancel")}

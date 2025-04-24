@@ -1595,82 +1595,78 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {!getMeetingHostInfo.isHost &&
-            getMeetingHostInfo?.isDashboardVideo &&
-            !presenterViewHostFlag && (
-              <div
-                className={
-                  LeaveCallModalFlag === true ||
-                  (isZoomEnabled && disableBeforeJoinZoom)
-                    ? "grayScaleImage"
-                    : presenterViewJoinFlag
-                    ? !raisedUnRaisedParticipant
-                      ? "inactive-state"
-                      : "cursor-pointer active-state"
-                    : getMeetingHostInfo?.isHost === false
-                    ? !raisedUnRaisedParticipant
-                      ? "inactive-state"
-                      : "cursor-pointer active-state"
-                    : !handStatus
+          {!presenterViewHostFlag && getMeetingHostInfo?.isDashboardVideo && (
+            <div
+              className={
+                LeaveCallModalFlag === true ||
+                (isZoomEnabled && disableBeforeJoinZoom)
+                  ? "grayScaleImage"
+                  : presenterViewJoinFlag
+                  ? !raisedUnRaisedParticipant
                     ? "inactive-state"
                     : "cursor-pointer active-state"
+                  : getMeetingHostInfo?.isHost === false
+                  ? !raisedUnRaisedParticipant
+                    ? "inactive-state"
+                    : "cursor-pointer active-state"
+                  : !handStatus
+                  ? "inactive-state"
+                  : "cursor-pointer active-state"
+              }
+            >
+              <Tooltip
+                placement={
+                  presenterViewJoinFlag && !presenterViewHostFlag
+                    ? "bottom"
+                    : "topRight"
                 }
-              >
-                <Tooltip
-                  placement={
-                    presenterViewJoinFlag && !presenterViewHostFlag
-                      ? "bottom"
-                      : "topRight"
-                  }
-                  overlayClassName={
-                    presenterViewJoinFlag
-                      ? "zindexing-for-presenter-tooltip"
-                      : ""
-                  }
-                  title={
-                    getMeetingHostInfo?.isHost
-                      ? presenterViewJoinFlag
-                        ? raisedUnRaisedParticipant
-                          ? t("Lower-hand")
-                          : t("Raise-hand")
-                        : handStatus
+                overlayClassName={
+                  presenterViewJoinFlag ? "zindexing-for-presenter-tooltip" : ""
+                }
+                title={
+                  getMeetingHostInfo?.isHost
+                    ? presenterViewJoinFlag
+                      ? raisedUnRaisedParticipant
                         ? t("Lower-hand")
                         : t("Raise-hand")
-                      : raisedUnRaisedParticipant
+                      : handStatus
                       ? t("Lower-hand")
                       : t("Raise-hand")
-                  }
-                >
-                  <img
-                    onClick={() =>
-                      getMeetingHostInfo?.isHost
-                        ? presenterViewJoinFlag
-                          ? raiseUnRaiseForParticipant(
-                              raisedUnRaisedParticipant ? false : true
-                            )
-                          : raiseHandFunction
-                        : raiseUnRaiseForParticipant(
+                    : raisedUnRaisedParticipant
+                    ? t("Lower-hand")
+                    : t("Raise-hand")
+                }
+              >
+                <img
+                  onClick={() =>
+                    getMeetingHostInfo?.isHost
+                      ? presenterViewJoinFlag && !presenterViewHostFlag
+                        ? raiseUnRaiseForParticipant(
                             raisedUnRaisedParticipant ? false : true
                           )
-                    }
-                    src={
-                      getMeetingHostInfo?.isHost
-                        ? presenterViewJoinFlag
-                          ? raisedUnRaisedParticipant === true
-                            ? LowerHand
-                            : RaiseHand
-                          : handStatus
+                        : raiseHandFunction
+                      : raiseUnRaiseForParticipant(
+                          raisedUnRaisedParticipant ? false : true
+                        )
+                  }
+                  src={
+                    getMeetingHostInfo?.isHost
+                      ? presenterViewJoinFlag
+                        ? raisedUnRaisedParticipant === true
                           ? LowerHand
                           : RaiseHand
-                        : raisedUnRaisedParticipant === true
+                        : handStatus
                         ? LowerHand
                         : RaiseHand
-                    }
-                    alt="Raise Hand"
-                  />
-                </Tooltip>
-              </div>
-            )}
+                      : raisedUnRaisedParticipant === true
+                      ? LowerHand
+                      : RaiseHand
+                  }
+                  alt="Raise Hand"
+                />
+              </Tooltip>
+            </div>
+          )}
 
           {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
           (presenterViewHostFlag && presenterViewFlag) ? (

@@ -585,28 +585,24 @@ const VideoNewParticipantList = () => {
                           </>
                         )
                       )}{" "}
-                      {!usersData.isHost && (
-                        <>
-                          {((presenterViewHostFlag && presenterViewFlag) ||
-                            meetinHostInfo.isHost) &&
-                          usersData.raiseHand ? (
-                            <img
-                              draggable="false"
-                              src={GoldenHandRaised}
-                              alt=""
-                              width={"22px"}
-                              height={"22px"}
-                              className="handraised-participant"
-                            />
-                          ) : (
-                            <img
-                              draggable="false"
-                              src={MenuRaiseHand}
-                              alt=""
-                              className="handraised-participant"
-                            />
-                          )}
-                        </>
+                      {((presenterViewHostFlag && presenterViewFlag) ||
+                        meetinHostInfo.isHost) &&
+                      usersData.raiseHand ? (
+                        <img
+                          draggable="false"
+                          src={GoldenHandRaised}
+                          alt=""
+                          width={"22px"}
+                          height={"22px"}
+                          className="handraised-participant"
+                        />
+                      ) : (
+                        <img
+                          draggable="false"
+                          src={MenuRaiseHand}
+                          alt=""
+                          className="handraised-participant"
+                        />
                       )}
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&

@@ -133,6 +133,8 @@ const DeviceFor2FAVerify = () => {
   };
 
   const handleGoBack = () => {
+    console.log("goback");
+
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
   };
@@ -213,8 +215,7 @@ const DeviceFor2FAVerify = () => {
                         <img
                           draggable='false'
                           src={
-                            (localStorage.getItem("i18nextLng") === "ar") ===
-                            "ar"
+                            localStorage.getItem("i18nextLng") === "ar"
                               ? DiskusLogoArabic
                               : img1
                           }
