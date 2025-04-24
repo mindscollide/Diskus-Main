@@ -261,8 +261,9 @@ const VideoCallNormalHeader = ({
   );
   console.log(leavePresenterParticipant, "leavePresenterParticipant");
 
-  console.log(groupCallParticipantList, "groupCallParticipantList");
-  console.log(unansweredCallParticipant, "unansweredCallParticipant");
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -275,6 +276,7 @@ const VideoCallNormalHeader = ({
   let lan = localStorage.getItem("i18nextLng");
   let recipentCalledID = Number(localStorage.getItem("recipentCalledID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let ScreenShare = JSON.parse(localStorage.getItem("ScreenShare"));
   let callerID = Number(localStorage.getItem("callerID"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
@@ -1572,6 +1574,8 @@ const VideoCallNormalHeader = ({
                 ? "presenterImage"
                 : presenterViewFlag && presenterViewJoinFlag
                 ? "presenterImage"
+                : globallyScreenShare
+                ? "presenterImage"
                 : "screenShare-Toggle inactive-state"
             }
           >
@@ -1587,7 +1591,11 @@ const VideoCallNormalHeader = ({
               }
             >
               <img
-                onClick={!presenterViewFlag ? screenShareButton : null}
+                onClick={
+                  !presenterViewFlag && !globallyScreenShare
+                    ? screenShareButton
+                    : null
+                }
                 src={NonActiveScreenShare}
                 alt="Screen Share"
               />

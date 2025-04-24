@@ -103,6 +103,8 @@ const initialState = {
   inCallParticipantList: [],
   pendingCallParticipantList: [],
   stopScreenShareOnPresenter: false,
+  isScreenShare: null,
+  globallyScreenShare: false,
   // startOrStopPresenter: false,
 };
 
@@ -1189,6 +1191,41 @@ const videoFeatureReducer = (state = initialState, action) => {
         inCallParticipantList: [],
         pendingCallParticipantList: [],
         ResponseMessage: action.message,
+      };
+    }
+
+    //For Screen Shared Triggered Or Not
+    case actions.IS_SCREEN_SHARED_TRIGGERED_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.IS_SCREEN_SHARED_TRIGGERED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        isScreenShare: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.IS_SCREEN_SHARED_TRIGGERED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        isScreenShare: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //is Screen Share Triggered Globally Function
+    case actions.GLOBAL_SCREEN_SHARE_TRIGGERED: {
+      console.log(action, "GLOBAL_SCREEN_SHARE_TRIGGERED");
+      return {
+        ...state,
+        globallyScreenShare: action.response,
       };
     }
 

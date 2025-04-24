@@ -94,6 +94,7 @@ import {
   participantVideoNavigationScreen,
   participantWaitingListBox,
   presenterViewGlobalState,
+  screenShareTriggeredGlobally,
   setAudioControlHost,
   setRaisedUnRaisedParticiant,
   setVideoControlHost,
@@ -9193,6 +9194,8 @@ const LeaveMeetingVideo = (
               await dispatch(videoIconOrButtonState(false));
               await dispatch(participantVideoButtonState(false));
               await dispatch(maxParticipantVideoCallPanel(false));
+              await dispatch(screenShareTriggeredGlobally(false));
+
               const meetingHost = {
                 isHost: false,
                 isHostId: 0,
@@ -9285,6 +9288,7 @@ const LeaveMeetingVideo = (
                 )
             ) {
               await dispatch(videoIconOrButtonState(false));
+              await dispatch(screenShareTriggeredGlobally(false));
               await dispatch(participantVideoButtonState(false));
               localStorage.removeItem("newRoomId");
               localStorage.setItem("isMeetingVideo", false);
