@@ -24,18 +24,19 @@ import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
 import { Loader, Notification } from "./components/elements";
 import { router } from "./routes/routes";
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider, useNavigate } from "react-router-dom";
 import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
-const MIN_LOADER_DISPLAY_TIME = 500;
+import { useAuthContext } from "./context/AuthContext";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
   const dispatch = useDispatch();
+  const { signOut } = useAuthContext();
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
   const auth = useSelector((state) => state.auth);
   const assignees = useSelector((state) => state.assignees);
@@ -130,6 +131,19 @@ const App = () => {
     return isAndroid || isIOS;
   };
   let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
+
+  useEffect(() => {
+    const channel = new BroadcastChannel("auth");
+
+    channel.onmessage = (event) => {
+      if (event.data === "logout") {
+        signOut();
+        // signOut(navigate, "", dispatch);
+      }
+    };
+
+    return () => channel.close();
+  }, [dispatch]);
 
   useEffect(() => {
     if (isMobileDevice()) {

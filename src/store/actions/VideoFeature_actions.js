@@ -2235,15 +2235,31 @@ const leavePresenterViewMainApi = (
                   presenterViewGlobalState(currentMeetingID, true, false, false)
                 );
                 if (alreadyInMeetingVideo) {
-                  dispatch(participantVideoButtonState(true));
-                  dispatch(presenterViewGlobalState(0, false, false, false));
+                  // dispatch(participantVideoButtonState(true));
+                  // dispatch(presenterViewGlobalState(0, false, false, false));
+                  // console.log("Check is participant Uid Removed?");
+                  // sessionStorage.removeItem("alreadyInMeetingVideo");
+                  //  await dispatch(presenterStartedMainFlag(true));
+                  // dispatch(maximizeVideoPanelFlag(true));
+                  // dispatch(normalizeVideoPanelFlag(false));
+                  // dispatch(minimizeVideoPanelFlag(false));
+                  // localStorage.setItem("isMeetingVideo", true);
+
                   console.log("Check is participant Uid Removed?");
-                  sessionStorage.removeItem("alreadyInMeetingVideo");
-                  // await dispatch(presenterStartedMainFlag(true));
-                  dispatch(maximizeVideoPanelFlag(true));
+                  localStorage.removeItem("participantUID");
+                  localStorage.removeItem("participantRoomId");
+                  localStorage.removeItem("isGuid");
+                  localStorage.removeItem("videoIframe");
+                  localStorage.removeItem("acceptedRoomID");
+                  localStorage.removeItem("newRoomId");
+                  localStorage.removeItem("isMeetingVideo");
+                  localStorage.removeItem("alreadyInMeetingVideo");
+                  localStorage.removeItem("presenterViewvideoURL");
+                  dispatch(maximizeVideoPanelFlag(false));
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
-                  localStorage.setItem("isMeetingVideo", true);
+                  dispatch(setAudioControlHost(false));
+                  dispatch(setVideoControlHost(false));
                 } else {
                   console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
@@ -2268,6 +2284,32 @@ const leavePresenterViewMainApi = (
                   localStorage.removeItem("acceptedRoomID");
                   localStorage.removeItem("newRoomId");
                   localStorage.removeItem("presenterViewvideoURL");
+                } else if (alreadyInMeetingVideo) {
+                  console.log("Check is participant Uid Removed?");
+                  let newName = localStorage.getItem("name");
+                  let participantRoomId =
+                    localStorage.getItem("participantRoomId");
+                  let participantUID = localStorage.getItem("participantUID");
+                  let isGuid = localStorage.getItem("isGuid");
+                  let currentMeetingID = Number(
+                    localStorage.getItem("currentMeetingID")
+                  );
+                  const meetHostFlag = JSON.parse(
+                    localStorage.getItem("meetinHostInfo")
+                  );
+                  let isMeetingVideoHostCheck = JSON.parse(
+                    localStorage.getItem("isMeetingVideoHostCheck")
+                  );
+                  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                  let Data = {
+                    RoomID: String(participantRoomId),
+                    UserGUID: String(UID),
+                    Name: String(newName),
+                    IsHost: meetHostFlag?.isHost ? true : false,
+                    MeetingID: Number(currentMeetingID),
+                  };
+                  dispatch(setRaisedUnRaisedParticiant(false));
+                  dispatch(LeaveMeetingVideo(Data, navigate, t));
                 }
                 await dispatch(
                   leavePresenterSuccess(

@@ -3386,27 +3386,26 @@ const NewMeeting = () => {
     try {
       if (
         MeetingStatusEnded !== null &&
-        MeetingStatusEnded !== undefined &&
-        MeetingStatusEnded.length !== 0
+        MeetingStatusEnded !== undefined
       ) {
         let endMeetingData = MeetingStatusEnded.meeting;
         const indexToUpdate = rows.findIndex(
           (obj) => obj.pK_MDID === endMeetingData.pK_MDID
         );
-        let roomId;
-        if (
-          CurrentMeetingURL !== "" &&
-          CurrentMeetingURL !== null &&
-          CurrentMeetingURL !== undefined
-        ) {
-          let url = CurrentMeetingURL;
-          let urlObject = new URL(url);
-          let searchParams = new URLSearchParams(urlObject.search);
-          roomId = Number(searchParams.get("RoomID"));
-        } else {
-          roomId = 0;
-        }
-        let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+        // let roomId;
+        // if (
+        //   CurrentMeetingURL !== "" &&
+        //   CurrentMeetingURL !== null &&
+        //   CurrentMeetingURL !== undefined
+        // ) {
+        //   let url = CurrentMeetingURL;
+        //   let urlObject = new URL(url);
+        //   let searchParams = new URLSearchParams(urlObject.search);
+        //   roomId = Number(searchParams.get("RoomID"));
+        // } else {
+        //   roomId = 0;
+        // }
+        // let acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
 
         if (indexToUpdate !== -1) {
           let updatedRows = [...rows];
@@ -3433,20 +3432,10 @@ const NewMeeting = () => {
             setCurrentMeetingID(0);
             setAdvanceMeetingModalID(null);
             setDataroomMapFolderId(0);
-            if (acceptedRoomID === roomId) {
-              dispatch(normalizeVideoPanelFlag(false));
-              dispatch(minimizeVideoPanelFlag(false));
-              localStorage.setItem("activeCall", false);
-              localStorage.setItem("activeRoomID", 0);
-              localStorage.setItem("acceptedRoomID", 0);
-              localStorage.setItem("isMeeting", false);
-            }
+  
           }
           dispatch(mqttCurrentMeetingEnded(null));
-        } else {
-          let updatedRows = [...rows, endMeetingData];
-          setRow(updatedRows);
-        }
+        } 
       }
     } catch (eror) {
       console.log(eror);

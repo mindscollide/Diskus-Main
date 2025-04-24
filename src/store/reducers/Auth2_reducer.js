@@ -497,6 +497,8 @@ const AuthReducer = (state = initialState, action) => {
     }
 
     case actions.USER_LOGOUT_SUCCESS: {
+      localStorage.setItem("logout", Date.now());
+      new BroadcastChannel('auth').postMessage('logout');
       return {
         ...state,
         Loading: false,

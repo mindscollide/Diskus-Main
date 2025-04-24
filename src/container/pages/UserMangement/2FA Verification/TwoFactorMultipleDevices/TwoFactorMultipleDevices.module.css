@@ -46,7 +46,6 @@ body[dir="rtl"] .forogt_email_link {
 .SelectLineTwofacSendEmail_twofacmultidevice {
   color: #5a5a5a;
   font-weight: 600 !important;
-  margin-bottom: 28px;
 }
 body[dir="rtl"] .SelectLineTwofacSendEmail_twofacmultidevice {
   font-weight: 600 !important;
@@ -54,6 +53,12 @@ body[dir="rtl"] .SelectLineTwofacSendEmail_twofacmultidevice {
 .VerifyHeadingTwofacSendEmail_twofacmultidevice {
   color: #5a5a5a;
   margin-top: 2rem !important;
+  font-weight: 600 !important;
+  font-size: 30px !important;
+}
+body[dir="rtl"] .VerifyHeadingTwofacSendEmail_twofacmultidevice {
+  color: #5a5a5a;
+  margin-top: 0 !important;
   font-weight: 600 !important;
   font-size: 30px !important;
 }

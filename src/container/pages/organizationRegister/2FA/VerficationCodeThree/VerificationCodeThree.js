@@ -181,8 +181,14 @@ const VerificationCodeThree = () => {
   }, []);
 
   const handleGoback = () => {
-    localStorage.setItem("LoginFlowPageRoute", 15);
-    dispatch(LoginFlowRoutes(15));
+    console.log("goback");
+    if (localStorage.getItem("isMultiDevice") === "false") {
+      localStorage.setItem("LoginFlowPageRoute", 8);
+      dispatch(LoginFlowRoutes(8));
+    } else {
+      localStorage.setItem("LoginFlowPageRoute", 15);
+      dispatch(LoginFlowRoutes(15));
+    }
   };
   return (
     <>
