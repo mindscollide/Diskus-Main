@@ -1989,6 +1989,11 @@ const participantOfGroupCall = {
   RequestMethod: "ServiceManager.GetGroupCallParticipants",
 };
 
+// For Shared Screen when someone share screen then others need to Disable
+const isSharedScreenCall = {
+  RequestMethod: "ServiceManager.IsSharedScreen",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2509,4 +2514,5 @@ export {
   joinPresenterView,
   leavePresenterView,
   participantOfGroupCall,
+  isSharedScreenCall,
 };
