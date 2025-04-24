@@ -54,12 +54,10 @@ const DocumentViewer = () => {
 
   // Utility: Clear Local Storage
   const clearLocalStorage = () => {
-    [
-      "DataRoomOperations",
-      "NotificationClickFileID",
-      "NotificationClickFileName",
-      "DataRoomOperationsForFileEditorRights",
-    ].forEach(localStorage.removeItem);
+    localStorage.removeItem("DataRoomOperations");
+    localStorage.removeItem("NotificationClickFileID");
+    localStorage.removeItem("NotificationClickFileName");
+    localStorage.removeItem("DataRoomOperationsForFileEditorRights");
   };
 
   // Utility: Convert Base64 to Blob
