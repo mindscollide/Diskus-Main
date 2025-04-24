@@ -23,7 +23,6 @@ import ViewAttachments from "./ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "./EditResolution/EditResolution";
 import {
-  clearResponseMessage,
   getResolutionbyResolutionID,
   getResolutionResult,
   getResolutions,
@@ -128,6 +127,7 @@ const Resolution = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [enterpressed, setEnterpressed] = useState(false);
   const [rows, setRows] = useState([]);
+  console.log(rows, "rowsrowsrowsrows");
   const [isSearchVoter, setSearchVoter] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
@@ -422,6 +422,12 @@ const Resolution = () => {
     dispatch(getResolutionbyResolutionID(navigate, id, t, 2));
   };
 
+  const viewResolutionCancelled = (id) => {
+    console.log(id, "viewResolutionCancelled");
+    localStorage.setItem("resolutionDeleted", true);
+    dispatch(getResolutionbyResolutionID(navigate, id, t, 3));
+  };
+
   const getResultHandle = (id) => {
     dispatch(getResolutionResult(navigate, id, t, setResultresolution));
   };
@@ -607,31 +613,32 @@ const Resolution = () => {
       key: "Result",
       width: "78px",
       render: (table, data) => {
-        if (data.resolutionStatus === "Circulated") {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Result")}>
-              <img
-                draggable="false"
-                src={ResultResolutionIcon}
-                onClick={() => getResultHandle(data.resolutionID)}
-                className={styles["Result_icon"]}
-                alt=""
-              />
-            </Tooltip>
-          );
-        } else if (data.resolutionStatus === "Closed") {
-          return (
-            <Tooltip placement="bottomLeft" title={t("Result")}>
-              <img
-                draggable="false"
-                src={ResultResolutionIcon}
-                onClick={() => getResultHandle(data.resolutionID)}
-                className={styles["Result_icon"]}
-                alt=""
-              />
-            </Tooltip>
-          );
-        }
+        // if (data.resolutionStatus === "Closed") {
+        //   return (
+        //     <Tooltip placement="bottomLeft" title={t("Result")}>
+        //       <img
+        //         draggable="false"
+        //         src={ResultResolutionIcon}
+        //         onClick={() => getResultHandle(data.resolutionID)}
+        //         className={styles["Result_icon"]}
+        //         alt=""
+        //       />
+        //     </Tooltip>
+        //   );
+        // }
+        // else if (data.resolutionStatus === "Closed") {
+        //   return (
+        //     <Tooltip placement="bottomLeft" title={t("Result")}>
+        //       <img
+        //         draggable="false"
+        //         src={ResultResolutionIcon}
+        //         onClick={() => getResultHandle(data.resolutionID)}
+        //         className={styles["Result_icon"]}
+        //         alt=""
+        //       />
+        //     </Tooltip>
+        //   );
+        // }
       },
     },
     {
@@ -683,14 +690,27 @@ const Resolution = () => {
       align: "start",
       width: "365px",
       render: (table, data) => {
-        return (
-          <span
-            className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}
-          >
-            {table}
-          </span>
-        );
+        console.log(data, "datadatadata");
+        if (data.resolutionStatus === "Cancelled") {
+          console.log(data.resolutionStatus, "viewResolutionCancelled");
+          return (
+            <span
+              className={styles["resolution_title"]}
+              onClick={() => viewResolutionCancelled(data.resolutionID)}
+            >
+              {table}
+            </span>
+          );
+        } else {
+          return (
+            <span
+              className={styles["resolution_title"]}
+              onClick={() => viewResolution(data.resolutionID)}
+            >
+              {table}
+            </span>
+          );
+        }
       },
     },
     {
@@ -795,6 +815,23 @@ const Resolution = () => {
         } else {
           return "";
         }
+      },
+    },
+    {
+      title: t("Status"),
+      dataIndex: "resolutionStatus",
+      align: "center",
+      key: "resolutionStatus",
+      width: "78px",
+      render: (text, data) => {
+        console.log(data, "datadata");
+        return (
+          <>
+            <span className={styles["resolution_date"]}>
+              {data.resolutionStatus}
+            </span>
+          </>
+        );
       },
     },
   ];
