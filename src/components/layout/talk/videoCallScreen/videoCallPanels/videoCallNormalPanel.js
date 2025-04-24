@@ -1429,6 +1429,7 @@ const VideoPanelNormal = () => {
       setIsMeetingHost(meetingHost?.isHost ? true : false);
     } catch {}
   }, [participantWaitinglistBox]);
+
   return (
     <>
       {MaximizeHostVideoFlag ? (
