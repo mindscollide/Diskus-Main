@@ -80,6 +80,7 @@ import {
   setMQTTRequestUpcomingEvents,
   createGroupMeeting,
   createCommitteeMeeting,
+  mqttCurrentMeetingEnded,
 } from "../../store/actions/GetMeetingUserId";
 import {
   mqttInsertOtoMessage,
@@ -889,6 +890,7 @@ const Dashboard = () => {
                   data?.payload?.meeting?.pK_MDID
                 );
                 meetingEnded(data.payload);
+                dispatch(mqttCurrentMeetingEnded(data.payload));
               } catch (error) {
                 console.log(error);
               }

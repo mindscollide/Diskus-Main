@@ -93,6 +93,7 @@ body[dir="rtl"] .VerifyHeading_sendmailwithdevice {
   font-weight: 600 !important;
   font-size: calc(35px - 20%) !important;
   margin-bottom: 0px !important;
+  margin-top: 0 !important;
 }
 body[dir="rtl"] .VerifyHeading_sendmailwithdevice {
   font-weight: 600 !important;
