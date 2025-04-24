@@ -13,7 +13,6 @@ import {
 import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
-  getUserWiseProposedDatesMainApi,
   getUserProposedWiseApi,
 } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
@@ -335,7 +334,8 @@ const SceduleProposedmeeting = ({
             {record.userName === "Total" ? (
               <span
                 className={styles["TotalCount_HEading"]}
-                title={record.userName}>
+                title={record.userName}
+              >
                 {record.userName}
               </span>
             ) : (
@@ -385,7 +385,8 @@ const SceduleProposedmeeting = ({
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
-            onClick={() => toggleActive(index, record, formattedDate)}>
+            onClick={() => toggleActive(index, record, formattedDate)}
+          >
             <span className={styles["date-time-column"]}>
               {newTimeFormaterViewPoll(formattedDate)}
             </span>
@@ -420,15 +421,19 @@ const SceduleProposedmeeting = ({
             );
             if (proposedDate?.isSelected) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img
-                    src={BlueTick}
-                    className={styles["TickIconClass"]}
-                    width='20.7px'
-                    height='14.21px'
-                    alt=''
-                  />
-                </span>
+                <Row>
+                  <Col lg={8} md={8} sm={8}>
+                    <span className="d-flex justify-content-center">
+                      <img
+                        src={BlueTick}
+                        className={styles["TickIconClass"]}
+                        width="20.7px"
+                        height="14.21px"
+                        alt=""
+                      />
+                    </span>
+                  </Col>
+                </Row>
               );
             }
           }
@@ -454,7 +459,8 @@ const SceduleProposedmeeting = ({
               isActiveDateSelected
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail_disabled"]
-            }>
+            }
+          >
             {t("None-of-the-above")}
           </span>
         );
@@ -485,9 +491,9 @@ const SceduleProposedmeeting = ({
           <img
             src={BlueTick}
             className={styles["TickIconClass"]}
-            width='20.7px'
-            height='14.21px'
-            alt=''
+            width="20.7px"
+            height="14.21px"
+            alt=""
           />
         ) : null;
       },
@@ -516,10 +522,10 @@ const SceduleProposedmeeting = ({
                   {t("Schedule-proposed-meetings")}
                 </span>
               </Col>
-              <Col lg={1} md={1} sm={1} className='d-flex justify-content-end'>
+              <Col lg={1} md={1} sm={1} className="d-flex justify-content-end">
                 <img
                   src={BlackCrossIcon}
-                  alt=''
+                  alt=""
                   className="cursor-pointer"
                   width={15}
                   onClick={handleCrossIconClass}
@@ -537,7 +543,7 @@ const SceduleProposedmeeting = ({
                     column={scheduleColumn}
                     scroll={{ x: "22vh", y: "42vh" }}
                     pagination={false}
-                    className='SceduleProposedMeeting'
+                    className="SceduleProposedMeeting"
                     rows={updateTableRows}
                   />
                   <span>
@@ -546,7 +552,8 @@ const SceduleProposedmeeting = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center mt-4'>
+                        className="d-flex justify-content-center mt-4"
+                      >
                         <Button
                           text={t("Schedule")}
                           className={styles["Schedule-btn-count"]}
