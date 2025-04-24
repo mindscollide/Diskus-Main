@@ -1,27 +1,56 @@
 import { useMeetingContext } from "../../context/MeetingContext";
-import { viewCommitteePageFlag } from "../../store/actions/Committee_actions";
+import {
+  createCommitteePageFlag,
+  updateCommitteePageFlag,
+  viewCommitteePageFlag,
+} from "../../store/actions/Committee_actions";
 import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
 import { ViewMeeting } from "../../store/actions/Get_List_Of_Assignees";
 import { getPackageExpiryDetail } from "../../store/actions/GetPackageExpirtyDetails";
-import { viewGroupPageFlag } from "../../store/actions/Groups_actions";
+import {
+  createGroupPageFlag,
+  updateGroupPageFlag,
+  viewGroupPageFlag,
+} from "../../store/actions/Groups_actions";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../store/actions/Minutes_action";
 import {
+  actionsGlobalFlag,
+  agendaContributorsGlobalFlag,
+  agendaGlobalFlag,
+  attendanceGlobalFlag,
   GetMeetingStatusDataAPI,
+  meetingDetailsGlobalFlag,
+  meetingMaterialGlobalFlag,
+  minutesGlobalFlag,
+  organizersGlobalFlag,
+  participantsGlobalFlag,
+  pollsGlobalFlag,
   proposedMeetingDatesGlobalFlag,
+  proposeNewMeetingPageFlag,
+  scheduleMeetingPageFlag,
   searchNewUserMeeting,
+  showCancelModalmeetingDeitals,
   showEndMeetingModal,
   showSceduleProposedMeeting,
+  uploadGlobalFlag,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
+  viewMeetingFlag,
   viewProposeDateMeetingPageFlag,
+  viewProposeOrganizerMeetingPageFlag,
 } from "../../store/actions/NewMeetingActions";
 import { getPollsByPollIdApi } from "../../store/actions/Polls_actions";
 import {
+  createResolutionModal,
   getResolutionbyResolutionID,
   getResolutionResult,
+  resultResolutionFlag,
+  viewAttachmentFlag,
+  viewResolutionModal,
+  voteResolutionFlag,
 } from "../../store/actions/Resolution_actions";
 import { LoginFlowRoutes } from "../../store/actions/UserManagementActions";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
@@ -2024,4 +2053,247 @@ export const sortTasksByDeadline = (tasks) => {
     const deadlineB = taskB?.deadlineDateTime;
     return parseInt(deadlineA, 10) - parseInt(deadlineB, 10);
   });
+};
+
+//Whole Navigating scenairo convered for particpant joined video
+
+// navigationUtils.js
+
+// Common function to check if any meeting page flag is active
+export const isAnyMeetingPageActive = async (flags) => {
+  const {
+    scheduleMeetingPageFlag,
+    viewProposeDateMeetingPageFlag,
+    viewAdvanceMeetingPublishPageFlag,
+    viewAdvanceMeetingUnpublishPageFlag,
+    viewProposeOrganizerMeetingPageFlag,
+    proposeNewMeetingPageFlag,
+    viewMeetingFlag,
+  } = flags;
+
+  return (
+    (((await isFunction(scheduleMeetingPageFlag)) &&
+      scheduleMeetingPageFlag === true) ||
+      ((await isFunction(viewProposeDateMeetingPageFlag)) &&
+        viewProposeDateMeetingPageFlag === true) ||
+      ((await isFunction(viewAdvanceMeetingPublishPageFlag)) &&
+        viewAdvanceMeetingPublishPageFlag === true) ||
+      ((await isFunction(viewAdvanceMeetingUnpublishPageFlag)) &&
+        viewAdvanceMeetingUnpublishPageFlag === true) ||
+      ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
+        viewProposeOrganizerMeetingPageFlag === true) ||
+      ((await isFunction(proposeNewMeetingPageFlag)) &&
+        proposeNewMeetingPageFlag === true)) &&
+    (await isFunction(viewMeetingFlag)) &&
+    viewMeetingFlag === false
+  );
+};
+
+// Common function to handle meeting navigation
+export const handleMeetingNavigation = (navigate, dispatch) => {
+  navigate("/Diskus/Meeting");
+  const isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  if (isMeeting && !isMeetingVideo) {
+    dispatch(showCancelModalmeetingDeitals(true));
+  }
+  dispatch(uploadGlobalFlag(false));
+};
+
+// Common function to reset all meeting flags
+export const resetMeetingFlags = (dispatch) => {
+  dispatch(showCancelModalmeetingDeitals(false));
+  dispatch(scheduleMeetingPageFlag(false));
+  dispatch(viewProposeDateMeetingPageFlag(false));
+  dispatch(viewAdvanceMeetingPublishPageFlag(false));
+  dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+  dispatch(viewProposeOrganizerMeetingPageFlag(false));
+  dispatch(proposeNewMeetingPageFlag(false));
+  dispatch(viewMeetingFlag(false));
+};
+
+// Function to handle specific navigation cases
+export const handleNavigationforParticipantVideoFlow = async ({
+  NavigationLocation,
+  navigate,
+  dispatch,
+  location,
+  flags,
+  t,
+}) => {
+  const meetingFlags = {
+    scheduleMeetingPageFlag:
+      flags.scheduleMeetingPageFlagReducer || flags.scheduleMeetingsPageFlag,
+    viewProposeDateMeetingPageFlag:
+      flags.viewProposeDateMeetingPageFlagReducer ||
+      flags.viewProposeDateMeetingsPageFlag,
+    viewAdvanceMeetingPublishPageFlag:
+      flags.viewAdvanceMeetingPublishPageFlagReducer ||
+      flags.viewAdvanceMeetingsPublishPageFlag,
+    viewAdvanceMeetingUnpublishPageFlag:
+      flags.viewAdvanceMeetingUnpublishPageFlagReducer ||
+      flags.viewAdvanceMeetingsUnpublishPageFlag,
+    viewProposeOrganizerMeetingPageFlag:
+      flags.viewProposeOrganizerMeetingPageFlagReducer ||
+      flags.viewProposeOrganizerMeetingsPageFlag,
+    proposeNewMeetingPageFlag:
+      flags.proposeNewMeetingPageFlagReducer ||
+      flags.proposeNewMeetingsPageFlag,
+    viewMeetingFlag: flags.viewMeetingFlagReducer || flags.viewMeetingsFlag,
+  };
+
+  const shouldNavigateToMeeting = await isAnyMeetingPageActive(meetingFlags);
+
+  try {
+    if (shouldNavigateToMeeting) {
+      handleMeetingNavigation(navigate, dispatch);
+      return;
+    }
+
+    switch (NavigationLocation) {
+      case "dataroom":
+        navigate("/Diskus/dataroom");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "resolution":
+        navigate("/Diskus/resolution");
+        resetMeetingFlags(dispatch);
+        dispatch(resultResolutionFlag(false));
+        dispatch(voteResolutionFlag(false));
+        dispatch(viewAttachmentFlag(false));
+        dispatch(createResolutionModal(false));
+        dispatch(viewResolutionModal(false));
+        break;
+
+      case "committee":
+        navigate("/Diskus/committee");
+        resetMeetingFlags(dispatch);
+        dispatch(createCommitteePageFlag(false));
+        dispatch(updateCommitteePageFlag(false));
+        dispatch(viewCommitteePageFlag(false));
+        break;
+
+      case "Meeting":
+        handleMeetingCase(navigate, dispatch, t);
+        break;
+
+      case "groups":
+        navigate("/Diskus/groups");
+        resetMeetingFlags(dispatch);
+        dispatch(createGroupPageFlag(false));
+        dispatch(updateGroupPageFlag(false));
+        dispatch(viewGroupPageFlag(false));
+        break;
+
+      case "todolist":
+        navigate("/Diskus/todolist");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "calendar":
+        navigate("/Diskus/calendar");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "Notes":
+        navigate("/Diskus/Notes");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "polling":
+        navigate("/Diskus/polling");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "home":
+        if (!location.pathname.includes("/Admin")) {
+          navigate("/Diskus/");
+          resetMeetingFlags(dispatch);
+        }
+        break;
+
+      case "dataroomRecentAddedFiles":
+        localStorage.setItem("setTableView", 4);
+        navigate("/Diskus/dataroom");
+        resetMeetingFlags(dispatch);
+        break;
+
+      case "setting":
+        if (!location.pathname.includes("/Admin")) {
+          navigate("/Diskus/setting");
+          resetMeetingFlags(dispatch);
+        }
+        break;
+
+      case "Minutes":
+        if (!location.pathname.includes("/Admin")) {
+          navigate("/Diskus/Minutes");
+          resetMeetingFlags(dispatch);
+        }
+        break;
+
+      case "faq's":
+        if (!location.pathname.includes("/Admin")) {
+          navigate("/Diskus/faq's");
+          resetMeetingFlags(dispatch);
+        }
+        break;
+
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log(error, "Navigation error");
+  }
+};
+
+// Special handling for Meeting case
+const handleMeetingCase = (navigate, dispatch, t) => {
+  const currentView = localStorage.getItem("MeetingCurrentView");
+  const meetingpageRow = localStorage.getItem("MeetingPageRows");
+  const meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
+  const userID = localStorage.getItem("userID");
+
+  if (meetingpageRow !== null && meetingPageCurrent !== null) {
+    const searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: Number(meetingPageCurrent),
+      Length: Number(meetingpageRow),
+      PublishedMeetings: Number(currentView) === 1 ? true : false,
+    };
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+  } else {
+    const searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 50,
+      PublishedMeetings: Number(currentView) === 1 ? true : false,
+    };
+    localStorage.setItem("MeetingPageRows", 30);
+    localStorage.setItem("MeetingPageCurrent", 1);
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+  }
+
+  dispatch(viewMeetingFlag(false));
+  dispatch(meetingDetailsGlobalFlag(false));
+  dispatch(organizersGlobalFlag(false));
+  dispatch(agendaContributorsGlobalFlag(false));
+  dispatch(participantsGlobalFlag(false));
+  dispatch(agendaGlobalFlag(false));
+  dispatch(meetingMaterialGlobalFlag(false));
+  dispatch(minutesGlobalFlag(false));
+  dispatch(proposedMeetingDatesGlobalFlag(false));
+  dispatch(actionsGlobalFlag(false));
+  dispatch(pollsGlobalFlag(false));
+  dispatch(attendanceGlobalFlag(false));
+  dispatch(uploadGlobalFlag(false));
+  resetMeetingFlags(dispatch);
 };

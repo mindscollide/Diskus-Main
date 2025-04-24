@@ -110,11 +110,11 @@ const MeetingDetails = ({
   const getCurrentDateforMeeting = getCurrentDate();
   const [rows, setRows] = useState([
     {
-      selectedOption: getCurrentDateforMeeting.dateFormat,
+      // selectedOption: getCurrentDateforMeeting.dateFormat,
       dateForView: getCurrentDateforMeeting.DateGMT,
-      startDate: getStartTime?.formattedTime,
+      // startDate: getStartTime?.formattedTime,
       startTime: getStartTime?.newFormatTime,
-      endDate: getEndTime?.formattedTime,
+      // endDate: getEndTime?.formattedTime,
       endTime: getEndTime?.newFormatTime,
     },
   ]);
@@ -233,12 +233,9 @@ const MeetingDetails = ({
       });
       setRows([
         {
-          selectedOption: "",
-          dateForView: "",
-          startDate: "",
-          startTime: "",
-          endDate: "",
-          endTime: "",
+          dateForView: getCurrentDateforMeeting.DateGMT,
+          startTime: getStartTime?.newFormatTime,
+          endTime: getEndTime?.newFormatTime,
         },
       ]);
     };
@@ -265,139 +262,87 @@ const MeetingDetails = ({
   };
 
   console.log("MeetingDetailsMeetingDetails", meetingDetails);
+  console.log("MeetingDetailsMeetingDetails rows", rows);
 
-  const handleStartDateChange = (index, date) => {
+  const handleMeetingStartTime = (index, date) => {
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
       const updatedRows = [...rows];
+      const selectedDate = new Date(updatedRows[index].dateForView);
+      const now = new Date();
 
-      if (
-        index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
-      ) {
-        if (formattedTime <= updatedRows[index - 1].endDate) {
-          showMessage(
-            t(
-              "Selected-start-time-should-not-be-less-than-the-previous-endTime"
-            ),
-            "error",
-            setOpen
-          );
-          updatedRows[index].startDate = getStartTime?.formattedTime;
+      // If date is today, time must be in the future
+      if (selectedDate.toDateString() === now.toDateString()) {
+        if (newDate <= now) {
+          showMessage("Start time must be in the future", "error", setOpen);
           updatedRows[index].startTime = getStartTime?.newFormatTime;
-          setRows(updatedRows);
           return;
-        } else {
-          if (
-            updatedRows[index].endDate !== "" &&
-            formattedTime >= updatedRows[index].endDate
-          ) {
-            showMessage(
-              t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-              "error",
-              setOpen
-            );
-            updatedRows[index].startDate = formattedTime;
-            updatedRows[index].startTime = newDate;
-            setRows(updatedRows);
-            return;
-          } else {
-            updatedRows[index].startDate = formattedTime;
-            updatedRows[index].startTime = newDate;
-            setRows(updatedRows);
-          }
-        }
-      } else {
-        if (
-          updatedRows[index].endDate !== "" &&
-          formattedTime >= updatedRows[index].endDate
-        ) {
-          showMessage(
-            t("Selected-start-time-should-not-be-greater-than-the-endTime"),
-            "error",
-            setOpen
-          );
-          updatedRows[index].startDate = formattedTime;
-          updatedRows[index].startTime = newDate;
-          setRows(updatedRows);
-          return;
-        } else {
-          updatedRows[index].startDate = formattedTime;
-          updatedRows[index].startTime = newDate;
-          setRows(updatedRows);
         }
       }
-    } else {
+
+      // Check against previous row if date matches
+      if (
+        index > 0 &&
+        updatedRows[index - 1].dateForView.toDateString() ===
+          selectedDate.toDateString()
+      ) {
+        const prevEndTime = new Date(updatedRows[index - 1].endTime);
+        if (newDate <= prevEndTime) {
+          showMessage(
+            "Start time must be after previous end time",
+            "error",
+            setOpen
+          );
+          return;
+        }
+      }
+
+      // Check if endTime is already selected for this row
+      if (
+        updatedRows[index].endTime &&
+        newDate >= new Date(updatedRows[index].endTime)
+      ) {
+        showMessage("Start time must be before end time", "error", setOpen);
+        updatedRows[index].startTime = getStartTime?.newFormatTime;
+        return;
+      }
+
+      updatedRows[index].startTime = newDate;
+      setRows(updatedRows);
     }
   };
 
-  const handleEndDateChange = (index, date) => {
+  const handleMeetingEndTime = (index, date) => {
     let newDate = new Date(date);
 
     if (newDate instanceof Date && !isNaN(newDate)) {
-      const hours = ("0" + newDate.getHours()).slice(-2);
-      const minutes = ("0" + newDate.getMinutes()).slice(-2);
-
-      // Format the time as HH:mm:ss
-      const formattedTime = `${hours}${minutes}${"00"}`;
-
       const updatedRows = [...rows];
+      const startTime = new Date(updatedRows[index].startTime);
 
-      if (
-        index > 0 &&
-        updatedRows[index - 1].selectedOption ===
-          updatedRows[index].selectedOption
-      ) {
-        if (formattedTime <= updatedRows[index].startDate) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-the-previous-one"),
-            "error",
-            setOpen
-          );
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          return;
-        } else {
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          setRows(updatedRows);
-        }
-      } else {
-        if (formattedTime <= updatedRows[index].startDate) {
-          showMessage(
-            t("Selected-end-time-should-not-be-less-than-start-time"),
-            "error",
-            setOpen
-          );
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          return;
-        } else {
-          updatedRows[index].endDate = formattedTime;
-          updatedRows[index].endTime = newDate;
-          setRows(updatedRows);
-        }
+      if (newDate <= startTime) {
+        showMessage("End time must be after start time", "error", setOpen);
+        updatedRows[index].endTime = getEndTime?.newFormatTime;
+        return;
       }
-      // }
-    } else {
+
+      updatedRows[index].endTime = newDate;
+      setRows(updatedRows);
     }
   };
 
   const changeDateStartHandler = (date, index) => {
     try {
       let newDate = new Date(date);
-      let DateDate = new DateObject(date).format("YYYYMMDD");
-      const updatedRows = [...rows];
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // set to start of today
 
-      updatedRows[index].selectedOption = DateDate;
+      if (newDate < today) {
+        showMessage("Date should not be in the past", "error", setOpen);
+        return;
+      }
+
+      const updatedRows = [...rows];
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
     } catch (error) {
@@ -415,11 +360,11 @@ const MeetingDetails = ({
       setRows([
         ...rows,
         {
-          selectedOption: dateFormat,
+          // selectedOption: dateFormat,
           dateForView: DateGMT,
-          startDate: getStartTime?.formattedTime,
+          // startDate: getStartTime?.formattedTime,
           startTime: getStartTime?.newFormatTime,
-          endDate: getEndTime?.formattedTime,
+          // endDate: getEndTime?.formattedTime,
           endTime: getEndTime?.newFormatTime,
         },
       ]);
@@ -454,13 +399,17 @@ const MeetingDetails = ({
     }
 
     rows.forEach((data, index) => {
+      let meetingDates = moment(data.dateForView).format("YYYYMMDD");
+      let meetingStartTime = moment(data.startTime).format("HHmmss");
+      let meetingEndTime = moment(data.endTime).format("HHmmss");
+      console.log(
+        { meetingDates, meetingStartTime, meetingEndTime },
+        "meetingEndTime"
+      );
       newArr.push({
-        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate),
-        EndTime: createConvert(data.selectedOption + data.endDate),
+        MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
+        StartTime: createConvert(meetingDates + meetingStartTime),
+        EndTime: createConvert(meetingDates + meetingEndTime),
       });
     });
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -496,6 +445,7 @@ const MeetingDetails = ({
           MeetingStatusID: 1,
         },
       };
+      console.log({ data }, "meetingEndTime");
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -532,13 +482,17 @@ const MeetingDetails = ({
     }
 
     rows.forEach((data, index) => {
+      let meetingDates = moment(data.dateForView).format("YYYYMMDD");
+      let meetingStartTime = moment(data.startTime).format("HHmmss");
+      let meetingEndTime = moment(data.endTime).format("HHmmss");
+      console.log(
+        { meetingDates, meetingStartTime, meetingEndTime },
+        "meetingEndTime"
+      );
       newArr.push({
-        MeetingDate: createConvert(data.selectedOption + data.startDate).slice(
-          0,
-          8
-        ),
-        StartTime: createConvert(data.selectedOption + data.startDate),
-        EndTime: createConvert(data.selectedOption + data.endDate),
+        MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
+        StartTime: createConvert(meetingDates + meetingStartTime),
+        EndTime: createConvert(meetingDates + meetingEndTime),
       });
     });
 
@@ -627,18 +581,19 @@ const MeetingDetails = ({
     }
 
     // Process each row to construct the newArr
-    rows.forEach((data) => {
-      const convertedStartDate = createConvert(
-        data.selectedOption + data.startDate
-      );
-      const convertedEndDate = createConvert(
-        data.selectedOption + data.endDate
-      );
 
+    rows.forEach((data, index) => {
+      let meetingDates = moment(data.dateForView).format("YYYYMMDD");
+      let meetingStartTime = moment(data.startTime).format("HHmmss");
+      let meetingEndTime = moment(data.endTime).format("HHmmss");
+      console.log(
+        { meetingDates, meetingStartTime, meetingEndTime },
+        "meetingEndTime"
+      );
       newArr.push({
-        MeetingDate: convertedStartDate.slice(0, 8), // YYYYMMDD
-        StartTime: convertedStartDate, // HHmmss
-        EndTime: convertedEndDate, // HHmmss
+        MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
+        StartTime: createConvert(meetingDates + meetingStartTime),
+        EndTime: createConvert(meetingDates + meetingEndTime),
       });
     });
 
@@ -859,7 +814,6 @@ const MeetingDetails = ({
     "getALlMeetingTypes?.meetingTypes"
   );
 
-
   //Reminder Frequency Drop Down Data
   useEffect(() => {
     try {
@@ -922,41 +876,41 @@ const MeetingDetails = ({
     }
   }, [recurringDropDown, meetingDetails.RecurringOptions]);
 
-    //Meeting Type Drop Down Data
-    useEffect(() => {
-      try {
-        if (
-          getALlMeetingTypes?.meetingTypes !== null &&
-          getALlMeetingTypes.meetingTypes.length > 0
-        ) {
-          let Newdata = [];
-          getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
-            console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
-            Newdata.push({
-              value: data.pK_MTID,
-              label: data.type,
-            });
-            if (index === 0) {
-              console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
-              let typeData = {
-                PK_MTID: data.pK_MTID,
-                Type: data.type,
-              };
-  
-              console.log(typeData, "getALlMeetingTypesgetALlMeetingTypes");
-  
-              setMeetingDetails({
-                ...meetingDetails,
-                MeetingType: typeData,
-              });
-            }
+  //Meeting Type Drop Down Data
+  useEffect(() => {
+    try {
+      if (
+        getALlMeetingTypes?.meetingTypes !== null &&
+        getALlMeetingTypes.meetingTypes.length > 0
+      ) {
+        let Newdata = [];
+        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
+          console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+          Newdata.push({
+            value: data.pK_MTID,
+            label: data.type,
           });
-          setmeetingTypeDropdown(Newdata);
-        }
-      } catch (error) {
-        console.log(error);
+          if (index === 0) {
+            console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+            let typeData = {
+              PK_MTID: data.pK_MTID,
+              Type: data.type,
+            };
+
+            console.log(typeData, "getALlMeetingTypesgetALlMeetingTypes");
+
+            setMeetingDetails({
+              ...meetingDetails,
+              MeetingType: typeData,
+            });
+          }
+        });
+        setmeetingTypeDropdown(Newdata);
       }
-    }, [getALlMeetingTypes]);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [getALlMeetingTypes]);
 
   // Showing The reposnse messege
   useEffect(() => {
@@ -1304,7 +1258,7 @@ const MeetingDetails = ({
                                 <Row className='mt-2'>
                                   <Col lg={4} md={4} sm={12}>
                                     <DatePicker
-                                      selected={data.selectedOption}
+                                      // selected={data.selectedOption}
                                       value={data.dateForView}
                                       format={"DD/MM/YYYY"}
                                       minDate={
@@ -1373,12 +1327,12 @@ const MeetingDetails = ({
                                       calendar={calendarValue}
                                       locale={localValue}
                                       format='hh:mm A'
-                                      selected={data.startDate}
+                                      // selected={data.startDate}
                                       value={data.startTime}
                                       editable={false}
                                       plugins={[<TimePicker hideSeconds />]}
                                       onChange={(date) =>
-                                        handleStartDateChange(index, date)
+                                        handleMeetingStartTime(index, date)
                                       }
                                       disabled={
                                         (Number(editorRole.status) === 9 ||
@@ -1433,11 +1387,10 @@ const MeetingDetails = ({
                                       locale={localValue}
                                       value={data.endTime}
                                       format='hh:mm A'
-                                      selected={data.endDate}
                                       plugins={[<TimePicker hideSeconds />]}
                                       editable={false}
                                       onChange={(date) =>
-                                        handleEndDateChange(index, date)
+                                        handleMeetingEndTime(index, date)
                                       }
                                       disabled={
                                         (Number(editorRole.status) === 9 ||

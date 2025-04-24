@@ -237,10 +237,13 @@ const UserManagementProcess = () => {
   );
 
   if (UserMangementReducerdefaultRoutingValue === 1) {
+    // Sign In Component
     componentToRender = <SignInComponent />;
   } else if (UserMangementReducerdefaultRoutingValue === 2) {
+    // Password Verification Component
     componentToRender = <PasswordVerification />;
   } else if (UserMangementReducerdefaultRoutingValue === 3) {
+    // Verify OTP
     componentToRender = <VerifyOTPUM />;
   } else if (UserMangementReducerdefaultRoutingValue === 4) {
     componentToRender = <TwoFactorVerifyUM />;

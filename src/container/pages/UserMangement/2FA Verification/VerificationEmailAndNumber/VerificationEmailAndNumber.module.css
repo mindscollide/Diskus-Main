@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  width: 380px !important;
-  padding: 30px 45px;
+  max-width: 380px !important;
+  /* padding: 30px 45px; */
 }
 
 .TwoFa_heading {

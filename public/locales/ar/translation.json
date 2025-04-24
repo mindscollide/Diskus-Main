@@ -2340,7 +2340,7 @@
   "FILE_SHARED": "[Place holder] file shared with you",
   "FOLDER_SHARED": "[Place holder] folder shared with you",
   "No-attachement": "لا يوجد مرفق",
-  "Has-again-added-you-as-a-minutes-reviewer-in-the-meeting": "قام بإضافتك مرة أخرى كمراجع لمحاضر الاجتماع",
+  "Has-again-added-you-as-a-minutes-reviewer-in-the-meeting": "قام بإضافتك مرة أخرى كمراجع لمحاضر الاجتماع في الاجتماع",
   "Has-changed-your-Role-from-group-head-member-to-group-member-head-in-the-group": " قام بتغيير دورك من (رئيس المجموعة/عضو) إلى (عضو/رئيس المجموعة) في المجموعة ",
   "Has-changed-your-Role-from-Previous-Role-name-to-New-Role-Name-in-the-committee": "قام بتغيير دورك من (اسم الدور السابق) إلى (اسم الدور الجديد) في اللجنة",
   "Has-deleted-the-poll": "قام بحذف الاستطلاع",
@@ -2419,5 +2419,6 @@
   "Presenter-view-started": "Presenter view started",
   "VIDEO_RECORDING_ONETO_ONE_RECEIVED": "Video Recording of Call with [Participant Name] is available now",
   "VIDEO_RECORDING_GROUP_RECEIVED": "Video Recording of Group Call with [Participant Name] and others is available now",
-  "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available"
+  "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available",
+  "Submit": "إرسال "
 }

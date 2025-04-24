@@ -215,6 +215,8 @@ const VerificationEmailAndNumber = () => {
   }, [Helper.socket]);
 
   const handleGoBackButton = () => {
+    console.log("goback");
+
     localStorage.setItem("LoginFlowPageRoute", 4);
     dispatch(LoginFlowRoutes(4));
   };

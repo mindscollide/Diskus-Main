@@ -14,6 +14,7 @@ import {
   currentMeetingStatus,
   GetMeetingStatusDataAPI,
   LeaveCurrentMeetingOtherMenus,
+  LeaveMeetingVideo,
   meetingDetailsGlobalFlag,
   meetingMaterialGlobalFlag,
   minutesGlobalFlag,
@@ -60,6 +61,7 @@ import {
   leaveMeetingVideoOnEndStatusMqtt,
   leavePresenterViewMainApiTest,
   participantWaitingListBox,
+  setRaisedUnRaisedParticiant,
   stopPresenterViewMainApiTest,
   toggleParticipantsVisibility,
 } from "../../../../../store/actions/VideoFeature_actions";
@@ -163,6 +165,69 @@ const LeaveVideoIntimationModal = () => {
     localStorage.setItem("webNotifactionDataRoutecheckFlag", false);
   };
 
+  const functionForMeetingVideoScenario = async () => {
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting) {
+      if (isMeetingVideo) {
+        console.log("Saif Check Issue");
+        if (!isMeetingVideoHostCheck) {
+          let participantRoomId = localStorage.getItem("participantRoomId");
+          let newMeetingTitle = localStorage.getItem("meetingTitle");
+          let currentMeetingID = Number(
+            localStorage.getItem("currentMeetingID")
+          );
+          let participantUID = localStorage.getItem("participantUID");
+
+          console.log("busyCall");
+          let Data = {
+            RoomID: String(participantRoomId),
+            UserGUID: String(participantUID),
+            Name: String(newMeetingTitle),
+            IsHost: isMeetingVideoHostCheck ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(showCancelModalmeetingDeitals(false));
+          dispatch(LeaveInitmationMessegeVideoMeetAction(false));
+        }
+      }
+    }
+
+    let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+    let Data = {
+      FK_MDID: currentMeeting,
+      DateTime: getCurrentDateTimeUTC(),
+    };
+    await dispatch(
+      LeaveCurrentMeetingOtherMenus(
+        navigate,
+        t,
+        Data,
+        scheduleMeetingsPageFlag,
+        viewProposeDateMeetingsPageFlag,
+        viewAdvanceMeetingsPublishPageFlag,
+        viewAdvanceMeetingsUnpublishPageFlag,
+        viewProposeOrganizerMeetingsPageFlag,
+        proposeNewMeetingsPageFlag,
+        viewMeetingsFlag,
+        scheduleMeetingPageFlagReducer,
+        viewProposeDateMeetingPageFlagReducer,
+        viewAdvanceMeetingPublishPageFlagReducer,
+        viewAdvanceMeetingUnpublishPageFlagReducer,
+        viewProposeOrganizerMeetingPageFlagReducer,
+        proposeNewMeetingPageFlagReducer,
+        viewMeetingFlagReducer,
+        location
+      )
+    );
+    await dispatch(currentMeetingStatus(0));
+  };
+
   //handle Yes button
   const handleYesButtonLeaveVideoMeeting = async () => {
     try {
@@ -236,504 +301,33 @@ const LeaveVideoIntimationModal = () => {
         }
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === true
-          ) {
-            if (meetingpageRow !== null && meetingPageCurrent !== null) {
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber: Number(meetingPageCurrent),
-                Length: Number(meetingpageRow),
-                PublishedMeetings: Number(currentView) === 1 ? true : false,
-              };
-              dispatch(searchNewUserMeeting(navigate, searchData, t));
-            } else {
-              let searchData = {
-                Date: "",
-                Title: "",
-                HostName: "",
-                UserID: Number(userID),
-                PageNumber: 1,
-                Length: 50,
-                PublishedMeetings: Number(currentView) === 1 ? true : false,
-              };
-              localStorage.setItem("MeetingPageRows", 30);
-              localStorage.setItem("MeetingPageCurrent", 1);
-              dispatch(searchNewUserMeeting(navigate, searchData, t));
-            }
-            dispatch(viewMeetingFlag(false));
-            dispatch(meetingDetailsGlobalFlag(false));
-            dispatch(organizersGlobalFlag(false));
-            dispatch(agendaContributorsGlobalFlag(false));
-            dispatch(participantsGlobalFlag(false));
-            dispatch(agendaGlobalFlag(false));
-            dispatch(meetingMaterialGlobalFlag(false));
-            dispatch(minutesGlobalFlag(false));
-            dispatch(proposedMeetingDatesGlobalFlag(false));
-            dispatch(actionsGlobalFlag(false));
-            dispatch(pollsGlobalFlag(false));
-            dispatch(attendanceGlobalFlag(false));
-            dispatch(uploadGlobalFlag(false));
-          }
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "todolist") {
-        //If Navigating to Task Tab
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/todolist");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "calendar") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/calendar");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "Notes") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/Notes");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "dataroom") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/dataroom");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "groups") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/groups");
-          dispatch(createGroupPageFlag(false));
-          dispatch(updateGroupPageFlag(false));
-          dispatch(viewGroupPageFlag(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "committee") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/committee");
-          dispatch(createCommitteePageFlag(false));
-          dispatch(updateCommitteePageFlag(false));
-          dispatch(viewCommitteePageFlag(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "resolution") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/resolution");
-          dispatch(resultResolutionFlag(false));
-          dispatch(voteResolutionFlag(false));
-          dispatch(viewAttachmentFlag(false));
-          dispatch(createResolutionModal(false));
-          dispatch(viewResolutionModal(false));
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "polling") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingsPageFlag === true ||
-            viewProposeDateMeetingsPageFlag === true ||
-            viewAdvanceMeetingsPublishPageFlag === true ||
-            viewAdvanceMeetingsUnpublishPageFlag === true ||
-            viewProposeOrganizerMeetingsPageFlag === true ||
-            proposeNewMeetingsPageFlag === true) &&
-          viewMeetingsFlag === false
-        ) {
-          navigate("/Diskus/Meeting");
-          dispatch(showCancelModalmeetingDeitals(true));
-          dispatch(uploadGlobalFlag(false));
-        } else {
-          navigate("/Diskus/polling");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "dataroomRecentAddedFiles") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (
-          (scheduleMeetingPageFlagReducer === true ||
-            viewProposeDateMeetingPageFlagReducer === true ||
-            viewAdvanceMeetingPublishPageFlagReducer === true ||
-            viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-            viewProposeOrganizerMeetingPageFlagReducer === true ||
-            proposeNewMeetingPageFlagReducer === true) &&
-          viewMeetingFlagReducer === false
-        ) {
-          dispatch(showCancelModalmeetingDeitals(true));
-        } else {
-          localStorage.setItem("setTableView", 4);
-          navigate("/Diskus/dataroom");
-          dispatch(showCancelModalmeetingDeitals(false));
-          dispatch(scheduleMeetingPageFlag(false));
-          dispatch(viewProposeDateMeetingPageFlag(false));
-          dispatch(viewAdvanceMeetingPublishPageFlag(false));
-          dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-          dispatch(viewProposeOrganizerMeetingPageFlag(false));
-          dispatch(proposeNewMeetingPageFlag(false));
-          dispatch(viewMeetingFlag(false));
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "home") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-            dispatch(showCancelModalmeetingDeitals(true));
-          } else {
-            navigate("/Diskus/");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "setting") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-            dispatch(showCancelModalmeetingDeitals(true));
-          } else {
-            navigate("/Diskus/setting");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "Minutes") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-            dispatch(showCancelModalmeetingDeitals(true));
-          } else {
-            navigate("/Diskus/Minutes");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
+        functionForMeetingVideoScenario();
       } else if (NavigationLocation === "faq's") {
-        let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
-        let Data = {
-          FK_MDID: currentMeeting,
-          DateTime: getCurrentDateTimeUTC(),
-        };
-        dispatch(LeaveCurrentMeetingOtherMenus(navigate, t, Data));
-        dispatch(currentMeetingStatus(0));
-        if (location.pathname.includes("/Admin") === false) {
-          if (
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-          ) {
-            navigate("/Diskus/Meeting");
-            dispatch(showCancelModalmeetingDeitals(true));
-          } else {
-            navigate("/Diskus/faq's");
-            dispatch(showCancelModalmeetingDeitals(false));
-            dispatch(scheduleMeetingPageFlag(false));
-            dispatch(viewProposeDateMeetingPageFlag(false));
-            dispatch(viewAdvanceMeetingPublishPageFlag(false));
-            dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
-            dispatch(viewProposeOrganizerMeetingPageFlag(false));
-            dispatch(proposeNewMeetingPageFlag(false));
-            dispatch(viewMeetingFlag(false));
-          }
-        }
+        functionForMeetingVideoScenario();
       }
     } catch (error) {
       console.log(error, "NavigationError");

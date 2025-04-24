@@ -660,7 +660,7 @@ body[dir="rtl"] a.SignOutOptionMenu.text-black.border-none.FontClass.nav-link {
 
 .BellNotificationIconStyles {
   position: relative !important;
-  margin-left: 10px !important;
+  margin-left: 12px !important;
   cursor: pointer !important;
   display: flex !important;
   justify-content: center !important;
@@ -672,16 +672,19 @@ body[dir="rtl"] .BellNotificationIconStyles {
 }
 
 .NotficationCountSpan {
-  width: 17px !important;
-  height: 16px !important;
-  background: #6172d6 !important;
-  border-radius: 50% !important;
-  color: #fff !important;
-  position: absolute !important;
-  top: -5px !important;
-  left: 31px !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  font-size: 10px !important;
+  min-width: 17px;
+  height: 16px;
+  background: #6172d6;
+  border-radius: 999px;
+  color: #fff;
+  position: absolute;
+  top: -5px;
+  left: 31px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 10px;
+  padding: 0 4px;
+  line-height: 1;
+  white-space: nowrap;
 }

@@ -196,6 +196,7 @@ body[dir="rtl"] .SelectLinetwofac {
 body[dir="rtl"] .VerifyHeadingtwofac {
   font-weight: 600 !important;
   font-size: calc(35px - 10%) !important;
+  margin-top: 0 !important;
 }
 
 .diskus-logo {
