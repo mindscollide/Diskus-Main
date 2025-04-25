@@ -1166,6 +1166,12 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
                   console.log("ResolutionAccessDenied");
                   dispatch(AccessDeniedPolls(true));
                 }
+              } else if (no === 3) {
+                if (
+                  JSON.parse(localStorage.getItem("resolutionDeleted")) === true
+                ) {
+                  dispatch(AccessDeniedPolls(true));
+                }
               }
               dispatch(getResolutionById_Fail(t("Unable-to-fetch-data")));
             } else if (

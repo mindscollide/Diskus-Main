@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./AccessDeniedModal.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -17,7 +17,14 @@ const AccessDeniedModal = () => {
 
   const handleOnClickAccessDenied = () => {
     dispatch(AccessDeniedPolls(false));
+    localStorage.removeItem("resolutionDeleted");
   };
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("resolutionDeleted");
+    };
+  }, []);
 
   return (
     <section>
@@ -28,6 +35,7 @@ const AccessDeniedModal = () => {
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(AccessDeniedPolls(false));
+          localStorage.removeItem("resolutionDeleted");
         }}
         ModalBody={
           <>
@@ -74,6 +82,11 @@ const AccessDeniedModal = () => {
                   ) : JSON.parse(
                       localStorage.getItem("ResolutionAccessDenied")
                     ) === true ? (
+                    <span className={styles["DeninedModalSubHeading"]}>
+                      {"Resolution"}
+                    </span>
+                  ) : JSON.parse(localStorage.getItem("resolutionDeleted")) ===
+                    true ? (
                     <span className={styles["DeninedModalSubHeading"]}>
                       {"Resolution"}
                     </span>

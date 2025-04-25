@@ -73,6 +73,7 @@ import {
   unansweredOneToOneCall,
   stopScreenShareOnPresenterStarting,
   maxParticipantVideoDenied,
+  screenShareTriggeredGlobally,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -519,6 +520,9 @@ const Dashboard = () => {
       console.log("mqtt mqmqmqmqmqmq", currentCallType);
       // denied screen should be closed when presentation is started
       dispatch(maxParticipantVideoDenied(false));
+
+      // remove Screen Should be closed when presentation is started
+      dispatch(maxParticipantVideoRemoved(false));
 
       if (String(meetingVideoID) === String(payload?.meetingID)) {
         showMessage(t("Presenter-view-started"), "success", setOpen);
@@ -1251,6 +1255,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "REMOVED_FROM_MEETING".toLowerCase()
             ) {
+              dispatch(screenShareTriggeredGlobally(false));
               let isMeetingVideoCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideo")
               );
@@ -1626,6 +1631,57 @@ const Dashboard = () => {
                 presenterNewParticipantJoin(data.payload.newParticipant)
               );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "VIDEO_SHARING_ENABLED".toLowerCase()
+            ) {
+              console.log(data.payload, "checkdatacheckdata");
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
+              let isGuid = localStorage.getItem("isGuid");
+              let participantUID = localStorage.getItem("participantUID");
+              let userID = String(localStorage.getItem("userID"));
+
+              if (isZoomEnabled) {
+                let UID;
+                if (isMeeting) {
+                  if (isMeetingVideo) {
+                    UID = String(
+                      isMeetingVideoHostCheck ? isGuid : participantUID
+                    );
+                  }
+                } else {
+                  UID = userID;
+                }
+
+                //It will check the UID is same who shared the screen
+                if (String(data.payload.shareScreenUID) === String(UID)) {
+                  console.log("check Data Triggered");
+                  dispatch(screenShareTriggeredGlobally(false));
+                } else {
+                  console.log("check Data Triggered");
+                  dispatch(screenShareTriggeredGlobally(true));
+                }
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "VIDEO_SHARING_DISABLED".toLowerCase()
+            ) {
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
+              if (isZoomEnabled) {
+                console.log("check Data Triggered");
+                dispatch(screenShareTriggeredGlobally(false));
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()

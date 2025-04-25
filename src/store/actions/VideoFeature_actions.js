@@ -3,6 +3,7 @@ import {
   getVideoCallParticipantsAndWaitingList,
   getVideoCallParticipantsForGuest,
   hideUnHidePaticipantVideo,
+  isSharedScreenCall,
   joinMeetingVideoRequest,
   joinPresenterView,
   leavePresenterView,
@@ -2245,6 +2246,8 @@ const leavePresenterViewMainApi = (
                   // dispatch(minimizeVideoPanelFlag(false));
                   // localStorage.setItem("isMeetingVideo", true);
 
+                  // Ye jb participant video Meeting ma ho aur presenter view ma join hojae tou jab wo presenter View ma ajaye toh leavePresenter
+                  // krna par wo meetingVideo ma b Join nahi hoga
                   console.log("Check is participant Uid Removed?");
                   localStorage.removeItem("participantUID");
                   localStorage.removeItem("participantRoomId");
@@ -2739,6 +2742,111 @@ const stopScreenShareOnPresenterStarting = (response) => {
   };
 };
 
+// For Screen Share for triggered when some share screen Init
+const isSharedScreenInit = () => {
+  return {
+    type: actions.IS_SCREEN_SHARED_TRIGGERED_INIT,
+  };
+};
+
+const isSharedScreenSuccess = (response, message) => {
+  return {
+    type: actions.IS_SCREEN_SHARED_TRIGGERED_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const isSharedScreenFail = (message) => {
+  return {
+    type: actions.IS_SCREEN_SHARED_TRIGGERED_FAIL,
+    message: message,
+  };
+};
+
+const isSharedScreenTriggeredApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(isSharedScreenInit());
+    let form = new FormData();
+    form.append("RequestMethod", isSharedScreenCall.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
+    axios({
+      method: "post",
+      url: meetingApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_IsSharedScreen_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                isSharedScreenSuccess(
+                  response.data.responseResult,
+                  t("Successful")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_IsSharedScreen_02".toLowerCase()
+                )
+            ) {
+              await dispatch(isSharedScreenFail(t("Invalid-request-data-2")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_IsSharedScreen_03".toLowerCase()
+                )
+            ) {
+              await dispatch(isSharedScreenFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_IsSharedScreen_04".toLowerCase()
+                )
+            ) {
+              await dispatch(isSharedScreenFail(t("UnSuccessful")));
+            }
+          } else {
+            await dispatch(isSharedScreenFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(isSharedScreenFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(isSharedScreenFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Global state for Screen Shared triggered
+const screenShareTriggeredGlobally = (response) => {
+  console.log(response, "screenShareTriggeredGlobally");
+  return {
+    type: actions.GLOBAL_SCREEN_SHARE_TRIGGERED,
+    response: response,
+  };
+};
+
 export {
   participantAcceptandReject,
   participantWaitingList,
@@ -2840,4 +2948,6 @@ export {
   getGroupCallParticipantsMainApi,
   updatedParticipantListForPresenter,
   stopScreenShareOnPresenterStarting,
+  isSharedScreenTriggeredApi,
+  screenShareTriggeredGlobally,
 };
