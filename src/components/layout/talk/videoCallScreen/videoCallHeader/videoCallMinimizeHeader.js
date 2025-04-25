@@ -143,6 +143,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   let isGuid = localStorage.getItem("isGuid");
   let newName = localStorage.getItem("name");
   let currentMeetingID = localStorage.getItem("currentMeetingID");
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
   // Prepare data for the API request
 
@@ -198,6 +199,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const leavePresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
+
+  const MinimizeVideoFlag = useSelector(
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+  );
+
+  console.log(MinimizeVideoFlag, "MinimizeVideoFlag");
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let activeRoomID = localStorage.getItem("activeRoomID");
@@ -1673,60 +1680,57 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           </Col>
         </Row>
       </div>
-      {/* <div ref={leaveModalPopupRef}>
-        {LeaveCallModalFlag === true && (
-          <div className="minimize-leave-meeting-options leave-meeting-options-position">
-            <div className="leave-meeting-options__inner">
-              {meetingHostData?.isDashboardVideo ? (
-                <>
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={
-                      presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presentation")
-                        : presenterViewFlag && !presenterViewHostFlag
-                        ? t("Leave-presentation")
-                        : t("Leave-call")
-                    }
-                    onClick={() =>
-                      minimizeEndCallParticipant(false, false, false, false)
-                    }
-                  />
+      {/* {!isCaller && isMeeting && (
+        <>
+          <div ref={leaveModalPopupRef}>
+            {LeaveCallModalFlag === true && (
+              <div className="minimize-leave-meeting-options leave-meeting-options-position">
+                <div className="leave-meeting-options__inner">
+                  {meetingHostData?.isDashboardVideo ? (
+                    <>
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-red-button"
+                        text={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Stop-presentation")
+                            : presenterViewFlag && !presenterViewHostFlag
+                            ? t("Leave-presentation")
+                            : t("Leave-call")
+                        }
+                        onClick={() =>
+                          minimizeEndCallParticipant(false, false, false, false)
+                        }
+                      />
 
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    text="Cancel"
-                    onClick={closeVideoPanel}
-                  />
-                </>
-              ) : (
-                <>
-                  {currentCallType === 1 && (
-                    <Button
-                      className="leave-meeting-options__btn leave-meeting-red-button"
-                      text={t("Leave-call")}
-                      onClick={minimizeLeaveCall}
-                    />
-                  )}
-                  {currentCallType === 2 && (
-                    <Button
-                      className="leave-meeting-options__btn leave-meeting-gray-button"
-                      text={currentCallType === 2 && t("End-call-for-everyone")}
-                      onClick={minimizeLeaveCall}
-                    />
-                  )}
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
+                        onClick={closeVideoPanel}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      {currentCallType === 1 && (
+                        <Button
+                          className="leave-meeting-options__btn leave-meeting-red-button"
+                          text={t("Leave-call")}
+                          onClick={minimizeLeaveCall}
+                        />
+                      )}
 
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    text="Cancel"
-                    onClick={closeVideoPanel}
-                  />
-                </>
-              )}
-            </div>
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
+                        onClick={closeVideoPanel}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div> */}
+        </>
+      )} */}
     </>
   );
 };
