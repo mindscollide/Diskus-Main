@@ -1680,7 +1680,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           </Col>
         </Row>
       </div>
-      {/* {!isCaller && isMeeting && (
+      {!isCaller && isMeeting && (
         <>
           <div ref={leaveModalPopupRef}>
             {LeaveCallModalFlag === true && (
@@ -1695,6 +1695,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                             ? t("Stop-presentation")
                             : presenterViewFlag && !presenterViewHostFlag
                             ? t("Leave-presentation")
+                            : isMeetingVideo
+                            ? t("Leave-meeting-video-call")
                             : t("Leave-call")
                         }
                         onClick={() =>
@@ -1730,7 +1732,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             )}
           </div>
         </>
-      )} */}
+      )}
     </>
   );
 };

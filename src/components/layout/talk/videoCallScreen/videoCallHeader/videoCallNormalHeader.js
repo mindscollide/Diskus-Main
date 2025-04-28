@@ -59,6 +59,8 @@ import {
   getGroupCallParticipantsMainApi,
   updatedParticipantListForPresenter,
   presenterNewParticipantJoin,
+  screenShareTriggeredGlobally,
+  isSharedScreenTriggeredApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { GetOTOUserMessages } from "../../../../../store/actions/Talk_action";
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
@@ -151,7 +153,6 @@ const VideoCallNormalHeader = ({
   console.log(videoControl, "videoControl");
   console.log(MinimizeVideoFlag, "MinimizeVideoFlag");
   console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
-
 
   // For Participant Raise Un Raised Hand
   const raisedUnRaisedParticipant = useSelector(
@@ -267,6 +268,8 @@ const VideoCallNormalHeader = ({
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
+
+  console.log(globallyScreenShare, "globallyScreenShare");
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -889,6 +892,38 @@ const VideoCallNormalHeader = ({
         handlePresenterViewFunc();
       } else if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
+        if (globallyScreenShare) {
+          console.log("busyCall");
+          if (isZoomEnabled) {
+            console.log("busyCall");
+            let participantRoomId = localStorage.getItem("participantRoomId");
+            let roomID = String(localStorage.getItem("acceptedRoomID"));
+            let userID = String(localStorage.getItem("userID"));
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let isGuid = localStorage.getItem("isGuid");
+            let participantUID = String(localStorage.getItem("participantUID"));
+            let RoomID = isMeetingVideo
+              ? isMeetingVideoHostCheck
+                ? newRoomID
+                : participantRoomId
+              : roomID;
+
+            let UID = isMeetingVideo
+              ? isMeetingVideoHostCheck
+                ? isGuid
+                : participantUID
+              : userID;
+            let data = {
+              RoomID: RoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(UID),
@@ -2045,7 +2080,7 @@ const VideoCallNormalHeader = ({
       </Row>
 
       <div ref={leaveModalPopupRef}>
-        {LeaveCallModalFlag === true || MinimizeVideoFlag ? (
+        {LeaveCallModalFlag === true && !MinimizeVideoFlag ? (
           <div className="leave-meeting-options leave-meeting-options-position">
             <div className="leave-meeting-options__inner">
               {editorRole.role === "Organizer" ? (
