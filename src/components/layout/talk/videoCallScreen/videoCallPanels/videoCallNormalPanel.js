@@ -969,88 +969,6 @@ const VideoPanelNormal = () => {
       dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
-  console.log("disableZoomBeforeJoinSession", disableBeforeJoinZoom);
-
-  //For Screen Share Triggered in which participant have disabled the ScreenShare Icon
-  const isScreenSharedFunct = () => {
-    console.log("Check is Screen Shared or Not");
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    let newRoomId = String(localStorage.getItem("newRoomId"));
-    let acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
-    let participantRoomId = String(localStorage.getItem("participantRoomId"));
-    let isGuid = String(localStorage.getItem("isGuid"));
-    let participantUID = String(localStorage.getItem("participantUID"));
-    let userID = String(localStorage.getItem("userID"));
-    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-
-    let RoomId;
-    let newUID;
-    if (isZoomEnabled) {
-      if (isMeeting) {
-        if (isMeetingVideo) {
-          console.log("isMeeting is true");
-          RoomId = isMeetingVideoHostCheck ? newRoomId : participantRoomId;
-          newUID = isMeetingVideoHostCheck ? isGuid : participantUID;
-        }
-      } else {
-        console.log("isMeeting is false");
-        RoomId = acceptedRoomID;
-        newUID = userID;
-      }
-
-      let data = {
-        RoomID: RoomId,
-        ShareScreen: true,
-        UID: newUID,
-      };
-      dispatch(isSharedScreenTriggeredApi(navigate, t, data));
-    }
-  };
-
-  //For Stop Screen Share Triggered in which all have enabled ScreenShare Icon
-  const isStopScreenShareFunc = () => {
-    console.log("Check is Screen Shared or Not");
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
-
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    let newRoomId = String(localStorage.getItem("newRoomId"));
-    let acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
-    let participantRoomId = String(localStorage.getItem("participantRoomId"));
-    let isGuid = String(localStorage.getItem("isGuid"));
-    let participantUID = String(localStorage.getItem("participantUID"));
-    let userID = String(localStorage.getItem("userID"));
-    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-
-    let RoomId;
-    let newUID;
-    if (isZoomEnabled) {
-      if (isMeeting) {
-        if (isMeetingVideo) {
-          console.log("isMeeting is true");
-          RoomId = isMeetingVideoHostCheck ? newRoomId : participantRoomId;
-          newUID = isMeetingVideoHostCheck ? isGuid : participantUID;
-        }
-      } else {
-        console.log("isMeeting is false");
-        RoomId = acceptedRoomID;
-        newUID = userID;
-      }
-
-      let data = {
-        RoomID: RoomId,
-        ShareScreen: false,
-        UID: newUID,
-      };
-      dispatch(isSharedScreenTriggeredApi(navigate, t, data));
-    }
-  };
 
   // Add event listener for messages
   useEffect(() => {
@@ -1069,11 +987,6 @@ const VideoPanelNormal = () => {
         console.log("maximizeParticipantVideoFlag");
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
-            console.log("Check is Screen Shared or Not");
-            if (!presenterViewFlag && !presenterViewHostFlag) {
-              console.log("Check is Screen Shared or Not");
-              isScreenSharedFunct();
-            }
             let alreadyInMeetingVideo = JSON.parse(
               sessionStorage.getItem("alreadyInMeetingVideo")
             );
@@ -1094,6 +1007,30 @@ const VideoPanelNormal = () => {
             if (nonPresenter) {
               console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
+              if (isZoomEnabled) {
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+                let roomID = localStorage.getItem("acceptedRoomID");
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let isGuid = localStorage.getItem("isGuid");
+                let participantUID = localStorage.getItem("participantUID");
+                let RoomID =
+                  presenterViewFlag &&
+                  (presenterViewHostFlag || presenterViewJoinFlag)
+                    ? roomID
+                    : isMeetingVideoHostCheck
+                    ? newRoomID
+                    : participantRoomId;
+                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                let data = {
+                  RoomID: RoomID,
+                  ShareScreen: true,
+                  UID: UID,
+                };
+                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              }
             } else if (alreadyInMeetingVideo) {
               console.log("handlePostMessage", alreadyInMeetingVideo);
               if (alreadyInMeetingVideoStartPresenterCheck) {
@@ -1123,11 +1060,6 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
             console.log("ScreenSharedStopMsgFromIframe");
-            if (!presenterViewFlag && !presenterViewHostFlag) {
-              console.log("Check is Screen Shared stop or Not");
-              isStopScreenShareFunc();
-            }
-            dispatch(screenShareTriggeredGlobally(false));
 
             if (presenterViewFlag && presenterViewHostFlag) {
               console.log("ScreenSharedStopMsgFromIframe");
@@ -1144,6 +1076,31 @@ const VideoPanelNormal = () => {
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
               dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+            } else {
+              if (isZoomEnabled) {
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+                let roomID = localStorage.getItem("acceptedRoomID");
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let isGuid = localStorage.getItem("isGuid");
+                let participantUID = localStorage.getItem("participantUID");
+                let RoomID =
+                  presenterViewFlag &&
+                  (presenterViewHostFlag || presenterViewJoinFlag)
+                    ? roomID
+                    : isMeetingVideoHostCheck
+                    ? newRoomID
+                    : participantRoomId;
+                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                let data = {
+                  RoomID: RoomID,
+                  ShareScreen: false,
+                  UID: UID,
+                };
+                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              }
             }
 
             break;

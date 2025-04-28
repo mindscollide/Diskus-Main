@@ -149,6 +149,9 @@ const VideoCallNormalHeader = ({
   );
   console.log(audioControl, "audioControl");
   console.log(videoControl, "videoControl");
+  console.log(MinimizeVideoFlag, "MinimizeVideoFlag");
+  console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
+
 
   // For Participant Raise Un Raised Hand
   const raisedUnRaisedParticipant = useSelector(
@@ -2042,7 +2045,7 @@ const VideoCallNormalHeader = ({
       </Row>
 
       <div ref={leaveModalPopupRef}>
-        {LeaveCallModalFlag === true ? (
+        {LeaveCallModalFlag === true || MinimizeVideoFlag ? (
           <div className="leave-meeting-options leave-meeting-options-position">
             <div className="leave-meeting-options__inner">
               {editorRole.role === "Organizer" ? (
