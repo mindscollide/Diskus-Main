@@ -29,7 +29,6 @@ import {
   leaveCallModal,
   guestJoinPopup,
   participantWaitingList,
-  guestLeaveVideoMeeting,
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
@@ -45,7 +44,6 @@ import {
   globalStateForVideoStream,
   globalNavigatorVideoStream,
   leaveMeetingVideoOnlogout,
-  makeParticipantHost,
   endMeetingStatusForQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
@@ -54,12 +52,8 @@ import {
   participantVideoButtonState,
   videoIconOrButtonState,
   setParticipantRemovedFromVideobyHost,
-  openPresenterViewMainApi,
   joinPresenterViewMainApi,
-  stopPresenterViewMainApi,
   presenterViewGlobalState,
-  leavePresenterViewMainApi,
-  stopMeetingVideoByPresenter,
   presenterNewParticipantJoin,
   participantWaitingListBox,
   toggleParticipantsVisibility,
@@ -109,7 +103,6 @@ import {
   callRequestReceivedMQTT,
   GetUserMissedCallCount,
   missedCallCount,
-  LeaveCall,
   cleareResponceMessage,
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
@@ -138,8 +131,6 @@ import {
   meetingReminderNotifcation,
   getDashboardMeetingCountMQTT,
   removeUpComingEvent,
-  AgendaPollVotingStartedAction,
-  AgendaPollVotingStartedMQTTObjectDataAction,
   meetingTranscriptDownloaded,
   meetingMinutesDownloaded,
 } from "../../store/actions/NewMeetingActions";
@@ -213,11 +204,8 @@ import {
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
-import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
-import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { DATAROOM_BREADCRUMBS } from "../../store/action_types";
 import {
   SignatureDocumentActionByMe,
   SignatureDocumentReceived,
@@ -245,11 +233,8 @@ const Dashboard = () => {
     cancelConfirmationModal,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
-    groupVideoCallAccepted,
     setGroupVideoCallAccepted,
-    groupCallParticipantList,
     setGroupCallParticipantList,
-    unansweredCallParticipant,
     setUnansweredCallParticipant,
   } = useMeetingContext();
 
@@ -292,26 +277,31 @@ const Dashboard = () => {
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
-  console.log(NormalizeVideoFlag, "NormalizeVideoFlag");
 
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag
   );
+
   const ShowGuestPopup = useSelector(
     (state) => state.videoFeatureReducer.ShowGuestPopup
   );
+
   const VideoChatMessagesFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.VideoChatMessagesFlag
   );
+  
   const MinimizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
+
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
+
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
+
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
     (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
   );
@@ -324,24 +314,6 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.audioControlForParticipant
   );
 
-  const getNewParticipantsMeetingJoin = useSelector(
-    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
-  );
-
-  const getAllParticipantMain = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-  console.log(
-    getAllParticipantMain,
-    "getAllParticipantMaingetAllParticipantMain"
-  );
-
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
-  );
-  const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
-  );
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
@@ -357,8 +329,6 @@ const Dashboard = () => {
   const leavePresenterOrJoinOtherCalls = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
   );
-
-  console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
@@ -401,12 +371,15 @@ const Dashboard = () => {
   useEffect(() => {
     presenterViewJoinFlagRef.current = presenterViewJoinFlag;
   }, [presenterViewJoinFlag]);
+
   useEffect(() => {
     presenterViewHostFlagFlagRef.current = presenterViewHostFlag;
   }, [presenterViewHostFlag]);
+
   useEffect(() => {
     presenterViewFlagRef.current = presenterViewFlag;
   }, [presenterViewFlag]);
+
   useEffect(() => {
     maximizeParticipantVideoFlagRef.current = maximizeParticipantVideoFlag;
   }, [maximizeParticipantVideoFlag]);
@@ -423,6 +396,7 @@ const Dashboard = () => {
           : 0;
     }
   }, [getJoinMeetingParticipantorHostrequest]);
+  
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
