@@ -25,6 +25,7 @@ import {
   disableZoomBeforeJoinSession,
   getVideoCallParticipantsMainApi,
   incomingVideoCallFlag,
+  isSharedScreenTriggeredApi,
   leavePresenterViewMainApi,
   makeHostNow,
   makeParticipantHost,
@@ -964,7 +965,6 @@ const VideoPanelNormal = () => {
       dispatch(leavePresenterViewMainApi(navigate, t, data, 4));
     }
   };
-  console.log("disableZoomBeforeJoinSession", disableBeforeJoinZoom);
 
   // Add event listener for messages
   useEffect(() => {
@@ -1026,7 +1026,7 @@ const VideoPanelNormal = () => {
                   ShareScreen: true,
                   UID: UID,
                 };
-                // dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
               }
             } else if (alreadyInMeetingVideo) {
               console.log("handlePostMessage", alreadyInMeetingVideo);
@@ -1072,6 +1072,31 @@ const VideoPanelNormal = () => {
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
               dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
+            }else{
+              if (isZoomEnabled) {
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+                let roomID = localStorage.getItem("acceptedRoomID");
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let isGuid = localStorage.getItem("isGuid");
+                let participantUID = localStorage.getItem("participantUID");
+                let RoomID =
+                  presenterViewFlag &&
+                  (presenterViewHostFlag || presenterViewJoinFlag)
+                    ? roomID
+                    : isMeetingVideoHostCheck
+                    ? newRoomID
+                    : participantRoomId;
+                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                let data = {
+                  RoomID: RoomID,
+                  ShareScreen: false,
+                  UID: UID,
+                };
+                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              }
             }
 
             break;

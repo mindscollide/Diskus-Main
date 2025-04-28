@@ -94,8 +94,6 @@ const VideoCallNormalHeader = ({
 
   const { t } = useTranslation();
 
-  const location = useLocation();
-
   const {
     editorRole,
     groupVideoCallAccepted,
@@ -116,10 +114,6 @@ const VideoCallNormalHeader = ({
 
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag
-  );
-
-  const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
 
   const NormalizeVideoFlag = useSelector(
@@ -147,8 +141,6 @@ const VideoCallNormalHeader = ({
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
   );
-  console.log(audioControl, "audioControl");
-  console.log(videoControl, "videoControl");
 
   // For Participant Raise Un Raised Hand
   const raisedUnRaisedParticipant = useSelector(
@@ -218,18 +210,6 @@ const VideoCallNormalHeader = ({
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
-  console.log(
-    { presenterViewFlag, presenterViewHostFlag, presenterViewJoinFlag },
-    "presenterViewFlag"
-  );
-
-  const presenterMeetingId = useSelector(
-    (state) => state.videoFeatureReducer.presenterMeetingId
-  );
-
-  const meetingStoppedByPresenter = useSelector(
-    (state) => state.videoFeatureReducer.meetingStoppedByPresenter
-  );
 
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
@@ -243,35 +223,23 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.unansweredFlagForOneToOneCall
   );
 
-  const inCallParticipantList = useSelector(
-    (state) => state.videoFeatureReducer.inCallParticipantList
-  );
-
   const pendingCallParticipantList = useSelector(
     (state) => state.videoFeatureReducer.pendingCallParticipantList
-  );
-
-  console.log(
-    { inCallParticipantList, pendingCallParticipantList },
-    "inCallParticipantList"
   );
 
   const leavePresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
-  console.log(leavePresenterParticipant, "leavePresenterParticipant");
 
-  console.log(groupCallParticipantList, "groupCallParticipantList");
-  console.log(unansweredCallParticipant, "unansweredCallParticipant");
-
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+  console.log("mqtt globallyScreenShare", globallyScreenShare);
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
   let currentUserName = localStorage.getItem("name");
   let callerName = localStorage.getItem("callerName");
-  let initiateVideoCallFlag = JSON.parse(
-    localStorage.getItem("initiateVideoCall")
-  );
   let lan = localStorage.getItem("i18nextLng");
   let recipentCalledID = Number(localStorage.getItem("recipentCalledID"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -1568,9 +1536,9 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag === true ||
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
-                  : presenterViewFlag && presenterViewHostFlag
-                  ? "presenterImage"
-                  : presenterViewFlag && presenterViewJoinFlag
+                  : (presenterViewFlag &&
+                      (presenterViewHostFlag || presenterViewJoinFlag)) ||
+                    globallyScreenShare
                   ? "presenterImage"
                   : "screenShare-Toggle inactive-state"
               }
@@ -1587,7 +1555,11 @@ const VideoCallNormalHeader = ({
                 }
               >
                 <img
-                  onClick={!presenterViewFlag ? screenShareButton : null}
+                  onClick={
+                    !presenterViewFlag && !globallyScreenShare
+                      ? screenShareButton
+                      : null
+                  }
                   src={NonActiveScreenShare}
                   alt="Screen Share"
                 />

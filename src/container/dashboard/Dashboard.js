@@ -29,7 +29,6 @@ import {
   leaveCallModal,
   guestJoinPopup,
   participantWaitingList,
-  guestLeaveVideoMeeting,
   participanMuteUnMuteMeeting,
   participanRaisedUnRaisedHand,
   participantHideUnhideVideo,
@@ -45,7 +44,6 @@ import {
   globalStateForVideoStream,
   globalNavigatorVideoStream,
   leaveMeetingVideoOnlogout,
-  makeParticipantHost,
   endMeetingStatusForQuickMeetingVideo,
   endMeetingStatusForQuickMeetingModal,
   leaveMeetingVideoOnEndStatusMqtt,
@@ -54,12 +52,8 @@ import {
   participantVideoButtonState,
   videoIconOrButtonState,
   setParticipantRemovedFromVideobyHost,
-  openPresenterViewMainApi,
   joinPresenterViewMainApi,
-  stopPresenterViewMainApi,
   presenterViewGlobalState,
-  leavePresenterViewMainApi,
-  stopMeetingVideoByPresenter,
   presenterNewParticipantJoin,
   participantWaitingListBox,
   toggleParticipantsVisibility,
@@ -73,6 +67,7 @@ import {
   unansweredOneToOneCall,
   stopScreenShareOnPresenterStarting,
   maxParticipantVideoDenied,
+  screenShareTriggeredGlobally,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -108,7 +103,6 @@ import {
   callRequestReceivedMQTT,
   GetUserMissedCallCount,
   missedCallCount,
-  LeaveCall,
   cleareResponceMessage,
 } from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
@@ -137,8 +131,6 @@ import {
   meetingReminderNotifcation,
   getDashboardMeetingCountMQTT,
   removeUpComingEvent,
-  AgendaPollVotingStartedAction,
-  AgendaPollVotingStartedMQTTObjectDataAction,
   meetingTranscriptDownloaded,
   meetingMinutesDownloaded,
 } from "../../store/actions/NewMeetingActions";
@@ -212,11 +204,8 @@ import {
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
-import VotingPollAgendaIntiminationModal from "../pages/meeting/scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
-import CastVoteAgendaModal from "../pages/meeting/viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
-import { DATAROOM_BREADCRUMBS } from "../../store/action_types";
 import {
   SignatureDocumentActionByMe,
   SignatureDocumentReceived,
@@ -244,11 +233,8 @@ const Dashboard = () => {
     cancelConfirmationModal,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
-    groupVideoCallAccepted,
     setGroupVideoCallAccepted,
-    groupCallParticipantList,
     setGroupCallParticipantList,
-    unansweredCallParticipant,
     setUnansweredCallParticipant,
   } = useMeetingContext();
 
@@ -279,7 +265,6 @@ const Dashboard = () => {
     (state) => state.VideoMainReducer.ResponseMessage
   );
 
-  console.log(IncomingVideoCallFlagReducer, "IncomingVideoCallFlagReducer");
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
@@ -291,7 +276,6 @@ const Dashboard = () => {
   const maximizeParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
-  console.log(NormalizeVideoFlag, "NormalizeVideoFlag");
 
   const MaximizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeVideoFlag
@@ -323,24 +307,6 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.audioControlForParticipant
   );
 
-  const getNewParticipantsMeetingJoin = useSelector(
-    (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
-  );
-
-  const getAllParticipantMain = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-  console.log(
-    getAllParticipantMain,
-    "getAllParticipantMaingetAllParticipantMain"
-  );
-
-  const getVideoParticpantListandWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.getVideoParticpantListandWaitingList
-  );
-  const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
-  );
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
@@ -386,12 +352,17 @@ const Dashboard = () => {
   let newClient = Helper.socket;
   // for close the realtime Notification bar
   const presenterViewJoinFlagRef = useRef(presenterViewJoinFlag);
+
   const presenterViewHostFlagFlagRef = useRef(presenterViewHostFlag);
+
   const presenterViewFlagRef = useRef(presenterViewFlag);
+
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
+
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
     getJoinMeetingParticipantorHostrequest
   );
+
   const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
     getJoinMeetingParticipantorHostrequest
   );
@@ -400,12 +371,15 @@ const Dashboard = () => {
   useEffect(() => {
     presenterViewJoinFlagRef.current = presenterViewJoinFlag;
   }, [presenterViewJoinFlag]);
+
   useEffect(() => {
     presenterViewHostFlagFlagRef.current = presenterViewHostFlag;
   }, [presenterViewHostFlag]);
+
   useEffect(() => {
     presenterViewFlagRef.current = presenterViewFlag;
   }, [presenterViewFlag]);
+
   useEffect(() => {
     maximizeParticipantVideoFlagRef.current = maximizeParticipantVideoFlag;
   }, [maximizeParticipantVideoFlag]);
@@ -422,6 +396,7 @@ const Dashboard = () => {
           : 0;
     }
   }, [getJoinMeetingParticipantorHostrequest]);
+
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
@@ -1641,6 +1616,60 @@ const Dashboard = () => {
                   data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID
                 )
               );
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "VIDEO_SHARING_ENABLED".toLowerCase()
+            ) {
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
+              let userID = String(localStorage.getItem("userID"));
+              let UID = isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID
+                : userID;
+              if (isZoomEnabled) {
+                if (String(data.payload.shareScreenUID) !== String(UID)) {
+                  console.log("check Data Triggered");
+                  dispatch(screenShareTriggeredGlobally(true));
+                }
+              }
+            } else if (
+              data.payload.message.toLowerCase() ===
+              "VIDEO_SHARING_DISABLED".toLowerCase()
+            ) {
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
+              let userID = String(localStorage.getItem("userID"));
+              let UID = isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID
+                : userID;
+              if (isZoomEnabled) {
+                if (String(data.payload.shareScreenUID) !== String(UID)) {
+                  console.log("check Data Triggered");
+                  dispatch(screenShareTriggeredGlobally(false));
+                }
+              }
             }
           } catch (error) {
             console.log(error);
