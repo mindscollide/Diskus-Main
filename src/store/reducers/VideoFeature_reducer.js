@@ -703,7 +703,6 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         maxParticipantVideoRemovedFlag: action.response,
-        MaximizeVideoFlag: false,
       };
 
     case actions.PARTICIPANT_REMOVED_FROM_VIDEO_BY_HOST:

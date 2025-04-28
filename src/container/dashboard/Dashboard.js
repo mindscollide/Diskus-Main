@@ -265,7 +265,10 @@ const Dashboard = () => {
     (state) => state.VideoMainReducer.ResponseMessage
   );
 
-  console.log(IncomingVideoCallFlagReducer, "IncomingVideoCallFlagReducer");
+  const maxParticipantVideoRemovedFlag = useSelector(
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+  );
+
   const NormalizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
@@ -289,7 +292,7 @@ const Dashboard = () => {
   const VideoChatMessagesFlagReducer = useSelector(
     (state) => state.videoFeatureReducer.VideoChatMessagesFlag
   );
-  
+
   const MinimizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
@@ -396,7 +399,7 @@ const Dashboard = () => {
           : 0;
     }
   }, [getJoinMeetingParticipantorHostrequest]);
-  
+
   const leaveMeetingCall = async (data) => {
     let getUserID =
       localStorage.getItem("userID") !== null && localStorage.getItem("userID");
@@ -495,10 +498,11 @@ const Dashboard = () => {
       // denied screen should be closed when presentation is started
       dispatch(maxParticipantVideoDenied(false));
 
-      // remove Screen Should be closed when presentation is started
-      dispatch(maxParticipantVideoRemoved(false));
-
       if (String(meetingVideoID) === String(payload?.meetingID)) {
+        if (maxParticipantVideoRemovedFlag) {
+          // remove Screen Should be closed when presentation is started
+         await dispatch(maxParticipantVideoRemoved(false));
+        }
         showMessage(t("Presenter-view-started"), "success", setOpen);
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
