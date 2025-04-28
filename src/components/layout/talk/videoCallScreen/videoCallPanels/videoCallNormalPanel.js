@@ -1004,6 +1004,30 @@ const VideoPanelNormal = () => {
             if (nonPresenter) {
               console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
+              if (isZoomEnabled) {
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+                let roomID = localStorage.getItem("acceptedRoomID");
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let isGuid = localStorage.getItem("isGuid");
+                let participantUID = localStorage.getItem("participantUID");
+                let RoomID =
+                  presenterViewFlag &&
+                  (presenterViewHostFlag || presenterViewJoinFlag)
+                    ? roomID
+                    : isMeetingVideoHostCheck
+                    ? newRoomID
+                    : participantRoomId;
+                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                let data = {
+                  RoomID: RoomID,
+                  ShareScreen: true,
+                  UID: UID,
+                };
+                // dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              }
             } else if (alreadyInMeetingVideo) {
               console.log("handlePostMessage", alreadyInMeetingVideo);
               if (alreadyInMeetingVideoStartPresenterCheck) {
