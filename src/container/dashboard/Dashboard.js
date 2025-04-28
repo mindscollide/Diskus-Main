@@ -1635,38 +1635,25 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "VIDEO_SHARING_ENABLED".toLowerCase()
             ) {
-              console.log(data.payload, "checkdatacheckdata");
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
-              let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
-              );
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled")
               );
-              let isGuid = localStorage.getItem("isGuid");
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
               let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
               let userID = String(localStorage.getItem("userID"));
-
+              let UID = isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID
+                : userID;
               if (isZoomEnabled) {
-                let UID;
-                if (isMeeting) {
-                  if (isMeetingVideo) {
-                    UID = String(
-                      isMeetingVideoHostCheck ? isGuid : participantUID
-                    );
-                  }
-                } else {
-                  UID = userID;
-                }
-
-                //It will check the UID is same who shared the screen
-                if (String(data.payload.shareScreenUID) === String(UID)) {
-                  console.log("check Data Triggered");
-                  dispatch(screenShareTriggeredGlobally(false));
-                } else {
+                if (String(data.payload.shareScreenUID) !== String(UID)) {
                   console.log("check Data Triggered");
                   dispatch(screenShareTriggeredGlobally(true));
                 }
@@ -1678,9 +1665,25 @@ const Dashboard = () => {
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled")
               );
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+              let isMeetingVideoHostCheck = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+              let participantUID = localStorage.getItem("participantUID");
+              let isGuid = localStorage.getItem("isGuid");
+              let userID = String(localStorage.getItem("userID"));
+              let UID = isMeetingVideo
+                ? isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID
+                : userID;
               if (isZoomEnabled) {
-                console.log("check Data Triggered");
-                dispatch(screenShareTriggeredGlobally(false));
+                if (String(data.payload.shareScreenUID) !== String(UID)) {
+                  console.log("check Data Triggered");
+                  dispatch(screenShareTriggeredGlobally(false));
+                }
               }
             } else if (
               data.payload.message.toLowerCase() ===
