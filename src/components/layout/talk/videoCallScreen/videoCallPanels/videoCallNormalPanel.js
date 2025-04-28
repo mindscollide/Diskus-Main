@@ -402,113 +402,122 @@ const VideoPanelNormal = () => {
   }, []);
 
   useEffect(() => {
-    const handleLeaveSession = async () => {
-      const iframe = iframeRef.current;
-      if (participantRemovedFromVideobyHost && iframe?.contentWindow) {
-        console.log("busyCall");
+    if (participantRemovedFromVideobyHost) {
+      const handleLeaveSession = async () => {
+        const iframe = iframeRef.current;
+        if (participantRemovedFromVideobyHost && iframe?.contentWindow) {
+          console.log("busyCall");
 
-        iframe.contentWindow.postMessage("leaveSession", "*");
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const meetingHost = {
-          isHost: false,
-          isHostId: 0,
-          isDashboardVideo: true,
-        };
-        dispatch(makeHostNow(meetingHost));
-        localStorage.setItem("isMeeting", true);
-        localStorage.setItem("isMeetingVideo", false);
-        localStorage.removeItem("refinedVideoUrl");
-        localStorage.setItem("refinedVideoGiven", false);
-        localStorage.setItem("isWebCamEnabled", false);
-        localStorage.setItem("isMicEnabled", false);
-        dispatch(setAudioControlHost(false));
-        dispatch(setVideoControlHost(false));
+          iframe.contentWindow.postMessage("leaveSession", "*");
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          const meetingHost = {
+            isHost: false,
+            isHostId: 0,
+            isDashboardVideo: true,
+          };
+          dispatch(makeHostNow(meetingHost));
+          localStorage.setItem("isMeeting", true);
+          localStorage.setItem("isMeetingVideo", false);
+          localStorage.removeItem("refinedVideoUrl");
+          localStorage.setItem("refinedVideoGiven", false);
+          localStorage.setItem("isWebCamEnabled", false);
+          localStorage.setItem("isMicEnabled", false);
+          dispatch(setAudioControlHost(false));
+          dispatch(setVideoControlHost(false));
 
-        localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
+          localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
 
-        dispatch(maximizeVideoPanelFlag(false));
-        dispatch(maxParticipantVideoRemoved(true));
-        // Participant room Id and usrrGuid
-        let participantRoomIds = localStorage.getItem("participantRoomId");
-        let participantUID = localStorage.getItem("participantUID");
-        let currentMeetingID = localStorage.getItem("currentMeetingID");
-        let newName = localStorage.getItem("name");
-        let Data = {
-          RoomID: String(participantRoomIds),
-          UserGUID: String(participantUID),
-          Name: String(newName),
-          IsHost: false,
-          MeetingID: Number(currentMeetingID),
-        };
-        dispatch(setRaisedUnRaisedParticiant(false));
-        dispatch(LeaveMeetingVideo(Data, navigate, t));
-        dispatch(setParticipantRemovedFromVideobyHost(false));
-      }
-    };
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(maxParticipantVideoRemoved(true));
+          // Participant room Id and usrrGuid
+          let participantRoomIds = localStorage.getItem("participantRoomId");
+          let participantUID = localStorage.getItem("participantUID");
+          let currentMeetingID = localStorage.getItem("currentMeetingID");
+          let newName = localStorage.getItem("name");
+          let Data = {
+            RoomID: String(participantRoomIds),
+            UserGUID: String(participantUID),
+            Name: String(newName),
+            IsHost: false,
+            MeetingID: Number(currentMeetingID),
+          };
+          dispatch(setRaisedUnRaisedParticiant(false));
+          dispatch(LeaveMeetingVideo(Data, navigate, t));
+          dispatch(setParticipantRemovedFromVideobyHost(false));
+        }
+      };
 
-    handleLeaveSession();
+      handleLeaveSession();
+    }
   }, [participantRemovedFromVideobyHost, iframe]);
 
   useEffect(() => {
-    const handleLeaveSession = async () => {
-      const iframe = iframeRef.current;
-      if (participantLeaveCallForJoinNonMeetingCall && iframe?.contentWindow) {
-        console.log("busyCall");
-        let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
-        iframe.contentWindow.postMessage("leaveSession", "*");
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        let currentMeetingID = JSON.parse(
-          localStorage.getItem("currentMeetingID")
-        );
-        let newRoomID = meetinHostInfo?.isHost
-          ? localStorage.getItem("newRoomId")
-          : localStorage.getItem("activeRoomID");
-        let newUserGUID = meetinHostInfo?.isHost
-          ? localStorage.getItem("isGuid")
-          : localStorage.getItem("participantUID");
-        let newName = localStorage.getItem("name");
-        let Data = {
-          RoomID: String(newRoomID),
-          UserGUID: String(newUserGUID),
-          Name: String(newName),
-          IsHost: meetinHostInfo?.isHost ? true : false,
-          MeetingID: Number(currentMeetingID),
-        };
-        await dispatch(LeaveMeetingVideo(Data, navigate, t));
-        await dispatch(setAudioControlHost(false));
-        await dispatch(setVideoControlHost(false));
-        localStorage.setItem("isMicEnabled", false);
-        localStorage.setItem("isWebCamEnabled", false);
-        localStorage.setItem("activeOtoChatID", 0);
-        localStorage.setItem("initiateVideoCall", false);
-        localStorage.setItem("activeRoomID", 0);
-        localStorage.setItem("meetingVideoID", 0);
-        localStorage.setItem("newCallerID", 0);
-        localStorage.setItem("callerStatusObject", JSON.stringify([]));
-        localStorage.removeItem("newRoomId");
-        localStorage.removeItem("isHost");
-        localStorage.removeItem("isGuid");
-        localStorage.removeItem("hostUrl");
-        localStorage.removeItem("VideoView");
-        localStorage.removeItem("videoIframe");
-        localStorage.removeItem("CallType");
-        localStorage.removeItem("NewRoomID");
-        let currentUserId = Number(localStorage.getItem("userID"));
-        let callTypeID = Number(localStorage.getItem("callTypeID"));
-        let Data2 = {
-          ReciepentID: currentUserId,
-          RoomID: activeRoomID,
-          CallStatusID: 1,
-          CallTypeID: callTypeID,
-        };
-        dispatch(VideoCallResponse(Data2, navigate, t));
-        console.log("busyCall");
-        dispatch(incomingVideoCallFlag(false));
-        dispatch(setParticipantLeaveCallForJoinNonMeetingCall(false));
-      }
-    };
+    if (participantLeaveCallForJoinNonMeetingCall) {
+      const handleLeaveSession = async () => {
+        const iframe = iframeRef.current;
+        if (
+          participantLeaveCallForJoinNonMeetingCall &&
+          iframe?.contentWindow
+        ) {
+          console.log("busyCall");
+          let meetinHostInfo = JSON.parse(
+            localStorage.getItem("meetinHostInfo")
+          );
+          iframe.contentWindow.postMessage("leaveSession", "*");
+          await new Promise((resolve) => setTimeout(resolve, 100));
+          let currentMeetingID = JSON.parse(
+            localStorage.getItem("currentMeetingID")
+          );
+          let newRoomID = meetinHostInfo?.isHost
+            ? localStorage.getItem("newRoomId")
+            : localStorage.getItem("activeRoomID");
+          let newUserGUID = meetinHostInfo?.isHost
+            ? localStorage.getItem("isGuid")
+            : localStorage.getItem("participantUID");
+          let newName = localStorage.getItem("name");
+          let Data = {
+            RoomID: String(newRoomID),
+            UserGUID: String(newUserGUID),
+            Name: String(newName),
+            IsHost: meetinHostInfo?.isHost ? true : false,
+            MeetingID: Number(currentMeetingID),
+          };
+          await dispatch(LeaveMeetingVideo(Data, navigate, t));
+          await dispatch(setAudioControlHost(false));
+          await dispatch(setVideoControlHost(false));
+          localStorage.setItem("isMicEnabled", false);
+          localStorage.setItem("isWebCamEnabled", false);
+          localStorage.setItem("activeOtoChatID", 0);
+          localStorage.setItem("initiateVideoCall", false);
+          localStorage.setItem("activeRoomID", 0);
+          localStorage.setItem("meetingVideoID", 0);
+          localStorage.setItem("newCallerID", 0);
+          localStorage.setItem("callerStatusObject", JSON.stringify([]));
+          localStorage.removeItem("newRoomId");
+          localStorage.removeItem("isHost");
+          localStorage.removeItem("isGuid");
+          localStorage.removeItem("hostUrl");
+          localStorage.removeItem("VideoView");
+          localStorage.removeItem("videoIframe");
+          localStorage.removeItem("CallType");
+          localStorage.removeItem("NewRoomID");
+          let currentUserId = Number(localStorage.getItem("userID"));
+          let callTypeID = Number(localStorage.getItem("callTypeID"));
+          let Data2 = {
+            ReciepentID: currentUserId,
+            RoomID: activeRoomID,
+            CallStatusID: 1,
+            CallTypeID: callTypeID,
+          };
+          dispatch(VideoCallResponse(Data2, navigate, t));
+          console.log("busyCall");
+          dispatch(incomingVideoCallFlag(false));
+          dispatch(setParticipantLeaveCallForJoinNonMeetingCall(false));
+        }
+      };
 
-    handleLeaveSession();
+      handleLeaveSession();
+    }
   }, [participantLeaveCallForJoinNonMeetingCall, iframe]);
 
   useEffect(() => {
@@ -1072,7 +1081,7 @@ const VideoPanelNormal = () => {
               sessionStorage.setItem("StopPresenterViewAwait", true);
               console.log(data, "presenterViewJoinFlag");
               dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
-            }else{
+            } else {
               if (isZoomEnabled) {
                 let participantRoomId =
                   localStorage.getItem("participantRoomId");
