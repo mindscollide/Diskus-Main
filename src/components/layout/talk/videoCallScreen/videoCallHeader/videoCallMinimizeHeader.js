@@ -687,7 +687,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setOpen({
       ...open,
       flag: true,
-      message: t("Generating-meeting-link"),
+      message: t("Link-copied"),
     });
     setTimeout(() => {
       setOpen({

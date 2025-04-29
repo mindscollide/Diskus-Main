@@ -1400,7 +1400,7 @@ const VideoCallNormalHeader = ({
     setOpen({
       ...open,
       flag: true,
-      message: t("Generating-meeting-link"),
+      message:  t("Link-copied"),
     });
     setTimeout(() => {
       setOpen({

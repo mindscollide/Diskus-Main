@@ -18,11 +18,13 @@ const AccessDeniedModal = () => {
   const handleOnClickAccessDenied = () => {
     dispatch(AccessDeniedPolls(false));
     localStorage.removeItem("resolutionDeleted");
+    localStorage.removeItem("AccessDeniedCommittee");
   };
 
   useEffect(() => {
     return () => {
       localStorage.removeItem("resolutionDeleted");
+      localStorage.removeItem("AccessDeniedCommittee");
     };
   }, []);
 
@@ -36,6 +38,7 @@ const AccessDeniedModal = () => {
         onHide={() => {
           dispatch(AccessDeniedPolls(false));
           localStorage.removeItem("resolutionDeleted");
+          localStorage.removeItem("AccessDeniedCommittee");
         }}
         ModalBody={
           <>
@@ -89,6 +92,12 @@ const AccessDeniedModal = () => {
                     true ? (
                     <span className={styles["DeninedModalSubHeading"]}>
                       {"Resolution"}
+                    </span>
+                  ) : JSON.parse(
+                      localStorage.getItem("AccessDeniedCommittee")
+                    ) === true ? (
+                    <span className={styles["DeninedModalSubHeading"]}>
+                      {"Committee"}
                     </span>
                   ) : (
                     <span className={styles["DeninedModalSubHeading"]}>

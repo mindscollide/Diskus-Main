@@ -47,10 +47,7 @@ const RefreshToken = (navigate, t) => {
             );
             let message2 = t("Your-session-has-expired-please-login-again");
             await dispatch(refreshtokenFail(message2));
-            setTimeout(() => {
-              signOut(navigate, "", dispatch);
-            }, 4000);
-            // navigate("/");
+            await signOut(message2, dispatch);
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
