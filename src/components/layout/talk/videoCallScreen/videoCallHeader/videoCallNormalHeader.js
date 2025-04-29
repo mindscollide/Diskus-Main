@@ -269,8 +269,6 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  console.log(globallyScreenShare, "globallyScreenShare");
-
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
@@ -892,29 +890,19 @@ const VideoCallNormalHeader = ({
         handlePresenterViewFunc();
       } else if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
-        if (globallyScreenShare) {
+        if (!globallyScreenShare) {
           console.log("busyCall");
           if (isZoomEnabled) {
             console.log("busyCall");
-            let participantRoomId = localStorage.getItem("participantRoomId");
-            let roomID = String(localStorage.getItem("acceptedRoomID"));
-            let userID = String(localStorage.getItem("userID"));
+
             let isMeetingVideoHostCheck = JSON.parse(
               localStorage.getItem("isMeetingVideoHostCheck")
             );
             let isGuid = localStorage.getItem("isGuid");
-            let participantUID = String(localStorage.getItem("participantUID"));
-            let RoomID = isMeetingVideo
-              ? isMeetingVideoHostCheck
-                ? newRoomID
-                : participantRoomId
-              : roomID;
+            let RoomID =
+              isMeetingVideo && isMeetingVideoHostCheck ? newRoomID : null;
 
-            let UID = isMeetingVideo
-              ? isMeetingVideoHostCheck
-                ? isGuid
-                : participantUID
-              : userID;
+            let UID = isMeetingVideo && isMeetingVideoHostCheck ? isGuid : null;
             let data = {
               RoomID: RoomID,
               ShareScreen: false,
@@ -936,6 +924,32 @@ const VideoCallNormalHeader = ({
         leaveSuccess();
       } else if (isMeetingVideo) {
         console.log("busyCall");
+        if (!globallyScreenShare) {
+          if (isZoomEnabled) {
+            console.log("busyCall");
+            let participantRoomId = localStorage.getItem("participantRoomId");
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let participantUID = String(localStorage.getItem("participantUID"));
+            let RoomID =
+              isMeetingVideo && !isMeetingVideoHostCheck
+                ? participantRoomId
+                : null;
+
+            let UID =
+              isMeetingVideo && !isMeetingVideoHostCheck
+                ? participantUID
+                : null;
+            let data = {
+              RoomID: RoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
         let Data = {
           RoomID: String(participantRoomId),
           UserGUID: String(UID),
@@ -1030,6 +1044,27 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
       setGroupVideoCallAccepted([]);
       setUnansweredCallParticipant([]);
+      if (!globallyScreenShare) {
+        console.log("busyCall");
+        if (isZoomEnabled) {
+          console.log("busyCall");
+          let acceptedRoomID = localStorage.getItem("acceptedRoomID");
+          let isMeetingVideo = JSON.parse(
+            localStorage.getItem("isMeetingVideo")
+          );
+          let userID = String(localStorage.getItem("userID"));
+          let RoomID = !isMeetingVideo ? acceptedRoomID : null;
+
+          let UID = !isMeetingVideo ? userID : null;
+          let data = {
+            RoomID: RoomID,
+            ShareScreen: false,
+            UID: UID,
+          };
+          dispatch(screenShareTriggeredGlobally(false));
+          await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+        }
+      }
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: isZoomEnabled ? String(initiateCallRoomID) : activeRoomID,
@@ -1180,6 +1215,33 @@ const VideoCallNormalHeader = ({
         localStorage.removeItem("isHost");
         localStorage.removeItem("isNewHost");
         console.log("busyCall");
+
+        // when host share screen then leave meeting Video
+        if (!globallyScreenShare) {
+          console.log("busyCall");
+          if (isZoomEnabled) {
+            console.log("busyCall");
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let isGuid = localStorage.getItem("isGuid");
+            let RoomID =
+              isMeetingVideo && isMeetingVideoHostCheck
+                ? String(newRoomID)
+                : null;
+
+            let UID =
+              isMeetingVideo && isMeetingVideoHostCheck ? String(isGuid) : null;
+            let data = {
+              RoomID: RoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+
         let Data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -1235,6 +1297,36 @@ const VideoCallNormalHeader = ({
           }
         } catch (error) {}
         console.log("busyCall");
+        // when Participant share screen then leave meeting Video
+        if (!globallyScreenShare) {
+          if (isZoomEnabled) {
+            console.log("busyCall");
+            let participantRoomId = String(
+              localStorage.getItem("participantRoomId")
+            );
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let participantUID = String(localStorage.getItem("participantUID"));
+            let RoomID =
+              isMeetingVideo && !isMeetingVideoHostCheck
+                ? participantRoomId
+                : null;
+
+            let UID =
+              isMeetingVideo && !isMeetingVideoHostCheck
+                ? participantUID
+                : null;
+            let data = {
+              RoomID: RoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+
         let Data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -2078,65 +2170,68 @@ const VideoCallNormalHeader = ({
           )}
         </Col>
       </Row>
+      <>
+        <>
+          <div ref={leaveModalPopupRef}>
+            {LeaveCallModalFlag === true && !MinimizeVideoFlag ? (
+              <div className="leave-meeting-options leave-meeting-options-position">
+                <div className="leave-meeting-options__inner">
+                  {editorRole.role === "Organizer" ? (
+                    <>
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-red-button"
+                        text={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Stop-presentation")
+                            : presenterViewFlag && presenterViewJoinFlag
+                            ? t("Leave-presentation")
+                            : isMeetingVideo
+                            ? t("Leave-meeting-video-call")
+                            : t("End-call")
+                        }
+                        onClick={() => leaveCall(false, false, false, false)}
+                      />
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
+                        onClick={closeVideoPanel}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-red-button"
+                        text={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Stop-presentation")
+                            : presenterViewFlag && presenterViewJoinFlag
+                            ? t("Leave-presentation")
+                            : isMeetingVideo
+                            ? t("Leave-meeting-video-call")
+                            : t("End-call")
+                        }
+                        onClick={participantLeaveCall}
+                      />
 
-      <div ref={leaveModalPopupRef}>
-        {LeaveCallModalFlag === true && !MinimizeVideoFlag ? (
-          <div className="leave-meeting-options leave-meeting-options-position">
-            <div className="leave-meeting-options__inner">
-              {editorRole.role === "Organizer" ? (
-                <>
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={
-                      presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presentation")
-                        : presenterViewFlag && presenterViewJoinFlag
-                        ? t("Leave-presentation")
-                        : isMeetingVideo
-                        ? t("Leave-meeting-video-call")
-                        : t("End-call")
-                    }
-                    onClick={() => leaveCall(false, false, false, false)}
-                  />
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    text="Cancel"
-                    onClick={closeVideoPanel}
-                  />
-                </>
-              ) : (
-                <>
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-red-button"
-                    text={
-                      presenterViewFlag && presenterViewHostFlag
-                        ? t("Stop-presentation")
-                        : presenterViewFlag && presenterViewJoinFlag
-                        ? t("Leave-presentation")
-                        : isMeetingVideo
-                        ? t("Leave-meeting-video-call")
-                        : t("End-call")
-                    }
-                    onClick={participantLeaveCall}
-                  />
+                      <Button
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
+                        onClick={closeVideoPanel}
+                      />
+                    </>
+                  )}
+                </div>
+              </div>
+            ) : null}
 
-                  <Button
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
-                    text="Cancel"
-                    onClick={closeVideoPanel}
-                  />
-                </>
-              )}
-            </div>
+            <Notification
+              setOpen={setOpen}
+              open={open.flag}
+              message={open.message}
+            />
           </div>
-        ) : null}
-
-        <Notification
-          setOpen={setOpen}
-          open={open.flag}
-          message={open.message}
-        />
-      </div>
+        </>
+      </>
     </>
   );
 };

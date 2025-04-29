@@ -1008,8 +1008,10 @@ const VideoPanelNormal = () => {
               console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
               if (isZoomEnabled) {
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
+                let newRoomID = String(localStorage.getItem("newRoomId"));
+                let participantRoomId = String(
+                  localStorage.getItem("participantRoomId")
+                );
                 let roomID = String(localStorage.getItem("acceptedRoomID"));
                 let userID = String(localStorage.getItem("userID"));
                 let isMeetingVideoHostCheck = JSON.parse(
@@ -1019,6 +1021,9 @@ const VideoPanelNormal = () => {
                 let participantUID = String(
                   localStorage.getItem("participantUID")
                 );
+
+                console.log({ roomID });
+
                 let RoomID = isMeetingVideo
                   ? isMeetingVideoHostCheck
                     ? newRoomID
@@ -1084,8 +1089,10 @@ const VideoPanelNormal = () => {
               dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
             } else {
               if (isZoomEnabled) {
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
+                let participantRoomId = String(
+                  localStorage.getItem("participantRoomId")
+                );
+                let newRoomID = String(localStorage.getItem("newRoomId"));
                 let roomID = String(localStorage.getItem("acceptedRoomID"));
                 let userID = String(localStorage.getItem("userID"));
                 let isMeetingVideoHostCheck = JSON.parse(

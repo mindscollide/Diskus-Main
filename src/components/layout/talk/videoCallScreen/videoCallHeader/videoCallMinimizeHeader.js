@@ -204,8 +204,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
 
-  console.log(MinimizeVideoFlag, "MinimizeVideoFlag");
-
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let activeRoomID = localStorage.getItem("activeRoomID");
   let RoomID =
@@ -1538,7 +1536,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         />
                       </Tooltip>
                     </div>
-                    {LeaveCallModalFlag === true && (
+                    {LeaveCallModalFlag === true && !isMeeting && (
                       <div className="minimize-leave-meeting-options leave-meeting-options-position">
                         <div className="leave-meeting-options__inner">
                           {(currentCallType === 1 || currentCallType === 2) && (
