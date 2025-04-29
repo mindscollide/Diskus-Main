@@ -806,8 +806,8 @@ const Agenda = ({
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-    // allSavedPresenters,
-    // allUsersRC,
+    allSavedPresenters,
+    allUsersRC,
   ]);
 
   useEffect(() => {
