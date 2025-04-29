@@ -1060,7 +1060,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage(t("Generating-meeting-link"), "error", setOpen);
+    showMessage( t("Link-copied"), "success", setOpen);
   };
 
   const joinMeetingCall = () => {

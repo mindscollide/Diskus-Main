@@ -340,6 +340,9 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
     localStorage.setItem("LocalUserRoutes", JSON.stringify(LocalUserRoutes));
     localStorage.setItem("LocalAdminRoutes", JSON.stringify(LocalAdminRoutes));
+    if (Number(localStorage.getItem("LoginFlowPageRoute")) !== 1) {
+      localStorage.setItem("LoginFlowPageRoute", 1);
+    }
   } catch (error) {
     console.error(error);
   }
