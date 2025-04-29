@@ -48,6 +48,7 @@ import CustomPagination from "../../commen/functions/customPagination/Pagination
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
 import { Spin } from "antd";
+import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
 const Groups = () => {
   const { t } = useTranslation();
@@ -93,6 +94,10 @@ const Groups = () => {
 
   const talkStateDataAllUserChats = useSelector(
     (state) => state.talkStateData.AllUserChats
+  );
+
+  const AccessDeniedGlobalState = useSelector(
+    (state) => state.PollsReducer.AccessDeniedPolls
   );
 
   const [modalStatusChange, setModalStatusChange] = useState(false);
@@ -808,7 +813,7 @@ const Groups = () => {
           setViewGroupPage={setViewGroupPage}
         />
       ) : null}
-
+      {AccessDeniedGlobalState && <AccessDeniedModal />}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

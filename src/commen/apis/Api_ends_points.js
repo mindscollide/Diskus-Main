@@ -14,6 +14,7 @@ const dataRoomApi = baseURL + process.env.REACT_APP_DATA_ROOM_API;
 const getCommitteesApi = baseURL + process.env.REACT_APP_COMMITTEE_API;
 //const getCommitteesApi = "http://localhost:6695/Committee";
 const getGroupsApi = baseURL + process.env.REACT_APP_GROUPS_API;
+//const getGroupsApi = "http://localhost:47667/Groups";
 const getNotesApi = baseURL + process.env.REACT_APP_NOTES_API;
 //const getNotesApi = "http://localhost:37716/Notes";
 const getResolutionApi = baseURL + process.env.REACT_APP_RESOLUTION_API;

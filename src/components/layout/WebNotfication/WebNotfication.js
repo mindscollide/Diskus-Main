@@ -28,7 +28,10 @@ import {
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
-import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
+import {
+  getbyGroupID,
+  viewGroupPageFlag,
+} from "../../../store/actions/Groups_actions.js";
 import {
   getCommitteesbyCommitteeId,
   viewCommitteePageFlag,
@@ -837,22 +840,41 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 16) {
         if (currentURL.includes("/Diskus/groups")) {
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
           );
-          // For Notification Added in the Group
-          setViewGroupPage(true);
-          dispatch(viewGroupPageFlag(true));
+          //Here we will be calling the api to cover the scenario that the user dose not belong to this group
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
+          );
         } else {
           //Notificaiton For Added in Group
           navigate("/Diskus/groups");
-          //open ViewMode Modal Also in this
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
+          );
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
           );
         }
       } else if (NotificationData.notificationActionID === 17) {
