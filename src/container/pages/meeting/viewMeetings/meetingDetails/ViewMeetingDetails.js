@@ -86,13 +86,6 @@ const ViewMeetingDetails = ({}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
-  );
-  const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
-  );
-  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   const {
     setEndMeetingConfirmationModal,
@@ -107,12 +100,28 @@ const ViewMeetingDetails = ({}) => {
     setMeetingMaterial,
     setAgenda,
   } = useMeetingContext();
-  const [cancelModalView, setCancelModalView] = useState(false);
-  const [meetingStatus, setMeetingStatus] = useState(0);
 
-  const guestVideoUrlNotification = useSelector(
-    (state) => state.GuestVideoReducer.ResponseMessage
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag
   );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+  );
+
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+
+  const ResponseMessage = useSelector(
+    (state) => state.NewMeetingreducer.ResponseMessage
+  );
+
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
@@ -164,18 +173,11 @@ const ViewMeetingDetails = ({}) => {
   let currentMeeting = Number(localStorage.getItem("currentMeetingLS"));
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
   let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
-
-  let activeCall = JSON.parse(localStorage.getItem("activeCall"));
-
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
-
   let currentCallType = Number(localStorage.getItem("CallType"));
-
   let callTypeID = Number(localStorage.getItem("callTypeID"));
-
   let callerID = Number(localStorage.getItem("callerID"));
 
   const [rows, setRows] = useState([
@@ -188,6 +190,10 @@ const ViewMeetingDetails = ({}) => {
       endTime: "",
     },
   ]);
+
+  const [cancelModalView, setCancelModalView] = useState(false);
+
+  const [meetingStatus, setMeetingStatus] = useState(0);
 
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
@@ -631,7 +637,7 @@ const ViewMeetingDetails = ({}) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage( t("Link-copied"), "success", setOpen);
+    showMessage(t("Link-copied"), "success", setOpen);
   };
 
   const groupChatInitiation = (data) => {
@@ -869,11 +875,14 @@ const ViewMeetingDetails = ({}) => {
                               <Button
                                 disableBtn={
                                   enableDisableVideoState ||
-                                  participantEnableVideoState
+                                  participantEnableVideoState ||
+                                  (presenterViewFlag &&
+                                    (presenterViewJoinFlag ||
+                                      presenterViewHostFlag))
                                     ? true
                                     : false
                                 }
-                                text="Join Video Call"
+                                text={t("Join-video-call")}
                                 className="JoinMeetingButton"
                                 onClick={joinMeetingCall}
                               />
@@ -990,25 +999,6 @@ const ViewMeetingDetails = ({}) => {
             </Row>
           </Col>
         </Row>
-        {/* <Row className="mt-2">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <Button
-              text={t("Back")}
-              className={styles["Cancel_Meeting_Details"]}
-              onClick={handleCancelMeetingNoPopup}
-            />
-            <Button
-              text={t("Next")}
-              className={styles["Next_Meeting_SaveMeeting"]}
-              onClick={handleUpdateNext}
-            />
-          </Col>
-        </Row> */}
         {
           <EndMeetingConfirmationModal
             handleClickContinue={handleClickEndMeeting}
