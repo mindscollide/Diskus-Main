@@ -193,7 +193,6 @@ const WebNotfication = ({
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    console.log(PayLoadData, "NotificationDataNotificationData");
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
       if (
