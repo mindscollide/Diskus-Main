@@ -28,8 +28,14 @@ import {
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
 import { MinutesWorkFlowActorStatusNotificationAPI } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
-import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
-import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
+import {
+  getbyGroupID,
+  viewGroupPageFlag,
+} from "../../../store/actions/Groups_actions.js";
+import {
+  getCommitteesbyCommitteeId,
+  viewCommitteePageFlag,
+} from "../../../store/actions/Committee_actions.js";
 import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
@@ -44,6 +50,7 @@ import {
 } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 import { useResolutionContext } from "../../../context/ResolutionContext.js";
+import { isFunction } from "../../../commen/functions/utils.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -833,22 +840,41 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 16) {
         if (currentURL.includes("/Diskus/groups")) {
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
           );
-          // For Notification Added in the Group
-          setViewGroupPage(true);
-          dispatch(viewGroupPageFlag(true));
+          //Here we will be calling the api to cover the scenario that the user dose not belong to this group
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
+          );
         } else {
           //Notificaiton For Added in Group
           navigate("/Diskus/groups");
-          //open ViewMode Modal Also in this
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
+          );
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
           );
         }
       } else if (NotificationData.notificationActionID === 17) {
@@ -910,20 +936,58 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 21) {
         if (currentURL.includes("/Diskus/committee")) {
-          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem("AccessDeniedCommittee", true);
           localStorage.setItem(
             "NotifcationClickViewCommitteeID",
             PayLoadData.CommitteeID
           );
-          setViewGroupPage(true);
-          dispatch(viewCommitteePageFlag(true));
+          // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: JSON.parse(PayLoadData.CommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(
+            getCommitteesbyCommitteeId(
+              navigate,
+              Data,
+              t,
+              setViewGroupPage,
+              false,
+              false,
+              false,
+              1
+            )
+          );
         } else {
           //Notification for being Added in the Committee
           navigate("/Diskus/committee");
-          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem("AccessDeniedCommittee", true);
           localStorage.setItem(
             "NotifcationClickViewCommitteeID",
             PayLoadData.CommitteeID
+          );
+          // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: JSON.parse(PayLoadData.CommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(
+            getCommitteesbyCommitteeId(
+              navigate,
+              Data,
+              t,
+              setViewGroupPage,
+              false,
+              false,
+              false,
+              1
+            )
           );
         }
       } else if (NotificationData.notificationActionID === 22) {

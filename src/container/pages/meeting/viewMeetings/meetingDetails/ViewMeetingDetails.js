@@ -631,7 +631,7 @@ const ViewMeetingDetails = ({}) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage(t("Generating-meeting-link"), "error", setOpen);
+    showMessage( t("Link-copied"), "success", setOpen);
   };
 
   const groupChatInitiation = (data) => {

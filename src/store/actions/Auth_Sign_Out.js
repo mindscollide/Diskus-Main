@@ -57,8 +57,8 @@ const userLogOutApiFunc = (navigate, t) => {
                 .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
             ) {
               await dispatch(userlogOutSuccess(null, t("Successful")));
-              signOut(navigate, "", dispatch);
               dispatch(showUpgradeNowModal(false));
+              await signOut(t("Successful"), dispatch);
               // navigate("/");
             } else if (
               response.data.responseResult.responseMessage
@@ -93,7 +93,7 @@ const userLogOutApiFunc = (navigate, t) => {
   };
 };
 
-export const signOut = ( message, dispatch) => {
+export const signOut = async (message, dispatch) => {
   // logoutChannel.postMessage("Logout");
   dispatch(initaialStateFun());
   window.location.replace = "/";

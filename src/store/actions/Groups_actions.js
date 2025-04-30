@@ -21,6 +21,8 @@ import {
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
 import axios from "axios";
+import { isFunction } from "../../commen/functions/utils";
+import { AccessDeniedPolls } from "./Polls_actions";
 
 const clearMessagesGroup = () => {
   return {
@@ -344,22 +346,29 @@ const getbyGroupID = (
               dispatch(
                 getbyGroupID_Success(response.data.responseResult.group, "")
               );
-              let newData = {
-                GroupID: Number(GroupId),
-              };
-              dispatch(RetriveDocumentsGroupsApiFunc(navigate, newData, t));
-              if (no === 1) {
-                setViewGroupPage(true);
-                setUpdateComponentpage(false);
-              } else if (no === 2) {
-                setArchivedGroups(false);
-                setViewGroupPage(true);
-                setUpdateComponentpage(false);
-              } else if (no === 3) {
-                dispatch(updateGroupPageFlag(true));
-
-                setUpdateComponentpage(true);
-                setViewGroupPage(false);
+              try {
+                let newData = {
+                  GroupID: Number(GroupId),
+                };
+                dispatch(RetriveDocumentsGroupsApiFunc(navigate, newData, t));
+                if (no === 1) {
+                  setViewGroupPage(true);
+                  setUpdateComponentpage(false);
+                } else if (no === 2) {
+                  setArchivedGroups(false);
+                  setViewGroupPage(true);
+                  setUpdateComponentpage(false);
+                } else if (no === 3) {
+                  dispatch(updateGroupPageFlag(true));
+                  setUpdateComponentpage(true);
+                  setViewGroupPage(false);
+                } else if (no === 4) {
+                  (await isFunction(setViewGroupPage)) &&
+                    setViewGroupPage(true);
+                  dispatch(viewGroupPageFlag(true));
+                }
+              } catch (error) {
+                console.log(error, "error");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -393,6 +402,15 @@ const getbyGroupID = (
                 )
             ) {
               dispatch(getbyGroupID_Fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Groups_GroupServiceManager_GetGroupByGroupID_06".toLowerCase()
+                )
+            ) {
+              dispatch(getbyGroupID_Fail(""));
+              dispatch(AccessDeniedPolls(true));
             }
           } else {
             dispatch(getbyGroupID_Fail(t("Something-went-wrong")));

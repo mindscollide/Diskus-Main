@@ -1,93 +1,27 @@
 {
-  "userInformation": [],
-  "channelInformation": [],
-  "groupInformation": [],
-  "addedUsersInGroup": [],
-  "removedUsersFromGroup": [],
-  "existingUsersOfGroup": [],
-  "roomInformation": [],
-  "broadcastInformation": [],
-  "allMessages": [],
-  "oneToOneMessages": [],
-  "groupMessages": [],
-  "broadcastMessages": [],
-  "archiveMessages": [],
-  "lastMessageObject": [],
-  "flagMessages": [],
-  "followMessages": [],
-  "tagMessages": [],
-  "blockedUsers": [],
-  "allUsers": [],
-  "email": "",
-  "password": "",
-  "responseType": "",
-  "responseStatus": 100,
-  "responseMessage": "",
-  "sessionID": "",
-  "messageActivity": [],
-  "messageCount": {
-    "flagMessage": 0,
-    "followMessage": 0,
-    "tagMessage": 0,
-    "archiveMessage": 0,
-    "blockedUser": 0
-  },
-  "unreadMessageCount": [],
-  "undeliveredMessages": [],
-  "seenOrReceiveMessages": [],
-  "notificationDetails": [],
-  "unreadNotifications": 0,
-  "groupUsers": [],
-  "roomUsers": [],
-  "broadcastUsers": [
-    {
-      "id": 1025,
-      "name": "Shout one ",
-      "imgURL": "B.jpg",
-      "messageType": "B",
-      "adminUser": 1351,
-      "createdOn": "20250307110841",
-      "channelID": 561,
-      "userID": 1351,
-      "userName": "SAIF UL ISLAM  ",
-      "userEmail": "saifneworganization@yopmail.com",
-      "companyName": "SaifNewOrganization "
-    },
-    {
-      "id": 1025,
-      "name": "Shout one ",
-      "imgURL": "B.jpg",
-      "messageType": "B",
-      "adminUser": 1351,
-      "createdOn": "20250307110841",
-      "channelID": 561,
-      "userID": 1353,
-      "userName": "Saif Professional  ",
-      "userEmail": "SaifProfessional@yopmail.com",
-      "companyName": "SaifNewOrganization "
-    },
-    {
-      "id": 1025,
-      "name": "Shout one ",
-      "imgURL": "B.jpg",
-      "messageType": "B",
-      "adminUser": 1351,
-      "createdOn": "20250307110841",
-      "channelID": 561,
-      "userID": 1354,
-      "userName": "Saif Premium ",
-      "userEmail": "saifPremium@yopmail.com",
-      "companyName": "SaifNewOrganization "
-    }
-  ],
-  "hashtags": [],
-  "allMessageModel": {
-    "channelID": "",
-    "messages": [],
-    "otoMessages": [],
-    "groupMessages": [],
-    "roomMessages": [],
-    "broadcastMessages": []
-  },
-  "filePath": ""
+  "MeetingDetails": {
+    "MeetingID": 0,
+    "MeetingTitle": "Time Change one ",
+    "MeetingType": { "PK_MTID": 497, "Type": "Board Meetings" },
+    "Location": "karachi ",
+    "Description": "desc",
+    "IsVideoChat": true,
+    "IsPublished": false,
+    "IsTalkGroup": false,
+    "OrganizationId": 561,
+    "MeetingDates": [
+      {
+        "MeetingDate": "20250429",
+        "StartTime": "20250429070000",
+        "EndTime": "20250429080000"
+      }
+    ],
+    "MeetingReminders": [2],
+    "Notes": "note s",
+    "AllowRSVP": true,
+    "NotifyOrganizerOnRSVP": true,
+    "ReucurringMeetingID": 1,
+    "VideoURL": "",
+    "MeetingStatusID": 11
+  }
 }
