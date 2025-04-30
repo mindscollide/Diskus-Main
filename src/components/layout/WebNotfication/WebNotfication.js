@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import {
   GetMeetingStatusDataAPI,
   proposedMeetingDatesGlobalFlag,
-  showSceduleProposedMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeDateMeetingPageFlag,
@@ -26,7 +25,6 @@ import {
   webNotificationDataLeaveVideoIntiminationModal,
 } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
-import { MinutesWorkFlowActorStatusNotificationAPI } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
 import {
   getbyGroupID,
@@ -50,7 +48,6 @@ import {
 } from "../../../store/actions/Resolution_actions.js";
 import { LeaveInitmationMessegeVideoMeetAction } from "../../../store/actions/VideoMain_actions.js";
 import { useResolutionContext } from "../../../context/ResolutionContext.js";
-import { isFunction } from "../../../commen/functions/utils.js";
 
 const WebNotfication = ({
   webNotificationData, // All Web Notification that Includes or Notification Data
@@ -77,19 +74,17 @@ const WebNotfication = ({
     setAdvanceMeetingModalID,
   } = useMeetingContext();
   //Resolution Context
+  const location = useLocation();
+  const currentURL = window.location.href;
+  const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
+
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
-  const location = useLocation();
-  const currentURL = window.location.href;
-  console.log(currentURL, "currentURL");
-  const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
   const [groupedNotifications, setGroupedNotifications] = useState({
     today: [],
     previous: [],
   });
-
-  console.log(groupedNotifications, "groupedNotifications");
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
@@ -138,58 +133,65 @@ const WebNotfication = ({
 
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {
-    if (
-      Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
-      GlobalUnreadCountNotificaitonFromMqtt.length > 0
-    ) {
-      // Iterate over each notification object in the array
-      const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
-        (notification) => notification.notificationData
-      );
-
-      // Prepending the new notifications to the state while ensuring uniqueness
-      setwebNotificationData((prevData) => {
-        const newData = newNotifications.filter(
-          (newNotification) =>
-            !prevData.some(
-              (existingNotification) =>
-                existingNotification.notificationID ===
-                newNotification.notificationID
-            )
+    try {
+      if (
+        Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
+        GlobalUnreadCountNotificaitonFromMqtt.length > 0
+      ) {
+        // Iterate over each notification object in the array
+        const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
+          (notification) => notification.notificationData
         );
-        return [...newData, ...prevData]; // Add new unique notifications to the front of the list
-      });
+
+        // Prepending the new notifications to the state while ensuring uniqueness
+        setwebNotificationData((prevData) => {
+          const newData = newNotifications.filter(
+            (newNotification) =>
+              !prevData.some(
+                (existingNotification) =>
+                  existingNotification.notificationID ===
+                  newNotification.notificationID
+              )
+          );
+          return [...newData, ...prevData]; // Add new unique notifications to the front of the list
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
   useEffect(() => {
-    const uniqueNotifications = Array.from(
-      new Map(
-        webNotificationData.map((item) => [item.notificationID, item])
-      ).values()
-    );
+    try {
+      if (Object.keys(webNotificationData).length > 0) {
+        const uniqueNotifications = Array.from(
+          new Map(
+            webNotificationData.map((item) => [item.notificationID, item])
+          ).values()
+        );
 
-    const groupNotificationsData = uniqueNotifications.reduce(
-      (acc, notification) => {
-        const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
-        if (notificationDate === todayDate) {
-          acc.today.push(notification);
-        } else {
-          acc.previous.push(notification);
-        }
-        return acc;
-      },
-      { today: [], previous: [] }
-    );
-
-    setGroupedNotifications(groupNotificationsData);
-    console.log(groupNotificationsData, "groupNotificationsData");
+        const groupNotificationsData = uniqueNotifications.reduce(
+          (acc, notification) => {
+            const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
+            if (notificationDate === todayDate) {
+              acc.today.push(notification);
+            } else {
+              acc.previous.push(notification);
+            }
+            return acc;
+          },
+          { today: [], previous: [] }
+        );
+        setGroupedNotifications(groupNotificationsData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }, [webNotificationData, todayDate]);
 
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
-    console.log(NotificationData, "NotificationDataNotificationData");
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
