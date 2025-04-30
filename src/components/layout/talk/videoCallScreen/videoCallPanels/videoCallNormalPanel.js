@@ -1008,22 +1008,33 @@ const VideoPanelNormal = () => {
               console.log("handlePostMessage", nonPresenter);
               sessionStorage.removeItem("nonPresenter");
               if (isZoomEnabled) {
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
-                let roomID = localStorage.getItem("acceptedRoomID");
+                let newRoomID = String(localStorage.getItem("newRoomId"));
+                let participantRoomId = String(
+                  localStorage.getItem("participantRoomId")
+                );
+                let roomID = String(localStorage.getItem("acceptedRoomID"));
+                let userID = String(localStorage.getItem("userID"));
                 let isMeetingVideoHostCheck = JSON.parse(
                   localStorage.getItem("isMeetingVideoHostCheck")
                 );
-                let isGuid = localStorage.getItem("isGuid");
-                let participantUID = localStorage.getItem("participantUID");
-                let RoomID =
-                  presenterViewFlag &&
-                  (presenterViewHostFlag || presenterViewJoinFlag)
-                    ? roomID
-                    : isMeetingVideoHostCheck
+                let isGuid = String(localStorage.getItem("isGuid"));
+                let participantUID = String(
+                  localStorage.getItem("participantUID")
+                );
+
+                console.log({ roomID });
+
+                let RoomID = isMeetingVideo
+                  ? isMeetingVideoHostCheck
                     ? newRoomID
-                    : participantRoomId;
-                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                    : participantRoomId
+                  : roomID;
+
+                let UID = isMeetingVideo
+                  ? isMeetingVideoHostCheck
+                    ? isGuid
+                    : participantUID
+                  : userID;
                 let data = {
                   RoomID: RoomID,
                   ShareScreen: true,
@@ -1078,27 +1089,36 @@ const VideoPanelNormal = () => {
               dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
             } else {
               if (isZoomEnabled) {
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
-                let roomID = localStorage.getItem("acceptedRoomID");
+                let participantRoomId = String(
+                  localStorage.getItem("participantRoomId")
+                );
+                let newRoomID = String(localStorage.getItem("newRoomId"));
+                let roomID = String(localStorage.getItem("acceptedRoomID"));
+                let userID = String(localStorage.getItem("userID"));
                 let isMeetingVideoHostCheck = JSON.parse(
                   localStorage.getItem("isMeetingVideoHostCheck")
                 );
-                let isGuid = localStorage.getItem("isGuid");
-                let participantUID = localStorage.getItem("participantUID");
-                let RoomID =
-                  presenterViewFlag &&
-                  (presenterViewHostFlag || presenterViewJoinFlag)
-                    ? roomID
-                    : isMeetingVideoHostCheck
+                let isGuid = String(localStorage.getItem("isGuid"));
+                let participantUID = String(
+                  localStorage.getItem("participantUID")
+                );
+                let RoomID = isMeetingVideo
+                  ? isMeetingVideoHostCheck
                     ? newRoomID
-                    : participantRoomId;
-                let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+                    : participantRoomId
+                  : roomID;
+
+                let UID = isMeetingVideo
+                  ? isMeetingVideoHostCheck
+                    ? isGuid
+                    : participantUID
+                  : userID;
                 let data = {
                   RoomID: RoomID,
                   ShareScreen: false,
                   UID: UID,
                 };
+                dispatch(screenShareTriggeredGlobally(false));
                 dispatch(isSharedScreenTriggeredApi(navigate, t, data));
               }
             }
