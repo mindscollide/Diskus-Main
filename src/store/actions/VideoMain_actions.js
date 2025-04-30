@@ -740,6 +740,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               localStorage.setItem("initiateVideoCall", false);
               localStorage.setItem("NewRoomID", 0);
               localStorage.setItem("newCallerID", 0);
+              localStorage.removeItem("isSharedSceenEnable");
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               await dispatch(leaveCallAction(t("Call-disconnected-by-caller")));
               if (flag === 1) {

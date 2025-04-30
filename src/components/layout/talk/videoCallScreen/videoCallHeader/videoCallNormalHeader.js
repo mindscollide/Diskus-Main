@@ -78,6 +78,7 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
+import { RecordCircle } from "react-bootstrap-icons";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -890,7 +891,10 @@ const VideoCallNormalHeader = ({
         handlePresenterViewFunc();
       } else if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
-        if (!globallyScreenShare) {
+        let isSharedSceenEnable = JSON.parse(
+          localStorage.getItem("isSharedSceenEnable")
+        );
+        if (isSharedSceenEnable && !globallyScreenShare) {
           console.log("busyCall");
           if (isZoomEnabled) {
             console.log("busyCall");
@@ -1044,7 +1048,10 @@ const VideoCallNormalHeader = ({
       setGroupCallParticipantList([]);
       setGroupVideoCallAccepted([]);
       setUnansweredCallParticipant([]);
-      if (!globallyScreenShare) {
+      let isSharedSceenEnable = JSON.parse(
+        localStorage.getItem("isSharedSceenEnable")
+      );
+      if (isSharedSceenEnable && !globallyScreenShare) {
         console.log("busyCall");
         if (isZoomEnabled) {
           console.log("busyCall");
@@ -1297,8 +1304,11 @@ const VideoCallNormalHeader = ({
           }
         } catch (error) {}
         console.log("busyCall");
+        let isSharedSceenEnable = JSON.parse(
+          localStorage.getItem("isSharedSceenEnable")
+        );
         // when Participant share screen then leave meeting Video
-        if (!globallyScreenShare) {
+        if (isSharedSceenEnable && !globallyScreenShare) {
           if (isZoomEnabled) {
             console.log("busyCall");
             let participantRoomId = String(
@@ -1400,7 +1410,7 @@ const VideoCallNormalHeader = ({
     setOpen({
       ...open,
       flag: true,
-      message:  t("Link-copied"),
+      message: t("Link-copied"),
     });
     setTimeout(() => {
       setOpen({
@@ -1606,6 +1616,34 @@ const VideoCallNormalHeader = ({
             )}
         </Col>
         <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+          {/* <div>
+            <Tooltip
+              placement={presenterViewFlag ? "bottom" : "topRight"}
+              title={
+                !isMeetingVideo && presenterViewFlag && presenterViewHostFlag
+                  ? t("Start-recording")
+                  : t("Stop-recording")
+              }
+              overlayClassName={
+                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+              }
+            >
+              <img
+                src={
+                  !isMeetingVideo && presenterViewFlag && presenterViewHostFlag
+                    ? RecordCircle
+                    : null
+                }
+                // onClick={() =>
+                //   getMeetingHostInfo?.isDashboardVideo
+                //     ? muteUnMuteForHost(audioControl ? false : true)
+                //     : disableMic()
+                // }
+                alt="Record"
+              />
+            </Tooltip>
+          </div> */}
+
           <div
             className={
               LeaveCallModalFlag === true ||
