@@ -25,6 +25,11 @@ import CopyLink from "./../../talk-Video/video-images/Copy Link Purple.svg";
 import CloseNotification from "../../../../../assets/images/Close-Notification.png";
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
+import StartRecordLarge from "../../../../../assets/images/Recent Activity Icons/Video/StartRecordLarge.png";
+import StartRecordSmall from "../../../../../assets/images/Recent Activity Icons/Video/StartRecordSmall.png";
+import RecordStart from "../../../../../assets/images/Recent Activity Icons/Video/RecordStart.png";
+import RecordPlay from "../../../../../assets/images/Recent Activity Icons/Video/RecordPlay.png";
+
 import { activeChat } from "../../../../../store/actions/Talk_action";
 import {
   maximizeVideoPanelFlag,
@@ -1327,34 +1332,93 @@ const VideoCallNormalHeader = ({
               </div>
             )}
         </Col>
+
         <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-          {/* <div>
-            <Tooltip
-              placement={presenterViewFlag ? "bottom" : "topRight"}
-              title={
-                !isMeetingVideo && presenterViewFlag && presenterViewHostFlag
-                  ? t("Start-recording")
-                  : t("Stop-recording")
-              }
-              overlayClassName={
-                presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-              }
-            >
-              <img
-                src={
-                  !isMeetingVideo && presenterViewFlag && presenterViewHostFlag
-                    ? RecordCircle
-                    : null
-                }
-                // onClick={() =>
-                //   getMeetingHostInfo?.isDashboardVideo
-                //     ? muteUnMuteForHost(audioControl ? false : true)
-                //     : disableMic()
-                // }
-                alt="Record"
-              />
-            </Tooltip>
-          </div> */}
+          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+            <>
+              <div>
+                <Tooltip
+                  placement={presenterViewFlag ? "bottom" : "topRight"}
+                  title={
+                    !isMeetingVideo &&
+                    presenterViewFlag &&
+                    presenterViewHostFlag
+                      ? t("Start-recording")
+                      : t("Stop-recording")
+                  }
+                  overlayClassName={
+                    presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                  }
+                >
+                  <img
+                    src={
+                      !isMeetingVideo &&
+                      presenterViewFlag &&
+                      presenterViewHostFlag
+                        ? StartRecordLarge
+                        : null
+                    }
+                    className="Start-Record-Button"
+                    // onClick={() =>
+                    //   getMeetingHostInfo?.isDashboardVideo
+                    //     ? muteUnMuteForHost(audioControl ? false : true)
+                    //     : disableMic()
+                    // }
+                    alt="Record"
+                  />
+                </Tooltip>
+              </div>
+            </>
+          )}
+
+          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+            <>
+              <div className="Record-Start-Background">
+                <img
+                  src={
+                    !isMeetingVideo &&
+                    presenterViewFlag &&
+                    presenterViewHostFlag
+                      ? StartRecordSmall
+                      : null
+                  }
+                  className="Bunch-Start-Record-Button"
+                  alt="Record"
+                />
+                <p className="Recording-text">{t("Recording...")}</p>
+                <img
+                  src={
+                    !isMeetingVideo &&
+                    presenterViewFlag &&
+                    presenterViewHostFlag
+                      ? RecordStart
+                      : null
+                  }
+                  className="Bunch-Start-Record-Button"
+                  alt="Record"
+                />
+              </div>
+            </>
+          )}
+
+          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+            <>
+              <div className="Record-Start-BackgroundRed">
+                <p className="RecordingPaused-text">{t("Recording-paused")}</p>
+                <img
+                  src={
+                    !isMeetingVideo &&
+                    presenterViewFlag &&
+                    presenterViewHostFlag
+                      ? RecordPlay
+                      : null
+                  }
+                  className="Bunch-Start-RecordingPaused-Button"
+                  alt="Record"
+                />
+              </div>
+            </>
+          )}
 
           <div
             className={
