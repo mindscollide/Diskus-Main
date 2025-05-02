@@ -321,8 +321,8 @@ const Events = () => {
           {isSame ? (
             <>
               <div
-                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}
-              >
+                key={index}
+                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}>
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -330,8 +330,7 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : `${styles["event-details-block"]}`
-                  }
-                >
+                  }>
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -420,14 +419,14 @@ const Events = () => {
               {flag && <span className={styles["bordertop"]} />}
 
               <div
+                key={index}
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
                     minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                     : ` ${styles["event-details"]}`
-                }
-              >
+                }>
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -435,8 +434,7 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }
-                >
+                  }>
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -568,7 +566,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt="" width={300} draggable="false" />
+              <img src={noTask} alt='' width={300} draggable='false' />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>

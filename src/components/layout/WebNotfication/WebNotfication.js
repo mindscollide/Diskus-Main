@@ -1514,10 +1514,10 @@ const WebNotfication = ({
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         {groupedNotifications.today.length > 0 && (
           <Col lg={12} md={12} sm={12}>
-            <span className={styles["NotificationCategories"]}>Today</span>
+            <span className={styles["NotificationCategories"]}>{t("Today")}</span>
           </Col>
         )}
       </Row>
@@ -1534,16 +1534,14 @@ const WebNotfication = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center my-3"
-                  >
+                    className='d-flex justify-content-center my-3'>
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
             }
-            height="68vh"
-            style={{ overflowX: "hidden" }}
-          >
+            height='68vh'
+            style={{ overflowX: "hidden" }}>
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
               groupedNotifications.today
@@ -1562,8 +1560,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1582,7 +1579,7 @@ const WebNotfication = ({
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NotificationCategories"]}>
-                      Previous
+                      {t("Previous")}
                     </span>
                   </Col>
                 </Row>
@@ -1596,8 +1593,7 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}
-                  >
+                    onClick={() => HandleClickNotfication(data)}>
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1616,12 +1612,12 @@ const WebNotfication = ({
             {webNotificationData.length === 0 && (
               <Row>
                 <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                  <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
+                  <div className='d-flex flex-column flex-wrap justify-content-center align-items-center'>
                     <img
                       src={BellIconNotificationEmptyState}
-                      width="155.35px"
-                      height="111px"
-                      alt=""
+                      width='155.35px'
+                      height='111px'
+                      alt=''
                     />
                     <span className={styles["NotificationEmptyState"]}>
                       {t("You-have-no-notifications")}

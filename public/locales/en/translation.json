@@ -2041,7 +2041,6 @@
   "DRAFT": "DRAFT",
   "Pending-signature": "Pending signature",
   "Signed": "Signed",
-  "SIGNED": "Signed",
   "Declined": "Declined",
   "DECLINED": "Declined",
   "Add-reviewers": "Add Reviewers",
@@ -2473,5 +2472,7 @@
   "VIDEO_RECORDING_ONETO_ONE_RECEIVED": "Video Recording of Call with [Participant Name] is available now",
   "VIDEO_RECORDING_GROUP_RECEIVED": "Video Recording of Group Call with [Participant Name] and others is available now",
   "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available",
-  "Submit": "Submit"
+  "Submit": "Submit",
+  "Submission-date": "Submission date",
+  "Reviewed": "Reviewed"
 }
