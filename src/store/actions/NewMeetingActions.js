@@ -9318,7 +9318,7 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
-              localStorage.removeItem("isSharedSceenEnable")
+              localStorage.removeItem("isSharedSceenEnable");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
@@ -9403,7 +9403,7 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
-              localStorage.removeItem("isSharedSceenEnable")
+              localStorage.removeItem("isSharedSceenEnable");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);

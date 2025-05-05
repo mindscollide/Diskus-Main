@@ -18,9 +18,12 @@ import {
   convertDateTimeRangeToGMT,
   newTimeFormaterAsPerUTCTalkDateTime,
 } from "../../../commen/functions/date_formater";
+import SpinComponent from "../../../components/elements/mainLoader/loader";
 const RSVP = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const loader = useSelector((state) => state.NewMeetingreducer.Loading);
+  console.log(loader, "VALIDATE_EMPTY_STRING_INIT");
   const dispatch = useDispatch();
   const location = useLocation();
   const [rsvpData, setrsvpData] = useState({
@@ -60,7 +63,7 @@ const RSVP = () => {
         };
         callRSVP();
       }
-    } else if(localStorage.getItem("RSVP") !== null) {
+    } else if (localStorage.getItem("RSVP") !== null) {
       let actionKey = localStorage.getItem("RSVP");
       if (actionKey !== null) {
         const callRSVP = async () => {
@@ -104,10 +107,9 @@ const RSVP = () => {
   }, [UserAvalibilityState]);
 
   return (
-    <section>
-      <Row>
-        <Col lg={3} md={3} sm={3}></Col>
-        {rsvpData && (
+    <>
+      <section className={styles["RSVP_Container"]}>
+        {rsvpData.meetingTitle !== "" && (
           <>
             <Col lg={6} md={6} sm={6}>
               <Row className='mt-5'>
@@ -278,10 +280,9 @@ const RSVP = () => {
             </Col>
           </>
         )}
-
-        <Col lg={3} md={3} sm={3}></Col>
-      </Row>
-    </section>
+        <SpinComponent />
+      </section>
+    </>
   );
 };
 export default RSVP;
