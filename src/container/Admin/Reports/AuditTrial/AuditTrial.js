@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
+import { LoadingOutlined } from "@ant-design/icons";
 import { Button, Table, TextField } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import CrossIcon from "../../../../assets/images/Cross-Chat-Icon.png";
-import Select from "react-select";
 import InfiniteScroll from "react-infinite-scroll-component";
 //import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
@@ -19,8 +18,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
 import { Spin } from "antd";
-import DatePicker from "react-multi-date-picker";
-import InputIcon from "react-multi-date-picker/components/input_icon";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
@@ -158,7 +155,12 @@ const AuditTrial = () => {
       align: "center",
       ellipsis: true,
       render: (text, record) => {
-        const deviceType = record.deviceID === "1" ? "Web" : "Tablet";
+        const deviceType =
+          record.deviceID === "1"
+            ? "Web"
+            : record.deviceID === "2"
+            ? "Mobile"
+            : "Tablet";
         return <span className={styles["NameStylesTable"]}>{deviceType}</span>;
       },
     },
@@ -255,6 +257,18 @@ const AuditTrial = () => {
     }
   };
 
+  //Antd Spin Icon
+
+  //Spinner Styles in Lazy Loading
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 36,
+      }}
+      spin
+    />
+  );
+
   return (
     <Container>
       <Row className="mt-5">
@@ -308,7 +322,7 @@ const AuditTrial = () => {
                             lg={12}
                             className="d-flex justify-content-center mt-2"
                           >
-                            <Spin />
+                            <Spin indicator={antIcon} />
                           </Col>
                         </Row>
                       </>
