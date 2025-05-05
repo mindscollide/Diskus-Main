@@ -146,7 +146,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
 
   const handleSaveAdvancedPermissionModal = () => {
     let newarray = [];
-    members.map((data, index) => {
+    members.forEach((data, index) => {
       newarray.push({
         UserID: data.userID,
         CanView: data.canView,
@@ -169,7 +169,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           undefined
       ) {
         let agendaListArry = [];
-        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.map(
+        MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData.agendaList.forEach(
           (agenda, index) => {
             agendaListArry.push(agenda);
           }
@@ -190,7 +190,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
           let getUserrightsdetails =
             NewMeetingreducer.agendaRights.agendaUserRights;
 
-          getUserrightsdetails.map((agendaRightsData, agendaRightsIndex) => {
+          getUserrightsdetails.forEach((agendaRightsData, agendaRightsIndex) => {
             console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
             agendaUserRightsarray.push({
               userName: agendaRightsData.userName,

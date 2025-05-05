@@ -3508,7 +3508,7 @@ const SaveUserAttachmentPermissionsSuccess = (response, message) => {
 
 const SaveUserAttachmentPermissionsFailed = (message) => {
   return {
-    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS,
+    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED,
     message: message,
   };
 };
@@ -3541,16 +3541,16 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
               dispatch(
                 SaveUserAttachmentPermissionsSuccess(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Settings-are-saved-successfully")
                 )
               );
+              dispatch(showAdvancePermissionModal(false));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02 "
             ) {
               dispatch(
                 SaveUserAttachmentPermissionsFailed(
-                  response.data.responseResult.responseMessage,
                   t("No-record-saved")
                 )
               );

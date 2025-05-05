@@ -20,6 +20,7 @@ import {
   GetAllMeetingUserApiFunc,
   searchNewUserMeeting,
   showCancelModalAgendaBuilder,
+  CleareMessegeNewMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import {
   UploadDocumentsAgendaApi,
@@ -172,8 +173,10 @@ const Agenda = ({
         ...NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
       ];
       if (allPresentersReducer.length > 0) {
-
-        console.log(allPresentersReducer, "allPresentersReducerallPresentersReducer")
+        console.log(
+          allPresentersReducer,
+          "allPresentersReducerallPresentersReducer"
+        );
         const mappedPresenters = allPresentersReducer.map((presenter) => ({
           value: presenter.userID,
           name: presenter.userName,
@@ -201,7 +204,6 @@ const Agenda = ({
   }, [NewMeetingreducer?.getMeetingusers]);
 
   const [rows, setRows] = useState([]);
-
 
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
@@ -1036,6 +1038,16 @@ const Agenda = ({
     }
     dispatch(clearResponseMessage(""));
   }, [MeetingAgendaReducer.ResponseMessage]);
+
+  useEffect(() => {
+    if (
+      NewMeetingreducer.ResponseMessage !== "" &&
+      typeof NewMeetingreducer.ResponseMessage === "string"
+    ) {
+      showMessage(NewMeetingreducer.ResponseMessage, "success", setOpen);
+      dispatch(CleareMessegeNewMeeting());
+    }
+  }, [NewMeetingreducer.ResponseMessage]);
 
   useEffect(() => {
     if (
