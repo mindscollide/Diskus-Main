@@ -97,11 +97,11 @@ const Agenda = ({
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
-  const [allPresenters, setAllPresenters] = useState([]);
-  const [presenters, setPresenters] = useState([]);
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
+
+  console.log(allSavedPresenters, "allSavedPresentersallSavedPresenters");
   const [allUsersRC, setAllUsersRC] = useState([]);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
@@ -157,47 +157,34 @@ const Agenda = ({
   }, [getAllMeetingDetails]);
 
   useEffect(() => {
-    if (
-      NewMeetingreducer.getMeetingusers !== undefined &&
-      NewMeetingreducer.getMeetingusers !== null &&
-      NewMeetingreducer.getMeetingusers.length !== 0
-    ) {
-      const newData = {
-        meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
-        meetingParticipants:
-          NewMeetingreducer.getMeetingusers.meetingParticipants,
-        meetingAgendaContributors:
-          NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
-      };
-      setAllPresenters(newData);
-    }
-  }, [NewMeetingreducer?.getMeetingusers]);
-
-  useEffect(() => {
-    if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
+    if (NewMeetingreducer.getMeetingusers !== null) {
+      // const newData = {
+      //   meetingOrganizers: NewMeetingreducer.getMeetingusers.meetingOrganizers,
+      //   meetingParticipants:
+      //     NewMeetingreducer.getMeetingusers.meetingParticipants,
+      //   meetingAgendaContributors:
+      //     NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
+      // };
+      // setAllPresenters(newData);
       const allPresentersReducer = [
-        ...allPresenters.meetingOrganizers,
-        ...allPresenters.meetingAgendaContributors,
-        ...allPresenters.meetingParticipants,
+        ...NewMeetingreducer.getMeetingusers.meetingOrganizers,
+        ...NewMeetingreducer.getMeetingusers.meetingParticipants,
+        ...NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
       ];
-      setPresenters(allPresentersReducer);
-    }
-  }, [allPresenters, allSavedPresenters]);
+      if (allPresentersReducer.length > 0) {
 
-  useEffect(() => {
-    if (presenters.length > 0 || Object.keys(presenters).length > 0) {
-      const mappedPresenters = presenters.map((presenter) => ({
-        value: presenter.userID,
-        name: presenter.userName,
-        label: (
-          <>
+        console.log(allPresentersReducer, "allPresentersReducerallPresentersReducer")
+        const mappedPresenters = allPresentersReducer.map((presenter) => ({
+          value: presenter.userID,
+          name: presenter.userName,
+          label: (
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <img
-                  alt=""
+                  alt=''
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width="17px"
-                  height="17px"
+                  width='17px'
+                  height='17px'
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -205,21 +192,16 @@ const Agenda = ({
                 </span>
               </Col>
             </Row>
-          </>
-        ),
-      }));
-      setAllSavedPresenters((prevPresenters) => {
-        if (
-          JSON.stringify(prevPresenters) !== JSON.stringify(mappedPresenters)
-        ) {
-          return mappedPresenters;
-        }
-        return prevPresenters; // No change, return the current state
-      });
+          ),
+        }));
+
+        setAllSavedPresenters(mappedPresenters);
+      }
     }
-  }, [allPresenters, allSavedPresenters]);
+  }, [NewMeetingreducer?.getMeetingusers]);
 
   const [rows, setRows] = useState([]);
+
 
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
@@ -778,31 +760,6 @@ const Agenda = ({
         console.log("add newMainAgenda", newData);
         setRows([newData]);
       }
-    } else {
-      let newData = {
-        iD: getRandomUniqueNumber().toString() + "A",
-        title: "",
-        agendaVotingID: 0,
-        presenterID: allSavedPresenters[0]?.value,
-        presenterName: allSavedPresenters[0]?.label,
-        description: "",
-        startDate: meetingTime?.meetingStartTime,
-        endDate: meetingTime?.meetingEndTime,
-        selectedRadio: 1,
-        urlFieldMain: "",
-        mainNote: "",
-        requestContributorURlName: "",
-        files: [],
-        isLocked: false,
-        voteOwner: null,
-        isAttachment: false,
-        userID: 0,
-        subAgenda: [],
-        canView: true,
-        canEdit: true,
-      };
-      console.log("add newMainAgenda", newData);
-      setRows([newData]);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
@@ -1143,8 +1100,7 @@ const Agenda = ({
             rows.length > 0 &&
             rows[0]?.title === "" ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-              >
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
                 {emptyStateRows === true &&
                 (editorRole.role === "Agenda Contributor" ||
                   editorRole.role === "Participant") ? null : (
@@ -1157,19 +1113,16 @@ const Agenda = ({
                         rows.length > 1
                           ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                           : styles["Scroller_Agenda"]
-                      }
-                    >
+                      }>
                       <Droppable
                         //  key={`main-agenda-${rows.id}`}
                         //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId="board"
-                        type="PARENT"
-                      >
+                        droppableId='board'
+                        type='PARENT'>
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}
-                          >
+                            {...provided.droppableProps}>
                             {rows.length > 0
                               ? rows.map((data, index) => {
                                   console.log(
@@ -1186,8 +1139,7 @@ const Agenda = ({
                                             "Agenda Contributor"
                                             ? "d-none"
                                             : styles["agenda-border-class"]
-                                        }
-                                      >
+                                        }>
                                         <ParentAgenda
                                           fileForSend={fileForSend}
                                           setFileForSend={setFileForSend}
@@ -1246,14 +1198,13 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
+                    className='d-flex justify-content-center mt-3'>
                     <img
                       draggable={false}
                       src={emptyContributorState}
-                      width="274.05px"
-                      alt=""
-                      height="230.96px"
+                      width='274.05px'
+                      alt=''
+                      height='230.96px'
                       className={styles["Image-Add-Agenda"]}
                     />
                   </Col>
@@ -1263,8 +1214,7 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center mt-3"
-                  >
+                    className='d-flex justify-content-center mt-3'>
                     <span className={styles["Empty_state_heading"]}>
                       {t("No-agenda-availabe-to-discuss").toUpperCase()}
                     </span>
@@ -1277,7 +1227,7 @@ const Agenda = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.status === "9" ||
             editorRole.status === 9 ? null : (
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <Button
                     text={
@@ -1287,14 +1237,13 @@ const Agenda = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center gap-2 align-items-center"
-                          >
+                            className='d-flex justify-content-center gap-2 align-items-center'>
                             <img
                               draggable={false}
                               src={plusFaddes}
-                              height="10.77px"
-                              width="10.77px"
-                              alt=""
+                              height='10.77px'
+                              width='10.77px'
+                              alt=''
                             />
                             <span className={styles["Add_Agen_Heading"]}>
                               {t("Add-agenda")}
@@ -1315,13 +1264,12 @@ const Agenda = ({
                 </Col>
               </Row>
             )}
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (
