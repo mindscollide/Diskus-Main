@@ -752,27 +752,37 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   height: auto;
   width: 30px;
   margin-right: 8px;
-  margin-top: 5px;
+}
+
+.start-Recording-div {
+  cursor: pointer;
 }
 
 .Record-Start-Background {
   position: relative;
+  cursor: pointer;
   top: 2px;
-  height: 39px;
+  height: 42px;
   width: 190px;
   background-color: #e1e1e1 !important;
   border-radius: 8px !important;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
   flex-direction: row;
-  gap: 15px;
+}
+
+.Bunch-Start-Record-Button-2 {
+  height: 21px;
+  width: 21px;
+  margin: 8px;
+  cursor: pointer;
 }
 
 .Bunch-Start-Record-Button {
   height: 21px;
   width: 21px;
-  margin: 4px;
+  margin: 8px;
   cursor: pointer;
 }
 
@@ -781,15 +791,16 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   justify-content: flex-start;
   align-items: center;
   color: #6172d6;
-  margin-top: 10px;
+  margin-top: 13px;
   font-size: 14px;
+  margin-right: 22px;
   font-weight: 600;
 }
 
 .Record-Start-BackgroundRed {
   position: relative;
   top: 2px;
-  height: 39px;
+  height: 42px;
   width: 190px;
   background-color: red !important;
   border-radius: 8px !important;
@@ -805,14 +816,14 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   justify-content: flex-start;
   align-items: center;
   color: #fff;
-  margin-top: 10px;
+  margin-top: 13px;
   font-size: 13px;
   font-weight: 600;
 }
 
 .Bunch-Start-RecordingPaused-Button {
-  height: 24px;
-  width: 24px;
-  margin: 4px;
+  height: 27px;
+  width: 26px;
+  margin-left: 10px;
   cursor: pointer;
 }
