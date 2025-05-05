@@ -5,13 +5,16 @@ import { useTranslation } from "react-i18next";
 import { Button, Table } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
 import {
   AuditTrialViewActionModal,
+  GetAuditActionsAPI,
   GetAuditListingAPI,
 } from "../../../../store/actions/Admin_Organization";
 import { useNavigate } from "react-router-dom";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
+import { Spin } from "antd";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
@@ -34,6 +37,9 @@ const AuditTrial = () => {
   const [auditTrialListingTableData, setAuditTrialListingTableData] = useState(
     []
   );
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [isScroll, setIsScroll] = useState(false);
+  const [isRowsData, setSRowsData] = useState(0);
 
   useEffect(() => {
     try {
@@ -52,28 +58,55 @@ const AuditTrial = () => {
     }
   }, []);
 
-  // Extracting the Audit listing Data
-
-  useEffect(() => {
-    try {
-      if (
-        GetAuditListingReducerGlobalState &&
-        GetAuditListingReducerGlobalState !== null
-      ) {
-        setAuditTrialListingTableData(
-          GetAuditListingReducerGlobalState.userAuditListingModel
-        );
-      }
-    } catch (error) {
-      console.log(error, "errorerrorerrorerror");
-    }
-  }, [GetAuditListingReducerGlobalState]);
-
   console.log(auditTrialListingTableData, "GetAuditListingReducerGlobalState");
 
+  // Extracting the Audit listing Data
+  useEffect(() => {
+    try {
+      if (GetAuditListingReducerGlobalState !== null) {
+        if (
+          GetAuditListingReducerGlobalState.userAuditListingModel?.length > 0 &&
+          GetAuditListingReducerGlobalState.totalCount > 0
+        ) {
+          if (isScroll) {
+            setIsScroll(false);
+
+            let copyData = [...auditTrialListingTableData];
+
+            GetAuditListingReducerGlobalState.userAuditListingModel.forEach(
+              (data, index) => {
+                copyData.push(data);
+              }
+            );
+            setAuditTrialListingTableData(copyData);
+            setSRowsData(
+              (prev) =>
+                prev +
+                GetAuditListingReducerGlobalState.userAuditListingModel.length
+            );
+            setTotalRecords(GetAuditListingReducerGlobalState.totalCount);
+          } else {
+            setAuditTrialListingTableData(
+              GetAuditListingReducerGlobalState.userAuditListingModel
+            );
+            setTotalRecords(GetAuditListingReducerGlobalState.totalCount);
+            setSRowsData(
+              GetAuditListingReducerGlobalState.userAuditListingModel.length
+            );
+          }
+        } else {
+          setAuditTrialListingTableData([]);
+          setTotalRecords(0);
+          setSRowsData(0);
+        }
+      }
+    } catch {}
+  }, [GetAuditListingReducerGlobalState]);
+
   //handle View ActionModal
-  const handleViewActionModal = () => {
-    dispatch(AuditTrialViewActionModal(true));
+  const handleViewActionModal = (UserRoleID) => {
+    let Data = { UserLoginHistoryID: Number(UserRoleID) };
+    dispatch(GetAuditActionsAPI(navigate, Data, t));
   };
 
   // columns Audit Trial
@@ -189,13 +222,32 @@ const AuditTrial = () => {
             <Button
               text={t("View-Action")}
               className={styles["ViewActions"]}
-              onClick={handleViewActionModal}
+              onClick={() => handleViewActionModal(record.userLoginHistoryID)}
             />
           </>
         );
       },
     },
   ];
+
+  //Handle Scroll Function
+  const handleScroll = async (e) => {
+    if (isRowsData <= totalRecords) {
+      setIsScroll(true);
+      let Data = {
+        Username: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        sRow: Number(isRowsData),
+        Length: 10,
+      };
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+    } else {
+      setIsScroll(false);
+    }
+  };
 
   return (
     <Container>
@@ -211,17 +263,45 @@ const AuditTrial = () => {
           <span className={styles["AuditTrial_Box"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={AuditTrialColumns}
-                  rows={auditTrialListingTableData}
-                  pagination={false}
-                  footer={false}
-                  className={"userlogin_history_tableP"}
-                  size={"small"}
-                  scroll={{
-                    x: false,
-                  }}
-                />
+                <InfiniteScroll
+                  dataLength={auditTrialListingTableData.length}
+                  next={handleScroll}
+                  height={"60vh"}
+                  hasMore={
+                    auditTrialListingTableData.length === totalRecords
+                      ? false
+                      : true
+                  }
+                  loader={
+                    isRowsData <= totalRecords && isScroll ? (
+                      <>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="d-flex justify-content-center mt-2"
+                          >
+                            <Spin />
+                          </Col>
+                        </Row>
+                      </>
+                    ) : null
+                  }
+                  scrollableTarget="scrollableDiv"
+                >
+                  <Table
+                    column={AuditTrialColumns}
+                    rows={auditTrialListingTableData}
+                    pagination={false}
+                    footer={false}
+                    className={"userlogin_history_tableP"}
+                    size={"small"}
+                    scroll={{
+                      x: false,
+                    }}
+                  />
+                </InfiniteScroll>
               </Col>
             </Row>
           </span>

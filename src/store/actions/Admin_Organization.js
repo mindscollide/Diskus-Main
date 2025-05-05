@@ -1,4 +1,5 @@
 import {
+  GetUsersAuditActions,
   GetUsersAuditListing,
   IsOrganizationEmailExsists,
   IsOrganizationExsists,
@@ -332,9 +333,85 @@ const GetAuditListingAPI = (navigate, Data, t) => {
       });
   };
 };
+
+const GetAuditActionsInit = () => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_INIT,
+  };
+};
+
+const GetAuditActionsSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAuditActionsFail = (message) => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_FAIL,
+    message: message,
+  };
+};
+
+const GetAuditActionsAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(GetAuditActionsInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetUsersAuditActions.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: AuditAPi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAuditActionsAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_01".toLowerCase()
+            ) {
+              dispatch(
+                GetAuditActionsSuccess(response.data.responseResult, "")
+              );
+              dispatch(AuditTrialViewActionModal(true));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_02".toLowerCase()
+            ) {
+              dispatch(GetAuditActionsFail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_03".toLowerCase()
+            ) {
+              dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
   checkOraganisation,
   checkEmailExsist,
   AuditTrialViewActionModal,
   GetAuditListingAPI,
+  GetAuditActionsAPI,
 };
