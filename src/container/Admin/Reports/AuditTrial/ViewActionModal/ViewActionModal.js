@@ -24,7 +24,16 @@ const ViewActionModal = () => {
       timestamp: "2024-10-15 | 09:05 AM",
       status: "Logged In",
     },
-
+    {
+      type: "activity",
+      timestamp: "2024-10-15 | 9:15 AM",
+      description: "Created meeting for Project Kickoff.",
+    },
+    {
+      type: "activity",
+      timestamp: "2024-10-15 | 10:30 AM",
+      description: 'Assigned task "Draft Budget Proposal" to Team B.',
+    },
     {
       type: "logout",
       timestamp: "2024-10-15 | 10:45 AM",
