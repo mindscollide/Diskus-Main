@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
@@ -16,11 +16,23 @@ const AuditTrial = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  //View Action Modal Globla State
   const ViewActionModalGlobalState = useSelector(
     (state) => state.adminReducer.auditTrialViewActionModal
   );
 
+  //View Action Modal Globla State
+
   //Calling Get Audit Listing
+  const GetAuditListingReducerGlobalState = useSelector(
+    (state) => state.adminReducer.getAuditListingData
+  );
+
+  // Local States
+  const [auditTrialListingTableData, setAuditTrialListingTableData] = useState(
+    []
+  );
 
   useEffect(() => {
     try {
@@ -39,38 +51,89 @@ const AuditTrial = () => {
     }
   }, []);
 
+  // Extracting the Audit listing Data
+
+  useEffect(() => {
+    try {
+      if (
+        GetAuditListingReducerGlobalState &&
+        GetAuditListingReducerGlobalState !== null
+      ) {
+        setAuditTrialListingTableData(
+          GetAuditListingReducerGlobalState.userAuditListingModel
+        );
+      }
+    } catch (error) {
+      console.log(error, "errorerrorerrorerror");
+    }
+  }, [GetAuditListingReducerGlobalState]);
+
+  console.log(auditTrialListingTableData, "GetAuditListingReducerGlobalState");
+
   // columns Audit Trial
   const AuditTrialColumns = [
     {
       title: t("User"),
-      dataIndex: "User",
-      key: "User",
+      dataIndex: "userName",
+      key: "userName",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>{record.userName}</span>
+          </>
+        );
+      },
     },
 
     {
       title: t("IP"),
-      dataIndex: "IP",
-      key: "IP",
+      dataIndex: "loggedInFromIP",
+      key: "loggedInFromIP",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>
+              {record.loggedInFromIP}
+            </span>
+          </>
+        );
+      },
     },
 
     {
       title: t("Interface"),
-      dataIndex: "Interface",
-      key: "Interface",
+      dataIndex: "deviceID",
+      key: "deviceID",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        const deviceType = record.deviceID === "1" ? "Web" : "Tablet";
+        return <span className={styles["NameStylesTable"]}>{deviceType}</span>;
+      },
     },
 
     {
       title: t("Login"),
-      dataIndex: "Login",
-      key: "Login",
+      dataIndex: "dateLogin",
+      key: "dateLogin",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>
+              {record.dateLogin}
+            </span>
+          </>
+        );
+      },
     },
 
     {
@@ -79,14 +142,34 @@ const AuditTrial = () => {
       key: "Action",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>
+              {record.actionCount} Actions taken
+            </span>
+          </>
+        );
+      },
     },
 
     {
       title: t("Logout"),
-      dataIndex: "Logout",
-      key: "Logout",
+      dataIndex: "dateLogOut",
+      key: "dateLogOut",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        console.log(record, "recordrecordrecord");
+        return (
+          <>
+            <span className={styles["NameStylesTable"]}>
+              {record.dateLogOut}
+            </span>
+          </>
+        );
+      },
     },
     {
       title: t("View-Action"),
@@ -94,6 +177,17 @@ const AuditTrial = () => {
       key: "viewAction",
       align: "center",
       ellipsis: true,
+      render: (text, record) => {
+        return (
+          <>
+            <Button
+              text={t("View-Action")}
+              className={styles["ViewActions"]}
+              onClick={handleViewActionModal}
+            />
+          </>
+        );
+      },
     },
   ];
 
@@ -102,29 +196,6 @@ const AuditTrial = () => {
   const handleViewActionModal = () => {
     dispatch(AuditTrialViewActionModal(true));
   };
-
-  //Dummy Data source
-
-  const auditTrialData = [
-    {
-      key: "1",
-      User: "John Doe",
-      IP: "192.168.0.1",
-      Interface: "Web",
-      Login: "2025-05-05 09:15:00",
-      Action: "Viewed Report",
-      Logout: "2025-05-05 09:45:00",
-      viewAction: (
-        <>
-          <Button
-            text={t("View-Action")}
-            className={styles["ViewActions"]}
-            onClick={handleViewActionModal}
-          />
-        </>
-      ),
-    },
-  ];
 
   return (
     <Container>
@@ -142,7 +213,7 @@ const AuditTrial = () => {
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={AuditTrialColumns}
-                  rows={auditTrialData}
+                  rows={auditTrialListingTableData}
                   pagination={false}
                   footer={false}
                   className={"userlogin_history_tableP"}
