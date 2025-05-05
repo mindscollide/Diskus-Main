@@ -1,0 +1,67 @@
+.UserNameStyles {
+  font-weight: 500 !important;
+  font-size: 16px !important;
+}
+
+.classOne {
+  border: 1px solid #6172d6;
+  border-radius: "8px" !important;
+  overflow: "hidden" !important;
+  background-color: #f6f9fc !important;
+  border-radius: 4px !important;
+}
+
+.item-base {
+  display: block;
+  padding: 12px 20px;
+  background-color: #f7f9fb;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 4px !important;
+}
+
+.item-activity {
+  padding: 10px 20px;
+  background-color: #f6f9fc !important;
+  color: #000;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.item-border-top {
+  border-top: 2px solid #6172d6;
+}
+
+.item-border-Bottom {
+  border-bottom: 2px solid #6172d6;
+}
+
+.InnerSideDescription {
+  color: #424242 !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+}
+
+.H1styles {
+  margin: 4px 0;
+  border: none;
+  border-top: 1px solid #000;
+}
+
+.ViewActionModal_scroll_bar {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.ViewActionModal_scroll_bar::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.ViewActionModal_scroll_bar::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px !important;
+}
