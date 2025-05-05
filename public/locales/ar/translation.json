@@ -698,7 +698,7 @@
   "Your-sign-in-was-denied": "تم رفض تسجيل الدخول الخاص بك",
   "Open-your": "افتح",
   "Notification": "إشعار",
-  "Diskus": "Diskus",
+  "Diskus": "ديسكوس",
   "Click-on": "انقر فوق",
   "Yes": "نعم",
   "to-sign-in": "لتسجيل الدخول",
@@ -1987,7 +1987,7 @@
   "DECLINED": "تم الرفض",
   "Add-reviewers": "أضف مراجعين",
   "File-name": "اسم الملف",
-  "Signatories": "الموقّعون",
+  "Signatories": "الموقعون",
   "Sent-on": "أُرسل في",
   "Date-and-time": "التاريخ والوقت",
   "Country-selection-is-required": "مطلوب اختيار البلد",
@@ -2422,5 +2422,7 @@
   "Submission-date": "تاريخ التقديم",
   "Reviewed": "تمت المراجعة",
   "Recording-paused": "Recording Paused",
-  "Settings-are-saved-successfully": "Settings are saved successfully"
+  "Settings-are-saved-successfully": "Settings are saved successfully",
+  "Notes-title": "عنوان الملاحظات",
+  "Comments": "تعليقات"
 }
