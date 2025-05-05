@@ -36,6 +36,9 @@ const workflowApi = baseURL + process.env.REACT_APP_WORKFLOW_API;
 // WebSocket Connection
 const getSocketConnection = baseURL + process.env.REACT_APP_SOCKET_API;
 
+//Audit API
+const AuditAPi = baseURL + process.env.REACT_APP_AUDIT_API;
+
 export {
   authenticationApi,
   toDoListApi,
@@ -59,4 +62,5 @@ export {
   workflowApi,
   settingDownloadApi,
   talkApiReport,
+  AuditAPi,
 };

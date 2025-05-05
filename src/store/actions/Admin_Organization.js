@@ -1,11 +1,13 @@
 import {
+  GetUsersAuditListing,
   IsOrganizationEmailExsists,
   IsOrganizationExsists,
 } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 import axios from "axios";
-import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { AuditAPi, getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { setLoader } from "./Auth2_actions";
+import { RefreshToken } from "./Auth_action";
 
 const organizationInit = (response, message) => {
   return {
@@ -254,4 +256,85 @@ const AuditTrialViewActionModal = (response) => {
     response: response,
   };
 };
-export { checkOraganisation, checkEmailExsist, AuditTrialViewActionModal };
+
+//********************************************************AUDIT APIS */
+// Get Audit listing
+const GetAuditListingInit = () => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_INIT,
+  };
+};
+
+const GetAuditListingSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAuditListingFail = (message) => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_FAIL,
+    message: message,
+  };
+};
+
+const GetAuditListingAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(GetAuditListingInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetUsersAuditListing.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: AuditAPi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAuditListingAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_01".toLowerCase()
+            ) {
+              dispatch(
+                GetAuditListingSuccess(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_02".toLowerCase()
+            ) {
+              dispatch(GetAuditListingFail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_03".toLowerCase()
+            ) {
+              dispatch(GetAuditListingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(GetAuditListingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(GetAuditListingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAuditListingFail(t("Something-went-wrong")));
+      });
+  };
+};
+export {
+  checkOraganisation,
+  checkEmailExsist,
+  AuditTrialViewActionModal,
+  GetAuditListingAPI,
+};

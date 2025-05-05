@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
@@ -6,14 +6,38 @@ import { Button, Table } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
-import { AuditTrialViewActionModal } from "../../../../store/actions/Admin_Organization";
+import {
+  AuditTrialViewActionModal,
+  GetAuditListingAPI,
+} from "../../../../store/actions/Admin_Organization";
+import { useNavigate } from "react-router-dom";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const ViewActionModalGlobalState = useSelector(
     (state) => state.adminReducer.auditTrialViewActionModal
   );
+
+  //Calling Get Audit Listing
+
+  useEffect(() => {
+    try {
+      let Data = {
+        Username: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        sRow: 0,
+        Length: 10,
+      };
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+    } catch (error) {
+      console.log(error, "errorerrorerror");
+    }
+  }, []);
 
   // columns Audit Trial
   const AuditTrialColumns = [
