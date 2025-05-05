@@ -11,12 +11,13 @@ import {
   GetAuditListingAPI,
 } from "../../../../store/actions/Admin_Organization";
 import { useNavigate } from "react-router-dom";
+import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const locale = localStorage.getItem("i18nextLng");
   //View Action Modal Globla State
   const ViewActionModalGlobalState = useSelector(
     (state) => state.adminReducer.auditTrialViewActionModal
@@ -69,6 +70,11 @@ const AuditTrial = () => {
   }, [GetAuditListingReducerGlobalState]);
 
   console.log(auditTrialListingTableData, "GetAuditListingReducerGlobalState");
+
+  //handle View ActionModal
+  const handleViewActionModal = () => {
+    dispatch(AuditTrialViewActionModal(true));
+  };
 
   // columns Audit Trial
   const AuditTrialColumns = [
@@ -129,7 +135,7 @@ const AuditTrial = () => {
         return (
           <>
             <span className={styles["NameStylesTable"]}>
-              {record.dateLogin}
+              {AuditTrialDateTimeFunction(record.dateLogin, locale)}
             </span>
           </>
         );
@@ -190,12 +196,6 @@ const AuditTrial = () => {
       },
     },
   ];
-
-  //handle View ActionModal
-
-  const handleViewActionModal = () => {
-    dispatch(AuditTrialViewActionModal(true));
-  };
 
   return (
     <Container>
