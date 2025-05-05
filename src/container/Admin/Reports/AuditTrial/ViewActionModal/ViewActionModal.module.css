@@ -65,3 +65,38 @@
   background: #ccc;
   margin-left: -15px !important;
 }
+
+.DownloadExcelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #fff !important;
+  border: 1px solid #a2a2a2 !important;
+  gap: 10px !important;
+}
+
+.DownloadExcelButton:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #fff !important;
+  border: 1px solid #a2a2a2 !important;
+  gap: 10px !important;
+}
+
+.NoActivity {
+  font-weight: 700 !important;
+  font-size: 20px !important;
+  color: #a2a2a2 !important;
+  margin-left: 20px !important;
+}

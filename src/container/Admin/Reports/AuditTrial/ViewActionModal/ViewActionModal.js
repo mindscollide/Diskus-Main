@@ -3,11 +3,13 @@ import styles from "./ViewActionModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "../../../../../components/elements";
+import { Button, Modal } from "../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { AuditTrialViewActionModal } from "../../../../../store/actions/Admin_Organization";
 import { Col, Row } from "react-bootstrap";
+import NoActionsAudits from "../../../../../assets/images/NoActionsAudits.png";
 import CrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
+import Excelicon from "../../../../../assets/images/ExcelIcon.png";
 const ViewActionModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -22,26 +24,7 @@ const ViewActionModal = () => {
       timestamp: "2024-10-15 | 09:05 AM",
       status: "Logged In",
     },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 9:15 AM",
-      description: "Created meeting for Project Kickoff.",
-    },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 10:30 AM",
-      description: 'Assigned task "Draft Budget Proposal" to Team B.',
-    },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 10:30 AM",
-      description: 'Assigned task "Draft Budget Proposal" to Team B.',
-    },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 10:30 AM",
-      description: 'Assigned task "Draft Budget Proposal" to Team B.',
-    },
+
     {
       type: "logout",
       timestamp: "2024-10-15 | 10:45 AM",
@@ -58,7 +41,7 @@ const ViewActionModal = () => {
       <Modal
         show={ViewActionModalGlobalState}
         setShow={dispatch(AuditTrialViewActionModal)}
-        modalFooterClassName={"d-block"}
+        // modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => {
           dispatch(AuditTrialViewActionModal(false));
@@ -111,7 +94,7 @@ const ViewActionModal = () => {
                 sm={12}
                 className={styles["ViewActionModal_scroll_bar"]}
               >
-                <div className={styles["classOne"]}>
+                {/* <div className={styles["classOne"]}>
                   {dummyData.map((item, index) => (
                     <span
                       key={index}
@@ -148,12 +131,95 @@ const ViewActionModal = () => {
                       )}
                     </span>
                   ))}
+                </div> */}
+                <div className={styles["classOne"]}>
+                  {/* LOGIN ITEM */}
+                  {dummyData
+                    .filter((item) => item.type === "login")
+                    .map((item, index) => (
+                      <span
+                        key={`login-${index}`}
+                        className={`
+                        ${styles["item-base"]}
+                        ${styles["item-border-Bottom"]}
+                      `}
+                      >
+                        {`${item.timestamp} – ${item.status}`}
+                      </span>
+                    ))}
+
+                  {/* ACTIVITY ITEMS OR NO ACTIVITY MESSAGE */}
+                  {dummyData.some((item) => item.type === "activity") ? (
+                    dummyData
+                      .filter((item) => item.type === "activity")
+                      .map((item, index, arr) => (
+                        <span
+                          key={`activity-${index}`}
+                          className={`
+                          ${styles["item-base"]}
+                          ${styles["item-activity"]}
+                        `}
+                        >
+                          <span className={styles["InnerSideDescription"]}>
+                            {item.timestamp} – {item.description}
+                          </span>
+                          {index !== arr.length - 1 && (
+                            <hr className={styles["H1styles"]} />
+                          )}
+                        </span>
+                      ))
+                  ) : (
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex flex-column flex-wrap justify-content-center align-items-center p-4"
+                      >
+                        <img src={NoActionsAudits} alt="" width={150} />
+                        <span className={styles["NoActivity"]}>
+                          {t("No-activity")}
+                        </span>
+                      </Col>
+                    </Row>
+                  )}
+
+                  {/* LOGOUT ITEM */}
+                  {dummyData
+                    .filter((item) => item.type === "logout")
+                    .map((item, index) => (
+                      <span
+                        key={`logout-${index}`}
+                        className={`
+                        ${styles["item-base"]}
+                        ${styles["item-border-top"]}
+                      `}
+                      >
+                        {`${item.timestamp} – ${item.status}`}
+                      </span>
+                    ))}
                 </div>
               </Col>
             </Row>
           </>
         }
-        ModalFooter={<></>}
+        ModalFooter={
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Button
+                  text={t("Download")}
+                  icon={
+                    <>
+                      <img src={Excelicon} width={20} alt="" />
+                    </>
+                  }
+                  className={styles["DownloadExcelButton"]}
+                />
+              </Col>
+            </Row>
+          </>
+        }
       />
     </div>
   );
