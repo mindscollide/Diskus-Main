@@ -68,36 +68,32 @@ const Agenda = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
-  let currentView = localStorage.getItem("MeetingCurrentView");
-  let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let userID = localStorage.getItem("userID");
-  let folderDataRoomMeeting = Number(
-    localStorage.getItem("folderDataRoomMeeting")
-  );
-
   const navigate = useNavigate();
-
-  const [allSavedPresenters, setAllSavedPresenters] = useState([]);
-
-  const [allUsersRC, setAllUsersRC] = useState([]);
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
     (state) => state
   );
+
+  const getAllMeetingDetails = useSelector(
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
+  );
+
   const MeetingAgendaData =
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData;
-  console.log("MeetingAgendaData", MeetingAgendaData);
+
   const { isAgendaUpdateWhenMeetingActive, editorRole, setEditorRole } =
     useContext(MeetingContext);
 
   const ShowCancelAgendaBuilderModal = useSelector(
     (state) => state.NewMeetingreducer.cancelAgendaSavedModal
   );
-  let meetingTitle = localStorage.getItem("MeetingTitle");
+
+  let folderDataRoomMeeting = Number(
+    localStorage.getItem("folderDataRoomMeeting")
+  );
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
+
   const [enableVotingPage, setenableVotingPage] = useState(false);
   const [agendaViewPage, setagendaViewPage] = useState(false);
   const [fileForSend, setFileForSend] = useState([]);
@@ -105,24 +101,22 @@ const Agenda = ({
   const [presenters, setPresenters] = useState([]);
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
-
+  const [allSavedPresenters, setAllSavedPresenters] = useState([]);
+  const [allUsersRC, setAllUsersRC] = useState([]);
+  const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
+  const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
+  const [selectedID, setSelectedID] = useState(0);
+  const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
     severity: "error",
   });
-
-  const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
-  const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
-  const [selectedID, setSelectedID] = useState(0);
   const [meetingTime, setMeetingTime] = useState({
     meetingStartTime: "",
     meetingEndTime: "",
   });
-  const [subajendaRemoval, setSubajendaRemoval] = useState(0);
-  const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
-  );
+
   useEffect(() => {
     let getAllData = {
       MeetingID: currentMeetingIDLS !== null ? currentMeetingIDLS : 0,
@@ -253,6 +247,8 @@ const Agenda = ({
       canEdit: false,
       canView: false,
     };
+    console.log("add newMainAgenda", newMainAgenda);
+    console.log("add newMainAgenda", rows);
     setRows([...rows, newMainAgenda]);
   };
 
@@ -674,12 +670,13 @@ const Agenda = ({
       if (rows.length === 1) {
         updatedRows[0].presenterID = allSavedPresenters[0]?.value;
         updatedRows[0].presenterName = allSavedPresenters[0]?.label;
+        console.log("add newMainAgenda", updatedRows);
         setRows(updatedRows);
         console.log("updated Rows ROWS ROWS");
       }
     }
   }, [allSavedPresenters, allUsersRC]);
-  console.log(MeetingAgendaData, "MeetingAgendaDataMeetingAgendaData");
+
   useEffect(() => {
     if (MeetingAgendaData !== null && MeetingAgendaData !== undefined) {
       if (MeetingAgendaData.agendaList?.length > 0) {
@@ -749,6 +746,7 @@ const Agenda = ({
               files: agendaItem.files ? [...agendaItem.files] : [],
             };
           });
+          console.log("add newMainAgenda", generateAgendaData);
           setRows(generateAgendaData);
           setIsPublishedState(isPublishedAgenda);
         } catch (error) {
@@ -777,6 +775,7 @@ const Agenda = ({
           canView: true,
           canEdit: true,
         };
+        console.log("add newMainAgenda", newData);
         setRows([newData]);
       }
     } else {
@@ -802,12 +801,13 @@ const Agenda = ({
         canView: true,
         canEdit: true,
       };
+      console.log("add newMainAgenda", newData);
       setRows([newData]);
     }
   }, [
     MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
-    allSavedPresenters,
-    allUsersRC,
+    // allSavedPresenters,
+    // allUsersRC,
   ]);
 
   useEffect(() => {
@@ -819,6 +819,7 @@ const Agenda = ({
       let newData =
         MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
 
+      console.log("add newMainAgenda", newData);
       console.log("updated Rows ROWS ROWS", newData);
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
@@ -1046,6 +1047,7 @@ const Agenda = ({
     } else {
       // Your existing logic for handling other cases
       console.log("updated Rows ROWS ROWS", rows);
+      console.log("add newMainAgenda", rows);
       setRows(rows);
     }
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
@@ -1218,22 +1220,6 @@ const Agenda = ({
                                           setSelectedID={setSelectedID}
                                         />
                                       </div>
-                                      {/* Line Seperator */}
-                                      {/* <Row className="mt-3">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <img
-                                          draggable={false}
-                                          src={line}
-                                          className={
-                                            data.canView === false &&
-                                            editorRole.role ===
-                                              "Agenda Contributor"
-                                              ? "d-none"
-                                              : styles["LineStyles"]
-                                          }
-                                        />
-                                      </Col>
-                                    </Row> */}
                                     </>
                                   );
                                 })
