@@ -2794,6 +2794,13 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_IsSharedScreen_01".toLowerCase()
                 )
             ) {
+              if (data.ShareScreen === true) {
+                console.log("CheckDataCheckData");
+                localStorage.setItem("isSharedSceenEnable", true);
+              } else {
+                console.log("CheckDataCheckData");
+                localStorage.removeItem("isSharedSceenEnable");
+              }
               await dispatch(
                 isSharedScreenSuccess(
                   response.data.responseResult,
