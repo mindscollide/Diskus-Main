@@ -654,6 +654,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
@@ -674,6 +675,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/ManageUsers");
@@ -722,6 +724,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
@@ -742,6 +745,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/ManageUsers");
@@ -789,6 +793,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/PayOutstanding");
@@ -809,6 +814,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                   { id: 34, name: "Summary" },
                   { id: 200, name: "Admin" },
                   { name: "PaymentHistory", id: 218 },
+                  { name: "AuditTrial", id: 219 },
                 ])
               );
               navigate("/Admin/ManageUsers");

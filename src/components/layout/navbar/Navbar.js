@@ -336,6 +336,15 @@ const NavbarAdmin = () => {
                                   {t("User-login-history")}
                                 </NavDropdown.Item>
                               ) : null}
+
+                              <NavDropdown.Item
+                                as={Link}
+                                to="AuditTrial"
+                                eventKey="link-8"
+                                className="text-black border-none"
+                              >
+                                {t("Audit-trial")}
+                              </NavDropdown.Item>
                             </NavDropdown>
                           </>
                         )}

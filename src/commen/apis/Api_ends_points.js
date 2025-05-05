@@ -2,6 +2,7 @@ const baseURL = process.env.REACT_APP_BASE_URL;
 
 // API Endpoints from Environment Variables
 const authenticationApi = baseURL + process.env.REACT_APP_AUTH_API;
+//const authenticationApi = "http://localhost:12278/ERM_Auth";
 const toDoListApi = baseURL + process.env.REACT_APP_TODO_LIST_API;
 const settingApi = baseURL + process.env.REACT_APP_SETTING_API;
 const settingDownloadApi = baseURL + process.env.REACT_APP_SETTING_DOWNLOAD_API;

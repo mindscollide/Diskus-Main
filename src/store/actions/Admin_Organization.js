@@ -247,4 +247,11 @@ const checkEmailExsist = (
       });
   };
 };
-export { checkOraganisation, checkEmailExsist };
+
+const AuditTrialViewActionModal = (response) => {
+  return {
+    type: actions.AUDITTRIAL_VIEW_ACTION_MODAL,
+    response: response,
+  };
+};
+export { checkOraganisation, checkEmailExsist, AuditTrialViewActionModal };

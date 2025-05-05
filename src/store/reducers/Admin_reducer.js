@@ -33,6 +33,7 @@ const initialState = {
   searchPaymentHistory: null,
   Spinner: false,
   getSubscriptiondetails: null,
+  auditTrialViewActionModal: false,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -509,6 +510,13 @@ const adminReducer = (state = initialState, action) => {
         Spinner: false,
         searchPaymentHistory: null,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.AUDITTRIAL_VIEW_ACTION_MODAL: {
+      return {
+        ...state,
+        auditTrialViewActionModal: action.response,
       };
     }
     default:

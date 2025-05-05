@@ -3706,3 +3706,6 @@ export const IS_SCREEN_SHARED_TRIGGERED_FAIL =
 
 // Global state of screen share trigger
 export const GLOBAL_SCREEN_SHARE_TRIGGERED = "GLOBAL_SCREEN_SHARE_TRIGGERED";
+
+//export const Audit Trial Modal
+export const AUDITTRIAL_VIEW_ACTION_MODAL = "AUDITTRIAL_VIEW_ACTION_MODAL";
