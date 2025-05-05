@@ -24,6 +24,8 @@ import {
   ValidateEncryptedStringViewCommitteeDetailLinkRM,
 } from "../../commen/apis/Api_config";
 import { GetAllUserChats } from "./Talk_action";
+import { isFunction } from "../../commen/functions/utils";
+import { AccessDeniedPolls } from "./Polls_actions";
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -519,7 +521,8 @@ const getCommitteesbyCommitteeId = (
   setViewGroupPage,
   setUpdateComponentpage,
   CommitteeStatusID,
-  setArchivedCommittee
+  setArchivedCommittee,
+  flag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -551,7 +554,8 @@ const getCommitteesbyCommitteeId = (
               setViewGroupPage,
               setUpdateComponentpage,
               CommitteeStatusID,
-              setArchivedCommittee
+              setArchivedCommittee,
+              flag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -569,28 +573,38 @@ const getCommitteesbyCommitteeId = (
                   ""
                 )
               );
-              let newData = {
-                CommitteeID: Number(Data.CommitteeID),
-              };
-              await dispatch(
-                reteriveCommitteeDocumentsApi(navigate, t, newData)
-              );
-              if (CommitteeStatusID === 1) {
-                setViewGroupPage(true);
-                setUpdateComponentpage(false);
-                dispatch(viewCommitteePageFlag(true));
-                dispatch(updateCommitteePageFlag(false));
-              } else if (CommitteeStatusID === 2) {
-                setUpdateComponentpage(false);
-                setArchivedCommittee(false);
-                setViewGroupPage(true);
-                dispatch(viewCommitteePageFlag(true));
-                dispatch(updateCommitteePageFlag(false));
-              } else if (CommitteeStatusID === 3) {
-                setUpdateComponentpage(true);
-                setViewGroupPage(false);
-                dispatch(viewCommitteePageFlag(false));
-                dispatch(updateCommitteePageFlag(true));
+              try {
+                let newData = {
+                  CommitteeID: Number(Data.CommitteeID),
+                };
+                await dispatch(
+                  reteriveCommitteeDocumentsApi(navigate, t, newData)
+                );
+                if (CommitteeStatusID === 1) {
+                  setViewGroupPage(true);
+                  setUpdateComponentpage(false);
+                  dispatch(viewCommitteePageFlag(true));
+                  dispatch(updateCommitteePageFlag(false));
+                } else if (CommitteeStatusID === 2) {
+                  setUpdateComponentpage(false);
+                  setArchivedCommittee(false);
+                  setViewGroupPage(true);
+                  dispatch(viewCommitteePageFlag(true));
+                  dispatch(updateCommitteePageFlag(false));
+                } else if (CommitteeStatusID === 3) {
+                  setUpdateComponentpage(true);
+                  setViewGroupPage(false);
+                  dispatch(viewCommitteePageFlag(false));
+                  dispatch(updateCommitteePageFlag(true));
+                }
+
+                if (flag === 1) {
+                  (await isFunction(setViewGroupPage)) &&
+                    setViewGroupPage(true);
+                  dispatch(viewCommitteePageFlag(true));
+                }
+              } catch (error) {
+                console.log(error, "Saiferrorerrorerror");
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -623,6 +637,15 @@ const getCommitteesbyCommitteeId = (
                   "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_05".toLowerCase()
                 )
             ) {
+              dispatch(getCommitteByCommitteeID_Fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Committees_CommitteeServiceManager_GetCommitteeByCommitteeID_06".toLowerCase()
+                )
+            ) {
+              dispatch(AccessDeniedPolls(true));
               dispatch(getCommitteByCommitteeID_Fail(""));
             }
           } else {

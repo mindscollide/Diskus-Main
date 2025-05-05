@@ -20,27 +20,66 @@ const CustomMiscellaneous = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
+  const extractYouTubeID = (url) => {
+    const regex =
+      /(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/))([\w-]{11})/;
+    const match = url.match(regex);
+    return match ? match[1] : null;
+  };
+
+  console.log(currentLanguage, "currentLanguagecurrentLanguage");
+
   return (
     <>
-      <section className='faqs_container'>
+      <section className="faqs_container">
         {fAQsReducer.AllFAQsData.map((data, index) => {
           return (
             <>
-              <Row className='mb-3' key={index}>
+              <Row className="mb-3" key={index}>
                 <Col lg={7} md={7} xs={7}>
                   <Accordian
                     // defaultActiveKey={"0"}
-                    eventKey='1'
+                    eventKey="1"
                     flush
                     className={`${"ABC"} ${currentLanguage}  `}
                     AccordioonHeader={
-                      <Card.Title className='fs-4 FaqsQuestionsStyles'>
-                        {data.question}
+                      <Card.Title className="fs-4 FaqsQuestionsStyles">
+                        {currentLanguage === "en"
+                          ? data.question
+                          : data.questionArabic !== ""
+                          ? data.questionArabic
+                          : data.question}
                       </Card.Title>
                     }
                     AccordioonBody={
                       <>
-                        <Card.Text>{data.answer}</Card.Text>
+                        <Card.Text>
+                          {currentLanguage === "en"
+                            ? data.answer
+                            : data.answerArabic !== ""
+                            ? data.answerArabic
+                            : data.answer}
+                        </Card.Text>
+
+                        <Row>
+                          <Col lg={12} md={12} sm={12} className="p-5">
+                            {data.videoLinkURL && (
+                              <div>
+                                <div className="ratio ratio-16x9">
+                                  <iframe
+                                    src={`https://www.youtube.com/embed/${extractYouTubeID(
+                                      data.videoLinkURL
+                                    )}`}
+                                    title="YouTube video player"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    style={{ borderRadius: "20px" }}
+                                  ></iframe>
+                                </div>
+                              </div>
+                            )}
+                          </Col>
+                        </Row>
                       </>
                     }
                   />

@@ -14,7 +14,6 @@ import { useDispatch } from "react-redux";
 import {
   GetMeetingStatusDataAPI,
   proposedMeetingDatesGlobalFlag,
-  showSceduleProposedMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
   viewProposeDateMeetingPageFlag,
@@ -26,10 +25,15 @@ import {
   webNotificationDataLeaveVideoIntiminationModal,
 } from "../../../store/actions/UpdateUserNotificationSetting.js";
 import { ViewMeeting } from "../../../store/actions/Get_List_Of_Assignees.js";
-import { MinutesWorkFlowActorStatusNotificationAPI } from "../../../store/actions/Minutes_action.js";
 import { useGroupsContext } from "../../../context/GroupsContext.js";
-import { viewGroupPageFlag } from "../../../store/actions/Groups_actions.js";
-import { viewCommitteePageFlag } from "../../../store/actions/Committee_actions.js";
+import {
+  getbyGroupID,
+  viewGroupPageFlag,
+} from "../../../store/actions/Groups_actions.js";
+import {
+  getCommitteesbyCommitteeId,
+  viewCommitteePageFlag,
+} from "../../../store/actions/Committee_actions.js";
 import {
   DataRoomFileSharingPermissionAPI,
   getFolderDocumentsApi,
@@ -70,19 +74,17 @@ const WebNotfication = ({
     setAdvanceMeetingModalID,
   } = useMeetingContext();
   //Resolution Context
+  const location = useLocation();
+  const currentURL = window.location.href;
+  const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
+
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
-  const location = useLocation();
-  const currentURL = window.location.href;
-  console.log(currentURL, "currentURL");
-  const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
   const [groupedNotifications, setGroupedNotifications] = useState({
     today: [],
     previous: [],
   });
-
-  console.log(groupedNotifications, "groupedNotifications");
 
   //Global Loader From Setting Reducer
   const WebNotificaitonLoader = useSelector(
@@ -131,62 +133,68 @@ const WebNotfication = ({
 
   // Real-time data for notification appending in webNotificationData
   useEffect(() => {
-    if (
-      Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
-      GlobalUnreadCountNotificaitonFromMqtt.length > 0
-    ) {
-      // Iterate over each notification object in the array
-      const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
-        (notification) => notification.notificationData
-      );
-
-      // Prepending the new notifications to the state while ensuring uniqueness
-      setwebNotificationData((prevData) => {
-        const newData = newNotifications.filter(
-          (newNotification) =>
-            !prevData.some(
-              (existingNotification) =>
-                existingNotification.notificationID ===
-                newNotification.notificationID
-            )
+    try {
+      if (
+        Array.isArray(GlobalUnreadCountNotificaitonFromMqtt) &&
+        GlobalUnreadCountNotificaitonFromMqtt.length > 0
+      ) {
+        // Iterate over each notification object in the array
+        const newNotifications = GlobalUnreadCountNotificaitonFromMqtt.map(
+          (notification) => notification.notificationData
         );
-        return [...newData, ...prevData]; // Add new unique notifications to the front of the list
-      });
+
+        // Prepending the new notifications to the state while ensuring uniqueness
+        setwebNotificationData((prevData) => {
+          const newData = newNotifications.filter(
+            (newNotification) =>
+              !prevData.some(
+                (existingNotification) =>
+                  existingNotification.notificationID ===
+                  newNotification.notificationID
+              )
+          );
+          return [...newData, ...prevData]; // Add new unique notifications to the front of the list
+        });
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, [GlobalUnreadCountNotificaitonFromMqtt]);
 
   // Group notifications whenever webNotificationData changes
   useEffect(() => {
-    const uniqueNotifications = Array.from(
-      new Map(
-        webNotificationData.map((item) => [item.notificationID, item])
-      ).values()
-    );
+    try {
+      if (Object.keys(webNotificationData).length > 0) {
+        const uniqueNotifications = Array.from(
+          new Map(
+            webNotificationData.map((item) => [item.notificationID, item])
+          ).values()
+        );
 
-    const groupNotificationsData = uniqueNotifications.reduce(
-      (acc, notification) => {
-        const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
-        if (notificationDate === todayDate) {
-          acc.today.push(notification);
-        } else {
-          acc.previous.push(notification);
-        }
-        return acc;
-      },
-      { today: [], previous: [] }
-    );
-
-    setGroupedNotifications(groupNotificationsData);
-    console.log(groupNotificationsData, "groupNotificationsData");
+        const groupNotificationsData = uniqueNotifications.reduce(
+          (acc, notification) => {
+            const notificationDate = notification.sentDateTime.slice(0, 8); // Extract YYYYMMDD
+            if (notificationDate === todayDate) {
+              acc.today.push(notification);
+            } else {
+              acc.previous.push(notification);
+            }
+            return acc;
+          },
+          { today: [], previous: [] }
+        );
+        setGroupedNotifications(groupNotificationsData);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }, [webNotificationData, todayDate]);
 
   //Handle Click Notification
   const HandleClickNotfication = async (NotificationData) => {
-    console.log(NotificationData, "NotificationDataNotificationData");
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    console.log(PayLoadData, "NotificationDataNotificationData");
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
       if (
@@ -833,22 +841,41 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 16) {
         if (currentURL.includes("/Diskus/groups")) {
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
           );
-          // For Notification Added in the Group
-          setViewGroupPage(true);
-          dispatch(viewGroupPageFlag(true));
+          //Here we will be calling the api to cover the scenario that the user dose not belong to this group
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
+          );
         } else {
           //Notificaiton For Added in Group
           navigate("/Diskus/groups");
-          //open ViewMode Modal Also in this
-          localStorage.setItem("NotificationClickAddedIntoGroup", true);
+          localStorage.setItem("AccessDeniedGroups", true);
           localStorage.setItem(
             "NotifcationClickViewGroupID",
             PayLoadData.GroupID
+          );
+          dispatch(
+            getbyGroupID(
+              navigate,
+              Number(PayLoadData.GroupID),
+              t,
+              false,
+              false,
+              4,
+              false
+            )
           );
         }
       } else if (NotificationData.notificationActionID === 17) {
@@ -910,20 +937,58 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 21) {
         if (currentURL.includes("/Diskus/committee")) {
-          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem("AccessDeniedCommittee", true);
           localStorage.setItem(
             "NotifcationClickViewCommitteeID",
             PayLoadData.CommitteeID
           );
-          setViewGroupPage(true);
-          dispatch(viewCommitteePageFlag(true));
+          // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: JSON.parse(PayLoadData.CommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(
+            getCommitteesbyCommitteeId(
+              navigate,
+              Data,
+              t,
+              setViewGroupPage,
+              false,
+              false,
+              false,
+              1
+            )
+          );
         } else {
           //Notification for being Added in the Committee
           navigate("/Diskus/committee");
-          localStorage.setItem("NotificationClickCommitteeOperations", true);
+          localStorage.setItem("AccessDeniedCommittee", true);
           localStorage.setItem(
             "NotifcationClickViewCommitteeID",
             PayLoadData.CommitteeID
+          );
+          // here calling the getCommitteeByID so that can handle all scenarios including if the user is not present in the committee
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeID: JSON.parse(PayLoadData.CommitteeID),
+            OrganizationId: OrganizationID,
+          };
+          dispatch(
+            getCommitteesbyCommitteeId(
+              navigate,
+              Data,
+              t,
+              setViewGroupPage,
+              false,
+              false,
+              false,
+              1
+            )
           );
         }
       } else if (NotificationData.notificationActionID === 22) {

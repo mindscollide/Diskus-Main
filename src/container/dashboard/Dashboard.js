@@ -68,6 +68,7 @@ import {
   stopScreenShareOnPresenterStarting,
   maxParticipantVideoDenied,
   screenShareTriggeredGlobally,
+  isSharedScreenTriggeredApi,
 } from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
@@ -333,6 +334,12 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
   );
 
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+
+  console.log(globallyScreenShare, "globallyScreenShare");
+
   const [checkInternet, setCheckInternet] = useState(navigator);
 
   // for real time Notification
@@ -501,7 +508,7 @@ const Dashboard = () => {
       if (String(meetingVideoID) === String(payload?.meetingID)) {
         if (maxParticipantVideoRemovedFlag) {
           // remove Screen Should be closed when presentation is started
-         await dispatch(maxParticipantVideoRemoved(false));
+          await dispatch(maxParticipantVideoRemoved(false));
         }
         showMessage(t("Presenter-view-started"), "success", setOpen);
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -1243,6 +1250,38 @@ const Dashboard = () => {
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 if (isZoomEnabled) {
+                  console.log("busyCall");
+                  if (!globallyScreenShare) {
+                    console.log("busyCall");
+
+                    let isMeetingVideoHostCheck = JSON.parse(
+                      localStorage.getItem("isMeetingVideoHostCheck")
+                    );
+                    let participantRoomId = String(
+                      localStorage.getItem("participantRoomId")
+                    );
+                    let participantUID = String(
+                      localStorage.getItem("participantUID")
+                    );
+                    let RoomID =
+                      isMeetingVideoCheck && !isMeetingVideoHostCheck
+                        ? participantRoomId
+                        : null;
+
+                    let UID =
+                      isMeetingVideoCheck && !isMeetingVideoHostCheck
+                        ? participantUID
+                        : null;
+                    let data = {
+                      RoomID: RoomID,
+                      ShareScreen: false,
+                      UID: UID,
+                    };
+                    dispatch(screenShareTriggeredGlobally(false));
+                    await dispatch(
+                      isSharedScreenTriggeredApi(navigate, t, data)
+                    );
+                  }
                   dispatch(setAudioControlHost(false));
                   dispatch(setVideoControlHost(false));
                   await dispatch(setParticipantRemovedFromVideobyHost(true));
@@ -1413,6 +1452,7 @@ const Dashboard = () => {
               localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
+              console.log("iframeiframe", data.payload.screenShare);
               console.log("iframeiframe", data.payload.userID);
               localStorage.setItem("acceptedRecipientID", data.payload.userID);
               localStorage.setItem("isMeetingVideo", true);
@@ -1421,6 +1461,18 @@ const Dashboard = () => {
                 data.payload.videoUrl
               );
               console.log("iframeiframe", data.payload.userID);
+
+              // when Is screenShare is true
+              if (data?.payload?.screenShare) {
+                console.log("Check Datat");
+                let isZoomEnabled = JSON.parse(
+                  localStorage.getItem("isZoomEnabled")
+                );
+                if (isZoomEnabled) {
+                  console.log(data?.payload?.screenShare, "Check Datat");
+                  dispatch(screenShareTriggeredGlobally(true));
+                }
+              }
               if (data?.payload?.videoUrl) {
                 // Fetch values from localStorage and Redux
                 console.log("iframeiframe", data.payload.userID);
