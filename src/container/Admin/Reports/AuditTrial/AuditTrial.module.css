@@ -43,3 +43,19 @@
   font-weight: 400 !important;
   font-size: 12px !important;
 }
+
+.report_search_Box {
+  position: relative;
+}
+
+.searchbox_icon_userhistoryLogin {
+  position: absolute !important;
+  right: 10px;
+  top: 10px;
+  left: auto;
+  cursor: pointer;
+}
+body[dir="rtl"] .searchbox_icon_userhistoryLogin {
+  left: 10px;
+  right: auto;
+}

@@ -2,11 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
-import { Button, Table } from "../../../../components/elements";
+import { Button, Table, TextField } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import CrossIcon from "../../../../assets/images/Cross-Chat-Icon.png";
+import Select from "react-select";
 import InfiniteScroll from "react-infinite-scroll-component";
+//import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
+import searchicon from "../../../../assets/images/searchicon.svg";
 import {
   AuditTrialViewActionModal,
   GetAuditActionsAPI,
@@ -15,6 +19,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
 import { Spin } from "antd";
+import DatePicker from "react-multi-date-picker";
+import InputIcon from "react-multi-date-picker/components/input_icon";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
@@ -204,7 +210,7 @@ const AuditTrial = () => {
         return (
           <>
             <span className={styles["NameStylesTable"]}>
-              {record.dateLogOut}
+              {AuditTrialDateTimeFunction(record.dateLogOut, locale)}
             </span>
           </>
         );
@@ -252,10 +258,30 @@ const AuditTrial = () => {
   return (
     <Container>
       <Row className="mt-5">
-        <Col lg={12} md={12} sm={12}>
+        <Col lg={7} md={7} sm={7}>
           <span className={styles["AuditTrialHeading"]}>
             {t("Audit-trial")}
           </span>
+        </Col>
+        <Col lg={5} md={5} sm={5}>
+          <section className={styles["report_search_Box"]}>
+            <TextField
+              applyClass={"user-login-history-searchbar"}
+              labelclass={"d-none"}
+              width={"100%"}
+              iconclassname={"d-block"}
+              placeholder={`${t("Search")}...`}
+              name={"Title"}
+              inputicon={
+                <img
+                  draggable="false"
+                  src={searchicon}
+                  alt=""
+                  className={styles["searchbox_icon_userhistoryLogin"]}
+                />
+              }
+            />
+          </section>
         </Col>
       </Row>
       <Row>
