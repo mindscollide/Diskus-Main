@@ -111,6 +111,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
               >
                 <span className={styles["UserNameStyles"]}>
                   {t("User")}
+                  {""}
                   <span>
                     :{""}
                     {viewActionModalDataState.userName}
@@ -120,6 +121,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
               <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
                 <span className={styles["UserNameStyles"]}>
                   {t("Interface")}
+                  {""}
                   <span>
                     :{""}{" "}
                     {viewActionModalDataState.deviceID === "1"
