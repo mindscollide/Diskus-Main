@@ -17,7 +17,6 @@ import searchicon from "../../../../assets/images/searchicon.svg";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 import {
-  AuditTrialViewActionModal,
   GetAuditActionsAPI,
   GetAuditListingAPI,
 } from "../../../../store/actions/Admin_Organization";
@@ -86,6 +85,24 @@ const AuditTrial = () => {
     } catch (error) {
       console.log(error, "errorerrorerror");
     }
+    return () => {
+      setAuditTrialSearch({
+        userName: "",
+        IpAddress: "",
+        LoginDate: "",
+        LoginDateView: "",
+        LogoutDate: "",
+        LogoutDateView: "",
+        LogoutTime: "",
+        LogoutTimeView: "",
+        LoginTime: "",
+        LoginTimeView: "",
+        Interface: {
+          value: 0,
+          label: "",
+        },
+      });
+    };
   }, []);
 
   console.log(auditTrialListingTableData, "GetAuditListingReducerGlobalState");
@@ -329,7 +346,6 @@ const AuditTrial = () => {
       label: "Tablet",
       value: 2,
     },
-    ,
     {
       label: "Mobile",
       value: 3,
@@ -379,50 +395,6 @@ const AuditTrial = () => {
       }
     }
   };
-
-  //Handle Change React Select login Date
-  // const handleChangeLoginDate = (event) => {
-  //   setAuditTrialSearch({
-  //     ...auditTrialSearch,
-  //     LoginDate: {
-  //       label: event.label,
-  //       value: event.value,
-  //     },
-  //   });
-  // };
-
-  //Handle Change React Select login Time
-  // const handleChangeLoginTime = (event) => {
-  //   setAuditTrialSearch({
-  //     ...auditTrialSearch,
-  //     LoginTime: {
-  //       label: event.label,
-  //       value: event.value,
-  //     },
-  //   });
-  // };
-
-  //Handle Change React Select logout Date
-  // const handleChangeLogoutDate = (event) => {
-  //   setAuditTrialSearch({
-  //     ...auditTrialSearch,
-  //     LogoutDate: {
-  //       label: event.label,
-  //       value: event.value,
-  //     },
-  //   });
-  // };
-
-  //Handle Change React Select logout Time
-  // const handleChangeLogoutTime = (event) => {
-  //   setAuditTrialSearch({
-  //     ...auditTrialSearch,
-  //     LogoutTime: {
-  //       label: event.label,
-  //       value: event.value,
-  //     },
-  //   });
-  // };
 
   //Handle Change React Select logout Time
   const handleChangeInterface = (event) => {
@@ -485,6 +457,39 @@ const AuditTrial = () => {
       ...auditTrialSearch,
       LoginTime: timeString.replace(":", ""),
       LoginTimeView: formattedTime,
+    });
+  };
+
+  const handleSearchAuditTrialListing = () => {
+    let Data = {
+      Username: auditTrialSearch.userName,
+      IpAddress: auditTrialSearch.IpAddress,
+      DeviceID: auditTrialSearch.Interface.value,
+      DateLogin: auditTrialSearch.LoginDate,
+      DateLogOut: auditTrialSearch.LogoutDate,
+      sRow: 0,
+      Length: 10,
+    };
+    console.log(Data, "handleSearchAuditTrialListing");
+    dispatch(GetAuditListingAPI(navigate, Data, t));
+  };
+
+  const handleResetButton = () => {
+    setAuditTrialSearch({
+      userName: "",
+      IpAddress: "",
+      LoginDate: "",
+      LoginDateView: "",
+      LogoutDate: "",
+      LogoutDateView: "",
+      LogoutTime: "",
+      LogoutTimeView: "",
+      LoginTime: "",
+      LoginTimeView: "",
+      Interface: {
+        value: 0,
+        label: "",
+      },
     });
   };
 
@@ -557,10 +562,7 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Login-date")}
                       </span>
-                      {/* <Select
-                        placeholder={t("Login-date")}
-                        onChange={handleChangeLoginDate}
-                      /> */}
+
                       <DatePicker
                         format={"DD/MM/YYYY"}
                         placeholder={t("Login-date")}
@@ -587,10 +589,7 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Login-time")}
                       </span>
-                      {/* <Select
-                        placeholder={t("Login-time")}
-                        onChange={handleChangeLoginTime}
-                      /> */}
+
                       <DatePicker
                         arrowClassName="arrowClass"
                         containerClassName="containerClassTimePicker"
@@ -614,10 +613,7 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Logout-date")}
                       </span>
-                      {/* <Select
-                        placeholder={t("Logout-date")}
-                        onChange={handleChangeLogoutDate}
-                      /> */}
+
                       <DatePicker
                         format={"DD/MM/YYYY"}
                         placeholder={t("Logout-date")}
@@ -644,10 +640,7 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Logout-time")}
                       </span>
-                      {/* <Select
-                        placeholder={t("Logout-time")}
-                        onChange={handleChangeLogoutTime}
-                      /> */}
+
                       <DatePicker
                         arrowClassName="arrowClass"
                         containerClassName="containerClassTimePicker"
@@ -687,10 +680,15 @@ const AuditTrial = () => {
                     sm={12}
                     className="d-flex justify-content-end gap-2 align-items-center"
                   >
-                    <Button text={t("Reset")} className={styles["ResetBtn"]} />
+                    <Button
+                      text={t("Reset")}
+                      className={styles["ResetBtn"]}
+                      onClick={handleResetButton}
+                    />
                     <Button
                       text={t("Search")}
                       className={styles["SearchBtn"]}
+                      onClick={handleSearchAuditTrialListing}
                     />
                   </Col>
                 </Row>
