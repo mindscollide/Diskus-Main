@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ViewActionModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -14,9 +14,33 @@ const ViewActionModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  //Local state
+  const [auditActionsData, setAuditActionsData] = useState([]);
+
   const ViewActionModalGlobalState = useSelector(
     (state) => state.adminReducer.auditTrialViewActionModal
   );
+
+  const GetUserActionsAuditData = useSelector(
+    (state) => state.adminReducer.getAuditActionsData
+  );
+
+  console.log(GetUserActionsAuditData, "GetUserActionsAuditData");
+
+  //Extracting the Audit actions data
+  useEffect(() => {
+    try {
+      if (GetUserActionsAuditData && GetUserActionsAuditData !== null) {
+        setAuditActionsData(GetUserActionsAuditData.userLoginAuditActions);
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+    return () => {};
+  }, []);
+
+  console.log(auditActionsData, "GetUserActionsAuditData");
 
   const dummyData = [
     {
