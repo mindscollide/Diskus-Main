@@ -10,10 +10,16 @@ import { Col, Row } from "react-bootstrap";
 import NoActionsAudits from "../../../../../assets/images/NoActionsAudits.png";
 import CrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import Excelicon from "../../../../../assets/images/ExcelIcon.png";
-const ViewActionModal = () => {
+import {
+  AuditTrialDateTimeFunction,
+  AuditTrialDateTimeFunctionViewActionDetails,
+} from "../../../../../commen/functions/date_formater";
+const ViewActionModal = ({ viewActionModalDataState }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const locale = localStorage.getItem("i18nextLng");
+
+  console.log(viewActionModalDataState, "viewActionModalDataState");
 
   //Local state
   const [auditActionsData, setAuditActionsData] = useState([]);
@@ -74,7 +80,6 @@ const ViewActionModal = () => {
       <Modal
         show={ViewActionModalGlobalState}
         setShow={dispatch(AuditTrialViewActionModal)}
-        // modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => {
           dispatch(AuditTrialViewActionModal(false));
@@ -106,13 +111,23 @@ const ViewActionModal = () => {
               >
                 <span className={styles["UserNameStyles"]}>
                   {t("User")}
-                  <span>:{""}James Miller</span>
+                  <span>
+                    :{""}
+                    {viewActionModalDataState.userName}
+                  </span>
                 </span>
               </Col>
               <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
                 <span className={styles["UserNameStyles"]}>
                   {t("Interface")}
-                  <span>:{""}Web</span>
+                  <span>
+                    :{""}{" "}
+                    {viewActionModalDataState.deviceID === "1"
+                      ? "Web"
+                      : viewActionModalDataState.deviceID === "2"
+                      ? "Mobile"
+                      : "Tablet"}
+                  </span>
                 </span>
               </Col>
             </Row>
@@ -177,30 +192,36 @@ const ViewActionModal = () => {
                         ${styles["item-border-Bottom"]}
                       `}
                       >
-                        {`${item.timestamp} – ${item.status}`}
+                        {`${AuditTrialDateTimeFunctionViewActionDetails(
+                          viewActionModalDataState.dateLogin,
+                          locale
+                        )} – `}
+                        {t("Logged-In")}
                       </span>
                     ))}
 
                   {/* ACTIVITY ITEMS OR NO ACTIVITY MESSAGE */}
-                  {dummyData.some((item) => item.type === "activity") ? (
-                    dummyData
-                      .filter((item) => item.type === "activity")
-                      .map((item, index, arr) => (
-                        <span
-                          key={`activity-${index}`}
-                          className={`
+                  {auditActionsData.length > 0 ? (
+                    auditActionsData.map((item, index, arr) => (
+                      <span
+                        key={`activity-${index}`}
+                        className={`
                           ${styles["item-base"]}
                           ${styles["item-activity"]}
                         `}
-                        >
-                          <span className={styles["InnerSideDescription"]}>
-                            {item.timestamp} – {item.description}
-                          </span>
-                          {index !== arr.length - 1 && (
-                            <hr className={styles["H1styles"]} />
-                          )}
+                      >
+                        <span className={styles["InnerSideDescription"]}>
+                          {AuditTrialDateTimeFunctionViewActionDetails(
+                            item.datetime,
+                            locale
+                          )}{" "}
+                          – {item.message}
                         </span>
-                      ))
+                        {index !== arr.length - 1 && (
+                          <hr className={styles["H1styles"]} />
+                        )}
+                      </span>
+                    ))
                   ) : (
                     <Row>
                       <Col
@@ -218,7 +239,7 @@ const ViewActionModal = () => {
                   )}
 
                   {/* LOGOUT ITEM */}
-                  {dummyData
+                  {/* {dummyData
                     .filter((item) => item.type === "logout")
                     .map((item, index) => (
                       <span
@@ -230,7 +251,7 @@ const ViewActionModal = () => {
                       >
                         {`${item.timestamp} – ${item.status}`}
                       </span>
-                    ))}
+                    ))} */}
                 </div>
               </Col>
             </Row>

@@ -1974,3 +1974,30 @@ export const AuditTrialDateTimeFunction = (dateTime, locale = "en") => {
     return momentObj.format("hh:mm A - Do MMMM, YYYY"); // fallback to default
   }
 };
+
+export const AuditTrialDateTimeFunctionViewActionDetails = (
+  dateTime,
+  locale = "en"
+) => {
+  if (!dateTime || dateTime.length !== 14) return "";
+
+  // Construct ISO datetime string
+  let isoString =
+    dateTime.slice(0, 4) +
+    "-" +
+    dateTime.slice(4, 6) +
+    "-" +
+    dateTime.slice(6, 8) +
+    "T" +
+    dateTime.slice(8, 10) +
+    ":" +
+    dateTime.slice(10, 12) +
+    ":" +
+    dateTime.slice(12, 14) +
+    "Z";
+
+  const momentObj = moment(isoString).locale(locale);
+
+  // Format: YYYY-MM-DD | hh:mm A
+  return momentObj.format("YYYY-MM-DD | hh:mm A");
+};

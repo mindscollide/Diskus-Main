@@ -53,6 +53,7 @@ const AuditTrial = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [searchText, setSearchText] = useState([]);
+  const [viewActionModalDataState, setViewActionModalDataState] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
     title: "",
     userName: "",
@@ -166,8 +167,9 @@ const AuditTrial = () => {
   }, [locale]);
 
   //handle View ActionModal
-  const handleViewActionModal = (UserRoleID) => {
-    let Data = { UserLoginHistoryID: Number(UserRoleID) };
+  const handleViewActionModal = (record) => {
+    setViewActionModalDataState(record);
+    let Data = { UserLoginHistoryID: Number(record.userLoginHistoryID) };
     dispatch(GetAuditActionsAPI(navigate, Data, t));
   };
 
@@ -289,7 +291,7 @@ const AuditTrial = () => {
             <Button
               text={t("View-Action")}
               className={styles["ViewActions"]}
-              onClick={() => handleViewActionModal(record.userLoginHistoryID)}
+              onClick={() => handleViewActionModal(record)}
             />
           </>
         );
@@ -786,7 +788,9 @@ const AuditTrial = () => {
           </span>
         </Col>
       </Row>
-      {ViewActionModalGlobalState && <ViewActionModal />}
+      {ViewActionModalGlobalState && (
+        <ViewActionModal viewActionModalDataState={viewActionModalDataState} />
+      )}
     </section>
   );
 };

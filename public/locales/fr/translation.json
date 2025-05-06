@@ -2385,5 +2385,6 @@
   "Login-date": "Login Date",
   "Login-time": "Login Time",
   "Logout-date": "Logout Date",
-  "Logout-time": "Logout Time"
+  "Logout-time": "Logout Time",
+  "Logged-In": "Logged In"
 }
