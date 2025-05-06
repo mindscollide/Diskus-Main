@@ -54,7 +54,7 @@ const AuditTrial = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [searchText, setSearchText] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
-    Title: "",
+    title: "",
     userName: "",
     IpAddress: "",
     LoginDate: "",
@@ -515,7 +515,7 @@ const AuditTrial = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       let Data = {
-        Username: auditTrialSearch.Title,
+        Username: auditTrialSearch.title,
         IpAddress: auditTrialSearch.IpAddress,
         DeviceID: auditTrialSearch.Interface.value,
         DateLogin: auditTrialSearch.LoginDate,
@@ -543,7 +543,7 @@ const AuditTrial = () => {
               labelclass={"d-none"}
               width={"100%"}
               iconclassname={"d-block"}
-              value={auditTrialSearch.Title}
+              value={auditTrialSearch.title}
               onKeyDown={handleKeyDown}
               change={handeSearchBoxTextField}
               placeholder={`${t("Search")}...`}
