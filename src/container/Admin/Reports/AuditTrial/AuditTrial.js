@@ -52,7 +52,9 @@ const AuditTrial = () => {
   const [searchBar, setSearchBar] = useState(false);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const [searchText, setSearchText] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
+    Title: "",
     userName: "",
     IpAddress: "",
     LoginDate: "",
@@ -359,7 +361,7 @@ const AuditTrial = () => {
     console.log({ name, value }, "handleChangeSearchBoxValues");
 
     // For userName or Title, ensure only letters and whitespace are allowed
-    if (name === "userName") {
+    if (name === "UserName" || name === "Title") {
       if (value !== "") {
         let valueCheck = /^[A-Za-z\s]*$/i.test(value);
         if (valueCheck) {
@@ -378,7 +380,7 @@ const AuditTrial = () => {
     }
 
     // For IpAddress, validate the input and update the state accordingly
-    if (name === "IpAddress") {
+    if (name === "IPAddress") {
       if (value !== "") {
         if (validateIPInput(value)) {
           setAuditTrialSearch((prevState) => ({
@@ -475,23 +477,54 @@ const AuditTrial = () => {
   };
 
   const handleResetButton = () => {
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      userName: "",
-      IpAddress: "",
-      LoginDate: "",
-      LoginDateView: "",
-      LogoutDate: "",
-      LogoutDateView: "",
-      LogoutTime: "",
-      LogoutTimeView: "",
-      LoginTime: "",
-      LoginTimeView: "",
-      Interface: {
-        value: 0,
-        label: "",
-      },
-    });
+    try {
+      let Data = {
+        Username: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        sRow: 0,
+        Length: 10,
+      };
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+      setSearchBar(false);
+      setAuditTrialSearch({
+        ...auditTrialSearch,
+        userName: "",
+        IpAddress: "",
+        LoginDate: "",
+        LoginDateView: "",
+        LogoutDate: "",
+        LogoutDateView: "",
+        LogoutTime: "",
+        LogoutTimeView: "",
+        LoginTime: "",
+        LoginTimeView: "",
+        Interface: {
+          value: 0,
+          label: "",
+        },
+      });
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      let Data = {
+        Username: auditTrialSearch.userName,
+        IpAddress: auditTrialSearch.IpAddress,
+        DeviceID: auditTrialSearch.Interface.value,
+        DateLogin: auditTrialSearch.LoginDate,
+        DateLogOut: auditTrialSearch.LogoutDate,
+        sRow: 0,
+        Length: 10,
+      };
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+      setSearchText([...searchText, auditTrialSearch.userName]);
+    }
   };
 
   return (
@@ -509,6 +542,9 @@ const AuditTrial = () => {
               labelclass={"d-none"}
               width={"100%"}
               iconclassname={"d-block"}
+              value={auditTrialSearch.Title}
+              onKeyDown={handleKeyDown}
+              change={handeSearchBoxTextField}
               placeholder={`${t("Search")}...`}
               name={"Title"}
               inputicon={
@@ -536,7 +572,7 @@ const AuditTrial = () => {
                         width={"100%"}
                         iconclassname={"d-block"}
                         placeholder={`${t("UserName")}...`}
-                        name={"userName"}
+                        name={"UserName"}
                         change={handeSearchBoxTextField}
                       />
                     </div>
@@ -551,7 +587,7 @@ const AuditTrial = () => {
                         width={"100%"}
                         iconclassname={"d-block"}
                         placeholder={`${t("IP")}`}
-                        name={"IpAddress"}
+                        name={"IPAddress"}
                         change={handeSearchBoxTextField}
                       />
                     </div>
