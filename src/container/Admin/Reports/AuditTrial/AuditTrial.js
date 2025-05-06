@@ -149,6 +149,12 @@ const AuditTrial = () => {
           setTotalRecords(0);
           setSRowsData(0);
         }
+      } else {
+        if (!isScroll) {
+          setAuditTrialListingTableData([]);
+          setTotalRecords(0);
+          setSRowsData(0);
+        }
       }
     } catch {}
   }, [GetAuditListingReducerGlobalState]);
@@ -367,18 +373,26 @@ const AuditTrial = () => {
 
     if (name === "UserName" || name === "Title") {
       if (value !== "") {
+        console.log("saif");
         let valueCheck = /^[A-Za-z\s]*$/i.test(value);
         if (valueCheck) {
           setAuditTrialSearch((prevState) => ({
             ...prevState,
             [key]: value.trim(),
           }));
+        } else {
+          setAuditTrialSearch((prevState) => ({
+            ...prevState,
+            userName: "",
+            title: "",
+          }));
         }
       } else {
+        console.log("saif");
         setAuditTrialSearch((prevState) => ({
           ...prevState,
           userName: "",
-          Title: "",
+          title: "",
         }));
       }
     }
