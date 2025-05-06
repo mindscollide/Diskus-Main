@@ -62,7 +62,7 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 
 .SearchBoxAuditTrial {
   background: #fff !important;
-  width: 525px !important;
+  width: 539px !important;
   min-height: 300px !important;
   border: 1px solid #e1e1e1 !important;
   position: absolute !important;
@@ -80,4 +80,55 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 .AuditMainSection {
   width: 96% !important;
   margin: 0 auto !important;
+}
+
+.ResetBtn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.ResetBtn:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.SearchBtn {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.SearchBtn:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.UserLoginHistory_datePicker {
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  height: 39px !important;
+  padding: 0 10px;
+  cursor: pointer !important;
+}
+.UserLoginHistory_datePicker:is(:focus, :focus-visible) {
+  outline: none !important;
 }

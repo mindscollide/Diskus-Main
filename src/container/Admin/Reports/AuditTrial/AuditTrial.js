@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
 import { LoadingOutlined } from "@ant-design/icons";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Table, TextField } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import InfiniteScroll from "react-infinite-scroll-component";
-//import Crossicon from "../../../assets/images/WhiteCrossIcon.svg";
+import InputIcon from "react-multi-date-picker/components/input_icon";
+import DatePicker from "react-multi-date-picker";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
 import searchicon from "../../../../assets/images/searchicon.svg";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+
 import {
   AuditTrialViewActionModal,
   GetAuditActionsAPI,
@@ -45,31 +51,26 @@ const AuditTrial = () => {
   const [isScroll, setIsScroll] = useState(false);
   const [isRowsData, setSRowsData] = useState(0);
   const [searchBar, setSearchBar] = useState(false);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
     userName: "",
     IpAddress: "",
-    LoginDate: {
-      value: 0,
-      label: "",
-    },
-    LoginTime: {
-      value: 0,
-      label: "",
-    },
-    LogoutDate: {
-      value: 0,
-      label: "",
-    },
-    LogoutTime: {
-      value: 0,
-      label: "",
-    },
+    LoginDate: "",
+    LoginDateView: "",
+    LogoutDate: "",
+    LogoutDateView: "",
+    LogoutTime: "",
+    LogoutTimeView: "",
+    LoginTime: "",
+    LoginTimeView: "",
     Interface: {
       value: 0,
       label: "",
     },
   });
 
+  //Calling Get Audit Listing API
   useEffect(() => {
     try {
       let Data = {
@@ -131,6 +132,19 @@ const AuditTrial = () => {
       }
     } catch {}
   }, [GetAuditListingReducerGlobalState]);
+
+  //Handling the Arabic
+  useEffect(() => {
+    if (locale !== null && locale !== undefined) {
+      if (locale === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (locale === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [locale]);
 
   //handle View ActionModal
   const handleViewActionModal = (UserRoleID) => {
@@ -367,48 +381,48 @@ const AuditTrial = () => {
   };
 
   //Handle Change React Select login Date
-  const handleChangeLoginDate = (event) => {
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LoginDate: {
-        label: event.label,
-        value: event.value,
-      },
-    });
-  };
+  // const handleChangeLoginDate = (event) => {
+  //   setAuditTrialSearch({
+  //     ...auditTrialSearch,
+  //     LoginDate: {
+  //       label: event.label,
+  //       value: event.value,
+  //     },
+  //   });
+  // };
 
   //Handle Change React Select login Time
-  const handleChangeLoginTime = (event) => {
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LoginTime: {
-        label: event.label,
-        value: event.value,
-      },
-    });
-  };
+  // const handleChangeLoginTime = (event) => {
+  //   setAuditTrialSearch({
+  //     ...auditTrialSearch,
+  //     LoginTime: {
+  //       label: event.label,
+  //       value: event.value,
+  //     },
+  //   });
+  // };
 
   //Handle Change React Select logout Date
-  const handleChangeLogoutDate = (event) => {
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LogoutDate: {
-        label: event.label,
-        value: event.value,
-      },
-    });
-  };
+  // const handleChangeLogoutDate = (event) => {
+  //   setAuditTrialSearch({
+  //     ...auditTrialSearch,
+  //     LogoutDate: {
+  //       label: event.label,
+  //       value: event.value,
+  //     },
+  //   });
+  // };
 
   //Handle Change React Select logout Time
-  const handleChangeLogoutTime = (event) => {
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LogoutTime: {
-        label: event.label,
-        value: event.value,
-      },
-    });
-  };
+  // const handleChangeLogoutTime = (event) => {
+  //   setAuditTrialSearch({
+  //     ...auditTrialSearch,
+  //     LogoutTime: {
+  //       label: event.label,
+  //       value: event.value,
+  //     },
+  //   });
+  // };
 
   //Handle Change React Select logout Time
   const handleChangeInterface = (event) => {
@@ -421,15 +435,68 @@ const AuditTrial = () => {
     });
   };
 
+  //handle Login Date Change
+  const handleChangeLoginDate = (date) => {
+    let getDate = new Date(date);
+    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LoginDate: utcDate,
+      LoginDateView: getDate,
+    });
+  };
+
+  const handleChangeLogoutDate = (date) => {
+    let getDate = new Date(date);
+    let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LogoutDate: utcDate,
+      LogoutDateView: getDate,
+    });
+  };
+
+  const handleChangeLogoutTime = (date) => {
+    let getDate = new Date(date);
+    let timeString = getDate.toTimeString().slice(0, 5);
+    let formattedTime = getDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LogoutTime: timeString.replace(":", ""),
+      LogoutTimeView: formattedTime,
+    });
+  };
+
+  const handleChangeLoginTime = (date) => {
+    let getDate = new Date(date);
+    let timeString = getDate.toTimeString().slice(0, 5);
+    let formattedTime = getDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LoginTime: timeString.replace(":", ""),
+      LoginTimeView: formattedTime,
+    });
+  };
+
   return (
     <section className={styles["AuditMainSection"]}>
       <Row className="mt-5">
-        <Col lg={7} md={7} sm={7}>
+        <Col lg={8} md={8} sm={8}>
           <span className={styles["AuditTrialHeading"]}>
             {t("Audit-trial")}
           </span>
         </Col>
-        <Col lg={5} md={5} sm={5}>
+        <Col lg={4} md={4} sm={4}>
           <section className={styles["report_search_Box"]}>
             <TextField
               applyClass={"user-login-history-searchbar"}
@@ -490,9 +557,28 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Login-date")}
                       </span>
-                      <Select
+                      {/* <Select
                         placeholder={t("Login-date")}
                         onChange={handleChangeLoginDate}
+                      /> */}
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        placeholder={t("Login-date")}
+                        value={auditTrialSearch.LoginDateView}
+                        render={
+                          <InputIcon
+                            placeholder={t("Date-from")}
+                            className={styles["UserLoginHistory_datePicker"]}
+                          />
+                        }
+                        editable={false}
+                        className="datePickerTodoCreate2"
+                        onOpenPickNewDate={true}
+                        containerClassName={styles["datePicker_Container"]}
+                        inputMode=""
+                        calendar={calendarValue}
+                        locale={localValue}
+                        onFocusedDateChange={handleChangeLoginDate}
                       />
                     </div>
                   </Col>
@@ -501,9 +587,23 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Login-time")}
                       </span>
-                      <Select
+                      {/* <Select
                         placeholder={t("Login-time")}
                         onChange={handleChangeLoginTime}
+                      /> */}
+                      <DatePicker
+                        arrowClassName="arrowClass"
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="hh:mm A"
+                        value={auditTrialSearch.LoginTimeView}
+                        editable={false}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onFocusedDateChange={handleChangeLoginTime}
                       />
                     </div>
                   </Col>
@@ -514,9 +614,28 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Logout-date")}
                       </span>
-                      <Select
+                      {/* <Select
                         placeholder={t("Logout-date")}
                         onChange={handleChangeLogoutDate}
+                      /> */}
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        placeholder={t("Logout-date")}
+                        value={auditTrialSearch.LogoutDateView}
+                        render={
+                          <InputIcon
+                            placeholder={t("Logout-date")}
+                            className={styles["UserLoginHistory_datePicker"]}
+                          />
+                        }
+                        editable={false}
+                        className="datePickerTodoCreate2"
+                        onOpenPickNewDate={true}
+                        containerClassName={styles["datePicker_Container"]}
+                        inputMode=""
+                        calendar={calendarValue}
+                        locale={localValue}
+                        onFocusedDateChange={handleChangeLogoutDate}
                       />
                     </div>
                   </Col>
@@ -525,9 +644,23 @@ const AuditTrial = () => {
                       <span className={styles["SearchBoxEntities"]}>
                         {t("Logout-time")}
                       </span>
-                      <Select
+                      {/* <Select
                         placeholder={t("Logout-time")}
                         onChange={handleChangeLogoutTime}
+                      /> */}
+                      <DatePicker
+                        arrowClassName="arrowClass"
+                        containerClassName="containerClassTimePicker"
+                        className="timePicker"
+                        disableDayPicker
+                        inputClass="inputTImeMeeting"
+                        calendar={calendarValue}
+                        locale={localValue}
+                        format="hh:mm A"
+                        value={auditTrialSearch.LogoutTimeView}
+                        editable={false}
+                        plugins={[<TimePicker hideSeconds />]}
+                        onFocusedDateChange={handleChangeLogoutTime}
                       />
                     </div>
                   </Col>
@@ -546,6 +679,20 @@ const AuditTrial = () => {
                     </div>
                   </Col>
                   <Col lg={6} md={6} sm={6}></Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end gap-2 align-items-center"
+                  >
+                    <Button text={t("Reset")} className={styles["ResetBtn"]} />
+                    <Button
+                      text={t("Search")}
+                      className={styles["SearchBtn"]}
+                    />
+                  </Col>
                 </Row>
               </span>
             </>
