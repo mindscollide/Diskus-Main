@@ -476,6 +476,7 @@ const AuditTrial = () => {
 
   const handleResetButton = () => {
     setAuditTrialSearch({
+      ...auditTrialSearch,
       userName: "",
       IpAddress: "",
       LoginDate: "",
