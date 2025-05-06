@@ -59,3 +59,25 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
   left: 10px;
   right: auto;
 }
+
+.SearchBoxAuditTrial {
+  background: #fff !important;
+  width: 525px !important;
+  min-height: 300px !important;
+  border: 1px solid #e1e1e1 !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  padding: 8px 12px !important;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.SearchBoxEntities {
+  font-weight: 600 !important;
+  font-size: 10px !important;
+  color: #6172d6 !important;
+}
+
+.AuditMainSection {
+  width: 96% !important;
+  margin: 0 auto !important;
+}

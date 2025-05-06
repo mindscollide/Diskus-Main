@@ -16,6 +16,7 @@ import {
   GetAuditListingAPI,
 } from "../../../../store/actions/Admin_Organization";
 import { useNavigate } from "react-router-dom";
+import Select from "react-select";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
 import { Spin } from "antd";
 
@@ -43,6 +44,31 @@ const AuditTrial = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   const [isScroll, setIsScroll] = useState(false);
   const [isRowsData, setSRowsData] = useState(0);
+  const [searchBar, setSearchBar] = useState(false);
+  const [auditTrialSearch, setAuditTrialSearch] = useState({
+    userName: "",
+    IpAddress: "",
+    LoginDate: {
+      value: 0,
+      label: "",
+    },
+    LoginTime: {
+      value: 0,
+      label: "",
+    },
+    LogoutDate: {
+      value: 0,
+      label: "",
+    },
+    LogoutTime: {
+      value: 0,
+      label: "",
+    },
+    Interface: {
+      value: 0,
+      label: "",
+    },
+  });
 
   useEffect(() => {
     try {
@@ -269,8 +295,134 @@ const AuditTrial = () => {
     />
   );
 
+  //Handle Search icon
+  const handleSearchIcon = () => {
+    setSearchBar(!searchBar);
+  };
+
+  //Validation IP
+  const validateIPInput = (value) => {
+    const ipRegex = /^(\d{1,3}\.){0,3}\d{0,3}$/;
+    return ipRegex.test(value);
+  };
+
+  const DeviceIdType = [
+    {
+      label: "Browser",
+      value: 1,
+    },
+    {
+      label: "Tablet",
+      value: 2,
+    },
+    ,
+    {
+      label: "Mobile",
+      value: 3,
+    },
+  ];
+
+  //Handle Search Box entities
+  const handeSearchBoxTextField = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log({ name, value }, "handleChangeSearchBoxValues");
+
+    // For userName or Title, ensure only letters and whitespace are allowed
+    if (name === "userName") {
+      if (value !== "") {
+        let valueCheck = /^[A-Za-z\s]*$/i.test(value);
+        if (valueCheck) {
+          setAuditTrialSearch((prevState) => ({
+            ...prevState,
+            [name]: value.trim(),
+          }));
+        }
+      } else {
+        setAuditTrialSearch((prevState) => ({
+          ...prevState,
+          userName: "",
+          Title: "",
+        }));
+      }
+    }
+
+    // For IpAddress, validate the input and update the state accordingly
+    if (name === "IpAddress") {
+      if (value !== "") {
+        if (validateIPInput(value)) {
+          setAuditTrialSearch((prevState) => ({
+            ...prevState,
+            IpAddress: value.trim(),
+          }));
+        } else {
+        }
+      } else {
+        setAuditTrialSearch((prevState) => ({
+          ...prevState,
+          IpAddress: "",
+        }));
+      }
+    }
+  };
+
+  //Handle Change React Select login Date
+  const handleChangeLoginDate = (event) => {
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LoginDate: {
+        label: event.label,
+        value: event.value,
+      },
+    });
+  };
+
+  //Handle Change React Select login Time
+  const handleChangeLoginTime = (event) => {
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LoginTime: {
+        label: event.label,
+        value: event.value,
+      },
+    });
+  };
+
+  //Handle Change React Select logout Date
+  const handleChangeLogoutDate = (event) => {
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LogoutDate: {
+        label: event.label,
+        value: event.value,
+      },
+    });
+  };
+
+  //Handle Change React Select logout Time
+  const handleChangeLogoutTime = (event) => {
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      LogoutTime: {
+        label: event.label,
+        value: event.value,
+      },
+    });
+  };
+
+  //Handle Change React Select logout Time
+  const handleChangeInterface = (event) => {
+    setAuditTrialSearch({
+      ...auditTrialSearch,
+      Interface: {
+        label: event.label,
+        value: event.value,
+      },
+    });
+  };
+
   return (
-    <Container>
+    <section className={styles["AuditMainSection"]}>
       <Row className="mt-5">
         <Col lg={7} md={7} sm={7}>
           <span className={styles["AuditTrialHeading"]}>
@@ -292,10 +444,112 @@ const AuditTrial = () => {
                   src={searchicon}
                   alt=""
                   className={styles["searchbox_icon_userhistoryLogin"]}
+                  onClick={handleSearchIcon}
                 />
               }
             />
           </section>
+          {searchBar && (
+            <>
+              <span className={styles["SearchBoxAuditTrial"]}>
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("User")}
+                      </span>
+                      <TextField
+                        labelclass={"d-none"}
+                        width={"100%"}
+                        iconclassname={"d-block"}
+                        placeholder={`${t("UserName")}...`}
+                        name={"userName"}
+                        change={handeSearchBoxTextField}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("IP")}
+                      </span>
+                      <TextField
+                        labelclass={"d-none"}
+                        width={"100%"}
+                        iconclassname={"d-block"}
+                        placeholder={`${t("IP")}`}
+                        name={"IpAddress"}
+                        change={handeSearchBoxTextField}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("Login-date")}
+                      </span>
+                      <Select
+                        placeholder={t("Login-date")}
+                        onChange={handleChangeLoginDate}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("Login-time")}
+                      </span>
+                      <Select
+                        placeholder={t("Login-time")}
+                        onChange={handleChangeLoginTime}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("Logout-date")}
+                      </span>
+                      <Select
+                        placeholder={t("Logout-date")}
+                        onChange={handleChangeLogoutDate}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("Logout-time")}
+                      </span>
+                      <Select
+                        placeholder={t("Logout-time")}
+                        onChange={handleChangeLogoutTime}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={6} md={6} sm={6}>
+                    <div className="d-flex flex-column flex-wrap">
+                      <span className={styles["SearchBoxEntities"]}>
+                        {t("Interface")}
+                      </span>
+                      <Select
+                        placeholder={t("Interface")}
+                        options={DeviceIdType}
+                        onChange={handleChangeInterface}
+                      />
+                    </div>
+                  </Col>
+                  <Col lg={6} md={6} sm={6}></Col>
+                </Row>
+              </span>
+            </>
+          )}
         </Col>
       </Row>
       <Row>
@@ -306,7 +560,7 @@ const AuditTrial = () => {
                 <InfiniteScroll
                   dataLength={auditTrialListingTableData.length}
                   next={handleScroll}
-                  height={"60vh"}
+                  height={"55vh"}
                   hasMore={
                     auditTrialListingTableData.length === totalRecords
                       ? false
@@ -348,7 +602,7 @@ const AuditTrial = () => {
         </Col>
       </Row>
       {ViewActionModalGlobalState && <ViewActionModal />}
-    </Container>
+    </section>
   );
 };
 

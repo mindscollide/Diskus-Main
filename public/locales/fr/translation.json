@@ -2381,5 +2381,9 @@
   "Call-initiated-successfully": "Call initiated successfully",
   "Submit": "Submit",
   "Audit-trial": "Audit Trial",
-  "View-Action": "View Action"
+  "View-Action": "View Action",
+  "Login-date": "Login Date",
+  "Login-time": "Login Time",
+  "Logout-date": "Logout Date",
+  "Logout-time": "Logout Time"
 }

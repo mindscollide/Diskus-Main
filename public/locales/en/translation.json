@@ -2475,5 +2475,9 @@
   "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available",
   "Submit": "Submit",
   "Audit-trial": "Audit Trial",
-  "View-Action": "View Action"
+  "View-Action": "View Action",
+  "Login-date": "Login Date",
+  "Login-time": "Login Time",
+  "Logout-date": "Logout Date",
+  "Logout-time": "Logout Time"
 }
