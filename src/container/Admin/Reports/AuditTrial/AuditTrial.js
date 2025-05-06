@@ -476,6 +476,7 @@ const AuditTrial = () => {
     dispatch(GetAuditListingAPI(navigate, Data, t));
   };
 
+  //Handle Reset Button
   const handleResetButton = () => {
     try {
       let Data = {
@@ -514,7 +515,7 @@ const AuditTrial = () => {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       let Data = {
-        Username: auditTrialSearch.userName,
+        Username: auditTrialSearch.Title,
         IpAddress: auditTrialSearch.IpAddress,
         DeviceID: auditTrialSearch.Interface.value,
         DateLogin: auditTrialSearch.LoginDate,
@@ -523,7 +524,7 @@ const AuditTrial = () => {
         Length: 10,
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
-      setSearchText([...searchText, auditTrialSearch.userName]);
+      setSearchText([...searchText, auditTrialSearch.Title]);
     }
   };
 
@@ -570,6 +571,7 @@ const AuditTrial = () => {
                       <TextField
                         labelclass={"d-none"}
                         width={"100%"}
+                        value={auditTrialSearch.userName}
                         iconclassname={"d-block"}
                         placeholder={`${t("UserName")}...`}
                         name={"UserName"}
@@ -585,6 +587,7 @@ const AuditTrial = () => {
                       <TextField
                         labelclass={"d-none"}
                         width={"100%"}
+                        value={auditTrialSearch.IpAddress}
                         iconclassname={"d-block"}
                         placeholder={`${t("IP")}`}
                         name={"IPAddress"}
