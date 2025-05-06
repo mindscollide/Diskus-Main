@@ -360,14 +360,16 @@ const AuditTrial = () => {
     let value = e.target.value;
     console.log({ name, value }, "handleChangeSearchBoxValues");
 
-    // For userName or Title, ensure only letters and whitespace are allowed
+    // Normalize the key to match state
+    const key = name.charAt(0).toLowerCase() + name.slice(1);
+
     if (name === "UserName" || name === "Title") {
       if (value !== "") {
         let valueCheck = /^[A-Za-z\s]*$/i.test(value);
         if (valueCheck) {
           setAuditTrialSearch((prevState) => ({
             ...prevState,
-            [name]: value.trim(),
+            [key]: value.trim(),
           }));
         }
       } else {
@@ -379,7 +381,6 @@ const AuditTrial = () => {
       }
     }
 
-    // For IpAddress, validate the input and update the state accordingly
     if (name === "IPAddress") {
       if (value !== "") {
         if (validateIPInput(value)) {
@@ -387,7 +388,6 @@ const AuditTrial = () => {
             ...prevState,
             IpAddress: value.trim(),
           }));
-        } else {
         }
       } else {
         setAuditTrialSearch((prevState) => ({
