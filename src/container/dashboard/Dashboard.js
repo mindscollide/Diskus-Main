@@ -671,6 +671,7 @@ const Dashboard = () => {
 
               // Dispatch the API request with the data
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
@@ -687,6 +688,7 @@ const Dashboard = () => {
               localStorage.removeItem("newRoomId");
               localStorage.removeItem("acceptedRoomID");
               dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(false));
               dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
@@ -1283,6 +1285,7 @@ const Dashboard = () => {
                     );
                   }
                   dispatch(setAudioControlHost(false));
+                  console.log("videoHideUnHideForHost");
                   dispatch(setVideoControlHost(false));
                   await dispatch(setParticipantRemovedFromVideobyHost(true));
                 } else {
@@ -1299,6 +1302,7 @@ const Dashboard = () => {
                   localStorage.setItem("isWebCamEnabled", false);
                   localStorage.setItem("isMicEnabled", false);
                   dispatch(setAudioControlHost(false));
+                  console.log("videoHideUnHideForHost");
                   dispatch(setVideoControlHost(false));
 
                   localStorage.setItem(
@@ -1648,8 +1652,9 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
-              dispatch(setAudioControlHost(false));
-              dispatch(setVideoControlHost(false));
+              // dispatch(setAudioControlHost(false));
+              // console.log("videoHideUnHideForHost");
+              // dispatch(setVideoControlHost(true));
               dispatch(setRaisedUnRaisedParticiant(false));
               dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);

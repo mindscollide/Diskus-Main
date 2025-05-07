@@ -1245,8 +1245,10 @@ const VideoCallNormalHeader = ({
   }, [showNotification]);
 
   const videoHideUnHideForHost = (flag) => {
+    console.log("VidOn 123", flag);
     // Set the HideVideo flag based on videoControlForParticipant
     if (!isZoomEnabled || !disableBeforeJoinZoom) {
+      console.log("VidOn 123", flag);
       dispatch(setVideoControlHost(flag));
       let data = {
         RoomID: String(RoomID),

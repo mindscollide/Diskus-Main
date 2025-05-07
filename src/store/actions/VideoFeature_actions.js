@@ -1712,6 +1712,7 @@ const stopPresenterViewMainApi = (
                 localStorage.removeItem("acceptedRoomID");
                 localStorage.removeItem("presenterViewvideoURL");
                 dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
                 await dispatch(
                   presenterViewGlobalState(0, false, false, false)
@@ -1723,6 +1724,8 @@ const stopPresenterViewMainApi = (
                 console.log("busyCall");
                 localStorage.removeItem("presenterViewvideoURL");
                 localStorage.setItem("isMeetingVideo", true);
+                dispatch(setVideoControlHost(true));
+                dispatch(setAudioControlHost(false));
                 dispatch(leaveCallModal(false));
                 dispatch(
                   presenterFlagForAlreadyInParticipantMeetingVideo(false)
@@ -1758,8 +1761,8 @@ const stopPresenterViewMainApi = (
                 };
                 // Dispatch the API request with the data
                 dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
-                dispatch(setVideoControlHost(true));
-                dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
+
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -1894,6 +1897,7 @@ const stopPresenterViewMainApiTest = (
               localStorage.removeItem("presenterViewvideoURL");
 
               dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(false));
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
@@ -1928,6 +1932,7 @@ const stopPresenterViewMainApiTest = (
 
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
               dispatch(setAudioControlHost(false));
               dispatch(maximizeVideoPanelFlag(true));
@@ -2230,6 +2235,7 @@ const leavePresenterViewMainApi = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
               } else if (flag === 2) {
                 dispatch(participantVideoButtonState(false));
@@ -2264,6 +2270,7 @@ const leavePresenterViewMainApi = (
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                   dispatch(setAudioControlHost(false));
+                  console.log("videoHideUnHideForHost");
                   dispatch(setVideoControlHost(false));
                 } else {
                   console.log("Check is participant Uid Removed?");
@@ -2277,6 +2284,7 @@ const leavePresenterViewMainApi = (
                   dispatch(normalizeVideoPanelFlag(false));
                   dispatch(minimizeVideoPanelFlag(false));
                   dispatch(setAudioControlHost(false));
+                  console.log("videoHideUnHideForHost");
                   dispatch(setVideoControlHost(false));
                 }
               } else if (flag === 3) {
@@ -2327,6 +2335,7 @@ const leavePresenterViewMainApi = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
                 dispatch(presenterViewGlobalState(0, true, false, false));
                 sessionStorage.removeItem("alreadyInMeetingVideo");
@@ -2466,6 +2475,7 @@ const leavePresenterViewMainApiTest = (
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(false));
             } else if (flag === 2) {
               dispatch(participantVideoButtonState(false));
@@ -2486,6 +2496,7 @@ const leavePresenterViewMainApiTest = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
               }
             } else if (flag === 3) {
@@ -2498,6 +2509,7 @@ const leavePresenterViewMainApiTest = (
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               dispatch(setAudioControlHost(false));
+              console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(false));
               dispatch(presenterViewGlobalState(0, true, false, false));
               sessionStorage.removeItem("alreadyInMeetingVideo");
