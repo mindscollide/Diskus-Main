@@ -14,7 +14,7 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import DatePicker from "react-multi-date-picker";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
 import searchicon from "../../../../assets/images/searchicon.svg";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import CrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 
 import {
   GetAuditActionsAPI,
@@ -446,38 +446,6 @@ const AuditTrial = () => {
     });
   };
 
-  const handleChangeLogoutTime = (date) => {
-    let getDate = new Date(date);
-    let timeString = getDate.toTimeString().slice(0, 5);
-    let formattedTime = getDate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LogoutTime: timeString.replace(":", ""),
-      LogoutTimeView: formattedTime,
-    });
-  };
-
-  const handleChangeLoginTime = (date) => {
-    let getDate = new Date(date);
-    let timeString = getDate.toTimeString().slice(0, 5);
-    let formattedTime = getDate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true,
-    });
-
-    setAuditTrialSearch({
-      ...auditTrialSearch,
-      LoginTime: timeString.replace(":", ""),
-      LoginTimeView: formattedTime,
-    });
-  };
-
   const handleSearchAuditTrialListing = () => {
     let Data = {
       Username: auditTrialSearch.userName,
@@ -544,6 +512,11 @@ const AuditTrial = () => {
     }
   };
 
+  //Search bar cross icon
+  const handleCrossIcon = () => {
+    setSearchBar(false);
+  };
+
   return (
     <section className={styles["AuditMainSection"]}>
       <Row className="mt-5">
@@ -578,6 +551,21 @@ const AuditTrial = () => {
           {searchBar && (
             <>
               <span className={styles["SearchBoxAuditTrial"]}>
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end align-items-center"
+                  >
+                    <img
+                      src={CrossIcon}
+                      className="cursor-pointer"
+                      alt=""
+                      onClick={handleCrossIcon}
+                    />
+                  </Col>
+                </Row>
                 <Row className="mt-3">
                   <Col lg={6} md={6} sm={6}>
                     <div className="d-flex flex-column flex-wrap">
@@ -643,30 +631,6 @@ const AuditTrial = () => {
                   <Col lg={6} md={6} sm={6}>
                     <div className="d-flex flex-column flex-wrap">
                       <span className={styles["SearchBoxEntities"]}>
-                        {t("Login-time")}
-                      </span>
-
-                      <DatePicker
-                        arrowClassName="arrowClass"
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
-                        disableDayPicker
-                        inputClass="inputTImeMeeting"
-                        calendar={calendarValue}
-                        locale={localValue}
-                        format="hh:mm A"
-                        value={auditTrialSearch.LoginTimeView}
-                        editable={false}
-                        plugins={[<TimePicker hideSeconds />]}
-                        onFocusedDateChange={handleChangeLoginTime}
-                      />
-                    </div>
-                  </Col>
-                </Row>
-                <Row className="mt-3">
-                  <Col lg={6} md={6} sm={6}>
-                    <div className="d-flex flex-column flex-wrap">
-                      <span className={styles["SearchBoxEntities"]}>
                         {t("Logout-date")}
                       </span>
 
@@ -691,28 +655,9 @@ const AuditTrial = () => {
                       />
                     </div>
                   </Col>
-                  <Col lg={6} md={6} sm={6}>
-                    <div className="d-flex flex-column flex-wrap">
-                      <span className={styles["SearchBoxEntities"]}>
-                        {t("Logout-time")}
-                      </span>
-
-                      <DatePicker
-                        arrowClassName="arrowClass"
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
-                        disableDayPicker
-                        inputClass="inputTImeMeeting"
-                        calendar={calendarValue}
-                        locale={localValue}
-                        format="hh:mm A"
-                        value={auditTrialSearch.LogoutTimeView}
-                        editable={false}
-                        plugins={[<TimePicker hideSeconds />]}
-                        onFocusedDateChange={handleChangeLogoutTime}
-                      />
-                    </div>
-                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={6} md={6} sm={6}></Col>
                 </Row>
                 <Row className="mt-3">
                   <Col lg={6} md={6} sm={6}>
