@@ -2474,5 +2474,9 @@
   "VIDEO_RECORDING_GROUP_RECEIVED": "Video Recording of Group Call with [Participant Name] and others is available now",
   "MEETING_VIDEO_RECORDING_RECEIVED": "Video Recording of Meeting [Meeting Title] is now available",
   "Submit": "Submit",
-  "Recording-paused":"Recording Paused"
+  "Recording-paused":"Recording Paused",
+  "Start-recording":"Start recording",
+  "Stop-recording":"Stop recording",
+  "Pause-recording":"Pause recording",
+  "Resume-recording":"Resume recording"
 }

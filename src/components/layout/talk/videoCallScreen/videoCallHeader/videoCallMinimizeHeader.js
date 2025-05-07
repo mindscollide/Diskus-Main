@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Dropdown } from "react-bootstrap";
-import { Button } from "./../../../../elements";
+import { Button, Notification } from "./../../../../elements";
 import { Tooltip } from "antd";
 import "./videoCallHeader.css";
 import {
@@ -80,6 +80,7 @@ import {
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { checkFeatureIDAvailability } from "../../../../../commen/functions/utils";
+import { showMessage } from "../../../../elements/snack_bar/utill";
 
 const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const navigate = useNavigate();
@@ -761,18 +762,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       MeetingId: Number(currentMeetingID),
     };
     dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Link-copied"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage(t("Link-copied"), "success", setOpen);
   };
 
   const openPresenterParticipantsList = () => {
@@ -1752,6 +1742,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                 </Tooltip>
               </div>
             </div>
+            <Notification open={open} setOpen={setOpen} />
           </Col>
         </Row>
       </div>

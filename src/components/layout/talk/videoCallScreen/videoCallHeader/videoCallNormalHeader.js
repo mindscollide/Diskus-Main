@@ -81,6 +81,7 @@ import {
 } from "../../../../../context/MeetingContext";
 import { convertNumbersInString } from "../../../../../commen/functions/regex";
 import { RecordCircle } from "react-bootstrap-icons";
+import { showMessage } from "../../../../elements/snack_bar/utill";
 
 const VideoCallNormalHeader = ({
   isScreenActive,
@@ -92,6 +93,10 @@ const VideoCallNormalHeader = ({
   isVideoActive,
   showTile,
   iframeCurrent,
+  onStartRecording,
+  onPauseRecording,
+  onStopRecording,
+  onResumeRecording,
 }) => {
   const dispatch = useDispatch();
 
@@ -113,8 +118,10 @@ const VideoCallNormalHeader = ({
     setStartRecordingState,
     pauseRecordingState,
     setPauseRecordingState,
-    restartRecordingState,
-    setRestartRecordingState,
+    resumeRecordingState,
+    setResumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -486,6 +493,10 @@ const VideoCallNormalHeader = ({
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         setLeavePresenterViewToJoinOneToOne(false);
+
+        //Jab Recording On Ho aur Host Stop krday toh
+        onStopRecording();
+
         await dispatch(
           stopPresenterViewMainApi(
             navigate,
@@ -1206,18 +1217,7 @@ const VideoCallNormalHeader = ({
       MeetingId: Number(currentMeetingID),
     };
     dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
-    setOpen({
-      ...open,
-      flag: true,
-      message: t("Link-copied"),
-    });
-    setTimeout(() => {
-      setOpen({
-        ...open,
-        flag: false,
-        message: "",
-      });
-    }, 3000);
+    showMessage(t("Link-copied"), "success", setOpen);
   };
 
   useEffect(() => {
@@ -1315,18 +1315,28 @@ const VideoCallNormalHeader = ({
     return null;
   };
 
-  const onHandleClickForStartRecording = () => {
-    console.log("onHandleClickForStartRecording");
-    setStartRecordingState(false);
-    setPauseRecordingState(true);
-    setRestartRecordingState(false);
-  };
+  // const onHandleClickForStartRecording = () => {
+  //   console.log("onHandleClickForStartRecording");
+  //   setStartRecordingState(false);
+  //   setPauseRecordingState(true);
+  //   setResumeRecordingState(false);
+  //   if (presenterViewFlag && presenterViewHostFlag) {
+  //     const iframe = iframeRef.current;
+  //     if (iframe && iframe.contentWindow) {
+  //       if (startRecordingState === false) {
+  //         iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+  //       } else {
+  //         iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+  //       }
+  //     }
+  //   }
+  // };
 
   const onHandleClickForPauseRecording = () => {
     console.log("onHandleClickForStartRecording");
     setStartRecordingState(false);
     setPauseRecordingState(false);
-    setRestartRecordingState(true);
+    setResumeRecordingState(true);
   };
 
   return (
@@ -1335,7 +1345,7 @@ const VideoCallNormalHeader = ({
         <Col lg={3} md={3} sm={12} className="mt-1">
           <p
             className={
-              presenterViewFlag && isMeetingVideo
+              presenterViewFlag && MinimizeVideoFlag && isMeetingVideo
                 ? "title-for-presenter"
                 : "title-heading"
             }
@@ -1368,13 +1378,10 @@ const VideoCallNormalHeader = ({
         </Col>
 
         <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-          {/* {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
             <>
               {startRecordingState && (
-                <div
-                  className="start-Recording-div"
-                  onClick={onHandleClickForStartRecording}
-                >
+                <div className="start-Recording-div" onClick={onStartRecording}>
                   <Tooltip
                     placement={presenterViewFlag ? "bottom" : "topRight"}
                     title={
@@ -1382,7 +1389,7 @@ const VideoCallNormalHeader = ({
                       presenterViewFlag &&
                       presenterViewHostFlag
                         ? t("Start-recording")
-                        : t("Stop-recording")
+                        : null
                     }
                     overlayClassName={
                       presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
@@ -1405,12 +1412,12 @@ const VideoCallNormalHeader = ({
             </>
           )}
 
-          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+          {/* {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
             <>
               {pauseRecordingState && (
                 <div
                   className="Record-Start-Background"
-                  onClick={onHandleClickForPauseRecording}
+                  onClick={onPauseRecording}
                 >
                   <img
                     src={
@@ -1438,33 +1445,111 @@ const VideoCallNormalHeader = ({
                 </div>
               )}
             </>
+          )} */}
+
+          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+            <>
+              {pauseRecordingState && (
+                <div
+                  className="Record-Start-Background"
+                  // onClick={onResumeRecording}
+                >
+                  <Tooltip
+                    placement={presenterViewFlag ? "bottom" : "topRight"}
+                    title={
+                      !isMeetingVideo &&
+                      presenterViewFlag &&
+                      presenterViewHostFlag
+                        ? t("Stop-recording")
+                        : null
+                    }
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={
+                        !isMeetingVideo &&
+                        presenterViewFlag &&
+                        presenterViewHostFlag
+                          ? StartRecordSmall
+                          : null
+                      }
+                      onClick={onStopRecording}
+                      className="Bunch-Start-Record-Button-2"
+                      alt="Record"
+                    />
+                  </Tooltip>
+                  <p className="Recording-text">{t("Recording...")}</p>
+
+                  <Tooltip
+                    placement={presenterViewFlag ? "bottom" : "topRight"}
+                    title={
+                      !isMeetingVideo &&
+                      presenterViewFlag &&
+                      presenterViewHostFlag
+                        ? t("Pause-recording")
+                        : null
+                    }
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={
+                        !isMeetingVideo &&
+                        presenterViewFlag &&
+                        presenterViewHostFlag
+                          ? RecordStart
+                          : null
+                      }
+                      onClick={onPauseRecording}
+                      className="Bunch-Start-Record-Button"
+                      alt="Record"
+                    />
+                  </Tooltip>
+                </div>
+              )}
+            </>
           )}
 
           {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
             <>
-              {restartRecordingState && (
-                <div
-                  className="Record-Start-BackgroundRed"
-                  onClick={onHandleClickForStartRecording}
-                >
+              {resumeRecordingState && (
+                <div className="Record-Start-BackgroundRed">
                   <p className="RecordingPaused-text">
                     {t("Recording-paused")}
                   </p>
-                  <img
-                    src={
+                  <Tooltip
+                    placement={presenterViewFlag ? "bottom" : "topRight"}
+                    title={
                       !isMeetingVideo &&
                       presenterViewFlag &&
                       presenterViewHostFlag
-                        ? RecordPlay
+                        ? t("Resume-recording")
                         : null
                     }
-                    className="Bunch-Start-RecordingPaused-Button"
-                    alt="Record"
-                  />
+                    overlayClassName={
+                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
+                    }
+                  >
+                    <img
+                      src={
+                        !isMeetingVideo &&
+                        presenterViewFlag &&
+                        presenterViewHostFlag
+                          ? RecordPlay
+                          : null
+                      }
+                      className="Bunch-Start-RecordingPaused-Button"
+                      alt="Record"
+                      onClick={onResumeRecording}
+                    />
+                  </Tooltip>
                 </div>
               )}
             </>
-          )} */}
+          )}
 
           <div
             className={
@@ -2081,11 +2166,7 @@ const VideoCallNormalHeader = ({
               </div>
             ) : null}
 
-            <Notification
-              setOpen={setOpen}
-              open={open.flag}
-              message={open.message}
-            />
+            <Notification setOpen={setOpen} open={open} />
           </div>
         </>
       </>

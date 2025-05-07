@@ -183,14 +183,17 @@ export const MeetingProvider = ({ children }) => {
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
-  // state for Pause Recording
+  // state for Start Recording
   const [startRecordingState, setStartRecordingState] = useState(false);
 
   // state for Pause Recording
   const [pauseRecordingState, setPauseRecordingState] = useState(false);
 
-  // state for Restart Recording
-  const [restartRecordingState, setRestartRecordingState] = useState(false);
+  // state for Resume Recording
+  const [resumeRecordingState, setResumeRecordingState] = useState(false);
+
+  // state for Resume Recording
+  const [stopRecordingState, setStopRecordingState] = useState(false);
 
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
@@ -401,8 +404,10 @@ export const MeetingProvider = ({ children }) => {
     setStartRecordingState,
     pauseRecordingState,
     setPauseRecordingState,
-    restartRecordingState,
-    setRestartRecordingState,
+    resumeRecordingState,
+    setResumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
   };
 
   // Provide the state data to the context
