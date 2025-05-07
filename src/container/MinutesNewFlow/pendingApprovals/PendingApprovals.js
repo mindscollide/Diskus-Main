@@ -334,7 +334,11 @@ const PendingApproval = () => {
               ? styles["pendingStatus"]
               : styles["reviewedStatus"]
           }>
-          {text}
+          {text === "Expired"
+            ? t("Expired")
+            : text === "Pending"
+            ? t("Pending")
+            : t("Reviewed")}
         </p>
       ),
     },

@@ -773,7 +773,7 @@ const SignatureViewer = () => {
                 type: "customElement",
                 render: () => {
                   const SaveButton = document.createElement("button");
-                  SaveButton.textContent = "Signed";
+                  SaveButton.textContent = "Sign";
                   SaveButton.style.background = "#6172d6";
                   SaveButton.style.color = "#fff";
                   SaveButton.style.borderRadius = "4px";

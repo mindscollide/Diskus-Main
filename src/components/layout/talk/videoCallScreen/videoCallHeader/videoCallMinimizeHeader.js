@@ -30,6 +30,8 @@ import {
   presenterNewParticipantJoin,
   muteUnMuteParticipantMainApi,
   hideUnHideParticipantGuestMainApi,
+  screenShareTriggeredGlobally,
+  isSharedScreenTriggeredApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import AddParticipant from "./../../talk-Video/video-images/Add Participant Purple.svg";
 import ExpandIcon from "./../../talk-Video/video-images/Expand White.svg";
@@ -196,8 +198,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const newJoinPresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.newJoinPresenterParticipant
   );
+
   const leavePresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterParticipant
+  );
+
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
   const MinimizeVideoFlag = useSelector(
@@ -457,6 +464,42 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         handlePresenterViewFunc();
       } else if (meetingHostData?.isDashboardVideo) {
         console.log("busyCall");
+
+        let isSharedSceenEnable = JSON.parse(
+          localStorage.getItem("isSharedSceenEnable")
+        );
+        if (isSharedSceenEnable && !globallyScreenShare) {
+          console.log("busyCall");
+          if (isZoomEnabled) {
+            let isMeetingVideoHostCheck = JSON.parse(
+              localStorage.getItem("isMeetingVideoHostCheck")
+            );
+            let roomID = localStorage.getItem("acceptedRoomID");
+            let userID = localStorage.getItem("userID");
+            let isGuid = localStorage.getItem("isGuid");
+            let participantUID = localStorage.getItem("participantUID");
+            let participantRoomId = localStorage.getItem("participantRoomId");
+            let RoomID = !isMeetingVideo
+              ? roomID
+              : isMeetingVideo && isMeetingVideoHostCheck
+              ? newRoomID
+              : participantRoomId;
+
+            let UID = isMeetingVideo
+              ? userID
+              : isMeetingVideoHostCheck
+              ? isGuid
+              : participantUID;
+            let data = {
+              RoomID: RoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+
         let Data = {
           RoomID: String(RoomID),
           UserGUID: String(
@@ -483,6 +526,40 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       }
     } else if (meetingHostData?.isDashboardVideo === false) {
       console.log("busyCall");
+      let isSharedSceenEnable = JSON.parse(
+        localStorage.getItem("isSharedSceenEnable")
+      );
+      if (isSharedSceenEnable && !globallyScreenShare) {
+        console.log("busyCall");
+        if (isZoomEnabled) {
+          let isMeetingVideoHostCheck = JSON.parse(
+            localStorage.getItem("isMeetingVideoHostCheck")
+          );
+          let roomID = localStorage.getItem("acceptedRoomID");
+          let userID = localStorage.getItem("userID");
+          let isGuid = localStorage.getItem("isGuid");
+          let participantUID = localStorage.getItem("participantUID");
+          let participantRoomId = localStorage.getItem("participantRoomId");
+          let RoomID = !isMeetingVideo
+            ? roomID
+            : isMeetingVideoHostCheck
+            ? newRoomID
+            : participantRoomId;
+
+          let UID = !isMeetingVideo
+            ? userID
+            : isMeetingVideoHostCheck
+            ? isGuid
+            : participantUID;
+          let data = {
+            RoomID: RoomID,
+            ShareScreen: false,
+            UID: UID,
+          };
+          dispatch(screenShareTriggeredGlobally(false));
+          await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+        }
+      }
       let isCaller = JSON.parse(localStorage.getItem("isCaller"));
       let Data = {
         OrganizationID: currentOrganization,

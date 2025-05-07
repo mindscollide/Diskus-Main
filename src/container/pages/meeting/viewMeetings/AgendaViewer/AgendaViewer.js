@@ -125,6 +125,9 @@ const AgendaViewer = () => {
     joinMeetingVideoParticipant,
     setStartPresenterViewOrLeaveOneToOne,
     setPresenterForOneToOneOrGroup,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setRestartRecordingState,
   } = useMeetingContext();
 
   console.log(videoTalk, "videoTalkvideoTalk");
@@ -786,6 +789,9 @@ const AgendaViewer = () => {
   };
 
   const onClickStartPresenter = async () => {
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setRestartRecordingState(false);
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -848,6 +854,9 @@ const AgendaViewer = () => {
   const onClickStopPresenter = async (value) => {
     console.log("onClickStopPresenter", value);
     try {
+      setStartRecordingState(false);
+      setPauseRecordingState(false);
+      setRestartRecordingState(false);
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
       // if (presenterMeetingId === currentMeeting) {

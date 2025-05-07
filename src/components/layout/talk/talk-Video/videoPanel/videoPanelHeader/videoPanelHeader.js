@@ -8,26 +8,28 @@ import {
 } from "../../../../../../store/actions/VideoFeature_actions";
 import { Select } from "antd";
 import SearchIcon from "../../../../../../assets/images/Search-Icon.png";
+import { useTranslation } from "react-i18next";
 
 const VideoPanelHeader = () => {
+  const { t } = useTranslation();
   const { videoFeatureReducer } = useSelector((state) => state);
 
   const dispatch = useDispatch();
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: "talk-video-filter", label: "Recent", value: 2 },
-    { className: "talk-video-filter", label: "Contact", value: 1 },
+    { className: "talk-video-filter", label: t("Recent"), value: 2 },
+    { className: "talk-video-filter", label: t("Contact"), value: 1 },
   ];
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
     value: 2,
-    label: "Recent",
+    label: t("Recent"),
   });
 
   // for   select Chat Filter Name
-  const [chatFilterName, setChatFilterName] = useState("Contact");
+  const [chatFilterName, setChatFilterName] = useState(t("Contact"));
 
   useEffect(() => {
     if (videoFeatureReducer.ContactVideoFlag) {
@@ -88,23 +90,22 @@ const VideoPanelHeader = () => {
 
   return (
     <>
-      <section className="d-flex justify-content-between">
-        <div className="d-flex align-items-center gap-2">
-          <p className="talk-video-heading m-0">Video</p>
+      <section className='d-flex justify-content-between'>
+        <div className='d-flex align-items-center gap-2'>
+          <p className='talk-video-heading m-0'>{t("Video")}</p>
           <Select
             options={chatFilterOptions}
             defaultValue={chatFilterOptions[0]}
             onChange={chatFilterHandler}
-            className="videoFilter"
-            popupClassName="talk-video-filter"
+            className='videoFilter'
+            popupClassName='talk-video-filter'
             onClick={preventPropagation}
           />
         </div>
         <div
-          className="d-flex align-items-center justify-content-center cursor-pointer"
-          onClick={videoSearchFilterChat}
-        >
-          <img src={SearchIcon} className="img-cover" width={20} />
+          className='d-flex align-items-center justify-content-center cursor-pointer'
+          onClick={videoSearchFilterChat}>
+          <img src={SearchIcon} className='img-cover' width={20} />
         </div>
       </section>
     </>

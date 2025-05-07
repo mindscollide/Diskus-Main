@@ -2041,7 +2041,6 @@
   "DRAFT": "DRAFT",
   "Pending-signature": "Pending signature",
   "Signed": "Signed",
-  "SIGNED": "Signed",
   "Declined": "Declined",
   "DECLINED": "Declined",
   "Add-reviewers": "Add Reviewers",
@@ -2480,5 +2479,12 @@
   "Login-time": "Login Time",
   "Logout-date": "Logout Date",
   "Logout-time": "Logout Time",
-  "Logged-In": "Logged In"
+  "Logged-In": "Logged In",
+  "Submission-date": "Submission date",
+  "Reviewed": "Reviewed",
+  "Recording-paused": "Recording Paused",
+  "Settings-are-saved-successfully": "Settings are saved successfully",
+  "Notes-title": "Notes title",
+  "Comments": "Comments",
+  "Hello-welcome": "Hello welcome"
 }

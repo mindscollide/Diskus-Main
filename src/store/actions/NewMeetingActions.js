@@ -3508,7 +3508,7 @@ const SaveUserAttachmentPermissionsSuccess = (response, message) => {
 
 const SaveUserAttachmentPermissionsFailed = (message) => {
   return {
-    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_SUCCESS,
+    type: actions.SAVE_USER_ATTACHMENT_PERMISSION_FAILED,
     message: message,
   };
 };
@@ -3541,16 +3541,16 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
               dispatch(
                 SaveUserAttachmentPermissionsSuccess(
                   response.data.responseResult,
-                  t("Record-saved")
+                  t("Settings-are-saved-successfully")
                 )
               );
+              dispatch(showAdvancePermissionModal(false));
             } else if (
               response.data.responseResult.responseMessage ===
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02 "
             ) {
               dispatch(
                 SaveUserAttachmentPermissionsFailed(
-                  response.data.responseResult.responseMessage,
                   t("No-record-saved")
                 )
               );
@@ -9318,6 +9318,7 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
+              localStorage.removeItem("isSharedSceenEnable");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
@@ -9402,6 +9403,7 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMeetingVideo", false);
               localStorage.removeItem("refinedVideoUrl");
               localStorage.removeItem("participantRoomId");
+              localStorage.removeItem("isSharedSceenEnable");
               localStorage.setItem("refinedVideoGiven", false);
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);

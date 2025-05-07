@@ -467,13 +467,9 @@ body[dir="rtl"] .voterCountStyle {
   font-weight: 600;
 }
 
-
-
 .Result_icon {
   cursor: pointer !important;
 }
-
-
 
 body[dir="rtl"] .resolution_date {
   font-weight: 600;
@@ -583,10 +579,12 @@ body[dir="rtl"] .SearchButton_SearchBar_Resolution {
 .decision_Approved {
   color: #6de595 !important;
   font-weight: 600;
-
   font-size: 12px !important;
   white-space: nowrap !important;
   word-wrap: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .decision_Approved {
@@ -594,24 +592,29 @@ body[dir="rtl"] .decision_Approved {
   justify-content: center !important;
   font-weight: 600;
 
-  margin-left: 8px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .decision_non_Approved {
   color: #f16b6b !important;
   font-weight: 600;
-
   font-size: 12px !important;
   white-space: nowrap !important;
   word-wrap: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .decision_non_Approved {
   display: flex !important;
   justify-content: center !important;
   font-weight: 600;
-
-  margin-left: 8px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .decision_text_Pending {

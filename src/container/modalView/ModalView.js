@@ -749,6 +749,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
         console.log("cacacacacacacacacc");
+        setEndMeetingConfirmationModal(false)
         dispatch(setAudioControlHost(false));
         dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
@@ -795,6 +796,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       dispatch(presenterViewGlobalState(0, false, false, false));
       localStorage.setItem("isMeeting", false);
       dispatch(removeCalenderDataFunc(null));
+      setEndMeetingConfirmationModal(false)
+
       setViewFlag(false);
       dispatch(cleareAssigneesState());
       setIsDetails(true);
