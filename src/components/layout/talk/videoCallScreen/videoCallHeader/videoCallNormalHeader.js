@@ -443,6 +443,7 @@ const VideoCallNormalHeader = ({
   };
 
   function leaveSuccess() {
+    console.log("busyCall");
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
     const emptyArray = [];
@@ -475,6 +476,7 @@ const VideoCallNormalHeader = ({
       }
       // Stop presenter view
       if (presenterStartedFlag) {
+        console.log("busyCall");
         console.log("Check isShare Issue");
         if (iframeCurrent && iframeCurrent.contentWindow) {
           iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
@@ -517,6 +519,7 @@ const VideoCallNormalHeader = ({
       }
     } else {
       if (presenterViewJoinFlag) {
+        console.log("busyCall");
         // Leave presenter view
         if (isMeetingVideoHostCheck) {
           dispatch(videoIconOrButtonState(false));
@@ -547,6 +550,7 @@ const VideoCallNormalHeader = ({
   const endCallParticipant = async () => {
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
@@ -720,9 +724,12 @@ const VideoCallNormalHeader = ({
   const leaveCall = async (flag, flag2, flag3, flag4) => {
     let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
     try {
-      if (iframeCurrent && iframeCurrent.contentWindow !== null) {
-        iframeCurrent.contentWindow.postMessage("leaveSession", "*");
-        await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+      if (!presenterStartedFlag) {
+        if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+          console.log("busyCall");
+          iframeCurrent.contentWindow.postMessage("leaveSession", "*");
+          await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
+        }
       }
     } catch (error) {}
     if (isMeeting === true) {
@@ -837,6 +844,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnLogoutResponse) {
+        console.log("busyCall");
         leaveCall(true, false, false, false);
       }
     } catch {}
@@ -845,6 +853,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (closeQuickMeetingVideoReducer) {
+        console.log("busyCall");
         leaveCall(false, true, false, false);
       }
     } catch (error) {}
@@ -853,6 +862,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     try {
       if (leaveMeetingVideoOnEndStatusMqttFlag) {
+        console.log("busyCall");
         leaveCall(false, false, true, false);
       }
     } catch (error) {}
@@ -861,6 +871,7 @@ const VideoCallNormalHeader = ({
   const leaveCallForNonMeating = async (flag) => {
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+        console.log("busyCall");
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
@@ -1027,6 +1038,7 @@ const VideoCallNormalHeader = ({
         console.log("busyCall");
         try {
           if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+            console.log("busyCall");
             iframeCurrent.contentWindow.postMessage("leaveSession", "*");
             await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
           }
@@ -1109,6 +1121,7 @@ const VideoCallNormalHeader = ({
         localStorage.removeItem("isNewHost");
         try {
           if (iframeCurrent && iframeCurrent.contentWindow !== null) {
+            console.log("busyCall");
             iframeCurrent.contentWindow.postMessage("leaveSession", "*");
             await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
           }

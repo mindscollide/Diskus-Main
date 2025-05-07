@@ -1688,7 +1688,7 @@ const stopPresenterViewMainApi = (
               );
 
               if (flag === 1) {
-                console.log("Check Flag");
+                console.log("busyCall");
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(true));
                 dispatch(minimizeVideoPanelFlag(false));
@@ -1703,6 +1703,7 @@ const stopPresenterViewMainApi = (
                 }
               }
               if (!alreadyInMeetingVideo) {
+                console.log("busyCall");
                 localStorage.removeItem("participantUID");
                 localStorage.removeItem("isGuid");
                 localStorage.removeItem("videoIframe");
@@ -1719,6 +1720,7 @@ const stopPresenterViewMainApi = (
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
               } else if (alreadyInMeetingVideo) {
+                console.log("busyCall");
                 localStorage.removeItem("presenterViewvideoURL");
                 localStorage.setItem("isMeetingVideo", true);
                 dispatch(leaveCallModal(false));
