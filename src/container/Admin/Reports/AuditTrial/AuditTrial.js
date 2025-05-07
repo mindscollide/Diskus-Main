@@ -309,6 +309,7 @@ const AuditTrial = () => {
   const handleScroll = async (e) => {
     if (isRowsData <= totalRecords) {
       setIsScroll(true);
+
       let Data = {
         Username: "",
         IpAddress: "",
@@ -318,6 +319,7 @@ const AuditTrial = () => {
         sRow: Number(isRowsData),
         Length: 10,
       };
+
       dispatch(GetAuditListingAPI(navigate, Data, t));
     } else {
       setIsScroll(false);
@@ -447,17 +449,20 @@ const AuditTrial = () => {
   };
 
   const handleSearchAuditTrialListing = () => {
-    let Data = {
-      Username: auditTrialSearch.userName,
-      IpAddress: auditTrialSearch.IpAddress,
-      DeviceID: auditTrialSearch.Interface.value,
-      DateLogin: auditTrialSearch.LoginDate,
-      DateLogOut: auditTrialSearch.LogoutDate,
+    let Data2 = {
+      Username: auditTrialSearch.userName || "",
+      IpAddress: auditTrialSearch.IpAddress || "",
+      DeviceID: auditTrialSearch.Interface?.value
+        ? String(auditTrialSearch.Interface.value)
+        : "",
+      DateLogin: auditTrialSearch.LoginDate || "",
+      DateLogOut: auditTrialSearch.LogoutDate || "",
       sRow: 0,
       Length: 10,
     };
-    console.log(Data, "handleSearchAuditTrialListing");
-    dispatch(GetAuditListingAPI(navigate, Data, t));
+    console.log(Data2, "handleSearchAuditTrialListing");
+    console.log(typeof Data2.Username, "handleSearchAuditTrialListing");
+    dispatch(GetAuditListingAPI(navigate, Data2, t));
   };
 
   //Handle Reset Button
@@ -501,7 +506,9 @@ const AuditTrial = () => {
       let Data = {
         Username: auditTrialSearch.title,
         IpAddress: auditTrialSearch.IpAddress,
-        DeviceID: auditTrialSearch.Interface.value,
+        DeviceID: auditTrialSearch.Interface?.value
+          ? String(auditTrialSearch.Interface.value)
+          : "",
         DateLogin: auditTrialSearch.LoginDate,
         DateLogOut: auditTrialSearch.LogoutDate,
         sRow: 0,
