@@ -1994,6 +1994,21 @@ const isSharedScreenCall = {
   RequestMethod: "ServiceManager.IsSharedScreen",
 };
 
+//Save Audit log
+const SaveAuditLog = {
+  RequestMethod: "ServiceManager.SaveAuditLog",
+};
+
+// Audit listing
+const GetUsersAuditListing = {
+  RequestMethod: "ServiceManager.GetUsersAuditListing",
+};
+
+// Audit Actions
+const GetUsersAuditActions = {
+  RequestMethod: "ServiceManager.GetUserAuditActions",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2515,4 +2530,7 @@ export {
   leavePresenterView,
   participantOfGroupCall,
   isSharedScreenCall,
+  SaveAuditLog,
+  GetUsersAuditListing,
+  GetUsersAuditActions,
 };

@@ -2379,5 +2379,12 @@
   "Approvals": "Approvals",
   "Has-deleted-the-poll-main": "has deleted the poll",
   "Call-initiated-successfully": "Call initiated successfully",
-  "Submit": "Submit"
+  "Submit": "Submit",
+  "Audit-trial": "Audit Trial",
+  "View-Action": "View Action",
+  "Login-date": "Login Date",
+  "Login-time": "Login Time",
+  "Logout-date": "Logout Date",
+  "Logout-time": "Logout Time",
+  "Logged-In": "Logged In"
 }

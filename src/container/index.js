@@ -63,3 +63,4 @@ export { default as AddUserMain } from "../container/pages/UserMangement/AdminUs
 export { default as UserManagementProcess } from "../container/pages/UserManagementProcess/UserManagementProcess";
 export { default as SignupProcessUserManagement } from "../container/pages/SignUpProcessUserManagement/SignupProcessUserManagement";
 export { default as PakageDetailsUMUpgrade } from "../container/pages/UserMangement/AdminUserManagement/PackageDetailsUMUpgrade/PackageDetailsUMUpgrade";
+export { default as AuditTrial } from "../container/Admin/Reports/AuditTrial/AuditTrial";
