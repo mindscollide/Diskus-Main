@@ -186,15 +186,10 @@ const NewMeeting = () => {
   const meetingVideoRecording = useSelector(
     (state) => state.DataRoomReducer.meetingVideoRecording
   );
-  console.log(
-    meetingVideoRecording,
-    "meetingVideoRecordingmeetingVideoRecording"
-  );
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const MeetingStatusSocket = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusSocket
   );
-
   const MeetingStatusEnded = useSelector(
     (state) => state.meetingIdReducer.MeetingStatusEnded
   );
@@ -210,11 +205,9 @@ const NewMeeting = () => {
   const ResponseMessages = useSelector(
     (state) => state.MeetingOrganizersReducer.ResponseMessage
   );
-
   const scheduleMeetingsPageFlag = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
-
   const mqtMeetingPrRemoved = useSelector(
     (state) => state.NewMeetingreducer.mqtMeetingPrRemoved
   );
@@ -324,7 +317,6 @@ const NewMeeting = () => {
 
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
-  console.log(isMeetingTypeFilter, "isMeetingTypeFilterisMeetingTypeFilter");
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
     Organizer: false,
@@ -3818,8 +3810,7 @@ const NewMeeting = () => {
 
     return () => {};
   }, [globalFunctionWebnotificationFlag]);
-  console.log("NewEndLeaveMeeting", endForAllMeeting);
-  console.log("NewEndLeaveMeeting", endMeetingModal);
+  
   return (
     <>
       <section className={styles["NewMeeting_container"]}>

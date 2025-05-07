@@ -358,9 +358,7 @@ const SubAgendaMappingDragging = ({
 
   useEffect(() => {
     if (
-      getMeetingusers !== undefined &&
-      getMeetingusers !== null &&
-      getMeetingusers.length !== 0
+      getMeetingusers  !== null
     ) {
       const newData = {
         meetingOrganizers: getMeetingusers.meetingOrganizers,

@@ -34,69 +34,81 @@ const userlogOutFailed = (message) => {
 const userLogOutApiFunc = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
-    dispatch(userlogOutInit());
-    let form = new FormData();
-    form.append("RequestMethod", UserLogout.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(userLogOutApiFunc(navigate, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_LogOut_01".toLowerCase())
-            ) {
-              await dispatch(userlogOutSuccess(null, t("Successful")));
-              dispatch(showUpgradeNowModal(false));
-              await signOut(t("Successful"), dispatch);
-              // navigate("/");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_LogOut_02".toLowerCase())
-            ) {
-              dispatch(userlogOutFailed(t("Invalid Token")));
-              dispatch(showUpgradeNowModal(true));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes("ERM_AuthService_AuthManager_LogOut_03".toLowerCase())
-            ) {
-              dispatch(userlogOutFailed(t("Something-went-wrong")));
-              dispatch(showUpgradeNowModal(true));
+    try {
+      dispatch(userlogOutInit());
+      let form = new FormData();
+      form.append("RequestMethod", UserLogout.RequestMethod);
+      axios({
+        method: "post",
+        url: authenticationApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(userLogOutApiFunc(navigate, t));
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_AuthManager_LogOut_01".toLowerCase()
+                  )
+              ) {
+                await dispatch(userlogOutSuccess(null, t("Successful")));
+                dispatch(showUpgradeNowModal(false));
+                await signOut(t("Successful"), dispatch);
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_AuthManager_LogOut_02".toLowerCase()
+                  )
+              ) {
+                dispatch(userlogOutFailed(t("Invalid Token")));
+                dispatch(showUpgradeNowModal(true));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "ERM_AuthService_AuthManager_LogOut_03".toLowerCase()
+                  )
+              ) {
+                dispatch(userlogOutFailed(t("Something-went-wrong")));
+                dispatch(showUpgradeNowModal(true));
+              } else {
+                dispatch(userlogOutFailed(t("Something-went-wrong")));
+                dispatch(showUpgradeNowModal(true));
+              }
             } else {
               dispatch(userlogOutFailed(t("Something-went-wrong")));
               dispatch(showUpgradeNowModal(true));
             }
           } else {
+            console.log("CHecing");
             dispatch(userlogOutFailed(t("Something-went-wrong")));
-            dispatch(showUpgradeNowModal(true));
+            await signOut(t("Successful"), dispatch);
+            dispatch(showUpgradeNowModal(false));
           }
-        } else {
+        })
+        .catch(async (response) => {
           dispatch(userlogOutFailed(t("Something-went-wrong")));
-          dispatch(showUpgradeNowModal(true));
-        }
-      })
-      .catch((response) => {
-        dispatch(userlogOutFailed(t("Something-went-wrong")));
-      });
+          await signOut(t("Successful"), dispatch);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
 export const signOut = async (message, dispatch) => {
   // logoutChannel.postMessage("Logout");
   dispatch(initaialStateFun());
-  window.location.replace = "/";
+  window.location.href = "/";
   let RememberEmailLocal = JSON.parse(localStorage.getItem("rememberEmail"));
   let RememberPasswordLocal = JSON.parse(
     localStorage.getItem("remeberPassword")

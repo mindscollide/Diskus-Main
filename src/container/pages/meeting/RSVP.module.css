@@ -47,3 +47,12 @@
   font-size: 12px !important;
   font-weight: 600 !important;
 }
+.RSVP_Container {
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto ;
+  height: 100%;
+  flex-direction: column;
+}

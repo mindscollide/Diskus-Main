@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     }
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
+    
   };
   return (
     <AuthContext.Provider value={{ signOut }}>{children}</AuthContext.Provider>

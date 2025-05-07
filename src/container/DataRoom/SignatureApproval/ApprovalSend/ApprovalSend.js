@@ -136,15 +136,14 @@ const ApprovalSend = () => {
       {reviewAndSignatureStatus.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={sortingData.statusID.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center justify-content-center">
+      <div className='d-flex gap-3 align-items-center justify-content-center'>
         <Button
           text={t("Reset")}
           className={styles["FilterResetBtn"]}
@@ -195,12 +194,12 @@ const ApprovalSend = () => {
       // Column for file name
       title: (
         <>
-          <span className="d-flex gap-2">
+          <span className='d-flex gap-2'>
             {t("File-name")}
             {sortingData.title === 2 ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
@@ -223,9 +222,8 @@ const ApprovalSend = () => {
         console.log(record, "texttexttext");
         return (
           <span
-            className="d-flex gap-2 align-items-center cursor-pointer"
-            onClick={() => handleClickOpenDoc(record)}
-          >
+            className='d-flex gap-2 align-items-center cursor-pointer'
+            onClick={() => handleClickOpenDoc(record)}>
             <img
               width={"25px"}
               height={"25px"}
@@ -254,8 +252,9 @@ const ApprovalSend = () => {
           return (
             <span
               onClick={() => handleClickSignatoriesList(record)}
-              className={styles["signatories_vale"]}
-            >{` ${text} Signatories`}</span>
+              className={styles["signatories_vale"]}>{` ${text} ${t(
+              "Signatories"
+            )}`}</span>
           );
         }
       },
@@ -266,7 +265,7 @@ const ApprovalSend = () => {
         <>
           {" "}
           <Row>
-            <Col className="d-flex align-items-center justify-content-center gap-2">
+            <Col className='d-flex align-items-center justify-content-center gap-2'>
               {t("Sent-on")}
               {sortingData.sentOn === 2 ? (
                 <img src={ArrowUpIcon} />
@@ -308,7 +307,7 @@ const ApprovalSend = () => {
       // Column for status
       title: (
         <>
-          <span className="d-flex justify-content-center gap-2">
+          <span className='d-flex justify-content-center gap-2'>
             {t("Status")}
           </span>
         </>
@@ -322,7 +321,7 @@ const ApprovalSend = () => {
 
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -343,8 +342,7 @@ const ApprovalSend = () => {
                 : status === "Declined"
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }
-          >
+            }>
             {t(status)}
           </p>
         );
@@ -363,7 +361,7 @@ const ApprovalSend = () => {
           return (
             <img
               src={DeleteIcon}
-              className="cursor-pointer"
+              className='cursor-pointer'
               onClick={() => deleteSignatureDocument(record)}
             />
           );
@@ -386,9 +384,7 @@ const ApprovalSend = () => {
     let reponseData = JSON.stringify(record.fileID);
     if (Number(record.workFlowStatusID) === 4) {
       window.open(
-        `/Diskus/signatureviewer?documentID=${encodeURIComponent(
-          reponseData
-        )}`,
+        `/Diskus/signatureviewer?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
         "noopener noreferrer"
       );
@@ -599,8 +595,8 @@ const ApprovalSend = () => {
   return (
     <>
       {" "}
-      <Row className="mb-2">
-        <Col sm={12} md={12} lg={12} className="mt-3">
+      <Row className='mb-2'>
+        <Col sm={12} md={12} lg={12} className='mt-3'>
           <InfiniteScroll
             dataLength={approvalsData.length}
             next={handleScroll}
@@ -609,7 +605,7 @@ const ApprovalSend = () => {
             }}
             hasMore={approvalsData.length === totalRecords ? false : true}
             height={"58vh"}
-            endMessage=""
+            endMessage=''
             loader={
               approvalsData.length <= totalRecords &&
               isScrolling && (
@@ -619,15 +615,13 @@ const ApprovalSend = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="d-flex justify-content-center mt-2"
-                    >
+                      className='d-flex justify-content-center mt-2'>
                       <Spin indicator={antIcon} />
                     </Col>
                   </Row>
                 </>
               )
-            }
-          >
+            }>
             <TableToDo
               sortDirections={["descend", "ascend"]}
               column={pendingApprovalColumns}
@@ -640,13 +634,12 @@ const ApprovalSend = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center align-items-center mt-2"
-                  >
+                    className='d-flex justify-content-center align-items-center mt-2'>
                     <section className={styles["ApprovalSend_emptyContainer"]}>
                       <img
-                        className="d-flex justify-content-center"
+                        className='d-flex justify-content-center'
                         src={EmtpyImage}
-                        alt=""
+                        alt=''
                         width={250}
                       />
                       <span className={styles["emptyState_title"]}>
@@ -658,13 +651,12 @@ const ApprovalSend = () => {
                         )}
                         !
                       </span>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center align-items-center"
-                        >
+                          className='d-flex justify-content-center align-items-center'>
                           <SpinComponent />
                           {/* <Spin /> */}
                         </Col>
