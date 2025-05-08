@@ -72,6 +72,18 @@ const WebNotfication = ({
     setViewPublishedPoll,
     polls,
     setAdvanceMeetingModalID,
+    setPolls,
+    setMeetingMaterial,
+    setAgendaContributors,
+    setorganizers,
+    setmeetingDetails,
+    setMinutes,
+    setAttendance,
+    setAgenda,
+    setParticipants,
+    setAttendees,
+    setRecording,
+    setactionsPage,
   } = useMeetingContext();
   //Resolution Context
   const location = useLocation();
@@ -194,7 +206,7 @@ const WebNotfication = ({
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
-    console.log(PayLoadData, "PayLoadDataPayLoadData");
+    console.log({ PayLoadData, NotificationData }, "PayLoadDataPayLoadData");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
@@ -219,6 +231,28 @@ const WebNotfication = ({
             setViewPublishedPoll
           )
         );
+      } else if (!polls) {
+        setMeetingMaterial(false);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(false);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setAttendees(false);
+        setRecording(false);
+        setactionsPage(false);
+        setPolls(true);
+        localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+        //set Local storage flag for identification for polls
+        localStorage.setItem("viewadvanceMeetingPolls", true);
       } else {
         await dispatch(
           webNotificationDataLeaveVideoIntiminationModal(NotificationData)
