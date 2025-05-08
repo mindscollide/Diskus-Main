@@ -281,7 +281,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className="m-0">
+                      <Row className="m-0 mt-2">
                         <Col
                           lg={12}
                           md={12}

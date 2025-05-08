@@ -307,7 +307,7 @@ const SubAgendaMappingDragging = ({
                                               lg={6}
                                               md={6}
                                               sm={12}
-                                              className="text-end"
+                                              className="text-end mt-2"
                                             >
                                               {Number(
                                                 subAgendaData.agendaVotingID

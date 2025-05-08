@@ -271,7 +271,12 @@ const ParentAgenda = ({
                                 {data.title}
                               </span>
                             </Col>
-                            <Col lg={6} md={6} sm={12} className="text-end">
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={12}
+                              className="text-end mt-2"
+                            >
                               {Number(data.agendaVotingID) !== 0 &&
                               Number(editorRole.status) === 10 &&
                               Number(data.voteOwner.userid) ===
@@ -452,8 +457,8 @@ const ParentAgenda = ({
                                       <span
                                         className={styles["NoFiles_Heading"]}
                                       >
-                                        {t("No-files-attached")}
-)                                      </span>
+                                        {t("No-files-attached")}){" "}
+                                      </span>
                                     ) : null}
 
                                     {data.selectedRadio === 2 && (
