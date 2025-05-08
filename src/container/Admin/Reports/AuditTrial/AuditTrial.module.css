@@ -132,3 +132,19 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 .UserLoginHistory_datePicker:is(:focus, :focus-visible) {
   outline: none !important;
 }
+
+.SearchFieldCrossIcon {
+  cursor: pointer !important;
+  top: 19.9% !important;
+  position: absolute !important;
+  left: auto !important;
+  right: 4% !important;
+}
+
+body[dir="rtl"] .SearchFieldCrossIcon {
+  cursor: pointer !important;
+  top: 21.7% !important;
+  position: absolute !important;
+  left: 4% !important;
+  right: auto !important;
+}
