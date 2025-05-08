@@ -202,6 +202,7 @@ import {
   admitGuestUserRequest,
   hideUnhideSelfMainApi,
   muteUnMuteSelfMainApi,
+  raiseUnRaisedHandMainApi,
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
@@ -676,6 +677,15 @@ const Dashboard = () => {
 
               // Dispatch the API request with the data
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+
+              let data = {
+                RoomID: String(
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                ),
+                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+                IsHandRaised: false,
+              };
+              await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
               console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
