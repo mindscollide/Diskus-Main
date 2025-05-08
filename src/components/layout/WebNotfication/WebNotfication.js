@@ -70,14 +70,14 @@ const WebNotfication = ({
     setvotePolls,
     setUnPublished,
     setViewPublishedPoll,
-    setPolls,
+    polls,
     setAdvanceMeetingModalID,
   } = useMeetingContext();
   //Resolution Context
   const location = useLocation();
   const currentURL = window.location.href;
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
-
+  console.log(polls, "PayLoadDataPayLoadData");
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -194,11 +194,12 @@ const WebNotfication = ({
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
+    console.log(PayLoadData, "PayLoadDataPayLoadData");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
       if (
-        setPolls &&
+        polls &&
         PayLoadData.MeetingID ===
           Number(localStorage.getItem("currentMeetingID"))
       ) {
@@ -1333,7 +1334,7 @@ const WebNotfication = ({
         navigate("/Diskus/resolution");
       } else if (NotificationData.notificationActionID === 45) {
         // if the poll has been deleted in the meeting
-        if (isMeeting && setPolls) {
+        if (isMeeting && polls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
@@ -1408,7 +1409,7 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 47) {
         //For participant has Give Vote on a Poll inside advance meeting
-        if (isMeeting && setPolls) {
+        if (isMeeting && polls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
@@ -1579,10 +1580,12 @@ const WebNotfication = ({
 
   return (
     <section className={styles["WebNotificationOuterBox"]}>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         {groupedNotifications.today.length > 0 && (
           <Col lg={12} md={12} sm={12}>
-            <span className={styles["NotificationCategories"]}>{t("Today")}</span>
+            <span className={styles["NotificationCategories"]}>
+              {t("Today")}
+            </span>
           </Col>
         )}
       </Row>
@@ -1599,14 +1602,16 @@ const WebNotfication = ({
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center my-3'>
+                    className="d-flex justify-content-center my-3"
+                  >
                     <Spin indicator={antIcon} />
                   </Col>
                 </Row>
               )
             }
-            height='68vh'
-            style={{ overflowX: "hidden" }}>
+            height="68vh"
+            style={{ overflowX: "hidden" }}
+          >
             {/* Render "Today" Notifications */}
             {groupedNotifications.today.length > 0 &&
               groupedNotifications.today
@@ -1625,7 +1630,8 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}>
+                    onClick={() => HandleClickNotfication(data)}
+                  >
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1658,7 +1664,8 @@ const WebNotfication = ({
                         ? styles["BackGroundreadNotifications"]
                         : styles["BackGroundUnreadNotifications"]
                     }
-                    onClick={() => HandleClickNotfication(data)}>
+                    onClick={() => HandleClickNotfication(data)}
+                  >
                     <Col lg={12} md={12} sm={12}>
                       <WebNotificationCard
                         NotificationMessege={JSON.parse(data.payloadData)}
@@ -1677,12 +1684,12 @@ const WebNotfication = ({
             {webNotificationData.length === 0 && (
               <Row>
                 <Col lg={12} md={12} sm={12} className={styles["TopMargin"]}>
-                  <div className='d-flex flex-column flex-wrap justify-content-center align-items-center'>
+                  <div className="d-flex flex-column flex-wrap justify-content-center align-items-center">
                     <img
                       src={BellIconNotificationEmptyState}
-                      width='155.35px'
-                      height='111px'
-                      alt=''
+                      width="155.35px"
+                      height="111px"
+                      alt=""
                     />
                     <span className={styles["NotificationEmptyState"]}>
                       {t("You-have-no-notifications")}
