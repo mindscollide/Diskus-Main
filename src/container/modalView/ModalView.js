@@ -749,8 +749,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (isMeeting) {
         dispatch(presenterViewGlobalState(0, false, false, false));
         console.log("cacacacacacacacacc");
-        setEndMeetingConfirmationModal(false)
+        setEndMeetingConfirmationModal(false);
         dispatch(setAudioControlHost(false));
+        console.log("videoHideUnHideForHost");
         dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
@@ -785,6 +786,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       console.log("cacacacacacacacacc");
       dispatch(setAudioControlHost(false));
+      console.log("videoHideUnHideForHost");
       dispatch(setVideoControlHost(false));
       localStorage.removeItem("presenterViewFlag");
       localStorage.setItem("CallType", 0);
@@ -796,7 +798,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       dispatch(presenterViewGlobalState(0, false, false, false));
       localStorage.setItem("isMeeting", false);
       dispatch(removeCalenderDataFunc(null));
-      setEndMeetingConfirmationModal(false)
+      setEndMeetingConfirmationModal(false);
 
       setViewFlag(false);
       dispatch(cleareAssigneesState());
@@ -1063,7 +1065,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       };
       dispatch(getMeetingGuestVideoMainApi(navigate, t, data));
     }
-    showMessage( t("Link-copied"), "success", setOpen);
+    showMessage(t("Link-copied"), "success", setOpen);
   };
 
   const joinMeetingCall = () => {

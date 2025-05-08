@@ -28,6 +28,7 @@ const MaxParticipantVideoRemovedComponent = () => {
     dispatch(maxParticipantVideoRemoved(false));
     dispatch(maxParticipantVideoCallPanel(false));
     dispatch(setAudioControlHost(false));
+    console.log("videoHideUnHideForHost");
     dispatch(setVideoControlHost(false));
     localStorage.setItem("isCaller", false);
     localStorage.setItem("isMeetingVideo", false);
