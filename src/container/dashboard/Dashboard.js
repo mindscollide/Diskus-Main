@@ -202,6 +202,7 @@ import {
   admitGuestUserRequest,
   hideUnhideSelfMainApi,
   muteUnMuteSelfMainApi,
+  raiseUnRaisedHandMainApi,
   transferMeetingHostSuccess,
 } from "../../store/actions/Guest_Video";
 import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateUserNotificationSetting";
@@ -634,6 +635,11 @@ const Dashboard = () => {
         : false
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
+      // dispatch(setAudioControlHost(false));
+      // console.log("videoHideUnHideForHost");
+      // dispatch(setVideoControlHost(true));
+      dispatch(setRaisedUnRaisedParticiant(false));
+      dispatch(clearPresenterParticipants());
       if (isMeeting) {
         if (activeCallState && currentCallType === 1) {
           dispatch(presenterViewGlobalState(0, false, false, false));
@@ -671,6 +677,15 @@ const Dashboard = () => {
 
               // Dispatch the API request with the data
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+
+              let data = {
+                RoomID: String(
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                ),
+                UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+                IsHandRaised: false,
+              };
+              await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
               console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
@@ -709,13 +724,11 @@ const Dashboard = () => {
                 isHostId: 0,
                 isDashboardVideo: true,
               };
-              console.log("makeHostOnClick", meetingHost);
               localStorage.setItem(
                 "meetinHostInfo",
                 JSON.stringify(meetingHost)
               );
               dispatch(makeHostNow(meetingHost));
-
               localStorage.setItem("hostUrl", refinedVideoUrl);
               localStorage.setItem("participantRoomId", newRoomId);
               localStorage.setItem("participantUID", isGuid);
@@ -767,6 +780,7 @@ const Dashboard = () => {
       }
     }
   };
+
   async function joinRequestForMeetingVideo(mqttData) {
     try {
       const currentMeetingID = localStorage.getItem("currentMeetingID");
@@ -1652,11 +1666,6 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_PRESENTATION_STOPPED".toLowerCase()
             ) {
-              // dispatch(setAudioControlHost(false));
-              // console.log("videoHideUnHideForHost");
-              // dispatch(setVideoControlHost(true));
-              dispatch(setRaisedUnRaisedParticiant(false));
-              dispatch(clearPresenterParticipants());
               stopPresenterView(data.payload);
             } else if (
               data.payload.message.toLowerCase() ===
