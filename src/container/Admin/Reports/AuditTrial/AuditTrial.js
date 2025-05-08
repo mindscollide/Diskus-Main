@@ -15,7 +15,6 @@ import DatePicker from "react-multi-date-picker";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import CrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
-
 import {
   GetAuditActionsAPI,
   GetAuditListingAPI,
@@ -52,7 +51,6 @@ const AuditTrial = () => {
   const [searchBar, setSearchBar] = useState(false);
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [searchText, setSearchText] = useState([]);
   const [enterPressedSearch, setEnterPressedSearch] = useState(false);
   const [viewActionModalDataState, setViewActionModalDataState] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
@@ -108,8 +106,6 @@ const AuditTrial = () => {
       });
     };
   }, []);
-
-  console.log(auditTrialListingTableData, "GetAuditListingReducerGlobalState");
 
   // Extracting the Audit listing Data
   useEffect(() => {
@@ -348,6 +344,7 @@ const AuditTrial = () => {
     return ipRegex.test(value);
   };
 
+  //Devices
   const DeviceIdType = [
     {
       label: "Browser",
@@ -503,7 +500,7 @@ const AuditTrial = () => {
     }
   };
 
-  //
+  //handle Cross Icon Pressed Enter
   const handlePressedEnterSearch = () => {
     try {
       let Data = {
@@ -541,6 +538,7 @@ const AuditTrial = () => {
     }
   };
 
+  //handle  Pressed Enter TextField
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       let Data = {
