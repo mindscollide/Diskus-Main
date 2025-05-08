@@ -37,8 +37,8 @@ const workflowApi = baseURL + process.env.REACT_APP_WORKFLOW_API;
 const getSocketConnection = baseURL + process.env.REACT_APP_SOCKET_API;
 
 //Audit API
-//const AuditAPi = baseURL + process.env.REACT_APP_AUDIT_API;
-const AuditAPi = "https://localhost:44348/Audit";
+const AuditAPi = baseURL + process.env.REACT_APP_AUDIT_API;
+//const AuditAPi = "https://localhost:44348/Audit";
 export {
   authenticationApi,
   toDoListApi,
