@@ -520,6 +520,7 @@ const AuditTrial = () => {
       setEnterPressedSearch(false);
       setAuditTrialSearch({
         ...auditTrialSearch,
+        title: "",
         userName: "",
         IpAddress: "",
         LoginDate: "",
