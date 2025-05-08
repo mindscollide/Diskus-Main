@@ -53,6 +53,7 @@ const AuditTrial = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [searchText, setSearchText] = useState([]);
+  const [enterPressedSearch, setEnterPressedSearch] = useState(false);
   const [viewActionModalDataState, setViewActionModalDataState] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
     title: "",
@@ -326,8 +327,6 @@ const AuditTrial = () => {
     }
   };
 
-  //Antd Spin Icon
-
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
@@ -355,11 +354,11 @@ const AuditTrial = () => {
       value: 1,
     },
     {
-      label: "Tablet",
+      label: "Mobile",
       value: 2,
     },
     {
-      label: "Mobile",
+      label: "Tablet",
       value: 3,
     },
   ];
@@ -438,6 +437,7 @@ const AuditTrial = () => {
     });
   };
 
+  //Handle Logout Date Change
   const handleChangeLogoutDate = (date) => {
     let getDate = new Date(date);
     let utcDate = getDate.toISOString().slice(0, 10).replace(/-/g, "");
@@ -448,6 +448,7 @@ const AuditTrial = () => {
     });
   };
 
+  //Handle Search Popup Button
   const handleSearchAuditTrialListing = () => {
     let Data2 = {
       Username: auditTrialSearch.userName || "",
@@ -479,6 +480,44 @@ const AuditTrial = () => {
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
       setSearchBar(false);
+      setEnterPressedSearch(false);
+      setAuditTrialSearch({
+        ...auditTrialSearch,
+        userName: "",
+        IpAddress: "",
+        LoginDate: "",
+        LoginDateView: "",
+        LogoutDate: "",
+        LogoutDateView: "",
+        LogoutTime: "",
+        LogoutTimeView: "",
+        LoginTime: "",
+        LoginTimeView: "",
+        Interface: {
+          value: 0,
+          label: "",
+        },
+      });
+    } catch (error) {
+      console.log(error, "errorerror");
+    }
+  };
+
+  //
+  const handlePressedEnterSearch = () => {
+    try {
+      let Data = {
+        Username: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        sRow: 0,
+        Length: 10,
+      };
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+      setSearchBar(false);
+      setEnterPressedSearch(false);
       setAuditTrialSearch({
         ...auditTrialSearch,
         userName: "",
@@ -515,7 +554,7 @@ const AuditTrial = () => {
         Length: 10,
       };
       dispatch(GetAuditListingAPI(navigate, Data, t));
-      setSearchText([...searchText, auditTrialSearch.Title]);
+      setEnterPressedSearch(true);
     }
   };
 
@@ -555,6 +594,14 @@ const AuditTrial = () => {
               }
             />
           </section>
+          {enterPressedSearch && (
+            <img
+              src={CrossIcon}
+              className={styles["SearchFieldCrossIcon"]}
+              onClick={handlePressedEnterSearch}
+              alt=""
+            />
+          )}
           {searchBar && (
             <>
               <span className={styles["SearchBoxAuditTrial"]}>
