@@ -251,7 +251,6 @@ const ViewMeetingModal = ({
           setParticipants(false);
           setPolls(false);
           setRecording(false);
-
           setAttendees(false);
           setactionsPage(false);
         }
