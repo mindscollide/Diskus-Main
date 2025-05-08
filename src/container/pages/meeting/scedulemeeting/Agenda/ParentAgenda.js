@@ -77,6 +77,8 @@ const ParentAgenda = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
+  console.log(allSavedPresenters, "allSavedPresenters");
+
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
@@ -113,6 +115,7 @@ const ParentAgenda = ({
   //Add Function To Add SubAgendas
   const addSubAjendaRows = (rowAgendaIndex) => {
     const updatedRows = [...rows];
+
     // const nextSubAgendaID = updatedRows[0].subAgenda.length.toString();
     const newSubAgenda = {
       subAgendaID: getRandomUniqueNumber().toString() + "A",
@@ -331,7 +334,6 @@ const ParentAgenda = ({
     setRows(updatedAgendaItems);
   };
 
-
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -344,78 +346,67 @@ const ParentAgenda = ({
     }
   }, [currentLanguage]);
 
-  useEffect(() => {
-    if (
-      getMeetingusers !== undefined &&
-      getMeetingusers !== null &&
-      getMeetingusers.length !== 0
-    ) {
-      const newData = {
-        meetingOrganizers: getMeetingusers.meetingOrganizers,
-        meetingParticipants: getMeetingusers.meetingParticipants,
-        meetingAgendaContributors: getMeetingusers.meetingAgendaContributors,
-      };
-      setAllPresenters(newData);
-    }
-  }, [getMeetingusers]);
+  // useEffect(() => {
+  //   if (getMeetingusers !== null) {
+  //     const newData = {
+  //       meetingOrganizers: getMeetingusers.meetingOrganizers,
+  //       meetingParticipants: getMeetingusers.meetingParticipants,
+  //       meetingAgendaContributors: getMeetingusers.meetingAgendaContributors,
+  //     };
+  //     setAllPresenters(newData);
+  //   }
+  // }, [getMeetingusers]);
 
-  useEffect(() => {
-    if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
-      const allPresentersReducer = [
-        ...allPresenters.meetingOrganizers,
-        ...allPresenters.meetingAgendaContributors,
-        ...allPresenters.meetingParticipants,
-      ];
-      setPresenters(allPresentersReducer);
-    }
-  }, [allPresenters]);
+  // useEffect(() => {
+  //   if (allPresenters.lenth > 0 || Object.keys(allPresenters).length > 0) {
+  //     const allPresentersReducer = [
+  //       ...allPresenters.meetingOrganizers,
+  //       ...allPresenters.meetingAgendaContributors,
+  //       ...allPresenters.meetingParticipants,
+  //     ];
+  //     setPresenters(allPresentersReducer);
+  //   }
+  // }, [allPresenters]);
 
-  useEffect(() => {
-    if (presenters.length > 0 || Object.keys(presenters).length > 0) {
-      const mappedPresenters = presenters.map((presenter) => ({
-        value: presenter.userID,
-        name: presenter.userName,
-        label: (
-          <>
-            <Row>
-              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
-                <img
-                  alt=''
-                  src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width='17px'
-                  height='17px'
-                  className={styles["Image_class_Agenda"]}
-                />
-                <span className={styles["Name_Class"]}>
-                  {presenter.userName}
-                </span>
-              </Col>
-            </Row>
-          </>
-        ).toString(),
-      }));
-      setAllSavedPresenters((prevPresenters) => {
-        if (
-          JSON.stringify(prevPresenters) !== JSON.stringify(mappedPresenters)
-        ) {
-          return mappedPresenters;
-        }
-        return prevPresenters; // No change, return the current state
-      });
-    }
-    const updatedAgendaItems = [...rows];
-    if (
-      GetAdvanceMeetingAgendabyMeetingIDData === null &&
-      GetAdvanceMeetingAgendabyMeetingIDData === undefined &&
-      GetAdvanceMeetingAgendabyMeetingIDData.length === 0 &&
-      Object.keys(GetAdvanceMeetingAgendabyMeetingIDData).length === 0
-    ) {
-      console.log("updated Rows ROWS ROWS");
-      updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
-      updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
-    }
-    setRows(updatedAgendaItems);
-  }, [presenters, allPresenters]);
+  // useEffect(() => {
+  //   if (presenters.length > 0 || Object.keys(presenters).length > 0) {
+  //     const mappedPresenters = presenters.map((presenter) => ({
+  //       value: presenter.userID,
+  //       name: presenter.userName,
+  //       label: (
+  //         <>
+  //           <Row>
+  //             <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+  //               <img
+  //                 alt=''
+  //                 src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
+  //                 width='17px'
+  //                 height='17px'
+  //                 className={styles["Image_class_Agenda"]}
+  //               />
+  //               <span className={styles["Name_Class"]}>
+  //                 {presenter.userName}
+  //               </span>
+  //             </Col>
+  //           </Row>
+  //         </>
+  //       ).toString(),
+  //     }));
+  //     setAllSavedPresenters(mappedPresenters);
+  //   }
+  //   const updatedAgendaItems = [...rows];
+  //   if (
+  //     GetAdvanceMeetingAgendabyMeetingIDData === null &&
+  //     GetAdvanceMeetingAgendabyMeetingIDData === undefined &&
+  //     GetAdvanceMeetingAgendabyMeetingIDData.length === 0 &&
+  //     Object.keys(GetAdvanceMeetingAgendabyMeetingIDData).length === 0
+  //   ) {
+  //     console.log("updated Rows ROWS ROWS");
+  //     updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
+  //     updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
+  //   }
+  //   setRows(updatedAgendaItems);
+  // }, [presenters, allPresenters]);
 
   // console.log("editor role", editorRole);
 

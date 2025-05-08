@@ -183,6 +183,7 @@ const Stats = () => {
 
           return (
             <ProgressBar
+              key={index}
               now={checkisbothValueisEqual ? 0 : calculateValue}
               max={bar.max}
               label={`${convertToArabicNumerals(

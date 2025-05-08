@@ -33,6 +33,10 @@ const initialState = {
   searchPaymentHistory: null,
   Spinner: false,
   getSubscriptiondetails: null,
+  auditTrialViewActionModal: false,
+  getAuditListingData: null,
+  getAuditActionsData: null,
+  SaveAuditLog: null,
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -508,6 +512,88 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         Spinner: false,
         searchPaymentHistory: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.AUDITTRIAL_VIEW_ACTION_MODAL: {
+      return {
+        ...state,
+        auditTrialViewActionModal: action.response,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_LISTING_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_LISTING_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAuditListingData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_LISTING_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAuditListingData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_ACTIONS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_ACTIONS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getAuditActionsData: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_USER_AUDIT_ACTIONS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getAuditListingData: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_AUDIT_LOGS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.SAVE_AUDIT_LOGS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SaveAuditLog: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SAVE_AUDIT_LOGS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SaveAuditLog: null,
         ResponseMessage: action.message,
       };
     }

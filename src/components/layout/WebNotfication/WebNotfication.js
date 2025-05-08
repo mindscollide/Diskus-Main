@@ -70,14 +70,26 @@ const WebNotfication = ({
     setvotePolls,
     setUnPublished,
     setViewPublishedPoll,
-    setPolls,
+    polls,
     setAdvanceMeetingModalID,
+    setPolls,
+    setMeetingMaterial,
+    setAgendaContributors,
+    setorganizers,
+    setmeetingDetails,
+    setMinutes,
+    setAttendance,
+    setAgenda,
+    setParticipants,
+    setAttendees,
+    setRecording,
+    setactionsPage,
   } = useMeetingContext();
   //Resolution Context
   const location = useLocation();
   const currentURL = window.location.href;
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
-
+  console.log(polls, "PayLoadDataPayLoadData");
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -194,11 +206,12 @@ const WebNotfication = ({
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
+    console.log({ PayLoadData, NotificationData }, "PayLoadDataPayLoadData");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
       if (
-        setPolls &&
+        polls &&
         PayLoadData.MeetingID ===
           Number(localStorage.getItem("currentMeetingID"))
       ) {
@@ -218,6 +231,28 @@ const WebNotfication = ({
             setViewPublishedPoll
           )
         );
+      } else if (!polls) {
+        setMeetingMaterial(false);
+        setAgendaContributors(false);
+        setorganizers(false);
+        setmeetingDetails(false);
+        setMinutes(false);
+        setAttendance(false);
+        setAgenda(false);
+        setParticipants(false);
+        setAttendees(false);
+        setRecording(false);
+        setactionsPage(false);
+        setPolls(true);
+        localStorage.setItem("NotificationClickPollID", PayLoadData.PollID);
+        localStorage.setItem("AdvanceMeetingOperations", true);
+        localStorage.setItem(
+          "NotificationAdvanceMeetingID",
+          PayLoadData.MeetingID
+        );
+        localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+        //set Local storage flag for identification for polls
+        localStorage.setItem("viewadvanceMeetingPolls", true);
       } else {
         await dispatch(
           webNotificationDataLeaveVideoIntiminationModal(NotificationData)
@@ -1333,7 +1368,7 @@ const WebNotfication = ({
         navigate("/Diskus/resolution");
       } else if (NotificationData.notificationActionID === 45) {
         // if the poll has been deleted in the meeting
-        if (isMeeting && setPolls) {
+        if (isMeeting && polls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
@@ -1408,7 +1443,7 @@ const WebNotfication = ({
         }
       } else if (NotificationData.notificationActionID === 47) {
         //For participant has Give Vote on a Poll inside advance meeting
-        if (isMeeting && setPolls) {
+        if (isMeeting && polls) {
           return;
         } else {
           if (currentURL.includes("/Diskus/Meeting")) {
@@ -1582,7 +1617,9 @@ const WebNotfication = ({
       <Row className="mt-2">
         {groupedNotifications.today.length > 0 && (
           <Col lg={12} md={12} sm={12}>
-            <span className={styles["NotificationCategories"]}>Today</span>
+            <span className={styles["NotificationCategories"]}>
+              {t("Today")}
+            </span>
           </Col>
         )}
       </Row>
@@ -1647,7 +1684,7 @@ const WebNotfication = ({
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["NotificationCategories"]}>
-                      Previous
+                      {t("Previous")}
                     </span>
                   </Col>
                 </Row>

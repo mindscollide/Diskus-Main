@@ -77,6 +77,7 @@ import {
   logErrors,
 } from "../components/elements/ErrorFallBack/index.jsx";
 import { ErrorBoundary } from "react-error-boundary";
+import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -86,18 +87,19 @@ export const router = createBrowserRouter(
       {/* Video Meeting Route */}
       <Route element={<PrivateVideoMeeting />}>
         <Route
-          path='/Diskus/video'
+          path="/Diskus/video"
           element={
             <ErrorBoundary
               FallbackComponent={ErrorFallback}
-              onError={logErrors}>
+              onError={logErrors}
+            >
               <VideoMeetingBoardDeck />
             </ErrorBoundary>
           }
         />
       </Route>
       <Route
-        path='/GuestVideoCall'
+        path="/GuestVideoCall"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <GuestVideoCall />
@@ -106,7 +108,7 @@ export const router = createBrowserRouter(
       />
       {/* for all login Routes  */}
       <Route
-        path='/'
+        path="/"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <UserManagementProcess />
@@ -115,7 +117,7 @@ export const router = createBrowserRouter(
       />
       {/* For All Signup Route */}
       <Route
-        path='/Signup'
+        path="/Signup"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <SignupProcessUserManagement />{" "}
@@ -124,7 +126,7 @@ export const router = createBrowserRouter(
       />
       {/* ============================================================ */}
       <Route
-        path='/PakageDetailsUserManagement'
+        path="/PakageDetailsUserManagement"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <PakageDetailsUserManagement />{" "}
@@ -133,7 +135,7 @@ export const router = createBrowserRouter(
       />
       {/* <Route path="/signuporganization" element={<Signup />} /> */}
       <Route
-        path='/forgotpasswordVerification'
+        path="/forgotpasswordVerification"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <ForgotPasswordVerification />{" "}
@@ -141,7 +143,7 @@ export const router = createBrowserRouter(
         }
       />
       <Route
-        path='/updatepassword'
+        path="/updatepassword"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <UpdatePasswordSuccessfully />{" "}
@@ -150,7 +152,7 @@ export const router = createBrowserRouter(
       />
       Ï
       <Route
-        path='/PaymentFormUserManagement'
+        path="/PaymentFormUserManagement"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <BillingMethodUsermanagement />
@@ -158,17 +160,17 @@ export const router = createBrowserRouter(
         }
       />
       <Route
-        path='/updatePasswordSuccess'
+        path="/updatePasswordSuccess"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <PasswordUpdateMessage />{" "}
           </ErrorBoundary>
         }
       />
-      <Route path='/404' element={<NotFound />} />
-      <Route path='*' element={<NotFound />} />
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
       <Route
-        path='/onboard'
+        path="/onboard"
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <OnBoard />{" "}
@@ -178,47 +180,52 @@ export const router = createBrowserRouter(
       {/* ============================================================ */}
       <Route element={<PrivateRoutes />}>
         <Route
-          path='/Diskus/'
+          path="/Diskus/"
           element={
-            <RouteWrapperUser name='Diskus'>
+            <RouteWrapperUser name="Diskus">
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}
-                onError={logErrors}>
+                onError={logErrors}
+              >
                 <Dashboard />
               </ErrorBoundary>
             </RouteWrapperUser>
-          }>
+          }
+        >
           <Route
-            path=''
+            path=""
             element={
-              <RouteWrapperUser name=''>
+              <RouteWrapperUser name="">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <NewDashobard />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Minutes'
+            path="Minutes"
             element={
-              <RouteWrapperUser name='Minutes'>
+              <RouteWrapperUser name="Minutes">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <MinutesFlow />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='home'
+            path="home"
             element={
-              <RouteWrapperUser name='home'>
+              <RouteWrapperUser name="home">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <NewDashobard />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -226,24 +233,26 @@ export const router = createBrowserRouter(
           />
 
           <Route
-            path='todolist'
+            path="todolist"
             element={
-              <RouteWrapperUser name='todolist'>
+              <RouteWrapperUser name="todolist">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <TodoList />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='documentViewer'
+            path="documentViewer"
             element={
-              <RouteWrapperUser name='documentViewer'>
+              <RouteWrapperUser name="documentViewer">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <DocumentViewer />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -251,36 +260,39 @@ export const router = createBrowserRouter(
           />
 
           <Route
-            path='signatureviewer'
+            path="signatureviewer"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <SignatureViewer />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='signeddocument'
+            path="signeddocument"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PendingSignature />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='viewSignDocument'
+            path="viewSignDocument"
             element={
-              <RouteWrapperUser name='signatureviewer'>
+              <RouteWrapperUser name="signatureviewer">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <ViewSignatureDocument />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -288,48 +300,52 @@ export const router = createBrowserRouter(
           />
           {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route
-            path='calendar'
+            path="calendar"
             element={
-              <RouteWrapperUser name='calendar'>
+              <RouteWrapperUser name="calendar">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CalendarPage />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Meeting'
+            path="Meeting"
             element={
-              <RouteWrapperUser name='Meeting'>
+              <RouteWrapperUser name="Meeting">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <NewMeeting />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='Meeting/Useravailabilityformeeting'
+            path="Meeting/Useravailabilityformeeting"
             element={
-              <RouteWrapperUser name='Meeting'>
+              <RouteWrapperUser name="Meeting">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <RSVP />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='setting'
+            path="setting"
             element={
-              <RouteWrapperUser name='setting'>
+              <RouteWrapperUser name="setting">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <UserSettings />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -341,91 +357,99 @@ export const router = createBrowserRouter(
               <RouteWrapperUser name="faq's">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CustomMiscellaneous />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='groups'
+            path="groups"
             element={
-              <RouteWrapperUser name='groups'>
+              <RouteWrapperUser name="groups">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Groups />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='changePassword'
+            path="changePassword"
             element={
-              <RouteWrapperUser name='changePassword'>
+              <RouteWrapperUser name="changePassword">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <ChangePassword />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='notes'
+            path="notes"
             element={
-              <RouteWrapperUser name='notes'>
+              <RouteWrapperUser name="notes">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Notes />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='committee'
+            path="committee"
             element={
-              <RouteWrapperUser name='committee'>
+              <RouteWrapperUser name="committee">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Committee />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='resolution'
+            path="resolution"
             element={
-              <RouteWrapperUser name='resolution'>
+              <RouteWrapperUser name="resolution">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Resolution />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='dataroom'
+            path="dataroom"
             element={
-              <RouteWrapperUser name='dataroom'>
+              <RouteWrapperUser name="dataroom">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <DataRoom />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
           />
           <Route
-            path='polling'
+            path="polling"
             element={
-              <RouteWrapperUser name='polling'>
+              <RouteWrapperUser name="polling">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Polling />
                 </ErrorBoundary>
               </RouteWrapperUser>
@@ -436,35 +460,39 @@ export const router = createBrowserRouter(
       <Route element={<PrivateAdminRoute />}>
         <Route
           exact
-          path='/Admin/'
+          path="/Admin/"
           element={
-            <RouteWrapperAdmin name='Admin'>
+            <RouteWrapperAdmin name="Admin">
               <ErrorBoundary
                 FallbackComponent={ErrorFallback}
-                onError={logErrors}>
+                onError={logErrors}
+              >
                 <AdminHome />
               </ErrorBoundary>
             </RouteWrapperAdmin>
-          }>
+          }
+        >
           <Route
-            path=''
+            path=""
             element={
-              <RouteWrapperAdmin name='Admin'>
+              <RouteWrapperAdmin name="Admin">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   {roleRoute ? <PayOutstanding /> : <ManageUsers />}
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PaymentFormUserManagement'
+            path="PaymentFormUserManagement"
             element={
-              <RouteWrapperAdmin name='PaymentFormUserManagement'>
+              <RouteWrapperAdmin name="PaymentFormUserManagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <BillingMethodUsermanagement />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
@@ -473,36 +501,39 @@ export const router = createBrowserRouter(
           {/* Route For Payment Processs end */}
 
           <Route
-            path='PakageDetailsUserManagement'
+            path="PakageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PakageDetailsUserManagement'>
+              <RouteWrapperAdmin name="PakageDetailsUserManagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PakageDetailsUserManagement />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='loginreport'
+            path="loginreport"
             element={
-              <RouteWrapperAdmin name='loginreport'>
+              <RouteWrapperAdmin name="loginreport">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Reports />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetailUMupgrade'
+            path="PackageDetailUMupgrade"
             element={
-              <RouteWrapperAdmin name='PackageDetailUMupgrade'>
+              <RouteWrapperAdmin name="PackageDetailUMupgrade">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PakageDetailsUMUpgrade />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
@@ -510,240 +541,260 @@ export const router = createBrowserRouter(
           />
 
           <Route
-            path='AddUsers'
+            path="AddUsers"
             element={
-              <RouteWrapperAdmin name='AddUsers'>
+              <RouteWrapperAdmin name="AddUsers">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <AddUsers />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='ManageUsers'
+            path="ManageUsers"
             element={
-              <RouteWrapperAdmin name='ManageUsers'>
+              <RouteWrapperAdmin name="ManageUsers">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <ManageUsers />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UserLevelConfigUM'
+            path="UserLevelConfigUM"
             element={
-              <RouteWrapperAdmin name='UserLevelConfigUM'>
+              <RouteWrapperAdmin name="UserLevelConfigUM">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <UserLevelConfigUM />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='AddUsersUsermanagement'
+            path="AddUsersUsermanagement"
             element={
-              <RouteWrapperAdmin name='AddUsersUsermanagement'>
+              <RouteWrapperAdmin name="AddUsersUsermanagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <AddUserMain />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PayOutstanding'
+            path="PayOutstanding"
             element={
-              <RouteWrapperAdmin name='PayOutstanding'>
+              <RouteWrapperAdmin name="PayOutstanding">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PayOutstanding />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PaymentHistory'
+            path="PaymentHistory"
             element={
-              <RouteWrapperAdmin name='PaymentHistory'>
+              <RouteWrapperAdmin name="PaymentHistory">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PaymentHistory />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PaymentHistoryusermanagement'
+            path="PaymentHistoryusermanagement"
             element={
-              <RouteWrapperAdmin name='PaymentHistoryusermanagement'>
+              <RouteWrapperAdmin name="PaymentHistoryusermanagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PaymentMethodBillInfo />
                 </ErrorBoundary>{" "}
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='Summary'
+            path="Summary"
             element={
-              <RouteWrapperAdmin name='Summary'>
+              <RouteWrapperAdmin name="Summary">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <Summary />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='OrganizationlevelConfigUM'
+            path="OrganizationlevelConfigUM"
             element={
-              <RouteWrapperAdmin name='OrganizationlevelConfigUM'>
+              <RouteWrapperAdmin name="OrganizationlevelConfigUM">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <OrganizationLevelConfigUM />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='AllMeeting'
+            path="AllMeeting"
             element={
-              <RouteWrapperAdmin name='AllMeeting'>
+              <RouteWrapperAdmin name="AllMeeting">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <AllMeetings />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CancelSub'
+            path="CancelSub"
             element={
-              <RouteWrapperAdmin name='CancelSub'>
+              <RouteWrapperAdmin name="CancelSub">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CancelSubs />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CancelSubscriptionUserManagement'
+            path="CancelSubscriptionUserManagement"
             element={
-              <RouteWrapperAdmin name='CancelSubscriptionUserManagement'>
+              <RouteWrapperAdmin name="CancelSubscriptionUserManagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CancelSubscriptionAdmin />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetail'
+            path="PackageDetail"
             element={
-              <RouteWrapperAdmin name='PackageDetail'>
+              <RouteWrapperAdmin name="PackageDetail">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PackageDetails />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='PackageDetailsUserManagement'
+            path="PackageDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='PackageDetailsUserManagement'>
+              <RouteWrapperAdmin name="PackageDetailsUserManagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PakageDetailsAdmin />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='subscriptionDetailsUserManagement'
+            path="subscriptionDetailsUserManagement"
             element={
-              <RouteWrapperAdmin name='subscriptionDetailsUserManagement'>
+              <RouteWrapperAdmin name="subscriptionDetailsUserManagement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <SubscriptionDetailsUserManagement />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='downgradeSubscription'
+            path="downgradeSubscription"
             element={
-              <RouteWrapperAdmin name='downgradeSubscription'>
+              <RouteWrapperAdmin name="downgradeSubscription">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <DowngradeSubscription />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='updatedCancelSubscription'
+            path="updatedCancelSubscription"
             element={
-              <RouteWrapperAdmin name='updatedCancelSubscription'>
+              <RouteWrapperAdmin name="updatedCancelSubscription">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <UpdatedCancelSubscription />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='EmptyState'
+            path="EmptyState"
             element={
-              <RouteWrapperAdmin name='EmptyState'>
+              <RouteWrapperAdmin name="EmptyState">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <EmptyState />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackage'
+            path="UpgradePackage"
             element={
-              <RouteWrapperAdmin name='UpgradePackage'>
+              <RouteWrapperAdmin name="UpgradePackage">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PackageUpgrade />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='changePassword'
+            path="changePassword"
             element={
-              <RouteWrapperAdmin name='changePassword'>
+              <RouteWrapperAdmin name="changePassword">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <ChangePassword />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
@@ -755,80 +806,100 @@ export const router = createBrowserRouter(
               <RouteWrapperAdmin name="faq's">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CustomMiscellaneous />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='deleteorganization'
+            path="deleteorganization"
             element={
-              <RouteWrapperAdmin name='deleteorganization'>
+              <RouteWrapperAdmin name="deleteorganization">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <DeleteOrganization />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='deleteorganizationUserMangement'
+            path="deleteorganizationUserMangement"
             element={
-              <RouteWrapperAdmin name='deleteorganizationUserMangement'>
+              <RouteWrapperAdmin name="deleteorganizationUserMangement">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <DeleteOrganizationAdmin />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='paymentForm'
+            path="paymentForm"
             element={
-              <RouteWrapperAdmin name='paymentForm'>
+              <RouteWrapperAdmin name="paymentForm">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PaymentForm2 />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackageDetail'
+            path="UpgradePackageDetail"
             element={
-              <RouteWrapperAdmin name='UpgradePackageDetail'>
+              <RouteWrapperAdmin name="UpgradePackageDetail">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PackageUpgradeDetail />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='UpgradePackageSelect'
+            path="UpgradePackageSelect"
             element={
-              <RouteWrapperAdmin name='UpgradePackageSelect'>
+              <RouteWrapperAdmin name="UpgradePackageSelect">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <PackageUpgradeSelect />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }
           />
           <Route
-            path='CustomerInformation'
+            path="CustomerInformation"
             element={
-              <RouteWrapperAdmin name='CustomerInformation'>
+              <RouteWrapperAdmin name="CustomerInformation">
                 <ErrorBoundary
                   FallbackComponent={ErrorFallback}
-                  onError={logErrors}>
+                  onError={logErrors}
+                >
                   <CustomerInformation />
+                </ErrorBoundary>
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="AuditTrial"
+            element={
+              <RouteWrapperAdmin name="AuditTrial">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <AuditTrial />
                 </ErrorBoundary>
               </RouteWrapperAdmin>
             }

@@ -1,11 +1,14 @@
 import {
+  GetUsersAuditActions,
+  GetUsersAuditListing,
   IsOrganizationEmailExsists,
   IsOrganizationExsists,
 } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 import axios from "axios";
-import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { AuditAPi, getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { setLoader } from "./Auth2_actions";
+import { RefreshToken } from "./Auth_action";
 
 const organizationInit = (response, message) => {
   return {
@@ -247,4 +250,168 @@ const checkEmailExsist = (
       });
   };
 };
-export { checkOraganisation, checkEmailExsist };
+
+const AuditTrialViewActionModal = (response) => {
+  return {
+    type: actions.AUDITTRIAL_VIEW_ACTION_MODAL,
+    response: response,
+  };
+};
+
+//********************************************************AUDIT APIS */
+// Get Audit listing
+const GetAuditListingInit = () => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_INIT,
+  };
+};
+
+const GetAuditListingSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAuditListingFail = (message) => {
+  return {
+    type: actions.GET_USER_AUDIT_LISTING_FAIL,
+    message: message,
+  };
+};
+
+const GetAuditListingAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(GetAuditListingInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetUsersAuditListing.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: AuditAPi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAuditListingAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_01".toLowerCase()
+            ) {
+              dispatch(
+                GetAuditListingSuccess(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_02".toLowerCase()
+            ) {
+              dispatch(GetAuditListingFail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUsersAuditListing_03".toLowerCase()
+            ) {
+              dispatch(GetAuditListingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(GetAuditListingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(GetAuditListingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAuditListingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const GetAuditActionsInit = () => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_INIT,
+  };
+};
+
+const GetAuditActionsSuccess = (response, message) => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAuditActionsFail = (message) => {
+  return {
+    type: actions.GET_USER_AUDIT_ACTIONS_FAIL,
+    message: message,
+  };
+};
+
+const GetAuditActionsAPI = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(GetAuditActionsInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetUsersAuditActions.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: AuditAPi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAuditActionsAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_01".toLowerCase()
+            ) {
+              dispatch(
+                GetAuditActionsSuccess(response.data.responseResult, "")
+              );
+              dispatch(AuditTrialViewActionModal(true));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_02".toLowerCase()
+            ) {
+              dispatch(GetAuditActionsFail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActions_03".toLowerCase()
+            ) {
+              dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+      });
+  };
+};
+export {
+  checkOraganisation,
+  checkEmailExsist,
+  AuditTrialViewActionModal,
+  GetAuditListingAPI,
+  GetAuditActionsAPI,
+};

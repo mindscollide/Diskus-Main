@@ -668,6 +668,7 @@ const AddReviewers = ({
                   </label>
                   <DatePicker
                     onFocusedDateChange={minuteDateHandler}
+                    onChange={minuteDateHandler}
                     format={"DD MMMM YYYY"}
                     value={minuteDate}
                     minDate={moment().toDate()}

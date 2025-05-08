@@ -147,9 +147,7 @@ const ReviewSignature = () => {
     if (record.status === "Pending Signature") {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
-        `/Diskus/signeddocument?documentID=${encodeURIComponent(
-          reponseData
-        )}`,
+        `/Diskus/signeddocument?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
         "noopener noreferrer"
       );
@@ -297,9 +295,9 @@ const ReviewSignature = () => {
         return (
           <span
             onClick={() => handleClickSignatoriesList(record)}
-            className={
-              styles["signatories_vale"]
-            }>{` ${text} Signatories`}</span>
+            className={styles["signatories_vale"]}>{` ${text} ${t(
+            "Signatories"
+          )}`}</span>
         );
       },
     },
@@ -420,7 +418,13 @@ const ReviewSignature = () => {
             }>
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
-              : status}
+              : status?.toLowerCase() === "Signed".toLowerCase()
+              ? t("Signed")
+              : status?.toLowerCase() === "Declined".toLowerCase()
+              ? t("Declined")
+              : status?.toLowerCase() === "draftStatus".toLowerCase()
+              ? t("draftStatus")
+              : null}
           </p>
         );
       },
