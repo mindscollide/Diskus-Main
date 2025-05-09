@@ -44,7 +44,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
       console.log(error, "error");
     }
     return () => {};
-  }, []);
+  }, [GetUserActionsAuditData]);
 
   console.log(auditActionsData, "GetUserActionsAuditData");
 
@@ -144,44 +144,6 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                 sm={12}
                 className={styles["ViewActionModal_scroll_bar"]}
               >
-                {/* <div className={styles["classOne"]}>
-                  {dummyData.map((item, index) => (
-                    <span
-                      key={index}
-                      className={`
-                    ${styles["item-base"]}
-                    ${
-                      item.type === "activity"
-                        ? `${styles["item-activity"]}`
-                        : ""
-                    }
-                    ${
-                      index !== 0 && item.type !== "activity"
-                        ? `${styles["item-border-top"]}`
-                        : ""
-                    }
-                      ${
-                        index === 0 && item.type !== "activity"
-                          ? `${styles["item-border-Bottom"]}`
-                          : ""
-                      }
-                    `}
-                    >
-                      {item.type === "activity" ? (
-                        <>
-                          <span className={styles["InnerSideDescription"]}>
-                            {item.timestamp} – {item.description}
-                          </span>
-                          {index !== dummyData.length - 2 ? (
-                            <hr className={styles["H1styles"]} />
-                          ) : null}
-                        </>
-                      ) : (
-                        `${item.timestamp} – ${item.status}`
-                      )}
-                    </span>
-                  ))}
-                </div> */}
                 <div className={styles["classOne"]}>
                   {/* LOGIN ITEM */}
                   {dummyData
