@@ -3022,6 +3022,38 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
 
+          //For Stop Recording while user reject the call
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Stop");
+            if (isCaller && CallType === 1) {
+              console.log("Does Check Recording Stop");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            } else if (
+              isCaller &&
+              CallType === 2 &&
+              existingData.length === 1
+            ) {
+              console.log("Does Check Recording Stop Call Type 2");
+
+              // Assuming iframeRef is defined
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop Call Type 2");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            }
+          }
+
           if (CallType === 2) {
             setGroupCallParticipantList((prevState) =>
               prevState.filter(
@@ -3209,6 +3241,12 @@ const Dashboard = () => {
           let roomID = localStorage.getItem("acceptedRoomID");
           let newRoomID = localStorage.getItem("newRoomId");
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+          let CallType = Number(localStorage.getItem("CallType"));
+          let existingData =
+            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
           let RoomID =
             presenterViewFlag &&
             (presenterViewHostFlag || presenterViewJoinFlag)
@@ -3227,6 +3265,38 @@ const Dashboard = () => {
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
+
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Stop");
+            // // Condition For Video Recording
+            if (isCaller && CallType === 1) {
+              console.log("Does Check Recording Stop");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            } else if (
+              isCaller &&
+              CallType === 2 &&
+              existingData.length === 0
+            ) {
+              console.log("Does Check Recording Stop Call Type 2");
+
+              // Assuming iframeRef is defined
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop Call Type 2");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            }
+          }
 
           if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
             //To make false sessionStorage which is set on VideoCall
@@ -3569,15 +3639,34 @@ const Dashboard = () => {
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+          let existingData =
+            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
           let RoomID = "";
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // // Condition For Video Recording
-            if (isCaller && (CallType === 1 || CallType === 2)) {
+            if (isCaller && CallType === 1) {
               console.log("Does Check Recording Stop");
               const iframe = iframeRef.current;
               if (iframe && iframe.contentWindow) {
                 console.log("Does Check Recording Stop");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            } else if (
+              isCaller &&
+              CallType === 2 &&
+              existingData.length === 1
+            ) {
+              console.log("Does Check Recording Stop Call Type 2");
+
+              // Assuming iframeRef is defined
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop Call Type 2");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
                   "*"
