@@ -238,7 +238,10 @@ const Dashboard = () => {
     setGroupVideoCallAccepted,
     setGroupCallParticipantList,
     setUnansweredCallParticipant,
+    iframeRef,
   } = useMeetingContext();
+
+  let iframe = iframeRef.current;
 
   let i18nextLng = localStorage.getItem("i18nextLng");
 
@@ -2872,6 +2875,24 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
 
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Start");
+            // // Condition For Video Recording
+            if (isCaller && (CallType === 1 || CallType === 2)) {
+              console.log("Does Check Recording Start");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Start");
+                iframe.contentWindow.postMessage(
+                  "RecordingStartMsgFromIframe",
+                  "*"
+                );
+              }
+            }
+          }
+
           if (CallType === 2) {
             console.log("mqtt");
             setGroupVideoCallAccepted((prevState) => {
@@ -2885,7 +2906,6 @@ const Dashboard = () => {
               return prevState;
             });
           }
-          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let falgCheck1 = false;
           if (isZoomEnabled) {
             falgCheck1 = String(activeRoomID) !== "" && !isCaller;
@@ -3344,10 +3364,24 @@ const Dashboard = () => {
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+          let CallType = Number(localStorage.getItem("CallType"));
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let roomID = 0;
           let flagCheck1 = false;
           if (isZoomEnabled) {
+            console.log("Does Check Recording Stop");
+            // // Condition For Video Recording
+            if (CallType === 1 || CallType === 2) {
+              console.log("Does Check Recording Stop");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            }
             flagCheck1 = String(activeRoomID) !== "";
           } else {
             flagCheck1 = Number(activeRoomID) !== 0;
@@ -3525,6 +3559,8 @@ const Dashboard = () => {
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let participantRoomId = localStorage.getItem("participantRoomId");
           let activeRoomID = localStorage.getItem("activeRoomID");
+          let CallType = Number(localStorage.getItem("CallType"));
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
@@ -3535,6 +3571,20 @@ const Dashboard = () => {
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let RoomID = "";
           if (isZoomEnabled) {
+            console.log("Does Check Recording Stop");
+            // // Condition For Video Recording
+            if (isCaller && (CallType === 1 || CallType === 2)) {
+              console.log("Does Check Recording Stop");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Stop");
+                iframe.contentWindow.postMessage(
+                  "RecordingStopMsgFromIframe",
+                  "*"
+                );
+              }
+            }
+
             RoomID =
               presenterViewFlagRef.current &&
               (presenterViewHostFlagFlagRef.current ||
@@ -3565,7 +3615,6 @@ const Dashboard = () => {
           console.log("mqtt");
           console.log("mqtt", RoomID);
 
-          let CallType = Number(localStorage.getItem("CallType"));
           if (CallType === 2) {
             // Also remove the user from groupCallParticipantList
             setGroupCallParticipantList((prevList) =>

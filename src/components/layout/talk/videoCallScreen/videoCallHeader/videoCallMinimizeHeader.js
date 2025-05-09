@@ -65,6 +65,10 @@ import NormalizeIcon from "./../../talk-Video/video-images/Collapse.svg";
 import ParticipantIcon from "./../../talk-Video/video-images/Users White.svg";
 import ActiveParticipantIcon from "./../../talk-Video/video-images/Users Purple.svg";
 import ParticipantsIcon from "./../../talk-Video/video-images/Users Purple.svg";
+import StartRecordLarge from "../../../../../assets/images/Recent Activity Icons/Video/StartRecordLarge.png";
+import StartRecordSmall from "../../../../../assets/images/Recent Activity Icons/Video/StartRecordSmall.png";
+import RecordStart from "../../../../../assets/images/Recent Activity Icons/Video/RecordStart.png";
+import RecordPlay from "../../../../../assets/images/Recent Activity Icons/Video/RecordPlay.png";
 
 import { LeaveCall } from "../../../../../store/actions/VideoMain_actions";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
@@ -96,6 +100,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setShareScreenTrue,
     setToggleMicMinimizeNonMeeting,
     setToggleVideoMinimizeNonMeeting,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
+    iframeRef,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -896,6 +909,70 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     dispatch(removeParticipantMeetingMainApi(navigate, t, data));
   };
 
+  const onHandleClickForStartRecording = () => {
+    console.log("onHandleClickForStartRecording");
+    setStartRecordingState(false);
+    setPauseRecordingState(true);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (presenterViewFlag && presenterViewHostFlag) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+        console.log("onHandleClickForStartRecording");
+      }
+    }
+  };
+
+  const onHandleClickForPauseRecording = () => {
+    console.log("RecordingPauseMsgFromIframe");
+    setStartRecordingState(false);
+    setPauseRecordingState(false);
+    setResumeRecordingState(true);
+    setStopRecordingState(false);
+
+    if (presenterViewFlag && presenterViewHostFlag) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
+        console.log("RecordingPauseMsgFromIframe");
+      }
+    }
+  };
+
+  const onHandleClickForResumeRecording = () => {
+    console.log("RecordingResumeMsgFromIframe");
+    setStartRecordingState(false);
+    setPauseRecordingState(true);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (presenterViewFlag && presenterViewHostFlag) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
+        console.log("RecordingResumeMsgFromIframe");
+      }
+    }
+  };
+
+  const onHandleClickForStopRecording = () => {
+    console.log("RecordingStopMsgFromIframe");
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (presenterViewFlag && presenterViewHostFlag) {
+      const iframe = iframeRef.current;
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+        console.log("RecordingStopMsgFromIframe");
+      }
+    }
+  };
+
   return (
     <>
       <div className="videoCallGroupScreen-minmizeVideoCall">
@@ -937,6 +1014,139 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
           <Col lg={6} md={6} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
+              {presenterViewFlag && presenterViewHostFlag && (
+                <>
+                  {startRecordingState && (
+                    <div
+                      className="start-Recording-div"
+                      onClick={onHandleClickForStartRecording}
+                    >
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Start-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? StartRecordLarge
+                              : null
+                          }
+                          className="Start-Record-Button-Minimize"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {presenterViewFlag && presenterViewHostFlag && (
+                <>
+                  {pauseRecordingState && (
+                    <div
+                      className="record-minimize-background"
+                      // onClick={onResumeRecording}
+                    >
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Stop-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? StartRecordSmall
+                              : null
+                          }
+                          onClick={onHandleClickForStopRecording}
+                          className="Bunch-Start-Record-Button-2"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                      <p className="Recording-text">{t("Recording...")}</p>
+
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Pause-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? RecordStart
+                              : null
+                          }
+                          onClick={onHandleClickForPauseRecording}
+                          className="Bunch-Start-Record-Button"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
+                </>
+              )}
+
+              {presenterViewFlag && presenterViewHostFlag && (
+                <>
+                  {resumeRecordingState && (
+                    <div className="Record-Start-BackgroundRed-Minimize">
+                      <p className="RecordingPaused-text-Minimize">
+                        {t("Recording-paused")}
+                      </p>
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Resume-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? RecordPlay
+                              : null
+                          }
+                          className="Bunch-Start-RecordingPaused-Button"
+                          alt="Record"
+                          onClick={onHandleClickForResumeRecording}
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
+                </>
+              )}
+
               {presenterViewFlag && presenterViewHostFlag && (
                 <div onClick={minimizeStopPresenter} className="cursor-pointer">
                   <Tooltip placement="topRight" title={t("Stop-presentation")}>

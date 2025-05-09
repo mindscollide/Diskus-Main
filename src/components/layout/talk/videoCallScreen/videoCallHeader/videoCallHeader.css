@@ -827,3 +827,47 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   margin-left: 10px;
   cursor: pointer;
 }
+
+.record-minimize-background {
+  position: relative;
+  cursor: pointer;
+  top: -1px;
+  height: 40px;
+  width: 190px;
+  background-color: #e1e1e1 !important;
+  border-radius: 8px !important;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+}
+
+.Start-Record-Button-Minimize {
+  height: auto;
+  width: 30px;
+  margin-right: 8px;
+  margin-top: 5px;
+}
+
+.Record-Start-BackgroundRed-Minimize {
+  height: 40px;
+  background-color: red !important;
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+  padding: 0px 10px;
+}
+
+.RecordingPaused-text-Minimize {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  width: auto;
+  margin-top: 13px;
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

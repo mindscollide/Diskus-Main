@@ -568,6 +568,7 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
 
     if (getDashboardVideo?.isDashboardVideo === false) {
+      console.log("Check isCaller True");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: roomID,
@@ -828,6 +829,7 @@ const VideoCallNormalHeader = ({
         leaveSuccess();
       }
     } else if (getDashboardVideo?.isDashboardVideo === false) {
+      console.log("Check isCaller True");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateRoomID,
@@ -920,6 +922,13 @@ const VideoCallNormalHeader = ({
           };
           dispatch(screenShareTriggeredGlobally(false));
           await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+        }
+      }
+      console.log("Check isCaller True");
+      if (isZoomEnabled) {
+        if (isCaller && (currentCallType === 1 || currentCallType === 2)) {
+          console.log("Check isCaller True");
+          onStopRecording();
         }
       }
       let Data = {
@@ -1393,175 +1402,134 @@ const VideoCallNormalHeader = ({
         </Col>
 
         <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
-          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
+          {isZoomEnabled && (
             <>
-              {startRecordingState && (
-                <div className="start-Recording-div" onClick={onStartRecording}>
-                  <Tooltip
-                    placement={presenterViewFlag ? "bottom" : "topRight"}
-                    title={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? t("Start-recording")
-                        : null
-                    }
-                    overlayClassName={
-                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                    }
-                  >
-                    <img
-                      src={
-                        !isMeetingVideo &&
-                        presenterViewFlag &&
-                        presenterViewHostFlag
-                          ? StartRecordLarge
-                          : null
-                      }
-                      className="Start-Record-Button"
-                      alt="Record"
-                    />
-                  </Tooltip>
-                </div>
-              )}
-            </>
-          )}
+              {presenterViewFlag && presenterViewHostFlag && (
+                <>
+                  {/* if Recording is start */}
+                  {startRecordingState && (
+                    <div
+                      className="start-Recording-div"
+                      onClick={onStartRecording}
+                    >
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Start-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? StartRecordLarge
+                              : null
+                          }
+                          className="Start-Record-Button"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
 
-          {/* {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
-            <>
-              {pauseRecordingState && (
-                <div
-                  className="Record-Start-Background"
-                  onClick={onPauseRecording}
-                >
-                  <img
-                    src={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? StartRecordSmall
-                        : null
-                    }
-                    className="Bunch-Start-Record-Button-2"
-                    alt="Record"
-                  />
-                  <p className="Recording-text">{t("Recording...")}</p>
-                  <img
-                    src={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? RecordStart
-                        : null
-                    }
-                    className="Bunch-Start-Record-Button"
-                    alt="Record"
-                  />
-                </div>
-              )}
-            </>
-          )} */}
+                  {/* if Recording is Pause and Stop */}
+                  {pauseRecordingState && (
+                    <div
+                      className="Record-Start-Background"
+                      // onClick={onResumeRecording}
+                    >
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Stop-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? StartRecordSmall
+                              : null
+                          }
+                          onClick={onStopRecording}
+                          className="Bunch-Start-Record-Button-2"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                      <p className="Recording-text">{t("Recording...")}</p>
 
-          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
-            <>
-              {pauseRecordingState && (
-                <div
-                  className="Record-Start-Background"
-                  // onClick={onResumeRecording}
-                >
-                  <Tooltip
-                    placement={presenterViewFlag ? "bottom" : "topRight"}
-                    title={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? t("Stop-recording")
-                        : null
-                    }
-                    overlayClassName={
-                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                    }
-                  >
-                    <img
-                      src={
-                        !isMeetingVideo &&
-                        presenterViewFlag &&
-                        presenterViewHostFlag
-                          ? StartRecordSmall
-                          : null
-                      }
-                      onClick={onStopRecording}
-                      className="Bunch-Start-Record-Button-2"
-                      alt="Record"
-                    />
-                  </Tooltip>
-                  <p className="Recording-text">{t("Recording...")}</p>
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Pause-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? RecordStart
+                              : null
+                          }
+                          onClick={onPauseRecording}
+                          className="Bunch-Start-Record-Button"
+                          alt="Record"
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
 
-                  <Tooltip
-                    placement={presenterViewFlag ? "bottom" : "topRight"}
-                    title={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? t("Pause-recording")
-                        : null
-                    }
-                    overlayClassName={
-                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                    }
-                  >
-                    <img
-                      src={
-                        !isMeetingVideo &&
-                        presenterViewFlag &&
-                        presenterViewHostFlag
-                          ? RecordStart
-                          : null
-                      }
-                      onClick={onPauseRecording}
-                      className="Bunch-Start-Record-Button"
-                      alt="Record"
-                    />
-                  </Tooltip>
-                </div>
-              )}
-            </>
-          )}
-
-          {!isMeetingVideo && presenterViewFlag && presenterViewHostFlag && (
-            <>
-              {resumeRecordingState && (
-                <div className="Record-Start-BackgroundRed">
-                  <p className="RecordingPaused-text">
-                    {t("Recording-paused")}
-                  </p>
-                  <Tooltip
-                    placement={presenterViewFlag ? "bottom" : "topRight"}
-                    title={
-                      !isMeetingVideo &&
-                      presenterViewFlag &&
-                      presenterViewHostFlag
-                        ? t("Resume-recording")
-                        : null
-                    }
-                    overlayClassName={
-                      presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-                    }
-                  >
-                    <img
-                      src={
-                        !isMeetingVideo &&
-                        presenterViewFlag &&
-                        presenterViewHostFlag
-                          ? RecordPlay
-                          : null
-                      }
-                      className="Bunch-Start-RecordingPaused-Button"
-                      alt="Record"
-                      onClick={onResumeRecording}
-                    />
-                  </Tooltip>
-                </div>
+                  {/* if Recording is Pause and Resume */}
+                  {resumeRecordingState && (
+                    <div className="Record-Start-BackgroundRed">
+                      <p className="RecordingPaused-text">
+                        {t("Recording-paused")}
+                      </p>
+                      <Tooltip
+                        placement={presenterViewFlag ? "bottom" : "topRight"}
+                        title={
+                          presenterViewFlag && presenterViewHostFlag
+                            ? t("Resume-recording")
+                            : null
+                        }
+                        overlayClassName={
+                          presenterViewFlag
+                            ? "zindexing-for-presenter-tooltip"
+                            : ""
+                        }
+                      >
+                        <img
+                          src={
+                            presenterViewFlag && presenterViewHostFlag
+                              ? RecordPlay
+                              : null
+                          }
+                          className="Bunch-Start-RecordingPaused-Button"
+                          alt="Record"
+                          onClick={onResumeRecording}
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}

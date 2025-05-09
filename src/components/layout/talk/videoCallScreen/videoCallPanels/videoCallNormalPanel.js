@@ -83,10 +83,8 @@ const VideoPanelNormal = () => {
     resumeRecordingState,
     stopRecordingState,
     setStopRecordingState,
+    iframeRef,
   } = useMeetingContext();
-
-  // Create a ref for the iframe element
-  let iframeRef = useRef(null);
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -101,6 +99,10 @@ const VideoPanelNormal = () => {
   let currentUserName = localStorage.getItem("name");
 
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
+
+  let CallType = Number(localStorage.getItem("CallType"));
+
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
@@ -231,6 +233,8 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
   console.log(presenterViewFlag, "presenterViewFlagNormal");
+  console.log(iframeRef, "iframeRef");
+
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -1118,7 +1122,6 @@ const VideoPanelNormal = () => {
             setIsScreenActive(false);
             console.log("ScreenSharedStopMsgFromIframe");
             if (presenterViewFlag && presenterViewHostFlag) {
-             
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
@@ -1491,11 +1494,13 @@ const VideoPanelNormal = () => {
     setResumeRecordingState(false);
     setStopRecordingState(false);
 
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
-        console.log("onHandleClickForStartRecording");
+    if (isZoomEnabled) {
+      if (presenterViewFlag && presenterViewHostFlag) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+          console.log("onHandleClickForStartRecording");
+        }
       }
     }
   };
@@ -1507,11 +1512,13 @@ const VideoPanelNormal = () => {
     setResumeRecordingState(true);
     setStopRecordingState(false);
 
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
-        console.log("RecordingPauseMsgFromIframe");
+    if (isZoomEnabled) {
+      if (presenterViewFlag && presenterViewHostFlag) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
+          console.log("RecordingPauseMsgFromIframe");
+        }
       }
     }
   };
@@ -1523,11 +1530,13 @@ const VideoPanelNormal = () => {
     setResumeRecordingState(false);
     setStopRecordingState(false);
 
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
-        console.log("RecordingResumeMsgFromIframe");
+    if (isZoomEnabled) {
+      if (presenterViewFlag && presenterViewHostFlag) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
+          console.log("RecordingResumeMsgFromIframe");
+        }
       }
     }
   };
@@ -1539,11 +1548,26 @@ const VideoPanelNormal = () => {
     setResumeRecordingState(false);
     setStopRecordingState(false);
 
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-        console.log("RecordingStopMsgFromIframe");
+    if (isZoomEnabled) {
+      if (presenterViewFlag && presenterViewHostFlag) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+          console.log("RecordingStopMsgFromIframe");
+        }
+      } else {
+        if (isCaller) {
+          if (CallType === 1 || CallType === 2) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+              console.log("RecordingStopMsgFromIframe");
+            }
+          }
+        }
       }
     }
   };

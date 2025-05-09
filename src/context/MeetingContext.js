@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -194,6 +194,9 @@ export const MeetingProvider = ({ children }) => {
 
   // state for Resume Recording
   const [stopRecordingState, setStopRecordingState] = useState(false);
+
+  // Create a ref for the iframe element
+  const iframeRef = useRef(null);
 
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
@@ -408,6 +411,7 @@ export const MeetingProvider = ({ children }) => {
     setResumeRecordingState,
     stopRecordingState,
     setStopRecordingState,
+    iframeRef,
   };
 
   // Provide the state data to the context
