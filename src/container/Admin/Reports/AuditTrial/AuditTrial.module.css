@@ -136,16 +136,16 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
 
 .SearchFieldCrossIcon {
   cursor: pointer !important;
-  top: 19.9% !important;
+  top: 36% !important;
   position: absolute !important;
   left: auto !important;
-  right: 4% !important;
+  right: 6% !important;
 }
 
 body[dir="rtl"] .SearchFieldCrossIcon {
   cursor: pointer !important;
-  top: 21.7% !important;
+  top: 32% !important;
   position: absolute !important;
-  left: 4% !important;
+  left: 6% !important;
   right: auto !important;
 }
