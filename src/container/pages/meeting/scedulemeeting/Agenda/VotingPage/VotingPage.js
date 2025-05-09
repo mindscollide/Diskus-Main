@@ -40,7 +40,7 @@ const VotingPage = () => {
                     lg={3}
                     md={3}
                     sm={3}
-                    className="d-flex gap-2 align-items-center"
+                    className="d-flex gap-2 align-items-center mt-2"
                   >
                     {/* <Button
                       text={t("End-voting")}

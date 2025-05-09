@@ -365,6 +365,7 @@ const VideoPanelNormal = () => {
       dispatch(toggleParticipantsVisibility(false));
       dispatch(presenterViewGlobalState(currentMeetingID, true, false, true));
       dispatch(setAudioControlHost(true));
+      console.log("videoHideUnHideForHost");
       dispatch(setVideoControlHost(true));
       dispatch(maximizeVideoPanelFlag(true));
       dispatch(normalizeVideoPanelFlag(false));
@@ -432,6 +433,7 @@ const VideoPanelNormal = () => {
           localStorage.setItem("isWebCamEnabled", false);
           localStorage.setItem("isMicEnabled", false);
           dispatch(setAudioControlHost(false));
+          console.log("videoHideUnHideForHost");
           dispatch(setVideoControlHost(false));
 
           localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
@@ -493,6 +495,7 @@ const VideoPanelNormal = () => {
           };
           await dispatch(LeaveMeetingVideo(Data, navigate, t));
           await dispatch(setAudioControlHost(false));
+          console.log("videoHideUnHideForHost");
           await dispatch(setVideoControlHost(false));
           localStorage.setItem("isMicEnabled", false);
           localStorage.setItem("isWebCamEnabled", false);
@@ -911,6 +914,7 @@ const VideoPanelNormal = () => {
     if (iframe && iframe.contentWindow) {
       // Post message to iframe
       sessionStorage.removeItem("nonPresenter");
+      console.log("videoHideUnHideForHost");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
       console.log("videoHideUnHideForHost");
@@ -925,6 +929,7 @@ const VideoPanelNormal = () => {
   const handlePresenterViewForParticipent = async () => {
     sessionStorage.removeItem("nonPresenter");
     dispatch(setAudioControlHost(true));
+    console.log("videoHideUnHideForHost");
     dispatch(setVideoControlHost(true));
   };
 
@@ -1070,6 +1075,7 @@ const VideoPanelNormal = () => {
                   alreadyInMeetingVideoStartPresenterCheck
                 );
                 dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(true));
               } else {
                 console.log(
@@ -1078,6 +1084,7 @@ const VideoPanelNormal = () => {
                 );
 
                 dispatch(setAudioControlHost(true));
+                console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(true));
               }
               handlerForStaringPresenterView();
@@ -1223,6 +1230,7 @@ const VideoPanelNormal = () => {
   useEffect(() => {
     const iframe = iframeRef.current;
     if (iframe && iframe.contentWindow !== null) {
+      console.log("VidOn 123", videoControl);
       if (videoControl === true) {
         console.log("VidOn 123");
         iframe.contentWindow.postMessage("VidOn", "*");
@@ -1326,6 +1334,7 @@ const VideoPanelNormal = () => {
             console.log("VidOn");
             setIsVideoActive(false);
             localStorage.setItem("VidOff", false);
+            console.log("busyCall");
             iframe.contentWindow.postMessage("VidOn", "*");
           } else {
             console.log("VidOn");
@@ -1337,6 +1346,7 @@ const VideoPanelNormal = () => {
           if (isVideoActive) {
             iframe.contentWindow.postMessage("VidOff", "*");
           } else {
+            console.log("busyCall");
             iframe.contentWindow.postMessage("VidOn", "*");
           }
           setIsVideoActive(!isVideoActive);

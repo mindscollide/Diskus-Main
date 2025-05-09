@@ -232,6 +232,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
     await dispatch(setAudioControlHost(false));
+    console.log("videoHideUnHideForHost");
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
@@ -363,6 +364,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
+    console.log("videoHideUnHideForHost");
     await dispatch(setAudioControlHost(false));
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));

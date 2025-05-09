@@ -306,6 +306,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     if (flag) {
       iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOff" message to turn video off
     } else {
+      console.log("busyCall");
       iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOn" message to turn video on
     }
 

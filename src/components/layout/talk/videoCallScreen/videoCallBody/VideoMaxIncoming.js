@@ -256,6 +256,7 @@ const VideoMaxIncoming = () => {
               JSON.stringify(emptyArray)
             );
             await dispatch(setAudioControlHost(false));
+            console.log("videoHideUnHideForHost");
             await dispatch(setVideoControlHost(false));
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
@@ -332,6 +333,7 @@ const VideoMaxIncoming = () => {
               JSON.stringify(emptyArray)
             );
             await dispatch(setAudioControlHost(false));
+            console.log("videoHideUnHideForHost");
             await dispatch(setVideoControlHost(false));
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
