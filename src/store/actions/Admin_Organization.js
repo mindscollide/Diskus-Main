@@ -389,6 +389,7 @@ const GetAuditActionsAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Audit_AuditServiceManager_GetUserAuditActions_02".toLowerCase()
             ) {
+              dispatch(AuditTrialViewActionModal(true));
               dispatch(GetAuditActionsFail(t("No-data-available")));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
