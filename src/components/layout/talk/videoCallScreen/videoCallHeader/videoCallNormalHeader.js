@@ -744,9 +744,9 @@ const VideoCallNormalHeader = ({
         let isSharedSceenEnable = JSON.parse(
           localStorage.getItem("isSharedSceenEnable")
         );
-        if (isSharedSceenEnable && !globallyScreenShare) {
-          console.log("busyCall");
-          if (isZoomEnabled) {
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
               localStorage.getItem("isMeetingVideoHostCheck")
             );
@@ -778,8 +778,8 @@ const VideoCallNormalHeader = ({
           localStorage.getItem("isSharedSceenEnable")
         );
         console.log("busyCall");
-        if (isSharedSceenEnable && !globallyScreenShare) {
-          if (isZoomEnabled) {
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
             console.log("busyCall");
             let participantRoomId = localStorage.getItem("participantRoomId");
             let isMeetingVideoHostCheck = JSON.parse(
@@ -891,9 +891,10 @@ const VideoCallNormalHeader = ({
       let isSharedSceenEnable = JSON.parse(
         localStorage.getItem("isSharedSceenEnable")
       );
-      if (isSharedSceenEnable && !globallyScreenShare) {
-        console.log("busyCall");
-        if (isZoomEnabled) {
+
+      if (isZoomEnabled) {
+        if (isSharedSceenEnable && !globallyScreenShare) {
+          console.log("busyCall");
           let acceptedRoomID = localStorage.getItem("acceptedRoomID");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
@@ -1052,9 +1053,9 @@ const VideoCallNormalHeader = ({
           localStorage.getItem("isSharedSceenEnable")
         );
         console.log("busyCall");
-        if (isSharedSceenEnable && !globallyScreenShare) {
-          console.log("busyCall");
-          if (isZoomEnabled) {
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
             console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
               localStorage.getItem("isMeetingVideoHostCheck")
@@ -1131,9 +1132,9 @@ const VideoCallNormalHeader = ({
           localStorage.getItem("isSharedSceenEnable")
         );
         // when Participant share screen then leave meeting Video
-        if (isSharedSceenEnable && !globallyScreenShare) {
-          console.log("busyCall");
-          if (isZoomEnabled) {
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
             let participantRoomId = String(
               localStorage.getItem("participantRoomId")
             );

@@ -468,9 +468,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         let isSharedSceenEnable = JSON.parse(
           localStorage.getItem("isSharedSceenEnable")
         );
-        if (isSharedSceenEnable && !globallyScreenShare) {
-          console.log("busyCall");
-          if (isZoomEnabled) {
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
               localStorage.getItem("isMeetingVideoHostCheck")
             );
@@ -529,9 +529,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       let isSharedSceenEnable = JSON.parse(
         localStorage.getItem("isSharedSceenEnable")
       );
-      if (isSharedSceenEnable && !globallyScreenShare) {
-        console.log("busyCall");
-        if (isZoomEnabled) {
+      if (isZoomEnabled) {
+        if (isSharedSceenEnable && !globallyScreenShare) {
+          console.log("busyCall");
           let isMeetingVideoHostCheck = JSON.parse(
             localStorage.getItem("isMeetingVideoHostCheck")
           );
