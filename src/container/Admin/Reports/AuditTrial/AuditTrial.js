@@ -80,6 +80,7 @@ const AuditTrial = () => {
         DeviceID: "",
         DateLogin: "",
         DateLogOut: "",
+        OrganizationID: Number(localStorage.getItem("organizationID")),
         sRow: 0,
         Length: 10,
       };
@@ -308,6 +309,7 @@ const AuditTrial = () => {
         DeviceID: "",
         DateLogin: "",
         DateLogOut: "",
+        OrganizationID: Number(localStorage.getItem("organizationID")),
         sRow: Number(isRowsData),
         Length: 10,
       };
@@ -450,6 +452,7 @@ const AuditTrial = () => {
         : "",
       DateLogin: auditTrialSearch.LoginDate || "",
       DateLogOut: auditTrialSearch.LogoutDate || "",
+      OrganizationID: Number(localStorage.getItem("organizationID")),
       sRow: 0,
       Length: 10,
     };
@@ -467,6 +470,7 @@ const AuditTrial = () => {
         DeviceID: "",
         DateLogin: "",
         DateLogOut: "",
+        OrganizationID: Number(localStorage.getItem("organizationID")),
         sRow: 0,
         Length: 10,
       };
@@ -504,6 +508,7 @@ const AuditTrial = () => {
         DeviceID: "",
         DateLogin: "",
         DateLogOut: "",
+        OrganizationID: Number(localStorage.getItem("organizationID")),
         sRow: 0,
         Length: 10,
       };
@@ -544,6 +549,7 @@ const AuditTrial = () => {
           : "",
         DateLogin: auditTrialSearch.LoginDate,
         DateLogOut: auditTrialSearch.LogoutDate,
+        OrganizationID: Number(localStorage.getItem("organizationID")),
         sRow: 0,
         Length: 10,
       };
