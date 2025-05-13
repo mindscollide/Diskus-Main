@@ -160,7 +160,6 @@ const ViewMeetingModal = ({
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let isMinutePublished = localStorage.getItem("isMinutePublished");
   let meetingTitle = localStorage.getItem("meetingTitle");
   let CallType = Number(localStorage.getItem("CallType"));
