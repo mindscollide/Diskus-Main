@@ -102,6 +102,8 @@ const VideoPanelNormal = () => {
 
   let CallType = Number(localStorage.getItem("CallType"));
 
+  let initiateVideoCall = JSON.parse(localStorage.getItem("initiateVideoCall"));
+
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -111,6 +113,10 @@ const VideoPanelNormal = () => {
   let participantRoomIds = localStorage.getItem("participantRoomId");
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+  let isMeetingVideoHostChecker = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
 
   localStorage.setItem("VideoView", "Sidebar");
 
@@ -234,7 +240,6 @@ const VideoPanelNormal = () => {
   );
   console.log(presenterViewFlag, "presenterViewFlagNormal");
   console.log(iframeRef, "iframeRef");
-
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -948,6 +953,31 @@ const VideoPanelNormal = () => {
     }
   };
 
+  // For Recording Scenario In One To One
+  const RecordingStartScenarioForOneToOne = () => {
+    let initiateVideoCall = JSON.parse(
+      localStorage.getItem("initiateVideoCall")
+    );
+    console.log("Does Check Recording Start", isZoomEnabled);
+    if (isZoomEnabled) {
+      console.log("Does Check Recording Start", initiateVideoCall);
+      console.log("Does Check Recording Start", isMeetingVideo);
+      if (!isMeetingVideo && initiateVideoCall) {
+        console.log("Does Check Recording Start");
+        const iframe = iframeRef.current;
+        if (iframe && iframe?.contentWindow) {
+          console.log("Does Check Recording Start");
+          setTimeout(() => {
+            iframe?.contentWindow?.postMessage(
+              "RecordingStartMsgFromIframe",
+              "*"
+            );
+          }, 1000);
+        }
+      }
+    }
+  };
+
   const handlePresenterViewForParticipent = async () => {
     sessionStorage.removeItem("nonPresenter");
     dispatch(setAudioControlHost(true));
@@ -1184,6 +1214,8 @@ const VideoPanelNormal = () => {
 
           case "StreamConnected":
             console.log("disableZoomBeforeJoinSession", event.data);
+            RecordingStartScenarioForOneToOne();
+
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
@@ -1196,25 +1228,21 @@ const VideoPanelNormal = () => {
             stopScreenShareEventTRiger();
             break;
 
-          case "RecordingStartMsgFromIframe":
-            // stopScreenShareEventTRiger();
-            console.log("RecordingStartMsgFromIframe");
-            break;
+          // case "RecordingStartMsgFromIframe":
+          //   console.log("recording Start");
+          //   break;
 
-          case "RecordingStopMsgFromIframe":
-            // stopScreenShareEventTRiger();
-            console.log("RecordingStopMsgFromIframe");
-            break;
+          // case "RecordingStopMsgFromIframe":
+          //   console.log("recording Stop");
+          //   break;
 
-          case "RecordingPauseMsgFromIframe":
-            // stopScreenShareEventTRiger();
-            console.log("RecordingPauseMsgFromIframe");
-            break;
+          // case "RecordingPauseMsgFromIframe":
+          //   console.log("recording Pause");
+          //   break;
 
-          case "RecordingResumeMsgFromIframe":
-            // stopScreenShareEventTRiger();
-            console.log("RecordingResumeMsgFromIframe");
-            break;
+          // case "RecordingResumeMsgFromIframe":
+          //   console.log("recording Resume");
+          //   break;
 
           default:
             console.log(
@@ -1495,7 +1523,10 @@ const VideoPanelNormal = () => {
     setStopRecordingState(false);
 
     if (isZoomEnabled) {
-      if (presenterViewFlag && presenterViewHostFlag) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
@@ -1513,7 +1544,10 @@ const VideoPanelNormal = () => {
     setStopRecordingState(false);
 
     if (isZoomEnabled) {
-      if (presenterViewFlag && presenterViewHostFlag) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
@@ -1531,7 +1565,10 @@ const VideoPanelNormal = () => {
     setStopRecordingState(false);
 
     if (isZoomEnabled) {
-      if (presenterViewFlag && presenterViewHostFlag) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
@@ -1549,7 +1586,10 @@ const VideoPanelNormal = () => {
     setStopRecordingState(false);
 
     if (isZoomEnabled) {
-      if (presenterViewFlag && presenterViewHostFlag) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");

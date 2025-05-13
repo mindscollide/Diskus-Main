@@ -747,6 +747,9 @@ const AgendaViewer = () => {
   }, [joinMeetingVideoParticipant]);
 
   const onClickVideoIconOpenVideo = () => {
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")

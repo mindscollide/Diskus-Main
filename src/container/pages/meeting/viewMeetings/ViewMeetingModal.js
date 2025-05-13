@@ -17,6 +17,7 @@ import {
   presenterViewGlobalState,
   setAudioControlHost,
   setVideoControlHost,
+  updatedParticipantListForPresenter,
 } from "../../../../store/actions/VideoFeature_actions";
 import {
   AgendaPollVotingStartedAction,
@@ -79,7 +80,19 @@ const ViewMeetingModal = ({
     severity: "error",
   });
   const routeID = useSelector((state) => state.NewMeetingreducer.emailRouteID);
-  const { setViewFlag, setViewProposeDatePoll } = useContext(MeetingContext);
+  const {
+    setViewFlag,
+    setViewProposeDatePoll,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    setStopRecordingState,
+    iframeRef,
+  } = useContext(MeetingContext);
   const advanceMeetingOperations =
     JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true;
   const ViewAdvanceMeetingPolls =
@@ -143,8 +156,17 @@ const ViewMeetingModal = ({
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let isMinutePublished = localStorage.getItem("isMinutePublished");
   let meetingTitle = localStorage.getItem("meetingTitle");
+  let CallType = Number(localStorage.getItem("CallType"));
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  let isMeetingVideoHostChecker = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
+
+  console.log(iframeRef, "iframeRefiframeRef");
 
   const dispatch = useDispatch();
 
@@ -350,6 +372,42 @@ const ViewMeetingModal = ({
     };
   }, [routeID, editorRole, advanceMeetingOperations, ViewAdvanceMeetingPolls]);
 
+  //When Host Stop Recording
+  const onHandleClickForStopRecording = () => {
+    console.log("RecordingStopMsgFromIframe");
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        console.log("RecordingStopMsgFromIframe");
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+          console.log("RecordingStopMsgFromIframe");
+        }
+      } else {
+        if (isCaller) {
+          if (CallType === 1 || CallType === 2) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+              console.log("RecordingStopMsgFromIframe");
+            }
+          }
+        }
+      }
+    }
+  };
+
   const callBeforeLeave = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
@@ -365,6 +423,11 @@ const ViewMeetingModal = ({
         const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
         console.log(parsedHostFlag, "parsedHostFlag");
         if (parsedHostFlag.isHost) {
+          console.log("busyCall");
+
+          //When Recording is On and Host Leave Meeting Video
+          onHandleClickForStopRecording();
+
           let newRoomID = localStorage.getItem("newRoomId");
           let newUserGUID = localStorage.getItem("isGuid");
 

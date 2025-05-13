@@ -462,6 +462,55 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     leaveSuccess();
   }
 
+  const onHandleClickForStopRecording = () => {
+    console.log("RecordingStopMsgFromIframe");
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let CallType = Number(localStorage.getItem("CallType"));
+
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        console.log("RecordingStopMsgFromIframe");
+        const iframe = iframeRef.current;
+        if (iframe && iframe?.contentWindow) {
+          console.log("RecordingStopMsgFromIframe");
+          setTimeout(() => {
+            iframe?.contentWindow?.postMessage(
+              "RecordingStopMsgFromIframe",
+              "*"
+            );
+          }, 2000);
+        }
+      } else {
+        if (isCaller) {
+          if (CallType === 1 || CallType === 2) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+              console.log("RecordingStopMsgFromIframe");
+            }
+          }
+        }
+      }
+    }
+  };
+
   const minimizeEndCallParticipant = async (flag, flag2, flag3, flag4) => {
     console.log("busyCall");
 
@@ -513,6 +562,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
           }
         }
+
+        //When Recording is On and Host Leave Meeting Video
+        onHandleClickForStopRecording();
 
         let Data = {
           RoomID: String(RoomID),
@@ -915,12 +967,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setPauseRecordingState(true);
     setResumeRecordingState(false);
     setStopRecordingState(false);
-
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
-        console.log("onHandleClickForStartRecording");
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+          console.log("onHandleClickForStartRecording");
+        }
       }
     }
   };
@@ -931,12 +987,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setPauseRecordingState(false);
     setResumeRecordingState(true);
     setStopRecordingState(false);
-
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
-        console.log("RecordingPauseMsgFromIframe");
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
+          console.log("RecordingPauseMsgFromIframe");
+        }
       }
     }
   };
@@ -947,28 +1007,16 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setPauseRecordingState(true);
     setResumeRecordingState(false);
     setStopRecordingState(false);
-
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
-        console.log("RecordingResumeMsgFromIframe");
-      }
-    }
-  };
-
-  const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
-    setStartRecordingState(true);
-    setPauseRecordingState(false);
-    setResumeRecordingState(false);
-    setStopRecordingState(false);
-
-    if (presenterViewFlag && presenterViewHostFlag) {
-      const iframe = iframeRef.current;
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-        console.log("RecordingStopMsgFromIframe");
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
+          console.log("RecordingResumeMsgFromIframe");
+        }
       }
     }
   };
@@ -1014,8 +1062,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
           <Col lg={6} md={6} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
-              {presenterViewFlag && presenterViewHostFlag && (
+              {(isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+              (presenterViewFlag && presenterViewHostFlag) ? (
                 <>
+                  {/* if Recording is start */}
                   {startRecordingState && (
                     <div
                       className="start-Recording-div"
@@ -1024,7 +1074,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
                         title={
-                          presenterViewFlag && presenterViewHostFlag
+                          (isMeeting && isMeetingVideo) ||
+                          (presenterViewFlag && presenterViewHostFlag)
                             ? t("Start-recording")
                             : null
                         }
@@ -1035,22 +1086,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         }
                       >
                         <img
-                          src={
-                            presenterViewFlag && presenterViewHostFlag
-                              ? StartRecordLarge
-                              : null
-                          }
+                          src={StartRecordLarge}
                           className="Start-Record-Button-Minimize"
                           alt="Record"
                         />
                       </Tooltip>
                     </div>
                   )}
-                </>
-              )}
 
-              {presenterViewFlag && presenterViewHostFlag && (
-                <>
+                  {/* if Recording is Pause and Stop */}
                   {pauseRecordingState && (
                     <div
                       className="record-minimize-background"
@@ -1059,7 +1103,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
                         title={
-                          presenterViewFlag && presenterViewHostFlag
+                          (isMeeting && isMeetingVideo) ||
+                          (presenterViewFlag && presenterViewHostFlag)
                             ? t("Stop-recording")
                             : null
                         }
@@ -1070,11 +1115,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         }
                       >
                         <img
-                          src={
-                            presenterViewFlag && presenterViewHostFlag
-                              ? StartRecordSmall
-                              : null
-                          }
+                          src={StartRecordSmall}
                           onClick={onHandleClickForStopRecording}
                           className="Bunch-Start-Record-Button-2"
                           alt="Record"
@@ -1084,11 +1125,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={
-                          presenterViewFlag && presenterViewHostFlag
-                            ? t("Pause-recording")
-                            : null
-                        }
+                        title={t("Pause-recording")}
                         overlayClassName={
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
@@ -1096,11 +1133,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         }
                       >
                         <img
-                          src={
-                            presenterViewFlag && presenterViewHostFlag
-                              ? RecordStart
-                              : null
-                          }
+                          src={RecordStart}
                           onClick={onHandleClickForPauseRecording}
                           className="Bunch-Start-Record-Button"
                           alt="Record"
@@ -1108,11 +1141,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       </Tooltip>
                     </div>
                   )}
-                </>
-              )}
 
-              {presenterViewFlag && presenterViewHostFlag && (
-                <>
+                  {/* if Recording is Pause and Resume */}
                   {resumeRecordingState && (
                     <div className="Record-Start-BackgroundRed-Minimize">
                       <p className="RecordingPaused-text-Minimize">
@@ -1120,11 +1150,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       </p>
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={
-                          presenterViewFlag && presenterViewHostFlag
-                            ? t("Resume-recording")
-                            : null
-                        }
+                        title={t("Resume-recording")}
                         overlayClassName={
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
@@ -1132,11 +1158,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         }
                       >
                         <img
-                          src={
-                            presenterViewFlag && presenterViewHostFlag
-                              ? RecordPlay
-                              : null
-                          }
+                          src={RecordPlay}
                           className="Bunch-Start-RecordingPaused-Button"
                           alt="Record"
                           onClick={onHandleClickForResumeRecording}
@@ -1145,7 +1167,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     </div>
                   )}
                 </>
-              )}
+              ) : null}
 
               {presenterViewFlag && presenterViewHostFlag && (
                 <div onClick={minimizeStopPresenter} className="cursor-pointer">
