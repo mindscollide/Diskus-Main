@@ -568,7 +568,7 @@ const adminReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getAuditListingData: null,
+        getAuditActionsData: null,
         ResponseMessage: action.message,
       };
     }

@@ -381,10 +381,10 @@ const GetAuditActionsAPI = (navigate, Data, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Audit_AuditServiceManager_GetUserAuditActions_01".toLowerCase()
             ) {
+              dispatch(AuditTrialViewActionModal(true));
               dispatch(
                 GetAuditActionsSuccess(response.data.responseResult, "")
               );
-              dispatch(AuditTrialViewActionModal(true));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Audit_AuditServiceManager_GetUserAuditActions_02".toLowerCase()
