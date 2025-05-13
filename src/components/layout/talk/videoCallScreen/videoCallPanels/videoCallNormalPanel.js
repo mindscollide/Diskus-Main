@@ -84,6 +84,7 @@ const VideoPanelNormal = () => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    setHandRaiseCounter,
   } = useMeetingContext();
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -196,6 +197,8 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
+  console.log("setHandRaiseCounter", getAllParticipantMain);
+
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
@@ -268,6 +271,10 @@ const VideoPanelNormal = () => {
 
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
 
   const startPresenterTriggered = useSelector(
@@ -490,6 +497,46 @@ const VideoPanelNormal = () => {
   }, [participantRemovedFromVideobyHost, iframe]);
 
   useEffect(() => {
+    if (getAllParticipantMain?.length) {
+      setAllParticipant(getAllParticipantMain);
+    }
+  }, [getAllParticipantMain]);
+
+  useEffect(() => {
+    const leftUID = leavePresenterParticipant?.uid;
+
+    // Only proceed if all flags are valid and leftUID is defined
+    if (leftUID && presenterViewFlag) {
+      const updatedList = getAllParticipantMain.filter(
+        (participant) => participant.guid !== leftUID
+      );
+      const updatedRaisedHands = updatedList.filter(
+        (participant) => participant.raiseHand === true
+      );
+      setAllParticipant(updatedRaisedHands.length);
+
+      console.log(updatedList, "setHandRaiseCounter");
+
+      // if (!isMeetingVideo) {
+      dispatch(updatedParticipantListForPresenter(updatedList));
+      // }
+    }
+  }, [leavePresenterParticipant]);
+
+  // 3️⃣ Cleanup presentation-only participants after presentation ends
+  useEffect(() => {
+    if (!presenterViewFlag || !presenterViewHostFlag) {
+      const filteredParticipants = getAllParticipantMain.filter(
+        (participant) => !participant.joinedForPresentation
+      );
+
+      console.log(filteredParticipants, "setHandRaiseCounter");
+
+      dispatch(updatedParticipantListForPresenter(filteredParticipants));
+    }
+  }, [presenterViewFlag, presenterViewHostFlag]);
+
+  useEffect(() => {
     if (participantLeaveCallForJoinNonMeetingCall) {
       const handleLeaveSession = async () => {
         const iframe = iframeRef.current;
@@ -585,24 +632,27 @@ const VideoPanelNormal = () => {
     };
   }, []);
 
+  //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    if (getAllParticipantMain?.length) {
-      setAllParticipant(getAllParticipantMain);
-    }
+    let dublicateData = [...getAllParticipantMain];
+    const raisedHandCounter = dublicateData.filter(
+      (participant) => participant.raiseHand === true
+    );
+    setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
-  useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      // Extract and set the new participants to state
-      setParticipantsList(getNewParticipantsMeetingJoin);
-    } else {
-      setParticipantsList([]);
-    }
-  }, [getNewParticipantsMeetingJoin]);
+  // useEffect(() => {
+  //   if (
+  //     getNewParticipantsMeetingJoin !== null &&
+  //     getNewParticipantsMeetingJoin !== undefined &&
+  //     getNewParticipantsMeetingJoin.length > 0
+  //   ) {
+  //     // Extract and set the new participants to state
+  //     setParticipantsList(getNewParticipantsMeetingJoin);
+  //   } else {
+  //     setParticipantsList([]);
+  //   }
+  // }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
     try {

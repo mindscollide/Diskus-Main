@@ -17,9 +17,11 @@ import {
   useMeetingContext,
 } from "../../../../context/MeetingContext";
 import {
+  isSharedScreenTriggeredApi,
   leavePresenterViewMainApi,
   leavePresenterViewMainApiTest,
   participantWaitingListBox,
+  screenShareTriggeredGlobally,
   setRaisedUnRaisedParticiant,
   stopPresenterViewMainApi,
   stopPresenterViewMainApiTest,
@@ -43,6 +45,11 @@ const NewEndMeetingModal = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+
   const {
     setCancelConfirmationModal,
     setEditorRole,
@@ -130,6 +137,10 @@ const NewEndMeetingModal = () => {
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let participantRoomId = localStorage.getItem("participantRoomId");
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let isSharedSceenEnable = JSON.parse(
+      localStorage.getItem("isSharedSceenEnable")
+    );
 
     if (presenterViewHostFlag || presenterViewJoinFlag) {
       let isMeetingVideoHostCheck = JSON.parse(
@@ -180,6 +191,21 @@ const NewEndMeetingModal = () => {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
         onHandleClickForStopRecording();
         console.log("busyCall");
+
+        // For Stop Screen Share If Host Stop in Meeting Video
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
+            let data = {
+              RoomID: newRoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+        console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
           UserGUID: String(UID),
@@ -190,6 +216,21 @@ const NewEndMeetingModal = () => {
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
       } else if (isMeetingVideo) {
         console.log("busyCall");
+
+        // For Stop Screen Share If Non Host Stop in Meeting Video
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
+            let data = {
+              RoomID: participantRoomId,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+
         let Data = {
           RoomID: String(participantRoomId),
           UserGUID: String(UID),
