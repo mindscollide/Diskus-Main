@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./ViewActionModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Button, Modal } from "../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { AuditTrialViewActionModal } from "../../../../../store/actions/Admin_Organization";
@@ -10,10 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import NoActionsAudits from "../../../../../assets/images/NoActionsAudits.png";
 import CrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import Excelicon from "../../../../../assets/images/ExcelIcon.png";
-import {
-  AuditTrialDateTimeFunction,
-  AuditTrialDateTimeFunctionViewActionDetails,
-} from "../../../../../commen/functions/date_formater";
+import { AuditTrialDateTimeFunctionViewActionDetails } from "../../../../../commen/functions/date_formater";
 const ViewActionModal = ({ viewActionModalDataState }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -39,11 +35,15 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
     try {
       if (GetUserActionsAuditData && GetUserActionsAuditData !== null) {
         setAuditActionsData(GetUserActionsAuditData.userLoginAuditActions);
+      } else {
+        setAuditActionsData([]);
       }
     } catch (error) {
       console.log(error, "error");
     }
-    return () => {};
+    return () => {
+      setAuditActionsData([]);
+    };
   }, [GetUserActionsAuditData]);
 
   console.log(auditActionsData, "GetUserActionsAuditData");
