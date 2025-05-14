@@ -498,7 +498,12 @@ const VideoCallNormalHeader = ({
         setLeavePresenterViewToJoinOneToOne(false);
 
         //Jab Recording On Ho aur Host Stop krday toh
-        onStopRecording();
+        if (isZoomEnabled) {
+          if (pauseRecordingState || resumeRecordingState) {
+            console.log("Stop Recording Check");
+            onStopRecording();
+          }
+        }
 
         await dispatch(
           stopPresenterViewMainApi(
@@ -736,6 +741,7 @@ const VideoCallNormalHeader = ({
 
   // for Host leave Call
   const leaveCall = async (flag, flag2, flag3, flag4) => {
+    console.log("Check isCaller True");
     let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
     try {
       if (!presenterStartedFlag) {
@@ -747,6 +753,7 @@ const VideoCallNormalHeader = ({
       }
     } catch (error) {}
     if (isMeeting === true) {
+      console.log("Check isCaller True");
       if (
         presenterViewFlag &&
         (presenterViewHostFlag || presenterViewJoinFlag)
@@ -777,9 +784,12 @@ const VideoCallNormalHeader = ({
             dispatch(screenShareTriggeredGlobally(false));
             await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
           }
+          //Jab Recording On Ho aur Host Stop krday toh
+          if (pauseRecordingState || resumeRecordingState) {
+            console.log("Stop Recording Check");
+            onStopRecording();
+          }
         }
-        //Jab Recording On Ho aur Host Stop krday toh
-        onStopRecording();
 
         console.log("busyCall");
         let Data = {
@@ -832,6 +842,16 @@ const VideoCallNormalHeader = ({
 
         await dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(LeaveMeetingVideo(Data, navigate, t));
+        leaveSuccess();
+      } else if (getDashboardVideo?.isDashboardVideo === false) {
+        console.log("Check isCaller True");
+        let Data = {
+          OrganizationID: currentOrganization,
+          RoomID: initiateRoomID,
+          IsCaller: true,
+          CallTypeID: currentCallType,
+        };
+        await dispatch(LeaveCall(Data, navigate, t));
         leaveSuccess();
       }
     } else if (getDashboardVideo?.isDashboardVideo === false) {
@@ -938,6 +958,8 @@ const VideoCallNormalHeader = ({
           onStopRecording();
         }
       }
+
+      console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: isZoomEnabled ? String(initiateCallRoomID) : activeRoomID,
@@ -1222,12 +1244,14 @@ const VideoCallNormalHeader = ({
         localStorage.setItem("MicOff", true);
         localStorage.setItem("VidOff", true);
       } else {
+        console.log("busyCall");
         leaveCallForNonMeating(0);
       }
     } else if (
-      isMeeting === false &&
+      // isMeeting === false &&
       meetHostFlag?.isDashboardVideo === false
     ) {
+      console.log("busyCall");
       leaveCallForNonMeating(0);
     }
   };
@@ -1456,11 +1480,12 @@ const VideoCallNormalHeader = ({
                     {/* if Recording is Pause and Stop */}
                     {pauseRecordingState && (
                       <div
-                        className={
-                          !presenterViewFlag && !presenterViewHostFlag
-                            ? "Record-Start-Background-MeetingVideo"
-                            : "Record-Start-Background"
-                        }
+                        className={"Record-Start-Background-MeetingVideo"}
+                        // className={
+                        //   !presenterViewFlag && !presenterViewHostFlag
+                        //     ? "Record-Start-Background-MeetingVideo"
+                        //     : "Record-Start-Background"
+                        // }
                         // onClick={onResumeRecording}
                       >
                         <Tooltip
@@ -1508,19 +1533,9 @@ const VideoCallNormalHeader = ({
                     {/* if Recording is Pause and Resume */}
                     {resumeRecordingState && (
                       <div
-                        className={
-                          !presenterViewFlag && !presenterViewHostFlag
-                            ? "Record-Start-BackgroundRed-VideoMeeting"
-                            : "Record-Start-BackgroundRed"
-                        }
+                        className={"Record-Start-BackgroundRed-VideoMeeting"}
                       >
-                        <p
-                          className={
-                            !presenterViewFlag && !presenterViewHostFlag
-                              ? "RecordingPaused-text-videoMeeting"
-                              : "RecordingPaused-text"
-                          }
-                        >
+                        <p className={"RecordingPaused-text-videoMeeting"}>
                           {t("Recording-paused")}
                         </p>
                         <Tooltip

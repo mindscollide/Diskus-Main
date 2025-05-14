@@ -1024,6 +1024,17 @@ const VideoPanelNormal = () => {
             );
           }, 1000);
         }
+      } else {
+        const iframe = iframeRef.current;
+        if (iframe && iframe?.contentWindow) {
+          console.log("Does Check Recording Stop");
+          setTimeout(() => {
+            iframe?.contentWindow?.postMessage(
+              "RecordingStopMsgFromIframe",
+              "*"
+            );
+          }, 1000);
+        }
       }
     }
   };
@@ -1278,21 +1289,21 @@ const VideoPanelNormal = () => {
             stopScreenShareEventTRiger();
             break;
 
-          // case "RecordingStartMsgFromIframe":
-          //   console.log("recording Start");
-          //   break;
+          case "RecordingStartMsgFromIframe":
+            console.log("recording Start");
+            break;
 
-          // case "RecordingStopMsgFromIframe":
-          //   console.log("recording Stop");
-          //   break;
+          case "RecordingStopMsgFromIframe":
+            console.log("recording Stop");
+            break;
 
-          // case "RecordingPauseMsgFromIframe":
-          //   console.log("recording Pause");
-          //   break;
+          case "RecordingPauseMsgFromIframe":
+            console.log("recording Pause");
+            break;
 
-          // case "RecordingResumeMsgFromIframe":
-          //   console.log("recording Resume");
-          //   break;
+          case "RecordingResumeMsgFromIframe":
+            console.log("recording Resume");
+            break;
 
           default:
             console.log(

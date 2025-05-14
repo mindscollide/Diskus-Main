@@ -492,7 +492,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               "RecordingStopMsgFromIframe",
               "*"
             );
-          }, 2000);
+          }, 1000);
         }
       } else {
         if (isCaller) {
@@ -564,7 +564,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         }
 
         //When Recording is On and Host Leave Meeting Video
-        onHandleClickForStopRecording();
+        if (pauseRecordingState || resumeRecordingState) {
+          console.log("Stop Recording Check");
+          onHandleClickForStopRecording();
+        }
 
         let Data = {
           RoomID: String(RoomID),
@@ -1026,8 +1029,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       <div className="videoCallGroupScreen-minmizeVideoCall">
         <Row className="m-0 height100 align-items-center">
           <Col
-            lg={6}
-            md={6}
+            lg={5}
+            md={5}
             sm={12}
             className={
               meetingTitle === "" ? "cursor-pointer" : "mt-1 cursor-pointer"
@@ -1060,7 +1063,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             </p>
           </Col>
 
-          <Col lg={6} md={6} sm={12}>
+          <Col lg={7} md={7} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
               {(isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
               (presenterViewFlag && presenterViewHostFlag) ? (
@@ -1117,11 +1120,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         <img
                           src={StartRecordSmall}
                           onClick={onHandleClickForStopRecording}
-                          className="Bunch-Start-Record-Button-2"
+                          className="Bunch-Start-Record-Button-2-MinimizePanel"
                           alt="Record"
                         />
                       </Tooltip>
-                      <p className="Recording-text">{t("Recording...")}</p>
+                      <p className="Recording-text-MinimizePanel">
+                        {t("Recording...")}
+                      </p>
 
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1135,7 +1140,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         <img
                           src={RecordStart}
                           onClick={onHandleClickForPauseRecording}
-                          className="Bunch-Start-Record-Button"
+                          className="Bunch-Start-Record-Button-MinimizePanel"
                           alt="Record"
                         />
                       </Tooltip>
@@ -1159,7 +1164,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       >
                         <img
                           src={RecordPlay}
-                          className="Bunch-Start-RecordingPaused-Button"
+                          className="Bunch-Start-RecordingPaused-Button-MinimizePanel"
                           alt="Record"
                           onClick={onHandleClickForResumeRecording}
                         />
