@@ -81,7 +81,6 @@ import {
 } from "../../store/actions/FolderUploadDataroom";
 import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
-import { DownOutlined } from "@ant-design/icons";
 import folderColor from "../../assets/images/folder_color.svg";
 import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -116,7 +115,6 @@ import copyToClipboard from "../../hooks/useClipBoard";
 import {
   clearWorkFlowResponseMessage,
   createWorkflowApi,
-  getAllPendingApprovalStatusApi,
 } from "../../store/actions/workflow_actions";
 import ApprovalSend from "./SignatureApproval/ApprovalSend/ApprovalSend";
 import {
@@ -136,6 +134,7 @@ import ArrowUpIcon from "../../assets/images/sortingIcons/Arrow-up.png";
 import Tick from "../../assets/images/Tick-Icon.png";
 import MenuPopover from "../../components/elements/popover";
 import SpinComponent from "../../components/elements/mainLoader/loader";
+import { useTableScrollBottom } from "../../commen/functions/useTableScrollBottom";
 
 const DataRoom = () => {
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -143,7 +142,6 @@ const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
   const location = useLocation();
-
   const [filteredInfo, setFilteredInfo] = useState({});
   const [sortedInfo, setSortedInfo] = useState({});
   const { t } = useTranslation();
@@ -601,7 +599,9 @@ const DataRoom = () => {
           );
         }
       } else {
-        setGetAllData([]);
+        if (DataRoomReducer.dataBehaviour === false) {
+          setGetAllData([]);
+        }
       }
       // }
     } catch (error) {}
@@ -2941,39 +2941,45 @@ const DataRoom = () => {
   }, [detaUplodingForFOlder, tasksAttachments]);
 
   // api call onscroll
-  const handleScroll = async (e) => {
-    if (sRowsData <= totalRecords) {
-      await dispatch(dataBehaviour(true));
-      if (
-        viewFolderID !== null &&
-        viewFolderID !== undefined &&
-        Number(viewFolderID) !== 0
-      ) {
-        await dispatch(
-          getFolderDocumentsApiScrollBehaviour(
-            navigate,
-            viewFolderID,
-            t,
-            2,
-            sRowsData,
-            1,
-            true
-          )
-        );
-      } else {
-        await dispatch(
-          getDocumentsAndFolderApiScrollbehaviour(
-            navigate,
-            currentView,
-            t,
-            Number(sRowsData),
-            Number(sortValue),
-            isAscending
-          )
-        );
+  const handleScroll = async (e) => {};
+
+  const { hasReachedBottom, setHasReachedBottom } = useTableScrollBottom(
+    async () => {
+      if (getAllData.length !== totalRecords) {
+        if (sRowsData <= totalRecords) {
+          await dispatch(dataBehaviour(true));
+          if (
+            viewFolderID !== null &&
+            viewFolderID !== undefined &&
+            Number(viewFolderID) !== 0
+          ) {
+            await dispatch(
+              getFolderDocumentsApiScrollBehaviour(
+                navigate,
+                viewFolderID,
+                t,
+                2,
+                sRowsData,
+                1,
+                true
+              )
+            );
+          } else {
+            await dispatch(
+              getDocumentsAndFolderApiScrollbehaviour(
+                navigate,
+                currentView,
+                t,
+                Number(sRowsData),
+                Number(sortValue),
+                isAscending
+              )
+            );
+          }
+        }
       }
     }
-  };
+  );
 
   // const handleUploadDocuemtuploadOptions = () => { }
   useEffect(() => {
@@ -3363,7 +3369,9 @@ const DataRoom = () => {
                               className='mt-3 d-flex align-items-center gap-2'>
                               <Breadcrumb
                                 prefixCls='dataroombreadCrumbs'
-                                separator={<img src={RightArrowBreadCrumbs} />}>
+                                separator={
+                                  <img src={RightArrowBreadCrumbs} alt='' />
+                                }>
                                 {/* Show three dots if more than 2 items */}
                                 {BreadCrumbsListArr.length > 2 && (
                                   <Breadcrumb.Item>
@@ -3395,7 +3403,10 @@ const DataRoom = () => {
                                                       "breadCrumbsThreeDotsDiv_Row"
                                                     ]
                                                   }>
-                                                  <img src={folderColor} />
+                                                  <img
+                                                    src={folderColor}
+                                                    alt=''
+                                                  />
                                                   <p className='m-0'>
                                                     {item.name}
                                                   </p>
@@ -3495,42 +3506,16 @@ const DataRoom = () => {
                                 getAllData !== null &&
                                 listviewactive === true ? (
                                 <>
-                                  <InfiniteScroll
-                                    dataLength={getAllData.length}
-                                    next={handleScroll}
-                                    style={{
-                                      overflowX: "hidden",
-                                    }}
-                                    hasMore={
-                                      getAllData.length === totalRecords
-                                        ? false
-                                        : true
-                                    }
-                                    height={"58vh"}
-                                    endMessage=''
-                                    loader={
-                                      getAllData.length <= totalRecords && (
-                                        <Row>
-                                          <Col
-                                            sm={12}
-                                            md={12}
-                                            lg={12}
-                                            className='d-flex justify-content-center my-3'>
-                                            <Spin indicator={antIcon} />
-                                          </Col>
-                                        </Row>
-                                      )
-                                    }>
-                                    <TableToDo
-                                      sortDirections={["descend", "ascend"]}
-                                      column={shareWithmeColoumns}
-                                      className={"DataRoom_Table"}
-                                      size={"middle"}
-                                      onChange={handleSortChange}
-                                      rows={getAllData}
-                                      pagination={false}
-                                    />
-                                  </InfiniteScroll>
+                                  <TableToDo
+                                    sortDirections={["descend", "ascend"]}
+                                    column={shareWithmeColoumns}
+                                    className={"DataRoom_Table"}
+                                    size={"middle"}
+                                    onChange={handleSortChange}
+                                    rows={getAllData}
+                                    pagination={false}
+                                    scroll={{ y: "53vh", x: "hidden" }}
+                                  />
                                 </>
                               ) : (
                                 <>
@@ -3598,19 +3583,46 @@ const DataRoom = () => {
                                 <>
                                   {gridbtnactive ? (
                                     <>
-                                      <GridViewDataRoom
-                                        data={getAllData}
-                                        optionsforFolder={optionsforFolder(t)}
-                                        optionsforFile={optionsforFile(t)}
-                                        sRowsData={sRowsData}
-                                        totalRecords={totalRecords}
-                                        filter_Value={filterValue}
-                                        setSearchTabOpen={setSearchTabOpen}
-                                        setDetailView={setDetailView}
-                                        setFileDataforAnalyticsCount={
-                                          setFileDataforAnalyticsCount
+                                      <InfiniteScroll
+                                        dataLength={getAllData.length}
+                                        next={handleScroll}
+                                        style={{
+                                          overflowX: "hidden",
+                                        }}
+                                        hasMore={
+                                          getAllData.length === totalRecords
+                                            ? false
+                                            : true
                                         }
-                                      />
+                                        height={"58vh"}
+                                        endMessage=''
+                                        loader={
+                                          getAllData.length <= totalRecords && (
+                                            <Row>
+                                              <Col
+                                                sm={12}
+                                                md={12}
+                                                lg={12}
+                                                className='d-flex justify-content-center my-3'>
+                                                <Spin indicator={antIcon} />
+                                              </Col>
+                                            </Row>
+                                          )
+                                        }>
+                                        <GridViewDataRoom
+                                          data={getAllData}
+                                          optionsforFolder={optionsforFolder(t)}
+                                          optionsforFile={optionsforFile(t)}
+                                          sRowsData={sRowsData}
+                                          totalRecords={totalRecords}
+                                          filter_Value={filterValue}
+                                          setSearchTabOpen={setSearchTabOpen}
+                                          setDetailView={setDetailView}
+                                          setFileDataforAnalyticsCount={
+                                            setFileDataforAnalyticsCount
+                                          }
+                                        />
+                                      </InfiniteScroll>
                                     </>
                                   ) : listviewactive === true ? (
                                     <TableToDo
@@ -3619,11 +3631,12 @@ const DataRoom = () => {
                                       className={"DataRoom_Table"}
                                       rows={getAllData}
                                       pagination={false}
+                                      
                                       locale={{
                                         emptyText: (
                                           <>
                                             <span className='vh-100 text-center'>
-                                              <p>No Recent Data Found</p>
+                                              <p>{t("No-recent-data-found")}</p>
                                             </span>
                                           </>
                                         ),
@@ -3741,45 +3754,31 @@ const DataRoom = () => {
                                 getAllData !== undefined &&
                                 getAllData !== null &&
                                 listviewactive === true ? (
-                                <InfiniteScroll
-                                  dataLength={getAllData.length}
-                                  next={handleScroll}
-                                  style={{
-                                    overflowX: "hidden",
-                                    overflowY: "auto",
-                                  }}
-                                  hasMore={
-                                    getAllData.length === totalRecords
-                                      ? false
-                                      : true
-                                  }
-                                  height={"57vh"}
-                                  endMessage=''
-                                  loader={
-                                    getAllData.length <= totalRecords && (
-                                      <>
-                                        <Row>
-                                          <Col
-                                            sm={12}
-                                            md={12}
-                                            lg={12}
-                                            className='d-flex justify-content-center mt-2'>
-                                            <Spin indicator={antIcon} />
-                                          </Col>
-                                        </Row>
-                                      </>
-                                    )
-                                  }
-                                  scrollableTarget='scrollableDiv'>
+                                <>
                                   <TableToDo
                                     column={MyDocumentsColumns}
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ x: "max-content", y: "visible" }}
-                                    // onChange={handleSortMyDocuments}
+                                    scroll={{ x: "hidden", y: "53vh" }}
+                                    footer={() => {
+                                      return (
+                                        DataRoomReducer.dataBehaviour && (
+                                          <Spin indicator={antIcon} />
+                                        )
+                                      );
+                                    }}
                                   />
-                                </InfiniteScroll>
+                                  <Row>
+                                    <Col
+                                      sm={12}
+                                      md={12}
+                                      lg={12}
+                                      className='d-flex justify-content-center align-items-center'>
+                                      <SpinComponent />
+                                    </Col>
+                                  </Row>
+                                </>
                               ) : (
                                 <>
                                   <Row className='mt-2'>
@@ -3841,6 +3840,7 @@ const DataRoom = () => {
                           </Row>
                         </>
                       )}
+                      <></>
                     </>
                   )}
                 </span>
@@ -3995,4 +3995,5 @@ const DataRoom = () => {
     </>
   );
 };
+
 export default DataRoom;
