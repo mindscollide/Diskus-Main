@@ -1,0 +1,151 @@
+.AuditTrialHeading {
+  font-weight: 600 !important;
+  font-size: 30px !important;
+  color: #6172d6 !important;
+}
+
+.AuditTrial_Box {
+  min-height: 40vh !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  padding: 30px 30px 30px 30px;
+  border-radius: 8px !important;
+  border: 1px solid #e1e1e1 !important;
+  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--Paper-shadow);
+  display: inline-block !important;
+  background: #fff !important;
+}
+
+.ViewActions {
+  font-weight: 400 !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  padding: 2px 12px !important;
+  background: #fff !important;
+  color: #000 !important;
+}
+
+.ViewActions:is(:hover, :active, :focus, :focus-visible) {
+  font-weight: 400 !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  padding: 2px 12px !important;
+  color: #000 !important;
+  background: #fff !important;
+}
+
+.NameStylesTable {
+  font-weight: 400 !important;
+  font-size: 12px !important;
+}
+
+.report_search_Box {
+  position: relative !important;
+}
+
+.searchbox_icon_userhistoryLogin {
+  position: absolute !important;
+  right: 10px;
+  top: 10px;
+  left: auto;
+  cursor: pointer;
+}
+body[dir="rtl"] .searchbox_icon_userhistoryLogin {
+  left: 10px;
+  right: auto;
+}
+
+.SearchBoxAuditTrial {
+  background: #fff !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  min-height: 300px !important;
+  border: 1px solid #e1e1e1 !important;
+  position: absolute !important;
+  z-index: 1 !important;
+  padding: 8px 12px !important;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25) !important;
+}
+
+.SearchBoxEntities {
+  font-weight: 600 !important;
+  font-size: 10px !important;
+  color: #6172d6 !important;
+}
+
+.AuditMainSection {
+  width: 96% !important;
+  margin: 0 auto !important;
+}
+
+.ResetBtn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.ResetBtn:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.SearchBtn {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.SearchBtn:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.UserLoginHistory_datePicker {
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  height: 39px !important;
+  padding: 0 10px;
+  cursor: pointer !important;
+}
+.UserLoginHistory_datePicker:is(:focus, :focus-visible) {
+  outline: none !important;
+}
+
+.SearchFieldCrossIcon {
+  cursor: pointer !important;
+  top: 36% !important;
+  position: absolute !important;
+  left: auto !important;
+  right: 6% !important;
+}
+
+body[dir="rtl"] .SearchFieldCrossIcon {
+  cursor: pointer !important;
+  top: 32% !important;
+  position: absolute !important;
+  left: 6% !important;
+  right: auto !important;
+}

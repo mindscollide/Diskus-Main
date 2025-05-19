@@ -251,7 +251,6 @@ const ViewMeetingModal = ({
           setParticipants(false);
           setPolls(false);
           setRecording(false);
-
           setAttendees(false);
           setactionsPage(false);
         }
@@ -525,6 +524,7 @@ const ViewMeetingModal = ({
         }
         dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(setAudioControlHost(false));
+        console.log("videoHideUnHideForHost");
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });

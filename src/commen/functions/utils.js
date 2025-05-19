@@ -287,6 +287,7 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "subscriptionDetailsUserManagement", id: 288 },
           { name: "downgradeSubscription", id: 289 },
           { name: "updatedCancelSubscription", id: 290 },
+          { name: "AuditTrial", id: 219 },
         ]
       : [];
     if (response.isTrial) {
@@ -316,7 +317,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
           { name: "CustomerInformation", id: 208 },
           { name: "AddUsers", id: 26 },
           { name: "loginreport", id: 35 },
-          { name: "PaymentFormUserManagement", id: 222 }
+          { name: "PaymentFormUserManagement", id: 222 },
+          { name: "AuditTrial", id: 219 }
         );
       }
     } else {
