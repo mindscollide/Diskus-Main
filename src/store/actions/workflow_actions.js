@@ -1798,6 +1798,9 @@ const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
               let Data2 = {
                 sRow: 0,
                 Length: 10,
+                SentOnSort: 0,
+                StatusIDs: [],
+                TitleSort: 0,
               };
               dispatch(
                 getAllSignaturesDocumentsforCreatorApi(navigate, t, Data2)

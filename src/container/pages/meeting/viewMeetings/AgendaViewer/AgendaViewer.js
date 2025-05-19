@@ -128,6 +128,11 @@ const AgendaViewer = () => {
     setStartRecordingState,
     setPauseRecordingState,
     setResumeRecordingState,
+    setStopRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
   } = useMeetingContext();
 
   console.log(videoTalk, "videoTalkvideoTalk");
@@ -750,6 +755,8 @@ const AgendaViewer = () => {
     setStartRecordingState(true);
     setPauseRecordingState(false);
     setResumeRecordingState(false);
+    setStopRecordingState(false);
+
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
@@ -792,9 +799,20 @@ const AgendaViewer = () => {
   };
 
   const onClickStartPresenter = async () => {
-    setStartRecordingState(true);
-    setPauseRecordingState(false);
-    setResumeRecordingState(false);
+    console.log(pauseRecordingState, "pauseRecordingState");
+    if (pauseRecordingState) {
+      console.log("pauseRecordingState");
+      setStartRecordingState(false);
+      setPauseRecordingState(true);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
+    } else {
+      console.log("pauseRecordingState");
+      setStartRecordingState(true);
+      setPauseRecordingState(false);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
+    }
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -805,6 +823,7 @@ const AgendaViewer = () => {
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
+      console.log("maximizeParticipantVideoFlag");
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));

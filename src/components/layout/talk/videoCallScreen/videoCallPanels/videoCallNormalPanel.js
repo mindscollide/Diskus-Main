@@ -1018,24 +1018,26 @@ const VideoPanelNormal = () => {
         if (iframe && iframe?.contentWindow) {
           console.log("Does Check Recording Start");
           setTimeout(() => {
+            console.log("Does Check Recording Start");
             iframe?.contentWindow?.postMessage(
               "RecordingStartMsgFromIframe",
               "*"
             );
           }, 1000);
         }
-      } else {
-        const iframe = iframeRef.current;
-        if (iframe && iframe?.contentWindow) {
-          console.log("Does Check Recording Stop");
-          setTimeout(() => {
-            iframe?.contentWindow?.postMessage(
-              "RecordingStopMsgFromIframe",
-              "*"
-            );
-          }, 1000);
-        }
       }
+      //  else {
+      //   const iframe = iframeRef.current;
+      //   if (iframe && iframe?.contentWindow) {
+      //     console.log("Does Check Recording Stop");
+      //     setTimeout(() => {
+      //       iframe?.contentWindow?.postMessage(
+      //         "RecordingStopMsgFromIframe",
+      //         "*"
+      //       );
+      //     }, 1000);
+      //   }
+      // }
     }
   };
 
@@ -1585,8 +1587,11 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1606,8 +1611,11 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1627,8 +1635,11 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1648,13 +1659,21 @@ const VideoPanelNormal = () => {
 
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow) {
-          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe");
+        if (iframe && iframe?.contentWindow) {
+          setTimeout(() => {
+            iframe?.contentWindow?.postMessage(
+              "RecordingStopMsgFromIframe",
+              "*"
+            );
+            console.log("RecordingStopMsgFromIframe");
+          }, 1000);
         }
       } else {
         if (isCaller) {

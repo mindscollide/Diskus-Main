@@ -246,6 +246,11 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
+  console.log(
+    { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
+    "presenterViewJoinFlagpresenterViewHostFlag"
+  );
+
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let organizationName = localStorage.getItem("organizatioName");
@@ -496,14 +501,6 @@ const VideoCallNormalHeader = ({
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         setLeavePresenterViewToJoinOneToOne(false);
-
-        //Jab Recording On Ho aur Host Stop krday toh
-        if (isZoomEnabled) {
-          if (pauseRecordingState || resumeRecordingState) {
-            console.log("Stop Recording Check");
-            onStopRecording();
-          }
-        }
 
         await dispatch(
           stopPresenterViewMainApi(
@@ -1438,15 +1435,20 @@ const VideoCallNormalHeader = ({
               LeaveCallModalFlag === true ||
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
-                : !isMicActive
-                ? "cursor-pointer active-state"
+                : isMeetingVideoHostCheck &&
+                  !presenterViewJoinFlag &&
+                  !presenterViewHostFlag
+                ? "cursor-pointer meeting-Recording-State"
                 : "inactive-state"
             }
           >
             {isZoomEnabled && (
               <>
-                {(isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-                (presenterViewFlag && presenterViewHostFlag) ? (
+                {isMeeting &&
+                isMeetingVideo &&
+                isMeetingVideoHostCheck &&
+                !presenterViewJoinFlag &&
+                !presenterViewHostFlag ? (
                   <>
                     {/* if Recording is start */}
                     {startRecordingState && (
@@ -1456,12 +1458,7 @@ const VideoCallNormalHeader = ({
                       >
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
-                          title={
-                            (isMeeting && isMeetingVideo) ||
-                            (presenterViewFlag && presenterViewHostFlag)
-                              ? t("Start-recording")
-                              : null
-                          }
+                          title={t("Start-recording")}
                           overlayClassName={
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"
@@ -1490,12 +1487,7 @@ const VideoCallNormalHeader = ({
                       >
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
-                          title={
-                            (isMeeting && isMeetingVideo) ||
-                            (presenterViewFlag && presenterViewHostFlag)
-                              ? t("Stop-recording")
-                              : null
-                          }
+                          title={t("Stop-recording")}
                           overlayClassName={
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./VideoNewParticipantList.module.css";
 import { Col, Row, Dropdown } from "react-bootstrap";
@@ -28,6 +28,7 @@ import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
 import { js2xml } from "xml-js";
+import { MeetingContext } from "../../../../../context/MeetingContext";
 
 const VideoNewParticipantList = () => {
   const navigate = useNavigate();
@@ -36,11 +37,35 @@ const VideoNewParticipantList = () => {
 
   const dispatch = useDispatch();
 
+  const {
+    editorRole,
+    presenterParticipantList,
+    setPresenterParticipantList,
+    setShareScreenTrue,
+    setToggleMicMinimizeNonMeeting,
+    setToggleVideoMinimizeNonMeeting,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
+    iframeRef,
+  } = useContext(MeetingContext);
+
   let roomID = localStorage.getItem("newRoomId");
 
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
   let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isMeetingVideoHostChecker = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostChecker")
+  );
 
   let HostName = localStorage.getItem("name");
   let PresenterHostuserID = Number(localStorage.getItem("userID"));

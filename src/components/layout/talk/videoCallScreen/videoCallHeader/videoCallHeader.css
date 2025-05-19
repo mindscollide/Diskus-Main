@@ -454,6 +454,16 @@ body[dir="rtl"] .video_maximize_icon img {
   margin-right: 10px;
 }
 
+.meeting-Recording-State {
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
 .inactive-state {
   height: 40px;
   width: 40px;

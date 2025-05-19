@@ -480,8 +480,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     );
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         console.log("RecordingStopMsgFromIframe");
         const iframe = iframeRef.current;
@@ -972,8 +975,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -992,8 +998,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1012,8 +1021,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     setStopRecordingState(false);
     if (isZoomEnabled) {
       if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-        (presenterViewFlag && presenterViewHostFlag)
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostCheck &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
       ) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
@@ -1041,7 +1053,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             }}
           >
             <p className="title-heading">
-              {currentCallType === 2 || callTypeID === 2
+              {currentCallType === 2 || callTypeID === 2 || presenterViewFlag
                 ? meetingTitle === ""
                   ? t("Group-call")
                   : meetingTitle
@@ -1065,8 +1077,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
           <Col lg={7} md={7} sm={12}>
             <div className="d-flex gap-10 justify-content-end">
-              {(isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
-              (presenterViewFlag && presenterViewHostFlag) ? (
+              {isMeeting &&
+              isMeetingVideo &&
+              isMeetingVideoHostCheck &&
+              !presenterViewJoinFlag &&
+              !presenterViewHostFlag ? (
                 <>
                   {/* if Recording is start */}
                   {startRecordingState && (
@@ -1076,12 +1091,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     >
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={
-                          (isMeeting && isMeetingVideo) ||
-                          (presenterViewFlag && presenterViewHostFlag)
-                            ? t("Start-recording")
-                            : null
-                        }
+                        title={t("Start-recording")}
                         overlayClassName={
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
@@ -1105,12 +1115,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     >
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
-                        title={
-                          (isMeeting && isMeetingVideo) ||
-                          (presenterViewFlag && presenterViewHostFlag)
-                            ? t("Stop-recording")
-                            : null
-                        }
+                        title={t("Stop-recording")}
                         overlayClassName={
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"

@@ -239,6 +239,10 @@ const Dashboard = () => {
     setGroupCallParticipantList,
     setUnansweredCallParticipant,
     iframeRef,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    setStopRecordingState,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -615,6 +619,7 @@ const Dashboard = () => {
   };
 
   const stopPresenterView = async (payload) => {
+    console.log("mqtt mqmqmqmqmqmq");
     let StopPresenterViewAwait = JSON.parse(
       sessionStorage.getItem("StopPresenterViewAwait")
     );
@@ -637,7 +642,12 @@ const Dashboard = () => {
         ? sessionStorage.getItem("alreadyInMeetingVideo")
         : false
     );
+    console.log(
+      String(meetingVideoID) === String(payload?.meetingID),
+      "mqtt mqmqmqmqmqmq"
+    );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
+      console.log("mqtt mqmqmqmqmqmq", payload);
       // dispatch(setAudioControlHost(false));
       // console.log("videoHideUnHideForHost");
       // dispatch(setVideoControlHost(true));
@@ -658,6 +668,7 @@ const Dashboard = () => {
             if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
               sessionStorage.removeItem("alreadyInMeetingVideo");
               dispatch(setAudioControlHost(false));
+
               let dataAudio = {
                 RoomID: String(
                   isMeetingVideoHostCheck ? newRoomId : participantRoomId
@@ -691,6 +702,7 @@ const Dashboard = () => {
               await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
               console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
+              dispatch(participantVideoButtonState(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
               dispatch(maximizeVideoPanelFlag(false));
               dispatch(normalizeVideoPanelFlag(true));
@@ -715,6 +727,7 @@ const Dashboard = () => {
             }
           }
         } else {
+          console.log("Check Console StopPresenterViewAwait");
           sessionStorage.removeItem("StopPresenterViewAwait");
         }
 
@@ -1266,13 +1279,13 @@ const Dashboard = () => {
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled")
               );
+              let isSharedSceenEnable = JSON.parse(
+                localStorage.getItem("isSharedSceenEnable")
+              );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 if (isZoomEnabled) {
-                  console.log("busyCall");
-                  if (!globallyScreenShare) {
-                    console.log("busyCall");
-
+                  if (isSharedSceenEnable && !globallyScreenShare) {
                     let isMeetingVideoHostCheck = JSON.parse(
                       localStorage.getItem("isMeetingVideoHostCheck")
                     );
@@ -1554,9 +1567,40 @@ const Dashboard = () => {
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
               let userID = Number(localStorage.getItem("userID"));
+              let isZoomEnabled = JSON.parse(
+                localStorage.getItem("isZoomEnabled")
+              );
+              let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
               let isMeetingVideo = JSON.parse(
                 localStorage.getItem("isMeetingVideo")
               );
+              let isMeetingVideoHostChecker = JSON.parse(
+                localStorage.getItem("isMeetingVideoHostCheck")
+              );
+
+              console.log(data.payload, "checkHostTransfer");
+
+              if (isZoomEnabled) {
+                console.log("HostTransfer");
+                const iframe = iframeRef.current;
+                if (iframe && iframe.contentWindow) {
+                  console.log("HostTransfer");
+                  // iframe.contentWindow.postMessage(
+                  //   "hostTransferToParticipant",
+                  //   "*"
+                  // );
+
+                  iframe.contentWindow.postMessage(
+                    "RecordingStopMsgFromIframe",
+                    "*"
+                  );
+                }
+                setStartRecordingState(true);
+                setPauseRecordingState(false);
+                setResumeRecordingState(false);
+                setStopRecordingState(false);
+              }
+
               console.log("mqtt check 22", userID);
               console.log("mqtt check 22", data.receiverID[0]);
               if (userID === data.receiverID[0] && isMeetingVideo) {
@@ -2877,21 +2921,24 @@ const Dashboard = () => {
 
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
-          if (isZoomEnabled) {
-            console.log("Does Check Recording Start");
-            // // Condition For Video Recording
-            if (isCaller && (CallType === 1 || CallType === 2)) {
-              console.log("Does Check Recording Start");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Start");
-                iframe.contentWindow.postMessage(
-                  "RecordingStartMsgFromIframe",
-                  "*"
-                );
-              }
-            }
-          }
+          // if (isZoomEnabled) {
+          //   console.log("Does Check Recording Start");
+          //   // // Condition For Video Recording
+          //   if (isCaller && (CallType === 1 || CallType === 2)) {
+          //     console.log("Does Check Recording Start");
+          //     const iframe = iframeRef.current;
+          //     if (iframe && iframe?.contentWindow) {
+          //       console.log("Does Check Recording Start");
+          //       setTimeout(() => {
+          //         iframe?.contentWindow?.postMessage(
+          //           "RecordingStartMsgFromIframe",
+          //           "*"
+          //         );
+          //         console.log("Does Check Recording Start");
+          //       }, 1000);
+          //     }
+          //   }
+          // }
 
           if (CallType === 2) {
             console.log("mqtt");
@@ -3438,6 +3485,14 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let roomID = 0;
           let flagCheck1 = false;
+
+          if (isZoomEnabled) {
+            if (String(initiateCallRoomID) !== String(data.payload.roomID)) {
+              console.log("Check It");
+              dispatch(incomingVideoCallFlag(false));
+            }
+          }
+
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
             // // Condition For Video Recording
@@ -3475,12 +3530,17 @@ const Dashboard = () => {
           }
           console.log("mqtt", roomID);
           let flagCheck2 = 0;
+
           if (isZoomEnabled) {
+            console.log();
             flagCheck2 = String(roomID) === String(data.payload.roomID);
           } else {
             flagCheck2 = Number(roomID) === Number(data.payload.roomID);
           }
-          if (flagCheck2 && !isMeetingVideo) {
+          if (
+            flagCheck2 &&
+            (isMeetingVideo === null || isMeetingVideo === false)
+          ) {
             let callerID = JSON.parse(localStorage.getItem("callerID"));
             let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
             if (IncomingVideoCallFlagReducer === true && callStatus === false) {
