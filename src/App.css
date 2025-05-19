@@ -2809,7 +2809,7 @@ input#Participant::placeholder {
 .ant-table-column-sorter {
   display: none !important;
 }
-.ant-table-column-sorter::after{
+.ant-table-column-sorter::after {
   display: none;
 }
 
@@ -5492,8 +5492,9 @@ body[dir="rtl"] .dataroom_options .dropdown-menu {
 }
 .dataroom_options .dropdown-menu.show {
   transform: none !important;
-  left: auto !important;
+  /* left: auto !important; */
   right: 15px !important;
+  top: 30px !important;
   position: absolute !important;
   z-index: 1050;
   border: 1px solid #e1e1e1 !important;
@@ -8106,4 +8107,24 @@ td.ant-table-column-sort {
 }
 .ant-table-thead > tr > th {
   padding: 16px 8px 8px 8px !important;
+}
+
+.ant-table-ping-right .ant-table-cell-fix-right-first:after,
+.ant-table-ping-right .ant-table-cell-fix-right-last:after,
+.ant-table-ping-right:not(.ant-table-has-fix-right)
+  > .ant-table-container:after {
+  box-shadow: none !important;
+}
+.ant-table-footer {
+  background: #fff !important;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.gridviewDataroom {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+  max-height:40vh;
 }

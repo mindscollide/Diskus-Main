@@ -24,14 +24,13 @@
   border: 1px solid #e1e1e1;
   font-size: 0.8em;
   border-radius: 4px !important;
-  width: 160px;
+  max-width: 160px;
   font-weight: 600 !important;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   gap: 5px;
   cursor: pointer;
-  margin-top: -4px;
+  white-space: nowrap;
 }
 .report_search_Box {
   position: relative;

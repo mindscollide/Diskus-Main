@@ -536,7 +536,7 @@ const Reports = () => {
   return (
     <Fragment>
       <Container>
-        <Row className="my-3 d-flex align-items-center">
+        <Row className='my-3 d-flex align-items-center'>
           <Col sm={12} md={4} lg={4}>
             <h2 className={styles["user-login-history-heading"]}>
               {t("User-login-history")}
@@ -548,13 +548,12 @@ const Reports = () => {
                 sm={12}
                 md={4}
                 lg={4}
-                className="d-flex justify-content-end align-items-center gap-4"
-              >
+                className='d-flex justify-content-end align-items-center gap-4'>
                 <span
                   className={styles["export-to-excel-btn"]}
-                  onClick={handleClickExportExcel}
-                >
-                  <img src={XLSIcon} alt="" /> {t("Export-to-excel")}
+                  onClick={handleClickExportExcel}>
+                  <img src={XLSIcon} width={17} height={17} alt='' />{" "}
+                  {t("Export-to-excel")}
                 </span>
               </Col>
               <Col sm={12} md={8} lg={8}>
@@ -563,7 +562,7 @@ const Reports = () => {
                     applyClass={"user-login-history-searchbar"}
                     labelclass={"d-none"}
                     width={"100%"}
-                    iconclassname={"d-block"}
+                    iconclassname={"d-block m-0"}
                     placeholder={`${t("Title")}...`}
                     onKeyDown={handleKeyDown}
                     name={"Title"}
@@ -571,31 +570,30 @@ const Reports = () => {
                     value={userLoginHistorySearch.Title}
                     inputicon={
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={searchicon}
-                        alt=""
+                        alt=''
                         className={styles["searchbox_icon_userhistoryLogin"]}
                         onClick={handleIputSearchIcon}
                       />
                     }
                   />
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex gap-2 flex-wrap"
-                    >
-                      {showsearchText &&
-                      userLoginHistorySearch.userName !== "" ? (
+
+                  {showsearchText && userLoginHistorySearch.userName !== "" ? (
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex gap-2 flex-wrap'>
                         <div className={styles["SearchablesItems"]}>
                           <span className={styles["Searches"]}>
                             {userLoginHistorySearch.userName}
                           </span>
                           <img
                             src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             width={13}
                             onClick={() =>
                               handleSearches(
@@ -605,117 +603,110 @@ const Reports = () => {
                             }
                           />
                         </div>
-                      ) : null}
+                      </Col>
+                    </Row>
+                  ) : null}
 
-                      {showsearchText && userLoginHistorySearch.Title !== "" ? (
-                        <div className={styles["SearchablesItems"]}>
-                          <span className={styles["Searches"]}>
-                            {userLoginHistorySearch.Title}
-                          </span>
-                          <img
-                            src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
-                            width={13}
-                            onClick={() =>
-                              handleSearches(
-                                userLoginHistorySearch.Title,
-                                "Title"
-                              )
-                            }
-                          />
-                        </div>
-                      ) : null}
+                  {showsearchText && userLoginHistorySearch.Title !== "" ? (
+                    <div className={styles["SearchablesItems"]}>
+                      <span className={styles["Searches"]}>
+                        {userLoginHistorySearch.Title}
+                      </span>
+                      <img
+                        src={Crossicon}
+                        alt=''
+                        className='cursor-pointer'
+                        width={13}
+                        onClick={() =>
+                          handleSearches(userLoginHistorySearch.Title, "Title")
+                        }
+                      />
+                    </div>
+                  ) : null}
 
-                      {showsearchText &&
-                      userLoginHistorySearch.userEmail !== "" ? (
-                        <div className={styles["SearchablesItems"]}>
-                          <span className={styles["Searches"]}>
-                            {userLoginHistorySearch.userEmail}
-                          </span>
-                          <img
-                            src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
-                            width={13}
-                            onClick={() =>
-                              handleSearches(
-                                userLoginHistorySearch.userEmail,
-                                "userEmail"
-                              )
-                            }
-                          />
-                        </div>
-                      ) : null}
+                  {showsearchText && userLoginHistorySearch.userEmail !== "" ? (
+                    <div className={styles["SearchablesItems"]}>
+                      <span className={styles["Searches"]}>
+                        {userLoginHistorySearch.userEmail}
+                      </span>
+                      <img
+                        src={Crossicon}
+                        alt=''
+                        className='cursor-pointer'
+                        width={13}
+                        onClick={() =>
+                          handleSearches(
+                            userLoginHistorySearch.userEmail,
+                            "userEmail"
+                          )
+                        }
+                      />
+                    </div>
+                  ) : null}
 
-                      {showsearchText &&
-                      userLoginHistorySearch.IpAddress !== "" ? (
-                        <div className={styles["SearchablesItems"]}>
-                          <span className={styles["Searches"]}>
-                            {userLoginHistorySearch.IpAddress}
-                          </span>
-                          <img
-                            src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
-                            width={13}
-                            onClick={() =>
-                              handleSearches(
-                                userLoginHistorySearch.IpAddress,
-                                "IpAddress"
-                              )
-                            }
-                          />
-                        </div>
-                      ) : null}
+                  {showsearchText && userLoginHistorySearch.IpAddress !== "" ? (
+                    <div className={styles["SearchablesItems"]}>
+                      <span className={styles["Searches"]}>
+                        {userLoginHistorySearch.IpAddress}
+                      </span>
+                      <img
+                        src={Crossicon}
+                        alt=''
+                        className='cursor-pointer'
+                        width={13}
+                        onClick={() =>
+                          handleSearches(
+                            userLoginHistorySearch.IpAddress,
+                            "IpAddress"
+                          )
+                        }
+                      />
+                    </div>
+                  ) : null}
 
-                      {showsearchText &&
-                      userLoginHistorySearch.DateFrom !== "" ? (
-                        <div className={styles["SearchablesItems"]}>
-                          <span className={styles["Searches"]}>
-                            {moment
-                              .utc(userLoginHistorySearch.DateFrom, "YYYYMMDD")
-                              .format("DD-MMM-YYYY")}
-                          </span>
-                          <img
-                            src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
-                            width={13}
-                            onClick={() =>
-                              handleSearches(
-                                userLoginHistorySearch.DateFrom,
-                                "DateFrom"
-                              )
-                            }
-                          />
-                        </div>
-                      ) : null}
+                  {showsearchText && userLoginHistorySearch.DateFrom !== "" ? (
+                    <div className={styles["SearchablesItems"]}>
+                      <span className={styles["Searches"]}>
+                        {moment
+                          .utc(userLoginHistorySearch.DateFrom, "YYYYMMDD")
+                          .format("DD-MMM-YYYY")}
+                      </span>
+                      <img
+                        src={Crossicon}
+                        alt=''
+                        className='cursor-pointer'
+                        width={13}
+                        onClick={() =>
+                          handleSearches(
+                            userLoginHistorySearch.DateFrom,
+                            "DateFrom"
+                          )
+                        }
+                      />
+                    </div>
+                  ) : null}
 
-                      {showsearchText &&
-                      userLoginHistorySearch.DateTo !== "" ? (
-                        <div className={styles["SearchablesItems"]}>
-                          <span className={styles["Searches"]}>
-                            {moment
-                              .utc(userLoginHistorySearch.DateTo, "YYYYMMDD")
-                              .format("DD-MMM-YYYY")}
-                          </span>
-                          <img
-                            src={Crossicon}
-                            alt=""
-                            className="cursor-pointer"
-                            width={13}
-                            onClick={() =>
-                              handleSearches(
-                                userLoginHistorySearch.DateTo,
-                                "DateTo"
-                              )
-                            }
-                          />
-                        </div>
-                      ) : null}
-                    </Col>
-                  </Row>
+                  {showsearchText && userLoginHistorySearch.DateTo !== "" ? (
+                    <div className={styles["SearchablesItems"]}>
+                      <span className={styles["Searches"]}>
+                        {moment
+                          .utc(userLoginHistorySearch.DateTo, "YYYYMMDD")
+                          .format("DD-MMM-YYYY")}
+                      </span>
+                      <img
+                        src={Crossicon}
+                        alt=''
+                        className='cursor-pointer'
+                        width={13}
+                        onClick={() =>
+                          handleSearches(
+                            userLoginHistorySearch.DateTo,
+                            "DateTo"
+                          )
+                        }
+                      />
+                    </div>
+                  ) : null}
 
                   {searchBoxExpand && (
                     <section className={styles["userLoginHistory_Box"]}>
@@ -724,14 +715,13 @@ const Reports = () => {
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end"
-                        >
+                          className='d-flex justify-content-end'>
                           <img
                             src={CrossIcon}
                             width={14}
                             height={14}
-                            alt=""
-                            className="cursor-pointer"
+                            alt=''
+                            className='cursor-pointer'
                             onClick={handleCloseSearcbBox}
                           />
                         </Col>
@@ -741,7 +731,7 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-name")}
                             name={"userName"}
-                            type="text"
+                            type='text'
                             value={userLoginHistorySearch.userName}
                             change={handleChangeSearchBoxValues}
                           />
@@ -750,14 +740,14 @@ const Reports = () => {
                           <TextField
                             placeholder={t("User-email")}
                             name={"userEmail"}
-                            type="email"
+                            type='email'
                             onBlur={() => handleValidateEmail()}
                             change={handleChangeSearchBoxValues}
                             value={userLoginHistorySearch.userEmail}
                           />
                         </Col>
                       </Row>
-                      <Row className="my-3">
+                      <Row className='my-3'>
                         <Col sm={12} md={6} lg={6}>
                           {/* <TextField /> */}
                           <DatePicker
@@ -773,10 +763,10 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeFromDate}
@@ -797,10 +787,10 @@ const Reports = () => {
                               />
                             }
                             editable={false}
-                            className="datePickerTodoCreate2"
+                            className='datePickerTodoCreate2'
                             onOpenPickNewDate={true}
                             containerClassName={styles["datePicker_Container"]}
-                            inputMode=""
+                            inputMode=''
                             calendar={calendarValue}
                             locale={localValue}
                             onFocusedDateChange={handleChangeToDate}
@@ -825,13 +815,12 @@ const Reports = () => {
                           />
                         </Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className='mt-3'>
                         <Col
                           sm={12}
                           md={12}
                           lg={12}
-                          className="d-flex justify-content-end gap-2"
-                        >
+                          className='d-flex justify-content-end gap-2'>
                           <Button
                             className={styles["ResetBtn"]}
                             text={t("Reset")}
@@ -866,16 +855,14 @@ const Reports = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className="d-flex justify-content-center mt-2"
-                      >
+                        className='d-flex justify-content-center mt-2'>
                         <Spin />
                       </Col>
                     </Row>
                   </>
                 ) : null
               }
-              scrollableTarget="scrollableDiv"
-            >
+              scrollableTarget='scrollableDiv'>
               <Table
                 column={userloginColumns}
                 rows={loginHistoyRows}
