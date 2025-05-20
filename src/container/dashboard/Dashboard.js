@@ -2921,24 +2921,21 @@ const Dashboard = () => {
 
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
-          // if (isZoomEnabled) {
-          //   console.log("Does Check Recording Start");
-          //   // // Condition For Video Recording
-          //   if (isCaller && (CallType === 1 || CallType === 2)) {
-          //     console.log("Does Check Recording Start");
-          //     const iframe = iframeRef.current;
-          //     if (iframe && iframe?.contentWindow) {
-          //       console.log("Does Check Recording Start");
-          //       setTimeout(() => {
-          //         iframe?.contentWindow?.postMessage(
-          //           "RecordingStartMsgFromIframe",
-          //           "*"
-          //         );
-          //         console.log("Does Check Recording Start");
-          //       }, 1000);
-          //     }
-          //   }
-          // }
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Start");
+            // // Condition For Video Recording
+            if (isCaller && (CallType === 1 || CallType === 2)) {
+              console.log("Does Check Recording Start");
+              const iframe = iframeRef.current;
+              if (iframe && iframe.contentWindow) {
+                console.log("Does Check Recording Start");
+                iframe.contentWindow.postMessage(
+                  "RecordingStartMsgFromIframe",
+                  "*"
+                );
+              }
+            }
+          }
 
           if (CallType === 2) {
             console.log("mqtt");
