@@ -21,7 +21,8 @@ const CustomTableToDo = ({
   summary,
   sticky,
   style,
-  showHeader
+  showHeader,
+  footer
 }) => {
   const { Text } = Typography;
 
@@ -48,6 +49,8 @@ const CustomTableToDo = ({
         showHeader={showHeader}
         style={style}
         bordered={false}
+        footer={footer}
+        tableLayout="fixed"
       />
     </>
   );
