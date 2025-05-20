@@ -34,6 +34,7 @@ import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import { Checkbox, Dropdown, Menu } from "antd";
 import { Button } from "../../../../components/elements";
 import SpinComponent from "../../../../components/elements/mainLoader/loader";
+import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
 
 const ApprovalSend = () => {
   const { t } = useTranslation();
@@ -460,13 +461,14 @@ const ApprovalSend = () => {
         setIsScrolling(false);
       }
     } else {
-      setIsScrolling(false);
-      setApprovalsData([]);
-      setTotalRecords(0);
-      setPageNo(1);
+      if (isScrolling === false) {
+        setIsScrolling(false);
+        setApprovalsData([]);
+        setTotalRecords(0);
+        setPageNo(1);
 
-      setDataLength(0);
-      setIsScrolling(false);
+        setDataLength(0);
+      }
     }
   }, [SignatureWorkFlowReducer.getAllSignatureDocumentsforCreator]);
 
@@ -572,14 +574,14 @@ const ApprovalSend = () => {
     rowsDataLength,
     "handleScrollhandleScroll"
   );
-  const handleScroll = async () => {
+  useTableScrollBottom(async (hasReachedBottom) => {
     console.log(
-      rowsDataLength <= totalRecords,
-      totalRecords,
-      rowsDataLength,
-      "handleScrollhandleScroll"
+      hasReachedBottom,
+      approvalsData.length > 0 && rowsDataLength <= totalRecords,
+      "hasReachedBottom"
     );
-    if (approvalsData.length > 0 && rowsDataLength <= totalRecords) {
+
+    if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
       setIsScrolling(true);
       let Data = {
         sRow: Number(rowsDataLength),
@@ -591,13 +593,14 @@ const ApprovalSend = () => {
 
       await dispatch(getAllSignaturesDocumentsforCreatorApi(navigate, t, Data));
     }
-  };
+  });
+
   return (
     <>
       {" "}
       <Row className='mb-2'>
         <Col sm={12} md={12} lg={12} className='mt-3'>
-          <InfiniteScroll
+          {/* <InfiniteScroll
             dataLength={approvalsData.length}
             next={handleScroll}
             style={{
@@ -621,57 +624,57 @@ const ApprovalSend = () => {
                   </Row>
                 </>
               )
-            }>
-            <TableToDo
-              sortDirections={["descend", "ascend"]}
-              column={pendingApprovalColumns}
-              className={"ApprovalsTable"}
-              // prefClassName="ApprovalSending"
-              rows={approvalsData}
-              locale={{
-                emptyText: (
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className='d-flex justify-content-center align-items-center mt-2'>
-                    <section className={styles["ApprovalSend_emptyContainer"]}>
-                      <img
-                        className='d-flex justify-content-center'
-                        src={EmtpyImage}
-                        alt=''
-                        width={250}
-                      />
-                      <span className={styles["emptyState_title"]}>
-                        {t("Submit-document-for-approval")}
-                      </span>
-                      <span className={styles["emptyState_tagline"]}>
-                        {t(
-                          "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
-                        )}
-                        !
-                      </span>
-                      <Row className='mt-2'>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className='d-flex justify-content-center align-items-center'>
-                          <SpinComponent />
-                          {/* <Spin /> */}
-                        </Col>
-                      </Row>
-                    </section>
-                  </Col>
-                ),
-              }}
-              pagination={false}
-              showHeader={true}
-              id={(record, index) =>
-                index === approvalsData.length - 1 ? "last-row-class" : ""
-              }
-            />
-          </InfiniteScroll>
+            }> */}
+          <TableToDo
+            column={pendingApprovalColumns}
+            className={"ApprovalsTable"}
+            // prefClassName="ApprovalSending"
+            rows={approvalsData}
+            locale={{
+              emptyText: (
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className='d-flex justify-content-center align-items-center mt-2'>
+                  <section className={styles["ApprovalSend_emptyContainer"]}>
+                    <img
+                      className='d-flex justify-content-center'
+                      src={EmtpyImage}
+                      alt=''
+                      width={250}
+                    />
+                    <span className={styles["emptyState_title"]}>
+                      {t("Submit-document-for-approval")}
+                    </span>
+                    <span className={styles["emptyState_tagline"]}>
+                      {t(
+                        "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
+                      )}
+                      !
+                    </span>
+                    <Row className='mt-2'>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className='d-flex justify-content-center align-items-center'>
+                        <SpinComponent />
+                        {/* <Spin /> */}
+                      </Col>
+                    </Row>
+                  </section>
+                </Col>
+              ),
+            }}
+            pagination={false}
+            showHeader={true}
+            scroll={{ y: "50vh", x: "100%" }}
+            id={(record, index) =>
+              index === approvalsData.length - 1 ? "last-row-class" : ""
+            }
+          />
+          {/* </InfiniteScroll> */}
         </Col>
       </Row>
       {signatoriesList && (
