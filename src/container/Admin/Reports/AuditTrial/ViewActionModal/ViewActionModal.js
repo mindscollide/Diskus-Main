@@ -28,8 +28,6 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
     (state) => state.adminReducer.getAuditActionsData
   );
 
-  console.log(GetUserActionsAuditData, "GetUserActionsAuditData");
-
   //Extracting the Audit actions data
   useEffect(() => {
     try {
@@ -45,31 +43,6 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
       setAuditActionsData([]);
     };
   }, [GetUserActionsAuditData]);
-
-  console.log(auditActionsData, "GetUserActionsAuditData");
-
-  const dummyData = [
-    {
-      type: "login",
-      timestamp: "2024-10-15 | 09:05 AM",
-      status: "Logged In",
-    },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 9:15 AM",
-      description: "Created meeting for Project Kickoff.",
-    },
-    {
-      type: "activity",
-      timestamp: "2024-10-15 | 10:30 AM",
-      description: 'Assigned task "Draft Budget Proposal" to Team B.',
-    },
-    {
-      type: "logout",
-      timestamp: "2024-10-15 | 10:45 AM",
-      status: "Logged Out",
-    },
-  ];
 
   const handleCrossIconClick = () => {
     dispatch(AuditTrialViewActionModal(false));
@@ -113,7 +86,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                   {t("User")}
                   {""}
                   <span>
-                    :{""}
+                    :&nbsp;
                     {viewActionModalDataState.userName}
                   </span>
                 </span>
@@ -123,7 +96,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                   {t("Interface")}
                   {""}
                   <span>
-                    :{""}{" "}
+                    :&nbsp;
                     {viewActionModalDataState.deviceID === "1"
                       ? "Web"
                       : viewActionModalDataState.deviceID === "2"
@@ -145,25 +118,18 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                 className={styles["ViewActionModal_scroll_bar"]}
               >
                 <div className={styles["classOne"]}>
-                  {/* LOGIN ITEM */}
-                  {dummyData
-                    .filter((item) => item.type === "login")
-                    .map((item, index) => (
-                      <span
-                        key={`login-${index}`}
-                        className={`
+                  <span
+                    className={`
                         ${styles["item-base"]}
                         ${styles["item-border-Bottom"]}
                       `}
-                      >
-                        {`${AuditTrialDateTimeFunctionViewActionDetails(
-                          viewActionModalDataState.dateLogin,
-                          locale
-                        )} – `}
-                        {t("Logged-In")}
-                      </span>
-                    ))}
-
+                  >
+                    {`${AuditTrialDateTimeFunctionViewActionDetails(
+                      viewActionModalDataState.dateLogin,
+                      locale
+                    )} – `}
+                    {t("Logged-In")}
+                  </span>
                   {/* ACTIVITY ITEMS OR NO ACTIVITY MESSAGE */}
                   {auditActionsData.length > 0 ? (
                     auditActionsData.map((item, index, arr) => (
@@ -201,21 +167,18 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                       </Col>
                     </Row>
                   )}
-
-                  {/* LOGOUT ITEM */}
-                  {/* {dummyData
-                    .filter((item) => item.type === "logout")
-                    .map((item, index) => (
-                      <span
-                        key={`logout-${index}`}
-                        className={`
+                  <span
+                    className={`
                         ${styles["item-base"]}
                         ${styles["item-border-top"]}
                       `}
-                      >
-                        {`${item.timestamp} – ${item.status}`}
-                      </span>
-                    ))} */}
+                  >
+                    {`${AuditTrialDateTimeFunctionViewActionDetails(
+                      viewActionModalDataState.dateLogOut,
+                      locale
+                    )} – `}
+                    {t("Logged-out")}
+                  </span>
                 </div>
               </Col>
             </Row>
