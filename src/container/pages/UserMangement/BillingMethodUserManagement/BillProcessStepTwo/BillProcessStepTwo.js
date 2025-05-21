@@ -15,6 +15,7 @@ const BillProcessStepTwo = ({
   setBillingAddress,
   select,
   countryOnSelect,
+  countryNames,
 }) => {
   const { t } = useTranslation();
 
@@ -120,11 +121,10 @@ const BillProcessStepTwo = ({
           md={12}
           sm={12}
           xs={12}
-          className={styles["outerBoxForBilling"]}
-        >
-          <Row className="mt-5">
+          className={styles["outerBoxForBilling"]}>
+          <Row className='mt-5'>
             <Col lg={7} md={7} sm={12} xs={12}>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12} xs={12}>
@@ -140,15 +140,20 @@ const BillProcessStepTwo = ({
                       md={12}
                       sm={12}
                       xs={12}
-                      className={styles["react-flag-Info-Signup"]}
-                    >
+                      className={styles["react-flag-Info-Signup"]}>
                       <ReactFlagsSelect
                         selected={select}
                         onSelect={countryOnSelect}
+                        disabled={countryNames.length === 0 ? true : false}
                         searchable={true}
+                        className={
+                          countryNames.length === 0
+                            ? styles["country_ids_disabled"]
+                            : styles["country_ids"]
+                        }
                         required={true}
                         value={billingAddress.Country.value}
-                        name="Country"
+                        name='Country'
                       />
                     </Col>
                     <Row>
@@ -158,8 +163,7 @@ const BillProcessStepTwo = ({
                             billingAddress.Country.value === ""
                               ? ` ${styles["errorMessage_Billing"]} `
                               : `${styles["errorMessage_hidden_Billing"]}`
-                          }
-                        >
+                          }>
                           {billingAddress.Country.errorMessage}
                         </p>
                       </Col>
@@ -179,7 +183,7 @@ const BillProcessStepTwo = ({
                     }
                     change={billingAddressDetailsHandler}
                     value={billingAddress.PostalCode.value}
-                    name="PostalCode"
+                    name='PostalCode'
                   />
                   <Row>
                     <Col className={styles["errorContainer"]}>
@@ -188,15 +192,14 @@ const BillProcessStepTwo = ({
                           billingAddress.PostalCode.value === ""
                             ? ` ${styles["errorMessage_Billing"]} `
                             : `${styles["errorMessage_hidden_Billing"]}`
-                        }
-                      >
+                        }>
                         {billingAddress.PostalCode.errorMessage}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={12} xs={12}>
                   <TextField
                     placeholder={t("State-province*")}
@@ -210,7 +213,7 @@ const BillProcessStepTwo = ({
                     }
                     value={billingAddress.State.value}
                     change={billingAddressDetailsHandler}
-                    name="State"
+                    name='State'
                   />
                   <Row>
                     <Col className={styles["errorContainer"]}>
@@ -219,8 +222,7 @@ const BillProcessStepTwo = ({
                           billingAddress.State.value === ""
                             ? ` ${styles["errorMessage_Billing"]} `
                             : `${styles["errorMessage_hidden_Billing"]}`
-                        }
-                      >
+                        }>
                         {billingAddress.State.errorMessage}
                       </p>
                     </Col>
@@ -239,7 +241,7 @@ const BillProcessStepTwo = ({
                     }
                     value={billingAddress.City.value}
                     change={billingAddressDetailsHandler}
-                    name="City"
+                    name='City'
                   />
                   <Row>
                     <Col className={styles["errorContainer"]}>
@@ -248,15 +250,14 @@ const BillProcessStepTwo = ({
                           billingAddress.City.value === ""
                             ? ` ${styles["errorMessage_Billing"]} `
                             : `${styles["errorMessage_hidden_Billing"]}`
-                        }
-                      >
+                        }>
                         {billingAddress.City.errorMessage}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
                     placeholder={t("Address*")}
@@ -270,7 +271,7 @@ const BillProcessStepTwo = ({
                       </>
                     }
                     change={billingAddressDetailsHandler}
-                    name="Address"
+                    name='Address'
                   />
                   <Row>
                     <Col className={styles["errorContainer"]}>
@@ -279,8 +280,7 @@ const BillProcessStepTwo = ({
                           billingAddress.Address.value === ""
                             ? ` ${styles["errorMessage_Billing"]} `
                             : `${styles["errorMessage_hidden_Billing"]}`
-                        }
-                      >
+                        }>
                         {billingAddress.Address.errorMessage}
                       </p>
                     </Col>
@@ -293,9 +293,8 @@ const BillProcessStepTwo = ({
               md={5}
               sm={12}
               xs={12}
-              className="d-flex justify-content-center align-items-center"
-            >
-              <img src={locationImage} alt="" />
+              className='d-flex justify-content-center align-items-center'>
+              <img src={locationImage} alt='' />
             </Col>
           </Row>
         </Col>
