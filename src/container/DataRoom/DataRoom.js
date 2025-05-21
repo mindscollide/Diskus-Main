@@ -2943,7 +2943,7 @@ const DataRoom = () => {
   // api call onscroll
   const handleScroll = async (e) => {};
 
-  const { hasReachedBottom, setHasReachedBottom } = useTableScrollBottom(
+useTableScrollBottom(
     async () => {
       if (getAllData.length !== totalRecords) {
         if (sRowsData <= totalRecords) {
@@ -3514,7 +3514,7 @@ const DataRoom = () => {
                                     onChange={handleSortChange}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: "53vh", x: "hidden" }}
+                                    scroll={{ y: "53vh", x: "100%" }}
                                   />
                                 </>
                               ) : (
@@ -3760,7 +3760,7 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ x: "hidden", y: "53vh" }}
+                                    scroll={{ x: "100%", y: "53vh" }}
                                     footer={() => {
                                       return (
                                         DataRoomReducer.dataBehaviour && (

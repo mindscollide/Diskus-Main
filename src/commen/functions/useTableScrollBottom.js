@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
@@ -7,16 +7,15 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
   useEffect(() => {
     // Try to find either .ant-table-body or .gridviewDataroom
     const scrollContainer =
-      document.querySelector('.ant-table-body') ||
-      document.querySelector('.gridviewDataroom');
-    console.log(scrollContainer, "scrollContainerscrollContainer")
+      document.querySelector(".ant-table-body")
+    console.log(scrollContainer, "scrollContainerscrollContainer");
     if (scrollContainer) {
       containerRef.current = scrollContainer;
 
       const handleScroll = async () => {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
         const isBottom = scrollTop + clientHeight >= scrollHeight - threshold;
-        console.log(isBottom, "scrollContainerscrollContainer")
+        console.log(isBottom, "scrollContainerscrollContainer");
 
         if (isBottom && !hasReachedBottom) {
           setHasReachedBottom(true);
@@ -28,8 +27,8 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
         }
       };
 
-      scrollContainer.addEventListener('scroll', handleScroll);
-      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+      scrollContainer.addEventListener("scroll", handleScroll);
+      return () => scrollContainer.removeEventListener("scroll", handleScroll);
     }
   }, [hasReachedBottom, onBottomReach, threshold]);
 
