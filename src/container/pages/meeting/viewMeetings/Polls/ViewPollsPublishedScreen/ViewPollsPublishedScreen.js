@@ -242,11 +242,11 @@ const ViewPollsPublishedScreen = ({ setViewPublishedPoll }) => {
                       className={styles["Close_button_View"]}
                       onClick={handleCancelButton}
                     />
-                    <Button
+                    {/* <Button
                       text={t("View-votes")}
                       className={styles["ViewVotes_button_View"]}
                       onClick={handleViewVotesScreen}
-                    />
+                    /> */}
                   </Col>
                 </Row>
               </Col>

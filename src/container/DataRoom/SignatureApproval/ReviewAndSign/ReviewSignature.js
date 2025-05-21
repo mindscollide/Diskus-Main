@@ -37,6 +37,7 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
+import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -198,21 +199,22 @@ const ReviewSignature = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex gap-3 align-items-center justify-content-center'>
+      <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -236,12 +238,12 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          <span className='d-flex  gap-2 align-items-center'>
+          <span className="d-flex  gap-2 align-items-center">
             {t("Document-name")}
             {sortFileNameBy === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -265,8 +267,9 @@ const ReviewSignature = () => {
       }),
       render: (text, record) => (
         <p
-          className='cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center'
-          onClick={() => handleClickOpenSigatureDoc(record)}>
+          className="cursor-pointer m-0 text-truncate d-flex gap-2 align-items-center"
+          onClick={() => handleClickOpenSigatureDoc(record)}
+        >
           <img
             width={"25px"}
             height={"25px"}
@@ -280,7 +283,7 @@ const ReviewSignature = () => {
       // Column for signatories
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center'>
+          <span className="d-flex gap-2 justify-content-center">
             {t("Signatories")}
           </span>
         </>
@@ -295,21 +298,20 @@ const ReviewSignature = () => {
         return (
           <span
             onClick={() => handleClickSignatoriesList(record)}
-            className={styles["signatories_vale"]}>{` ${text} ${t(
-            "Signatories"
-          )}`}</span>
+            className={styles["signatories_vale"]}
+          >{` ${text} ${t("Signatories")}`}</span>
         );
       },
     },
     {
       title: (
         <>
-          <span className='d-flex justify-content-center gap-2 align-items-center'>
+          <span className="d-flex justify-content-center gap-2 align-items-center">
             {t("Requested-by")}{" "}
             {sortOrderRequestBy === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -332,15 +334,14 @@ const ReviewSignature = () => {
       }),
       render: (text, record) => (
         <span
-          className={
-            " d-flex align-items-center gap-2 justify-content-center "
-          }>
+          className={" d-flex align-items-center gap-2 justify-content-center "}
+        >
           <img
             src={`data:image/jpeg;base64,${record.creatorImg}`}
             width={22}
             height={22}
-            className='rounded-circle '
-            alt=''
+            className="rounded-circle "
+            alt=""
           />
           <span>{text}</span>
         </span>
@@ -349,12 +350,12 @@ const ReviewSignature = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center gap-2 align-items-center'>
+          <span className="d-flex justify-content-center gap-2 align-items-center">
             {t("Sent-on")}{" "}
             {sortOrderDateTime === "descend" ? (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             ) : (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             )}
           </span>
         </>
@@ -391,7 +392,7 @@ const ReviewSignature = () => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -399,7 +400,8 @@ const ReviewSignature = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -415,7 +417,8 @@ const ReviewSignature = () => {
                 : status?.toLowerCase() === "Declined".toLowerCase()
                 ? styles["declineStatus"]
                 : styles["draftStatus"]
-            }>
+            }
+          >
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
               : status?.toLowerCase() === "Signed".toLowerCase()
@@ -431,20 +434,43 @@ const ReviewSignature = () => {
     },
   ];
 
-  const handleScroll = async () => {
-    console.log(
-      totalDataLnegth <= totalRecords,
-      totalDataLnegth,
-      totalRecords,
-      "handleScrollhandleScroll"
-    );
-    if (totalDataLnegth <= totalRecords) {
-      setIsScrolling(true);
-      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-      console.log(Data, "handleScrollhandleScrollhandleScroll");
-      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  // const handleScroll = async () => {
+  //   console.log(
+  //     totalDataLnegth <= totalRecords,
+  //     totalDataLnegth,
+  //     totalRecords,
+  //     "handleScrollhandleScroll"
+  //   );
+  //   if (totalDataLnegth <= totalRecords) {
+  //     setIsScrolling(true);
+  //     let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+  //     console.log(Data, "handleScrollhandleScrollhandleScroll");
+  //     await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  //   }
+  // };
+
+  useTableScrollBottom(async () => {
+    if (reviewSignature.length !== totalRecords) {
+      if (totalDataLnegth <= totalRecords) {
+        setIsScrolling(true);
+        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+        console.log(Data, "handleScroll: fetching pending approvals");
+        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+        return; // stop further execution if this condition is met
+      } else {
+        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+      }
     }
-  };
+  });
+
+  console.log(totalDataLnegth <= totalRecords, "totalRecordstotalRecords");
+  console.log(
+    reviewSignature.length !== totalRecords,
+    "totalRecordstotalRecords"
+  );
+  console.log(totalDataLnegth, "totalRecordstotalRecords");
+  console.log(totalRecords, "totalRecordstotalRecords");
 
   useEffect(() => {
     if (
@@ -588,7 +614,8 @@ const ReviewSignature = () => {
                   style={{
                     height: "30px",
                     borderRadius: "20px",
-                  }}>
+                  }}
+                >
                   <ProgressBar
                     style={{
                       backgroundColor: "#55ce5c",
@@ -624,7 +651,7 @@ const ReviewSignature = () => {
                   />
                 </ProgressBar>
               </Col>
-              <Col lg={6} md={6} sm={12} className='d-flex'>
+              <Col lg={6} md={6} sm={12} className="d-flex">
                 <span className={styles["line"]} />
                 <div className={styles["progress-value-wrapper-signed"]}>
                   <span className={styles["numeric-value"]}>
@@ -663,47 +690,45 @@ const ReviewSignature = () => {
       <Row>
         <Col sm={12} md={12} lg={12}>
           {/* {reviewAndSignatureStatus.length > 0 && ( */}
-          <InfiniteScroll
+          {/* <InfiniteScroll
             dataLength={reviewSignature.length}
             next={handleScroll}
             hasMore={reviewSignature.length === totalRecords ? false : true}
             style={{
               overflowX: "hidden",
             }}
-            height={"50vh"}>
-            <TableToDo
-              sortDirections={["descend", "ascend"]}
-              column={pendingApprovalColumns}
-              className={"PendingApprovalsTable"}
-              sticky={true}
-              showHeader={true}
-              locale={{
-                emptyText: (
-                  <>
-                    <section className='d-flex flex-column align-items-center justify-content-center mt-3'>
-                      <img
-                        src={ReviewSignatureEmptyImage}
-                        width={"250px"}
-                        alt=''
-                      />
-                      <span className={styles["ReviewMinutes_emptyTitle"]}>
-                        {t("No-document-to-review")}
-                      </span>
-                      <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
-                        {t("No-document-awaiting-review-and-signature")}
-                      </span>
-                    </section>
-                  </>
-                ),
-              }}
-              rows={reviewSignature}
-              // scroll={scroll}
-              pagination={false}
-              id={(record, index) =>
-                index === reviewSignature.length - 1 ? "last-row-class" : ""
-              }
-            />
-          </InfiniteScroll>
+            height={"50vh"}
+          > */}
+          <TableToDo
+            column={pendingApprovalColumns}
+            className={"PendingApprovalsTable"}
+            locale={{
+              emptyText: (
+                <>
+                  <section className="d-flex flex-column align-items-center justify-content-center mt-3">
+                    <img
+                      src={ReviewSignatureEmptyImage}
+                      width={"250px"}
+                      alt=""
+                    />
+                    <span className={styles["ReviewMinutes_emptyTitle"]}>
+                      {t("No-document-to-review")}
+                    </span>
+                    <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
+                      {t("No-document-awaiting-review-and-signature")}
+                    </span>
+                  </section>
+                </>
+              ),
+            }}
+            rows={reviewSignature}
+            scroll={{ y: "43vh", x: "100%" }}
+            pagination={false}
+            id={(record, index) =>
+              index === reviewSignature.length - 1 ? "last-row-class" : ""
+            }
+          />
+          {/* </InfiniteScroll> */}
           {/* )} */}
         </Col>
       </Row>{" "}
