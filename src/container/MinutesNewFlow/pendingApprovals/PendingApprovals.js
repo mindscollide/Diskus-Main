@@ -156,14 +156,15 @@ const PendingApproval = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex gap-3 align-items-center justify-content-center'>
+      <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
           text={"Reset"}
           className={styles["FilterResetBtn"]}
@@ -187,9 +188,9 @@ const PendingApproval = () => {
           <span>
             {t("Meeting-title")}{" "}
             {sortOrderMeetingTitle === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -225,7 +226,8 @@ const PendingApproval = () => {
             record.status === "Expired"
               ? "cursor-pointer opacity-25 m-0 text-truncate"
               : "cursor-pointer m-0 text-truncate"
-          }>
+          }
+        >
           {text}
         </p>
       ),
@@ -236,9 +238,9 @@ const PendingApproval = () => {
           <span>
             {t("Review-requested-by")}{" "}
             {sortOrderReviewRequest === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -273,9 +275,9 @@ const PendingApproval = () => {
           <span>
             {t("Submission-date")}{" "}
             {sortOrderLeaveDateTime === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -313,7 +315,7 @@ const PendingApproval = () => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -321,7 +323,8 @@ const PendingApproval = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -333,7 +336,8 @@ const PendingApproval = () => {
               : text === "Pending"
               ? styles["pendingStatus"]
               : styles["reviewedStatus"]
-          }>
+          }
+        >
           {text === "Expired"
             ? t("Expired")
             : text === "Pending"
@@ -449,7 +453,7 @@ const PendingApproval = () => {
     <section className={styles["pendingApprovalContainer"]}>
       {" "}
       {/* Container for pending approval section */}
-      <Row className='my-3 d-flex align-items-center'>
+      <Row className="my-3 d-flex align-items-center">
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {t("Pending-approval")}{" "}
@@ -515,7 +519,8 @@ const PendingApproval = () => {
                         style={{
                           height: "30px",
                           borderRadius: "20px",
-                        }}>
+                        }}
+                      >
                         <ProgressBar
                           style={{
                             backgroundColor: "#6172D6",
@@ -551,7 +556,7 @@ const PendingApproval = () => {
                         />
                       </ProgressBar>
                     </Col>
-                    <Col lg={6} md={6} sm={12} className='d-flex'>
+                    <Col lg={6} md={6} sm={12} className="d-flex">
                       <span className={styles["line"]} />
                       <div className={styles["progress-value-wrapper-purple"]}>
                         <span className={styles["numeric-value"]}>
@@ -584,9 +589,10 @@ const PendingApproval = () => {
                       className={"PendingApprovalsTable"}
                       rows={rowsPendingApproval}
                       pagination={false}
-                      scroll={
-                        rowsPendingApproval.length > 10 ? { y: 385 } : undefined
-                      }
+                      // scroll={
+                      //   rowsPendingApproval.length > 10 ? { y: 385 } : undefined
+                      // }
+                      scroll={{ y: "53vh", x: "100%" }}
                       id={(record, index) =>
                         index === rowsPendingApproval.length - 1
                           ? "last-row-class"
@@ -596,8 +602,9 @@ const PendingApproval = () => {
                         emptyText: (
                           <>
                             <section
-                              className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}>
-                              <img src={NoApprovals} alt='' />
+                              className={`${styles["emptyScreen-height"]} d-flex flex-column align-items-center justify-content-center`}
+                            >
+                              <img src={NoApprovals} alt="" />
                               <span className={styles["No-Approvals"]}>
                                 {t("Approvals")}
                               </span>
