@@ -59,7 +59,10 @@ const Actions = () => {
     dataroomMapFolderId,
   } = useMeetingContext();
 
-  console.log(advanceMeetingModalID, "advanceMeetingModalIDadvanceMeetingModalIDadvanceMeetingModalID");
+  console.log(
+    advanceMeetingModalID,
+    "advanceMeetingModalIDadvanceMeetingModalIDadvanceMeetingModalID"
+  );
   const cancelActions = useSelector(
     (state) => state.NewMeetingreducer.cancelActions
   );
@@ -239,7 +242,15 @@ const Actions = () => {
       setRemoveTodo(statusdata);
     }
     dispatch(
-      updateTodoStatusFunc(navigate, e, statusdata, t, false, 3, advanceMeetingModalID)
+      updateTodoStatusFunc(
+        navigate,
+        e,
+        statusdata,
+        t,
+        false,
+        3,
+        advanceMeetingModalID
+      )
     );
   };
 
@@ -295,21 +306,22 @@ const Actions = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}>
+          onClick={() => handleMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex gap-3 align-items-center justify-content-center'>
+      <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={"FilterResetBtn"}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={"ResetOkBtn"}
           onClick={handleApplyFilter}
@@ -321,12 +333,12 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center'>
+          <span className="d-flex gap-2 align-items-center">
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -349,9 +361,10 @@ const Actions = () => {
       }),
       render: (text, record) => (
         <p
-          className='todolist-title-col'
+          className="todolist-title-col"
           title={text}
-          onClick={(e) => viewActionModal(record)}>
+          onClick={(e) => viewActionModal(record)}
+        >
           {text}
         </p>
       ),
@@ -359,12 +372,12 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -393,13 +406,13 @@ const Actions = () => {
       },
       render: (record, index) => {
         return (
-          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
             {" "}
             <img
-              draggable='false'
-              className='data-img'
+              draggable="false"
+              className="data-img"
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=''
+              alt=""
             />
             {record?.name}
           </p>
@@ -409,12 +422,12 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 justify-content-center align-items-center'>
+          <span className="d-flex gap-2 justify-content-center align-items-center">
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt='' />
+              <img src={DescendIcon} alt="" />
             ) : (
-              <img src={AscendIcon} alt='' />
+              <img src={AscendIcon} alt="" />
             )}
           </span>
         </>
@@ -442,15 +455,15 @@ const Actions = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
+              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
 
                     {text[0].name}
@@ -458,10 +471,10 @@ const Actions = () => {
                 ) : (
                   <>
                     <img
-                      draggable='false'
-                      className='data-img'
+                      draggable="false"
+                      className="data-img"
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=''
+                      alt=""
                     />
                     {text[0].name}
                   </>
@@ -475,12 +488,12 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className='d-flex gap-2 align-items-center justify-content-center'>
+          <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt='' />
+              <img src={ArrowDownIcon} alt="" />
             ) : (
-              <img src={ArrowUpIcon} alt='' />
+              <img src={ArrowUpIcon} alt="" />
             )}
           </span>
         </>
@@ -508,7 +521,7 @@ const Actions = () => {
       render: (text, record) => {
         console.log(record, "deadlineDateTime");
         return (
-          <span className='text-nowrap text-center'>
+          <span className="text-nowrap text-center">
             {_justShowDateformatBilling(record.deadlineDateTime)}
           </span>
         );
@@ -523,7 +536,7 @@ const Actions = () => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className='filter-chevron-icon-todolist'
+          className="filter-chevron-icon-todolist"
           onClick={handleClickChevron}
         />
       ),
@@ -531,7 +544,8 @@ const Actions = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
+          onVisibleChange={(open) => setVisible(open)}
+        >
           <div />
         </Dropdown>
       ),
@@ -542,7 +556,7 @@ const Actions = () => {
               <Select
                 value={text.status}
                 bordered={false}
-                popupClassName='Status-Todo'
+                popupClassName="Status-Todo"
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -556,7 +570,8 @@ const Actions = () => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
                 {statusOptions.map((optValue) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -582,7 +597,8 @@ const Actions = () => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }>
+              }
+            >
               {text.status}
             </p>
           );
@@ -600,10 +616,11 @@ const Actions = () => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (
             <i
-              className='meeting-editbutton cursor-pointer'
+              className="meeting-editbutton cursor-pointer"
               title={t("Delete")}
-              onClick={(e) => deleteActionHandler(record)}>
-              <img draggable='false' src={del} alt='' />
+              onClick={(e) => deleteActionHandler(record)}
+            >
+              <img draggable="false" src={del} alt="" />
             </i>
           );
         } else {
@@ -748,12 +765,12 @@ const Actions = () => {
         />
       ) : (
         <>
-          <Row className='mt-3'>
-            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <Button
                 text={t("Create-task")}
                 className={"Create_Task_Button"}
-                icon={<img draggable={false} src={addmore} alt='' />}
+                icon={<img draggable={false} src={addmore} alt="" />}
                 onClick={handleCreateTaskButton}
               />
             </Col>
@@ -775,25 +792,27 @@ const Actions = () => {
                         locale={{
                           emptyText: (
                             <>
-                              <Row className='mt-0'>
+                              <Row className="mt-0">
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center'>
+                                  className="d-flex justify-content-center"
+                                >
                                   <img
-                                    alt=''
+                                    alt=""
                                     draggable={false}
                                     src={EmptyStates}
                                   />
                                 </Col>
                               </Row>
-                              <Row className='mt-2'>
+                              <Row className="mt-2">
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center'>
+                                  className="d-flex justify-content-center"
+                                >
                                   <span className={"Empty-State_Heading"}>
                                     {t("Create-tasks-instantly")}
                                   </span>
@@ -804,7 +823,8 @@ const Actions = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center'>
+                                  className="d-flex justify-content-center"
+                                >
                                   <span className={"EmptyState_SubHeading"}>
                                     {t(
                                       "Assign-tasks-in-real-time-while-the-meeting-is-underway"
@@ -820,12 +840,13 @@ const Actions = () => {
                   </Row>
 
                   {Object.keys(actionsRows).length > 0 && (
-                    <Row className=''>
+                    <Row className="">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Row>
                           <Col
                             lg={12}
@@ -833,8 +854,9 @@ const Actions = () => {
                             sm={12}
                             className={
                               "pagination-groups-table d-flex justify-content-center"
-                            }>
-                            <span className='PaginationStyle-TodoList'>
+                            }
+                          >
+                            <span className="PaginationStyle-TodoList">
                               <CustomPagination
                                 onChange={handleForPagination}
                                 current={currentPage}

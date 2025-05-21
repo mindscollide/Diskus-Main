@@ -125,21 +125,6 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     });
   }, []);
 
-  // translate Languages start
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-
-  const currentLocale = Cookies.get("i18next") || "en";
-
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-
-  useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
-
   const handleNext = () => {
     if (activeStep === 0 && activeComponent === "PakageDetails") {
       setActiveComponent("billingContactDetails");
@@ -303,19 +288,33 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
   //Flag Selector
   const countryOnSelect = (code) => {
     console.log(code, "countryOnSelect");
-    setSelect(code);
     let a = Object.values(countryNames).find((obj) => {
       return obj.shortCode === code;
     });
+    if (a !== undefined) {
+      setSelect(code);
+
+      setBillingAddress({
+        ...billingAddress,
+        Country: {
+          value: a.shortCode,
+          errorMessage: "",
+          errorStatus: false, // Empty error message
+        },
+      });
+    } else {
+      setSelect("code");
+
+      setBillingAddress({
+        ...billingAddress,
+        Country: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false, // Empty error message
+        },
+      });
+    }
     console.log(a, "countryOnSelect");
-    setBillingAddress({
-      ...billingAddress,
-      Country: {
-        value: a.shortCode,
-        errorMessage: "",
-        errorStatus: false, // Empty error message
-      },
-    });
   };
 
   //Go Back
@@ -329,7 +328,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
     <Container className={styles["sectionStyling"]}>
       {Number(SignupPage) === 5 ? (
         <>
-          <Row className="position-relative">
+          <Row className='position-relative'>
             <Col className={styles["languageSelector"]}>
               <LanguageSelector />
             </Col>
@@ -339,14 +338,13 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
       <Row>
         <Col lg={1} md={1} sm={12} xs={12}></Col>
         <Col lg={10} md={10} sm={12} xs={12}>
-          <Row className="mt-4">
+          <Row className='mt-4'>
             <Col
               lg={12}
               md={12}
               sm={12}
               XS={12}
-              className="d-flex justify-content-center"
-            >
+              className='d-flex justify-content-center'>
               <span className={styles["BillingDetailsHeading"]}>
                 {t("Billing-details")}
               </span>
@@ -354,7 +352,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <div className="custom-stepper">
+              <div className='custom-stepper'>
                 <Stepper
                   activeStep={activeStep}
                   styleConfig={{
@@ -363,49 +361,45 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
                     inactiveBgColor: "rgb(224, 224, 224)",
                     size: "4rem",
                     zIndex: "1",
-                  }}
-                >
+                  }}>
                   <Step
-                    className="step-button"
-                    data-step="1"
+                    className='step-button'
+                    data-step='1'
                     label={
                       <span
                         style={{
                           color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
                           fontWeight: "600",
                           fontSize: "16px",
-                        }}
-                      >
+                        }}>
                         {t("Package-details")}
                       </span>
                     }
                   />
                   <Step
-                    className="step-button"
-                    data-step="2"
+                    className='step-button'
+                    data-step='2'
                     label={
                       <span
                         style={{
                           color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
                           fontWeight: "600",
                           fontSize: "16px",
-                        }}
-                      >
+                        }}>
                         {t("Billing-contact")}
                       </span>
                     }
                   />
                   <Step
-                    className="step-button"
-                    data-step="3"
+                    className='step-button'
+                    data-step='3'
                     label={
                       <span
                         style={{
                           color: activeStep >= 0 ? "#6172d6" : "#5a5a5a",
                           fontWeight: "600",
                           fontSize: "16px",
-                        }}
-                      >
+                        }}>
                         {t("Billing-address")}
                       </span>
                     }
@@ -433,20 +427,20 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
                     setBillingAddress={setBillingAddress}
                     countryOnSelect={countryOnSelect}
                     select={select}
+                    countryNames={countryNames}
                   />
                 </>
               ) : null}
             </Col>
           </Row>
 
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={3}
               md={3}
               sm={3}
               xs={12}
-              className="d-flex justify-content-start"
-            >
+              className='d-flex justify-content-start'>
               <span onClick={onClickLink} className={styles["signUp_goBack"]}>
                 {t("Go-back")}
               </span>
@@ -456,8 +450,7 @@ const BillingMethodUsermanagement = ({ setStoredStep }) => {
               md={9}
               sm={12}
               xs={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               {activeComponent === "PakageDetails" ? null : (
                 <Button
                   text={t("Back")}
