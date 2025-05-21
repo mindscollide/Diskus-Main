@@ -1025,19 +1025,21 @@ const VideoPanelNormal = () => {
             );
           }, 1000);
         }
+      } else {
+        if (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) {
+          console.log("Does Check Recording Stop");
+          const iframe = iframeRef.current;
+          if (iframe && iframe?.contentWindow) {
+            console.log("Does Check Recording Stop");
+            setTimeout(() => {
+              iframe?.contentWindow?.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+            }, 1000);
+          }
+        }
       }
-      //  else {
-      //   const iframe = iframeRef.current;
-      //   if (iframe && iframe?.contentWindow) {
-      //     console.log("Does Check Recording Stop");
-      //     setTimeout(() => {
-      //       iframe?.contentWindow?.postMessage(
-      //         "RecordingStopMsgFromIframe",
-      //         "*"
-      //       );
-      //     }, 1000);
-      //   }
-      // }
     }
   };
 

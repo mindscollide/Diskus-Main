@@ -246,6 +246,12 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
+  const nonMeetingVideoCheckModal = useSelector(
+    (state) => state.videoFeatureReducer.nonMeetingVideo
+  );
+
+  console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
+
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
     "presenterViewJoinFlagpresenterViewHostFlag"
@@ -914,7 +920,11 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
     try {
       let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
       let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+      let acceptedRoomID = localStorage.getItem("acceptedRoomID");
       let activeRoomID = localStorage.getItem("activeRoomID");
       let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
@@ -956,11 +966,20 @@ const VideoCallNormalHeader = ({
         }
       }
 
+      let RoomID;
+      if (isMeeting) {
+        console.log("busyCall");
+        RoomID = isZoomEnabled ? String(acceptedRoomID) : acceptedRoomID;
+      } else {
+        console.log("busyCall");
+        RoomID = isZoomEnabled ? String(initiateCallRoomID) : activeRoomID;
+      }
+
       console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: isZoomEnabled ? String(initiateCallRoomID) : activeRoomID,
-        IsCaller: isCaller,
+        RoomID: RoomID,
+        IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
       await dispatch(LeaveCall(Data, navigate, t));
@@ -1476,15 +1495,7 @@ const VideoCallNormalHeader = ({
 
                     {/* if Recording is Pause and Stop */}
                     {pauseRecordingState && (
-                      <div
-                        className={"Record-Start-Background-MeetingVideo"}
-                        // className={
-                        //   !presenterViewFlag && !presenterViewHostFlag
-                        //     ? "Record-Start-Background-MeetingVideo"
-                        //     : "Record-Start-Background"
-                        // }
-                        // onClick={onResumeRecording}
-                      >
+                      <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
                           title={t("Stop-recording")}

@@ -1580,26 +1580,26 @@ const Dashboard = () => {
 
               console.log(data.payload, "checkHostTransfer");
 
-              if (isZoomEnabled) {
-                console.log("HostTransfer");
-                const iframe = iframeRef.current;
-                if (iframe && iframe.contentWindow) {
-                  console.log("HostTransfer");
-                  // iframe.contentWindow.postMessage(
-                  //   "hostTransferToParticipant",
-                  //   "*"
-                  // );
+              // if (isZoomEnabled) {
+              //   console.log("HostTransfer");
+              //   const iframe = iframeRef.current;
+              //   if (iframe && iframe.contentWindow) {
+              //     console.log("HostTransfer");
+              //     // iframe.contentWindow.postMessage(
+              //     //   "hostTransferToParticipant",
+              //     //   "*"
+              //     // );
 
-                  iframe.contentWindow.postMessage(
-                    "RecordingStopMsgFromIframe",
-                    "*"
-                  );
-                }
-                setStartRecordingState(true);
-                setPauseRecordingState(false);
-                setResumeRecordingState(false);
-                setStopRecordingState(false);
-              }
+              //     iframe.contentWindow.postMessage(
+              //       "RecordingStopMsgFromIframe",
+              //       "*"
+              //     );
+              //   }
+              //   setStartRecordingState(true);
+              //   setPauseRecordingState(false);
+              //   setResumeRecordingState(false);
+              //   setStopRecordingState(false);
+              // }
 
               console.log("mqtt check 22", userID);
               console.log("mqtt check 22", data.receiverID[0]);
