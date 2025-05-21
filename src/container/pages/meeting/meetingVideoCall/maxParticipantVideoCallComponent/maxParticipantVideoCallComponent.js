@@ -322,6 +322,7 @@ const ParticipantVideoCallComponent = () => {
       localStorage.setItem("userRole", "Participant");
       localStorage.setItem("isMeetingVideo", true);
     }
+    dispatch(participantVideoButtonState(true));
     let data = {
       MeetingId: Number(meetingId),
       VideoCallURL: String(newVideoUrl),
