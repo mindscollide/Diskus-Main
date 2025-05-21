@@ -166,12 +166,12 @@ const PendingApproval = () => {
       <Menu.Divider />
       <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}

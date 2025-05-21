@@ -37,6 +37,7 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { convertToArabicNumerals } from "../../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
 import SignatoriesListModal from "../ApprovalSend/SignatoriesList/SignatoriesListModal";
+import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
 const ReviewSignature = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -208,12 +209,12 @@ const ReviewSignature = () => {
       <Menu.Divider />
       <div className="d-flex gap-3 align-items-center justify-content-center">
         <Button
-          text={"Reset"}
+          text={t("Reset")}
           className={styles["FilterResetBtn"]}
           onClick={resetFilter}
         />
         <Button
-          text={"Ok"}
+          text={t("Ok")}
           disableBtn={selectedValues.length === 0}
           className={styles["ResetOkBtn"]}
           onClick={handleApplyFilter}
@@ -433,20 +434,43 @@ const ReviewSignature = () => {
     },
   ];
 
-  const handleScroll = async () => {
-    console.log(
-      totalDataLnegth <= totalRecords,
-      totalDataLnegth,
-      totalRecords,
-      "handleScrollhandleScroll"
-    );
-    if (totalDataLnegth <= totalRecords) {
-      setIsScrolling(true);
-      let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-      console.log(Data, "handleScrollhandleScrollhandleScroll");
-      await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  // const handleScroll = async () => {
+  //   console.log(
+  //     totalDataLnegth <= totalRecords,
+  //     totalDataLnegth,
+  //     totalRecords,
+  //     "handleScrollhandleScroll"
+  //   );
+  //   if (totalDataLnegth <= totalRecords) {
+  //     setIsScrolling(true);
+  //     let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+  //     console.log(Data, "handleScrollhandleScrollhandleScroll");
+  //     await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+  //   }
+  // };
+
+  useTableScrollBottom(async () => {
+    if (reviewSignature.length !== totalRecords) {
+      if (totalDataLnegth <= totalRecords) {
+        setIsScrolling(true);
+        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+        console.log(Data, "handleScroll: fetching pending approvals");
+        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+        return; // stop further execution if this condition is met
+      } else {
+        let Data = { sRow: Number(totalDataLnegth), Length: 10 };
+        await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
+      }
     }
-  };
+  });
+
+  console.log(totalDataLnegth <= totalRecords, "totalRecordstotalRecords");
+  console.log(
+    reviewSignature.length !== totalRecords,
+    "totalRecordstotalRecords"
+  );
+  console.log(totalDataLnegth, "totalRecordstotalRecords");
+  console.log(totalRecords, "totalRecordstotalRecords");
 
   useEffect(() => {
     if (
@@ -666,7 +690,7 @@ const ReviewSignature = () => {
       <Row>
         <Col sm={12} md={12} lg={12}>
           {/* {reviewAndSignatureStatus.length > 0 && ( */}
-          <InfiniteScroll
+          {/* <InfiniteScroll
             dataLength={reviewSignature.length}
             next={handleScroll}
             hasMore={reviewSignature.length === totalRecords ? false : true}
@@ -674,40 +698,37 @@ const ReviewSignature = () => {
               overflowX: "hidden",
             }}
             height={"50vh"}
-          >
-            <TableToDo
-              sortDirections={["descend", "ascend"]}
-              column={pendingApprovalColumns}
-              className={"PendingApprovalsTable"}
-              sticky={true}
-              showHeader={true}
-              locale={{
-                emptyText: (
-                  <>
-                    <section className="d-flex flex-column align-items-center justify-content-center mt-3">
-                      <img
-                        src={ReviewSignatureEmptyImage}
-                        width={"250px"}
-                        alt=""
-                      />
-                      <span className={styles["ReviewMinutes_emptyTitle"]}>
-                        {t("No-document-to-review")}
-                      </span>
-                      <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
-                        {t("No-document-awaiting-review-and-signature")}
-                      </span>
-                    </section>
-                  </>
-                ),
-              }}
-              rows={reviewSignature}
-              // scroll={{ y: "53vh", x: "100%" }}
-              pagination={false}
-              id={(record, index) =>
-                index === reviewSignature.length - 1 ? "last-row-class" : ""
-              }
-            />
-          </InfiniteScroll>
+          > */}
+          <TableToDo
+            column={pendingApprovalColumns}
+            className={"PendingApprovalsTable"}
+            locale={{
+              emptyText: (
+                <>
+                  <section className="d-flex flex-column align-items-center justify-content-center mt-3">
+                    <img
+                      src={ReviewSignatureEmptyImage}
+                      width={"250px"}
+                      alt=""
+                    />
+                    <span className={styles["ReviewMinutes_emptyTitle"]}>
+                      {t("No-document-to-review")}
+                    </span>
+                    <span className={styles["ReviewMinutes_emptyTitle_tag"]}>
+                      {t("No-document-awaiting-review-and-signature")}
+                    </span>
+                  </section>
+                </>
+              ),
+            }}
+            rows={reviewSignature}
+            scroll={{ y: "43vh", x: "100%" }}
+            pagination={false}
+            id={(record, index) =>
+              index === reviewSignature.length - 1 ? "last-row-class" : ""
+            }
+          />
+          {/* </InfiniteScroll> */}
           {/* )} */}
         </Col>
       </Row>{" "}
