@@ -75,10 +75,17 @@ const VideoPanelNormal = () => {
     setToggleVideoMinimizeNonMeeting,
     toggleMicMinimizeNonMeeting,
     setToggleMicMinimizeNonMeeting,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
+    iframeRef,
+    setHandRaiseCounter,
   } = useMeetingContext();
-
-  // Create a ref for the iframe element
-  let iframeRef = useRef(null);
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -94,6 +101,12 @@ const VideoPanelNormal = () => {
 
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
 
+  let CallType = Number(localStorage.getItem("CallType"));
+
+  let initiateVideoCall = JSON.parse(localStorage.getItem("initiateVideoCall"));
+
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
 
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -101,6 +114,10 @@ const VideoPanelNormal = () => {
   let participantRoomIds = localStorage.getItem("participantRoomId");
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+  let isMeetingVideoHostChecker = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
 
   localStorage.setItem("VideoView", "Sidebar");
 
@@ -180,6 +197,8 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
+  console.log("setHandRaiseCounter", getAllParticipantMain);
+
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
@@ -223,6 +242,7 @@ const VideoPanelNormal = () => {
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
   console.log(presenterViewFlag, "presenterViewFlagNormal");
+  console.log(iframeRef, "iframeRef");
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -251,6 +271,10 @@ const VideoPanelNormal = () => {
 
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+
+  const leavePresenterParticipant = useSelector(
+    (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
 
   const startPresenterTriggered = useSelector(
@@ -291,6 +315,16 @@ const VideoPanelNormal = () => {
   const [isVideoActive, setIsVideoActive] = useState(vidStatus);
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
+
+  console.log(
+    {
+      startRecordingState,
+      pauseRecordingState,
+      stopRecordingState,
+      resumeRecordingState,
+    },
+    "checkstartRecordingState"
+  );
 
   function validateRoomID(input) {
     try {
@@ -463,6 +497,46 @@ const VideoPanelNormal = () => {
   }, [participantRemovedFromVideobyHost, iframe]);
 
   useEffect(() => {
+    if (getAllParticipantMain?.length) {
+      setAllParticipant(getAllParticipantMain);
+    }
+  }, [getAllParticipantMain]);
+
+  useEffect(() => {
+    const leftUID = leavePresenterParticipant?.uid;
+
+    // Only proceed if all flags are valid and leftUID is defined
+    if (leftUID && presenterViewFlag) {
+      const updatedList = getAllParticipantMain.filter(
+        (participant) => participant.guid !== leftUID
+      );
+      const updatedRaisedHands = updatedList.filter(
+        (participant) => participant.raiseHand === true
+      );
+      setAllParticipant(updatedRaisedHands.length);
+
+      console.log(updatedList, "setHandRaiseCounter");
+
+      // if (!isMeetingVideo) {
+      dispatch(updatedParticipantListForPresenter(updatedList));
+      // }
+    }
+  }, [leavePresenterParticipant]);
+
+  // 3️⃣ Cleanup presentation-only participants after presentation ends
+  useEffect(() => {
+    if (!presenterViewFlag || !presenterViewHostFlag) {
+      const filteredParticipants = getAllParticipantMain.filter(
+        (participant) => !participant.joinedForPresentation
+      );
+
+      console.log(filteredParticipants, "setHandRaiseCounter");
+
+      dispatch(updatedParticipantListForPresenter(filteredParticipants));
+    }
+  }, [presenterViewFlag, presenterViewHostFlag]);
+
+  useEffect(() => {
     if (participantLeaveCallForJoinNonMeetingCall) {
       const handleLeaveSession = async () => {
         const iframe = iframeRef.current;
@@ -558,24 +632,27 @@ const VideoPanelNormal = () => {
     };
   }, []);
 
+  //Hand Raise Counter To show on Participant Counter in presenter View
   useEffect(() => {
-    if (getAllParticipantMain?.length) {
-      setAllParticipant(getAllParticipantMain);
-    }
+    let dublicateData = [...getAllParticipantMain];
+    const raisedHandCounter = dublicateData.filter(
+      (participant) => participant.raiseHand === true
+    );
+    setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
-  useEffect(() => {
-    if (
-      getNewParticipantsMeetingJoin !== null &&
-      getNewParticipantsMeetingJoin !== undefined &&
-      getNewParticipantsMeetingJoin.length > 0
-    ) {
-      // Extract and set the new participants to state
-      setParticipantsList(getNewParticipantsMeetingJoin);
-    } else {
-      setParticipantsList([]);
-    }
-  }, [getNewParticipantsMeetingJoin]);
+  // useEffect(() => {
+  //   if (
+  //     getNewParticipantsMeetingJoin !== null &&
+  //     getNewParticipantsMeetingJoin !== undefined &&
+  //     getNewParticipantsMeetingJoin.length > 0
+  //   ) {
+  //     // Extract and set the new participants to state
+  //     setParticipantsList(getNewParticipantsMeetingJoin);
+  //   } else {
+  //     setParticipantsList([]);
+  //   }
+  // }, [getNewParticipantsMeetingJoin]);
 
   useEffect(() => {
     try {
@@ -926,6 +1003,44 @@ const VideoPanelNormal = () => {
     }
   };
 
+  // For Recording Scenario In One To One
+  const RecordingStartScenarioForOneToOne = () => {
+    let initiateVideoCall = JSON.parse(
+      localStorage.getItem("initiateVideoCall")
+    );
+    console.log("Does Check Recording Start", isZoomEnabled);
+    if (isZoomEnabled) {
+      console.log("Does Check Recording Start", initiateVideoCall);
+      console.log("Does Check Recording Start", isMeetingVideo);
+      if (!isMeetingVideo && initiateVideoCall) {
+        console.log("Does Check Recording Start");
+        const iframe = iframeRef.current;
+        if (iframe && iframe?.contentWindow) {
+          console.log("Does Check Recording Start");
+          setTimeout(() => {
+            console.log("Does Check Recording Start");
+            iframe?.contentWindow?.postMessage(
+              "RecordingStartMsgFromIframe",
+              "*"
+            );
+          }, 1000);
+        }
+      }
+      //  else {
+      //   const iframe = iframeRef.current;
+      //   if (iframe && iframe?.contentWindow) {
+      //     console.log("Does Check Recording Stop");
+      //     setTimeout(() => {
+      //       iframe?.contentWindow?.postMessage(
+      //         "RecordingStopMsgFromIframe",
+      //         "*"
+      //       );
+      //     }, 1000);
+      //   }
+      // }
+    }
+  };
+
   const handlePresenterViewForParticipent = async () => {
     sessionStorage.removeItem("nonPresenter");
     dispatch(setAudioControlHost(true));
@@ -1005,6 +1120,7 @@ const VideoPanelNormal = () => {
         console.log("handlePostMessage", presenterViewHostFlag);
         console.log("handlePostMessage", presenterViewHostFlag);
         console.log("handlePostMessage", event.data);
+        console.log("handlePostMessagesss", event.data);
         console.log("maximizeParticipantVideoFlag");
         switch (event.data) {
           case "ScreenSharedMsgFromIframe":
@@ -1099,8 +1215,6 @@ const VideoPanelNormal = () => {
             setIsScreenActive(false);
             console.log("ScreenSharedStopMsgFromIframe");
             if (presenterViewFlag && presenterViewHostFlag) {
-              // if (startPresenterTriggered) {
-              console.log("ScreenSharedStopMsgFromIframe");
               let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
               let currentMeetingID = Number(
                 localStorage.getItem("currentMeetingID")
@@ -1163,6 +1277,8 @@ const VideoPanelNormal = () => {
 
           case "StreamConnected":
             console.log("disableZoomBeforeJoinSession", event.data);
+            RecordingStartScenarioForOneToOne();
+
             dispatch(disableZoomBeforeJoinSession(false));
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
@@ -1173,6 +1289,22 @@ const VideoPanelNormal = () => {
 
           case "ScreenSharedCancelMsg":
             stopScreenShareEventTRiger();
+            break;
+
+          case "RecordingStartMsgFromIframe":
+            console.log("recording Start");
+            break;
+
+          case "RecordingStopMsgFromIframe":
+            console.log("recording Stop");
+            break;
+
+          case "RecordingPauseMsgFromIframe":
+            console.log("recording Pause");
+            break;
+
+          case "RecordingResumeMsgFromIframe":
+            console.log("recording Resume");
             break;
 
           default:
@@ -1446,6 +1578,120 @@ const VideoPanelNormal = () => {
     } catch {}
   }, [participantWaitinglistBox]);
 
+  const onHandleClickForStartRecording = () => {
+    console.log("onHandleClickForStartRecording");
+    setStartRecordingState(false);
+    setPauseRecordingState(true);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (isZoomEnabled) {
+      if (
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+          console.log("onHandleClickForStartRecording");
+        }
+      }
+    }
+  };
+
+  const onHandleClickForPauseRecording = () => {
+    console.log("RecordingPauseMsgFromIframe");
+    setStartRecordingState(false);
+    setPauseRecordingState(false);
+    setResumeRecordingState(true);
+    setStopRecordingState(false);
+
+    if (isZoomEnabled) {
+      if (
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
+          console.log("RecordingPauseMsgFromIframe");
+        }
+      }
+    }
+  };
+
+  const onHandleClickForResumeRecording = () => {
+    console.log("RecordingResumeMsgFromIframe");
+    setStartRecordingState(false);
+    setPauseRecordingState(true);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (isZoomEnabled) {
+      if (
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingResumeMsgFromIframe", "*");
+          console.log("RecordingResumeMsgFromIframe");
+        }
+      }
+    }
+  };
+
+  const onHandleClickForStopRecording = () => {
+    console.log("RecordingStopMsgFromIframe");
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    if (isZoomEnabled) {
+      if (
+        isMeeting &&
+        isMeetingVideo &&
+        isMeetingVideoHostChecker &&
+        !presenterViewJoinFlag &&
+        !presenterViewHostFlag
+      ) {
+        const iframe = iframeRef.current;
+        if (iframe && iframe?.contentWindow) {
+          setTimeout(() => {
+            iframe?.contentWindow?.postMessage(
+              "RecordingStopMsgFromIframe",
+              "*"
+            );
+            console.log("RecordingStopMsgFromIframe");
+          }, 1000);
+        }
+      } else {
+        if (isCaller) {
+          if (CallType === 1 || CallType === 2) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+              console.log("RecordingStopMsgFromIframe");
+            }
+          }
+        }
+      }
+    }
+  };
+
   return (
     <>
       {MaximizeHostVideoFlag ? (
@@ -1509,6 +1755,10 @@ const VideoPanelNormal = () => {
                     isVideoActive={isVideoActive}
                     isMicActive={isMicActive}
                     showTile={showTile}
+                    onStartRecording={onHandleClickForStartRecording}
+                    onPauseRecording={onHandleClickForPauseRecording}
+                    onStopRecording={onHandleClickForStopRecording}
+                    onResumeRecording={onHandleClickForResumeRecording}
                     iframeCurrent={iframe}
                   />
                   {VideoOutgoingCallFlag && <VideoOutgoing />}

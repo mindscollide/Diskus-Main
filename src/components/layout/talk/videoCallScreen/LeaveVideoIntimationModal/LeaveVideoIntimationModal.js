@@ -55,10 +55,12 @@ import { useMeetingContext } from "../../../../../context/MeetingContext";
 import {
   endMeetingStatusForQuickMeetingModal,
   endMeetingStatusForQuickMeetingVideo,
+  isSharedScreenTriggeredApi,
   leaveMeetingOnEndStatusMqtt,
   leaveMeetingVideoOnEndStatusMqtt,
   leavePresenterViewMainApiTest,
   participantWaitingListBox,
+  screenShareTriggeredGlobally,
   setRaisedUnRaisedParticiant,
   stopPresenterViewMainApiTest,
   toggleParticipantsVisibility,
@@ -79,6 +81,11 @@ const LeaveVideoIntimationModal = () => {
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let userID = localStorage.getItem("userID");
   let NavigationLocation = localStorage.getItem("navigateLocation");
+
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  let isSharedSceenEnable = JSON.parse(
+    localStorage.getItem("isSharedSceenEnable")
+  );
 
   //Global States
   const scheduleMeetingPageFlagReducer = useSelector(
@@ -146,6 +153,10 @@ const LeaveVideoIntimationModal = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
   console.log(LeaveVideoIntiminationNotificationClickData, "first");
 
   //Local States
@@ -164,8 +175,9 @@ const LeaveVideoIntimationModal = () => {
     );
     if (isMeeting) {
       if (isMeetingVideo) {
-        console.log("Saif Check Issue");
         if (!isMeetingVideoHostCheck) {
+          // For Stop Screen Share If Host Stop in Meeting Video
+
           let participantRoomId = localStorage.getItem("participantRoomId");
           let newMeetingTitle = localStorage.getItem("meetingTitle");
           let currentMeetingID = Number(
@@ -174,6 +186,21 @@ const LeaveVideoIntimationModal = () => {
           let participantUID = localStorage.getItem("participantUID");
 
           console.log("busyCall");
+
+          //For Participant Stop Screen Share API
+          if (isZoomEnabled) {
+            if (isSharedSceenEnable && !globallyScreenShare) {
+              console.log("busyCall");
+              let data = {
+                RoomID: participantRoomId,
+                ShareScreen: false,
+                UID: participantUID,
+              };
+              dispatch(screenShareTriggeredGlobally(false));
+              dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+            }
+          }
+
           let Data = {
             RoomID: String(participantRoomId),
             UserGUID: String(participantUID),

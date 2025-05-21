@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -183,14 +183,20 @@ export const MeetingProvider = ({ children }) => {
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
 
-  // state for Pause Recording
+  // state for Start Recording
   const [startRecordingState, setStartRecordingState] = useState(false);
 
   // state for Pause Recording
   const [pauseRecordingState, setPauseRecordingState] = useState(false);
 
-  // state for Restart Recording
-  const [restartRecordingState, setRestartRecordingState] = useState(false);
+  // state for Resume Recording
+  const [resumeRecordingState, setResumeRecordingState] = useState(false);
+
+  // state for Resume Recording
+  const [stopRecordingState, setStopRecordingState] = useState(false);
+
+  // Create a ref for the iframe element
+  const iframeRef = useRef(null);
 
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
@@ -401,8 +407,11 @@ export const MeetingProvider = ({ children }) => {
     setStartRecordingState,
     pauseRecordingState,
     setPauseRecordingState,
-    restartRecordingState,
-    setRestartRecordingState,
+    resumeRecordingState,
+    setResumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
+    iframeRef,
   };
 
   // Provide the state data to the context

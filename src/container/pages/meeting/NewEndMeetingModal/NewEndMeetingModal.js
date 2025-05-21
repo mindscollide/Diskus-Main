@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./NewEndMeetingModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -12,11 +12,16 @@ import {
 import { Col, Row } from "react-bootstrap";
 import { getCurrentDateTimeUTC } from "../../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import { useMeetingContext } from "../../../../context/MeetingContext";
 import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../context/MeetingContext";
+import {
+  isSharedScreenTriggeredApi,
   leavePresenterViewMainApi,
   leavePresenterViewMainApiTest,
   participantWaitingListBox,
+  screenShareTriggeredGlobally,
   setRaisedUnRaisedParticiant,
   stopPresenterViewMainApi,
   stopPresenterViewMainApiTest,
@@ -40,6 +45,11 @@ const NewEndMeetingModal = () => {
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
+
+  const globallyScreenShare = useSelector(
+    (state) => state.videoFeatureReducer.globallyScreenShare
+  );
+
   const {
     setCancelConfirmationModal,
     setEditorRole,
@@ -47,11 +57,69 @@ const NewEndMeetingModal = () => {
     setViewAdvanceMeetingModal,
     advanceMeetingModalID,
   } = useMeetingContext();
+
+  const {
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    setStopRecordingState,
+    iframeRef,
+  } = useContext(MeetingContext);
+
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
   );
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+  //When Host Stop Recording
+  const onHandleClickForStopRecording = () => {
+    console.log("RecordingStopMsgFromIframe");
+    setStartRecordingState(true);
+    setPauseRecordingState(false);
+    setResumeRecordingState(false);
+    setStopRecordingState(false);
+
+    let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let CallType = Number(localStorage.getItem("CallType"));
+
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isZoomEnabled) {
+      if (
+        (isMeeting && isMeetingVideo && isMeetingVideoHostCheck) ||
+        (presenterViewFlag && presenterViewHostFlag)
+      ) {
+        console.log("RecordingStopMsgFromIframe");
+        const iframe = iframeRef.current;
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+          console.log("RecordingStopMsgFromIframe");
+        }
+      } else {
+        if (isCaller) {
+          if (CallType === 1 || CallType === 2) {
+            const iframe = iframeRef.current;
+            if (iframe && iframe.contentWindow) {
+              iframe.contentWindow.postMessage(
+                "RecordingStopMsgFromIframe",
+                "*"
+              );
+              console.log("RecordingStopMsgFromIframe");
+            }
+          }
+        }
+      }
+    }
+  };
 
   const handleClickContinue = async () => {
     // setCancelConfirmationModal(false);
@@ -69,6 +137,10 @@ const NewEndMeetingModal = () => {
     let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
     let participantRoomId = localStorage.getItem("participantRoomId");
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let isSharedSceenEnable = JSON.parse(
+      localStorage.getItem("isSharedSceenEnable")
+    );
 
     if (presenterViewHostFlag || presenterViewJoinFlag) {
       let isMeetingVideoHostCheck = JSON.parse(
@@ -117,6 +189,22 @@ const NewEndMeetingModal = () => {
     }
     if (isMeeting) {
       if (isMeetingVideo && isMeetingVideoHostCheck) {
+        onHandleClickForStopRecording();
+        console.log("busyCall");
+
+        // For Stop Screen Share If Host Stop in Meeting Video
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
+            let data = {
+              RoomID: newRoomID,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
         console.log("busyCall");
         let Data = {
           RoomID: String(newRoomID),
@@ -128,6 +216,21 @@ const NewEndMeetingModal = () => {
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
       } else if (isMeetingVideo) {
         console.log("busyCall");
+
+        // For Stop Screen Share If Non Host Stop in Meeting Video
+        if (isZoomEnabled) {
+          if (isSharedSceenEnable && !globallyScreenShare) {
+            console.log("busyCall");
+            let data = {
+              RoomID: participantRoomId,
+              ShareScreen: false,
+              UID: UID,
+            };
+            dispatch(screenShareTriggeredGlobally(false));
+            dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+          }
+        }
+
         let Data = {
           RoomID: String(participantRoomId),
           UserGUID: String(UID),
