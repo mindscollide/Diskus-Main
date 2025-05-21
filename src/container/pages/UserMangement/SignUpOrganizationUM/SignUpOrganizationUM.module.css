@@ -451,7 +451,38 @@ body[dir="rtl"] .languageIcon {
   box-shadow: none !important;
 }
 
-.body[dir="rtl"] .react-flag-Info-Signup button {
+.country_ids button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  min-height: 39px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: white !important;
+}
+
+.country_ids_disabled button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  min-height: 39px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: lightgray !important;
+}
+/* .body[dir="rtl"] .react-flag-Info-Signup button {
   cursor: pointer !important;
   max-width: 100% !important;
   max-height: 120px !important;
@@ -491,7 +522,7 @@ body[dir="rtl"] .languageIcon {
   font-size: 13px !important;
 }
 
-.react-flag-Info-Signup button {
+.country_ids button {
   cursor: pointer !important;
   max-width: 100% !important;
   min-height: 39px !important;
@@ -507,9 +538,23 @@ body[dir="rtl"] .languageIcon {
   background: white !important;
 }
 
+.country_ids_disabled button {
+  cursor: pointer !important;
+  max-width: 100% !important;
+  min-height: 39px !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 2px 12px !important;
+  font-weight: 500 !important;
+  font-size: 13px !important;
+  color: #4d4d4d !important;
+  border: thin solid #e1e1e1;
+  border-radius: 4px !important;
+  background: gray !important;
+}
 .react-flag-Info-Signup input {
   cursor: pointer !important;
-  padding: 5px 8px !important;
   margin: 4px 5px !important;
   font-size: 13px !important;
   font-weight: 500 !important;
@@ -546,7 +591,7 @@ body[dir="rtl"] .languageIcon {
   border: thin solid #e1e1e1 !important;
   border-radius: 4px !important;
   background: white !important;
-}
+} */
 
 .sign-up-textfield-input {
   height: 30px !important;
