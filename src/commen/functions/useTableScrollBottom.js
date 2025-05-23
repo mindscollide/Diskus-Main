@@ -22,10 +22,6 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
           setHasReachedBottom(true);
           await onBottomReach?.();
         }
-
-        // if (!isBottom && hasReachedBottom) {
-        //   setHasReachedBottom(false);
-        // }
       };
 
       scrollContainer.addEventListener("scroll", handleScroll);
