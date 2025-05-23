@@ -285,6 +285,8 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+ 
+
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
@@ -787,11 +789,15 @@ const VideoCallNormalHeader = ({
             dispatch(screenShareTriggeredGlobally(false));
             await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
           }
-          //Jab Recording On Ho aur Host Stop krday toh
+
           if (pauseRecordingState || resumeRecordingState) {
+            console.log("busyCall");
+
             console.log("Stop Recording Check");
-            onStopRecording();
+            await onStopRecording();
+            await new Promise((resolve) => setTimeout(resolve, 100));
           }
+          //Jab Recording On Ho aur Host Stop krday toh
         }
 
         console.log("busyCall");

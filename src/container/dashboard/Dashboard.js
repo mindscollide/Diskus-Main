@@ -243,6 +243,10 @@ const Dashboard = () => {
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -346,7 +350,17 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  console.log(globallyScreenShare, "globallyScreenShare");
+  console.log({ globallyScreenShare }, "globallyScreenShare");
+
+  console.log(
+    {
+      startRecordingState,
+      pauseRecordingState,
+      resumeRecordingState,
+      stopRecordingState,
+    },
+    "CheckisPausedOccurOrNot"
+  );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
@@ -1580,27 +1594,6 @@ const Dashboard = () => {
 
               console.log(data.payload, "checkHostTransfer");
 
-              // if (isZoomEnabled) {
-              //   console.log("HostTransfer");
-              //   const iframe = iframeRef.current;
-              //   if (iframe && iframe.contentWindow) {
-              //     console.log("HostTransfer");
-              //     // iframe.contentWindow.postMessage(
-              //     //   "hostTransferToParticipant",
-              //     //   "*"
-              //     // );
-
-              //     iframe.contentWindow.postMessage(
-              //       "RecordingStopMsgFromIframe",
-              //       "*"
-              //     );
-              //   }
-              //   setStartRecordingState(true);
-              //   setPauseRecordingState(false);
-              //   setResumeRecordingState(false);
-              //   setStopRecordingState(false);
-              // }
-
               console.log("mqtt check 22", userID);
               console.log("mqtt check 22", data.receiverID[0]);
               if (userID === data.receiverID[0] && isMeetingVideo) {
@@ -1638,6 +1631,17 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
+                const wasRecordingPaused =
+                  localStorage.getItem("pauseRecordingState") === "true";
+                console.log(wasRecordingPaused, "Check is paused is true");
+
+                if (wasRecordingPaused) {
+                  console.log("Check is paused is true");
+                  setPauseRecordingState(true);
+                  setStartRecordingState(false);
+                  setResumeRecordingState(false);
+                  setStopRecordingState(false);
+                }
                 let newRoomId = localStorage.getItem("newRoomId");
                 console.log("mqtt check 22", newRoomId);
                 let Data = {

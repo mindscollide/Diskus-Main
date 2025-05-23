@@ -463,55 +463,62 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   }
 
   const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
-    setStartRecordingState(true);
-    setPauseRecordingState(false);
-    setResumeRecordingState(false);
-    setStopRecordingState(false);
+    return new Promise((resolve) => {
+      console.log("RecordingStopMsgFromIframe");
 
-    let isCaller = JSON.parse(localStorage.getItem("isCaller"));
-    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-    let CallType = Number(localStorage.getItem("CallType"));
+      setStartRecordingState(true);
+      setPauseRecordingState(false);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
 
-    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
-    if (isZoomEnabled) {
-      if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostCheck &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
-      ) {
-        console.log("RecordingStopMsgFromIframe");
+      let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+      let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+      let CallType = Number(localStorage.getItem("CallType"));
+
+      let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+      let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
+
+      if (isZoomEnabled) {
         const iframe = iframeRef.current;
-        if (iframe && iframe?.contentWindow) {
-          console.log("RecordingStopMsgFromIframe");
-          setTimeout(() => {
+        console.log("RecordingStopMsgFromIframe");
+        const sendMessage = () => {
+          if (iframe && iframe?.contentWindow) {
             iframe?.contentWindow?.postMessage(
               "RecordingStopMsgFromIframe",
               "*"
             );
-          }, 1000);
-        }
-      } else {
-        if (isCaller) {
-          if (CallType === 1 || CallType === 2) {
-            const iframe = iframeRef.current;
-            if (iframe && iframe.contentWindow) {
-              iframe.contentWindow.postMessage(
-                "RecordingStopMsgFromIframe",
-                "*"
-              );
-              console.log("RecordingStopMsgFromIframe");
-            }
+            console.log("RecordingStopMsgFromIframe");
+          }
+
+          // Slight delay to allow iframe to process the message
+          setTimeout(() => {
+            resolve();
+          }, 100);
+        };
+
+        // Host-specific path
+        if (
+          isMeeting &&
+          isMeetingVideo &&
+          isMeetingVideoHostCheck &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag
+        ) {
+          setTimeout(sendMessage, 1000); // 1s delay for host
+        } else {
+          if (isCaller && (CallType === 1 || CallType === 2)) {
+            sendMessage(); // Immediate for caller
+          } else {
+            resolve(); // If none of the conditions matched, resolve immediately
           }
         }
+      } else {
+        resolve(); // Zoom not enabled, no message needed
       }
-    }
+    });
   };
 
   const minimizeEndCallParticipant = async (flag, flag2, flag3, flag4) => {
@@ -569,7 +576,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         //When Recording is On and Host Leave Meeting Video
         if (pauseRecordingState || resumeRecordingState) {
           console.log("Stop Recording Check");
-          onHandleClickForStopRecording();
+          await onHandleClickForStopRecording();
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
 
         let Data = {
