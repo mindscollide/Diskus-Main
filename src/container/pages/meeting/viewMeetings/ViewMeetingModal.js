@@ -380,41 +380,52 @@ const ViewMeetingModal = ({
 
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
-    setStartRecordingState(true);
-    setPauseRecordingState(false);
-    setResumeRecordingState(false);
-    setStopRecordingState(false);
+    return new Promise((resolve) => {
+      console.log("RecordingStopMsgFromIframe");
 
-    if (isZoomEnabled) {
-      if (
-        (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) ||
-        (presenterViewFlag && presenterViewHostFlag)
-      ) {
-        console.log("RecordingStopMsgFromIframe");
+      setStartRecordingState(true);
+      setPauseRecordingState(false);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
+
+      if (isZoomEnabled) {
         const iframe = iframeRef.current;
-        if (iframe && iframe.contentWindow) {
-          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-          console.log("RecordingStopMsgFromIframe");
-        }
-      } else {
-        if (isCaller) {
-          if (CallType === 1 || CallType === 2) {
-            const iframe = iframeRef.current;
-            if (iframe && iframe.contentWindow) {
-              iframe.contentWindow.postMessage(
-                "RecordingStopMsgFromIframe",
-                "*"
-              );
-              console.log("RecordingStopMsgFromIframe");
-            }
+
+        const sendMessage = () => {
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+            console.log("RecordingStopMsgFromIframe");
+          }
+
+          // Slight delay to allow iframe to process the message
+          setTimeout(() => {
+            resolve();
+          }, 100);
+        };
+
+        // Host-specific path
+        if (
+          isMeeting &&
+          isMeetingVideo &&
+          isMeetingVideoHostChecker &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag
+        ) {
+          setTimeout(sendMessage, 1000); // 1s delay for host
+        } else {
+          if (isCaller && (CallType === 1 || CallType === 2)) {
+            sendMessage(); // Immediate for caller
+          } else {
+            resolve(); // If none of the conditions matched, resolve immediately
           }
         }
+      } else {
+        resolve(); // Zoom not enabled, no message needed
       }
-    }
+    });
   };
 
-  const callBeforeLeave = () => {
+  const callBeforeLeave = async() => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
       localStorage.setItem("isMeeting", false);
@@ -433,7 +444,8 @@ const ViewMeetingModal = ({
           console.log("busyCall");
 
           //When Recording is On and Host Leave Meeting Video
-          onHandleClickForStopRecording();
+          await onHandleClickForStopRecording();
+          await new Promise((resolve) => setTimeout(resolve, 100));
 
           // For Stop Screen Share If Host Stop in Meeting Video
           let isSharedSceenEnable = JSON.parse(

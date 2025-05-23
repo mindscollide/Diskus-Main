@@ -80,6 +80,15 @@ const VideoNewParticipantList = () => {
 
   console.log(getAllParticipantMain.length, "getAllParticipantMain");
   console.log(getAllParticipantMain, "getAllParticipantMain");
+  console.log(
+    {
+      startRecordingState,
+      pauseRecordingState,
+      resumeRecordingState,
+      stopRecordingState,
+    },
+    "startRecordingStatestartRecordingState"
+  );
 
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
