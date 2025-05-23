@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import {
   GetAllMeetingDetailsApiFunc,
   SetMeetingResponseApiFunc,
+  clearProposedWiseData,
   getUserProposedWiseApi,
   searchNewUserMeeting,
   viewProposeDateMeetingPageFlag,
@@ -116,6 +117,7 @@ const ViewParticipantsDates = ({
   useEffect(() => {
     callApis();
     return () => {
+      dispatch(clearProposedWiseData())
       localStorage.removeItem("viewProposeDatePollMeetingID");
       setCurrentMeetingID(null);
       setDataroomMapFolderId(null);

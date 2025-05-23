@@ -1116,7 +1116,7 @@ const uploadDocumentsNotesApi = (
                 FK_UserID: JSON.parse(creatorID),
                 FK_OrganizationID: JSON.parse(organizationID),
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+                FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
                 uploadDocumentNotes_success(response.data.responseResult, "")

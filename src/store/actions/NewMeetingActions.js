@@ -3976,7 +3976,7 @@ const uploadDocumentsMeetingMinutesApi = (
                 FK_UserID: JSON.parse(creatorID),
                 FK_OrganizationID: JSON.parse(organizationID),
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+                FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
                 uploadDocument_success(
@@ -4350,6 +4350,11 @@ const getProposedWiseFail = (message, loader) => {
   };
 };
 
+const clearProposedWiseData = () => {
+  return {
+    type: actions.CLEAR_GET_USER_WISE_PROPOSED,
+  }
+}
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -5443,7 +5448,7 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
                 FK_UserID: JSON.parse(creatorID),
                 FK_OrganizationID: JSON.parse(organizationID),
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+                FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
                 uploadDocument_success_agenda_wise(
@@ -10090,7 +10095,7 @@ const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
                 FK_UserID: JSON.parse(creatorID),
                 FK_OrganizationID: JSON.parse(organizationID),
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+                FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
               await dispatch(
                 uploadDocument_success_quickMeeting(
@@ -10964,4 +10969,5 @@ export {
   validateEmptyStringUserAvailibilityFailed,
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
+  clearProposedWiseData
 };

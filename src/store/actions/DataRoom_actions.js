@@ -87,7 +87,7 @@ const saveFilesApi = (
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSizeOnDisk: Number(data.fileSizeOnDisk),
         FileSize: Number(data.fileSize),
       },
     ],
@@ -656,48 +656,52 @@ const getFolderDocumentsApi = (
                   t("No-record-found")
                 )
               );
+              try {
+                console.log(BreadCrumbsListArr, "BreadCrumbsListArr");
 
-              if (
-                BreadCrumbsListArr !== null &&
-                BreadCrumbsListArr !== undefined &&
-                BreadCrumbsListArr.length === 0
-              ) {
-                let getCurrentView = localStorage.getItem("setTableView");
-                let newArr;
-                // if User click from main root folder
-                let viewName =
-                  Number(getCurrentView) === 1
-                    ? t("My-document")
-                    : Number(getCurrentView) === 2
-                    ? t("Shared-with-me")
-                    : Number(getCurrentView) === 3
-                    ? t("All")
-                    : t("Recently-added");
-                newArr = [
-                  { name: viewName, id: Number(getCurrentView), main: true },
-                  { name: record?.name, id: record?.id },
-                ];
-                dispatch(BreadCrumbsList(newArr));
-              } else {
-                let findIfItsExist = BreadCrumbsListArr.findIndex(
-                  (breadCrumbData, index) => breadCrumbData.id === record.id
-                );
-                if (findIfItsExist !== -1) {
-                  // Keep only the elements before index 2
-                  let checkingisExist = BreadCrumbsListArr.slice(
-                    0,
-                    findIfItsExist + 1
-                  );
-                  dispatch(BreadCrumbsList(checkingisExist));
-                } else {
-                  let newFolderRecord = [
-                    ...BreadCrumbsListArr,
+                if (
+                  BreadCrumbsListArr !== null &&
+                  BreadCrumbsListArr !== undefined &&
+                  BreadCrumbsListArr.length === 0
+                ) {
+                  let getCurrentView = localStorage.getItem("setTableView");
+                  let newArr;
+                  // if User click from main root folder
+                  let viewName =
+                    Number(getCurrentView) === 1
+                      ? t("My-document")
+                      : Number(getCurrentView) === 2
+                      ? t("Shared-with-me")
+                      : Number(getCurrentView) === 3
+                      ? t("All")
+                      : t("Recently-added");
+                  newArr = [
+                    { name: viewName, id: Number(getCurrentView), main: true },
                     { name: record?.name, id: record?.id },
                   ];
-                  dispatch(BreadCrumbsList(newFolderRecord));
+                  dispatch(BreadCrumbsList(newArr));
+                } else {
+                  let findIfItsExist = BreadCrumbsListArr.findIndex(
+                    (breadCrumbData, index) => breadCrumbData.id === record.id
+                  );
+                  if (findIfItsExist !== -1) {
+                    // Keep only the elements before index 2
+                    let checkingisExist = BreadCrumbsListArr.slice(
+                      0,
+                      findIfItsExist + 1
+                    );
+                    dispatch(BreadCrumbsList(checkingisExist));
+                  } else {
+                    let newFolderRecord = [
+                      ...BreadCrumbsListArr,
+                      { name: record?.name, id: record?.id },
+                    ];
+                    dispatch(BreadCrumbsList(newFolderRecord));
+                  }
                 }
+              } catch (error) {
+                console.log(error);
               }
-     
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1042,7 +1046,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         dispatch(tableSpinner(false));
-        return new Error(error)
+        return new Error(error);
       });
   };
 };

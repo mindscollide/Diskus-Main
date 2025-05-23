@@ -156,6 +156,20 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
                 )
             ) {
               dispatch(createWorkflow_fail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "WorkFlow_WorkFlowServiceManager_CreateSignatureFlow_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                createWorkflow_fail(
+                  t("File-extension-not-supported-for-signature")
+                )
+              );
+            } else {
+              dispatch(createWorkflow_fail(t("Something-went-wrong")));
             }
           } else {
             dispatch(createWorkflow_fail(t("Something-went-wrong")));

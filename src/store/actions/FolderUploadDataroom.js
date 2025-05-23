@@ -274,7 +274,7 @@ const saveFilesApi = (
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
-        fileSizeOnDisk: Number(data.fileSizeOnDisk),
+        FileSizeOnDisk: Number(data.fileSizeOnDisk),
         FileSize: Number(data.fileSize),
       },
     ],
