@@ -753,7 +753,7 @@ const AuditTrial = () => {
                   footer={false}
                   className={"userlogin_history_tableP"}
                   size={"small"}
-                  scroll={{ y: "40vh", x: "100%" }}
+                  scroll={{ y: "29vh", x: "100%" }}
                 />
               </Col>
             </Row>
