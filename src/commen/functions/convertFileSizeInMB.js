@@ -38,7 +38,7 @@ export function formatMB(mb) {
   const formattedNumber = formatter.format(mb);
 
   if (currentLanguage === "ar") {
-    return `${formattedNumber} ميغابايت`; // Arabic text for MB
+    return `${formattedNumber} MB`; // Arabic text for MB
   }
 
   return `${formattedNumber} MB`;
