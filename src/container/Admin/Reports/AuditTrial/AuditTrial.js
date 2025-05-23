@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
-import { LoadingOutlined } from "@ant-design/icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Table, TextField } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import DatePicker from "react-multi-date-picker";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
@@ -22,7 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
-import { Spin } from "antd";
+import { useTableScrollBottom } from "../../../../commen/functions/useTableScrollBottom";
 
 const AuditTrial = () => {
   const { t } = useTranslation();
@@ -111,45 +109,31 @@ const AuditTrial = () => {
   // Extracting the Audit listing Data
   useEffect(() => {
     try {
-      if (GetAuditListingReducerGlobalState !== null) {
-        if (
-          GetAuditListingReducerGlobalState.userAuditListingModel?.length > 0 &&
-          GetAuditListingReducerGlobalState.totalCount > 0
-        ) {
-          if (isScroll) {
-            setIsScroll(false);
+      const result = GetAuditListingReducerGlobalState;
 
-            let copyData = [...auditTrialListingTableData];
+      if (result && result.userAuditListingModel?.length > 0) {
+        const newData = result.userAuditListingModel;
 
-            GetAuditListingReducerGlobalState.userAuditListingModel.forEach(
-              (data, index) => {
-                copyData.push(data);
-              }
-            );
-            setAuditTrialListingTableData(copyData);
-            setSRowsData(
-              (prev) =>
-                prev +
-                GetAuditListingReducerGlobalState.userAuditListingModel.length
-            );
-            setTotalRecords(GetAuditListingReducerGlobalState.totalCount);
-          } else {
-            setAuditTrialListingTableData(
-              GetAuditListingReducerGlobalState.userAuditListingModel
-            );
-            setTotalRecords(GetAuditListingReducerGlobalState.totalCount);
-            setSRowsData(
-              GetAuditListingReducerGlobalState.userAuditListingModel.length
-            );
-          }
+        if (isScroll) {
+          setIsScroll(false);
+          setAuditTrialListingTableData((prev) => [...prev, ...newData]);
+          setSRowsData((prev) => prev + newData.length);
         } else {
+          setAuditTrialListingTableData(newData);
+          setSRowsData(newData.length);
+        }
+
+        setTotalRecords(result.totalCount);
+      } else {
+        if (!isScroll) {
           setAuditTrialListingTableData([]);
           setTotalRecords(0);
           setSRowsData(0);
         }
-      } else {
       }
-    } catch {}
+    } catch (error) {
+      console.error("Error in useEffect:", error);
+    }
   }, [GetAuditListingReducerGlobalState]);
 
   //Handling the Arabic
@@ -297,38 +281,6 @@ const AuditTrial = () => {
       },
     },
   ];
-
-  //Handle Scroll Function
-  const handleScroll = async (e) => {
-    if (isRowsData <= totalRecords) {
-      setIsScroll(true);
-
-      let Data = {
-        Username: "",
-        IpAddress: "",
-        DeviceID: "",
-        DateLogin: "",
-        DateLogOut: "",
-        OrganizationID: Number(localStorage.getItem("organizationID")),
-        sRow: Number(isRowsData),
-        Length: 10,
-      };
-
-      dispatch(GetAuditListingAPI(navigate, Data, t));
-    } else {
-      setIsScroll(false);
-    }
-  };
-
-  //Spinner Styles in Lazy Loading
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 36,
-      }}
-      spin
-    />
-  );
 
   //Handle Search icon
   const handleSearchIcon = () => {
@@ -562,6 +514,43 @@ const AuditTrial = () => {
   const handleCrossIcon = () => {
     setSearchBar(false);
   };
+  console.log(
+    {
+      auditTrialListingTableData: auditTrialListingTableData.length,
+      totalRecords,
+      isRowsData,
+    },
+    "auditTrialListingTableDataauditTrialListingTableData"
+  );
+  //Handle Scroll Function
+  useTableScrollBottom(async () => {
+    console.log(
+      auditTrialListingTableData.length,
+      totalRecords,
+      "auditTrialListingTableDataauditTrialListingTableData"
+    );
+    if (auditTrialListingTableData.length <= totalRecords) {
+      console.log(
+        auditTrialListingTableData.length,
+        totalRecords,
+        "auditTrialListingTableDataauditTrialListingTableData"
+      );
+      setIsScroll(true);
+
+      let Data = {
+        Username: "",
+        IpAddress: "",
+        DeviceID: "",
+        DateLogin: "",
+        DateLogOut: "",
+        OrganizationID: Number(localStorage.getItem("organizationID")),
+        sRow: Number(isRowsData),
+        Length: 10,
+      };
+
+      dispatch(GetAuditListingAPI(navigate, Data, t));
+    }
+  });
 
   return (
     <section className={styles["AuditMainSection"]}>
@@ -757,45 +746,15 @@ const AuditTrial = () => {
           <span className={styles["AuditTrial_Box"]}>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <InfiniteScroll
-                  dataLength={auditTrialListingTableData.length}
-                  next={handleScroll}
-                  height={"52vh"}
-                  hasMore={
-                    auditTrialListingTableData.length === totalRecords
-                      ? false
-                      : true
-                  }
-                  loader={
-                    isRowsData <= totalRecords && isScroll ? (
-                      <>
-                        <Row>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className="d-flex justify-content-center mt-2"
-                          >
-                            <Spin indicator={antIcon} />
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null
-                  }
-                  scrollableTarget="scrollableDiv"
-                >
-                  <Table
-                    column={AuditTrialColumns}
-                    rows={auditTrialListingTableData}
-                    pagination={false}
-                    footer={false}
-                    className={"userlogin_history_tableP"}
-                    size={"small"}
-                    scroll={{
-                      x: false,
-                    }}
-                  />
-                </InfiniteScroll>
+                <Table
+                  column={AuditTrialColumns}
+                  rows={auditTrialListingTableData}
+                  pagination={false}
+                  footer={false}
+                  className={"userlogin_history_tableP"}
+                  size={"small"}
+                  scroll={{ y: "40vh", x: "100%" }}
+                />
               </Col>
             </Row>
           </span>
