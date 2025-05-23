@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import {
   showSceduleProposedMeeting,
   getUserProposedWiseApi,
+  clearProposedWiseData,
 } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
@@ -98,6 +99,7 @@ const SceduleProposedmeeting = ({
     }
 
     return () => {
+      dispatch(clearProposedWiseData())
       localStorage.removeItem("ProposedMeetingOrganizer");
       localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
       localStorage.removeItem("MeetingStatusID");

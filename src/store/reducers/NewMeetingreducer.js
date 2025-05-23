@@ -1501,6 +1501,12 @@ const NewMeetingreducer = (state = initialState, action) => {
           ResponseMessage: action.message,
         };
       }
+      case actions.CLEAR_GET_USER_WISE_PROPOSED: {
+        return {
+          ...state,
+          userWiseMeetingProposed: [],
+        };
+      }
 
       // reducer for get proposed dates when organizer click on view poll
       case actions.GET_USER_PROPOSED_DATES_INIT: {
