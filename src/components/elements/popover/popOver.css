@@ -1,12 +1,19 @@
 
 .popOver_content {
-    min-width: 120px !important;
+    min-width: 100px !important;
 }
 .popOver_ulList {
   list-style: none !important;
   text-decoration: none !important;
   margin-bottom: 0px !important;
   padding-left: 0px !important;
+}
+body[dir="rtl"] .popOver_ulList {
+  list-style: none !important;
+  text-decoration: none !important;
+  margin-bottom: 0px !important;
+  padding-left: 0px !important;
+  text-align: right !important;
 }
 .popOver_li_options {
   border-bottom: 2px solid #000000 !important;
