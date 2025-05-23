@@ -1221,7 +1221,7 @@ const uploadDocumentsTaskApi = (
                 FK_UserID: JSON.parse(creatorID),
                 FK_OrganizationID: JSON.parse(organizationID),
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
-                fileSizeOnDisk: Number(response.data.responseResult.fileSize),
+                FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
             } else if (
               response.data.responseResult.responseMessage
