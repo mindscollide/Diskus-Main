@@ -157,7 +157,7 @@ const RejectCommentModal = ({
                 className='d-flex justify-content-end gap-2'>
                 <Button
                   onClick={() => handleClickRejectButton(commentText)}
-                  text={t("Reject")} // Translation for button text
+                  text={t("Review")} // Translation for button text
                   className={styles["Reject_Comment_Modal"]} // Styling for reject button
                   disableBtn={commentText === ""}
                 />
