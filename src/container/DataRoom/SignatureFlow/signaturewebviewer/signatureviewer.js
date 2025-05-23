@@ -763,6 +763,7 @@ const SignatureViewer = () => {
 
         const handleClickSaveBtn = async () => {
           console.log(signerDataRef, signerData, "signerDataRef");
+          
 
           // status of 1 for save button
           const doc = documentViewer.getDocument();
@@ -1422,7 +1423,6 @@ const SignatureViewer = () => {
         });
         showMessage(t("User-already-is-in-list"), "error", setOpen);
       }
-    } else {
     }
   };
 
@@ -1506,6 +1506,8 @@ const SignatureViewer = () => {
         name: "",
       });
       dispatch(saveWorkflowApi(Data, navigate, t, setOpenAddParticipentModal));
+    } else {
+      showMessage(t("Atleast-one-signatory-is-required"), "error", setOpen);
     }
   };
   // === End === //
@@ -1824,7 +1826,7 @@ const SignatureViewer = () => {
                     className="addOther_field"
                     text={t("Add-another-signer")}
                     onClick={handleClickAdd}
-                    icon={<img src={PlusSignSignatureFlow} />}
+                    icon={<img src={PlusSignSignatureFlow} alt="" />}
                   />
                 </Col>
               </Row>
