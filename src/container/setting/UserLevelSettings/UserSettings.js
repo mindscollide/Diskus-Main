@@ -27,13 +27,16 @@ import {
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 
-const UserSettings = () => {
+const UserSettings = ({ googleClientIDs }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const settingReducerData = useSelector(
     (state) => state.settingReducer.UserProfileData
+  );
+  const microsoftClientID = useSelector(
+    (state) => state.settingReducer.microsoftClientID
   );
 
   const [securitystate, setSecuritystate] = useState(true);
@@ -108,7 +111,6 @@ const UserSettings = () => {
   });
   const [authMicrosoftAccessCode, setAuthMicrosoftAccessCode] = useState("");
 
-  console.log("Client ID:", process.env.REACT_APP_GOOGLE_LOGIN_URL);
   useEffect(() => {
     if (settingReducerData === undefined || settingReducerData === null) {
       dispatch(getUserSetting(navigate, t, false));
@@ -131,20 +133,6 @@ const UserSettings = () => {
       AllowGoogleCalenderSync: userOptionsSettings.AllowGoogleCalenderSync,
     });
   };
-
-  const signIn = useGoogleLogin({
-    client_id:
-      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
-    onSuccess: handleGoogleLoginSuccess,
-    onError: handleGoogleLoginFailure,
-    flow: "auth-code",
-    cookiePolicy: "single_host_origin",
-    scope:
-      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
-    access_type: "offline",
-    responseType: "code",
-    prompt: "consent",
-  });
 
   useEffect(() => {
     if (settingReducerData !== null && settingReducerData !== undefined) {
@@ -408,32 +396,58 @@ const UserSettings = () => {
     });
   };
 
+  const signIn = useGoogleLogin({
+    client_id: googleClientIDs !== null ? googleClientIDs : "dummy-client-id",
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+    flow: "auth-code",
+    cookiePolicy: "single_host_origin",
+    scope:
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
+    access_type: "offline",
+    responseType: "code",
+    prompt: "consent",
+  });
+
   const onChangeAllowCalenderSync = (e) => {
-    let value = e.target.checked;
-    if (value) {
-      signIn();
-    } else {
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowGoogleCalenderSync: false,
-      });
-    }
+    try {
+      let value = e.target.checked;
+      if (value) {
+        if (googleClientIDs !== null) {
+          signIn();
+        } else {
+          console.error("Google Client ID not loaded yet.");
+        }
+      } else {
+        setUserOptionsSettings({
+          ...userOptionsSettings,
+          AllowGoogleCalenderSync: false,
+        });
+      }
+    } catch {}
   };
 
   async function redirectToUrl() {
-    const url = process.env.REACT_APP_MS_LOGIN_URL;
-    const windowFeatures = "width=600,height=400,top=100,left=100";
-    const popup = window.open(url, "Microsoft Login", windowFeatures);
+    if (microsoftClientID) {
+      const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
+      const url = baseUrl.replace(
+        /client_id=[^&]+/,
+        `client_id=${microsoftClientID}`
+      );
+      console.log("Client ID", url);
+      const windowFeatures = "width=600,height=400,top=100,left=100";
+      const popup = window.open(url, "Microsoft Login", windowFeatures);
 
-    // Wait for the popup to close
-    await new Promise((resolve) => {
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          resolve();
-        }
-      }, 1000); // Check every second
-    });
+      // Wait for the popup to close
+      await new Promise((resolve) => {
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed);
+            resolve();
+          }
+        }, 1000); // Check every second
+      });
+    }
   }
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
@@ -1553,12 +1567,13 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
+                    googleClientIDs !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
-                            onChange={onChangeAllowCalenderSync}
+                            onChange={(e) => onChangeAllowCalenderSync(e)}
                             checked={
                               userOptionsSettings.AllowGoogleCalenderSync
                             }
@@ -1571,6 +1586,7 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
+                    microsoftClientID !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
                       <Row className="mt-3">
