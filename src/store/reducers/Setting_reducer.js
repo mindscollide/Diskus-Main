@@ -36,7 +36,7 @@ const initialState = {
   realTimeIsReadFlag: false,
   webNotificationDataVideoIntimination: null,
   globalFunctionWebnotificationFlag: false,
-  googleClientID: "",
+  googleClientID: null,
   microsoftClientID: "",
 };
 
