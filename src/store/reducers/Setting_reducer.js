@@ -37,7 +37,7 @@ const initialState = {
   webNotificationDataVideoIntimination: null,
   globalFunctionWebnotificationFlag: false,
   googleClientID: null,
-  microsoftClientID: "",
+  microsoftClientID: null,
 };
 
 const settingReducer = (state = initialState, action) => {
