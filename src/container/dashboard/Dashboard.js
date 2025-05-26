@@ -680,6 +680,7 @@ const Dashboard = () => {
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
             if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
+              console.log("mqtt mqmqmqmqmqmq");
               sessionStorage.removeItem("alreadyInMeetingVideo");
               dispatch(setAudioControlHost(false));
 

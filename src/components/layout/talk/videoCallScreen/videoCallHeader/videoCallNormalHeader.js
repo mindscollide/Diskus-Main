@@ -252,6 +252,8 @@ const VideoCallNormalHeader = ({
 
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
 
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
+
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
     "presenterViewJoinFlagpresenterViewHostFlag"
@@ -285,7 +287,6 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
- 
 
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
@@ -974,11 +975,20 @@ const VideoCallNormalHeader = ({
 
       let RoomID;
       if (isMeeting) {
-        console.log("busyCall");
-        RoomID = isZoomEnabled ? String(acceptedRoomID) : acceptedRoomID;
+        if (isZoomEnabled) {
+          RoomID = String(acceptedRoomID);
+          if (isCaller) {
+            RoomID = String(initiateCallRoomID);
+          }
+        } else {
+          RoomID = acceptedRoomID;
+        }
       } else {
-        console.log("busyCall");
-        RoomID = isZoomEnabled ? String(initiateCallRoomID) : activeRoomID;
+        if (isZoomEnabled) {
+          RoomID = String(initiateCallRoomID);
+        } else {
+          RoomID = activeRoomID;
+        }
       }
 
       console.log("busyCall");
@@ -1709,7 +1719,8 @@ const VideoCallNormalHeader = ({
                   ? !raisedUnRaisedParticipant
                     ? "inactive-state"
                     : "cursor-pointer active-state"
-                  : !handStatus
+                  : getMeetingHostInfo?.isHost === true &&
+                    !raisedUnRaisedParticipant
                   ? "inactive-state"
                   : "cursor-pointer active-state"
               }
@@ -1729,7 +1740,7 @@ const VideoCallNormalHeader = ({
                       ? raisedUnRaisedParticipant
                         ? t("Lower-hand")
                         : t("Raise-hand")
-                      : handStatus
+                      : raisedUnRaisedParticipant
                       ? t("Lower-hand")
                       : t("Raise-hand")
                     : raisedUnRaisedParticipant
@@ -1744,7 +1755,9 @@ const VideoCallNormalHeader = ({
                         ? raiseUnRaiseForParticipant(
                             raisedUnRaisedParticipant ? false : true
                           )
-                        : raiseHandFunction
+                        : raiseUnRaiseForParticipant(
+                            raisedUnRaisedParticipant ? false : true
+                          )
                       : raiseUnRaiseForParticipant(
                           raisedUnRaisedParticipant ? false : true
                         )
@@ -1755,7 +1768,7 @@ const VideoCallNormalHeader = ({
                         ? raisedUnRaisedParticipant === true
                           ? LowerHand
                           : RaiseHand
-                        : handStatus
+                        : raisedUnRaisedParticipant === true
                         ? LowerHand
                         : RaiseHand
                       : raisedUnRaisedParticipant === true

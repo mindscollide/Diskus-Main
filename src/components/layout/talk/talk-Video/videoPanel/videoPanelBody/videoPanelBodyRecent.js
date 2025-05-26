@@ -116,6 +116,10 @@ const VideoPanelBodyRecent = () => {
   const videRecording = useSelector(
     (state) => state.DataRoomReducer.videRecording
   );
+  console.log(
+    VideoMainReducer.RecentCallsData,
+    "VideoMainReducerRecentCallsData"
+  );
 
   const searchChat = (e) => {
     setSearchChatValue(e);
@@ -669,7 +673,11 @@ const VideoPanelBodyRecent = () => {
             {recentVideoCalls.map((recentCallData, index) => {
               let recentCallDateTime =
                 recentCallData.callDate + recentCallData.callTime;
+
+              let whenIsInComingFalse = recentCallData.isIncoming === false;
               console.log("recentCallDatarecentCallData", recentCallData);
+              console.log("isIncomingrecipients", whenIsInComingFalse);
+
               return (
                 <>
                   <Row className="single-chat" key={index}>
@@ -678,14 +686,24 @@ const VideoPanelBodyRecent = () => {
                         // One to One And Group Call
                         <div className="one-to-one-and-group-call-profile">
                           <img
-                            src={`data:image/jpeg;base64,${recentCallData.callerDisplayProfilePicture}`}
+                            src={`data:image/jpeg;base64,${
+                              recentCallData.isIncoming === false
+                                ? recentCallData.recipients[0]
+                                    .recipientDisplayProfilePicture
+                                : recentCallData.callerDisplayProfilePicture
+                            }`}
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 2 ? (
                         // One to One And Group Call
                         <div className="one-to-one-and-group-call-profile">
                           <img
-                            src={`data:image/jpeg;base64,${recentCallData.callerDisplayProfilePicture}`}
+                            src={`data:image/jpeg;base64,${
+                              recentCallData.isIncoming === false
+                                ? recentCallData.recipients[0]
+                                    .recipientDisplayProfilePicture
+                                : recentCallData.callerDisplayProfilePicture
+                            }`}
                           />
                         </div>
                       ) : recentCallData.callType.callTypeID === 3 ? (
