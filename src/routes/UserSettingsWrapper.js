@@ -12,27 +12,27 @@ const UserSettingsWrapper = () => {
 
   // If settingReducerData hasn't loaded yet, wait
   if (!settingReducerData) {
-    return <section className="userSettingDataLoading"
-    >
+    return (
+      <section className="userSettingDataLoading">
         <Spin />
-    </section> ;
+      </section>
+    );
   }
 
   const isGoogleSyncAllowed = settingReducerData.userAllowGoogleCalendarSynch;
 
   // Wait until googleClientID is loaded if sync is allowed
-  if (isGoogleSyncAllowed !== null && !googleClientID) {
-    return <section className="userSettingDataLoading"
-    >
+  if (isGoogleSyncAllowed !== null && googleClientID === null) {
+    return (
+      <section className="userSettingDataLoading">
         <Spin />
-    </section>; // or your custom spinner
+      </section>
+    ); // or your custom spinner
   }
   console.log("googleClientID", googleClientID);
 
   return (
-    <UserSettings
-      googleClientIDs={googleClientID ? googleClientID : null}
-    />
+    <UserSettings googleClientIDs={googleClientID ? googleClientID : null} />
   );
 };
 

@@ -397,7 +397,7 @@ const UserSettings = ({ googleClientIDs }) => {
   };
 
   const signIn = useGoogleLogin({
-    client_id: googleClientIDs,
+    client_id: googleClientIDs !== null ? googleClientIDs : "dummy-client-id",
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginFailure,
     flow: "auth-code",
@@ -413,7 +413,7 @@ const UserSettings = ({ googleClientIDs }) => {
     try {
       let value = e.target.checked;
       if (value) {
-        if (googleClientIDs !== "") {
+        if (googleClientIDs !== null) {
           signIn();
         } else {
           console.error("Google Client ID not loaded yet.");
@@ -1565,6 +1565,7 @@ const UserSettings = ({ googleClientIDs }) => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
+                    googleClientIDs !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
                       <Row className="mt-3">
