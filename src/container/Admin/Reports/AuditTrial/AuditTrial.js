@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./AuditTrial.module.css";
 import { useTranslation } from "react-i18next";
-import { LoadingOutlined } from "@ant-design/icons";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Table, TextField } from "../../../../components/elements";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import InfiniteScroll from "react-infinite-scroll-component";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import DatePicker from "react-multi-date-picker";
 import ViewActionModal from "./ViewActionModal/ViewActionModal";
@@ -22,7 +20,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { AuditTrialDateTimeFunction } from "../../../../commen/functions/date_formater";
-import { Spin } from "antd";
 import { useScrollerAuditBottom } from "../../../../commen/functions/useScrollerAuditBottom";
 
 const AuditTrial = () => {
@@ -288,38 +285,6 @@ const AuditTrial = () => {
     },
   ];
 
-  //Handle Scroll Function
-  const handleScroll = async (e) => {
-    if (isRowsData <= totalRecords) {
-      setIsScroll(true);
-
-      let Data = {
-        Username: "",
-        IpAddress: "",
-        DeviceID: "",
-        DateLogin: "",
-        DateLogOut: "",
-        OrganizationID: Number(localStorage.getItem("organizationID")),
-        sRow: Number(isRowsData),
-        Length: 10,
-      };
-
-      dispatch(GetAuditListingAPI(navigate, Data, t));
-    } else {
-      setIsScroll(false);
-    }
-  };
-
-  //Spinner Styles in Lazy Loading
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 36,
-      }}
-      spin
-    />
-  );
-
   //Handle Search icon
   const handleSearchIcon = () => {
     setSearchBar(!searchBar);
@@ -446,9 +411,8 @@ const AuditTrial = () => {
       sRow: 0,
       Length: 10,
     };
-    console.log(Data2, "handleSearchAuditTrialListing");
-    console.log(typeof Data2.Username, "handleSearchAuditTrialListing");
     dispatch(GetAuditListingAPI(navigate, Data2, t));
+    setSearchBar(false);
   };
 
   //Handle Reset Button
