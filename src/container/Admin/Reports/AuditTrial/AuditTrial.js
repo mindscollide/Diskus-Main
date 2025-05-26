@@ -557,11 +557,13 @@ const AuditTrial = () => {
     setIsScroll(true);
 
     let Data = {
-      Username: "",
-      IpAddress: "",
-      DeviceID: "",
-      DateLogin: "",
-      DateLogOut: "",
+      Username: auditTrialSearch.userName || auditTrialSearch.title || "",
+      IpAddress: auditTrialSearch.IpAddress || "",
+      DeviceID: auditTrialSearch.Interface?.value
+        ? String(auditTrialSearch.Interface.value)
+        : "",
+      DateLogin: auditTrialSearch.LoginDate || "",
+      DateLogOut: auditTrialSearch.LogoutDate || "",
       OrganizationID: Number(localStorage.getItem("organizationID")),
       sRow: Number(isRowsData),
       Length: 10,
