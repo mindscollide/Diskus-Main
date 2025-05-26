@@ -8128,3 +8128,10 @@ td.ant-table-column-sort {
   padding-right: 10px;
   max-height: 40vh;
 }
+
+.userSettingDataLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
