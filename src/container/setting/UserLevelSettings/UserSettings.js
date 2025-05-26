@@ -428,24 +428,26 @@ const UserSettings = ({ googleClientIDs }) => {
   };
 
   async function redirectToUrl() {
-    const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
-    const url = baseUrl.replace(
-      /client_id=[^&]+/,
-      `client_id=${microsoftClientID}`
-    );
-    console.log("Client ID", url);
-    const windowFeatures = "width=600,height=400,top=100,left=100";
-    const popup = window.open(url, "Microsoft Login", windowFeatures);
+    if (microsoftClientID) {
+      const baseUrl = process.env.REACT_APP_MS_LOGIN_URL;
+      const url = baseUrl.replace(
+        /client_id=[^&]+/,
+        `client_id=${microsoftClientID}`
+      );
+      console.log("Client ID", url);
+      const windowFeatures = "width=600,height=400,top=100,left=100";
+      const popup = window.open(url, "Microsoft Login", windowFeatures);
 
-    // Wait for the popup to close
-    await new Promise((resolve) => {
-      const checkClosed = setInterval(() => {
-        if (popup.closed) {
-          clearInterval(checkClosed);
-          resolve();
-        }
-      }, 1000); // Check every second
-    });
+      // Wait for the popup to close
+      await new Promise((resolve) => {
+        const checkClosed = setInterval(() => {
+          if (popup.closed) {
+            clearInterval(checkClosed);
+            resolve();
+          }
+        }, 1000); // Check every second
+      });
+    }
   }
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
@@ -1584,6 +1586,7 @@ const UserSettings = ({ googleClientIDs }) => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
+                    microsoftClientID !== null &&
                     roleID !== 1 &&
                     roleID !== 2 ? (
                       <Row className="mt-3">
