@@ -36,6 +36,8 @@ const initialState = {
   realTimeIsReadFlag: false,
   webNotificationDataVideoIntimination: null,
   globalFunctionWebnotificationFlag: false,
+  googleClientID: "",
+  microsoftClientID: "",
 };
 
 const settingReducer = (state = initialState, action) => {
@@ -52,6 +54,20 @@ const settingReducer = (state = initialState, action) => {
         Loading: action.loader ? action.loader : false,
         UserProfileData: action.response,
         ResponseMessage: action.message,
+      };
+    }
+
+    case actions.SET_CLINET_ID_GOOGLE: {
+      return {
+        ...state,
+        googleClientID: action.response,
+      };
+    }
+    
+    case actions.SET_CLINET_ID_MS: {
+      return {
+        ...state,
+        microsoftClientID: action.response,
       };
     }
     case actions.GETSETTING_FAIL: {
