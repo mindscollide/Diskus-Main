@@ -9,6 +9,7 @@ import {
   downloadDocument,
   downloadAttendanceReport,
   LoginHistoryReportExporttoExcel,
+  AuditTrialReportExporttoExcel,
 } from "../../commen/apis/Api_config";
 
 const DownloadLoaderStart = () => {
@@ -200,8 +201,74 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
   };
 };
 
+// Audit Trial Report Downoload
+
+const downloadAuditTrialReport_init = () => {
+  return {
+    type: actions.EXPORT_AUDITTRIAL_REPORT_INIT,
+  };
+};
+const downloadAuditTrialReport_success = (response, message) => {
+  return {
+    type: actions.EXPORT_AUDITTRIAL_REPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const downloadAuditTrialReport_fail = (message) => {
+  return {
+    type: actions.EXPORT_AUDITTRIAL_REPORT_FAIL,
+    message: message,
+  };
+};
+const downloadAuditTrialReportApi = (navigate, t, Data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let form = new FormData();
+  form.append("RequestMethod", AuditTrialReportExporttoExcel.RequestMethod);
+  form.append("RequestData", JSON.stringify(Data));
+  return async (dispatch) => {
+    await dispatch(downloadAuditTrialReport_init());
+    axios({
+      method: "post",
+      url: reportDownload,
+      data: form,
+      headers: {
+        _token: token,
+        "Content-Disposition": "attachment; filename=template.xlsx",
+        "Content-Type":
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      },
+      responseType: "arraybuffer",
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(downloadAuditTrialReportApi(navigate, t, Data));
+        } else if (response.status === 200) {
+          const url = window.URL.createObjectURL(new Blob([response.data]));
+
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "Audit Trial Report.xlsx");
+          document.body.appendChild(link);
+          link.click();
+          dispatch(
+            downloadAuditTrialReport_success(
+              response.data.responseResult,
+              t("Download-successffuly")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(downloadAuditTrialReport_fail(response));
+      });
+  };
+};
+
 export {
   DownloadFile,
   downloadAttendanceReportApi,
   downlooadUserloginHistoryApi,
+  downloadAuditTrialReportApi,
 };
