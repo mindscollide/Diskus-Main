@@ -90,6 +90,7 @@ const VideoCallNormalHeader = ({
   disableMic,
   disableVideo,
   isMicActive,
+  setIsMicActive,
   isVideoActive,
   showTile,
   iframeCurrent,
@@ -318,6 +319,8 @@ const VideoCallNormalHeader = ({
 
   console.log(startRecordingState, "startRecordingState");
 
+  console.log({ isMicActive, audioControl }, "isMicActive,audioControl");
+
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
@@ -480,8 +483,11 @@ const VideoCallNormalHeader = ({
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     dispatch(participantPopup(false));
+    setIsMicActive(true);
+    dispatch(setRaisedUnRaisedParticiant(false))
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+    localStorage.setItem("handStatus", false);
   }
 
   // after presenter view is true then this funct call
@@ -574,6 +580,7 @@ const VideoCallNormalHeader = ({
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
         console.log("busyCall");
+        setIsMicActive(true);
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
