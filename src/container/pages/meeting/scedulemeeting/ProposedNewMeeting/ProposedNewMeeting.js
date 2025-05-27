@@ -176,7 +176,6 @@ const ProposedNewMeeting = ({
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
-        setMembersParticipants(getAllParticipants);
         setDropdowndata(getAllParticipants);
       }
     } catch (error) {
