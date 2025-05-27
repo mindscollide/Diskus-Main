@@ -7,6 +7,7 @@ const initialState = {
   ResponseMessage: "",
   downloadDocumentsList: [],
   userLoginHistoryDownload: null,
+  auditTrialDownload: null,
 };
 
 const downloadReducer = (state = initialState, action) => {
@@ -68,6 +69,30 @@ const downloadReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         userLoginHistoryDownload: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    //Audit Trial Report
+    case actions.EXPORT_AUDITTRIAL_REPORT_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.EXPORT_AUDITTRIAL_REPORT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        auditTrialDownload: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.EXPORT_AUDITTRIAL_REPORT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        auditTrialDownload: null,
         ResponseMessage: action.message,
       };
     }

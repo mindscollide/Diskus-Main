@@ -10,9 +10,12 @@ import NoActionsAudits from "../../../../../assets/images/NoActionsAudits.png";
 import CrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
 import Excelicon from "../../../../../assets/images/ExcelIcon.png";
 import { AuditTrialDateTimeFunctionViewActionDetails } from "../../../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
+import { downloadAuditTrialReportApi } from "../../../../../store/actions/Download_action";
 const ViewActionModal = ({ viewActionModalDataState }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const locale = localStorage.getItem("i18nextLng");
 
   console.log(viewActionModalDataState, "viewActionModalDataState");
@@ -46,6 +49,14 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
 
   const handleCrossIconClick = () => {
     dispatch(AuditTrialViewActionModal(false));
+  };
+
+  const handleDownloadButton = () => {
+    let Data = {
+      UserLoginHistoryID: Number(viewActionModalDataState.userLoginHistoryID),
+    };
+
+    dispatch(downloadAuditTrialReportApi(navigate, t, Data));
   };
 
   return (
@@ -196,6 +207,7 @@ const ViewActionModal = ({ viewActionModalDataState }) => {
                     </>
                   }
                   className={styles["DownloadExcelButton"]}
+                  onClick={handleDownloadButton}
                 />
               </Col>
             </Row>
