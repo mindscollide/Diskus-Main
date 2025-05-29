@@ -250,6 +250,7 @@ const VideoCallNormalHeader = ({
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
+  console.log(groupCallParticipantList, "groupCallParticipantList");
 
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
 
@@ -484,7 +485,7 @@ const VideoCallNormalHeader = ({
     dispatch(leaveCallModal(false));
     dispatch(participantPopup(false));
     setIsMicActive(true);
-    dispatch(setRaisedUnRaisedParticiant(false))
+    dispatch(setRaisedUnRaisedParticiant(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
     localStorage.setItem("handStatus", false);

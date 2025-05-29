@@ -536,7 +536,10 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
-        } else if (activeCallState && currentCallType === 1) {
+        } else if (
+          (activeCallState && currentCallType === 1) ||
+          currentCallType === 2
+        ) {
           console.log("mqtt mqmqmqmqmqmq", payload);
           setPresenterForOneToOneOrGroup(true);
           await dispatch(nonMeetingVideoGlobalModal(true));

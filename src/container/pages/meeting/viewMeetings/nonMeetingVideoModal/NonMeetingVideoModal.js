@@ -169,7 +169,10 @@ const NonMeetingVideoModal = () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
       setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
-    } else if (activeCallState && currentCallType === 1) {
+    } else if (
+      (activeCallState && currentCallType === 1) ||
+      currentCallType === 2
+    ) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
       console.log("setLeaveOneToOne");
@@ -188,7 +191,7 @@ const NonMeetingVideoModal = () => {
 
       await onHandleClickForStopRecording();
       await new Promise((resolve) => setTimeout(resolve, 100));
-
+      console.log("Check Hit Goes From There");
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateCallRoomID,
@@ -234,7 +237,8 @@ const NonMeetingVideoModal = () => {
                 <span className={styles["NonMeetingVideo-Message"]}>
                   {presenterViewFlag && presenterViewHostFlag ? (
                     <>{t("Are-you-sure-you-want-to-stop-presenter-view")}</>
-                  ) : activeCallState && currentCallType === 1 ? (
+                  ) : (activeCallState && currentCallType === 1) ||
+                    currentCallType === 2 ? (
                     <>{t("Are-You-Sure-you-Want-to-Leave-One-to-One")}</>
                   ) : (
                     <>{t("Are-You-Sure-you-Want-to-Leave-video")}</>
