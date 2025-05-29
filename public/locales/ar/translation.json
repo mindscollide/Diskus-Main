@@ -2439,5 +2439,6 @@
   "Hello-welcome": "Hello welcome",
   "Logged-out": "Logged Out",
   "File-extension-not-supported-for-signature": "لا يدعم امتداد الملف للتوقيع",
-  "Atleast-one-signatory-is-required": "يجب أن يكون هناك توقيع واحد على الأقل"
+  "Atleast-one-signatory-is-required": "يجب أن يكون هناك توقيع واحد على الأقل",
+  "Review": "مراجعة"
 }

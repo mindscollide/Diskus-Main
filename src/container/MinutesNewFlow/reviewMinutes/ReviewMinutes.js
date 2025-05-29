@@ -1017,7 +1017,7 @@ const ReviewMinutes = () => {
                                               {parentMinutedata.actorBundleStatusID ===
                                               3 ? (
                                                 <Button
-                                                  text={t("Reject")}
+                                                  text={t("Review")}
                                                   className={
                                                     styles["Reject-comment"]
                                                   }
@@ -1033,7 +1033,7 @@ const ReviewMinutes = () => {
                                               ) : parentMinutedata.actorBundleStatusID ===
                                                 2 ? (
                                                 <Button
-                                                  text={t("Reject")}
+                                                  text={t("Review")}
                                                   className={
                                                     styles["Reject-comment"]
                                                   }
@@ -2130,7 +2130,7 @@ const ReviewMinutes = () => {
                                                     {minuteDataSubminute.actorBundleStatusID ===
                                                     3 ? (
                                                       <Button
-                                                        text={t("Reject")}
+                                                        text={t("Review")}
                                                         className={
                                                           styles[
                                                             "Reject-comment"
@@ -2147,7 +2147,7 @@ const ReviewMinutes = () => {
                                                     ) : minuteDataSubminute.actorBundleStatusID ===
                                                       2 ? (
                                                       <Button
-                                                        text={t("Reject")}
+                                                        text={t("Review")}
                                                         className={
                                                           styles[
                                                             "Reject-comment"
@@ -3195,7 +3195,7 @@ const ReviewMinutes = () => {
 
                                       {data.actorBundleStatusID === 3 ? (
                                         <Button
-                                          text={t("Reject")}
+                                          text={t("Review")}
                                           className={styles["Reject-comment"]}
                                           // disableBtn={true}
                                           onClick={() =>
@@ -3204,7 +3204,7 @@ const ReviewMinutes = () => {
                                         />
                                       ) : data.actorBundleStatusID === 2 ? (
                                         <Button
-                                          text={t("Reject")}
+                                          text={t("Review")}
                                           className={styles["Reject-comment"]}
                                           onClick={() =>
                                             rejectGeneralComment(data, 0, false)

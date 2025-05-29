@@ -886,23 +886,25 @@ const MeetingDetails = ({
         let Newdata = [];
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
           console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
-          Newdata.push({
-            value: data.pK_MTID,
-            label: data.type,
-          });
-          if (index === 0) {
-            console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
-            let typeData = {
-              PK_MTID: data.pK_MTID,
-              Type: data.type,
-            };
-
-            console.log(typeData, "getALlMeetingTypesgetALlMeetingTypes");
-
-            setMeetingDetails({
-              ...meetingDetails,
-              MeetingType: typeData,
+          if (data.description === "Board Meetings") {
+            Newdata.push({
+              value: data.pK_MTID,
+              label: data.type,
             });
+            if (index === 0) {
+              console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+              let typeData = {
+                PK_MTID: data.pK_MTID,
+                Type: data.type,
+              };
+
+              console.log(typeData, "getALlMeetingTypesgetALlMeetingTypes");
+
+              setMeetingDetails({
+                ...meetingDetails,
+                MeetingType: typeData,
+              });
+            }
           }
         });
         setmeetingTypeDropdown(Newdata);

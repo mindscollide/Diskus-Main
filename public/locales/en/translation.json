@@ -2493,5 +2493,6 @@
   "Hello-welcome": "Hello welcome",
   "Logged-out": "Logged Out",
   "File-extension-not-supported-for-signature": "File extension not supported for signature",
-  "Atleast-one-signatory-is-required": "Atleast one signatory is required"
+  "Atleast-one-signatory-is-required": "Atleast one signatory is required",
+  "Review": "Review"
 }
