@@ -853,7 +853,7 @@
   "Open": "Open",
   "Copy-link": "Copy Link",
   "Send": "Send",
-  "Link-copied": "Link copied",
+  "Link-copied": "Link Copied",
   "You-dont-have-permission-to-edit": "You don't have permission to edit",
   "Access-updated": "Access updated",
   "Is-outisde-your-organization": "is outisde your organization",
@@ -2491,5 +2491,7 @@
   "Notes-title": "Notes title",
   "Comments": "Comments",
   "Hello-welcome": "Hello welcome",
-  "Logged-out": "Logged Out"
+  "Logged-out": "Logged Out",
+  "File-extension-not-supported-for-signature": "File extension not supported for signature",
+  "Atleast-one-signatory-is-required": "Atleast one signatory is required"
 }

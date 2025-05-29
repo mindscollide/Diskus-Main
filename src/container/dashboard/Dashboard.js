@@ -243,6 +243,10 @@ const Dashboard = () => {
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -346,7 +350,17 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  console.log(globallyScreenShare, "globallyScreenShare");
+  console.log({ globallyScreenShare }, "globallyScreenShare");
+
+  console.log(
+    {
+      startRecordingState,
+      pauseRecordingState,
+      resumeRecordingState,
+      stopRecordingState,
+    },
+    "CheckisPausedOccurOrNot"
+  );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
 
@@ -522,7 +536,10 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
-        } else if (activeCallState && currentCallType === 1) {
+        } else if (
+          (activeCallState && currentCallType === 1) ||
+          currentCallType === 2
+        ) {
           console.log("mqtt mqmqmqmqmqmq", payload);
           setPresenterForOneToOneOrGroup(true);
           await dispatch(nonMeetingVideoGlobalModal(true));
@@ -666,6 +683,7 @@ const Dashboard = () => {
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
             if (alreadyInMeetingVideo && presenterViewJoinFlagRef.current) {
+              console.log("mqtt mqmqmqmqmqmq");
               sessionStorage.removeItem("alreadyInMeetingVideo");
               dispatch(setAudioControlHost(false));
 
@@ -704,8 +722,8 @@ const Dashboard = () => {
               dispatch(setVideoControlHost(true));
               dispatch(participantVideoButtonState(true));
               await dispatch(presenterViewGlobalState(0, false, false, false));
-              dispatch(maximizeVideoPanelFlag(false));
-              dispatch(normalizeVideoPanelFlag(true));
+              dispatch(maximizeVideoPanelFlag(true));
+              dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               console.log("mqtt mqmqmqmqmqmq");
             } else {
@@ -714,6 +732,7 @@ const Dashboard = () => {
               localStorage.removeItem("participantUID");
               localStorage.removeItem("isGuid");
               localStorage.removeItem("videoIframe");
+              localStorage.removeItem("presenterViewvideoURL");
               localStorage.removeItem("acceptedRoomID");
               localStorage.removeItem("newRoomId");
               localStorage.removeItem("acceptedRoomID");
@@ -824,6 +843,35 @@ const Dashboard = () => {
         }
     } catch {}
   }
+
+  const sendStopRecordingMessageForMQTT = () => {
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let CallType = Number(localStorage.getItem("CallType"));
+
+    return new Promise((resolve) => {
+      if (!isZoomEnabled) {
+        resolve(); // Zoom not enabled, no need to send message
+        return;
+      }
+      console.log("RecordingStopMsgFromIframe from MQTT");
+      const iframe = iframeRef.current;
+
+      if (CallType === 1 || CallType === 2) {
+        if (iframe && iframe.contentWindow) {
+          iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+          console.log("RecordingStopMsgFromIframe from MQTT");
+        }
+
+        // Short delay to ensure iframe handles message
+        setTimeout(() => {
+          resolve();
+        }, 100);
+      } else {
+        resolve(); // Not a caller or irrelevant CallType
+      }
+    });
+  };
+
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1580,27 +1628,6 @@ const Dashboard = () => {
 
               console.log(data.payload, "checkHostTransfer");
 
-              if (isZoomEnabled) {
-                console.log("HostTransfer");
-                const iframe = iframeRef.current;
-                if (iframe && iframe.contentWindow) {
-                  console.log("HostTransfer");
-                  // iframe.contentWindow.postMessage(
-                  //   "hostTransferToParticipant",
-                  //   "*"
-                  // );
-
-                  iframe.contentWindow.postMessage(
-                    "RecordingStopMsgFromIframe",
-                    "*"
-                  );
-                }
-                setStartRecordingState(true);
-                setPauseRecordingState(false);
-                setResumeRecordingState(false);
-                setStopRecordingState(false);
-              }
-
               console.log("mqtt check 22", userID);
               console.log("mqtt check 22", data.receiverID[0]);
               if (userID === data.receiverID[0] && isMeetingVideo) {
@@ -1638,6 +1665,17 @@ const Dashboard = () => {
                 dispatch(participantWaitingListBox(false));
                 dispatch(toggleParticipantsVisibility(false));
                 dispatch(acceptHostTransferAccessGlobalFunc(true));
+                const wasRecordingPaused =
+                  localStorage.getItem("pauseRecordingState") === "true";
+                console.log(wasRecordingPaused, "Check is paused is true");
+
+                if (wasRecordingPaused) {
+                  console.log("Check is paused is true");
+                  setPauseRecordingState(true);
+                  setStartRecordingState(false);
+                  setResumeRecordingState(false);
+                  setStopRecordingState(false);
+                }
                 let newRoomId = localStorage.getItem("newRoomId");
                 console.log("mqtt check 22", newRoomId);
                 let Data = {
@@ -3315,14 +3353,14 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && CallType === 1) {
               console.log("Does Check Recording Stop");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*"
-                );
-              }
+              // const iframe = iframeRef.current;
+              // if (iframe && iframe.contentWindow) {
+              //   console.log("Does Check Recording Stop");
+              //   iframe.contentWindow.postMessage(
+              //     "RecordingStopMsgFromIframe",
+              //     "*"
+              //   );
+              // }
             } else if (
               isCaller &&
               CallType === 2 &&
@@ -3331,14 +3369,14 @@ const Dashboard = () => {
               console.log("Does Check Recording Stop Call Type 2");
 
               // Assuming iframeRef is defined
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop Call Type 2");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*"
-                );
-              }
+              // const iframe = iframeRef.current;
+              // if (iframe && iframe.contentWindow) {
+              //   console.log("Does Check Recording Stop Call Type 2");
+              //   iframe.contentWindow.postMessage(
+              //     "RecordingStopMsgFromIframe",
+              //     "*"
+              //   );
+              // }
             }
           }
 
@@ -3482,6 +3520,7 @@ const Dashboard = () => {
           let callStatus = JSON.parse(localStorage.getItem("activeCall"));
           let roomID = 0;
           let flagCheck1 = false;
+          localStorage.setItem("MicOff", true);
 
           if (isZoomEnabled) {
             if (String(initiateCallRoomID) !== String(data.payload.roomID)) {
@@ -3492,18 +3531,9 @@ const Dashboard = () => {
 
           if (isZoomEnabled) {
             console.log("Does Check Recording Stop");
-            // // Condition For Video Recording
-            if (CallType === 1 || CallType === 2) {
-              console.log("Does Check Recording Stop");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*"
-                );
-              }
-            }
+            // Function For Stop Video Recording
+            await sendStopRecordingMessageForMQTT();
+            await new Promise((resolve) => setTimeout(resolve, 100));
             flagCheck1 = String(activeRoomID) !== "";
           } else {
             flagCheck1 = Number(activeRoomID) !== 0;

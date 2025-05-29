@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   admitRejectAttendeeMainApi,
+  raiseUnRaisedHandMainApi,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
@@ -63,9 +64,14 @@ const VideoNewParticipantList = () => {
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-  let isMeetingVideoHostChecker = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostChecker")
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
   );
+  let participantUID = localStorage.getItem("participantUID");
+  let newroomID = localStorage.getItem("acceptedRoomID");
+  let isGuid = localStorage.getItem("isGuid");
+  let newRoomID = localStorage.getItem("newRoomId");
+  let participantRoomId = localStorage.getItem("participantRoomId");
 
   let HostName = localStorage.getItem("name");
   let PresenterHostuserID = Number(localStorage.getItem("userID"));
@@ -80,6 +86,15 @@ const VideoNewParticipantList = () => {
 
   console.log(getAllParticipantMain.length, "getAllParticipantMain");
   console.log(getAllParticipantMain, "getAllParticipantMain");
+  console.log(
+    {
+      startRecordingState,
+      pauseRecordingState,
+      resumeRecordingState,
+      stopRecordingState,
+    },
+    "startRecordingStatestartRecordingState"
+  );
 
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
@@ -106,18 +121,27 @@ const VideoNewParticipantList = () => {
   const leavePresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
+  const disableBeforeJoinZoom = useSelector(
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+  );
 
-  console.log(newJoinPresenterParticipant, "newJoinPresenterParticipant");
+  const raisedUnRaisedParticipant = useSelector(
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+  );
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   console.log(
     { presenterViewHostFlag, presenterViewFlag },
     "presenterViewFlagpresenterViewFlag"
   );
 
-  // For acccept Join name participantList
-  // const getNewParticipantsMeetingJoin = useSelector(
-  //   (state) => state.videoFeatureReducer.getNewParticipantsMeetingJoin
-  // );
+  let RoomID = presenterViewFlag
+    ? newroomID
+    : isMeetingVideoHostCheck
+    ? newRoomID
+    : participantRoomId;
+  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
   const [filteredParticipants, setFilteredParticipants] = useState([]);
   console.log(filteredParticipants, "filteredParticipants");
@@ -247,6 +271,20 @@ const VideoNewParticipantList = () => {
 
   const makeHostOnClick = async (usersData) => {
     let newRoomId = localStorage.getItem("newRoomId");
+
+    if (raisedUnRaisedParticipant) {
+      console.log("maximizeParticipantVideoFlag");
+      if (!isZoomEnabled || !disableBeforeJoinZoom) {
+        console.log("maximizeParticipantVideoFlag");
+        let data = {
+          RoomID: String(RoomID),
+          UID: String(UID),
+          IsHandRaised: false,
+        };
+        await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+      }
+    }
+
     let data = {
       RoomID: String(newRoomId),
       UID: usersData.guid,
@@ -624,7 +662,15 @@ const VideoNewParticipantList = () => {
                       ) : (
                         <img
                           draggable="false"
-                          src={MenuRaiseHand}
+                          src={
+                            presenterViewFlag
+                              ? !usersData.isHost
+                                ? MenuRaiseHand
+                                : null
+                              : usersData
+                              ? MenuRaiseHand
+                              : null
+                          }
                           alt=""
                           className="handraised-participant"
                         />

@@ -90,6 +90,7 @@ const VideoCallNormalHeader = ({
   disableMic,
   disableVideo,
   isMicActive,
+  setIsMicActive,
   isVideoActive,
   showTile,
   iframeCurrent,
@@ -246,6 +247,15 @@ const VideoCallNormalHeader = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
+  const nonMeetingVideoCheckModal = useSelector(
+    (state) => state.videoFeatureReducer.nonMeetingVideo
+  );
+  console.log(groupCallParticipantList, "groupCallParticipantList");
+
+  console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
+
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
     "presenterViewJoinFlagpresenterViewHostFlag"
@@ -279,6 +289,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
@@ -308,6 +319,8 @@ const VideoCallNormalHeader = ({
   const [showNotification, setShowNotification] = useState(true);
 
   console.log(startRecordingState, "startRecordingState");
+
+  console.log({ isMicActive, audioControl }, "isMicActive,audioControl");
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
@@ -471,8 +484,11 @@ const VideoCallNormalHeader = ({
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     dispatch(participantPopup(false));
+    setIsMicActive(true);
+    dispatch(setRaisedUnRaisedParticiant(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+    localStorage.setItem("handStatus", false);
   }
 
   // after presenter view is true then this funct call
@@ -565,6 +581,7 @@ const VideoCallNormalHeader = ({
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
         console.log("busyCall");
+        setIsMicActive(true);
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
@@ -781,11 +798,15 @@ const VideoCallNormalHeader = ({
             dispatch(screenShareTriggeredGlobally(false));
             await dispatch(isSharedScreenTriggeredApi(navigate, t, data));
           }
-          //Jab Recording On Ho aur Host Stop krday toh
+
           if (pauseRecordingState || resumeRecordingState) {
+            console.log("busyCall");
+
             console.log("Stop Recording Check");
-            onStopRecording();
+            await onStopRecording();
+            await new Promise((resolve) => setTimeout(resolve, 100));
           }
+          //Jab Recording On Ho aur Host Stop krday toh
         }
 
         console.log("busyCall");
@@ -914,7 +935,11 @@ const VideoCallNormalHeader = ({
     } catch (error) {}
     try {
       let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+      let isMeetingVideoHostCheck = JSON.parse(
+        localStorage.getItem("isMeetingVideoHostCheck")
+      );
       let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+      let acceptedRoomID = localStorage.getItem("acceptedRoomID");
       let activeRoomID = localStorage.getItem("activeRoomID");
       let isCaller = JSON.parse(localStorage.getItem("isCaller"));
 
@@ -956,11 +981,29 @@ const VideoCallNormalHeader = ({
         }
       }
 
+      let RoomID;
+      if (isMeeting) {
+        if (isZoomEnabled) {
+          RoomID = String(acceptedRoomID);
+          if (isCaller) {
+            RoomID = String(initiateCallRoomID);
+          }
+        } else {
+          RoomID = acceptedRoomID;
+        }
+      } else {
+        if (isZoomEnabled) {
+          RoomID = String(initiateCallRoomID);
+        } else {
+          RoomID = activeRoomID;
+        }
+      }
+
       console.log("busyCall");
       let Data = {
         OrganizationID: currentOrganization,
-        RoomID: isZoomEnabled ? String(initiateCallRoomID) : activeRoomID,
-        IsCaller: isCaller,
+        RoomID: RoomID,
+        IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
       await dispatch(LeaveCall(Data, navigate, t));
@@ -1476,15 +1519,7 @@ const VideoCallNormalHeader = ({
 
                     {/* if Recording is Pause and Stop */}
                     {pauseRecordingState && (
-                      <div
-                        className={"Record-Start-Background-MeetingVideo"}
-                        // className={
-                        //   !presenterViewFlag && !presenterViewHostFlag
-                        //     ? "Record-Start-Background-MeetingVideo"
-                        //     : "Record-Start-Background"
-                        // }
-                        // onClick={onResumeRecording}
-                      >
+                      <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
                           title={t("Stop-recording")}
@@ -1692,7 +1727,8 @@ const VideoCallNormalHeader = ({
                   ? !raisedUnRaisedParticipant
                     ? "inactive-state"
                     : "cursor-pointer active-state"
-                  : !handStatus
+                  : getMeetingHostInfo?.isHost === true &&
+                    !raisedUnRaisedParticipant
                   ? "inactive-state"
                   : "cursor-pointer active-state"
               }
@@ -1712,7 +1748,7 @@ const VideoCallNormalHeader = ({
                       ? raisedUnRaisedParticipant
                         ? t("Lower-hand")
                         : t("Raise-hand")
-                      : handStatus
+                      : raisedUnRaisedParticipant
                       ? t("Lower-hand")
                       : t("Raise-hand")
                     : raisedUnRaisedParticipant
@@ -1727,7 +1763,9 @@ const VideoCallNormalHeader = ({
                         ? raiseUnRaiseForParticipant(
                             raisedUnRaisedParticipant ? false : true
                           )
-                        : raiseHandFunction
+                        : raiseUnRaiseForParticipant(
+                            raisedUnRaisedParticipant ? false : true
+                          )
                       : raiseUnRaiseForParticipant(
                           raisedUnRaisedParticipant ? false : true
                         )
@@ -1738,7 +1776,7 @@ const VideoCallNormalHeader = ({
                         ? raisedUnRaisedParticipant === true
                           ? LowerHand
                           : RaiseHand
-                        : handStatus
+                        : raisedUnRaisedParticipant === true
                         ? LowerHand
                         : RaiseHand
                       : raisedUnRaisedParticipant === true

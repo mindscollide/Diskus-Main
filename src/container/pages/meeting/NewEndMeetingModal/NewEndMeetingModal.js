@@ -267,7 +267,7 @@ const NewEndMeetingModal = () => {
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationClickTaskID");
     localStorage.removeItem("viewadvanceMeetingTask");
-    localStorage.removeItem("isMeeting");
+    localStorage.setItem("isMeeting", false);
   };
   const handleClickDiscard = () => {
     console.log("NewEndLeaveMeeting");

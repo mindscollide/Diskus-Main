@@ -439,7 +439,7 @@ const VideoPanelNormal = () => {
         console.log("iframeiframe");
         setCallerURL("");
       }
-      // localStorage.removeItem("refinedVideoUrl");
+      localStorage.removeItem("refinedVideoUrl");
       localStorage.removeItem("initiateCallRoomID");
       localStorage.removeItem("acceptedRoomID");
     };
@@ -641,19 +641,6 @@ const VideoPanelNormal = () => {
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
-  // useEffect(() => {
-  //   if (
-  //     getNewParticipantsMeetingJoin !== null &&
-  //     getNewParticipantsMeetingJoin !== undefined &&
-  //     getNewParticipantsMeetingJoin.length > 0
-  //   ) {
-  //     // Extract and set the new participants to state
-  //     setParticipantsList(getNewParticipantsMeetingJoin);
-  //   } else {
-  //     setParticipantsList([]);
-  //   }
-  // }, [getNewParticipantsMeetingJoin]);
-
   useEffect(() => {
     try {
       if (Object.keys(InitiateVideoCallData).length > 0) {
@@ -669,6 +656,7 @@ const VideoPanelNormal = () => {
             : "";
         }
         if (isMeeting) {
+          console.log("iframeiframe");
           if (!isMeetingVideo) {
             console.log("iframeiframe", InitiateVideoCallData);
             console.log("iframeiframe", extractedBaseURLCaller);
@@ -702,6 +690,8 @@ const VideoPanelNormal = () => {
               }
             }
           } else {
+            console.log("iframeiframe");
+
             if (
               isMeeting &&
               isMeetingHost === false &&
@@ -765,6 +755,7 @@ const VideoPanelNormal = () => {
       }
 
       if (isMeeting === false) {
+        console.log("iframeiframe");
         if (callAcceptedRoomID && Number(callAcceptedRoomID) !== 0) {
           console.log("iframeiframe");
           let newurl = generateURLParticipant(
@@ -887,7 +878,9 @@ const VideoPanelNormal = () => {
           ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
           : "";
         if (isMeeting) {
+          console.log("iframeiframe");
           if (isMeetingHost) {
+            console.log("iframeiframe");
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi !== callerURL);
               if (urlFormeetingapi !== callerURL) {
@@ -901,6 +894,7 @@ const VideoPanelNormal = () => {
               isMeetingHost === false &&
               meetingHost?.isDashboardVideo === false
             ) {
+              console.log("iframeiframe");
               let newurl = generateURLCaller(
                 extractedBaseURLCaller,
                 currentUserName,
@@ -1027,15 +1021,19 @@ const VideoPanelNormal = () => {
         }
       }
       //  else {
-      //   const iframe = iframeRef.current;
-      //   if (iframe && iframe?.contentWindow) {
+      //   if (isMeeting && isMeetingVideo && isMeetingVideoHostChecker) {
       //     console.log("Does Check Recording Stop");
-      //     setTimeout(() => {
-      //       iframe?.contentWindow?.postMessage(
-      //         "RecordingStopMsgFromIframe",
-      //         "*"
-      //       );
-      //     }, 1000);
+      //     const iframe = iframeRef.current;
+      //     if (iframe && iframe?.contentWindow) {
+      //       console.log("Does Check Recording Stop");
+      //       setTimeout(() => {
+      //         console.log("Does Check Recording Stop");
+      //         iframe?.contentWindow?.postMessage(
+      //           "RecordingStopMsgFromIframe",
+      //           "*"
+      //         );
+      //       }, 1000);
+      //     }
       //   }
       // }
     }
@@ -1584,6 +1582,7 @@ const VideoPanelNormal = () => {
     setPauseRecordingState(true);
     setResumeRecordingState(false);
     setStopRecordingState(false);
+    localStorage.setItem("pauseRecordingState", "true");
 
     if (isZoomEnabled) {
       if (
@@ -1651,45 +1650,49 @@ const VideoPanelNormal = () => {
   };
 
   const onHandleClickForStopRecording = () => {
-    console.log("RecordingStopMsgFromIframe");
-    setStartRecordingState(true);
-    setPauseRecordingState(false);
-    setResumeRecordingState(false);
-    setStopRecordingState(false);
+    return new Promise((resolve) => {
+      console.log("RecordingStopMsgFromIframe");
 
-    if (isZoomEnabled) {
-      if (
-        isMeeting &&
-        isMeetingVideo &&
-        isMeetingVideoHostChecker &&
-        !presenterViewJoinFlag &&
-        !presenterViewHostFlag
-      ) {
+      setStartRecordingState(true);
+      setPauseRecordingState(false);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
+
+      if (isZoomEnabled) {
         const iframe = iframeRef.current;
-        if (iframe && iframe?.contentWindow) {
-          setTimeout(() => {
-            iframe?.contentWindow?.postMessage(
-              "RecordingStopMsgFromIframe",
-              "*"
-            );
+
+        const sendMessage = () => {
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
             console.log("RecordingStopMsgFromIframe");
-          }, 1000);
-        }
-      } else {
-        if (isCaller) {
-          if (CallType === 1 || CallType === 2) {
-            const iframe = iframeRef.current;
-            if (iframe && iframe.contentWindow) {
-              iframe.contentWindow.postMessage(
-                "RecordingStopMsgFromIframe",
-                "*"
-              );
-              console.log("RecordingStopMsgFromIframe");
-            }
+          }
+
+          // Slight delay to allow iframe to process the message
+          setTimeout(() => {
+            resolve();
+          }, 100);
+        };
+
+        // Host-specific path
+        if (
+          isMeeting &&
+          isMeetingVideo &&
+          isMeetingVideoHostChecker &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag
+        ) {
+          setTimeout(sendMessage, 1000); // 1s delay for host
+        } else {
+          if (isCaller && (CallType === 1 || CallType === 2)) {
+            sendMessage(); // Immediate for caller
+          } else {
+            resolve(); // If none of the conditions matched, resolve immediately
           }
         }
+      } else {
+        resolve(); // Zoom not enabled, no message needed
       }
-    }
+    });
   };
 
   return (
@@ -1754,6 +1757,7 @@ const VideoPanelNormal = () => {
                     disableVideo={disableVideoFunction}
                     isVideoActive={isVideoActive}
                     isMicActive={isMicActive}
+                    setIsMicActive={setIsMicActive}
                     showTile={showTile}
                     onStartRecording={onHandleClickForStartRecording}
                     onPauseRecording={onHandleClickForPauseRecording}
