@@ -90,6 +90,7 @@ const VideoCallNormalHeader = ({
   disableMic,
   disableVideo,
   isMicActive,
+  setIsMicActive,
   isVideoActive,
   showTile,
   iframeCurrent,
@@ -249,8 +250,11 @@ const VideoCallNormalHeader = ({
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
+  console.log(groupCallParticipantList, "groupCallParticipantList");
 
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
@@ -285,7 +289,6 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
- 
 
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
@@ -316,6 +319,8 @@ const VideoCallNormalHeader = ({
   const [showNotification, setShowNotification] = useState(true);
 
   console.log(startRecordingState, "startRecordingState");
+
+  console.log({ isMicActive, audioControl }, "isMicActive,audioControl");
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
@@ -479,8 +484,11 @@ const VideoCallNormalHeader = ({
     dispatch(minimizeVideoPanelFlag(false));
     dispatch(leaveCallModal(false));
     dispatch(participantPopup(false));
+    setIsMicActive(true);
+    dispatch(setRaisedUnRaisedParticiant(false));
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
+    localStorage.setItem("handStatus", false);
   }
 
   // after presenter view is true then this funct call
@@ -573,6 +581,7 @@ const VideoCallNormalHeader = ({
     try {
       if (iframeCurrent && iframeCurrent.contentWindow !== null) {
         console.log("busyCall");
+        setIsMicActive(true);
         iframeCurrent.contentWindow.postMessage("leaveSession", "*");
         await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
       }
@@ -974,11 +983,20 @@ const VideoCallNormalHeader = ({
 
       let RoomID;
       if (isMeeting) {
-        console.log("busyCall");
-        RoomID = isZoomEnabled ? String(acceptedRoomID) : acceptedRoomID;
+        if (isZoomEnabled) {
+          RoomID = String(acceptedRoomID);
+          if (isCaller) {
+            RoomID = String(initiateCallRoomID);
+          }
+        } else {
+          RoomID = acceptedRoomID;
+        }
       } else {
-        console.log("busyCall");
-        RoomID = isZoomEnabled ? String(initiateCallRoomID) : activeRoomID;
+        if (isZoomEnabled) {
+          RoomID = String(initiateCallRoomID);
+        } else {
+          RoomID = activeRoomID;
+        }
       }
 
       console.log("busyCall");
@@ -1709,7 +1727,8 @@ const VideoCallNormalHeader = ({
                   ? !raisedUnRaisedParticipant
                     ? "inactive-state"
                     : "cursor-pointer active-state"
-                  : !handStatus
+                  : getMeetingHostInfo?.isHost === true &&
+                    !raisedUnRaisedParticipant
                   ? "inactive-state"
                   : "cursor-pointer active-state"
               }
@@ -1729,7 +1748,7 @@ const VideoCallNormalHeader = ({
                       ? raisedUnRaisedParticipant
                         ? t("Lower-hand")
                         : t("Raise-hand")
-                      : handStatus
+                      : raisedUnRaisedParticipant
                       ? t("Lower-hand")
                       : t("Raise-hand")
                     : raisedUnRaisedParticipant
@@ -1744,7 +1763,9 @@ const VideoCallNormalHeader = ({
                         ? raiseUnRaiseForParticipant(
                             raisedUnRaisedParticipant ? false : true
                           )
-                        : raiseHandFunction
+                        : raiseUnRaiseForParticipant(
+                            raisedUnRaisedParticipant ? false : true
+                          )
                       : raiseUnRaiseForParticipant(
                           raisedUnRaisedParticipant ? false : true
                         )
@@ -1755,7 +1776,7 @@ const VideoCallNormalHeader = ({
                         ? raisedUnRaisedParticipant === true
                           ? LowerHand
                           : RaiseHand
-                        : handStatus
+                        : raisedUnRaisedParticipant === true
                         ? LowerHand
                         : RaiseHand
                       : raisedUnRaisedParticipant === true

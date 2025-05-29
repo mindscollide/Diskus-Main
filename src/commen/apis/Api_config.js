@@ -2009,6 +2009,10 @@ const GetUsersAuditActions = {
   RequestMethod: "ServiceManager.GetUserAuditActions",
 };
 
+const AuditTrialReportExporttoExcel = {
+  RequestMethod: "ServiceManager.DownloadAuditReport",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2533,4 +2537,5 @@ export {
   SaveAuditLog,
   GetUsersAuditListing,
   GetUsersAuditActions,
+  AuditTrialReportExporttoExcel,
 };

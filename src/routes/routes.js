@@ -78,6 +78,7 @@ import {
 } from "../components/elements/ErrorFallBack/index.jsx";
 import { ErrorBoundary } from "react-error-boundary";
 import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
+import UserSettingsWrapper from "./UserSettingsWrapper.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -346,7 +347,7 @@ export const router = createBrowserRouter(
                   FallbackComponent={ErrorFallback}
                   onError={logErrors}
                 >
-                  <UserSettings />
+                  <UserSettingsWrapper />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }

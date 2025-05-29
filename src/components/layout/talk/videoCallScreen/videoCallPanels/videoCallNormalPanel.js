@@ -439,7 +439,7 @@ const VideoPanelNormal = () => {
         console.log("iframeiframe");
         setCallerURL("");
       }
-      // localStorage.removeItem("refinedVideoUrl");
+      localStorage.removeItem("refinedVideoUrl");
       localStorage.removeItem("initiateCallRoomID");
       localStorage.removeItem("acceptedRoomID");
     };
@@ -641,19 +641,6 @@ const VideoPanelNormal = () => {
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
 
-  // useEffect(() => {
-  //   if (
-  //     getNewParticipantsMeetingJoin !== null &&
-  //     getNewParticipantsMeetingJoin !== undefined &&
-  //     getNewParticipantsMeetingJoin.length > 0
-  //   ) {
-  //     // Extract and set the new participants to state
-  //     setParticipantsList(getNewParticipantsMeetingJoin);
-  //   } else {
-  //     setParticipantsList([]);
-  //   }
-  // }, [getNewParticipantsMeetingJoin]);
-
   useEffect(() => {
     try {
       if (Object.keys(InitiateVideoCallData).length > 0) {
@@ -669,6 +656,7 @@ const VideoPanelNormal = () => {
             : "";
         }
         if (isMeeting) {
+          console.log("iframeiframe");
           if (!isMeetingVideo) {
             console.log("iframeiframe", InitiateVideoCallData);
             console.log("iframeiframe", extractedBaseURLCaller);
@@ -702,6 +690,8 @@ const VideoPanelNormal = () => {
               }
             }
           } else {
+            console.log("iframeiframe");
+
             if (
               isMeeting &&
               isMeetingHost === false &&
@@ -765,6 +755,7 @@ const VideoPanelNormal = () => {
       }
 
       if (isMeeting === false) {
+        console.log("iframeiframe");
         if (callAcceptedRoomID && Number(callAcceptedRoomID) !== 0) {
           console.log("iframeiframe");
           let newurl = generateURLParticipant(
@@ -887,7 +878,9 @@ const VideoPanelNormal = () => {
           ? extractedUrl(dynamicBaseURLCaller, endIndexBaseURLCaller)
           : "";
         if (isMeeting) {
+          console.log("iframeiframe");
           if (isMeetingHost) {
+            console.log("iframeiframe");
             if (validateRoomID(urlFormeetingapi)) {
               console.log("iframeiframe", urlFormeetingapi !== callerURL);
               if (urlFormeetingapi !== callerURL) {
@@ -901,6 +894,7 @@ const VideoPanelNormal = () => {
               isMeetingHost === false &&
               meetingHost?.isDashboardVideo === false
             ) {
+              console.log("iframeiframe");
               let newurl = generateURLCaller(
                 extractedBaseURLCaller,
                 currentUserName,
@@ -1763,6 +1757,7 @@ const VideoPanelNormal = () => {
                     disableVideo={disableVideoFunction}
                     isVideoActive={isVideoActive}
                     isMicActive={isMicActive}
+                    setIsMicActive={setIsMicActive}
                     showTile={showTile}
                     onStartRecording={onHandleClickForStartRecording}
                     onPauseRecording={onHandleClickForPauseRecording}

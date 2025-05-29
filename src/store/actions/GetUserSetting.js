@@ -23,6 +23,21 @@ const settingSuccess = (response, message, loader) => {
     loader: loader,
   };
 };
+
+const setClinetIdGoogle = (response) => {
+  return {
+    type: actions.SET_CLINET_ID_GOOGLE,
+    response: response,
+  };
+};
+
+const setClinetIdMS = (response) => {
+  return {
+    type: actions.SET_CLINET_ID_MS,
+    response: response,
+  };
+};
+
 const settingFail = (response, message) => {
   return {
     type: actions.GETSETTING_FAIL,
@@ -88,6 +103,16 @@ const getUserSetting = (navigate, t, loader) => {
               console.log("configValue", configValue); // Outputs the configValue or null if not found
 
               localStorage.setItem("isZoomEnabled", configValue);
+              const microsoftClientId =
+                response.data.responseResult.userSettings.configurations.find(
+                  (item) => item.configKey === "Microsoft_Client_ID"
+                )?.configValue;
+              dispatch(setClinetIdMS(microsoftClientId));
+              const googleClientId =
+                response.data.responseResult.userSettings.configurations.find(
+                  (item) => item.configKey === "Google_Client_ID"
+                )?.configValue;
+              dispatch(setClinetIdGoogle(googleClientId));
               if (
                 response.data.responseResult.userSettings
                   .userAllowMicrosoftCalendarSynch != null &&
@@ -98,9 +123,15 @@ const getUserSetting = (navigate, t, loader) => {
                   "officeEventColor",
                   response.data.responseResult.userSettings.officeEventColor
                 );
+
+                console.log(
+                  "Client ID",
+                  response.data.responseResult.userSettings.configurations
+                );
               } else {
                 localStorage.removeItem("officeEventColor");
               }
+
               if (
                 response.data.responseResult.userSettings
                   .userAllowGoogleCalendarSynch != null &&
@@ -110,6 +141,10 @@ const getUserSetting = (navigate, t, loader) => {
                 localStorage.setItem(
                   "googleEventColor",
                   response.data.responseResult.userSettings.googleEventColor
+                );
+                console.log(
+                  "Client ID",
+                  response.data.responseResult.userSettings.configurations
                 );
               } else {
                 localStorage.removeItem("googleEventColor");

@@ -43,6 +43,15 @@ const VideoMaxIncoming = () => {
     joiningOneToOneAfterLeavingPresenterView,
     setJoiningOneToOneAfterLeavingPresenterView,
     setLeaveMeetingVideoForOneToOneOrGroup,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStopRecordingState,
+    iframeRef,
   } = useMeetingContext();
   const { VideoMainReducer, videoFeatureReducer } = useSelector(
     (state) => state
@@ -65,10 +74,12 @@ const VideoMaxIncoming = () => {
   let callerID = Number(localStorage.getItem("callerID"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let callTypeID = Number(localStorage.getItem("callTypeID"));
+  let CallType = Number(localStorage.getItem("CallType"));
   let roomID = localStorage.getItem("acceptedRoomID");
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let newRoomID = localStorage.getItem("newRoomId");
   let participantRoomId = localStorage.getItem("participantRoomId");
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -195,6 +206,52 @@ const VideoMaxIncoming = () => {
     }
   }, [joiningOneToOneAfterLeavingPresenterView]);
 
+  const onHandleClickForStopRecording = () => {
+    return new Promise((resolve) => {
+      console.log("RecordingStopMsgFromIframe");
+      let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+      setStartRecordingState(true);
+      setPauseRecordingState(false);
+      setResumeRecordingState(false);
+      setStopRecordingState(false);
+
+      if (isZoomEnabled) {
+        const iframe = iframeRef.current;
+
+        const sendMessage = () => {
+          if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+            console.log("RecordingStopMsgFromIframe");
+          }
+
+          // Slight delay to allow iframe to process the message
+          setTimeout(() => {
+            resolve();
+          }, 100);
+        };
+
+        // Host-specific path
+        if (
+          isMeeting &&
+          isMeetingVideo &&
+          isMeetingVideoHostCheck &&
+          !presenterViewJoinFlag &&
+          !presenterViewHostFlag
+        ) {
+          setTimeout(sendMessage, 1000); // 1s delay for host
+        } else {
+          if (isCaller && (CallType === 1 || CallType === 2)) {
+            sendMessage(); // Immediate for caller
+          } else {
+            resolve(); // If none of the conditions matched, resolve immediately
+          }
+        }
+      } else {
+        resolve(); // Zoom not enabled, no message needed
+      }
+    });
+  };
+
   const endAndAccept = async () => {
     console.log("busyCall");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
@@ -210,6 +267,11 @@ const VideoMaxIncoming = () => {
           console.log("busyCall");
           // await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
           // setIsTimerRunning(false);
+          if (pauseRecordingState || resumeRecordingState) {
+            console.log("busyCall");
+            await onHandleClickForStopRecording();
+            await new Promise((resolve) => setTimeout(resolve, 100));
+          }
           if (
             presenterViewFlag &&
             (presenterViewHostFlag || presenterViewJoinFlag)

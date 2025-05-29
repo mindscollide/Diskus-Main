@@ -106,6 +106,7 @@ import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParti
 import { useMeetingContext } from "../../../../../context/MeetingContext";
 import { userLogOutApiFunc } from "../../../../../store/actions/Auth_Sign_Out";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
+import { raiseUnRaisedHandMainApi } from "../../../../../store/actions/Guest_Video";
 
 const AgendaViewer = () => {
   const { t } = useTranslation();
@@ -189,6 +190,8 @@ const AgendaViewer = () => {
     localStorage.getItem("isMeetingVideoHostCheck")
   );
 
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
   //and this is already in Meeting Video Check
   let alreadyInMeetingVideo = JSON.parse(
     sessionStorage.getItem("alreadyInMeetingVideo")
@@ -236,7 +239,9 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
-  console.log(maximizeParticipantVideoFlag, "maximizeParticipantVideoFlag");
+  const raisedUnRaisedParticipant = useSelector(
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+  );
 
   const normalParticipantVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.normalParticipantVideoFlag
@@ -264,6 +269,10 @@ const AgendaViewer = () => {
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
     (state) => state.videoFeatureReducer.participantEnableVideoState
+  );
+
+  const disableBeforeJoinZoom = useSelector(
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
 
   // start and stop Presenter View
@@ -533,17 +542,6 @@ const AgendaViewer = () => {
     // }
   };
 
-  // useEffect(() => {
-  //   try {
-  //     if (leaveMeetingOnLogoutResponse) {
-  //       if (fullScreenView === false) {
-  //         console.log("mqtt mqmqmqmqmqmq");
-  //         leaveMeeting(true);
-  //       }
-  //     }
-  //   } catch {}
-  // }, [leaveMeetingOnLogoutResponse]);
-
   const groupChatInitiation = (talkGroupID) => {
     if (
       talkGroupID !== 0 &&
@@ -799,20 +797,6 @@ const AgendaViewer = () => {
   };
 
   const onClickStartPresenter = async () => {
-    console.log(pauseRecordingState, "pauseRecordingState");
-    if (pauseRecordingState) {
-      console.log("pauseRecordingState");
-      setStartRecordingState(false);
-      setPauseRecordingState(true);
-      setResumeRecordingState(false);
-      setStopRecordingState(false);
-    } else {
-      console.log("pauseRecordingState");
-      setStartRecordingState(true);
-      setPauseRecordingState(false);
-      setResumeRecordingState(false);
-      setStopRecordingState(false);
-    }
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -824,6 +808,19 @@ const AgendaViewer = () => {
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
       console.log("maximizeParticipantVideoFlag");
+      if (raisedUnRaisedParticipant) {
+        console.log("maximizeParticipantVideoFlag");
+        if (!isZoomEnabled || !disableBeforeJoinZoom) {
+          console.log("maximizeParticipantVideoFlag");
+          let data = {
+            RoomID: String(RoomID),
+            UID: String(UID),
+            IsHandRaised: false,
+          };
+          await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+        }
+      }
+
       if (isWaiting) {
         console.log("maximizeParticipantVideoFlag");
         dispatch(closeWaitingParticipantVideoStream(true));
