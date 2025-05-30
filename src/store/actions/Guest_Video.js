@@ -322,6 +322,10 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
                 "GuestUserID",
                 response.data.responseResult.guestGuid
               );
+              sessionStorage.setItem(
+                "isZoomEnabled",
+                response.data.responseResult.isZoomEnabled
+              );
               await dispatch(
                 joinGuestVideoSuccess(
                   response.data.responseResult,

@@ -109,7 +109,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   let isZoomEnabled = JSON.parse(sessionStorage.getItem("isZoomEnabled"));
 
-  console.log({ micOn, isVideoOn }, "isVideoOnisVideoOn");
+  console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
 
   useEffect(() => {
     let getRoomId = sessionStorage.getItem("roomId");

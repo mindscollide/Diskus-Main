@@ -1498,6 +1498,7 @@ const VideoCallNormalHeader = ({
                 !presenterViewJoinFlag &&
                 !presenterViewHostFlag ? (
                   <>
+                    {console.log("Check QUick Is Coming or Not")}
                     {/* if Recording is start */}
                     {startRecordingState && (
                       <div
