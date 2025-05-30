@@ -128,12 +128,6 @@ const GuestVideoCall = () => {
             setRoomId(data.payload.roomID);
             sessionStorage.setItem("roomId", data.payload.roomID);
             dispatch(makeStreamStop(true, 2));
-            if (isZoomEnabled) {
-              console.log("Check ZOom");
-              sessionStorage.setItem("isZoomEnabled", true);
-            } else {
-              sessionStorage.removeItem("isZoomEnabled");
-            }
             // dispatch(guestVideoNavigationScreen(2));
           } else {
             dispatch(makeStreamStop(true, 3));
@@ -144,6 +138,7 @@ const GuestVideoCall = () => {
           "REMOVED_FROM_MEETING".toLowerCase()
         ) {
           sessionStorage.setItem("isLeftCheck", false);
+          sessionStorage.removeItem("isZoomEnabled");
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));
           dispatch(guestVideoNavigationScreen(5));

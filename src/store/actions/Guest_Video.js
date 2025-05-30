@@ -935,6 +935,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                 )
               );
               sessionStorage.setItem("isRejoining", "true");
+              sessionStorage.removeItem("isZoomEnabled");
               let leftCheck = JSON.parse(sessionStorage.getItem("isLeftCheck"));
               if (leftCheck) {
                 dispatch(guestVideoNavigationScreen(4));
