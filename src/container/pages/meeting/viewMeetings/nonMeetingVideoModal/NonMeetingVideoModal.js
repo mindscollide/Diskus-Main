@@ -70,7 +70,7 @@ const NonMeetingVideoModal = () => {
   let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
   let currentOrganization = Number(localStorage.getItem("organizationID"));
   let initiateCallRoomID = String(localStorage.getItem("initiateCallRoomID"));
-  let currentCallType = Number(localStorage.getItem("CallType"));
+  let currentCallType = Number(localStorage.getItem("callTypeID"));
 
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
@@ -141,7 +141,6 @@ const NonMeetingVideoModal = () => {
     let JoinpresenterForonetoone = JSON.parse(
       localStorage.getItem("JoinpresenterForonetoone")
     );
-    let currentCallType = Number(localStorage.getItem("CallType"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     if (JoinpresenterForonetoone) {
       dispatch(nonMeetingVideoGlobalModal(false));
@@ -170,8 +169,8 @@ const NonMeetingVideoModal = () => {
       setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
     } else if (
-      (activeCallState && currentCallType === 1) ||
-      currentCallType === 2
+      activeCallState &&
+      (currentCallType === 1 || currentCallType === 2)
     ) {
       console.log("busyCall");
       await dispatch(nonMeetingVideoGlobalModal(false));
@@ -191,7 +190,7 @@ const NonMeetingVideoModal = () => {
 
       await onHandleClickForStopRecording();
       await new Promise((resolve) => setTimeout(resolve, 100));
-      console.log("Check Hit Goes From There");
+
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: initiateCallRoomID,
@@ -237,9 +236,10 @@ const NonMeetingVideoModal = () => {
                 <span className={styles["NonMeetingVideo-Message"]}>
                   {presenterViewFlag && presenterViewHostFlag ? (
                     <>{t("Are-you-sure-you-want-to-stop-presenter-view")}</>
-                  ) : (activeCallState && currentCallType === 1) ||
-                    currentCallType === 2 ? (
+                  ) : activeCallState && currentCallType === 1 ? (
                     <>{t("Are-You-Sure-you-Want-to-Leave-One-to-One")}</>
+                  ) : activeCallState && currentCallType === 2 ? (
+                    <>{t("Are-You-Sure-you-Want-to-Leave-group-call")}</>
                   ) : (
                     <>{t("Are-You-Sure-you-Want-to-Leave-video")}</>
                   )}
