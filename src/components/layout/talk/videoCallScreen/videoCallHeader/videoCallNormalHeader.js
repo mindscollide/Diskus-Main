@@ -1853,6 +1853,11 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
+          (
+            isMeetingVideo &&
+            !getMeetingHostInfo?.isHost &&
+            !presenterViewFlag &&
+            !presenterViewHostFlag) ||
           (currentCallType === 2 &&
             !presenterViewFlag &&
             !presenterViewHostFlag) ||
@@ -2009,7 +2014,7 @@ const VideoCallNormalHeader = ({
             </div>
           ) : null}
 
-          {currentCallType === 1 && !presenterViewFlag && (
+          {currentCallType === 1 && !isMeetingVideo && !presenterViewFlag && (
             <>
               {currentCallType === 1 && checkFeatureIDAvailability(3) && (
                 <div

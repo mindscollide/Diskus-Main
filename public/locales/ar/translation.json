@@ -2440,5 +2440,6 @@
   "Logged-out": "Logged Out",
   "File-extension-not-supported-for-signature": "لا يدعم امتداد الملف للتوقيع",
   "Atleast-one-signatory-is-required": "يجب أن يكون هناك توقيع واحد على الأقل",
-  "Review": "مراجعة"
+  "Review": "مراجعة",
+  "Are-You-Sure-you-Want-to-Leave-group-call": "Are you sure you want to leave group call"
 }

@@ -797,6 +797,8 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
               console.log("leavecallMeetingVideo", flag);
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
+              localStorage.setItem("callTypeID", 0);
+
               if (flag === 1) {
                 console.log("leavecallMeetingVideo");
                 await dispatch(normalizeVideoPanelFlag(false));

@@ -20,7 +20,8 @@ import { RefreshToken } from "./Auth_action";
 import { LeaveMeetingVideo } from "./NewMeetingActions";
 import { VideoCallResponse } from "./VideoMain_actions";
 import { hideUnhideSelfMainApi, muteUnMuteSelfMainApi } from "./Guest_Video";
-
+import { Store } from "emoji-mart";
+import store from "../store";
 const videoChatPanel = (response) => {
   return {
     type: actions.VIDEO_CHAT_FLAG,
@@ -1741,28 +1742,43 @@ const stopPresenterViewMainApi = (
                 console.log("Check Presenter", isMeetingVideoHostCheck);
                 let isGuid = localStorage.getItem("isGuid");
                 let participantUID = localStorage.getItem("participantUID");
-                let dataAudio = {
-                  RoomID: String(data.RoomID),
-                  IsMuted: false, // Ensuring it's a boolean
-                  UID: String(
-                    isMeetingVideoHostCheck ? isGuid : participantUID
-                  ),
-                  MeetingID: data.MeetingID,
-                };
-                // Dispatch the API request with the data
-                dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
-                let dataVideo = {
-                  RoomID: String(data.RoomID),
-                  HideVideo: true, // Ensuring it's a boolean
-                  UID: String(
-                    isMeetingVideoHostCheck ? isGuid : participantUID
-                  ),
-                  MeetingID: Number(data.MeetingID),
-                };
-                // Dispatch the API request with the data
-                dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
-                console.log("videoHideUnHideForHost");
 
+                // this what I get the leavePresenterOrJoinOtherCalls from videoReature_reducer
+                let leavePresenterOrJoinOtherCallData =
+                  store.getState().videoFeatureReducer
+                    .leavePresenterOrJoinOtherCalls;
+                console.log(
+                  leavePresenterOrJoinOtherCallData,
+                  "leavePresenterOrJoinOtherCallData"
+                );
+
+                if (!leavePresenterOrJoinOtherCallData) {
+                  console.log(
+                    leavePresenterOrJoinOtherCallData,
+                    "leavePresenterOrJoinOtherCallData"
+                  );
+                  let dataAudio = {
+                    RoomID: String(data.RoomID),
+                    IsMuted: false, // Ensuring it's a boolean
+                    UID: String(
+                      isMeetingVideoHostCheck ? isGuid : participantUID
+                    ),
+                    MeetingID: data.MeetingID,
+                  };
+                  // Dispatch the API request with the data
+                  dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
+                  let dataVideo = {
+                    RoomID: String(data.RoomID),
+                    HideVideo: true, // Ensuring it's a boolean
+                    UID: String(
+                      isMeetingVideoHostCheck ? isGuid : participantUID
+                    ),
+                    MeetingID: Number(data.MeetingID),
+                  };
+                  // Dispatch the API request with the data
+                  dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
+                  console.log("videoHideUnHideForHost");
+                }
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));

@@ -518,7 +518,7 @@ const Dashboard = () => {
       sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-    let currentCallType = Number(localStorage.getItem("CallType"));
+    let currentCallType = Number(localStorage.getItem("callTypeID"));
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
 
@@ -537,8 +537,8 @@ const Dashboard = () => {
         if (alreadyInMeetingVideoStartPresenterCheck) {
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
         } else if (
-          (activeCallState && currentCallType === 1) ||
-          currentCallType === 2
+          activeCallState &&
+          (currentCallType === 1 || currentCallType === 2)
         ) {
           console.log("mqtt mqmqmqmqmqmq", payload);
           setPresenterForOneToOneOrGroup(true);
@@ -1531,7 +1531,7 @@ const Dashboard = () => {
 
               dispatch(globalStateForAudioStream(true));
               dispatch(globalStateForVideoStream(true));
-              localStorage.setItem("CallType", 2);
+              // localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
               console.log("iframeiframe", data.payload.screenShare);
@@ -3387,6 +3387,7 @@ const Dashboard = () => {
                 localStorage.setItem("unansweredFlag", true);
               }
             }
+            console.log("mqtt");
 
             setNotification({
               ...notification,
