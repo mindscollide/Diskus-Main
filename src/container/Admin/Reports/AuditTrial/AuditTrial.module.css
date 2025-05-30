@@ -139,13 +139,13 @@ body[dir="rtl"] .searchbox_icon_userhistoryLogin {
   top: 36% !important;
   position: absolute !important;
   left: auto !important;
-  right: 6% !important;
+  right: 7% !important;
 }
 
 body[dir="rtl"] .SearchFieldCrossIcon {
   cursor: pointer !important;
-  top: 32% !important;
+  top: 33% !important;
   position: absolute !important;
-  left: 6% !important;
+  left: 7% !important;
   right: auto !important;
 }

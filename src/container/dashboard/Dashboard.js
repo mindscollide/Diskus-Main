@@ -717,6 +717,8 @@ const Dashboard = () => {
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
               };
+              localStorage.setItem("isMeetingVideo", true);
+
               await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
               console.log("videoHideUnHideForHost");
               dispatch(setVideoControlHost(true));
