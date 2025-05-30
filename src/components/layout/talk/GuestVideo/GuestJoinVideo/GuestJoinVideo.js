@@ -72,6 +72,8 @@ const GuestJoinVideo = ({
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
+  let isZoomEnabled = JSON.parse(sessionStorage.getItem("isZoomEnabled"));
+
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
     console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
@@ -113,6 +115,9 @@ const GuestJoinVideo = ({
     dispatch(setVideoCameraGuest(!enable));
 
     if (enable) {
+      if (isZoomEnabled) {
+        sessionStorage.setItem("isWebCamEnabled", true);
+      }
       navigator.mediaDevices
         .getUserMedia({ video: true })
         .then((videoStream) => {
@@ -340,7 +345,7 @@ const GuestJoinVideo = ({
                               >
                                 <img
                                   className="cursor-pointer"
-                                  onClick={() => toggleVideo(false)}
+                                  onClick={() => toggleVideo(false, 2)}
                                   src={VideoOn}
                                 />
                               </Tooltip>
@@ -351,7 +356,7 @@ const GuestJoinVideo = ({
                               >
                                 <img
                                   className="cursor-pointer"
-                                  onClick={() => toggleVideo(true)}
+                                  onClick={() => toggleVideo(true, 1)}
                                   src={VideoOff}
                                 />
                               </Tooltip>

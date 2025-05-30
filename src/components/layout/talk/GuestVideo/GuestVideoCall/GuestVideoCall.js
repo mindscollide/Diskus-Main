@@ -41,6 +41,7 @@ const GuestVideoCall = () => {
 
   let guestUserId = sessionStorage.getItem("GuestUserID");
   let MeetingId = Number(sessionStorage.getItem("MeetingId"));
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
@@ -127,6 +128,12 @@ const GuestVideoCall = () => {
             setRoomId(data.payload.roomID);
             sessionStorage.setItem("roomId", data.payload.roomID);
             dispatch(makeStreamStop(true, 2));
+            if (isZoomEnabled) {
+              console.log("Check ZOom");
+              sessionStorage.setItem("isZoomEnabled", true);
+            } else {
+              sessionStorage.removeItem("isZoomEnabled");
+            }
             // dispatch(guestVideoNavigationScreen(2));
           } else {
             dispatch(makeStreamStop(true, 3));
