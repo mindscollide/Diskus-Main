@@ -1858,10 +1858,7 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
-          (isMeetingVideo &&
-            !getMeetingHostInfo?.isHost &&
-            !presenterViewFlag &&
-            !presenterViewHostFlag) ||
+          (isMeetingVideo && !presenterViewFlag && !presenterViewHostFlag) ||
           (currentCallType === 2 &&
             !presenterViewFlag &&
             !presenterViewHostFlag) ||
