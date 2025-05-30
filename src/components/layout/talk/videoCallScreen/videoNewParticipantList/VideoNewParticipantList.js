@@ -57,13 +57,9 @@ const VideoNewParticipantList = () => {
   } = useContext(MeetingContext);
 
   let roomID = localStorage.getItem("newRoomId");
-
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-
   let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
@@ -72,28 +68,11 @@ const VideoNewParticipantList = () => {
   let isGuid = localStorage.getItem("isGuid");
   let newRoomID = localStorage.getItem("newRoomId");
   let participantRoomId = localStorage.getItem("participantRoomId");
-
   let HostName = localStorage.getItem("name");
   let PresenterHostuserID = Number(localStorage.getItem("userID"));
 
-  const participantWaitingList = useSelector(
-    (state) => state.videoFeatureReducer.participantWaitingList
-  );
-
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
-  );
-
-  console.log(getAllParticipantMain.length, "getAllParticipantMain");
-  console.log(getAllParticipantMain, "getAllParticipantMain");
-  console.log(
-    {
-      startRecordingState,
-      pauseRecordingState,
-      resumeRecordingState,
-      stopRecordingState,
-    },
-    "startRecordingStatestartRecordingState"
   );
 
   const waitingParticipants = useSelector(
@@ -107,6 +86,7 @@ const VideoNewParticipantList = () => {
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
+
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
@@ -118,22 +98,17 @@ const VideoNewParticipantList = () => {
   const newJoinPresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.newJoinPresenterParticipant
   );
+
   const leavePresenterParticipant = useSelector(
     (state) => state.videoFeatureReducer.leavePresenterParticipant
   );
+
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
 
   const raisedUnRaisedParticipant = useSelector(
     (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
-  );
-
-  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
-
-  console.log(
-    { presenterViewHostFlag, presenterViewFlag },
-    "presenterViewFlagpresenterViewFlag"
   );
 
   let RoomID = presenterViewFlag
@@ -144,12 +119,9 @@ const VideoNewParticipantList = () => {
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
   const [filteredParticipants, setFilteredParticipants] = useState([]);
-  console.log(filteredParticipants, "filteredParticipants");
 
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
-
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -168,16 +140,6 @@ const VideoNewParticipantList = () => {
 
     setFilteredParticipants(filtered);
   };
-
-  // useEffect(() => {
-  //   console.log("hell");
-  //   let Data = {
-  //     RoomID: String(getRoomId),
-  //   };
-  //   dispatch(participantListWaitingListMainApi(Data, navigate, t));
-  // }, []);
-
-  // Update filteredParticipants based on participantList
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain).length) {
@@ -238,9 +200,29 @@ const VideoNewParticipantList = () => {
 
   // Ensure it listens to participantList updates
   function isEveryoneUnmuted(participants) {
-    return !participants.some(
-      (participant) => !participant.isHost && participant.mute === true
-    );
+    const localUserID = parseInt(localStorage.getItem("userID"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    const isGuid = isHost
+      ? localStorage.getItem("isGuid")
+      : localStorage.getItem("participantUID");
+
+    return !participants.some((participant) => {
+      if (presenterViewHostFlag) {
+        // Skip if host & matched user
+        return (
+          participant.userID !== localUserID &&
+          participant.guid !== isGuid &&
+          participant.mute === true
+        );
+      } else {
+        // Check if any non-host participant is muted
+        console.log(
+          "isEveryoneUnmuted",
+          !participant.isHost && participant.mute === true
+        );
+        return !participant.isHost && participant.mute === true;
+      }
+    });
   }
 
   useEffect(() => {
@@ -369,6 +351,7 @@ const VideoNewParticipantList = () => {
     let participantRoomId = localStorage.getItem("participantRoomId");
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
     if (presenterViewFlag && presenterViewHostFlag) {
+      console.log("isEveryoneUnmuted");
       let currentUserId = isHost ? isGuid : participantUID;
       allUids = duplicatesData
         .filter((participant) => participant.guid !== currentUserId) // Filter out hosts
