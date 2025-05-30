@@ -506,6 +506,7 @@ const VideoCallNormalHeader = ({
       }
       // Stop presenter view
       if (presenterStartedFlag) {
+        console.log("busyCall");
         console.log("Check isShare Issue");
         if (iframeCurrent && iframeCurrent.contentWindow) {
           iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
@@ -530,6 +531,7 @@ const VideoCallNormalHeader = ({
           )
         );
       } else {
+        console.log("busyCall");
         let data = {
           RoomID: String(RoomID),
           UserGUID: String(UID),
@@ -765,9 +767,12 @@ const VideoCallNormalHeader = ({
           await new Promise((resolve) => setTimeout(resolve, 100)); // 100ms delay
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("busyCall", error);
+    }
     if (isMeeting === true) {
-      console.log("Check isCaller True");
+      console.log("busyCall");
+
       if (
         presenterViewFlag &&
         (presenterViewHostFlag || presenterViewJoinFlag)
@@ -1853,8 +1858,7 @@ const VideoCallNormalHeader = ({
           )}
 
           {(presenterViewFlag && presenterViewHostFlag) ||
-          (
-            isMeetingVideo &&
+          (isMeetingVideo &&
             !getMeetingHostInfo?.isHost &&
             !presenterViewFlag &&
             !presenterViewHostFlag) ||
