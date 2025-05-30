@@ -937,15 +937,21 @@ const ViewMeetingModal = ({
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
       let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
+      console.log("Checking")
+    
       if (
         advanceMeetingModalID === endMeetingData?.pK_MDID &&
-        endMeetingData.status === "9"
+        endMeetingData.status === "9" &&
+        editorRole.status !== "9"
       ) {
+        console.log("Checking")
         setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
         if (isMeetingVideo === true) {
+        console.log("Checking")
+
           localStorage.setItem("isCaller", false);
           localStorage.setItem("isMeetingVideo", false);
           const emptyArray = [];
@@ -1185,14 +1191,13 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -1217,10 +1222,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={

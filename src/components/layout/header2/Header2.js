@@ -62,7 +62,7 @@ const Header2 = ({ isVideo }) => {
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
-  const { setCreateNotesModal } = useNotesContext();
+  const { createNotesModal,setCreateNotesModal } = useNotesContext();
   const {
     editorRole,
     minutes,
@@ -1571,7 +1571,7 @@ const Header2 = ({ isVideo }) => {
           checkFlag={1}
         />
       )}
-      {modalNoteHeader && <ModalAddNote />}
+      {createNotesModal && <ModalAddNote />}
       {showTaskModalHeader && (
         <ModalToDoList
           show={showTaskModalHeader}
