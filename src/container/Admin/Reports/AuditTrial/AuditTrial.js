@@ -573,7 +573,7 @@ const AuditTrial = () => {
       DateLogOut: auditTrialSearch.LogoutDate || "",
       OrganizationID: Number(localStorage.getItem("organizationID")),
       sRow: Number(isRowsData),
-      Length: 50,
+      Length: 10,
     };
 
     await dispatch(GetAuditListingAPI(navigate, Data, t));
