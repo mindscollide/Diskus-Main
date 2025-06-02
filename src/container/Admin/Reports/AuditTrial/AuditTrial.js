@@ -50,6 +50,8 @@ const AuditTrial = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [enterPressedSearch, setEnterPressedSearch] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true); // ✅ true initially
+
   const [viewActionModalDataState, setViewActionModalDataState] = useState([]);
   const [auditTrialSearch, setAuditTrialSearch] = useState({
     title: "",
@@ -108,34 +110,39 @@ const AuditTrial = () => {
 
   // Extracting the Audit listing Data
   useEffect(() => {
-    try {
-      const result = GetAuditListingReducerGlobalState;
+    const result = GetAuditListingReducerGlobalState;
 
-      if (
-        result &&
-        result.userAuditListingModel?.length > 0 &&
-        result.totalCount > 0
-      ) {
-        const newData = result.userAuditListingModel;
+    if (
+      result &&
+      Array.isArray(result.userAuditListingModel) &&
+      result.userAuditListingModel.length > 0 &&
+      result.totalCount > 0
+    ) {
+      const newData = result.userAuditListingModel;
 
-        if (isScroll) {
-          setAuditTrialListingTableData((prev) => [...prev, ...newData]);
-        } else {
-          setAuditTrialListingTableData(newData);
-        }
+      setAuditTrialListingTableData((prev) =>
+        isScroll ? [...prev, ...newData] : newData
+      );
 
-        setSRowsData((prev) => prev + newData.length);
-        setTotalRecords(result.totalCount);
-        setIsScroll(false);
+      const newTotalRows =
+        (isScroll ? auditTrialListingTableData.length : 0) + newData.length;
+
+      setSRowsData(newTotalRows);
+      setTotalRecords(result.totalCount);
+      setIsScroll(false);
+
+      if (newTotalRows >= result.totalCount) {
+        setHasMoreData(false); // ✅ end reached
       } else {
-        if (!isScroll) {
-          setAuditTrialListingTableData([]);
-          setTotalRecords(0);
-          setSRowsData(0);
-        }
+        setHasMoreData(true); // ✅ still has more
       }
-    } catch (error) {
-      console.error("Error in useEffect:", error);
+    } else {
+      if (!isScroll) {
+        setAuditTrialListingTableData([]);
+        setSRowsData(0);
+        setTotalRecords(0);
+      }
+      setHasMoreData(false); // ✅ No data
     }
   }, [GetAuditListingReducerGlobalState]);
 
@@ -552,11 +559,11 @@ const AuditTrial = () => {
 
   //Handle Scroll Function
   useScrollerAuditBottom(async () => {
-    if (auditTrialListingTableData.length >= totalRecords) return;
+    if (!hasMoreData) return; // ✅ Now this works correctly
 
     setIsScroll(true);
 
-    let Data = {
+    const Data = {
       Username: auditTrialSearch.userName || auditTrialSearch.title || "",
       IpAddress: auditTrialSearch.IpAddress || "",
       DeviceID: auditTrialSearch.Interface?.value
@@ -566,11 +573,11 @@ const AuditTrial = () => {
       DateLogOut: auditTrialSearch.LogoutDate || "",
       OrganizationID: Number(localStorage.getItem("organizationID")),
       sRow: Number(isRowsData),
-      Length: 10,
+      Length: 50,
     };
 
     await dispatch(GetAuditListingAPI(navigate, Data, t));
-  });
+  }, 50);
 
   return (
     <section className={styles["AuditMainSection"]}>
