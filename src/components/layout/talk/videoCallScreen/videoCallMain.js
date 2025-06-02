@@ -10,7 +10,6 @@ import LeaveVideoIntimationModal from "./LeaveVideoIntimationModal/LeaveVideoInt
 
 const VideoMain = () => {
   const {
-    talkStateData,
     videoFeatureReducer,
     assignees,
     CommitteeReducer,
@@ -23,7 +22,6 @@ const VideoMain = () => {
     fAQsReducer,
     meetingIdReducer,
     calendarReducer,
-    OnBoardModal,
     postAssigneeComments,
     VideoChatReducer,
     minuteofMeetingReducer,
@@ -39,7 +37,6 @@ const VideoMain = () => {
     PollsReducer,
     NewMeetingreducer,
     LanguageReducer,
-    VideoMainReducer,
     webViewer,
     MeetingOrganizersReducer,
     MeetingAgendaReducer,
@@ -78,7 +75,6 @@ const VideoMain = () => {
             fAQsReducer.Loading ||
             meetingIdReducer.Loading ||
             calendarReducer.Loading ||
-            OnBoardModal.Loading ||
             postAssigneeComments.Loading ||
             VideoChatReducer.Loading ||
             minuteofMeetingReducer.Loading ||

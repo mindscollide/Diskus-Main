@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import styles from "./FinalWelcomeScreen.module.css";
-import { Paper } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { handleNavigation } from "../../../../commen/functions/utils";
 import { useDispatch } from "react-redux";
@@ -12,14 +11,14 @@ const FinalWelcomeScreen = () => {
   //For Localization
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   let userName = localStorage.getItem("name");
 
   const handleClickNavigate = () => {
-    handleNavigation(navigate, false, dispatch)
-    document.body.style.overflow = ""
+    handleNavigation(navigate, false, dispatch);
+    document.body.style.overflow = "";
     // navigate("/Diskus")
-  }
+  };
   return (
     <Container data-tut="finalwelcome-screen">
       <Row>

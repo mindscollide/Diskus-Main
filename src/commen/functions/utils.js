@@ -1916,7 +1916,6 @@ export const handleNavigation = (
   const docSignAction = localStorage.getItem("docSignAction");
   const docSignedAction = localStorage.getItem("docSignedAction");
   const docSignedCrAction = localStorage.getItem("docSignedCrAction");
-
   if (isFirstLogin) {
     // if (adminRights) {
     //   navigate("/Admin/ManageUsers");
