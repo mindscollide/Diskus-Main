@@ -5,7 +5,6 @@ import styles from "./OnboardDashboard.module.css";
 import {
   CustomTableToDoDashboard,
   CustomTextProgressbar,
-  Notification,
   Modal,
   Button,
 } from "../../../../components/elements";
@@ -13,37 +12,18 @@ import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-
-import {
-  getCalendarDataResponse,
-  HideNotificationCalendarData,
-} from "../../../../store/actions/GetDataForCalendar";
+import { HideNotificationCalendarData } from "../../../../store/actions/GetDataForCalendar";
 import { useTranslation } from "react-i18next";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import { ExclamationTriangleFill } from "react-bootstrap-icons";
 
-import {
-  GetTodoListByUser,
-  GetWeeklyToDoCount,
-  HideNotificationTodo,
-} from "../../../../store/actions/ToDoList_action";
+import { HideNotificationTodo } from "../../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../../store/actions/Auth_action";
-import {
-  GetWeeklyMeetingsCount,
-  GetUpcomingEvents,
-  HideNotificationMeetings,
-} from "../../../../store/actions/GetMeetingUserId";
-import {
-  getNotifications,
-  HideNotificationUserNotificationData,
-} from "../../../../store/actions/GetUserNotification";
+import { HideNotificationMeetings } from "../../../../store/actions/GetMeetingUserId";
+import { HideNotificationUserNotificationData } from "../../../../store/actions/GetUserNotification";
 import { HideNotification } from "../../../../store/actions/Get_List_Of_Assignees";
 import { useLoaderData, useNavigate } from "react-router-dom";
-import {
-  cleareMessage,
-  setLoader,
-} from "../../../../store/actions/Auth2_actions";
-import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { setLoader } from "../../../../store/actions/Auth2_actions";
 import CreateQuickMeeting from "../../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 
 const OnboardDashboard = () => {
@@ -52,9 +32,8 @@ const OnboardDashboard = () => {
   //For Localization
   const { t } = useTranslation();
   const state = useSelector((state) => state);
-  const { settingReducer, calendarReducer, auth, Authreducer } = state;
+  const { settingReducer, calendarReducer, auth } = state;
   const { RecentActivityData } = settingReducer;
-
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -115,7 +94,6 @@ const OnboardDashboard = () => {
   //   const userID = localStorage.getItem("userID");
   //   dispatch(getCalendarDataResponse(navigate, t, userID, true));
   // }, []);
-
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -252,7 +230,6 @@ const OnboardDashboard = () => {
     dispatch(HideNotificationMeetings());
     dispatch(HideNotification());
   }, [auth.ResponseMessage]);
-
 
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
@@ -761,7 +738,6 @@ const OnboardDashboard = () => {
       <CreateQuickMeeting
         show={show}
         setShow={setShow}
-    
         // this is check from where its called 5 is from OnboardDashboard
         checkFlag={5}
       />

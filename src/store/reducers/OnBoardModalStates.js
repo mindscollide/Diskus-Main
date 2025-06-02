@@ -6,7 +6,7 @@ const initialState = {
   isAgenda: false,
   isAttendees: false,
   modalSteps: false,
-  Loader: true,
+  Loader: false,
 };
 const OnBoardModalStates = (state = initialState, action) => {
   switch (action.type) {
