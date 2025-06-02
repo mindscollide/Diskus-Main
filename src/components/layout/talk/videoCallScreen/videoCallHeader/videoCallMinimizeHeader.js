@@ -1061,7 +1061,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             }}
           >
             <p className="title-heading">
-              {currentCallType === 2 || callTypeID === 2 || presenterViewFlag
+              {currentCallType === 2 || callTypeID === 2 || presenterViewFlag || isMeetingVideo
                 ? meetingTitle === ""
                   ? t("Group-call")
                   : meetingTitle

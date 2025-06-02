@@ -123,6 +123,7 @@ const VideoCallNormalHeader = ({
     setResumeRecordingState,
     stopRecordingState,
     setStopRecordingState,
+  
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -1633,6 +1634,8 @@ const VideoCallNormalHeader = ({
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
                     ? muteUnMuteForHost(audioControl ? false : true)
+                    : disableBeforeJoinZoom
+                    ? null
                     : disableMic()
                 }
                 alt="Mic"
@@ -1677,6 +1680,8 @@ const VideoCallNormalHeader = ({
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
                     ? videoHideUnHideForHost(videoControl ? false : true)
+                    : disableBeforeJoinZoom
+                    ? null
                     : disableVideo()
                 }
                 alt="Video"
@@ -1710,7 +1715,8 @@ const VideoCallNormalHeader = ({
             >
               <img
                 onClick={
-                  !presenterViewFlag && !globallyScreenShare
+                  (!presenterViewFlag && !globallyScreenShare) ||
+                  (isZoomEnabled && disableBeforeJoinZoom)
                     ? screenShareButton
                     : null
                 }

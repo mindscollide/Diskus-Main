@@ -646,10 +646,19 @@ const VideoNewParticipantList = () => {
                         <img
                           draggable="false"
                           src={
-                            presenterViewFlag
-                              ? !usersData.isHost
+                            isMeetingVideoHostCheck
+                              ? presenterViewFlag
+                                ? !usersData.isHost
+                                  ? MenuRaiseHand
+                                  : null
+                                : usersData
                                 ? MenuRaiseHand
                                 : null
+                              : presenterViewFlag
+                              ? presenterViewHostFlag &&
+                                PresenterHostuserID === usersData?.userID
+                                ? null
+                                : MenuRaiseHand
                               : usersData
                               ? MenuRaiseHand
                               : null
@@ -661,6 +670,27 @@ const VideoNewParticipantList = () => {
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&
                       usersData.isHost ? (
+                        JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
+                          <img
+                            draggable="false"
+                            src={VideoDisable}
+                            width="18px"
+                            height="18px"
+                            alt="Video Disabled"
+                            className="handraised-participant"
+                          />
+                        ) : (
+                          <img
+                            draggable="false"
+                            src={VideoOn}
+                            width="18px"
+                            height="18px"
+                            alt="Video On"
+                            className="handraised-participant"
+                          />
+                        )
+                      ) : presenterViewHostFlag &&
+                        PresenterHostuserID === usersData.userID ? (
                         JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
                           <img
                             draggable="false"
@@ -715,6 +745,25 @@ const VideoNewParticipantList = () => {
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&
                       usersData.isHost ? (
+                        JSON.parse(localStorage.getItem("isMicEnabled")) ? (
+                          <img
+                            draggable="false"
+                            src={MicDisabled}
+                            width="19px"
+                            height="19px"
+                            alt="Microphone Disabled"
+                          />
+                        ) : (
+                          <img
+                            draggable="false"
+                            src={MicOnEnabled}
+                            width="15px"
+                            height="19px"
+                            alt="Microphone Enabled"
+                          />
+                        )
+                      ) : presenterViewHostFlag &&
+                        PresenterHostuserID === usersData.userID ? (
                         JSON.parse(localStorage.getItem("isMicEnabled")) ? (
                           <img
                             draggable="false"
