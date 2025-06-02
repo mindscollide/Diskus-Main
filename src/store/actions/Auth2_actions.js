@@ -1866,23 +1866,8 @@ const createPasswordAction = (value, navigate, t) => {
             response.data.responseResult.authToken.isFirstLogIn,
             dispatch
           );
-          // if (response.data.responseResult.hasUserRights) {
-          //   if (response.data.responseResult.authToken.isFirstLogIn) {
-          //     navigate("/onboard");
-          //   } else {
-          //     navigate("/Diskus");
-          //   }
-          //   clearLocalStorageAtloginresponce(dispatch, 1, navigate);
+          dispatch(createPasswordSuccess(response.data.responseResult, ""));
 
-          //   dispatch(createPasswordSuccess(response.data.responseResult, ""));
-          // } else {
-          //   clearLocalStorageAtloginresponce(dispatch, 2, navigate);
-          //   dispatch(LoginFlowRoutes(1));
-          //   dispatch(
-          //     createPasswordFail(t("User-not-authorised-contact-admin"))
-          //   );
-          // }
-          // no action
           break;
         case USERSPASSWORDCREATION.CREATION_08:
           //pay out standing

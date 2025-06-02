@@ -236,7 +236,11 @@ const getUserSetting = (navigate, t, loader) => {
                 );
               }
               await dispatch(
-                settingSuccess(response.data.responseResult.userSettings, "")
+                settingSuccess(
+                  response.data.responseResult.userSettings,
+                  "",
+                  false
+                )
               );
               // navigate("/Admin/ManageUsers");
             } else if (

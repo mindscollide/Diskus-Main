@@ -37,7 +37,6 @@ const OnBoard = () => {
                 draggable="false"
                 alt=""
                 width={70}
-                alt=""
                 src={ScheduleLeftArrow}
                 className="meeting-icon-arrow"
               />
@@ -57,7 +56,6 @@ const OnBoard = () => {
             draggable="false"
             alt=""
             src={ScheduleUpArrow}
-            alt=""
             width={55}
             className="meeting-btn-arrow"
           />
@@ -78,7 +76,6 @@ const OnBoard = () => {
             draggable="false"
             alt=""
             src={ScheduleRightArrow}
-            alt=""
             width={70}
             className="meeting-modal-arrow"
           />

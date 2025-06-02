@@ -232,7 +232,6 @@ const App = () => {
     fAQsReducer?.Loading,
     meetingIdReducer?.Loading,
     calendarReducer?.Loading,
-    OnBoardModal?.Loading,
     postAssigneeComments?.Loading,
     VideoChatReducer?.Loading,
     minuteofMeetingReducer?.Loading,
