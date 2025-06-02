@@ -41,6 +41,7 @@ const GuestVideoCall = () => {
 
   let guestUserId = sessionStorage.getItem("GuestUserID");
   let MeetingId = Number(sessionStorage.getItem("MeetingId"));
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData
@@ -137,6 +138,7 @@ const GuestVideoCall = () => {
           "REMOVED_FROM_MEETING".toLowerCase()
         ) {
           sessionStorage.setItem("isLeftCheck", false);
+          sessionStorage.removeItem("isZoomEnabled");
           dispatch(setVideoCameraGuest(false));
           dispatch(setVoiceControleGuest(false));
           dispatch(guestVideoNavigationScreen(5));

@@ -322,6 +322,10 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
                 "GuestUserID",
                 response.data.responseResult.guestGuid
               );
+              sessionStorage.setItem(
+                "isZoomEnabled",
+                response.data.responseResult.isZoomEnabled
+              );
               await dispatch(
                 joinGuestVideoSuccess(
                   response.data.responseResult,
@@ -931,6 +935,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
                 )
               );
               sessionStorage.setItem("isRejoining", "true");
+              sessionStorage.removeItem("isZoomEnabled");
               let leftCheck = JSON.parse(sessionStorage.getItem("isLeftCheck"));
               if (leftCheck) {
                 dispatch(guestVideoNavigationScreen(4));

@@ -107,7 +107,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
-  console.log({ micOn, isVideoOn }, "isVideoOnisVideoOn");
+  let isZoomEnabled = JSON.parse(sessionStorage.getItem("isZoomEnabled"));
+
+  console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
 
   useEffect(() => {
     let getRoomId = sessionStorage.getItem("roomId");
@@ -139,6 +141,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     }
   }, [getAllParticipantGuest]);
   console.log(guestMuteUnMuteData, "guestMuteUnMuteData");
+
   useEffect(() => {
     if (
       guestMuteUnMuteData &&
@@ -189,55 +192,37 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       guestUID === guesthideunHideByHostData.uid
     ) {
       const iframe = frameRef.current;
-      if (iframe.contentWindow !== null) {
-        if (guesthideunHideByHostData.isVideoHidden === true) {
-          iframe.contentWindow.postMessage("VidOff", "*");
-          console.log("isVideoOnisVideoOn");
+      if (isZoomEnabled) {
+        if (iframe.contentWindow !== null) {
+          if (guesthideunHideByHostData.isVideoHidden === true) {
+            iframe.contentWindow.postMessage("VidOn", "*");
+            console.log("isVideoOnisVideoOn");
 
-          setIsVideoOn(true);
-        } else {
-          iframe.contentWindow.postMessage("VidOn", "*");
-          console.log("isVideoOnisVideoOn");
+            setIsVideoOn(true);
+          } else {
+            iframe.contentWindow.postMessage("VidOff", "*");
+            console.log("isVideoOnisVideoOn");
 
-          setIsVideoOn(false);
+            setIsVideoOn(false);
+          }
+        }
+      } else {
+        if (iframe.contentWindow !== null) {
+          if (guesthideunHideByHostData.isVideoHidden === true) {
+            iframe.contentWindow.postMessage("VidOff", "*");
+            console.log("isVideoOnisVideoOn");
+
+            setIsVideoOn(true);
+          } else {
+            iframe.contentWindow.postMessage("VidOn", "*");
+            console.log("isVideoOnisVideoOn");
+
+            setIsVideoOn(false);
+          }
         }
       }
     }
   }, [guesthideunHideByHostData]);
-
-  // useEffect(() => {
-  //   const iframe = frameRef.current;
-  //   if (iframe.contentWindow !== null) {
-  //     console.log("Sending message...");
-  //     if (videoCameraGuest) {
-  //       iframe.contentWindow.postMessage("VidOff", "*");
-  //       console.log("isVideoOnisVideoOn");
-  //       setIsVideoOn(true);
-  //     } else {
-  //       iframe.contentWindow.postMessage("VidOn", "*");
-  //       console.log("isVideoOnisVideoOn");
-
-  //       setIsVideoOn(false);
-  //     }
-  //   }
-  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
-  // }, []);
-
-  // useEffect(() => {
-  //   const iframe = frameRef.current;
-  //   if (iframe.contentWindow !== null) {
-  //     console.log("Sending message...");
-  //     setMicOn(voiceControle);
-  //     if (voiceControle === true) {
-  //       iframe.contentWindow.postMessage("MicOff", "*");
-  //       console.log("isVideoOnisVideoOn");
-  //     } else {
-  //       iframe.contentWindow.postMessage("MicOn", "*");
-  //       console.log("isVideoOnisVideoOn");
-  //     }
-  //   }
-  //   console.log("Webcam status read from sessionStorage:", webcamStatus);
-  // }, []);
 
   useEffect(() => {
     if (muteUnMuteParticpantorGuestByHost) {
@@ -303,11 +288,20 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     const iframe = frameRef.current;
 
     // Send different messages depending on the state
-    if (flag) {
-      iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOff" message to turn video off
+    if (isZoomEnabled) {
+      if (flag) {
+        iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOff" message to turn video off
+      } else {
+        console.log("busyCall");
+        iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOn" message to turn video on
+      }
     } else {
-      console.log("busyCall");
-      iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOn" message to turn video on
+      if (flag) {
+        iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOff" message to turn video off
+      } else {
+        console.log("busyCall");
+        iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOn" message to turn video on
+      }
     }
 
     let data = {
