@@ -1535,6 +1535,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               try {
                 localStorage.setItem("isWebCamEnabled", true);
                 if (flag === 1) {
+                  localStorage.removeItem("CallType");
                   let currentMeeting = localStorage.getItem("currentMeetingID");
                   await dispatch(
                     presenterViewGlobalState(currentMeeting, true, true, true)

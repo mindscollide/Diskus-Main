@@ -580,6 +580,7 @@ const Dashboard = () => {
           console.log("mqtt mqmqmqmqmqmq");
           localStorage.setItem("isWebCamEnabled", true);
           localStorage.setItem("isMicEnabled", true);
+          localStorage.removeItem("CallType");
 
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
           let leaveRoomId =
@@ -677,6 +678,7 @@ const Dashboard = () => {
       sessionStorage.getItem("StopPresenterViewAwait")
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let currentCallType = Number(localStorage.getItem("CallType"));
     let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
@@ -701,20 +703,28 @@ const Dashboard = () => {
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
+      console.log("mqtt mqmqmqmqmqmq", isMeetingVideo);
       // dispatch(setAudioControlHost(false));
       // console.log("videoHideUnHideForHost");
       // dispatch(setVideoControlHost(true));
       dispatch(setRaisedUnRaisedParticiant(false));
       dispatch(clearPresenterParticipants());
       if (isMeeting) {
-        if (activeCallState && currentCallType === 1) {
+        console.log("mqtt mqmqmqmqmqmq", StopPresenterViewAwait);
+        console.log("mqtt mqmqmqmqmqmq", currentCallType);
+        console.log(
+          "typeof StopPresenterViewAwait:",
+          typeof StopPresenterViewAwait
+        );
+        console.log("value:", StopPresenterViewAwait);
+        if (
+          activeCallState &&
+          (currentCallType === 1 || currentCallType === 2)
+        ) {
           dispatch(presenterViewGlobalState(0, false, false, false));
 
           console.log("mqtt mqmqmqmqmqmq", payload);
-        } else if (
-          StopPresenterViewAwait === null ||
-          StopPresenterViewAwait === undefined
-        ) {
+        } else if (StopPresenterViewAwait == null) {
           console.log("mqtt mqmqmqmqmqmq", presenterViewJoinFlagRef.current);
           if (presenterViewFlagRef.current) {
             console.log("mqtt mqmqmqmqmqmq", alreadyInMeetingVideo);
@@ -1260,9 +1270,15 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
             ) {
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
-              dispatch(guestJoinPopup(true));
+              if (isMeetingVideo) {
+                console.log("isMeetingChecker");
+                dispatch(guestJoinPopup(true));
+              }
             } else if (
               //when Participant or attendee send Request to Host
               data.payload.message.toLowerCase() ===
@@ -3421,7 +3437,11 @@ const Dashboard = () => {
             }
           }
 
-          if (RoomID === data.payload.roomID && activeCall && !isMeetingVideo) {
+          if (
+            isZoomEnabled
+              ? String(RoomID) === String(data.payload.roomID)
+              : RoomID === data.payload.roomID && activeCall && !isMeetingVideo
+          ) {
             //To make false sessionStorage which is set on VideoCall
             if (Number(data.senderID) !== Number(createrID)) {
               if (Number(createrID) !== data.payload.recepientID) {

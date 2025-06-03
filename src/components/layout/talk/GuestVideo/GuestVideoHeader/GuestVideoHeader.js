@@ -67,7 +67,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuestByHost
   );
 
-  console.log(hideUnHideParticpantorGuest, "hideUnHideParticpantorGuest123");
+  console.log(muteUnMuteParticpantorGuest, "ChechkerDataNewest");
 
   const getAllParticipantGuest = useSelector(
     (state) => state.GuestVideoReducer.getAllParticipantGuest
@@ -100,8 +100,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const [isParticipant, setIsParticipant] = useState(false);
   const [showTile, setShowTile] = useState(false);
 
+  // this is for Participant list for video state when Multiple user VidOff and On
+  const [participantStatusMap, setParticipantStatusMap] = useState({});
+
   const [allParticipantGuest, setAllParticipantGuest] = useState([]);
-  console.log(allParticipantGuest, "allParticipantGuest");
+  console.log(micOn, "micOn");
+  console.log(isVideoOn, "isVideoOn");
 
   console.log(isRaiseHand, "isRaiseHandisRaiseHand");
 
@@ -372,6 +376,42 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
   };
 
+  useEffect(() => {
+    if (muteUnMuteParticpantorGuest?.uid) {
+      setParticipantStatusMap((prev) => ({
+        ...prev,
+        [muteUnMuteParticpantorGuest.uid]: {
+          ...prev[muteUnMuteParticpantorGuest.uid],
+          isMuted: muteUnMuteParticpantorGuest.isMuted,
+        },
+      }));
+    }
+  }, [muteUnMuteParticpantorGuest]);
+
+  useEffect(() => {
+    if (hideUnHideParticpantorGuest?.uid) {
+      setParticipantStatusMap((prev) => ({
+        ...prev,
+        [hideUnHideParticpantorGuest.uid]: {
+          ...prev[hideUnHideParticpantorGuest.uid],
+          isVideoHidden: hideUnHideParticpantorGuest.isVideoHidden,
+        },
+      }));
+    }
+  }, [hideUnHideParticpantorGuest]);
+
+  useEffect(() => {
+    if (raiseUnRaisedGuestorParticipant?.participantGuid) {
+      setParticipantStatusMap((prev) => ({
+        ...prev,
+        [raiseUnRaisedGuestorParticipant.participantGuid]: {
+          ...prev[raiseUnRaisedGuestorParticipant.participantGuid],
+          isHandRaised: raiseUnRaisedGuestorParticipant.isHandRaised,
+        },
+      }));
+    }
+  }, [raiseUnRaisedGuestorParticipant]);
+
   return (
     <>
       <Row className="mt-4">
@@ -485,28 +525,25 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
-                      // for raising hand show on specific participant
-                      const isHandRaisedForParticipant =
-                        raiseUnRaisedGuestorParticipant?.participantGuid ===
-                          participant.guid &&
-                        raiseUnRaisedGuestorParticipant?.isHandRaised;
-
-                      // for show video on specific particpant
-                      const isVideoOff =
-                        hideUnHideParticpantorGuest?.uid === participant.guid &&
-                        hideUnHideParticpantorGuest?.isVideoHidden;
-
-                      // for show Mute on specific particpant
-
-                      const muteParticipants =
-                        muteUnMuteParticpantorGuest?.uid === participant.guid &&
-                        muteUnMuteParticpantorGuest?.isMuted &&
-                        micOn;
-
+                      console.log(participant, "ChechkerDataNewestsss");
                       console.log(
-                        participant,
-                        "participantparticipantparticipant"
+                        hideUnHideParticpantorGuest?.uid,
+                        "ChechkerDataNewest"
                       );
+                      console.log(
+                        muteUnMuteParticpantorGuest?.uid,
+                        "ChechkerDataNewest"
+                      );
+
+                      // for raising hand show on specific participant
+                      const participantStatus =
+                        participantStatusMap[participant.guid] || {};
+
+                      const isHandRaisedForParticipant =
+                        participantStatus.isHandRaised;
+                      const isVideoOff = participantStatus.isVideoHidden;
+                      const muteParticipants = participantStatus.isMuted;
+                      console.log(muteParticipants, "ChechkerDataNewest");
                       return (
                         <>
                           <Row key={participant.guid}>
