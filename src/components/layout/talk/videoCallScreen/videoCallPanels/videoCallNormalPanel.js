@@ -26,6 +26,7 @@ import {
   getVideoCallParticipantsMainApi,
   incomingVideoCallFlag,
   isSharedScreenTriggeredApi,
+  leaveCallModal,
   leavePresenterViewMainApi,
   makeHostNow,
   makeParticipantHost,
@@ -85,6 +86,7 @@ const VideoPanelNormal = () => {
     setStopRecordingState,
     iframeRef,
     setHandRaiseCounter,
+    
   } = useMeetingContext();
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -199,6 +201,7 @@ const VideoPanelNormal = () => {
 
   console.log("setHandRaiseCounter", getAllParticipantMain);
 
+
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
@@ -241,7 +244,7 @@ const VideoPanelNormal = () => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
-  console.log(presenterViewFlag, "presenterViewFlagNormal");
+  console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
   console.log(iframeRef, "iframeRef");
 
   const presenterViewHostFlag = useSelector(
@@ -1277,7 +1280,13 @@ const VideoPanelNormal = () => {
             console.log("disableZoomBeforeJoinSession", event.data);
             RecordingStartScenarioForOneToOne();
 
-            dispatch(disableZoomBeforeJoinSession(false));
+            if (isZoomEnabled) {
+              console.log("is Zoom Connected");
+              setTimeout(() => {
+                dispatch(disableZoomBeforeJoinSession(false));
+              }, 2000);
+            }
+
             if (presenterViewFlag && presenterViewHostFlag) {
               handlePresenterView();
             } else if (presenterViewFlag && presenterViewJoinFlag) {

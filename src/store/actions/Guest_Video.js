@@ -1165,6 +1165,9 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                   "Meeting_MeetingServiceManager_HideUnHideVideo_03".toLowerCase()
                 )
             ) {
+              localStorage.setItem("isWebCamEnabled", false);
+              await dispatch(setVideoControlHost(false));
+
               await dispatch(hideUnhideSelfFail(t("Something-went-wrong")));
             } else if (
               response.data.responseResult.responseMessage
@@ -1173,6 +1176,8 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                   "Meeting_MeetingServiceManager_HideUnHideVideo_04".toLowerCase()
                 )
             ) {
+              await dispatch(setVideoControlHost(false));
+              localStorage.setItem("isWebCamEnabled", false);
               await dispatch(hideUnhideSelfFail(t("UnSuccessful")));
             }
           } else {

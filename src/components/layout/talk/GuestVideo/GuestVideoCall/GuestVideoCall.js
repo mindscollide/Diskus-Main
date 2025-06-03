@@ -41,7 +41,6 @@ const GuestVideoCall = () => {
 
   let guestUserId = sessionStorage.getItem("GuestUserID");
   let MeetingId = Number(sessionStorage.getItem("MeetingId"));
-  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   const validateData = useSelector(
     (state) => state.GuestVideoReducer.validateData

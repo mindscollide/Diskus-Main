@@ -264,7 +264,7 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.enableDisableVideoState
   );
 
-  console.log(enableDisableVideoState, "enableDisableVideoState");
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(

@@ -107,7 +107,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
-  let isZoomEnabled = JSON.parse(sessionStorage.getItem("isZoomEnabled"));
+  let isZoomEnabled =
+    sessionStorage.getItem("isZoomEnabled") !== null &&
+    sessionStorage.getItem("isZoomEnabled") !== undefined;
+  JSON.parse(sessionStorage.getItem("isZoomEnabled"));
 
   console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
 

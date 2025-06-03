@@ -35,6 +35,7 @@ import {
   setVideoControlHost,
   setAudioControlHost,
   makeHostNow,
+  disableZoomBeforeJoinSession,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import MissedCallIcon from "../../../../../../assets/images/Missedcall-Icon.png";
 import VideoCallIcon from "../../../../../../assets/images/VideoCall-Icon.png";
@@ -46,6 +47,7 @@ import EmptyRecentCalls from "./emptyRecentCalls";
 import { DownloadCallRecording } from "../../../../../../store/actions/VideoChat_actions";
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
 import { videoRecording } from "../../../../../../store/actions/DataRoom2_actions";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -58,6 +60,7 @@ const VideoPanelBodyRecent = () => {
 
   const { t } = useTranslation();
 
+
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
@@ -68,6 +71,8 @@ const VideoPanelBodyRecent = () => {
   let currentUserID = Number(localStorage.getItem("userID"));
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   let initiateRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -235,6 +240,9 @@ const VideoPanelBodyRecent = () => {
   };
 
   const otoVideoCall = (data) => {
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(true));
+    }
     setRecentCallRecipientData(data);
     console.log(data, "datadatadatadata");
     if (
