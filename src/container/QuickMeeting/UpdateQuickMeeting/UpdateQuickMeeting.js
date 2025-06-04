@@ -910,10 +910,9 @@ const UpdateQuickMeeting = ({
           OriginalAttachmentName: "",
         };
         setAttachments((prev) => [...prev, fileData]);
-        setFileForSend([...fileForSend, uploadedFile]);// Append new file to the existing ones
+        setFileForSend([...fileForSend, uploadedFile]); // Append new file to the existing ones
       }
     });
-
   };
   // for add another agenda main inputs handler
   const addAnOtherAgenda = async (e) => {
@@ -1189,13 +1188,14 @@ const UpdateQuickMeeting = ({
 
   // for list of all assignees
   useEffect(() => {
-    if (editFlag) {
-      let user1 = createMeeting.MeetingAttendees;
-      let List = addedParticipantNameList;
-      callApi();
-      setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
-      setAddedParticipantNameList(List);
-    } else {
+    // if (editFlag) {
+    // let user1 = createMeeting.MeetingAttendees;
+    // let List = addedParticipantNameList;
+    callApi();
+    // setCreateMeeting({ ...createMeeting, MeetingAttendees: user1 });
+    // setAddedParticipantNameList(List);
+    // } else {
+    return () => {
       setEditFlag(false);
       seteditRecordIndex(null);
       seteditRecordFlag(false);
@@ -1256,8 +1256,8 @@ const UpdateQuickMeeting = ({
       setAddedParticipantNameList([]);
       setReminder("");
       setTaskAssignedToInput("");
-    }
-  }, [editFlag]);
+    };
+  }, []);
 
   // for api reponce of list of all assignees
   useEffect(() => {
@@ -1477,7 +1477,9 @@ const UpdateQuickMeeting = ({
               setAddedParticipantNameList(List);
             }
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log(error, "error in view data");
+        }
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
             let opData = {
@@ -1507,7 +1509,9 @@ const UpdateQuickMeeting = ({
               MeetingAgendaAttachments: file,
             });
           });
-        } catch (error) {}
+        } catch (error) {
+          console.log(error, "error in view data");
+        }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
             minutesOfMeetings.push({
@@ -1533,6 +1537,7 @@ const UpdateQuickMeeting = ({
           );
         } catch (error) {
           //  Block of code to handle errors
+          console.log(error, "error in view data");
         }
 
         setMeetingDate(
@@ -1572,7 +1577,9 @@ const UpdateQuickMeeting = ({
         });
         setMinutesOfMeeting(minutesOfMeetings);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error, "error in view data");
+    }
   }, [assigneesViewMeetingDetails]);
 
   const editGrid = (datarecord, dataindex) => {
@@ -2512,7 +2519,11 @@ const UpdateQuickMeeting = ({
           ButtonTitle={ModalTitle}
           modalFooterClassName={"d-block border-0"}
           modalHeaderClassName={"d-none"}
-          modalBodyClassName={"modal_update_bodyClass"}
+          modalBodyClassName={
+            closeConfirmationModal || isCancelMeetingModal
+              ? null
+              : "modal_update_bodyClass"
+          }
           size={
             isPublishMeeting || isCancelMeetingModal || closeConfirmationModal
               ? null

@@ -643,6 +643,7 @@ const SubAgendaMappingDragging = ({
                                                 filterOption={
                                                   filterSubAgendaFunc
                                                 }
+                                                menuPortalTarget={document.body}
                                                 isSearchable={true}
                                               />
                                             </Col>

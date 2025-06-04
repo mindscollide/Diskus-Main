@@ -10,6 +10,10 @@ import {
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_actions";
 
 const ModalViewNote = ({
   ModalTitle,
@@ -19,6 +23,8 @@ const ModalViewNote = ({
   flag,
 }) => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const GetNotesByNotesId = useSelector(
     (state) => state.NotesReducer.GetNotesByNotesId
@@ -93,6 +99,36 @@ const ModalViewNote = ({
     setViewNotes(false);
   };
 
+  const handleClickDownloadDoc = (data) => {
+    let data2 = {
+      FileID: Number(data.pK_FileID),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data2,
+        t,
+        data.displayFileName
+      )
+    );
+  };
+  const handleClickOpenDoc = (data) => {
+    let ext = data?.displayFileName?.split(".")[1];
+    let pdfData = {
+      taskId: data.pK_FileID,
+      commingFrom: 4,
+      fileName: data.displayFileName,
+      attachmentID: data.pK_FileID,
+    };
+    const pdfDataJson = JSON.stringify(pdfData);
+    if (fileFormatforSignatureFlow.includes(ext)) {
+      window.open(
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
   return (
     <>
       <Container>
@@ -117,8 +153,7 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <p className={styles["date-updatenote"]}>
                     {t("Last-modified-On")}:{" "}
                     {_justShowDateformat(notesData.date + notesData.time)} |{" "}
@@ -127,7 +162,7 @@ const ModalViewNote = ({
                 </Col>
               </Row>
 
-              <Row className="my-2">
+              <Row className='my-2'>
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <p className={styles["modal-View-title"]}>
                     {notesData.title}
@@ -141,8 +176,7 @@ const ModalViewNote = ({
                     className={styles["modal-view-discription"]}
                     dangerouslySetInnerHTML={{
                       __html: notesData.description,
-                    }}
-                  ></p>
+                    }}></p>
                 </Col>
               </Row>
 
@@ -152,8 +186,7 @@ const ModalViewNote = ({
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <p className={styles["modal-update-attachment-heading"]}>
                     {t("Attachments")}
                   </p>
@@ -168,8 +201,12 @@ const ModalViewNote = ({
                           <Col sm={4} lg={4} md={4}>
                             <AttachmentViewer
                               data={data}
-                              id={0}
+                              id={data.pK_FileID}
                               name={data.displayFileName}
+                              handleEyeIcon={() => handleClickOpenDoc(data)}
+                              handleClickDownload={() =>
+                                handleClickDownloadDoc(data)
+                              }
                             />
                           </Col>
                         );
@@ -186,8 +223,7 @@ const ModalViewNote = ({
                   lg={12}
                   md={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     text={t("Close")}
                     className={styles["close-note-modal-btn"]}

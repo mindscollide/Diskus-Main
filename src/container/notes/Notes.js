@@ -1071,7 +1071,7 @@ const Notes = () => {
         </Row>
         {/* Test Accordian Ends  */}
       </div>
-      {createNotesModal && <ModalAddNote />}
+      {/* {createNotesModal && <ModalAddNote />} */}
 
       {updateShow ? (
         <ModalUpdateNote

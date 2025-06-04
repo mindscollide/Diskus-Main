@@ -331,6 +331,8 @@ const UpdateOrganizersMeeting = (
                 )
             ) {
               console.log("end meeting chaek");
+              // For Quick Meeting start Meeting from the modal view route id will be 11
+              // For Quick Meeting end Meeting from the modal view route id will be 12
 
               try {
                 await dispatch(
@@ -338,10 +340,16 @@ const UpdateOrganizersMeeting = (
                     response.data.responseResult,
                     route === 5
                       ? t("Meeting-published-successfully")
-                      : (route === 4 || route === 6 || route === 7) &&
+                      : (route === 4 ||
+                          route === 6 ||
+                          route === 7 ||
+                          route === 11) &&
                         Data.StatusID === 10
                       ? t("Meeting-started-successfully")
-                      : (route === 4 || route === 6 || route === 7) &&
+                      : (route === 4 ||
+                          route === 6 ||
+                          route === 7 ||
+                          route === 12) &&
                         Data.StatusID === 9
                       ? t("Meeting-ended-successfully")
                       : ""
@@ -390,7 +398,7 @@ const UpdateOrganizersMeeting = (
                 } else if (route === 4) {
                   console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 9) {
-                    setEndMeetingConfirmationModal(false)
+                    setEndMeetingConfirmationModal(false);
                     console.log("end meeting chaek", leaveMeetingData);
                     // dispatch(
                     //   LeaveCurrentMeeting(
@@ -533,6 +541,24 @@ const UpdateOrganizersMeeting = (
                     };
                     console.log("end meeting chaek", leaveMeetingData);
                     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  }
+                } else if(route === 11) {
+                  if (Data.StatusID === 10) {
+                    console.log("end meeting chaek", leaveMeetingData);
+                    dispatch(
+                      JoinCurrentMeeting(
+                        true,
+                        navigate,
+                        t,
+                        leaveMeetingData,
+                        setViewFlag,
+                        setEditFlag,
+                        setSceduleMeeting,
+                        route,
+                        setAdvanceMeetingModalID,
+                        setViewAdvanceMeetingModal
+                      )
+                    );
                   }
                 }
               } catch (error) {
@@ -975,7 +1001,7 @@ const UpdateMeetingStatus = (
                 } else if (route === 4) {
                   console.log("end meeting chaek", leaveMeetingData);
                   if (Data.StatusID === 9) {
-                    setEndMeetingConfirmationModal(false)
+                    setEndMeetingConfirmationModal(false);
                     console.log("end meeting chaek", leaveMeetingData);
                     // dispatch(
                     //   LeaveCurrentMeeting(

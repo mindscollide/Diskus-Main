@@ -716,4 +716,6 @@ body[dir="rtl"] .errorMessage {
 }
 .modal_update_bodyClass {
   border-bottom: 0px !important;
+  min-height: 500px !important;
+  height: 100% !important;
 }
