@@ -344,17 +344,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   }, [CommitteeReducergetCommitteeTypes]);
 
   const checkGroupMembers = (GroupMembers) => {
-    if (Object.keys(GroupMembers).length > 0) {
-      let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
-
-      if (flag2 !== undefined) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
+    console.log(GroupMembers, "GroupMembersGroupMembers");
+    if (Array.isArray(GroupMembers) && GroupMembers.length > 0) {
+      const validIds = [1, 2, 3, 4, 5];
+      let hasValidMember = GroupMembers.some((data) =>
+        validIds.includes(data.FK_CMMRID)
+      );
+      return hasValidMember;
     }
+    return false;
   };
 
   const handleClickUpdate = () => {

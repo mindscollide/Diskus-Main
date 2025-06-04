@@ -1,23 +1,22 @@
 {
   "MeetingDetails": {
     "MeetingID": 0,
-    "MeetingTitle": "Time Change one ",
+    "MeetingTitle": "mamdani ",
     "MeetingType": { "PK_MTID": 497, "Type": "Board Meetings" },
-    "Location": "karachi ",
-    "Description": "desc",
-    "IsVideoChat": true,
-    "IsPublished": false,
+    "Location": "",
+    "Description": "asd",
+    "IsVideoChat": false,
     "IsTalkGroup": false,
     "OrganizationId": 561,
     "MeetingDates": [
       {
-        "MeetingDate": "20250429",
-        "StartTime": "20250429070000",
-        "EndTime": "20250429080000"
+        "MeetingDate": "20250604",
+        "StartTime": "20250604140000",
+        "EndTime": "20250604150000"
       }
     ],
-    "MeetingReminders": [2],
-    "Notes": "note s",
+    "MeetingReminders": [4],
+    "Notes": "",
     "AllowRSVP": true,
     "NotifyOrganizerOnRSVP": true,
     "ReucurringMeetingID": 1,

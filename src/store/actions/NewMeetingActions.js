@@ -1781,7 +1781,7 @@ const SaveparticipantsApi = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
-                console.log(Data, "setProposedMeetingDateApiFunc");
+                console.log(Data, "sendResponseByate");
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -3550,9 +3550,7 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02 "
             ) {
               dispatch(
-                SaveUserAttachmentPermissionsFailed(
-                  t("No-record-saved")
-                )
+                SaveUserAttachmentPermissionsFailed(t("No-record-saved"))
               );
             } else if (
               response.data.responseResult.responseMessage ===
@@ -4353,8 +4351,8 @@ const getProposedWiseFail = (message, loader) => {
 const clearProposedWiseData = () => {
   return {
     type: actions.CLEAR_GET_USER_WISE_PROPOSED,
-  }
-}
+  };
+};
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -10969,5 +10967,5 @@ export {
   validateEmptyStringUserAvailibilityFailed,
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
-  clearProposedWiseData
+  clearProposedWiseData,
 };

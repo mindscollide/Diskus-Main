@@ -126,6 +126,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     name: "",
   });
 
+  console.log(presenterValue, "presenterValuepresenterValue");
+
   //To Set task Creater ID
   useEffect(() => {
     try {
@@ -292,13 +294,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex gap-2 align-items-center'>
+                    className="d-flex gap-2 align-items-center"
+                  >
                     <img
                       src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                      height='16.45px'
-                      width='18.32px'
-                      draggable='false'
-                      alt=''
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
                     />
                     <span>{user.userName}</span>
                   </Col>
@@ -318,13 +321,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-2 align-items-center'>
+                      className="d-flex gap-2 align-items-center"
+                    >
                       <img
                         src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                        alt=""
                       />
                       <span>{user.userName}</span>
                     </Col>
@@ -498,7 +502,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         onFocus={onFocus}
         value={value}
         onChange={onChange}
-        className='input-with-icon'
+        className="input-with-icon"
       />
     );
   }
@@ -535,8 +539,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           show={show}
           setShow={setShow}
           modalBodyClassName={"createTask__body p-4"}
-          modalFooterClassName='d-block'
-          modalHeaderClassName='d-none'
+          modalFooterClassName="d-block"
+          modalHeaderClassName="d-none"
           ButtonTitle={ModalTitle}
           size={"md"}
           ModalBody={
@@ -544,26 +548,27 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               <>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <span className='createtask__heading'>
+                    <span className="createtask__heading">
                       {t("Create-task")}
                     </span>
                   </Col>
                 </Row>
-                <div className='createTask__contet'>
-                  <Row className='mt-4'>
+                <div className="createTask__contet">
+                  <Row className="mt-4">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='todolist-modal-fields'>
-                      <span className='createTask_label'>{`${t(
+                      className="todolist-modal-fields"
+                    >
+                      <span className="createTask_label">{`${t(
                         "Task-title"
                       )}*`}</span>
                       <TextField
                         change={taskHandler}
-                        name='Title'
-                        applyClass='createtodo-title'
-                        type='text'
+                        name="Title"
+                        applyClass="createtodo-title"
+                        type="text"
                         labelclass={"d-none"}
                         placeholder={t("Title") + "*"}
                         required
@@ -572,9 +577,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       />
                     </Col>
                   </Row>
-                  <Row className='my-3'>
+                  <Row className="my-3">
                     <Col lg={5} md={5} sm={12} xs={12}>
-                      <span className='createTask_label'>{`${t(
+                      <span className="createTask_label">{`${t(
                         "Add-assignee"
                       )}*`}</span>
                       <Select
@@ -585,7 +590,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           presenterValue.value === 0 ? null : presenterValue
                         }
                         placeholder={t("Add-assignee")}
-                        applyClass='assigneeFindInCreateToDo'
+                        // applyClass='assigneeFindInCreateToDo'
                         filterOption={filterFunc}
                       />
                     </Col>
@@ -595,8 +600,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       md={5}
                       sm={12}
                       xs={12}
-                      className='d-flex flex-column'>
-                      <span className='createTask_label'>{`${t(
+                      className="d-flex flex-column"
+                    >
+                      <span className="createTask_label">{`${t(
                         "Deadline"
                       )}*`}</span>
                       <DatePicker
@@ -604,46 +610,46 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         format={"DD/MM/YYYY"}
                         value={task.creationDate}
                         minDate={moment().toDate()}
-                        placeholder='DD/MM/YYYY'
+                        placeholder="DD/MM/YYYY"
                         render={
                           <InputIcon
-                            placeholder='DD/MM/YYYY'
-                            className='datepicker_input'
+                            placeholder="DD/MM/YYYY"
+                            className="datepicker_input"
                           />
                         }
                         editable={false}
-                        className='datePickerTodoCreate2'
+                        className="datePickerTodoCreate2"
                         onOpenPickNewDate={true}
-                        inputMode=''
+                        inputMode=""
                         calendar={calendarValue}
                         locale={localValue}
                         ref={calendRef}
                       />
                     </Col>
                   </Row>
-                  <Row className='create_todo_assignee d-flex justify-content-end'>
+                  <Row className="create_todo_assignee d-flex justify-content-end">
                     {assignees ? (
                       <>
                         {assignees.map((taskAssignedName, index) => (
                           <Col sm={12} md={6} lg={6}>
-                            <div className='dropdown-row-assignee w-100'>
-                              <div className='d-flex align-items-center gap-2 mt-1 position-relative'>
+                            <div className="dropdown-row-assignee w-100">
+                              <div className="d-flex align-items-center gap-2 mt-1 position-relative">
                                 <img
-                                  draggable='false'
-                                  alt=''
+                                  draggable="false"
+                                  alt=""
                                   src={`data:image/jpeg;base64,${taskAssignedName.userProfilePicture.displayProfilePictureName}`}
                                 />
-                                <p className=' m-0'>
+                                <p className=" m-0">
                                   {taskAssignedName.userName}
                                 </p>
                               </div>
-                              <span className='todolist-remove-assignee-icon'>
+                              <span className="todolist-remove-assignee-icon">
                                 <img
-                                  draggable='false'
+                                  draggable="false"
                                   width={20}
-                                  className='remove'
+                                  className="remove"
                                   height={20}
-                                  alt=''
+                                  alt=""
                                   src={deleteButtonCreateMeeting}
                                   onClick={() =>
                                     handleDeleteAttendee(
@@ -661,39 +667,39 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Row>
 
                   <Row>
-                    <Col lg={12} md={12} xs={12} className='FontArabicRegular'>
-                      <span className='createTask_label'>{`${t(
+                    <Col lg={12} md={12} xs={12} className="FontArabicRegular">
+                      <span className="createTask_label">{`${t(
                         "Description"
                       )}`}</span>
                       <TextField
                         change={taskHandler}
-                        name='Description'
-                        applyClass='createtodo-description'
-                        type='text'
+                        name="Description"
+                        applyClass="createtodo-description"
+                        type="text"
                         labelclass={"d-none"}
                         as={"textarea"}
-                        rows='7'
+                        rows="7"
                         placeholder={t("Description")}
                         maxLength={2000}
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
-                    <Col lg={12} md={12} xs={12} className=' attachmentCon '>
-                      <label className='ArabicFontSemiBold'>
+                  <Row className="mt-4">
+                    <Col lg={12} md={12} xs={12} className=" attachmentCon ">
+                      <label className="ArabicFontSemiBold">
                         {t("Attachement")}
                       </label>
-                      <span className='custom-upload-input'>
+                      <span className="custom-upload-input">
                         <CustomUpload
                           multiple={true}
                           change={uploadFilesToDo}
                           onClick={(event) => {
                             event.target.value = null;
                           }}
-                          className='UploadFileButton'
+                          className="UploadFileButton"
                         />
                       </span>
-                      <section className='todolist_files '>
+                      <section className="todolist_files ">
                         {tasksAttachments.TasksAttachments.length > 0
                           ? tasksAttachments.TasksAttachments.map(
                               (data, index) => {
@@ -723,7 +729,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={"Confirmationmodal_body_text"}>
+                    className={"Confirmationmodal_body_text"}
+                  >
                     {t(
                       "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
                     )}
@@ -740,7 +747,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex justify-content-end gap-3 p-0'>
+                    className="d-flex justify-content-end gap-3 p-0"
+                  >
                     <Button
                       onClick={() => {
                         setCloseConfirmationBox(true);
@@ -765,7 +773,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className='d-flex justify-content-center gap-3'>
+                    className="d-flex justify-content-center gap-3"
+                  >
                     <Button
                       onClick={() => setIsCreateTodo(true)}
                       className={"cancelButton_createTodo"}
