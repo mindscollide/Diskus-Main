@@ -1,12 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import "./ModalToDoList.css";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
   TextField,
@@ -16,7 +14,6 @@ import {
   AttachmentViewer,
 } from "./../../components/elements";
 import {
-  createConvert,
   get_CurrentDateTime,
   multiDatePickerDateChangIntoUTC,
 } from "./../../commen/functions/date_formater";
@@ -570,8 +567,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           presenterValue.value === 0 ? null : presenterValue
                         }
                         placeholder={t("Add-assignee")}
-                        applyClass="assigneeFindInCreateToDo"
-                        className="seletTaskAssginee"
                         filterOption={filterFunc}
                       />
                     </Col>
