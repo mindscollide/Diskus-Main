@@ -65,6 +65,8 @@ import { openDocumentViewer } from "../../commen/functions/utils";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { UpdateOrganizersMeeting } from "../../store/actions/MeetingOrganizers_action";
+import { getMeetingStatusfromSocket } from "../../store/actions/GetMeetingUserId";
+import { Prev } from "react-bootstrap/esm/PageItem";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
@@ -74,6 +76,12 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
 
   const navigate = useNavigate();
 
+  const {
+    CommitteeMeetingMQTT,
+    MeetingStatusSocket,
+    allMeetingsSocketData,
+    MeetingStatusEnded,
+  } = useSelector((state) => state.meetingIdReducer);
   const assigneesViewMeetingDetails = useSelector(
     (state) => state.assignees.ViewMeetingDetails
   );
@@ -154,6 +162,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [attachmentsList, setattachmentsList] = useState([]);
   //all Meeting details
   const [allMeetingDetails, setAllMeetingDetails] = useState(null);
+  console.log(
+    allMeetingDetails,
+    "allMeetingDetailsallMeetingDetailsallMeetingDetails"
+  );
   const [meetingDifference, setMeetingDifference] = useState(0);
   // for meatings  Attendees List
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
@@ -691,6 +703,46 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     } catch (error) {}
   }, [calendarReducereventsDetails]);
 
+  //  Update Meeting Status Cancelled and Start Meeting
+  useEffect(() => {
+    try {
+      if (MeetingStatusSocket !== null) {
+        if (
+          MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+        ) {
+          let meetingID =
+            MeetingStatusSocket?.meeting?.pK_MDID ||
+            MeetingStatusSocket?.meetingID;
+          setAllMeetingDetails((prevDetails) => {
+            if (prevDetails.meetingDetails.pK_MDID === meetingID) {
+              return {
+                ...prevDetails,
+                meetingDetails: {
+                  ...prevDetails.meetingDetails,
+                  status: "10", // Assuming 2 is the status for started
+                },
+                meetingStatus: {
+                  ...prevDetails.meetingStatus,
+                  status: "10",
+                  pK_MSID: 10,
+                },
+              };
+            }
+            return prevDetails;
+          });
+          setMeetStatus(10);
+          dispatch(getMeetingStatusfromSocket(null));
+        }
+
+        // if (meetingStatusID === 4) {
+        //   updateCalendarData(true, meetingID);
+        // }
+      }
+    } catch (error) {}
+  }, [MeetingStatusSocket]);
+
   useEffect(() => {
     if (userProfileData !== null) {
       let settingConfigurations = userProfileData?.configurations;
@@ -872,7 +924,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setViewFlag,
         null,
         null,
-        false,
+        false
       )
     );
     // let meetingID = checkMeetingID;
@@ -1642,7 +1694,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     lg={12}
                     md={12}
                     xs={12}
-                    className='d-flex justify-content-end'>
+                    className='d-flex justify-content-end gap-2'>
                     {meetingDifference <= remainingMinutesAgo &&
                     allMeetingDetails.meetingStatus.status === "1" &&
                     isDetails ? (
