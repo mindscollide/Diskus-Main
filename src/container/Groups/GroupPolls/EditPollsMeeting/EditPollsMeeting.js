@@ -231,7 +231,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           DueDate: multiDatePickerDateChangIntoUTC(updatePolls.date),
           AllowMultipleAnswers: updatePolls.AllowMultipleAnswers,
           CreatorID: parseInt(createrid),
-          PollStatusID: parseInt(pollStatusValue),
+          PollStatusID: checkForPollStatus ? 2 : parseInt(pollStatusValue),
           OrganizationID: parseInt(organizationid),
           PollID: parseInt(updatePolls.PollID),
         },
@@ -648,11 +648,13 @@ const EditPollsMeeting = ({ setEditPolls }) => {
             className={styles["Save_Button_Meeting_Creat_Polls"]}
             onClick={() => handleUpdateClick(1)}
           />
-          <Button
-            text={t("Publish")}
-            className={styles["Save_Button_Meeting_Creat_Polls"]}
-            onClick={() => handleUpdateClick(2)}
-          />
+          {!checkForPollStatus && (
+            <Button
+              text={t("Publish")}
+              className={styles["Save_Button_Meeting_Creat_Polls"]}
+              onClick={() => handleUpdateClick(2)}
+            />
+          )}
         </Col>
       </Row>
       {unsavedEditPollsMeeting && (

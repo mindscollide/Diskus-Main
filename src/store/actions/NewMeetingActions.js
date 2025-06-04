@@ -3550,9 +3550,7 @@ const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
               "Meeting_MeetingServiceManager_SaveUserAttachmentPermission_02 "
             ) {
               dispatch(
-                SaveUserAttachmentPermissionsFailed(
-                  t("No-record-saved")
-                )
+                SaveUserAttachmentPermissionsFailed(t("No-record-saved"))
               );
             } else if (
               response.data.responseResult.responseMessage ===
@@ -4353,8 +4351,8 @@ const getProposedWiseFail = (message, loader) => {
 const clearProposedWiseData = () => {
   return {
     type: actions.CLEAR_GET_USER_WISE_PROPOSED,
-  }
-}
+  };
+};
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -8259,17 +8257,23 @@ const JoinCurrentMeeting = (
               );
               if (isQuickMeeting === true) {
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
-                await dispatch(
-                  ViewMeeting(
-                    navigate,
-                    viewMeetingData,
-                    t,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    no
-                  )
+                console.log(
+                  { no, viewMeetingData },
+                  "viewMeetingDataviewMeetingData"
                 );
+                if (no !== 11) {
+                  await dispatch(
+                    ViewMeeting(
+                      navigate,
+                      viewMeetingData,
+                      t,
+                      setViewFlag,
+                      setEditFlag,
+                      setSceduleMeeting,
+                      no
+                    )
+                  );
+                }
               } else {
                 isFunction(setAdvanceMeetingModalID) &&
                   setAdvanceMeetingModalID(Number(Data.FK_MDID));
@@ -10969,5 +10973,5 @@ export {
   validateEmptyStringUserAvailibilityFailed,
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
-  clearProposedWiseData
+  clearProposedWiseData,
 };

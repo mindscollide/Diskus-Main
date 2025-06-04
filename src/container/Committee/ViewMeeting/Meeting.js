@@ -42,13 +42,18 @@ import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+import { activeChatBoxGS, addNewChatScreen, chatBoxActiveFlag, createGroupScreen, createShoutAllScreen, footerActionStatus, footerShowHideStatus, headerShowHideStatus, recentChatFlag } from "../../../store/actions/Talk_Feature_actions";
+import { GetAllUserChats, GetAllUsers, GetAllUsersGroupsRoomsList, GetGroupMessages, activeChat } from "../../../store/actions/Talk_action";
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
+  console.log(committeeStatus, "committeeStatuscommitteeStatus");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID
   );
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
@@ -302,6 +307,78 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
   };
+  const [talkGroupID, setTalkGroupID] = useState(0);
+  let currentOrganizationId = localStorage.getItem("organizationID");
+
+
+  const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata");
+    if (data.talkGroupID !== 0) {
+      await dispatch(createShoutAllScreen(false));
+      await dispatch(addNewChatScreen(false));
+      await dispatch(footerActionStatus(false));
+      await dispatch(createGroupScreen(false));
+      await dispatch(chatBoxActiveFlag(false));
+      await dispatch(recentChatFlag(true));
+      await dispatch(activeChatBoxGS(true));
+      await dispatch(chatBoxActiveFlag(true));
+      await dispatch(headerShowHideStatus(true));
+      await dispatch(footerShowHideStatus(true));
+      setTalkGroupID(data.talkGroupID);
+      let chatGroupData = {
+        UserID: parseInt(currentUserId),
+        ChannelID: currentOrganizationId,
+        GroupID: data.talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      await dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+    }
+  };
+
+  
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      talkGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages.allMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
+      setTalkGroupID(0);
+    }
+  }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
   const menu = (
     <Menu>
@@ -526,6 +603,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                 )}
                 {record.isChat ? (
                   <span
+                  onClick={(e) => groupChatInitiation(record)}
                     className={
                       currentLanguage === "ar"
                         ? "margin-left-10"
@@ -781,16 +859,16 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.pK_MARID === 1
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.pK_MARID === 4
         );
         const isQuickMeeting = record.isQuickMeeting;
-
+        console.log(record.status,isQuickMeeting,isOrganiser,committeeStatus, "committeeStatuscommitteeStatus");
         if (
           record.status === "8" ||
           record.status === "4" ||
