@@ -72,8 +72,10 @@ const GuestJoinVideo = ({
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
-  let isZoomEnabled = JSON.parse(sessionStorage.getItem("isZoomEnabled"));
-  console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
+  let isZoomEnabled =
+    sessionStorage.getItem("isZoomEnabled") !== null &&
+    sessionStorage.getItem("isZoomEnabled") !== undefined;
+  JSON.parse(sessionStorage.getItem("isZoomEnabled"));
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {

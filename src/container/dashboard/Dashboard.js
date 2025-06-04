@@ -350,7 +350,15 @@ const Dashboard = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  console.log({ globallyScreenShare }, "globallyScreenShare");
+  const raisedUnRaisedParticipant = useSelector(
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+  );
+
+  const disableBeforeJoinZoom = useSelector(
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+  );
+
+  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   console.log(
     {
@@ -518,7 +526,16 @@ const Dashboard = () => {
       sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    let handStatus = JSON.parse(localStorage.getItem("handStatus"));
     let currentCallType = Number(localStorage.getItem("callTypeID"));
+    let isGuid = localStorage.getItem("isGuid");
+    let participantUID = localStorage.getItem("participantUID");
+    let newRoomId = localStorage.getItem("newRoomId");
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
 
@@ -532,9 +549,25 @@ const Dashboard = () => {
           // remove Screen Should be closed when presentation is started
           await dispatch(maxParticipantVideoRemoved(false));
         }
+        console.log("maximizeParticipantVideoFlag");
+        if (handStatus) {
+          if (!isZoomEnabled || !disableBeforeJoinZoom) {
+            console.log("maximizeParticipantVideoFlag");
+            let data = {
+              RoomID: String(
+                isMeetingVideoHostCheck ? newRoomId : participantRoomId
+              ),
+              UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+              IsHandRaised: false,
+            };
+            await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+          }
+        }
         showMessage(t("Presenter-view-started"), "success", setOpen);
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         if (alreadyInMeetingVideoStartPresenterCheck) {
+          console.log("mqtt mqmqmqmqmqmq");
+
           sessionStorage.removeItem("alreadyInMeetingVideoStartPresenterCheck");
         } else if (
           activeCallState &&
@@ -545,6 +578,9 @@ const Dashboard = () => {
           await dispatch(nonMeetingVideoGlobalModal(true));
         } else if (isMeetingVideo) {
           console.log("mqtt mqmqmqmqmqmq");
+          localStorage.setItem("isWebCamEnabled", true);
+          localStorage.setItem("isMicEnabled", true);
+
           let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
           let leaveRoomId =
             getJoinMeetingParticipantorHostrequestRoomIdRef.current;
@@ -696,7 +732,7 @@ const Dashboard = () => {
                 MeetingID: payload?.meetingID,
               };
 
-              // Dispatch the API request with the data
+              // // Dispatch the API request with the data
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               let dataVideo = {
                 RoomID: String(
@@ -707,7 +743,7 @@ const Dashboard = () => {
                 MeetingID: Number(payload?.meetingID),
               };
 
-              // Dispatch the API request with the data
+              // // Dispatch the API request with the data
               dispatch(hideUnhideSelfMainApi(navigate, t, dataVideo, 1));
 
               let data = {
@@ -717,6 +753,9 @@ const Dashboard = () => {
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
               };
+
+              localStorage.setItem("isWebCamEnabled", true);
+              localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("isMeetingVideo", true);
 
               await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));

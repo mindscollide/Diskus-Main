@@ -13,6 +13,7 @@ import videoEndIcon from "../../../../../assets/images/newElements/VideoEndIcon.
 import videoAttendIcon from "../../../../../assets/images/newElements/VideoAttendIcon.png";
 import BusyIcon from "../../../../../assets/images/newElements/BusyIcon.png";
 import {
+  disableZoomBeforeJoinSession,
   incomingVideoCallFlag,
   leaveCallModal,
   leavePresenterJoinOneToOneOrOtherCall,
@@ -253,6 +254,10 @@ const VideoMaxIncoming = () => {
   };
 
   const endAndAccept = async () => {
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(true));
+    }
     console.log("busyCall");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
@@ -262,7 +267,6 @@ const VideoMaxIncoming = () => {
       console.log("busyCall");
       if (isMeetingVideo) {
         console.log("busyCall");
-        let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
         if (isZoomEnabled) {
           console.log("busyCall");
           // await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
@@ -528,6 +532,10 @@ const VideoMaxIncoming = () => {
   };
 
   const rejectCall = async () => {
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(false));
+    }
     console.log("busyCall");
     console.log("busyCall", incomingRoomID);
     let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
@@ -552,6 +560,10 @@ const VideoMaxIncoming = () => {
   };
 
   const busyCall = async () => {
+    let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(false));
+    }
     console.log("busyCall");
     let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
     let NewRoomID = localStorage.getItem("NewRoomID");

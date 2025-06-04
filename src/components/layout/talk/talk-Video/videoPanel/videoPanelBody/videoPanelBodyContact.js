@@ -29,6 +29,7 @@ import {
   setVideoControlHost,
   maxParticipantVideoRemoved,
   setRaisedUnRaisedParticiant,
+  disableZoomBeforeJoinSession,
 } from "../../../../../../store/actions/VideoFeature_actions";
 import VideoPanelFooter from "../videoPanelFooter/videoPanelFooter";
 import { LeaveMeetingVideo } from "../../../../../../store/actions/NewMeetingActions";
@@ -59,6 +60,8 @@ const VideoPanelBodyContact = () => {
   let callerID = Number(localStorage.getItem("callerID"));
 
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
   const [searchChatValue, setSearchChatValue] = useState("");
 
@@ -146,6 +149,10 @@ const VideoPanelBodyContact = () => {
   }, [VideoMainReducer?.VideoCallUsersData]);
 
   const otoVideoCall = (userData) => {
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(true));
+    }
+
     setGroupCallUsers([userData.userID]);
     if (
       activeCall === false ||
@@ -180,6 +187,10 @@ const VideoPanelBodyContact = () => {
   };
 
   const initiateGroupCall = () => {
+    if (isZoomEnabled) {
+      dispatch(disableZoomBeforeJoinSession(true));
+    }
+
     if (
       activeCall === false ||
       activeCall === undefined ||
