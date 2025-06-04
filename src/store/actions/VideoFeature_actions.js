@@ -1714,6 +1714,7 @@ const stopPresenterViewMainApi = (
                 // localStorage.removeItem("newRoomId");
                 localStorage.removeItem("acceptedRoomID");
                 localStorage.removeItem("presenterViewvideoURL");
+                localStorage.removeItem("isWebCamEnabled");
                 dispatch(setAudioControlHost(false));
                 console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
