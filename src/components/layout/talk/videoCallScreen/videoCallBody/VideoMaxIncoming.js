@@ -70,6 +70,17 @@ const VideoMaxIncoming = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
+  const IncomingVideoCallFlag = useSelector(
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+  );
+
+  const VideoOutgoingCallFlag = useSelector(
+    (state) => state.videoFeatureReducer.VideoOutgoingCallFlag
+  );
+
+  console.log("IncomingVideoCallFlag", IncomingVideoCallFlag);
+  console.log("VideoOutgoingCallFlag", VideoOutgoingCallFlag);
+
   let currentUserId = Number(localStorage.getItem("userID"));
   let incomingRoomID = localStorage.getItem("NewRoomID");
   let callerID = Number(localStorage.getItem("callerID"));
@@ -86,6 +97,7 @@ const VideoMaxIncoming = () => {
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let activeRoomID = localStorage.getItem("activeRoomID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isActiveCall = localStorage.getItem("activeCall")
 
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)

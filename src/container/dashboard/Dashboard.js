@@ -1672,13 +1672,14 @@ const Dashboard = () => {
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
             ) {
               let userID = Number(localStorage.getItem("userID"));
+              let isMeetingVideo = JSON.parse(
+                localStorage.getItem("isMeetingVideo")
+              );
+
               let isZoomEnabled = JSON.parse(
                 localStorage.getItem("isZoomEnabled")
               );
               let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
-              );
               let isMeetingVideoHostChecker = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck")
               );
@@ -3462,7 +3463,10 @@ const Dashboard = () => {
               dispatch(unansweredOneToOneCall(true));
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
-              setLeaveOneToOne(true);
+              if (data.payload.recepientResponseCode === 3) {
+              } else {
+                setLeaveOneToOne(true);
+              }
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(
@@ -3529,7 +3533,7 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_CALL_RINGING".toLowerCase()
         ) {
-          let userID = localStorage.setItem("userID");
+          let userID = localStorage.getItem("userID");
           if (data.senderID === userID) {
             localStorage.setItem("initiateCallRoomID", data.payload.roomID);
             localStorage.setItem("ringerRoomId", data.payload.roomID);
@@ -3653,6 +3657,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeRoomID", acceptedRoomID);
               }
               if (activeRoomID === acceptedRoomID) {
+                console.log("Check One To Three");
                 if (
                   NormalizeVideoFlag === true ||
                   IncomingVideoCallFlagReducer === true ||
@@ -3705,7 +3710,8 @@ const Dashboard = () => {
                 localStorage.setItem("activeRoomID", acceptedRoomID);
               }
               if (activeRoomID === acceptedRoomID) {
-                console.log("Check 123");
+                console.log("Check One To Three");
+
                 if (
                   NormalizeVideoFlag === true ||
                   IncomingVideoCallFlagReducer === true ||
@@ -3717,6 +3723,11 @@ const Dashboard = () => {
                     message: `Call has been disconnected by ${data.payload.callerName}`,
                   });
                   setNotificationID(id);
+                }
+                let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+                if (isMeeting) {
+                  console.log("Check One To Three");
+                  localStorage.removeItem("callTypeID");
                 }
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(videoChatMessagesFlag(false));

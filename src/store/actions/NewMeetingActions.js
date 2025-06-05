@@ -1478,6 +1478,7 @@ const FetchMeetingURLApi = (
                 CallTypeID: currentCallType,
               };
               if (activeCallStatus === true && meetingStatus === false) {
+                console.log("Check LeaveCall new");
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }

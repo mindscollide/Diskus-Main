@@ -60,7 +60,6 @@ const VideoPanelBodyRecent = () => {
 
   const { t } = useTranslation();
 
-
   //Current language
   let lang = localStorage.getItem("i18nextLng");
 
@@ -343,6 +342,7 @@ const VideoPanelBodyRecent = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -450,6 +450,7 @@ const VideoPanelBodyRecent = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -546,6 +547,7 @@ const VideoPanelBodyRecent = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data2, navigate, t));
     }
     dispatch(InitiateVideoCall(Data, navigate, t));
@@ -596,6 +598,7 @@ const VideoPanelBodyRecent = () => {
         IsCaller: false,
         CallTypeID: callTypeID,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data2, navigate, t));
     }
     dispatch(InitiateVideoCall(Data, navigate, t));

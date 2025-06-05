@@ -86,7 +86,6 @@ const VideoPanelNormal = () => {
     setStopRecordingState,
     iframeRef,
     setHandRaiseCounter,
-    
   } = useMeetingContext();
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -200,7 +199,6 @@ const VideoPanelNormal = () => {
   );
 
   console.log("setHandRaiseCounter", getAllParticipantMain);
-
 
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
@@ -1591,7 +1589,6 @@ const VideoPanelNormal = () => {
     setPauseRecordingState(true);
     setResumeRecordingState(false);
     setStopRecordingState(false);
-    localStorage.setItem("pauseRecordingState", "true");
 
     if (isZoomEnabled) {
       if (

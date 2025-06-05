@@ -618,6 +618,7 @@ const VideoCallNormalHeader = ({
         IsCaller: false,
         CallTypeID: callTypeID,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -895,7 +896,8 @@ const VideoCallNormalHeader = ({
           IsCaller: true,
           CallTypeID: currentCallType,
         };
-        await dispatch(LeaveCall(Data, navigate, t));
+        await console.log("Check LeaveCall new");
+        dispatch(LeaveCall(Data, navigate, t));
         leaveSuccess();
       }
     } else if (getDashboardVideo?.isDashboardVideo === false) {
@@ -906,7 +908,8 @@ const VideoCallNormalHeader = ({
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
 
@@ -1032,7 +1035,8 @@ const VideoCallNormalHeader = ({
         IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];

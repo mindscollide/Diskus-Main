@@ -152,6 +152,7 @@ const FullScreenAgendaModal = ({
       IsCaller: true,
       CallTypeID: currentCallType,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -194,6 +195,7 @@ const FullScreenAgendaModal = ({
       IsCaller: false,
       CallTypeID: callTypeID,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -336,7 +338,7 @@ const FullScreenAgendaModal = ({
       }
     } catch {}
   }, [leaveMeetingOnLogoutResponse]);
-  
+
   const leaveMeeting = async (flag) => {
     console.log("Agenda View Full");
     let leaveMeetingData = {
