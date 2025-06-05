@@ -4,7 +4,6 @@ import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
-
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
@@ -76,8 +75,6 @@ import {
   validateStringEmailApi,
   meetingParticipantAdded,
   meetingParticipantRemoved,
-  boardDeckModal,
-  showSceduleProposedMeeting,
   validateEncryptedStringViewMeetingLinkApi,
   clearMeetingState,
   emailRouteID,
@@ -132,7 +129,6 @@ import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuic
 import { useResolutionContext } from "../../../context/ResolutionContext";
 import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
 import DeleteMeetingConfirmationModal from "./deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
-import SpinComponent from "../../../components/elements/mainLoader/loader";
 import EmptyTableComponent from "./EmptyTableComponent/EmptyTableComponent";
 
 const NewMeeting = () => {
@@ -163,15 +159,11 @@ const NewMeeting = () => {
     setPolls,
     boardDeckMeetingID,
     setmeetingDetails,
-    setBoardDeckMeetingID,
     boardDeckMeetingTitle,
-    setBoardDeckMeetingTitle,
-    downloadMeetinModal,
     setDownloadMeeting,
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
-    joinMeetingFunction,
   } = useContext(MeetingContext);
   const { setResultresolution } = useResolutionContext();
 
@@ -246,11 +238,6 @@ const NewMeeting = () => {
     (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
   );
 
-  console.log(
-    viewAdvanceMeetingsPublishPageFlag,
-    viewAdvanceMeetingModal,
-    "viewAdvanceMeetingsPublishPageFlag"
-  );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
     (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
   );
@@ -4175,7 +4162,6 @@ const NewMeeting = () => {
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <>
-                          {/* {defaultFiltersValues.length > 0 ? ( */}
                           <Table
                             column={MeetingColoumns}
                             scroll={{ y: "54vh", x: false }}
@@ -4186,7 +4172,6 @@ const NewMeeting = () => {
                               emptyText: <EmptyTableComponent />, // Set your custom empty text here
                             }}
                           />
-                          {/* // ) : null} */}
                         </>
                       </Col>
                     </Row>

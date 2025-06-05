@@ -71,6 +71,7 @@ const SpinComponent = () => {
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const [showLoader, setShowLoader] = useState(false);
+  console.log(assignees, "assigneesassignees");
   const isLoading = [
     NewMeetingreducer?.Loading,
     auth?.Loading,
@@ -117,6 +118,7 @@ const SpinComponent = () => {
     UserMangementReducer?.Loading,
   ].some((loading) => loading);
 
+  console.log(isLoading, "isLoadingisLoadingisLoading");
   useEffect(() => {
     let timeout;
 
@@ -133,7 +135,11 @@ const SpinComponent = () => {
   }, [isLoading]);
 
   if (showLoader) {
-    return <Spin />;
+    return (
+      <section className="spinLoaderMain">
+        <Spin />
+      </section>
+    );
   } else {
     return null;
   }

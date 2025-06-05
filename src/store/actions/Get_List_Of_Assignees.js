@@ -945,6 +945,12 @@ const EndMeeting = (navigate, object, t, searchData) => {
   };
 };
 
+const getAllRemindersinit = () => {
+  return {
+    type: actions.GET_REMINDERS_INIT,
+  };
+};
+
 const getAllRemindersSuccess = (response, message) => {
   return {
     type: actions.GET_REMINDERS_SUCCESS,
@@ -963,6 +969,7 @@ const getAllRemindersFail = (message) => {
 const GetAllReminders = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
+    dispatch(getAllRemindersinit());
     let form = new FormData();
     form.append("RequestMethod", getAllReminders.RequestMethod);
     axios({
