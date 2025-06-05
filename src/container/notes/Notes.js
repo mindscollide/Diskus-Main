@@ -1073,10 +1073,7 @@ const Notes = () => {
                     md={12}
                     sm={12}
                     className={styles["Notes_spinner"]}
-                  >
-                    <SpinComponent />
-                    {/* <Spin /> */}
-                  </Col>
+                  ></Col>
                 </Row>
               </>
             )}

@@ -628,9 +628,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
                     md={12}
                     sm={12}
                     className="d-flex justify-content-center align-items-center mt-3"
-                  >
-                    <SpinComponent />
-                  </Col>
+                  ></Col>
                 </Row>
                 <Row className={styles["Scroller_For_CreatePollModal2"]}>
                   {membersOrganizers.length > 0

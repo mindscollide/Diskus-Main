@@ -1060,7 +1060,6 @@ const TodoList = () => {
                       <section className="d-flex flex-column align-items-center justify-content-center">
                         <img src={TodoMessageIcon1} width={"250px"} alt="" />
                         <span className="NotaskTodolist">{t("No-Task")}</span>
-                        <SpinComponent />
                       </section>
                     </>
                   ), // Set your custom empty text here

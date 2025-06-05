@@ -326,9 +326,7 @@ const MeetingRecording = ({ title }) => {
                 pagination={false}
               />
             </Col>
-            <div className="d-flex justify-content-center align-items-center">
-              <SpinComponent />
-            </div>
+            <div className="d-flex justify-content-center align-items-center"></div>
           </Row>
         </>
       }

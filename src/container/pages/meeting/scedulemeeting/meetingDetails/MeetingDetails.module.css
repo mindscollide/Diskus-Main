@@ -261,3 +261,10 @@ body[dir="rtl"] .White_Icon_class {
   width: 20px !important;
   top: 9.6px !important;
 }
+
+.SpinnerStyles {
+  /* position: absolute !important; */
+  /* top: 0 !important; */
+  /* right: 0 !important; */
+  text-align: center !important;
+}
