@@ -32,6 +32,7 @@ import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
+import SpinComponent from "./components/elements/mainLoader/loader";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
@@ -323,8 +324,6 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      {navigator.onLine && showLoader && <Loader progress={progress} />}
-      {/* {navigator.onLine && showLoader && <Loader />} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

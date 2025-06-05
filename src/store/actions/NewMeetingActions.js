@@ -815,6 +815,11 @@ const SaveMeetingDetialsNewApiFunction = (
       });
   };
 };
+const handlegetallReminderFrequencyInit = () => {
+  return {
+    type: actions.GET_ALL_REMINDER_FREQUENCY_INIT,
+  };
+};
 
 const handlegetallReminderFrequencySuccess = (response, message) => {
   return {
@@ -835,6 +840,7 @@ const handlegetallReminderFrequencyFailed = (message) => {
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
+    dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
     form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
 
@@ -906,6 +912,11 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
     }
   };
 };
+const handleReucrringSInit = () => {
+  return {
+    type: actions.GET_ALL_RECURRING_INIT,
+  };
+};
 
 const handleReucrringSuccess = (response, message, loader) => {
   return {
@@ -928,6 +939,7 @@ const handleReucrringFailed = (message, loader) => {
 const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
+    dispatch(handleReucrringSInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllRecurringNewMeeting.RequestMethod);
     axios({
