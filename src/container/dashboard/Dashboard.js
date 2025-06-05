@@ -3463,7 +3463,10 @@ const Dashboard = () => {
               dispatch(unansweredOneToOneCall(true));
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
-              setLeaveOneToOne(true);
+              if (data.payload.recepientResponseCode === 3) {
+              } else {
+                setLeaveOneToOne(true);
+              }
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(

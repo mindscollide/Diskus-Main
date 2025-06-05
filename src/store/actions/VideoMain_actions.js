@@ -726,6 +726,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          console.log("Check LeaveCall new");
           dispatch(LeaveCall(Data, navigate, t, flag, setIsTimerRunning));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {

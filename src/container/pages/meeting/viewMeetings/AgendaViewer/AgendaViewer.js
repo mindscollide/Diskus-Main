@@ -421,6 +421,7 @@ const AgendaViewer = () => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -462,6 +463,7 @@ const AgendaViewer = () => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,

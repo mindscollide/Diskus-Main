@@ -97,7 +97,7 @@ const VideoMaxIncoming = () => {
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let activeRoomID = localStorage.getItem("activeRoomID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-  let isActiveCall = localStorage.getItem("activeCall");
+  let isActiveCall = localStorage.getItem("activeCall")
 
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
@@ -146,12 +146,11 @@ const VideoMaxIncoming = () => {
     const timer = setTimeout(() => {
       // Dispatch action to update global state
       let NewRoomID = localStorage.getItem("NewRoomID");
-      let acceptedRoomID = localStorage.getItem("acceptedRoomID");
       let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
 
       let Data = {
         ReciepentID: Number(currentUserId),
-        RoomID: isActiveCall ? acceptedRoomID : NewRoomID,
+        RoomID: NewRoomID,
         CallStatusID: 3,
         CallTypeID: Number(incommingCallTypeID),
       };

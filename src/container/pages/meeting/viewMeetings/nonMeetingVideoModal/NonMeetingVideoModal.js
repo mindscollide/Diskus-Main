@@ -197,7 +197,8 @@ const NonMeetingVideoModal = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       await dispatch(nonMeetingVideoGlobalModal(false));
 
       // Get The NoneMeetingVideoCall check if true then it'll make a hit for getParticipantMeetingJoinApi

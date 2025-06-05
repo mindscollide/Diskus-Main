@@ -519,6 +519,7 @@ const ViewMeetingDetails = ({}) => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -560,6 +561,7 @@ const ViewMeetingDetails = ({}) => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
