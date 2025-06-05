@@ -304,6 +304,7 @@ const VideoCallResponse = (Data, navigate, t) => {
                 sessionStorage.setItem("NonMeetingVideoCall", false);
                 // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               }
+
               if (Data.CallStatusID === 1) {
                 const meetingHost = {
                   isHost: false,
@@ -314,6 +315,12 @@ const VideoCallResponse = (Data, navigate, t) => {
                   "meetinHostInfo",
                   JSON.stringify(meetingHost)
                 );
+                await dispatch(
+                  videoCallResponseSuccess(
+                    response.data.responseResult,
+                    t("Video-Call-Status-Updated")
+                  )
+                );
               } else if (Data.CallStatusID === 3) {
                 console.log(Data, "CheckCheck");
                 localStorage.removeItem("incommingCallType");
@@ -321,12 +328,6 @@ const VideoCallResponse = (Data, navigate, t) => {
                 localStorage.removeItem("incommingNewCallerID");
                 localStorage.removeItem("NewRoomID");
               }
-              await dispatch(
-                videoCallResponseSuccess(
-                  response.data.responseResult,
-                  t("Video-Call-Status-Updated")
-                )
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

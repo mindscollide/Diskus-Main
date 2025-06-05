@@ -3406,38 +3406,6 @@ const Dashboard = () => {
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
 
-          if (isZoomEnabled) {
-            console.log("Does Check Recording Stop");
-            // // Condition For Video Recording
-            if (isCaller && CallType === 1) {
-              console.log("Does Check Recording Stop");
-              // const iframe = iframeRef.current;
-              // if (iframe && iframe.contentWindow) {
-              //   console.log("Does Check Recording Stop");
-              //   iframe.contentWindow.postMessage(
-              //     "RecordingStopMsgFromIframe",
-              //     "*"
-              //   );
-              // }
-            } else if (
-              isCaller &&
-              CallType === 2 &&
-              existingData.length === 0
-            ) {
-              console.log("Does Check Recording Stop Call Type 2");
-
-              // Assuming iframeRef is defined
-              // const iframe = iframeRef.current;
-              // if (iframe && iframe.contentWindow) {
-              //   console.log("Does Check Recording Stop Call Type 2");
-              //   iframe.contentWindow.postMessage(
-              //     "RecordingStopMsgFromIframe",
-              //     "*"
-              //   );
-              // }
-            }
-          }
-
           if (
             isZoomEnabled
               ? String(RoomID) === String(data.payload.roomID)
@@ -3463,7 +3431,22 @@ const Dashboard = () => {
               dispatch(unansweredOneToOneCall(true));
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
+              let initiateVideoCall = JSON.parse(
+                localStorage.getItem("initiateVideoCall")
+              );
+              let initiateCallRoomID =
+                localStorage.getItem("initiateCallRoomID");
+
               if (data.payload.recepientResponseCode === 3) {
+                if (
+                  initiateVideoCall &&
+                  data.payload.roomID === initiateCallRoomID
+                ) {
+                  localStorage.setItem("initiateVideoCall", false);
+                  localStorage.removeItem("initiateCallRoomID");
+                  setLeaveOneToOne(true);
+                }
+                console.log("Check New Thing");
               } else {
                 setLeaveOneToOne(true);
               }
