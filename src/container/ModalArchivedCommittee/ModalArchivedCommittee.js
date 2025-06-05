@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Spin } from "antd";
 import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
@@ -183,9 +182,7 @@ const ModalArchivedCommittee = ({
               >
                 {CommitteeReducer.Loading ? (
                   <>
-                    <section className="d-flex justify-content-center align-items-center mt-5">
-                      <Spin />
-                    </section>
+                    <section className="d-flex justify-content-center align-items-center mt-5"></section>
                   </>
                 ) : (
                   <Row className="text-center mt-4">

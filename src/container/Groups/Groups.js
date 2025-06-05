@@ -47,7 +47,6 @@ import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
-import { Spin } from "antd";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
 const Groups = () => {
@@ -627,9 +626,7 @@ const Groups = () => {
                               md={12}
                               sm={12}
                               className={styles["Groups_spinner"]}
-                            >
-                              <Spin />
-                            </Col>
+                            ></Col>
                           </Row>
                           <Row>
                             <Col
