@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   committeeStatusUpdate,
   getAllArcheivedCommittees,
+  realtimeCommitteeStatusResponse,
 } from "../../store/actions/Committee_actions";
 import { Row, Col, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,9 @@ const ModalArchivedCommittee = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { CommitteeReducer } = useSelector((state) => state);
+  const CommitteeReducerrealtimeCommitteeStatus = useSelector(
+    (state) => state.CommitteeReducer.realtimeCommitteeStatus
+  );
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [totalLength, setTotalLength] = useState(0);
   let currentArPage = JSON.parse(localStorage.getItem("CoArcurrentPage"));
@@ -40,42 +44,69 @@ const ModalArchivedCommittee = ({
   }, []);
 
   useEffect(() => {
-    if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
-      if (status === 2) {
-        let findINdexCommitteeStatus =
-          CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.findIndex(
-            (data, index) =>
-              data.committeeID ===
-              CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+    try {
+      if (CommitteeReducerrealtimeCommitteeStatus !== null) {
+        const {
+          committeeStatusID,
+          commmitteeID,
+          committeeDetails: {
+            creatorID,
+            description,
+            committeMembers,
+            listOfGroups,
+            committeeTitle,
+            isTalkChatGroup,
+          },
+          committeeTalkDetails: {
+            creationDate,
+            creationTime,
+            modifiedDate,
+            modifiedTime,
+            talkGroupID,
+          },
+        } = CommitteeReducerrealtimeCommitteeStatus;
+
+        const committeeID = Number(commmitteeID);
+
+        const committeeData = {
+          committeesTitle: committeeTitle,
+          committeeID: committeeID,
+          userCount: committeMembers.length,
+          committeeStatusID: committeeStatusID,
+          description: description,
+          creationDate: creationDate,
+          creationTime: creationTime,
+          creatorID: creatorID,
+          modifiedDate: modifiedDate,
+          modifiedTime: modifiedTime,
+          talkGroupID: talkGroupID,
+          isTalk: isTalkChatGroup,
+          listOfGroups: [...listOfGroups],
+          committeeMembers: [...committeMembers],
+        };
+
+        setGetCommitteeData((prevData) => {
+          const exists = prevData.some(
+            (item) => item.committeeID === committeeID
           );
-        if (findINdexCommitteeStatus != -1) {
-          let forAddArchiveData =
-            CommitteeReducer.GetAllCommitteesByUserIDResponse.committees;
-          let newArchiveData = [...getcommitteedata];
-          newArchiveData.unshift({
-            committeesTitle:
-              forAddArchiveData[findINdexCommitteeStatus].committeesTitle,
-            committeeID:
-              forAddArchiveData[findINdexCommitteeStatus].committeeID,
-            userCount: forAddArchiveData[findINdexCommitteeStatus].userCount,
-            committeeMembers:
-              forAddArchiveData[findINdexCommitteeStatus].committeeMembers,
-            committeeStatusID: status,
-          });
-          setGetCommitteeData(newArchiveData);
-        }
-      } else if (status === 3 || status === 1) {
-        setGetCommitteeData((archGroupData) => {
-          return archGroupData.filter(
-            (groupData) =>
-              groupData.committeeID !==
-              CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-          );
+
+          if (committeeStatusID === 2) {
+            // Remove from list
+            return [...prevData, committeeData];
+          } else if (committeeStatusID === 1 || committeeStatusID === 3) {
+            return exists
+              ? prevData.filter((item) => item.committeeID !== committeeID)
+              : prevData;
+          }
+          return prevData;
         });
+
+        dispatch(realtimeCommitteeStatusResponse(null));
       }
+    } catch (error) {
+      console.log(error, "error");
     }
-  }, [CommitteeReducer.realtimeCommitteeStatus]);
+  }, [CommitteeReducerrealtimeCommitteeStatus]);
 
   useEffect(() => {
     if (
@@ -131,14 +162,14 @@ const ModalArchivedCommittee = ({
         }}
         setShow={setArchivedCommittee}
         closeButton={false}
-        modalFooterClassName="d-block"
-        modalHeaderClassName="d-block"
+        modalFooterClassName='d-block'
+        modalHeaderClassName='d-block'
         centered
         size={archivedCommittee === true ? "xl" : "xl"}
         ModalTitle={
           <>
             <Row>
-              <Col lg={11} md={11} sm={11} className="justify-content-start">
+              <Col lg={11} md={11} sm={11} className='justify-content-start'>
                 <p className={styles["Archived-heading"]}>
                   {t("Archived-committees")}
                 </p>
@@ -147,15 +178,15 @@ const ModalArchivedCommittee = ({
               CommitteeReducer.ArcheivedCommittees !== undefined ? (
                 CommitteeReducer.ArcheivedCommittees.pageNumbers >=
                 currentArPage + 1 ? (
-                  <Col lg={1} md={1} sm={1} className="justify-content-end">
+                  <Col lg={1} md={1} sm={1} className='justify-content-end'>
                     <Button
                       icon={
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={right}
-                          alt=""
-                          width="16.5px"
-                          height="33px"
+                          alt=''
+                          width='16.5px'
+                          height='33px'
                           className={
                             styles["ArrowIcon_modal_archived_comiitee"]
                           }
@@ -178,19 +209,18 @@ const ModalArchivedCommittee = ({
                   CommitteeReducer.Loading
                     ? styles["Archived_modal_scrollbar_Spinner"]
                     : styles["Archived_modal_scrollbar"]
-                }
-              >
+                }>
                 {CommitteeReducer.Loading ? (
                   <>
-                    <section className="d-flex justify-content-center align-items-center mt-5"></section>
+                    <section className='d-flex justify-content-center align-items-center mt-5'></section>
                   </>
                 ) : (
-                  <Row className="text-center mt-4">
+                  <Row className='text-center mt-4'>
                     {getcommitteedata.length > 0 &&
                     Object.values(getcommitteedata).length > 0 ? (
                       getcommitteedata.map((data) => {
                         return (
-                          <Col lg={4} md={4} sm={12} className="mb-3">
+                          <Col lg={4} md={4} sm={12} className='mb-3'>
                             <Card
                               setUniqCardID={setUniqCardID}
                               uniqCardID={uniqCardID}
@@ -214,10 +244,10 @@ const ModalArchivedCommittee = ({
                               profile={data.committeeMembers}
                               Icon={
                                 <img
-                                  draggable="false"
+                                  draggable='false'
                                   src={CommitteeICon}
                                   width={30}
-                                  alt=""
+                                  alt=''
                                 />
                               }
                               BtnText={
@@ -245,27 +275,24 @@ const ModalArchivedCommittee = ({
             {getcommitteedata.length > 0 &&
             Object.values(getcommitteedata).length > 0 ? (
               <>
-                <Row className="d-flex">
+                <Row className='d-flex'>
                   <Col lg={4} md={4} sm={4}></Col>
                   <Col lg={4} md={4} sm={4}>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex justify-content-center  "
-                    >
+                      className='d-flex justify-content-center  '>
                       <Container
                         className={
                           styles["PaginationStyle-Committee-Archived_modal"]
-                        }
-                      >
+                        }>
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className={"pagination-groups-table"}
-                          >
+                            className={"pagination-groups-table"}>
                             <CustomPagination
                               total={totalLength}
                               current={currentArPage}
