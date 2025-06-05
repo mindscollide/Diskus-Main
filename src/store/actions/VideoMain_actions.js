@@ -302,9 +302,8 @@ const VideoCallResponse = (Data, navigate, t) => {
               let activeCall = JSON.parse(localStorage.getItem("activeCall"));
               if (activeCall === false) {
                 sessionStorage.setItem("NonMeetingVideoCall", false);
+                // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               }
-
-              // call statusID 1 means call accepted and call statusID 5 means Busy and call StatusId 2
               if (Data.CallStatusID === 1) {
                 const meetingHost = {
                   isHost: false,
@@ -315,10 +314,13 @@ const VideoCallResponse = (Data, navigate, t) => {
                   "meetinHostInfo",
                   JSON.stringify(meetingHost)
                 );
-              } else {
+              } else if (Data.CallStatusID === 3) {
                 console.log(Data, "CheckCheck");
+                localStorage.removeItem("incommingCallType");
+                localStorage.removeItem("incommingCallTypeID");
+                localStorage.removeItem("incommingNewCallerID");
+                localStorage.removeItem("NewRoomID");
               }
-
               await dispatch(
                 videoCallResponseSuccess(
                   response.data.responseResult,

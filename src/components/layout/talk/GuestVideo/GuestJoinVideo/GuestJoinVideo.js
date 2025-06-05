@@ -72,19 +72,9 @@ const GuestJoinVideo = ({
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
-  let isZoomEnabled = false;
-  const rawValue = sessionStorage.getItem("isZoomEnabled");
-
-  if (rawValue !== null && rawValue !== "undefined") {
-    try {
-      isZoomEnabled = JSON.parse(rawValue);
-    } catch (e) {
-      console.error(
-        "Invalid JSON in sessionStorage for isZoomEnabled:",
-        rawValue
-      );
-    }
-  }
+  let isZoomEnabled =
+    sessionStorage.getItem("isZoomEnabled") !== null &&
+    sessionStorage.getItem("isZoomEnabled");
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {

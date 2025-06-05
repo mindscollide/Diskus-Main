@@ -113,8 +113,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   let isZoomEnabled =
     sessionStorage.getItem("isZoomEnabled") !== null &&
-    sessionStorage.getItem("isZoomEnabled") !== undefined;
-  JSON.parse(sessionStorage.getItem("isZoomEnabled"));
+    sessionStorage.getItem("isZoomEnabled");
 
   console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
 
@@ -553,7 +552,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                               sm={12}
                               className="d-flex justify-content-start"
                             >
-                              <p>{participant.name}</p>{" "}
+                              <p className="guest-Video-Participants">
+                                {participant.name}
+                              </p>{" "}
+                              <span className="isHost-class">
+                                {participant.isHost && <>{t("(Host)")}</>}
+                              </span>
                             </Col>
                             <Col
                               lg={6}
