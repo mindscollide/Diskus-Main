@@ -10,16 +10,15 @@ const EmptyTableComponent = () => {
   return (
     <section className={styles["EmptyTableMeeting"]}>
       <Row>
-        <Col className='d-flex justify-content-center align-items-center flex-column'>
+        <Col className="d-flex justify-content-center align-items-center flex-column">
           <img
             src={NoMeetingsIcon}
-            alt=''
-            draggable='false'
-            className='nodata-table-icon'
+            alt=""
+            draggable="false"
+            className="nodata-table-icon"
           />
           <h4>{t("No-new-meetings")}</h4>
           <span>{t("Anything-important-thats-needs-discussion")}</span>
-          <SpinComponent />
         </Col>
       </Row>
     </section>

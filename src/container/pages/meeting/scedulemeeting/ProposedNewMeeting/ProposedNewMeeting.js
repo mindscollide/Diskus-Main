@@ -188,6 +188,8 @@ const ProposedNewMeeting = ({
     message: "",
     severity: "error",
   });
+
+  //Setting Minutes hours and second for Send Response by Date Seperately
   let newDateValue = getCurrentDateforMeeting.DateGMT;
   newDateValue.setHours(23);
   newDateValue.setMinutes(59);

@@ -164,9 +164,7 @@ const DownloadOptionsModal = ({
                 md={12}
                 sm={12}
                 className="d-flex justify-content-center align-items-center"
-              >
-                <SpinComponent />
-              </Col>
+              ></Col>
             </Row>
           </>
         }

@@ -194,6 +194,13 @@ const assigneesReducer = (state = initialState, action) => {
         EndMeetingData: action.response,
       };
 
+    case actions.GET_REMINDERS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
     case actions.GET_REMINDERS_SUCCESS: {
       return {
         ...state,
