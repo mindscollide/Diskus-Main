@@ -2960,7 +2960,7 @@ const Dashboard = () => {
           ) {
             console.log(activeCall, "Check active");
             console.log("Check active");
-            dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
+            // dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             dispatch(incomingVideoCallFlag(true));
             let timeValue = Number(localStorage.getItem("callRingerTimeout"));
             localStorage.setItem("NewRoomID", data.payload.roomID);
@@ -2991,6 +2991,7 @@ const Dashboard = () => {
             console.log("Check active");
 
             dispatch(incomingVideoCallFlag(true));
+            console.log(data.payload.message, "Show me a message");
             dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
             localStorage.setItem("NewRoomID", data.payload.roomID);
             // localStorage.setItem("acceptedRoomID", 0);
@@ -3981,6 +3982,7 @@ const Dashboard = () => {
           let NewRoomID = localStorage.getItem("NewRoomID");
           let activeRoomID = localStorage.getItem("activeRoomID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+          let isZoomEnabled = localStorage.getItem("isZoomEnabled");
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
           let roomID = 0;
           if (activeRoomID) {
@@ -4005,17 +4007,47 @@ const Dashboard = () => {
             JSON.parse(
               localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
+          console.log(isMeetingVideo, "Check Is Mqtt");
+          console.log(
+            Number(data.payload.roomID) === Number(roomID),
+            "Check Is Mqtt"
+          );
+          console.log(data.payload.roomID, "Check Is Mqtt");
+          console.log(roomID, "Check Is Mqtt");
+          console.log(userID !== data.senderID, "Check Is Mqtt");
+          const isMqttCheck = isZoomEnabled
+            ? String(data.payload.roomID) === String(roomID)
+            : false;
+          console.log({ isMqttCheck }, "Check Is Mqtt");
+
           if (
-            !isMeetingVideo &&
-            Number(data.payload.roomID) === Number(roomID) &&
-            userID !== data.senderID
+            !isMeetingVideo && isZoomEnabled
+              ? String(data.payload.roomID) === String(roomID)
+              : Number(data.payload.roomID) === Number(roomID) &&
+                userID !== data.senderID
           ) {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
               if (userID !== data.recepientID) {
                 localStorage.setItem("onlyLeaveCall", true);
                 console.log("setLeaveOneToOne");
-                setLeaveOneToOne(true);
+                let initiateVideoCall =
+                  localStorage.getItem("initiateVideoCall");
+                let initiateCallRoomID =
+                  localStorage.getItem("initiateCallRoomID");
+                if (data.payload.recepientResponseCode === 5) {
+                  if (
+                    initiateVideoCall &&
+                    data.payload.roomID === initiateCallRoomID
+                  ) {
+                    localStorage.setItem("initiateVideoCall", false);
+                    localStorage.removeItem("initiateCallRoomID");
+                    setLeaveOneToOne(true);
+                  }
+                  console.log("Check New Thing");
+                } else {
+                  setLeaveOneToOne(true);
+                }
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
               }
