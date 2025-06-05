@@ -307,6 +307,7 @@ const VideoPanelBodyContact = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -341,6 +342,7 @@ const VideoPanelBodyContact = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -419,6 +421,7 @@ const VideoPanelBodyContact = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data, navigate, t));
     }
     let Data2 = {
@@ -461,6 +464,7 @@ const VideoPanelBodyContact = () => {
         IsCaller: false,
         CallTypeID: callTypeID,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data, navigate, t));
     }
     dispatch(InitiateVideoCall(Data2, navigate, t));

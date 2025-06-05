@@ -1304,7 +1304,7 @@ const ViewDetailsModal = ({
                               <Row className='mt-2'>
                                 <Col lg={1} md={1} sm={1}>
                                   <img
-                                    src={profilepic}
+                                src={`data:image/jpeg;base64,${thisMonthData.base64ImgOwner}`}
                                     alt=''
                                     height='30.25px'
                                     width='30.25px'

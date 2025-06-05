@@ -601,7 +601,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           IsCaller: isCaller ? true : false,
           CallTypeID: currentCallType,
         };
-        await dispatch(LeaveCall(Data, navigate, t));
+        await console.log("Check LeaveCall new");
+        dispatch(LeaveCall(Data, navigate, t));
         leaveSuccess();
       }
     } else if (meetingHostData?.isDashboardVideo === false) {
@@ -647,7 +648,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         IsCaller: isCaller ? true : false,
         CallTypeID: currentCallType,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
 
@@ -681,6 +683,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       IsCaller: JSON.parse(localStorage.getItem("isCaller")),
       CallTypeID: currentCallType,
     };
+    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     const emptyArray = [];
     setParticipantStatus([]);
@@ -1061,7 +1064,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             }}
           >
             <p className="title-heading">
-              {currentCallType === 2 || callTypeID === 2 || presenterViewFlag || isMeetingVideo
+              {currentCallType === 2 ||
+              callTypeID === 2 ||
+              presenterViewFlag ||
+              isMeetingVideo
                 ? meetingTitle === ""
                   ? t("Group-call")
                   : meetingTitle

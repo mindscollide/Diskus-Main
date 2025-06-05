@@ -1535,6 +1535,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               try {
                 localStorage.setItem("isWebCamEnabled", true);
                 if (flag === 1) {
+                  localStorage.removeItem("CallType");
                   let currentMeeting = localStorage.getItem("currentMeetingID");
                   await dispatch(
                     presenterViewGlobalState(currentMeeting, true, true, true)
@@ -1713,6 +1714,7 @@ const stopPresenterViewMainApi = (
                 // localStorage.removeItem("newRoomId");
                 localStorage.removeItem("acceptedRoomID");
                 localStorage.removeItem("presenterViewvideoURL");
+                localStorage.removeItem("isWebCamEnabled");
                 dispatch(setAudioControlHost(false));
                 console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));

@@ -551,8 +551,8 @@ const ViewMeeting = (
                   localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (no === 2) {
-                  dispatch(GetAllReminders(navigate, t));
                   setEditFlag(true);
+                  // dispatch(GetAllReminders(navigate, t));
                 } else if (no === 3 || no === 10) {
                   setViewFlag(true);
                   setCalendarViewModal(true);

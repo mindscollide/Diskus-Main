@@ -44,3 +44,18 @@
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   overflow: hidden auto;
 }
+
+.guest-Video-Participants {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.isHost-class {
+  color: #6127d6 !important;
+  font-weight: 600 !important;
+  margin-left: 3px !important;
+}

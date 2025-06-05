@@ -123,7 +123,6 @@ const VideoCallNormalHeader = ({
     setResumeRecordingState,
     stopRecordingState,
     setStopRecordingState,
-  
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
@@ -147,6 +146,8 @@ const VideoCallNormalHeader = ({
   const waitingParticipantsList = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
+
+  console.log(waitingParticipantsList, "waitingParticipantsList");
 
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
@@ -325,6 +326,9 @@ const VideoCallNormalHeader = ({
 
   const [participantCounterList, setParticipantCounterList] = useState([]);
 
+  const [participantWaitingCounterList, setParticipantWaitingCounterList] =
+    useState([]);
+
   const [handStatus, setHandStatus] = useState(raisedUnRaisedParticipant);
 
   const [open, setOpen] = useState({
@@ -332,8 +336,24 @@ const VideoCallNormalHeader = ({
     message: "",
   });
 
+  //when Duplicate data come in the waiting participantListCOunter
+  useEffect(() => {
+    if (waitingParticipantsList?.length) {
+      const uniqueParticipants = Object.values(
+        waitingParticipantsList.reduce((acc, item) => {
+          acc[item.guid] = item; // Last occurrence wins. Use `|| item` for first.
+          return acc;
+        }, {})
+      );
+
+      setParticipantWaitingCounterList(uniqueParticipants);
+    } else {
+      setParticipantWaitingCounterList([]);
+    }
+  }, [waitingParticipantsList]);
+
   // to show a host participants waiting List Counter
-  let participantWaitingListCounter = waitingParticipantsList?.length;
+  let participantWaitingListCounter = participantWaitingCounterList?.length;
 
   // API for check getGroupVideoCall Participants Data
   useEffect(() => {
@@ -598,6 +618,7 @@ const VideoCallNormalHeader = ({
         IsCaller: false,
         CallTypeID: callTypeID,
       };
+      console.log("Check LeaveCall new");
       dispatch(LeaveCall(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -875,7 +896,8 @@ const VideoCallNormalHeader = ({
           IsCaller: true,
           CallTypeID: currentCallType,
         };
-        await dispatch(LeaveCall(Data, navigate, t));
+        await console.log("Check LeaveCall new");
+        dispatch(LeaveCall(Data, navigate, t));
         leaveSuccess();
       }
     } else if (getDashboardVideo?.isDashboardVideo === false) {
@@ -886,7 +908,8 @@ const VideoCallNormalHeader = ({
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
 
@@ -1012,7 +1035,8 @@ const VideoCallNormalHeader = ({
         IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
-      await dispatch(LeaveCall(Data, navigate, t));
+      await console.log("Check LeaveCall new");
+      dispatch(LeaveCall(Data, navigate, t));
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];

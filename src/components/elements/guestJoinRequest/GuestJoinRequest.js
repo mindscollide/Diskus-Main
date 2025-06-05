@@ -81,15 +81,20 @@ const GuestJoinRequest = () => {
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
-    if (videoFeatureReducer.waitingParticipantsList?.length) {
-      console.log(
-        videoFeatureReducer.waitingParticipantsList,
-        "usersDatausersData"
+
+    const list = videoFeatureReducer.waitingParticipantsList;
+
+    if (list?.length) {
+      console.log(list, "usersDatausersData");
+
+      const uniqueByGuid = Object.values(
+        list.reduce((acc, item) => {
+          acc[item.guid] = item; // keeps the last item with that guid
+          return acc;
+        }, {})
       );
 
-      setFilteredWaitingParticipants(
-        videoFeatureReducer.waitingParticipantsList
-      );
+      setFilteredWaitingParticipants(uniqueByGuid);
     } else {
       setFilteredWaitingParticipants([]);
     }
@@ -158,13 +163,18 @@ const GuestJoinRequest = () => {
   };
 
   useEffect(() => {
-    if (
-      videoFeatureReducer.waitingParticipantsList !== undefined &&
-      videoFeatureReducer.waitingParticipantsList !== null &&
-      videoFeatureReducer.waitingParticipantsList.length > 0
-    ) {
+    const list = videoFeatureReducer.waitingParticipantsList;
+
+    if (Array.isArray(list) && list.length > 0) {
       try {
-        setWaitingOnParticipant(videoFeatureReducer.waitingParticipantsList);
+        const uniqueByGuid = Object.values(
+          list.reduce((acc, item) => {
+            acc[item.guid] = item; // Keeps the last occurrence; use `|| item` for first
+            return acc;
+          }, {})
+        );
+
+        setWaitingOnParticipant(uniqueByGuid);
       } catch (error) {
         setWaitingOnParticipant([]);
       }

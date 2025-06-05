@@ -41,6 +41,24 @@ import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuickMeeting";
+import {
+  activeChatBoxGS,
+  addNewChatScreen,
+  chatBoxActiveFlag,
+  createGroupScreen,
+  createShoutAllScreen,
+  footerActionStatus,
+  footerShowHideStatus,
+  headerShowHideStatus,
+  recentChatFlag,
+} from "../../../store/actions/Talk_Feature_actions";
+import {
+  GetAllUserChats,
+  GetAllUsers,
+  GetAllUsersGroupsRoomsList,
+  GetGroupMessages,
+  activeChat,
+} from "../../../store/actions/Talk_action";
 
 const CommitteeMeetingTab = ({ groupStatus }) => {
   const { t } = useTranslation();
@@ -51,6 +69,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const meetingStatusNotConductedMqttData = useSelector(
     (state) => state.NewMeetingreducer.meetingStatusNotConductedMqttData
   );
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+
   const {
     GroupMeetingMQTT,
     MeetingStatusSocket,
@@ -313,21 +333,90 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const handleClickChevron = () => {
     setVisible((prevVisible) => !prevVisible);
   };
+  const [talkGroupID, setTalkGroupID] = useState(0);
+  let currentOrganizationId = localStorage.getItem("organizationID");
+
+  const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata");
+    if (data.talkGroupID !== 0) {
+      await dispatch(createShoutAllScreen(false));
+      await dispatch(addNewChatScreen(false));
+      await dispatch(footerActionStatus(false));
+      await dispatch(createGroupScreen(false));
+      await dispatch(chatBoxActiveFlag(false));
+      await dispatch(recentChatFlag(true));
+      await dispatch(activeChatBoxGS(true));
+      await dispatch(chatBoxActiveFlag(true));
+      await dispatch(headerShowHideStatus(true));
+      await dispatch(footerShowHideStatus(true));
+      setTalkGroupID(data.talkGroupID);
+      let chatGroupData = {
+        UserID: parseInt(currentUserId),
+        ChannelID: currentOrganizationId,
+        GroupID: data.talkGroupID,
+        NumberOfMessages: 50,
+        OffsetMessage: 0,
+      };
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      await dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      talkGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages.allMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(activeChat(foundRecord));
+      }
+      localStorage.setItem("activeOtoChatID", talkGroupID);
+      setTalkGroupID(0);
+    }
+  }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
   const menu = (
     <Menu>
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
+      <div className='d-flex  align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -346,13 +435,13 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   const MeetingColoumns = [
     {
       title: (
-        <span className="d-flex gap-2 align-items-center">
+        <span className='d-flex gap-2 align-items-center'>
           {" "}
           {t("Title")}{" "}
           {meetingTitleSort === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </span>
       ),
@@ -373,8 +462,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
               );
               localStorage.setItem("meetingTitle", record.title);
               localStorage.setItem("videoCallURL", record.videoCallURL);
-            }}
-          >
+            }}>
             {text}
           </span>
         );
@@ -425,7 +513,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -433,8 +521,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -444,12 +531,12 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     },
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-center">
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
           {t("Organizer")}
           {meetingOrganizerSort === "descend" ? (
-            <img src={DescendIcon} alt="" />
+            <img src={DescendIcon} alt='' />
           ) : (
-            <img src={AscendIcon} alt="" />
+            <img src={AscendIcon} alt='' />
           )}
         </span>
       ),
@@ -476,12 +563,12 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
     },
     {
       title: (
-        <span className="d-flex gap-2 align-items-center justify-content-center">
+        <span className='d-flex gap-2 align-items-center justify-content-center'>
           {t("Date-time")}
           {meetingDateTimeSort === "descend" ? (
-            <img src={ArrowDownIcon} alt="" />
+            <img src={ArrowDownIcon} alt='' />
           ) : (
-            <img src={ArrowUpIcon} alt="" />
+            <img src={ArrowUpIcon} alt='' />
           )}
         </span>
       ),
@@ -538,28 +625,29 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center gap-3"
-              >
+                className='d-flex justify-content-center gap-3'>
                 <span className={styles["iconsWidth"]}>
                   {record.isAttachment ? (
-                    <Tooltip placement="topRight" title={t("ClipIcon")}>
+                    <Tooltip placement='topRight' title={t("ClipIcon")}>
                       <img
                         src={ClipIcon}
-                        className="cursor-pointer"
-                        alt=""
-                        draggable="false"
+                        className='cursor-pointer'
+                        alt=''
+                        draggable='false'
                       />
                     </Tooltip>
                   ) : null}
                 </span>
 
-                <span className={styles["iconsWidth"]}>
+                <span
+                  className={styles["iconsWidth"]}
+                  onClick={(e) => groupChatInitiation(record)}>
                   {record.isChat ? (
                     <img
                       src={CommentIcon}
-                      className="cursor-pointer"
-                      alt=""
-                      draggable="false"
+                      className='cursor-pointer'
+                      alt=''
+                      draggable='false'
                     />
                   ) : null}
                 </span>
@@ -568,9 +656,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   {record.isVideoCall ? (
                     <img
                       src={VideoIcon}
-                      alt=""
+                      alt=''
                       title={t("Video")}
-                      draggable="false"
+                      draggable='false'
                     />
                   ) : null}
                 </span>
@@ -578,10 +666,10 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   {record.status === "9" && isOrganiser && (
                     <img
                       src={member}
-                      className="cursor-pointer"
-                      alt=""
+                      className='cursor-pointer'
+                      alt=''
                       title={t("Member")}
-                      draggable="false"
+                      draggable='false'
                       onClick={() => onClickDownloadIcon(record.pK_MDID)}
                     />
                   )}
@@ -697,8 +785,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-start"
-                >
+                  className='d-flex justify-content-start'>
                   <Button
                     text={t("Join-meeting")}
                     className={styles["joining-Meeting"]}
@@ -769,13 +856,13 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Organizer"
+            attendee.meetingAttendeeRole.pK_MARID === 1
         );
 
         const isAgendaContributor = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
-            attendee.meetingAttendeeRole.role === "Agenda Contributor"
+            attendee.meetingAttendeeRole.pK_MARID === 4
         );
 
         const isQuickMeeting = record.isQuickMeeting;
@@ -800,11 +887,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                         {groupStatus === 3 && (
                           <img
                             src={EditIcon}
-                            className="cursor-pointer"
-                            width="17.11px"
-                            height="17.11px"
-                            alt=""
-                            draggable="false"
+                            className='cursor-pointer'
+                            width='17.11px'
+                            height='17.11px'
+                            alt=''
+                            draggable='false'
                             onClick={() =>
                               handleEditMeeting(
                                 record.pK_MDID,
@@ -924,9 +1011,9 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         icon={
           <img
             src={NoMeetingsIcon}
-            alt=""
-            draggable="false"
-            className="nodata-table-icon"
+            alt=''
+            draggable='false'
+            className='nodata-table-icon'
           />
         }
         title={t("No-new-meetings")}
@@ -1048,11 +1135,11 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         />
       )}
       <Row>
-        <Col sm={12} md={12} lg={12} className="d-flex justify-content-end">
+        <Col sm={12} md={12} lg={12} className='d-flex justify-content-end'>
           {groupStatus === 3 && (
             <Button
               text={t("Create-Meeting")}
-              icon={<img draggable={false} src={addmore} alt="" />}
+              icon={<img draggable={false} src={addmore} alt='' />}
               className={styles["Create_Meeting_Button"]}
               onClick={handelCreateMeeting}
             />
@@ -1066,8 +1153,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             scroll={scroll}
             rows={rows}
             pagination={false}
-            size="small"
-            className="newMeetingTable"
+            size='small'
+            className='newMeetingTable'
             locale={{
               emptyText: emptyText(), // Set your custom empty text here
             }}
@@ -1080,9 +1167,8 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
             lg={12}
             className={
               "pagination-groups-table position-absolute bottom-20 d-flex justify-content-center"
-            }
-          >
-            <span className="PaginationStyle-TodoList">
+            }>
+            <span className='PaginationStyle-TodoList'>
               <CustomPagination
                 current={currentPage}
                 showSizer={true}
