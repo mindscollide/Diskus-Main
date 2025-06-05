@@ -17,7 +17,6 @@ const EmptyTableComponent = () => {
             draggable="false"
             className="nodata-table-icon"
           />
-          <SpinComponent />
           <h4>{t("No-new-meetings")}</h4>
           <span>{t("Anything-important-thats-needs-discussion")}</span>
         </Col>

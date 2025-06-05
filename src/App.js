@@ -324,8 +324,6 @@ const App = () => {
           updateVersion={updateVersion}
         />
       )}
-      {/* { showLoader && <SpinComponent />} */}
-      {/* {navigator.onLine && showLoader && <Loader />} */}
       <Notification open={open} setOpen={setOpen} />
     </>
   );

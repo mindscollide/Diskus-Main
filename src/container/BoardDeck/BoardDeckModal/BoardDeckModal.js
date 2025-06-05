@@ -468,9 +468,7 @@ const BoardDeckModal = ({
                   md={12}
                   sm={12}
                   className="d-flex justify-content-center align-items-center mt-4"
-                >
-                  <SpinComponent />
-                </Col>
+                ></Col>
               </Row>
             </>
           }

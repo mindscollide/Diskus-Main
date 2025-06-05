@@ -1,6 +1,7 @@
 import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const SpinComponent = () => {
   const auth = useSelector((state) => state.auth);
@@ -71,7 +72,9 @@ const SpinComponent = () => {
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
 
   const [showLoader, setShowLoader] = useState(false);
-  console.log(assignees, "assigneesassignees");
+  const DashboardRoute =
+    window.location.pathname === "/Diskus" ||
+    window.location.pathname === "/Diskus/";
   const isLoading = [
     NewMeetingreducer?.Loading,
     auth?.Loading,
@@ -122,7 +125,7 @@ const SpinComponent = () => {
   useEffect(() => {
     let timeout;
 
-    if (isLoading) {
+    if (isLoading && !DashboardRoute) {
       setShowLoader(true); // Show loader
     } else {
       // Hide loader after a short delay when loading completes
@@ -132,7 +135,7 @@ const SpinComponent = () => {
     }
 
     return () => clearTimeout(timeout);
-  }, [isLoading]);
+  }, [isLoading, DashboardRoute]);
 
   if (showLoader) {
     return (
