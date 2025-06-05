@@ -43,6 +43,8 @@ import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
 import SpinComponent from "../../components/elements/mainLoader/loader";
+import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
+import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 const Notes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -727,6 +729,38 @@ const Notes = () => {
     dispatch(GetNotes(navigate, Data, t));
   };
 
+  
+  const handleClickDownloadDoc = (data) => {
+    let data2 = {
+      FileID: Number(data.pK_FileID),
+    };
+    dispatch(
+      DataRoomDownloadFileApiFunc(
+        navigate,
+        data2,
+        t,
+        data.displayFileName
+      )
+    );
+  };
+  const handleClickOpenDoc = (data) => {
+    let ext = data?.displayFileName?.split(".")[1];
+    let pdfData = {
+      taskId: data.pK_FileID,
+      commingFrom: 4,
+      fileName: data.displayFileName,
+      attachmentID: data.pK_FileID,
+    };
+    const pdfDataJson = JSON.stringify(pdfData);
+    if (fileFormatforSignatureFlow.includes(ext)) {
+      window.open(
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    }
+  };
+
   return (
     <>
       <div className={styles["notescontainer"]}>
@@ -1000,8 +1034,12 @@ const Notes = () => {
                                     return (
                                       <AttachmentViewer
                                         data={file}
-                                        id={0}
+                                        id={file.pK_FileID}
                                         name={file.displayFileName}
+                                        handleEyeIcon={() => handleClickOpenDoc(file)}
+                                        handleClickDownload={() =>
+                                          handleClickDownloadDoc(file)
+                                        }
                                       />
                                     );
                                   })
