@@ -14,7 +14,6 @@ import {
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
-import { Spin } from "antd";
 
 const ModalArchivedCommittee = ({
   archivedCommittee,
@@ -212,9 +211,7 @@ const ModalArchivedCommittee = ({
                   }
                 >
                   {GroupsReducerArcheivedGroupsSpinner ? (
-                    <section className="d-flex justify-content-center align-items-center mt-5">
-                      <Spin />
-                    </section>
+                    <section className="d-flex justify-content-center align-items-center mt-5"></section>
                   ) : (
                     <>
                       <Row className="text-center ">

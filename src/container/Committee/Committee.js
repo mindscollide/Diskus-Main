@@ -48,8 +48,6 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { useGroupsContext } from "../../context/GroupsContext";
-import { Spin } from "antd";
-import SpinComponent from "../../components/elements/mainLoader/loader";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
 
 const Committee = () => {
