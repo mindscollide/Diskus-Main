@@ -30,7 +30,10 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnectionGuestUser } from "../../../../../commen/functions/mqttconnection_guest";
 import GuestVideoScreen from "../GuestVideoScreen/GuestVideoScreen";
 import GuestVideoReject from "../GuestVideoReject/GuestVideoReject";
-import { participantWaitingList } from "../../../../../store/actions/VideoFeature_actions";
+import {
+  participanMuteUnMuteMeeting,
+  participantWaitingList,
+} from "../../../../../store/actions/VideoFeature_actions";
 import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
 
 const GuestVideoCall = () => {
@@ -197,6 +200,7 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
         ) {
+          // dispatch(participanMuteUnMuteMeeting(data.payload, false));
           dispatch(muteUnMuteParticipantsorGuest(data.payload));
           console.log(data.payload, "guestDataGuestData");
         } else if (
@@ -236,6 +240,15 @@ const GuestVideoCall = () => {
           };
           sessionStorage.setItem("isLeftCheck", true);
           await dispatch(guestLeaveMeetingVideoApi(navigate, t, data));
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "VIDEO_PARTICIPANT_LEFT".toLowerCase()
+        ) {
+          console.log(data.payload, "JOINEDJOINEDJOINED");
+          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          dispatch(
+            getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3)
+          );
         }
       }
     } catch (error) {}

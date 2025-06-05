@@ -1478,6 +1478,7 @@ const FetchMeetingURLApi = (
                 CallTypeID: currentCallType,
               };
               if (activeCallStatus === true && meetingStatus === false) {
+                console.log("Check LeaveCall new");
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }
@@ -8269,17 +8270,23 @@ const JoinCurrentMeeting = (
               );
               if (isQuickMeeting === true) {
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
-                await dispatch(
-                  ViewMeeting(
-                    navigate,
-                    viewMeetingData,
-                    t,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    no
-                  )
+                console.log(
+                  { no, viewMeetingData },
+                  "viewMeetingDataviewMeetingData"
                 );
+                if (no !== 11) {
+                  await dispatch(
+                    ViewMeeting(
+                      navigate,
+                      viewMeetingData,
+                      t,
+                      setViewFlag,
+                      setEditFlag,
+                      setSceduleMeeting,
+                      no
+                    )
+                  );
+                }
               } else {
                 isFunction(setAdvanceMeetingModalID) &&
                   setAdvanceMeetingModalID(Number(Data.FK_MDID));

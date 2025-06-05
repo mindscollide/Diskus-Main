@@ -350,7 +350,6 @@ const ModalAddNote = ({ ModalTitle }) => {
 
   return (
     <>
-      <Container>
         <Modal
           show={createNotesModal}
           onHide={() => {
@@ -383,7 +382,7 @@ const ModalAddNote = ({ ModalTitle }) => {
           ModalBody={
             <>
               {isAddNote ? (
-                <Container>
+                <>
                   <Row className="d-flex  align-items-center">
                     <Col
                       lg={12}
@@ -556,7 +555,7 @@ const ModalAddNote = ({ ModalTitle }) => {
                       </Row>
                     </Col>
                   </Row>
-                </Container>
+                  </>
               ) : closeConfirmationBox ? (
                 <>
                   <Row>
@@ -622,7 +621,6 @@ const ModalAddNote = ({ ModalTitle }) => {
             </>
           }
         />
-      </Container>
       <Notification open={open} setOpen={setOpen} />
     </>
   );

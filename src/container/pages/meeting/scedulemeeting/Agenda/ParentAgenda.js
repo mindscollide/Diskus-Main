@@ -570,6 +570,7 @@ const ParentAgenda = ({
                                 classNamePrefix={
                                   "SelectOrganizersSelect_active"
                                 }
+                                menuPortalTarget={document.body}
                                 filterOption={filterFunc}
                                 // isSearchable={true}
                               />

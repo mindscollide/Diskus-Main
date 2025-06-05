@@ -123,6 +123,8 @@ const VideoNewParticipantList = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
+  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
+
   const [searchValue, setSearchValue] = useState("");
 
   const [isForAll, setIsForAll] = useState(false);
@@ -242,10 +244,19 @@ const VideoNewParticipantList = () => {
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
     console.log("hell");
+
     if (waitingParticipants?.length) {
       console.log(waitingParticipants, "usersDatausersData");
 
-      setFilteredWaitingParticipants(waitingParticipants);
+      // Deduplicate based on `guid`
+      const uniqueByGuid = Object.values(
+        waitingParticipants.reduce((acc, item) => {
+          acc[item.guid] = item; // This will overwrite duplicates
+          return acc;
+        }, {})
+      );
+
+      setFilteredWaitingParticipants(uniqueByGuid);
     } else {
       setFilteredWaitingParticipants([]);
     }

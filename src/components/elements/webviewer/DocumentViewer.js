@@ -237,7 +237,6 @@ const DocumentViewer = () => {
         // Set permissions if needed
         if (
           Number(isPermission) === 1 ||
-          Number(isPermission) === 2 ||
           Number(isPermission) === 3
         ) {
           setPermissions(instance);
