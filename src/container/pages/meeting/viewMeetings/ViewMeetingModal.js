@@ -702,6 +702,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setMeetingMaterial(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showOrganizers = () => {
@@ -716,6 +717,7 @@ const ViewMeetingModal = ({
     setPolls(false);
     setMeetingMaterial(false);
     setAttendees(false);
+    setRecording(false);
   };
 
   const showAgendaContributers = () => {

@@ -10,6 +10,7 @@ import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   getArcheivedGroups,
+  realtimeGroupStatusResponse,
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
@@ -58,34 +59,66 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (GroupsReducerrealtimeGroupStatus !== null) {
-      let status = GroupsReducerrealtimeGroupStatus.groupStatusID;
+      try {
+        const {
+          groupStatusID,
+          groupID,
+          groupDetails: {
+            creatorID,
+            description,
+            groupMembers,
+            listOfCommittees,
+            title,
+          },
+          groupTalkDetails: {
+            creationDate,
+            creationTime,
+            modifiedDate,
+            modifiedTime,
+            talkGroupID,
+          },
+        } = GroupsReducerrealtimeGroupStatus;
 
-      if (status === 2) {
-        let findGroupIndex = GroupsReducergetAllGroupsResponse.groups.findIndex(
-          (data, index) => {
-            return data.groupID === GroupsReducerrealtimeGroupStatus.groupID;
-          }
+        const GroupData = {
+          groupTitle: title,
+          groupID,
+          groupDescription: description,
+          userCount: groupMembers.length,
+          groupStatusID,
+          creationDate,
+          creationTime,
+          modifiedDate,
+          modifiedTime,
+          creatorID,
+          talkGroupID,
+          listOfCommittees,
+          groupMembers: [...groupMembers],
+        };
+        const groupExists = groupsArheivedData.some(
+          (data) => data.groupID === groupID
         );
-        if (findGroupIndex !== -1) {
-          let allgroupData = GroupsReducergetAllGroupsResponse.groups;
-          let copygroupData = [...allgroupData];
-          copygroupData.unshift({
-            groupDescription: allgroupData[findGroupIndex].groupDescription,
-            groupID: allgroupData[findGroupIndex].groupID,
-            groupMembers: allgroupData[findGroupIndex].groupMembers,
-            groupStatusID: status,
-            groupTitle: allgroupData[findGroupIndex].groupTitle,
-            userCount: allgroupData[findGroupIndex].userCount,
-          });
-          setGroupsArheivedData(copygroupData);
+
+        if (groupStatusID === 1 || groupStatusID === 3) {
+          // Archive => remove from list if exists
+          if (groupExists) {
+            setGroupsArheivedData((prevGroupData) =>
+              prevGroupData.filter((data2) => data2.groupID !== groupID)
+            );
+          }
+        } else if (groupStatusID === 2) {
+          if (!groupExists) {
+            // Add new group if not already present
+            setGroupsArheivedData((prevGroups) => [...prevGroups, GroupData]);
+          }
         }
-      } else if (status === 3 || status === 1) {
-        setGroupsArheivedData((archGroupData) => {
-          return archGroupData.filter(
-            (groupData, index) =>
-              groupData.groupID !== GroupsReducerrealtimeGroupStatus.groupID
-          );
-        });
+
+        // Reset reducer
+        dispatch(realtimeGroupStatusResponse(null));
+      } catch (error) {
+        console.log(
+          error,
+          "error in useEffect GroupsReducerrealtimeGroupStatus"
+        );
       }
     }
   }, [GroupsReducerrealtimeGroupStatus]);
@@ -154,8 +187,8 @@ const ModalArchivedCommittee = ({
             }}
             setShow={setArchivedCommittee}
             closeButton={false}
-            modalFooterClassName="d-block"
-            modalHeaderClassName="d-block"
+            modalFooterClassName='d-block'
+            modalHeaderClassName='d-block'
             centered
             size={"xl"}
             ModalTitle={
@@ -165,8 +198,7 @@ const ModalArchivedCommittee = ({
                     lg={11}
                     md={11}
                     sm={11}
-                    className=" d-flex justify-content-start "
-                  >
+                    className=' d-flex justify-content-start '>
                     <p className={styles["Archived-heading"]}>
                       {t("Archived-groups")}
                     </p>
@@ -179,17 +211,16 @@ const ModalArchivedCommittee = ({
                         lg={1}
                         md={1}
                         sm={1}
-                        className=" d-flex justify-content-end mb-4"
-                      >
+                        className=' d-flex justify-content-end mb-4'>
                         <Button
                           icon={
                             <img
-                              draggable="false"
+                              draggable='false'
                               src={right}
-                              width="16.5px"
-                              height="33px"
+                              width='16.5px'
+                              height='33px'
                               className={styles["Arrow_archiveed_icon_groups"]}
-                              alt=""
+                              alt=''
                             />
                           }
                           onClick={handleArrow}
@@ -208,18 +239,17 @@ const ModalArchivedCommittee = ({
                     GroupsReducerArcheivedGroupsSpinner
                       ? styles["Archived_modal_scrollbar_Spinner"]
                       : styles["Archived_modal_scrollbar"]
-                  }
-                >
+                  }>
                   {GroupsReducerArcheivedGroupsSpinner ? (
-                    <section className="d-flex justify-content-center align-items-center mt-5"></section>
+                    <section className='d-flex justify-content-center align-items-center mt-5'></section>
                   ) : (
                     <>
-                      <Row className="text-center ">
+                      <Row className='text-center '>
                         {groupsArheivedData.length > 0 &&
                         Object.values(groupsArheivedData).length > 0 ? (
                           groupsArheivedData.map((data, index) => {
                             return (
-                              <Col sm={12} md={4} lg={4} className="mb-3">
+                              <Col sm={12} md={4} lg={4} className='mb-3'>
                                 <Card
                                   setUniqCardID={setUniqCardID}
                                   uniqCardID={uniqCardID}
@@ -243,11 +273,11 @@ const ModalArchivedCommittee = ({
                                   profile={data.groupMembers}
                                   Icon={
                                     <img
-                                      draggable="false"
+                                      draggable='false'
                                       src={GroupIcon}
-                                      alt=""
-                                      width="32.39px"
-                                      height="29.23px"
+                                      alt=''
+                                      width='32.39px'
+                                      height='29.23px'
                                     />
                                   }
                                   BtnText={
@@ -276,27 +306,24 @@ const ModalArchivedCommittee = ({
                 {groupsArheivedData.length > 0 &&
                 Object.values(groupsArheivedData).length > 0 ? (
                   <>
-                    <Row className="d-flex">
+                    <Row className='d-flex'>
                       <Col lg={4} md={4} sm={4}></Col>
                       <Col lg={4} md={4} sm={4}>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center  "
-                        >
+                          className='d-flex justify-content-center  '>
                           <Container
                             className={
                               styles["PaginationStyle-Committee-Archived_modal"]
-                            }
-                          >
+                            }>
                             <Row>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={"pagination-groups-table"}
-                              >
+                                className={"pagination-groups-table"}>
                                 <CustomPagination
                                   total={totalRecords}
                                   pageSize={8}
