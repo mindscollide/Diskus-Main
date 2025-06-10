@@ -1326,6 +1326,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       ? "presenterImage"
                       : presenterViewFlag && presenterViewJoinFlag
                       ? "presenterImage"
+                      : globallyScreenShare
+                      ? "presenterImage"
                       : "screenShare-Toggle inactive-state"
                   }
                 >
@@ -1340,7 +1342,9 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   >
                     <img
                       onClick={
-                        !presenterViewHostFlag ? handleScreenShareButton : null
+                        !presenterViewHostFlag && !globallyScreenShare
+                          ? handleScreenShareButton
+                          : null
                       }
                       src={ShareScreenWhite}
                       alt="Screen Share"
