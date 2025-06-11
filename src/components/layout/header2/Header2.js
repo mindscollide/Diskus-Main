@@ -62,7 +62,7 @@ const Header2 = ({ isVideo }) => {
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
-  const { createNotesModal,setCreateNotesModal } = useNotesContext();
+  const { createNotesModal, setCreateNotesModal } = useNotesContext();
   const {
     editorRole,
     minutes,
@@ -74,6 +74,8 @@ const Header2 = ({ isVideo }) => {
     sceduleMeeting,
     setSceduleMeeting,
     setGoBackCancelModal,
+    unReadCountNotification,
+    setUnReadCountNotification,
   } = useMeetingContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
@@ -147,7 +149,6 @@ const Header2 = ({ isVideo }) => {
   const [showWebNotification, setShowWebNotification] = useState(false);
   const [webNotificationData, setwebNotificationData] = useState([]);
   const [totalCountNotification, setTotalCountNotification] = useState(0);
-  const [unReadCountNotification, setUnReadCountNotification] = useState(0);
   const [prevArrayLength, setPrevArrayLength] = useState(0);
   let Blur = localStorage.getItem("blur");
   //OnClick Function for OutSide Click WebNotification

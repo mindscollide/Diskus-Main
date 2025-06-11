@@ -876,40 +876,39 @@ const MeetingDetails = ({
     }
   }, [recurringDropDown, meetingDetails.RecurringOptions]);
 
-  //Meeting Type Drop Down Data
   useEffect(() => {
     try {
-      if (
-        getALlMeetingTypes?.meetingTypes !== null &&
-        getALlMeetingTypes.meetingTypes.length > 0
-      ) {
-        let Newdata = [];
+      const meetingTypes = getALlMeetingTypes?.meetingTypes ?? [];
+
+      if (meetingTypes.length > 0) {
+        const Newdata = [];
         let typeData = {};
-        getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
+
+        meetingTypes.forEach((data) => {
           console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
-          if (
-            data.description === "Board Meetings" ||
-            data.description === "Board Meeting"
-          ) {
+          if (data.description?.toLowerCase().includes("board")) {
             Newdata.push({
               value: data.pK_MTID,
               label: data.type,
             });
+
+            // Save the last matching type
             typeData = {
               PK_MTID: data.pK_MTID,
               Type: data.type,
             };
           }
         });
+
         setmeetingTypeDropdown(Newdata);
 
-        setMeetingDetails({
-          ...meetingDetails,
+        setMeetingDetails((prev) => ({
+          ...prev,
           MeetingType: typeData,
-        });
+        }));
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error setting meeting types:", error);
     }
   }, [getALlMeetingTypes]);
 

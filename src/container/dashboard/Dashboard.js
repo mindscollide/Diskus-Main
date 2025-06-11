@@ -248,6 +248,7 @@ const Dashboard = () => {
     resumeRecordingState,
     stopRecordingState,
     setIsVisible,
+    setUnReadCountNotification,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -4465,6 +4466,15 @@ const Dashboard = () => {
             )
         ) {
           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
+        }
+      }
+      if (data.action.toLowerCase() === "Settings".toLowerCase()) {
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("Notification_Marked_As_Read".toLowerCase())
+        ) {
+          setUnReadCountNotification(0);
         }
       }
     } catch (error) {
