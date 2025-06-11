@@ -204,6 +204,9 @@ export const MeetingProvider = ({ children }) => {
   // Create a ref for the iframe element
   const iframeRef = useRef(null);
 
+  // For Incoming Calls Modal State
+  const [isVisible, setIsVisible] = useState(true);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -418,6 +421,8 @@ export const MeetingProvider = ({ children }) => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    isVisible,
+    setIsVisible,
   };
 
   // Provide the state data to the context

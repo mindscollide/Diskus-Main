@@ -317,6 +317,7 @@ const VideoPanelNormal = () => {
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
+
   console.log(
     {
       startRecordingState,
@@ -1286,7 +1287,14 @@ const VideoPanelNormal = () => {
             }
 
             if (presenterViewFlag && presenterViewHostFlag) {
-              handlePresenterView();
+              if (isZoomEnabled) {
+                setTimeout(() => {
+                  console.log("stream");
+                  handlePresenterView();
+                }, 2000);
+              } else {
+                handlePresenterView();
+              }
             } else if (presenterViewFlag && presenterViewJoinFlag) {
               handlePresenterViewForParticipent();
             }
