@@ -2015,8 +2015,25 @@ export const SideBarGlobalNavigationFunction = async (
       dispatch(showEndMeetingModal(true));
     } else if (minutes || actionsPage || polls) {
       console.log("Checking");
-
-      setCancelConfirmationModal(true);
+      if (Number(editorRole.status) === 9 && polls) {
+        setViewAdvanceMeetingModal(false);
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      } else {
+        setCancelConfirmationModal(true);
+      }
     } else {
       console.log("Checking");
       setViewAdvanceMeetingModal(false);
