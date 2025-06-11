@@ -238,6 +238,9 @@ export const MeetingProvider = ({ children }) => {
     // dispatch(UpdateMeetingStatus())
   };
 
+  // For Web Notification Count
+  const [unReadCountNotification, setUnReadCountNotification] = useState(0);
+
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
     startMeetingFunction,
@@ -418,6 +421,8 @@ export const MeetingProvider = ({ children }) => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    unReadCountNotification,
+    setUnReadCountNotification,
   };
 
   // Provide the state data to the context
