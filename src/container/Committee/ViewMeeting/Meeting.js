@@ -150,11 +150,9 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         setViewMeetingModal,
         setEditMeetingModal,
         setCalendarViewModal,
-        setSceduleMeeting,
         2
       )
     );
-    setEditMeetingModal(true);
   };
 
   useEffect(() => {

@@ -570,7 +570,7 @@ const CallRequestReceived = (Data, navigate, t) => {
               await dispatch(
                 callRequestReceivedSuccess(
                   response.data.responseResult,
-                  t("Record-Updated")
+                  t("Record-updated")
                 )
               );
             } else if (
