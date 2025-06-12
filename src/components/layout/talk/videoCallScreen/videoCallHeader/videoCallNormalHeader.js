@@ -252,6 +252,9 @@ const VideoCallNormalHeader = ({
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
+
+  console.log(pendingCallParticipantList, "pendingCallParticipantList");
+
   console.log(groupCallParticipantList, "groupCallParticipantList");
 
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
@@ -510,6 +513,9 @@ const VideoCallNormalHeader = ({
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
     localStorage.setItem("handStatus", false);
+    setGroupVideoCallAccepted([]); // Clear list when component unmounts
+    setGroupCallParticipantList([]);
+    setUnansweredCallParticipant([]);
   }
 
   // after presenter view is true then this funct call
@@ -1891,7 +1897,7 @@ const VideoCallNormalHeader = ({
           {(presenterViewFlag && presenterViewHostFlag) ||
           (isMeetingVideo && !presenterViewFlag && !presenterViewHostFlag) ||
           (currentCallType === 2 &&
-            !presenterViewFlag &&
+            !presenterViewJoinFlag &&
             !presenterViewHostFlag) ||
           (currentCallType === 3 &&
             !presenterViewFlag &&

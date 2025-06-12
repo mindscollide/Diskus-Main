@@ -317,7 +317,6 @@ const VideoPanelNormal = () => {
   const [isMeetinVideoCeckForParticipant, setIsMeetinVideoCeckForParticipant] =
     useState(false);
 
-
   console.log(
     {
       startRecordingState,
@@ -1206,7 +1205,6 @@ const VideoPanelNormal = () => {
               handlerForStaringPresenterView();
             } else if (presenterViewFlag && presenterViewHostFlag) {
               console.log("handlePostMessage", presenterViewHostFlag);
-              console.log("handlePostMessage", presenterViewHostFlag);
               handlerForStaringPresenterView();
             }
 
@@ -1214,62 +1212,46 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
             console.log("ScreenSharedStopMsgFromIframe");
-            if (presenterViewFlag && presenterViewHostFlag) {
-              let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-              let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
-              );
-              let videoCallURL = Number(localStorage.getItem("videoCallURL"));
-              let data = {
-                MeetingID: currentMeetingID,
-                RoomID: String(callAcceptedRoomID),
-                VideoCallUrl: videoCallURL,
-              };
-              sessionStorage.setItem("StopPresenterViewAwait", true);
-              console.log(data, "presenterViewJoinFlag");
-              dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
-              // }
-            } else {
+
+            console.log("busyCall");
+            if (isZoomEnabled) {
               console.log("busyCall");
-              if (isZoomEnabled) {
+              let isSharedSceenEnable = JSON.parse(
+                localStorage.getItem("isSharedSceenEnable")
+              );
+              if (isSharedSceenEnable && !globallyScreenShare) {
                 console.log("busyCall");
-                let isSharedSceenEnable = JSON.parse(
-                  localStorage.getItem("isSharedSceenEnable")
+                let participantRoomId = String(
+                  localStorage.getItem("participantRoomId")
                 );
-                if (isSharedSceenEnable && !globallyScreenShare) {
-                  console.log("busyCall");
-                  let participantRoomId = String(
-                    localStorage.getItem("participantRoomId")
-                  );
-                  let newRoomID = String(localStorage.getItem("newRoomId"));
-                  let roomID = String(localStorage.getItem("acceptedRoomID"));
-                  let isMeetingVideoHostCheck = JSON.parse(
-                    localStorage.getItem("isMeetingVideoHostCheck")
-                  );
-                  let isMeetingVideo = JSON.parse(
-                    localStorage.getItem("isMeetingVideo")
-                  );
-                  let userID = localStorage.getItem("userID");
-                  let isGuid = localStorage.getItem("isGuid");
-                  let participantUID = localStorage.getItem("participantUID");
-                  let RoomID = !isMeetingVideo
-                    ? roomID
-                    : isMeetingVideoHostCheck
-                    ? newRoomID
-                    : participantRoomId;
-                  let UID = !isMeetingVideo
-                    ? userID
-                    : isMeetingVideoHostCheck
-                    ? isGuid
-                    : participantUID;
-                  let data = {
-                    RoomID: RoomID,
-                    ShareScreen: false,
-                    UID: UID,
-                  };
-                  console.log("busyCall");
-                  dispatch(isSharedScreenTriggeredApi(navigate, t, data));
-                }
+                let newRoomID = String(localStorage.getItem("newRoomId"));
+                let roomID = String(localStorage.getItem("acceptedRoomID"));
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let isMeetingVideo = JSON.parse(
+                  localStorage.getItem("isMeetingVideo")
+                );
+                let userID = localStorage.getItem("userID");
+                let isGuid = localStorage.getItem("isGuid");
+                let participantUID = localStorage.getItem("participantUID");
+                let RoomID = !isMeetingVideo
+                  ? roomID
+                  : isMeetingVideoHostCheck
+                  ? newRoomID
+                  : participantRoomId;
+                let UID = !isMeetingVideo
+                  ? userID
+                  : isMeetingVideoHostCheck
+                  ? isGuid
+                  : participantUID;
+                let data = {
+                  RoomID: RoomID,
+                  ShareScreen: false,
+                  UID: UID,
+                };
+                console.log("busyCall");
+                dispatch(isSharedScreenTriggeredApi(navigate, t, data));
               }
             }
 

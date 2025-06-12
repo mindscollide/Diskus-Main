@@ -936,7 +936,7 @@ const Dashboard = () => {
         // Optional delay if iframe needs time to handle the message
         setTimeout(() => {
           resolve();
-        }, 100);
+        }, 1000);
       } else {
         // Immediately resolve if iframe is not ready or Zoom isn't enabled
         resolve();
@@ -2980,7 +2980,7 @@ const Dashboard = () => {
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
               await onHandleClickForStartRecording();
-              await new Promise((resolve) => setTimeout(resolve, 100));
+              await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
@@ -3054,6 +3054,16 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
 
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Start");
+            // // Condition For Video Recording
+            if (isCaller && (CallType === 1 || CallType === 2)) {
+              console.log("Does Check Recording Start");
+              await onHandleClickForStartRecording();
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+          }
 
           if (CallType === 2) {
             console.log("mqtt");

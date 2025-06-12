@@ -806,6 +806,7 @@ const AgendaViewer = () => {
     dispatch(participantWaitingListBox(false));
     dispatch(toggleParticipantsVisibility(false));
     if (activeCallState && !isMeetingVideo) {
+      console.log("maximizeParticipantVideoFlag");
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
@@ -902,7 +903,8 @@ const AgendaViewer = () => {
       } else if (value === 2) {
         let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
         let currentCallType = JSON.parse(localStorage.getItem("CallType"));
-        if (activeCallState && currentCallType === 1) {
+        if (activeCallState && (currentCallType === 1 || currentCallType === 2)) {
+          console.log("Check Stop")
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
