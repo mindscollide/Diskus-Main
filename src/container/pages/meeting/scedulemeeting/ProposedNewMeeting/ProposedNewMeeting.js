@@ -57,7 +57,6 @@ const ProposedNewMeeting = ({
   setProposedNewMeeting,
   isEditMeeting,
   isProposedMeetEdit,
-  setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
   setCurrentMeetingID,
@@ -68,7 +67,7 @@ const ProposedNewMeeting = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole } = useMeetingContext();
+  const { editorRole, setSceduleMeeting, setEditorRole } = useMeetingContext();
 
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
@@ -660,6 +659,8 @@ const ProposedNewMeeting = ({
   const handleCancelButtonProposedMeeting = () => {
     setProposedNewMeeting(false);
     setIsProposedMeetEdit(false);
+    setSceduleMeeting(false);
+    setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });
     dispatch(proposedMeetingData());
     dispatch(ParticipantsData());
     dispatch(GetAllMeetingDetialsData());
