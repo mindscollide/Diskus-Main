@@ -247,6 +247,7 @@ const Dashboard = () => {
     pauseRecordingState,
     resumeRecordingState,
     stopRecordingState,
+    setIsVisible,
     setUnReadCountNotification,
   } = useMeetingContext();
 
@@ -920,6 +921,25 @@ const Dashboard = () => {
         }, 100);
       } else {
         resolve(); // Not a caller or irrelevant CallType
+      }
+    });
+  };
+
+  const onHandleClickForStartRecording = () => {
+    return new Promise((resolve) => {
+      const iframe = iframeRef.current;
+
+      if (iframe && iframe.contentWindow) {
+        console.log("Does Check Recording Start");
+        iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+
+        // Optional delay if iframe needs time to handle the message
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      } else {
+        // Immediately resolve if iframe is not ready or Zoom isn't enabled
+        resolve();
       }
     });
   };
@@ -2935,8 +2955,11 @@ const Dashboard = () => {
           "NEW_VIDEO_CALL_INITIATED".toLowerCase()
         ) {
           console.log("Check active");
+          setIsVisible(true);
           // localStorage.setItem("activeCall", false);
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+          let CallType = Number(localStorage.getItem("CallType"));
+          let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
@@ -2948,6 +2971,19 @@ const Dashboard = () => {
           localStorage.setItem("incommingCallType", data.payload.callType);
           localStorage.setItem("incommingCallTypeID", data.payload.callTypeID);
           localStorage.setItem("incommingNewCallerID", data.payload.callerID);
+
+          let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+          if (isZoomEnabled) {
+            console.log("Does Check Recording Start");
+            // // Condition For Video Recording
+            if (isCaller && (CallType === 1 || CallType === 2)) {
+              console.log("Does Check Recording Start");
+              await onHandleClickForStartRecording();
+              await new Promise((resolve) => setTimeout(resolve, 1000));
+            }
+          }
+
           let Dataa = {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
@@ -3024,14 +3060,8 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Start");
-                iframe.contentWindow.postMessage(
-                  "RecordingStartMsgFromIframe",
-                  "*"
-                );
-              }
+              await onHandleClickForStartRecording();
+              await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
 
