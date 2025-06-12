@@ -49,6 +49,7 @@ import {
   ParticipantsData,
   proposedMeetingData,
   SaveMeetingDetialsNewApiFunction,
+  scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
@@ -57,7 +58,6 @@ const ProposedNewMeeting = ({
   setProposedNewMeeting,
   isEditMeeting,
   isProposedMeetEdit,
-  setSceduleMeeting,
   setorganizers,
   setmeetingDetails,
   setCurrentMeetingID,
@@ -68,7 +68,7 @@ const ProposedNewMeeting = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole } = useMeetingContext();
+  const { editorRole, setSceduleMeeting } = useMeetingContext();
 
   const animatedComponents = makeAnimated();
   const userID = localStorage.getItem("userID");
@@ -218,6 +218,7 @@ const ProposedNewMeeting = ({
     return () => {
       dispatch(proposedMeetingData());
       dispatch(ParticipantsData());
+      setSceduleMeeting(false);
       dispatch(GetAllMeetingDetialsData());
       setIsProposedMeetEdit(false);
       setProposedMeetingDetails({
@@ -668,7 +669,8 @@ const ProposedNewMeeting = ({
     dispatch(proposedMeetingData());
     dispatch(ParticipantsData());
     dispatch(GetAllMeetingDetialsData());
-
+    setSceduleMeeting(false);
+    dispatch(scheduleMeetingPageFlag(false));
     let searchData = {
       Date: "",
       Title: "",
@@ -990,8 +992,9 @@ const ProposedNewMeeting = ({
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
     let tem = [...membersParticipants];
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
