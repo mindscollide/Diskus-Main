@@ -248,12 +248,12 @@ const VideoCallNormalHeader = ({
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
-
+  // screenShareTriggeredGlobally
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
 
-  console.log(pendingCallParticipantList, "pendingCallParticipantList");
+  console.log(globallyScreenShare, "globallyScreenShare");
 
   console.log(groupCallParticipantList, "groupCallParticipantList");
 
@@ -625,6 +625,12 @@ const VideoCallNormalHeader = ({
         CallTypeID: callTypeID,
       };
       console.log("Check LeaveCall new");
+      if (isZoomEnabled) {
+        if (globallyScreenShare) {
+          console.log("Check LeaveCall new");
+          await dispatch(screenShareTriggeredGlobally(false));
+        }
+      }
       dispatch(LeaveCall(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -1028,6 +1034,9 @@ const VideoCallNormalHeader = ({
         }
       } else {
         if (isZoomEnabled) {
+          console.log("Check LeaveCall new", initiateCallRoomID);
+          console.log("Check LeaveCall new", activeRoomID);
+          console.log("Check LeaveCall new");
           RoomID = String(initiateCallRoomID);
         } else {
           RoomID = activeRoomID;
@@ -1041,8 +1050,8 @@ const VideoCallNormalHeader = ({
         IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
-      await console.log("Check LeaveCall new");
-      dispatch(LeaveCall(Data, navigate, t));
+      console.log("Check LeaveCall new");
+      await dispatch(LeaveCall(Data, navigate, t));
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];
@@ -2129,12 +2138,14 @@ const VideoCallNormalHeader = ({
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("Leave-call")
               }
             >
-              <img
-                className="inactive-state"
-                src={CallEndRedIcon}
-                onClick={endCallParticipant}
-                alt="End Call"
-              />
+              <div className="inactive-state">
+                <img
+                  className="cursor-pointer"
+                  src={CallEndRedIcon}
+                  onClick={endCallParticipant}
+                  alt="End Call"
+                />
+              </div>
             </Tooltip>
           ) : null}
 

@@ -653,6 +653,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         CallTypeID: currentCallType,
       };
       await console.log("Check LeaveCall new");
+      if (isZoomEnabled) {
+        if (globallyScreenShare) {
+          console.log("Check LeaveCall new");
+          await dispatch(screenShareTriggeredGlobally(false));
+        }
+      }
       dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
@@ -1958,14 +1964,21 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         callerID,
                         currentUserID
                       )}
-                      <img
-                        src={CallEndRedIcon}
-                        onClick={() =>
-                          minimizeEndCallParticipant(false, false, false, false)
-                        }
-                        alt="End Call"
-                        className="cursor-pointer"
-                      />
+                      <div className="minimize inactive-state">
+                        <img
+                          src={CallEndRedIcon}
+                          onClick={() =>
+                            minimizeEndCallParticipant(
+                              false,
+                              false,
+                              false,
+                              false
+                            )
+                          }
+                          alt="End Call"
+                          className="cursor-pointer"
+                        />
+                      </div>
                     </Tooltip>
                   )
                 )}
