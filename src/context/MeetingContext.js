@@ -51,6 +51,10 @@ export const MeetingProvider = ({ children }) => {
   // State for managing view flags and modals
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const [
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
+  ] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
@@ -423,6 +427,8 @@ export const MeetingProvider = ({ children }) => {
     iframeRef,
     unReadCountNotification,
     setUnReadCountNotification,
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish
   };
 
   // Provide the state data to the context
