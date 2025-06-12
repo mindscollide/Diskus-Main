@@ -612,7 +612,8 @@ const SaveMeetingDetialsNewApiFunction = (
                     rows,
                     ResponseDate,
                     setProposedNewMeeting,
-                    flag
+                    flag,
+                    setSceduleMeeting
                   )
                 );
                 // setSceduleMeeting(false);
@@ -1582,7 +1583,8 @@ const saveParcipantsProposeMeetingAPI = (
   flag,
   rows,
   ResponseDate,
-  setProposedNewMeeting
+  setProposedNewMeeting,
+  setSceduleMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -1613,7 +1615,8 @@ const saveParcipantsProposeMeetingAPI = (
               flag,
               rows,
               ResponseDate,
-              setProposedNewMeeting
+              setProposedNewMeeting,
+              setSceduleMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1644,7 +1647,8 @@ const saveParcipantsProposeMeetingAPI = (
                     navigate,
                     t,
                     true,
-                    setProposedNewMeeting
+                    setProposedNewMeeting,
+                    setSceduleMeeting
                   )
                 );
               } else {
@@ -2902,7 +2906,8 @@ const setProposedMeetingDateApiFunc = (
   navigate,
   t,
   flag,
-  setProposedNewMeeting
+  setProposedNewMeeting,
+  setSceduleMeeting
 ) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
@@ -2928,7 +2933,8 @@ const setProposedMeetingDateApiFunc = (
               navigate,
               t,
               flag,
-              setProposedNewMeeting
+              setProposedNewMeeting,
+              setSceduleMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2948,6 +2954,7 @@ const setProposedMeetingDateApiFunc = (
               );
               if (flag === true) {
                 setProposedNewMeeting(false);
+                console.log("saif i am here");
                 let userID = localStorage.getItem("userID");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent =
@@ -6034,7 +6041,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   rows,
   ResponseDate,
   setProposedNewMeeting,
-  flag
+  flag,
+  setSceduleMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -6066,7 +6074,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               rows,
               ResponseDate,
               setProposedNewMeeting,
-              flag
+              flag,
+              setSceduleMeeting
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6110,7 +6119,8 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   rows,
                   ResponseDate,
                   true,
-                  setProposedNewMeeting
+                  setProposedNewMeeting,
+                  setSceduleMeeting
                 )
               );
             } else if (
@@ -6797,7 +6807,8 @@ const UpdateMeetingUserApiFunc = (
   rows,
   ResponseDate,
   loader,
-  setProposedNewMeeting
+  setProposedNewMeeting,
+  setSceduleMeeting
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -6828,7 +6839,8 @@ const UpdateMeetingUserApiFunc = (
                 rows,
                 ResponseDate,
                 loader,
-                setProposedNewMeeting
+                setProposedNewMeeting,
+                setSceduleMeeting
               )
             );
           } else if (response.data.responseCode === 200) {
@@ -6914,7 +6926,8 @@ const UpdateMeetingUserApiFunc = (
                       true,
                       rows,
                       ResponseDate,
-                      setProposedNewMeeting
+                      setProposedNewMeeting,
+                      setSceduleMeeting
                     )
                   );
                 }

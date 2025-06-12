@@ -2003,7 +2003,7 @@ export const SideBarGlobalNavigationFunction = async (
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
   console.log(
-    { viewAdvanceMeetingModal, sceduleMeeting, editorRole },
+    { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
     "Checking"
   );
   if (viewAdvanceMeetingModal) {

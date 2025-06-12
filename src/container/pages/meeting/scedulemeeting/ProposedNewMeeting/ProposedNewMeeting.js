@@ -49,6 +49,7 @@ import {
   ParticipantsData,
   proposedMeetingData,
   SaveMeetingDetialsNewApiFunction,
+  scheduleMeetingPageFlag,
   searchNewUserMeeting,
 } from "../../../../../store/actions/NewMeetingActions";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
@@ -175,7 +176,9 @@ const ProposedNewMeeting = ({
         getAllParticipants.length > 0 &&
         getAllParticipants !== undefined
       ) {
+        console.log(getAllParticipants, "getAllParticipantsgetAllParticipants");
         setDropdowndata(getAllParticipants);
+        setMembersParticipants(getAllParticipants);
       }
     } catch (error) {
       console.log(error, "error");
@@ -215,6 +218,7 @@ const ProposedNewMeeting = ({
     return () => {
       dispatch(proposedMeetingData());
       dispatch(ParticipantsData());
+      setSceduleMeeting(false);
       dispatch(GetAllMeetingDetialsData());
       setIsProposedMeetEdit(false);
       setProposedMeetingDetails({
@@ -664,7 +668,8 @@ const ProposedNewMeeting = ({
     dispatch(proposedMeetingData());
     dispatch(ParticipantsData());
     dispatch(GetAllMeetingDetialsData());
-
+    setSceduleMeeting(false);
+    dispatch(scheduleMeetingPageFlag(false));
     let searchData = {
       Date: "",
       Title: "",
@@ -986,8 +991,9 @@ const ProposedNewMeeting = ({
   //Click Function for adding the participants
   const handleClickAddParticipants = () => {
     let newOrganizersData = gellAllCommittesandGroups;
-
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
     let tem = [...membersParticipants];
+    console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
 
     if (participantUsers.length > 0) {
       participantUsers.forEach((userData, index) => {
@@ -1248,6 +1254,10 @@ const ProposedNewMeeting = ({
                       <Row className='mt-2'>
                         {membersParticipants.length > 0
                           ? membersParticipants.map((participant, index) => {
+                              console.log(
+                                membersParticipants,
+                                "membersParticipants"
+                              );
                               return (
                                 <>
                                   <Col

@@ -789,6 +789,7 @@ const UnpublishedProposedMeeting = ({
           return (
             <img
               src={deleteIcon}
+              alt=""
               style={{ cursor: "pointer" }}
               onClick={() => handleClickDeleteMeeting(record)}
               // onClick={() => setDeleteMeetingConfirmationModal(true)}
