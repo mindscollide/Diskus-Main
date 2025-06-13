@@ -3962,7 +3962,7 @@ const NewMeeting = () => {
                 <span className='position-relative'>
                   <TextField
                     width={"490px"}
-                    placeholder={t("Search")}
+                    placeholder={t("Search-on-meeting-title")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
                     labelclass='d-none'

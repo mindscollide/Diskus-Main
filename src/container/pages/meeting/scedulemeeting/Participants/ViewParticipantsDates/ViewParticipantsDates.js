@@ -20,7 +20,10 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect } from "react";
 import { useState } from "react";
-import { resolutionResultTable } from "../../../../../../commen/functions/date_formater";
+import {
+  forRecentActivity,
+  resolutionResultTable,
+} from "../../../../../../commen/functions/date_formater";
 import moment from "moment";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
@@ -66,8 +69,15 @@ const ViewParticipantsDates = ({
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
 
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
+  const changeDateStartHandler2 = (date, value) => {
+    let newDate;
+    if (date.length >= 4) {
+      let newDate2 = forRecentActivity(date);
+      newDate = moment(newDate2).format("DD MMMM YYYY");
+    } else {
+      newDate = moment(date).format("DD MMMM YYYY");
+    }
+
     return newDate;
   };
 
@@ -117,7 +127,7 @@ const ViewParticipantsDates = ({
   useEffect(() => {
     callApis();
     return () => {
-      dispatch(clearProposedWiseData())
+      dispatch(clearProposedWiseData());
       localStorage.removeItem("viewProposeDatePollMeetingID");
       setCurrentMeetingID(null);
       setDataroomMapFolderId(null);
@@ -376,13 +386,12 @@ const ViewParticipantsDates = ({
 
   return (
     <section>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex align-items-center align-items-center gap-3"
-        >
+          className='d-flex align-items-center align-items-center gap-3'>
           <span className={styles["Prposed_Meeting_heading"]}>
             {t("Propose-meeting-date")}
           </span>
@@ -410,7 +419,7 @@ const ViewParticipantsDates = ({
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={12} md={12} sm={12}>
                 <p className={styles["Paragraph_Styles"]}>
                   {meetingDeatils.MeetingDiscription}
@@ -432,8 +441,7 @@ const ViewParticipantsDates = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Prposed_Meeting_date"]}
-                  >
+                    className={styles["Scroller_Prposed_Meeting_date"]}>
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
                           console.log(data, "prposedData");
@@ -443,13 +451,12 @@ const ViewParticipantsDates = ({
                             Number(data.userID) === Number(currentUserId);
                           let currentDate = new Date();
                           return (
-                            <Row className="m-0 p-0 mt-2" key={index}>
+                            <Row className='m-0 p-0 mt-2' key={index}>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Box_To_Show_Time"]}
-                              >
+                                className={styles["Box_To_Show_Time"]}>
                                 <Row className={styles["Inner_Send_class"]}>
                                   <Col lg={10} md={10} sm={12}>
                                     <span className={styles["Time_Class"]}>
@@ -464,7 +471,7 @@ const ViewParticipantsDates = ({
                                   <Col lg={2} md={2} sm={2}>
                                     <Checkbox
                                       prefixCls={"ProposedMeeting_Checkbox"}
-                                      classNameCheckBoxP="d-none"
+                                      classNameCheckBoxP='d-none'
                                       className={"cursor-pointer"}
                                       disabled={
                                         currentDate > data.startTime
@@ -486,7 +493,7 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Prposed_On_Heading"]}>
                       {t("Send-response-by")}{" "}
@@ -494,7 +501,7 @@ const ViewParticipantsDates = ({
                   </Col>
                 </Row>
 
-                <Row className="mt-1">
+                <Row className='mt-1'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
                       {JSON.parse(
@@ -516,19 +523,17 @@ const ViewParticipantsDates = ({
                 lg={2}
                 md={2}
                 sm={2}
-                className="d-flex justify-content-center mt-4"
-              >
+                className='d-flex justify-content-center mt-4'>
                 <span className={styles["OR_Heading"]}>{"OR"}</span>
               </Col>
 
               <Col lg={4} md={4} sm={4}>
-                <Row className="m-0 p-0 mt-4">
+                <Row className='m-0 p-0 mt-4'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Box_To_Show_Time"]}
-                  >
+                    className={styles["Box_To_Show_Time"]}>
                     <Row className={styles["Inner_Send_class"]}>
                       <Col lg={10} md={10} sm={10}>
                         <span className={styles["Time_Class"]}>
@@ -538,7 +543,7 @@ const ViewParticipantsDates = ({
                       <Col lg={2} md={2} sm={2}>
                         <Checkbox
                           prefixCls={"ProposedMeeting_Checkbox"}
-                          classNameCheckBoxP="d-none"
+                          classNameCheckBoxP='d-none'
                           checked={selectAll}
                           onChange={handleSelectAllChange}
                         />
@@ -553,8 +558,7 @@ const ViewParticipantsDates = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_ProposedMeeting"]}

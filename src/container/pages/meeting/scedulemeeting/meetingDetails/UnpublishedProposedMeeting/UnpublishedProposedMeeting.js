@@ -245,7 +245,15 @@ const UnpublishedProposedMeeting = ({
   };
 
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
+    console.log(date.length, "datedate")
+    let newDate;
+    if (date.length > 8) {
+      let newDate2 = forRecentActivity(date);
+      newDate = moment(newDate2).format("DD MMMM YYYY");
+    } else {
+      newDate = moment(date).format("DD MMMM YYYY");
+    }
+
     return newDate;
   };
 

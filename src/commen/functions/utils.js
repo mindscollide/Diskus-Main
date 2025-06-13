@@ -2010,7 +2010,6 @@ export const SideBarGlobalNavigationFunction = async (
   );
   if (viewAdvanceMeetingModal) {
     console.log("Checking");
-
     if (Number(editorRole?.status) === 10) {
       console.log("Checking");
 
