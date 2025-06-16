@@ -29,6 +29,27 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 
 const NewEndMeetingModal = () => {
+  const {
+    setCancelConfirmationModal,
+    setEditorRole,
+    setAdvanceMeetingModalID,
+    setViewAdvanceMeetingModal,
+    advanceMeetingModalID,
+  } = useMeetingContext();
+
+  const {
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    setStopRecordingState,
+    iframeRef,
+  } = useContext(MeetingContext);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const presenterViewFlag = useSelector(
@@ -50,31 +71,9 @@ const NewEndMeetingModal = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  const {
-    setCancelConfirmationModal,
-    setEditorRole,
-    setAdvanceMeetingModalID,
-    setViewAdvanceMeetingModal,
-    advanceMeetingModalID,
-  } = useMeetingContext();
-
-  const {
-    startRecordingState,
-    pauseRecordingState,
-    resumeRecordingState,
-    stopRecordingState,
-    setStartRecordingState,
-    setPauseRecordingState,
-    setResumeRecordingState,
-    setStopRecordingState,
-    iframeRef,
-  } = useContext(MeetingContext);
-
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
   );
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {

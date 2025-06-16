@@ -1840,8 +1840,9 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
-          (presenterViewHostFlag && presenterViewFlag) ? (
+          {(!presenterViewFlag && getMeetingHostInfo?.isHost) 
+          // || (presenterViewHostFlag && presenterViewFlag) 
+          ? (
             <div
               className={
                 LeaveCallModalFlag

@@ -106,6 +106,22 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarGroupsNoCall = () => {
     localStorage.setItem("navigateLocation", "groups");
+    // Jab Video Ma Join Ho aur isPrimaryOrganizer true ho sidebar pa click kray tou videoPanel Minimize hoga aur modal khulega
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        if (editorRole.isPrimaryOrganizer === true) {
+          console.log("Checking");
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
+      }
+    }
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -137,6 +153,22 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarPollsNoCall = () => {
     localStorage.setItem("navigateLocation", "polling");
+    // Jab Video Ma Join Ho aur isPrimaryOrganizer true ho sidebar pa click kray tou videoPanel Minimize hoga aur modal khulega
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        if (editorRole.isPrimaryOrganizer === true) {
+          console.log("Checking");
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
+      }
+    }
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -168,6 +200,22 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarCalendarNoCall = () => {
     localStorage.setItem("navigateLocation", "calendar");
+    // Jab Video Ma Join Ho aur isPrimaryOrganizer true ho sidebar pa click kray tou videoPanel Minimize hoga aur modal khulega
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        if (editorRole.isPrimaryOrganizer === true) {
+          console.log("Checking");
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
+      }
+    }
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -199,6 +247,22 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarTodoNoCall = async () => {
     localStorage.setItem("navigateLocation", "todolist");
+    // Jab Video Ma Join Ho aur isPrimaryOrganizer true ho sidebar pa click kray tou videoPanel Minimize hoga aur modal khulega
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        if (editorRole.isPrimaryOrganizer === true) {
+          console.log("Checking");
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
+      }
+    }
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -229,6 +293,22 @@ const ExpandedMenu = () => {
 
   const handleMeetingSidebarNotesNoCall = async () => {
     localStorage.setItem("navigateLocation", "Notes");
+    // Jab Video Ma Join Ho aur isPrimaryOrganizer true ho sidebar pa click kray tou videoPanel Minimize hoga aur modal khulega
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        if (editorRole.isPrimaryOrganizer === true) {
+          console.log("Checking");
+          dispatch(maximizeVideoPanelFlag(false));
+          dispatch(minimizeVideoPanelFlag(true));
+          dispatch(normalizeVideoPanelFlag(false));
+        }
+      }
+    }
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -276,7 +356,11 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
+            if (
+              activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null
+            ) {
               handleMeetingSidebarCalendarNoCall();
             } else {
               handleMeetingSidebarCalendar();
@@ -321,7 +405,11 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
+            if (
+              activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null
+            ) {
               handleMeetingSidebarGroupsNoCall();
             } else {
               handleMeetingSidebarGroups();
@@ -367,7 +455,11 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
+            if (
+              activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null
+            ) {
               handleMeetingSidebarTodoNoCall();
             } else {
               handleMeetingSidebarTodo();
@@ -412,7 +504,11 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
+            if (
+              activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null
+            ) {
               handleMeetingSidebarNotesNoCall();
             } else {
               handleMeetingSidebarNotes();
@@ -457,7 +553,11 @@ const ExpandedMenu = () => {
             e.preventDefault();
             const activeCall = JSON.parse(localStorage.getItem("activeCall"));
             // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
+            if (
+              activeCall === false ||
+              activeCall === undefined ||
+              activeCall === null
+            ) {
               handleMeetingSidebarPollsNoCall();
             } else {
               handleMeetingSidebarPolls();
