@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Accordian } from "./../../components/elements";
 import "./Miscellaneous.css";
 import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
@@ -7,12 +7,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 const CustomMiscellaneous = () => {
-  const state = useSelector((state) => state);
+  const fAQsAllData = useSelector((state) => state.fAQsReducer.AllFAQsData);
   const { t } = useTranslation();
-  const { fAQsReducer } = state;
+  const [fAQsStateData, setFAQsStateData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   //dispatch user getfaqs api
   useEffect(() => {
     dispatch(GetUserFAQs(navigate, t));
@@ -20,33 +19,37 @@ const CustomMiscellaneous = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const extractYouTubeID = (url) => {
-    const regex =
-      /(?:https?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/(?:watch\?v=|embed\/))([\w-]{11})/;
-    const match = url.match(regex);
-    return match ? match[1] : null;
-  };
+  useEffect(() => {
+    if (Array.isArray(fAQsAllData) && fAQsAllData.length > 0) {
+      try {
+        setFAQsStateData(fAQsAllData);
+      } catch (error) {
+        console.log(error, "error in setFAQsStateData");
+      }
+    }
+  }, [fAQsAllData]);
 
   console.log(currentLanguage, "currentLanguagecurrentLanguage");
 
   return (
     <>
-      <section className="faqs_container">
-        {fAQsReducer.AllFAQsData.map((data, index) => {
+      <section className='faqs_container'>
+        {fAQsStateData.map((data, index) => {
           return (
             <>
-              <Row className="mb-3" key={index}>
-                <Col lg={7} md={7} xs={7}>
+              <Row className='mb-3' key={data.key}>
+                <Col lg={12} md={12} xs={12}>
                   <Accordian
                     // defaultActiveKey={"0"}
-                    eventKey="1"
+                    eventKey='1'
                     flush
                     className={`${"ABC"} ${currentLanguage}  `}
                     AccordioonHeader={
-                      <Card.Title className="fs-4 FaqsQuestionsStyles">
-                        {currentLanguage === "en"
+                      <Card.Title className='fs-4 FaqsQuestionsStyles'>
+                        {currentLanguage === "en" && data.question !== ""
                           ? data.question
-                          : data.questionArabic !== ""
+                          : currentLanguage === "ar" &&
+                            data.questionArabic !== ""
                           ? data.questionArabic
                           : data.question}
                       </Card.Title>
@@ -54,27 +57,27 @@ const CustomMiscellaneous = () => {
                     AccordioonBody={
                       <>
                         <Card.Text>
-                          {currentLanguage === "en"
+                          {currentLanguage === "en" && data.answer !== ""
                             ? data.answer
-                            : data.answerArabic !== ""
+                            : currentLanguage === "ar" &&
+                              data.answerArabic !== ""
                             ? data.answerArabic
                             : data.answer}
                         </Card.Text>
 
                         <Row>
-                          <Col lg={12} md={12} sm={12} className="p-5">
-                            {data.videoLinkURL && (
+                          <Col lg={12} md={12} sm={12} className='p-5'>
+                            {data.videoLinkURL !== "" && (
                               <div>
-                                <div className="ratio ratio-16x9">
+                                <div className='ratio ratio-16x9'>
                                   <iframe
-                                    src={`https://www.youtube.com/embed/${extractYouTubeID(
-                                      data.videoLinkURL
-                                    )}`}
-                                    title="YouTube video player"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                    style={{ borderRadius: "20px" }}
-                                  ></iframe>
+                                    width='560'
+                                    height='315'
+                                    src='https://www.youtube.com/embed/dQw4w9WgXcQ'
+                                    title='YouTube video player'
+                                    frameborder='0'
+                                    allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                                    allowfullscreen></iframe>
                                 </div>
                               </div>
                             )}
