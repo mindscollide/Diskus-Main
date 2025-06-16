@@ -1098,7 +1098,7 @@ const Polling = () => {
             <span className="position-relative w-100">
               <TextField
                 width={"100%"}
-                placeholder={t("Search")}
+                placeholder={t("Search-on-poll-title")}
                 applyClass={"PollingSearchInput"}
                 name={"SearchVal"}
                 value={pollsState.searchValue}

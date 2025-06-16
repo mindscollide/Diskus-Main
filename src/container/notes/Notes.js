@@ -779,7 +779,7 @@ const Notes = () => {
             <span className="position-relative w-100">
               <TextField
                 width={"100%"}
-                placeholder={t("Search")}
+                placeholder={t("Search-on-notes-title")}
                 applyClass={"PollingSearchInput"}
                 name={"SearchVal"}
                 value={noteSearchState.searchValue}

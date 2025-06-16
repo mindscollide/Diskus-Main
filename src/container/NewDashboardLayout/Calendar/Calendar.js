@@ -455,7 +455,7 @@ const NewCalendar = () => {
           talkGroupID: meetingData.talkGroupID,
           isPrimaryOrganizer: meetingData.isPrimaryOrganizer,
           isMinutePublished: meetingData.isMinutePublished ? true : false,
-          attendeeRoleID: meetingData.attendeeRoleID,
+          attendeeRoleID: findPartcipantRoleID,
         };
         console.log(dashboardData, "meetingDatameetingDatameetingData");
 

@@ -228,6 +228,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
   });
+  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting")
 
   useEffect(() => {
     if (currentLanguage !== undefined) {
@@ -1619,7 +1620,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             PK_UID: taskAssignedTo,
           },
           MeetingAttendeeRole: {
-            PK_MARID: participantRoleID,
+            PK_MARID: participantRoleValue.value,
           },
           AttendeeAvailability: {
             PK_AAID: 1,
@@ -1731,7 +1732,7 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-
+    console.log(newData, "newDatanewDatanewData")
     await dispatch(
       ScheduleNewMeeting(navigate, t, checkFlag, newData, setShow)
     );

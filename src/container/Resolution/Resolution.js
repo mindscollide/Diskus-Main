@@ -1503,7 +1503,7 @@ const Resolution = () => {
                       <TextField
                         width="455px"
                         name="Title"
-                        placeholder={t("Search")}
+                        placeholder={t("Search-on-resolution-title")}
                         labelclass="textFieldSearch d-none"
                         value={allSearchInput}
                         change={(e) => filterResolution(e)}

@@ -1960,7 +1960,7 @@ const Minutes = () => {
                                   <Tooltip
                                     placement='top'
                                     showArrow={false}
-                                    title={t("Rejected")}>
+                                    title={t("Reviewed")}>
                                     <img
                                       className={styles["Attachment"]}
                                       alt=''
@@ -2021,7 +2021,7 @@ const Minutes = () => {
                                           </p>
                                           <span>|</span>
                                           <p className='m-0'>
-                                            {t("Rejected")}{" "}
+                                            {t("Reviewed")}{" "}
                                             {data?.MinuteStats?.rejected}
                                           </p>
                                         </div>
@@ -2083,7 +2083,7 @@ const Minutes = () => {
                                           </p>
                                           <span>|</span>
                                           <p className='m-0'>
-                                            {t("Rejected")}{" "}
+                                            {t("Reviewed")}{" "}
                                             {data?.MinuteStats?.rejected}
                                           </p>
                                         </div>

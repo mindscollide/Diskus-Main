@@ -1273,7 +1273,7 @@ const AgendaWise = ({
                                               </p>
                                               <span>|</span>
                                               <p className='m-0'>
-                                                {t("Rejected")}{" "}
+                                                {t("Reviewed")}{" "}
                                                 {
                                                   parentMinutedata?.MinuteStats
                                                     ?.rejected
@@ -1731,7 +1731,7 @@ const AgendaWise = ({
                                                   </p>
                                                   <span>|</span>
                                                   <p className='m-0'>
-                                                    {t("Rejected")}{" "}
+                                                    {t("Reviewed")}{" "}
                                                     {
                                                       minuteDataSubminute
                                                         ?.MinuteStats?.rejected

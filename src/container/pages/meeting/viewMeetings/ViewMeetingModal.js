@@ -64,7 +64,6 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import Recording from "./recording/Recording";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
-  setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
   dataroomMapFolderId,
@@ -90,6 +89,7 @@ const ViewMeetingModal = ({
     resumeRecordingState,
     stopRecordingState,
     setStartRecordingState,
+    setViewAdvanceMeetingModal,
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,

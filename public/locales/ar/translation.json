@@ -2443,5 +2443,11 @@
   "Review": "مراجعة",
   "Are-You-Sure-you-Want-to-Leave-group-call": "Are you sure you want to leave group call",
   "Video-Call-Status-Updated": "Video call status updated",
-  "NEW_VIDEO_CALL_INITIATED": "New Video Call initiated"
+  "NEW_VIDEO_CALL_INITIATED": "New Video Call initiated",
+  "Search-on-meeting-title": "Search on Meeting Title",
+  "Search-on-file-and-folder-name": "Search on File and Folder Name",
+  "Search-on-notes-title": "Search on Notes Title",
+  "Search-on-poll-title": "Search on Poll Title",
+  "Search-on-resolution-title": "Search on Resolution Title",
+  "Search-on-user-name": "Search on User Name"
 }
