@@ -780,7 +780,58 @@ const Sidebar = () => {
                       const activeCall = JSON.parse(
                         localStorage.getItem("activeCall")
                       );
-                      // Redirect based on state — only during normal click
+                      const isHost = JSON.parse(localStorage.getItem("isHost"));
+                      if (isMeeting) {
+                        console.log("Check Route scenario's");
+                        if (!isMeetingVideo) {
+                          console.log("Check Route scenario's");
+                          dispatch(showEndMeetingModal(true)); // Show the modal
+                        }
+                        if (isMeetingVideo && !activeCall) {
+                          console.log("Check Route scenario's");
+                          dispatch(maximizeVideoPanelFlag(false));
+                          dispatch(minimizeVideoPanelFlag(true));
+                          dispatch(normalizeVideoPanelFlag(false));
+                        } else {
+                          // Handle click action based on active call
+                          if (
+                            (activeCall === false ||
+                              activeCall === undefined ||
+                              activeCall === null) &&
+                            isMeetingVideoHostCheck
+                          ) {
+                            console.log("Check Route scenario's");
+                            handleMeetingSidebarClickNoCall();
+                          } else {
+                            console.log("Check Route scenario's");
+                            if (isMeetingVideo) {
+                              handleMeetingSidebarClick();
+                            }
+                          }
+                        }
+                        if (
+                          !isMeetingVideoHostCheck &&
+                          !isHost &&
+                          !isMeetingVideo
+                        ) {
+                          console.log("Check Route scenario's");
+                          localStorage.removeItem("navigateLocation");
+                          navigate("/Diskus/Meeting");
+                        }
+                        // localStorage.setItem("navigateLocation", "Meeting");
+
+                        return;
+                      }
+
+                      // Block routing if the modal is already open
+                      if (endMeetingModal) {
+                        console.log(
+                          "End Meeting Modal is open — blocking navigation."
+                        );
+                        return;
+                      }
+
+                      // If user is not in a meeting, allow normal route logic
                       const shouldRedirectToMeeting =
                         (scheduleMeetingsPageFlag === true ||
                           viewProposeDateMeetingsPageFlag === true ||
@@ -791,19 +842,11 @@ const Sidebar = () => {
                         viewMeetingsFlag === false;
 
                       if (shouldRedirectToMeeting) {
+                        console.log("Check Route scenario's");
                         navigate("/Diskus/Meeting");
                       } else {
+                        console.log("Check Route scenario's");
                         navigate("/Diskus/Meeting");
-                      }
-                      // Explicitly evaluate activeCall
-                      if (
-                        activeCall === false ||
-                        activeCall === undefined ||
-                        activeCall === null
-                      ) {
-                        handleMeetingSidebarClickNoCall();
-                      } else {
-                        handleMeetingSidebarClick();
                       }
                     }}
                   >
@@ -838,7 +881,8 @@ const Sidebar = () => {
                       const isHost = JSON.parse(localStorage.getItem("isHost"));
                       if (isMeeting) {
                         console.log("Check Route scenario's");
-                        if (isMeetingVideoHostCheck && !activeCall) {
+                        if (!isMeetingVideo) {
+                          console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
                         }
                         if (isMeetingVideo && !activeCall) {
@@ -849,20 +893,28 @@ const Sidebar = () => {
                         } else {
                           // Handle click action based on active call
                           if (
-                            activeCall === false ||
-                            activeCall === undefined ||
-                            activeCall === null
+                            (activeCall === false ||
+                              activeCall === undefined ||
+                              activeCall === null) &&
+                            isMeetingVideoHostCheck
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarDataroomNoCall();
                           } else {
                             console.log("Check Route scenario's");
-                            handleMeetingSidebarDataroom();
+                            if (isMeetingVideo) {
+                              handleMeetingSidebarClick();
+                            }
                           }
                         }
-                        if (!isHost && !isMeetingVideo) {
+                        if (
+                          !isMeetingVideoHostCheck &&
+                          !isHost &&
+                          !isMeetingVideo
+                        ) {
                           console.log("Check Route scenario's");
-                          navigate("/Diskus/dataroom");
+                          localStorage.removeItem("navigateLocation");
+                          // navigate("/Diskus/dataroom");
                         }
                         localStorage.setItem("navigateLocation", "dataroom");
 
@@ -929,7 +981,8 @@ const Sidebar = () => {
                       const isHost = JSON.parse(localStorage.getItem("isHost"));
                       if (isMeeting) {
                         console.log("Check Route scenario's");
-                        if (isMeetingVideoHostCheck && !activeCall) {
+                        if (!isMeetingVideo) {
+                          console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
                         }
                         if (isMeetingVideo && !activeCall) {
@@ -940,20 +993,27 @@ const Sidebar = () => {
                         } else {
                           // Handle click action based on active call
                           if (
-                            activeCall === false ||
-                            activeCall === undefined ||
-                            activeCall === null
+                            (activeCall === false ||
+                              activeCall === undefined ||
+                              activeCall === null) &&
+                            isMeetingVideoHostCheck
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarResolutionsNoCall();
                           } else {
                             console.log("Check Route scenario's");
-                            handleMeetingSidebarResolutions();
+                            if (isMeetingVideo) {
+                              handleMeetingSidebarClick();
+                            }
                           }
                         }
-                        if (!isHost && !isMeetingVideo) {
+                        if (
+                          !isMeetingVideoHostCheck &&
+                          !isHost &&
+                          !isMeetingVideo
+                        ) {
                           console.log("Check Route scenario's");
-                          navigate("/Diskus/resolution");
+                          localStorage.removeItem("navigateLocation");
                         }
                         localStorage.setItem("navigateLocation", "resolution");
 
@@ -1021,7 +1081,8 @@ const Sidebar = () => {
                       const isHost = JSON.parse(localStorage.getItem("isHost"));
                       if (isMeeting) {
                         console.log("Check Route scenario's");
-                        if (isMeetingVideoHostCheck && !activeCall) {
+                        if (!isMeetingVideo) {
+                          console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
                         }
                         if (isMeetingVideo && !activeCall) {
@@ -1032,20 +1093,27 @@ const Sidebar = () => {
                         } else {
                           // Handle click action based on active call
                           if (
-                            activeCall === false ||
-                            activeCall === undefined ||
-                            activeCall === null
+                            (activeCall === false ||
+                              activeCall === undefined ||
+                              activeCall === null) &&
+                            isMeetingVideoHostCheck
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarCommitteesNoCall();
                           } else {
                             console.log("Check Route scenario's");
-                            handleMeetingSidebarCommittees();
+                            if (isMeetingVideo) {
+                              handleMeetingSidebarClick();
+                            }
                           }
                         }
-                        if (!isHost && !isMeetingVideo) {
+                        if (
+                          !isMeetingVideoHostCheck &&
+                          !isHost &&
+                          !isMeetingVideo
+                        ) {
                           console.log("Check Route scenario's");
-                          navigate("/Diskus/committee");
+                          localStorage.removeItem("navigateLocation");
                         }
                         localStorage.setItem("navigateLocation", "committee");
 

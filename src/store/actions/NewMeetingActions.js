@@ -8642,7 +8642,7 @@ const LeaveCurrentMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase()
                 )
             ) {
               dispatch(leaveMeetingFail(t("Something-went-wrong")));
@@ -8829,7 +8829,7 @@ const LeaveCurrentMeetingOtherMenus = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase()
                 )
             ) {
               dispatch(leaveMeetingFail(t("Something-went-wrong")));

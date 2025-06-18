@@ -243,7 +243,7 @@ const NewEndMeetingModal = () => {
     }
 
     let leaveMeetingData = {
-      FK_MDID: Number(advanceMeetingModalID),
+      FK_MDID: Number(currentMeetingID),
       DateTime: getCurrentDateTimeUTC(),
     };
     await dispatch(

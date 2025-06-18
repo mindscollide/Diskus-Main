@@ -328,6 +328,10 @@ const LeaveVideoIntimationModal = () => {
         }
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/Meeting");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "todolist") {
         if (isMeetingVideo) {
