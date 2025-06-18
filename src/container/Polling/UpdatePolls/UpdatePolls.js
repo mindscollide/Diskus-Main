@@ -387,11 +387,6 @@ const UpdatePolls = () => {
     setOptions(optionscross);
   };
 
-  const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
-    return newDate;
-  };
-
   const HandlecancellButton = () => {
     setDefineUnsaveModal(true);
   };
