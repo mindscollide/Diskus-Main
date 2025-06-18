@@ -3388,7 +3388,7 @@ const UpdateQuickMeeting = ({
                         />
                         <Button
                           className={"UpdateMeeting_publishMeetingBtn"}
-                          text={t("Publish")}
+                          text={t("Update")}
                           onClick={handleSubmit}
                         />
                       </Col>
@@ -3407,7 +3407,7 @@ const UpdateQuickMeeting = ({
                       >
                         <Button
                           className={" btn btn-primary ismeeting-finish-btn"}
-                          text={t("Publish")}
+                          text={t("Update")}
                           onClick={navigateToPublish}
                         />
                       </Col>
@@ -3433,7 +3433,7 @@ const UpdateQuickMeeting = ({
                         />
                         <Button
                           className={"UpdateMeeting_publishMeetingBtn"}
-                          text={t("Publish")}
+                          text={t("Update")}
                           onClick={navigateToPublish}
                         />
                       </Col>
