@@ -24,6 +24,7 @@
   align-items: center !important;
   gap: 10px !important;
   max-width: 95% !important;
-  white-space: break-spaces !important;
-  word-break: break-all;
+  white-space: normal !important;
+  word-break: normal !important;
+  overflow-wrap: break-word;
 }

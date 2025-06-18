@@ -67,43 +67,44 @@ const RecentActivity = () => {
               <img
                 src={TodoMessageIcon1}
                 width={200}
-                alt=''
-                draggable='false'
+                alt=""
+                draggable="false"
               />
             }
-            className='recent-activity-text'
+            className="recent-activity-text"
           />
         ) : recentActivityData !== null && recentActivityData !== undefined ? (
-          recentActivityData.map((recentActivityData) => {  
+          recentActivityData.map((recentActivityData) => {
             return (
               <>
                 <div
                   key={recentActivityData.notificationTypes.pK_NTID}
-                  className={styles["imageNotificationCard"]}>
+                  className={styles["imageNotificationCard"]}
+                >
                   {recentActivityData.notificationTypes.pK_NTID === 1 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   ) : (
-                    <img src={DemoIcon} width={46} height={46} alt='' />
+                    <img src={DemoIcon} width={46} height={46} alt="" />
                   )}
                   {recentActivityData.notificationTypes.description}
                 </div>
-                <p className='d-flex justify-content-end  mx-1'>
+                <p className="d-flex justify-content-end  mx-1">
                   {timePassed(
                     forRecentActivity(recentActivityData.creationDateTime),
                     currentLanguage
