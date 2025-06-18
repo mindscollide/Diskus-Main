@@ -1296,7 +1296,7 @@ const Dashboard = () => {
               );
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
-              if (isMeetingVideo && !presenterViewFlag) {
+              if (isMeetingVideo) {
                 console.log("isMeetingChecker");
                 dispatch(guestJoinPopup(true));
               }

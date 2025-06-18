@@ -123,10 +123,10 @@ const NewEndMeetingModal = () => {
   const handleClickContinue = async () => {
     // setCancelConfirmationModal(false);
 
-    let isMeeting = localStorage.getItem("isMeeting");
-    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-    let isMeetingVideoHostCheck = localStorage.getItem(
-      "isMeetingVideoHostCheck"
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     let newRoomID = localStorage.getItem("newRoomId");
     let isGuid = localStorage.getItem("isGuid");
@@ -270,7 +270,7 @@ const NewEndMeetingModal = () => {
   };
   const handleClickDiscard = () => {
     console.log("NewEndLeaveMeeting");
-
+    localStorage.setItem("navigateLocation", "Meeting");
     dispatch(showEndMeetingModal(false));
   };
   return (
@@ -280,6 +280,8 @@ const NewEndMeetingModal = () => {
         setShow={dispatch(showEndMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
+        backdrop="static"
+        keyboard={false}
         className={styles["classOfMeetingModal"]}
         onHide={() => {
           dispatch(showEndMeetingModal(false));

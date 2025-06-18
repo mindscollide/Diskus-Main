@@ -2004,6 +2004,12 @@ export const SideBarGlobalNavigationFunction = async (
 ) => {
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
+
   console.log(
     { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
     "Checking"
@@ -2012,8 +2018,7 @@ export const SideBarGlobalNavigationFunction = async (
     console.log("Checking");
     if (Number(editorRole?.status) === 10) {
       console.log("Checking");
-
-      dispatch(showEndMeetingModal(true));
+   
     } else if (minutes || actionsPage || polls) {
       console.log("Checking");
       if (Number(editorRole.status) === 9 && polls) {
@@ -2037,6 +2042,7 @@ export const SideBarGlobalNavigationFunction = async (
       }
     } else if (Number(editorRole.status) === 11) {
       console.log("Checking");
+      console.log("Check Route Meeting");
 
       dispatch(viewMeetingFlag(false));
       setViewAdvanceMeetingModalUnpublish(false);
@@ -2064,6 +2070,8 @@ export const SideBarGlobalNavigationFunction = async (
           "setViewAdvanceMeetingModalsetViewAdvanceMeetingModal"
         );
         setViewAdvanceMeetingModal(false);
+        console.log("Check Route Meeting");
+
         dispatch(viewMeetingFlag(false));
         setViewAdvanceMeetingModalUnpublish(false);
         localStorage.removeItem("NotificationAdvanceMeetingID");
@@ -2111,18 +2119,20 @@ export const isAnyMeetingPageActive = async (flags) => {
   } = flags;
 
   return (
-    (((await isFunction(scheduleMeetingPageFlag)) &&
-      scheduleMeetingPageFlag === true) ||
-      ((await isFunction(viewProposeDateMeetingPageFlag)) &&
-        viewProposeDateMeetingPageFlag === true) ||
-      ((await isFunction(viewAdvanceMeetingPublishPageFlag)) &&
-        viewAdvanceMeetingPublishPageFlag === true) ||
-      ((await isFunction(viewAdvanceMeetingUnpublishPageFlag)) &&
-        viewAdvanceMeetingUnpublishPageFlag === true) ||
-      ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
-        viewProposeOrganizerMeetingPageFlag === true) ||
-      ((await isFunction(proposeNewMeetingPageFlag)) &&
-        proposeNewMeetingPageFlag === true)) &&
+    console.log("Check Route Meeting")(
+      ((await isFunction(scheduleMeetingPageFlag)) &&
+        scheduleMeetingPageFlag === true) ||
+        ((await isFunction(viewProposeDateMeetingPageFlag)) &&
+          viewProposeDateMeetingPageFlag === true) ||
+        ((await isFunction(viewAdvanceMeetingPublishPageFlag)) &&
+          viewAdvanceMeetingPublishPageFlag === true) ||
+        ((await isFunction(viewAdvanceMeetingUnpublishPageFlag)) &&
+          viewAdvanceMeetingUnpublishPageFlag === true) ||
+        ((await isFunction(viewProposeOrganizerMeetingPageFlag)) &&
+          viewProposeOrganizerMeetingPageFlag === true) ||
+        ((await isFunction(proposeNewMeetingPageFlag)) &&
+          proposeNewMeetingPageFlag === true)
+    ) &&
     (await isFunction(viewMeetingFlag)) &&
     viewMeetingFlag === false
   );
@@ -2320,6 +2330,7 @@ const handleMeetingCase = (navigate, dispatch, t) => {
     localStorage.setItem("MeetingPageCurrent", 1);
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
+  console.log("Check Route Meeting");
 
   dispatch(viewMeetingFlag(false));
   dispatch(meetingDetailsGlobalFlag(false));
