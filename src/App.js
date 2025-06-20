@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -22,9 +22,9 @@ import "@fontsource/ibm-plex-sans-arabic/500.css";
 import "@fontsource/ibm-plex-sans-arabic/600.css";
 import "@fontsource/ibm-plex-sans-arabic/700.css";
 import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagement/OpenPaymentForm/OpenPaymentForm";
-import { Loader, Notification } from "./components/elements";
+import { Notification } from "./components/elements";
 import { router } from "./routes/routes";
-import { RouterProvider, useNavigate } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
@@ -32,7 +32,6 @@ import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
-import SpinComponent from "./components/elements/mainLoader/loader";
 
 const POLLING_INTERVAL = 60000; // 1 minute
 const App = () => {
@@ -51,7 +50,6 @@ const App = () => {
   const fAQsReducer = useSelector((state) => state.fAQsReducer);
   const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
   const calendarReducer = useSelector((state) => state.calendarReducer);
-  const OnBoardModal = useSelector((state) => state.OnBoardModal);
   const postAssigneeComments = useSelector(
     (state) => state.postAssigneeComments
   );

@@ -3895,73 +3895,63 @@ const NewMeeting = () => {
         ) : (
           <>
             <Row className='mt-2'>
-              <Col
-                sm={12}
-                md={8}
-                lg={8}
-                className='d-flex gap-3 align-items-center'>
+              <Col sm={12} md={12} lg={6} className="d-flex ">
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <ReactBootstrapDropdown
-                      className='SceduleMeetingButton'
-                      // onClick={eventClickHandler}
-                    >
-                      <ReactBootstrapDropdown.Toggle
-                        title={t("Schedule-a-meeting")}>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["schedule_button"]}>
-                            <Plus width={20} height={20} fontWeight={800} />
-                            <span> {t("Schedule-a-meeting")}</span>
-                          </Col>
-                        </Row>
-                      </ReactBootstrapDropdown.Toggle>
+                <span>
+                  <ReactBootstrapDropdown
+                    className='SceduleMeetingButton d-inline-block position-relative ms-2'
+                    // onClick={eventClickHandler}
+                  >
+                    <ReactBootstrapDropdown.Toggle
+                      title={t("Schedule-a-meeting")}>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["schedule_button"]}>
+                          <Plus width={20} height={20} fontWeight={800} />
+                          <span> {t("Schedule-a-meeting")}</span>
+                        </Col>
+                      </Row>
+                    </ReactBootstrapDropdown.Toggle>
 
-                      <ReactBootstrapDropdown.Menu>
-                        {checkFeatureIDAvailability(1) ? (
+                    <ReactBootstrapDropdown.Menu>
+                      {checkFeatureIDAvailability(1) ? (
+                        <ReactBootstrapDropdown.Item
+                          className={styles["dropdown-item"]}
+                          onClick={CreateQuickMeetingFunc}>
+                          {t("Quick-meeting")}
+                        </ReactBootstrapDropdown.Item>
+                      ) : null}
+
+                      {checkFeatureIDAvailability(9) ? (
+                        <ReactBootstrapDropdown.Item
+                          className={styles["dropdown-item"]}
+                          onClick={openSceduleMeetingPage}>
+                          {t("Advance-meeting")}
+                        </ReactBootstrapDropdown.Item>
+                      ) : null}
+
+                      {checkFeatureIDAvailability(12) ? (
+                        <>
                           <ReactBootstrapDropdown.Item
                             className={styles["dropdown-item"]}
-                            onClick={CreateQuickMeetingFunc}>
-                            {t("Quick-meeting")}
+                            onClick={openProposedNewMeetingPage}>
+                            {t("Propose-new-meeting")}
                           </ReactBootstrapDropdown.Item>
-                        ) : null}
-
-                        {checkFeatureIDAvailability(9) ? (
-                          <ReactBootstrapDropdown.Item
-                            className={styles["dropdown-item"]}
-                            onClick={openSceduleMeetingPage}>
-                            {t("Advance-meeting")}
-                          </ReactBootstrapDropdown.Item>
-                        ) : null}
-
-                        {checkFeatureIDAvailability(12) ? (
-                          <>
-                            <ReactBootstrapDropdown.Item
-                              className={styles["dropdown-item"]}
-                              onClick={openProposedNewMeetingPage}>
-                              {t("Propose-new-meeting")}
-                            </ReactBootstrapDropdown.Item>
-                          </>
-                        ) : null}
-                      </ReactBootstrapDropdown.Menu>
-                    </ReactBootstrapDropdown>
-                  </Col>
-                </Row>
+                        </>
+                      ) : null}
+                    </ReactBootstrapDropdown.Menu>
+                  </ReactBootstrapDropdown>
+                </span>
               </Col>
-              <Col
-                sm={12}
-                md={4}
-                lg={4}
-                className='d-flex justify-content-end align-items-center'>
+              <Col sm={12} md={12} lg={6} className=''>
                 <span className='position-relative'>
                   <TextField
-                    width={"490px"}
+                    width={"100%"}
                     placeholder={t("Search-on-meeting-title")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}

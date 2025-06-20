@@ -4619,7 +4619,7 @@ const Dashboard = () => {
         <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className="sidebar_layout" width={"4%"}>
+            <Sider className="sidebar_layout" width={60}>
               <Sidebar />
             </Sider>
             <Content>
