@@ -2048,18 +2048,29 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <span className="participants-counter-For-Host">
-                    {getMeetingHostInfo?.isDashboardVideo &&
-                      convertNumbersInString(participantCounterList, lan)}
-                  </span>
-                  {participantWaitingListCounter > 0 && (
-                    <span className="participants-counter-For-Host-waiting-counter">
-                      {convertNumbersInString(
-                        participantWaitingListCounter,
-                        lan
-                      )}
+                  <div className="main-icon-div">
+                    {isMeetingVideo && isMeetingVideoHostCheck && (
+                      <>
+                        {handRaiseCounter > 0 && (
+                          <span className="HandRaise-Counter-for-participant">
+                            {convertNumbersInString(handRaiseCounter, lan)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    <span className="participants-counter-For-Host">
+                      {getMeetingHostInfo?.isDashboardVideo &&
+                        convertNumbersInString(participantCounterList, lan)}
                     </span>
-                  )}
+                    {participantWaitingListCounter > 0 && (
+                      <span className="participants-counter-For-Host-waiting-counter">
+                        {convertNumbersInString(
+                          participantWaitingListCounter,
+                          lan
+                        )}
+                      </span>
+                    )}
+                  </div>
                 </>
               )}
             </div>
