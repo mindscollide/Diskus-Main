@@ -3571,7 +3571,7 @@ const DataRoom = () => {
                                     onChange={handleSortChange}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: 500, x: "100%" }}
+                                    scroll={{ y: 400, x: "100%" }}
                                   />
                                 </>
                               ) : (
