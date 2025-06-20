@@ -3,9 +3,10 @@
   z-index: 102 !important;
   display: flex;
   align-items: center;
-  max-height: calc(100vh - 90vh);
+  max-height: 75px !important;
   width: 100%;
   padding: 10px 0 !important;
+  height: 100% !important;
 }
 
 body[dir="rtl"] .header2-container {

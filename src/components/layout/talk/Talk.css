@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 84%;
+  width: 100%;
   height: 55px;
   position: absolute;
   bottom: 0;
@@ -159,7 +159,7 @@ body[dir="rtl"] .talk-count.total {
   width: 22px;
 }
 
-@media screen and (max-width: 1250px) {
+/* @media screen and (max-width: 1250px) {
   .talk_nav {
     display: flex;
     align-items: flex-end;
@@ -200,7 +200,7 @@ body[dir="rtl"] .talk-count.total {
   .talk_subIcon svg {
     width: 28px;
   }
-}
+} */
 
 .talk_Icon svg {
   width: 30px;
@@ -221,6 +221,8 @@ body[dir="rtl"] .talk-count.total {
   border-top-left-radius: 4px;
   position: absolute;
   bottom: 55px;
+  max-width: 65px !important;
+  width: 65px !important;
 }
 
 body[dir="rtl"] .talk-count {
