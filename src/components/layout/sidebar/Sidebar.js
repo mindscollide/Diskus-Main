@@ -24,6 +24,7 @@ import {
   LeaveMeetingSideBarModalAction,
   searchNewUserMeeting,
   showEndMeetingModal,
+  viewAdvanceMeetingPublishPageFlag,
   viewMeetingFlag,
 } from "../../../store/actions/NewMeetingActions";
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
@@ -190,9 +191,9 @@ const Sidebar = () => {
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
     console.log("Checking");
-
     localStorage.setItem("navigateLocation", "Meeting");
     if (CurrentMeetingStatus === 10) {
+      console.log("Checking");
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
@@ -205,6 +206,10 @@ const Sidebar = () => {
   );
 
   const handleMeetingSidebarClickNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "Meeting");
     console.log("Checking", editorRole);
 
@@ -242,6 +247,10 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarDataroomNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     console.log("Checking", editorRole);
 
     localStorage.setItem("navigateLocation", "dataroom");
@@ -277,6 +286,10 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarResolutionsNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "resolution");
 
     console.log("Checking", editorRole);
@@ -313,6 +326,10 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarCommitteesNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "committee");
     console.log("Checking", editorRole);
 
@@ -765,7 +782,17 @@ const Sidebar = () => {
                 checkFeatureIDAvailability(9) ? (
                   <Nav.Link
                     as={Link}
-                    to={"/Diskus/Meeting"}
+                    to={
+                      (scheduleMeetingPageFlagReducer === true ||
+                        viewProposeDateMeetingPageFlagReducer === true ||
+                        viewAdvanceMeetingPublishPageFlagReducer === true ||
+                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                        viewProposeOrganizerMeetingPageFlagReducer === true ||
+                        proposeNewMeetingPageFlagReducer === true) &&
+                      viewMeetingFlagReducer === false
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/Meeting"
+                    }
                     eventKey="link-2"
                     className={
                       location.pathname === "/Diskus/Meeting" ||
@@ -786,25 +813,21 @@ const Sidebar = () => {
                         if (!isMeetingVideo) {
                           console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
-                        }
-                        if (isMeetingVideo && !activeCall) {
-                          console.log("Check Route scenario's");
-                          dispatch(maximizeVideoPanelFlag(false));
-                          dispatch(minimizeVideoPanelFlag(true));
-                          dispatch(normalizeVideoPanelFlag(false));
                         } else {
                           // Handle click action based on active call
                           if (
                             (activeCall === false ||
                               activeCall === undefined ||
                               activeCall === null) &&
-                            isMeetingVideoHostCheck
+                            isMeetingVideo
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarClickNoCall();
                           } else {
                             console.log("Check Route scenario's");
                             if (isMeetingVideo) {
+                              console.log("Check Route scenario's");
+
                               handleMeetingSidebarClick();
                             }
                           }
@@ -816,9 +839,9 @@ const Sidebar = () => {
                         ) {
                           console.log("Check Route scenario's");
                           localStorage.removeItem("navigateLocation");
-                          navigate("/Diskus/Meeting");
+                          // navigate("/Diskus/Meeting");
                         }
-                        // localStorage.setItem("navigateLocation", "Meeting");
+                        localStorage.setItem("navigateLocation", "Meeting");
 
                         return;
                       }
@@ -846,6 +869,12 @@ const Sidebar = () => {
                         navigate("/Diskus/Meeting");
                       } else {
                         console.log("Check Route scenario's");
+                        localStorage.removeItem("AdvanceMeetingOperations");
+                        localStorage.removeItem("NotificationAdvanceMeetingID");
+                        localStorage.removeItem(
+                          "NotificationClickSendResponseByDate"
+                        );
+                        dispatch(viewAdvanceMeetingPublishPageFlag(false));
                         navigate("/Diskus/Meeting");
                       }
                     }}
@@ -884,26 +913,20 @@ const Sidebar = () => {
                         if (!isMeetingVideo) {
                           console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
-                        }
-                        if (isMeetingVideo && !activeCall) {
-                          console.log("Check Route scenario's");
-                          dispatch(maximizeVideoPanelFlag(false));
-                          dispatch(minimizeVideoPanelFlag(true));
-                          dispatch(normalizeVideoPanelFlag(false));
                         } else {
                           // Handle click action based on active call
                           if (
                             (activeCall === false ||
                               activeCall === undefined ||
                               activeCall === null) &&
-                            isMeetingVideoHostCheck
+                            isMeetingVideo
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarDataroomNoCall();
                           } else {
                             console.log("Check Route scenario's");
                             if (isMeetingVideo) {
-                              handleMeetingSidebarClick();
+                              handleMeetingSidebarDataroom();
                             }
                           }
                         }
@@ -984,26 +1007,20 @@ const Sidebar = () => {
                         if (!isMeetingVideo) {
                           console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
-                        }
-                        if (isMeetingVideo && !activeCall) {
-                          console.log("Check Route scenario's");
-                          dispatch(maximizeVideoPanelFlag(false));
-                          dispatch(minimizeVideoPanelFlag(true));
-                          dispatch(normalizeVideoPanelFlag(false));
                         } else {
                           // Handle click action based on active call
                           if (
                             (activeCall === false ||
                               activeCall === undefined ||
                               activeCall === null) &&
-                            isMeetingVideoHostCheck
+                            isMeetingVideo
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarResolutionsNoCall();
                           } else {
                             console.log("Check Route scenario's");
                             if (isMeetingVideo) {
-                              handleMeetingSidebarClick();
+                              handleMeetingSidebarResolutions();
                             }
                           }
                         }
@@ -1084,26 +1101,20 @@ const Sidebar = () => {
                         if (!isMeetingVideo) {
                           console.log("Check Route scenario's");
                           dispatch(showEndMeetingModal(true)); // Show the modal
-                        }
-                        if (isMeetingVideo && !activeCall) {
-                          console.log("Check Route scenario's");
-                          dispatch(maximizeVideoPanelFlag(false));
-                          dispatch(minimizeVideoPanelFlag(true));
-                          dispatch(normalizeVideoPanelFlag(false));
                         } else {
                           // Handle click action based on active call
                           if (
                             (activeCall === false ||
                               activeCall === undefined ||
                               activeCall === null) &&
-                            isMeetingVideoHostCheck
+                            isMeetingVideo
                           ) {
                             console.log("Check Route scenario's");
                             handleMeetingSidebarCommitteesNoCall();
                           } else {
                             console.log("Check Route scenario's");
                             if (isMeetingVideo) {
-                              handleMeetingSidebarClick();
+                              handleMeetingSidebarCommittees();
                             }
                           }
                         }

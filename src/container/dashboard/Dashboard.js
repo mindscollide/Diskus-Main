@@ -944,6 +944,39 @@ const Dashboard = () => {
     });
   };
 
+  const handRaisedWhileHostTransferFunc = async () => {
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let participantUID = localStorage.getItem("participantUID");
+    let newRoomId = localStorage.getItem("newRoomId");
+    let isGuid = localStorage.getItem("isGuid");
+
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let handStatus = JSON.parse(localStorage.getItem("handStatus"));
+
+    if (isMeeting) {
+      console.log("Check why host not transfer");
+      if (isMeetingVideo) {
+        console.log("Check why host not transfer");
+        if (handStatus) {
+          console.log("Check why host not transfer");
+
+          let data = {
+            RoomID: String(
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+            ),
+            UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            IsHandRaised: false,
+          };
+          await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+        }
+      }
+    }
+  };
+
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1697,13 +1730,7 @@ const Dashboard = () => {
                 localStorage.getItem("isMeetingVideo")
               );
 
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
-              );
-              let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-              let isMeetingVideoHostChecker = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
+              handRaisedWhileHostTransferFunc();
 
               console.log(data.payload, "checkHostTransfer");
 

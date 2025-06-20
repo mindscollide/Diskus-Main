@@ -294,6 +294,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  console.log({ VideoRecipentData, callerNameInitiate }, "callerNameInitiate");
 
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
@@ -695,7 +696,10 @@ const VideoCallNormalHeader = ({
         if (callerID === currentUserID) {
           let activeChatData = {
             id: VideoRecipentData.userID,
-            fullName: VideoRecipentData.userName,
+            fullName:
+              VideoRecipentData?.recipients?.[0]?.userName ??
+              VideoRecipentData?.userName ??
+              "",
             imgURL: "",
             messageBody: "",
             messageDate: "",
@@ -1840,9 +1844,8 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {(!presenterViewFlag && getMeetingHostInfo?.isHost) 
-          // || (presenterViewHostFlag && presenterViewFlag) 
-          ? (
+          {!presenterViewFlag && getMeetingHostInfo?.isHost ? (
+            // || (presenterViewHostFlag && presenterViewFlag)
             <div
               className={
                 LeaveCallModalFlag

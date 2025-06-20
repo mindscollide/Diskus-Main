@@ -8680,7 +8680,8 @@ const LeaveCurrentMeetingOtherMenus = (
   viewProposeOrganizerMeetingPageFlagReducer,
   proposeNewMeetingPageFlagReducer,
   viewMeetingFlagReducer,
-  location
+  location,
+  setViewAdvanceMeetingModal
 ) => {
   console.log(
     {
@@ -8699,6 +8700,7 @@ const LeaveCurrentMeetingOtherMenus = (
       proposeNewMeetingPageFlagReducer,
       viewMeetingFlagReducer,
       location,
+      setViewAdvanceMeetingModal
     },
     "Coming inside this block scopr"
   );
@@ -8740,7 +8742,8 @@ const LeaveCurrentMeetingOtherMenus = (
               viewProposeOrganizerMeetingPageFlagReducer,
               proposeNewMeetingPageFlagReducer,
               viewMeetingFlagReducer,
-              location
+              location,
+              setViewAdvanceMeetingModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -8788,6 +8791,7 @@ const LeaveCurrentMeetingOtherMenus = (
                   navigate,
                   dispatch,
                   location,
+                  setViewAdvanceMeetingModal,
                   flags: {
                     scheduleMeetingPageFlagReducer,
                     viewProposeDateMeetingPageFlagReducer,

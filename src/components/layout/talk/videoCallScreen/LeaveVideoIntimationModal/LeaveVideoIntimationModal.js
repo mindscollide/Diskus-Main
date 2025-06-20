@@ -68,6 +68,7 @@ import {
 
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
+  const {setViewAdvanceMeetingModal} =useMeetingContext()
 
   const { t } = useTranslation();
 
@@ -226,30 +227,35 @@ const LeaveVideoIntimationModal = () => {
     };
     console.log("Check Route scenario's");
     console.log(location, "Check Route scenario's");
-
-    await dispatch(
-      LeaveCurrentMeetingOtherMenus(
-        navigate,
-        t,
-        Data,
-        scheduleMeetingsPageFlag,
-        viewProposeDateMeetingsPageFlag,
-        viewAdvanceMeetingsPublishPageFlag,
-        viewAdvanceMeetingsUnpublishPageFlag,
-        viewProposeOrganizerMeetingsPageFlag,
-        proposeNewMeetingsPageFlag,
-        viewMeetingsFlag,
-        scheduleMeetingPageFlagReducer,
-        viewProposeDateMeetingPageFlagReducer,
-        viewAdvanceMeetingPublishPageFlagReducer,
-        viewAdvanceMeetingUnpublishPageFlagReducer,
-        viewProposeOrganizerMeetingPageFlagReducer,
-        proposeNewMeetingPageFlagReducer,
-        viewMeetingFlagReducer,
-        location
-      )
-    );
-    await dispatch(currentMeetingStatus(0));
+    try {
+      console.log("Check Route scenario's");
+      await dispatch(
+        LeaveCurrentMeetingOtherMenus(
+          navigate,
+          t,
+          Data,
+          scheduleMeetingsPageFlag,
+          viewProposeDateMeetingsPageFlag,
+          viewAdvanceMeetingPublishPageFlag,
+          viewAdvanceMeetingsUnpublishPageFlag,
+          viewProposeOrganizerMeetingsPageFlag,
+          proposeNewMeetingsPageFlag,
+          viewMeetingsFlag,
+          scheduleMeetingPageFlagReducer,
+          viewProposeDateMeetingPageFlagReducer,
+          viewAdvanceMeetingPublishPageFlagReducer,
+          viewAdvanceMeetingUnpublishPageFlagReducer,
+          viewProposeOrganizerMeetingPageFlagReducer,
+          proposeNewMeetingPageFlagReducer,
+          viewMeetingFlagReducer,
+          location,
+          setViewAdvanceMeetingModal
+        )
+      );
+      await dispatch(currentMeetingStatus(0));
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   //handle Yes button

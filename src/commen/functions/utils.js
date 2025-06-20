@@ -2018,7 +2018,6 @@ export const SideBarGlobalNavigationFunction = async (
     console.log("Checking");
     if (Number(editorRole?.status) === 10) {
       console.log("Checking");
-   
     } else if (minutes || actionsPage || polls) {
       console.log("Checking");
       if (Number(editorRole.status) === 9 && polls) {
@@ -2119,7 +2118,10 @@ export const isAnyMeetingPageActive = async (flags) => {
   } = flags;
 
   return (
-    console.log("Check Route Meeting")(
+    console.log(
+      "Check Route Meeting",
+      flags
+    )(
       ((await isFunction(scheduleMeetingPageFlag)) &&
         scheduleMeetingPageFlag === true) ||
         ((await isFunction(viewProposeDateMeetingPageFlag)) &&
@@ -2168,42 +2170,44 @@ export const handleNavigationforParticipantVideoFlow = async ({
   navigate,
   dispatch,
   location,
+  setViewAdvanceMeetingModal,
   flags,
   t,
 }) => {
-  const meetingFlags = {
-    scheduleMeetingPageFlag:
-      flags.scheduleMeetingPageFlagReducer || flags.scheduleMeetingsPageFlag,
-    viewProposeDateMeetingPageFlag:
-      flags.viewProposeDateMeetingPageFlagReducer ||
-      flags.viewProposeDateMeetingsPageFlag,
-    viewAdvanceMeetingPublishPageFlag:
-      flags.viewAdvanceMeetingPublishPageFlagReducer ||
-      flags.viewAdvanceMeetingsPublishPageFlag,
-    viewAdvanceMeetingUnpublishPageFlag:
-      flags.viewAdvanceMeetingUnpublishPageFlagReducer ||
-      flags.viewAdvanceMeetingsUnpublishPageFlag,
-    viewProposeOrganizerMeetingPageFlag:
-      flags.viewProposeOrganizerMeetingPageFlagReducer ||
-      flags.viewProposeOrganizerMeetingsPageFlag,
-    proposeNewMeetingPageFlag:
-      flags.proposeNewMeetingPageFlagReducer ||
-      flags.proposeNewMeetingsPageFlag,
-    viewMeetingFlag: flags.viewMeetingFlagReducer || flags.viewMeetingsFlag,
-  };
-
-  const shouldNavigateToMeeting = await isAnyMeetingPageActive(meetingFlags);
-
+  // const meetingFlags = {
+  //   scheduleMeetingPageFlag:
+  //     flags.scheduleMeetingPageFlagReducer || flags.scheduleMeetingsPageFlag,
+  //   viewProposeDateMeetingPageFlag:
+  //     flags.viewProposeDateMeetingPageFlagReducer ||
+  //     flags.viewProposeDateMeetingsPageFlag,
+  //   viewAdvanceMeetingPublishPageFlag:
+  //     flags.viewAdvanceMeetingPublishPageFlagReducer ||
+  //     flags.viewAdvanceMeetingsPublishPageFlag,
+  //   viewAdvanceMeetingUnpublishPageFlag:
+  //     flags.viewAdvanceMeetingUnpublishPageFlagReducer ||
+  //     flags.viewAdvanceMeetingsUnpublishPageFlag,
+  //   viewProposeOrganizerMeetingPageFlag:
+  //     flags.viewProposeOrganizerMeetingPageFlagReducer ||
+  //     flags.viewProposeOrganizerMeetingsPageFlag,
+  //   proposeNewMeetingPageFlag:
+  //     flags.proposeNewMeetingPageFlagReducer ||
+  //     flags.proposeNewMeetingsPageFlag,
+  //   viewMeetingFlag: flags.viewMeetingFlagReducer || flags.viewMeetingsFlag,
+  // };
+  // console.log(meetingFlags,NavigationLocation, "MeetingFlags");
+  // const shouldNavigateToMeeting = await isAnyMeetingPageActive(meetingFlags);
+  // console.log(shouldNavigateToMeeting, "MeetingFlags");
   try {
-    if (shouldNavigateToMeeting) {
-      handleMeetingNavigation(navigate, dispatch);
-      return;
-    }
+    // if (shouldNavigateToMeeting) {
+    //   handleMeetingNavigation(navigate, dispatch);
+    //   return;
+    // }
 
     switch (NavigationLocation) {
       case "dataroom":
         navigate("/Diskus/dataroom");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "resolution":
@@ -2214,6 +2218,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(viewAttachmentFlag(false));
         dispatch(createResolutionModal(false));
         dispatch(viewResolutionModal(false));
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "committee":
@@ -2222,10 +2227,12 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(createCommitteePageFlag(false));
         dispatch(updateCommitteePageFlag(false));
         dispatch(viewCommitteePageFlag(false));
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "Meeting":
-        handleMeetingCase(navigate, dispatch, t);
+        handleMeetingCase(navigate, dispatch, t, setViewAdvanceMeetingModal);
+
         break;
 
       case "groups":
@@ -2234,32 +2241,38 @@ export const handleNavigationforParticipantVideoFlow = async ({
         dispatch(createGroupPageFlag(false));
         dispatch(updateGroupPageFlag(false));
         dispatch(viewGroupPageFlag(false));
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "todolist":
         navigate("/Diskus/todolist");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "calendar":
         navigate("/Diskus/calendar");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "Notes":
         navigate("/Diskus/Notes");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "polling":
         navigate("/Diskus/polling");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "home":
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/");
           resetMeetingFlags(dispatch);
+          setViewAdvanceMeetingModal(false);
         }
         break;
 
@@ -2267,12 +2280,14 @@ export const handleNavigationforParticipantVideoFlow = async ({
         localStorage.setItem("setTableView", 4);
         navigate("/Diskus/dataroom");
         resetMeetingFlags(dispatch);
+        setViewAdvanceMeetingModal(false);
         break;
 
       case "setting":
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/setting");
           resetMeetingFlags(dispatch);
+          setViewAdvanceMeetingModal(false);
         }
         break;
 
@@ -2280,6 +2295,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/Minutes");
           resetMeetingFlags(dispatch);
+          setViewAdvanceMeetingModal(false);
         }
         break;
 
@@ -2287,6 +2303,7 @@ export const handleNavigationforParticipantVideoFlow = async ({
         if (!location.pathname.includes("/Admin")) {
           navigate("/Diskus/faq's");
           resetMeetingFlags(dispatch);
+          setViewAdvanceMeetingModal(false);
         }
         break;
 
@@ -2299,7 +2316,12 @@ export const handleNavigationforParticipantVideoFlow = async ({
 };
 
 // Special handling for Meeting case
-const handleMeetingCase = (navigate, dispatch, t) => {
+const handleMeetingCase = (
+  navigate,
+  dispatch,
+  t,
+  setViewAdvanceMeetingModal
+) => {
   const currentView = localStorage.getItem("MeetingCurrentView");
   const meetingpageRow = localStorage.getItem("MeetingPageRows");
   const meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -2331,7 +2353,10 @@ const handleMeetingCase = (navigate, dispatch, t) => {
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
   console.log("Check Route Meeting");
-
+  localStorage.removeItem("AdvanceMeetingOperations");
+  localStorage.removeItem("NotificationAdvanceMeetingID");
+  localStorage.removeItem("NotificationClickSendResponseByDate");
+  setViewAdvanceMeetingModal(false);
   dispatch(viewMeetingFlag(false));
   dispatch(meetingDetailsGlobalFlag(false));
   dispatch(organizersGlobalFlag(false));
@@ -2343,6 +2368,8 @@ const handleMeetingCase = (navigate, dispatch, t) => {
   dispatch(proposedMeetingDatesGlobalFlag(false));
   dispatch(actionsGlobalFlag(false));
   dispatch(pollsGlobalFlag(false));
+  dispatch(viewAdvanceMeetingPublishPageFlag(false));
+
   dispatch(attendanceGlobalFlag(false));
   dispatch(uploadGlobalFlag(false));
   resetMeetingFlags(dispatch);
