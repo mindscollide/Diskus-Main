@@ -2353,9 +2353,7 @@ const handleMeetingCase = (
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   }
   console.log("Check Route Meeting");
-  localStorage.removeItem("AdvanceMeetingOperations");
-  localStorage.removeItem("NotificationAdvanceMeetingID");
-  localStorage.removeItem("NotificationClickSendResponseByDate");
+
   setViewAdvanceMeetingModal(false);
   dispatch(viewMeetingFlag(false));
   dispatch(meetingDetailsGlobalFlag(false));
