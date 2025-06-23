@@ -382,7 +382,10 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   );
                 }
               } catch (error) {
-                console.log(error);
+                console.log(
+                  error,
+                  "Meeting_MeetingServiceManager_UpdateMeeting_01"
+                );
               }
 
               // dispatch(
