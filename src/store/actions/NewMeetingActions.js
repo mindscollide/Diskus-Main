@@ -8346,7 +8346,7 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Something-went-wrong")));
+              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }
@@ -10795,7 +10795,7 @@ const NewJoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Something-went-wrong")));
+              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }
