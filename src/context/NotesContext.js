@@ -8,9 +8,10 @@ export const NotesProvider = ({ children }) => {
   // Add  Note Modal
   const [createNotesModal, setCreateNotesModal] = useState(false);
   const [modalNote, setModalNote] = useState(false);
+  const [notesOpenDashboard, setNotesOpenDashboard] = useState(false)
   return (
     <NotesContext.Provider
-      value={{ createNotesModal, setCreateNotesModal, modalNote, setModalNote }}
+      value={{ createNotesModal, setCreateNotesModal, modalNote, setModalNote,setNotesOpenDashboard, notesOpenDashboard}}
     >
       {children}
     </NotesContext.Provider>

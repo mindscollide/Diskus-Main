@@ -160,7 +160,19 @@ img.normalize-Icon-Large {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer; /* Adjust cursor if needed */
+  cursor:  not-allowed; 
+  margin-right: 10px;
+}
+
+.globally-screenshare-presenterImage {
+  filter: brightness(0) saturate(100%) invert(80%) sepia(1%) saturate(20%)
+    hue-rotate(0deg) brightness(65%) contrast(85%) !important; /* Applying color instead of grayscale */
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: not-allowed;
   margin-right: 10px;
 }
 

@@ -27,7 +27,7 @@ const fAQsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.response.responseMessage,
+        ResponseMessage: action.message,
         AllFAQsData: GetAllFAQsArray,
         ShowNotification: true,
       };
@@ -36,11 +36,8 @@ const fAQsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage:
-          action.response.responseMessage !== undefined
-            ? action.response.responseMessage
-            : action.response.responseMessage,
-        AllFAQsData: action.response.listOfFAQs,
+        ResponseMessage: action.message,
+        AllFAQsData: [],
         ShowNotification: true,
       };
 

@@ -23,16 +23,24 @@
 }
 
 .faqs_container {
-  width: 99% !important;
-  max-width: 99% !important;
+  max-height: 82vh !important;
+  overflow-y: auto;
+  width: 100% !important;
+  max-width: 97% !important;
   margin-left: 20px !important;
   margin-top: 40px !important;
+  overflow-x: hidden;
+  padding-right: 10px;
 }
 body[dir="rtl"] .faqs_container {
-  width: 99% !important;
-  max-width: 99% !important;
+  max-height: 82vh !important;
+  overflow-y: auto;
+  width: 100% !important;
+  max-width: 97% !important;
   margin-right: 20px !important;
   margin-top: 40px !important;
+  overflow-x: hidden;
+  padding-left: 10px;
 }
 
 .FaqsQuestionsStyles {

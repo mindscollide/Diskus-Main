@@ -1998,7 +1998,9 @@ export const SideBarGlobalNavigationFunction = async (
   t,
   sceduleMeeting,
   setSceduleMeeting,
-  setGoBackCancelModal
+  setGoBackCancelModal,
+  viewAdvanceMeetingModalUnpublish,
+  setViewAdvanceMeetingModalUnpublish
 ) => {
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -2008,7 +2010,6 @@ export const SideBarGlobalNavigationFunction = async (
   );
   if (viewAdvanceMeetingModal) {
     console.log("Checking");
-
     if (Number(editorRole?.status) === 10) {
       console.log("Checking");
 
@@ -2034,30 +2035,47 @@ export const SideBarGlobalNavigationFunction = async (
       } else {
         setCancelConfirmationModal(true);
       }
+    } else if (Number(editorRole.status) === 11) {
+      console.log("Checking");
+
+      dispatch(viewMeetingFlag(false));
+      setViewAdvanceMeetingModalUnpublish(false);
+      setViewAdvanceMeetingModal(false);
+      navigate(navigateValue);
     } else {
       console.log("Checking");
-      setViewAdvanceMeetingModal(false);
-      let searchData = {
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: Number(userID),
-        PageNumber: 1,
-        Length: 30,
-        PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
-      };
-      localStorage.setItem("MeetingPageRows", 30);
-      localStorage.setItem("MeetingPageCurrent", 1);
-      console.log("chek search meeting");
-      await dispatch(searchNewUserMeeting(navigate, searchData, t));
-      localStorage.removeItem("NotificationAdvanceMeetingID");
-      localStorage.removeItem("QuickMeetingCheckNotification");
-      localStorage.removeItem("viewadvanceMeetingPolls");
-      localStorage.removeItem("NotificationClickPollID");
-      localStorage.removeItem("AdvanceMeetingOperations");
-      localStorage.removeItem("NotificationClickTaskID");
-      localStorage.removeItem("viewadvanceMeetingTask");
+      try {
+        let searchData = {
+          Date: "",
+          Title: "",
+          HostName: "",
+          UserID: Number(userID),
+          PageNumber: 1,
+          Length: 30,
+          PublishedMeetings:
+            currentView && Number(currentView) === 1 ? true : false,
+        };
+        localStorage.setItem("MeetingPageRows", 30);
+        localStorage.setItem("MeetingPageCurrent", 1);
+        console.log("chek search meeting");
+        await dispatch(searchNewUserMeeting(navigate, searchData, t));
+        console.log(
+          typeof setViewAdvanceMeetingModal,
+          "setViewAdvanceMeetingModalsetViewAdvanceMeetingModal"
+        );
+        setViewAdvanceMeetingModal(false);
+        dispatch(viewMeetingFlag(false));
+        setViewAdvanceMeetingModalUnpublish(false);
+        localStorage.removeItem("NotificationAdvanceMeetingID");
+        localStorage.removeItem("QuickMeetingCheckNotification");
+        localStorage.removeItem("viewadvanceMeetingPolls");
+        localStorage.removeItem("NotificationClickPollID");
+        localStorage.removeItem("AdvanceMeetingOperations");
+        localStorage.removeItem("NotificationClickTaskID");
+        localStorage.removeItem("viewadvanceMeetingTask");
+      } catch (error) {
+        console.log("Checking", error);
+      }
     }
   } else if (sceduleMeeting) {
     setGoBackCancelModal(true);

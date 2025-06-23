@@ -328,59 +328,59 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   IsUpdateFlow: true,
                 };
 
-                if (
-                  response.data.responseResult?.agendaIdMappings !== null &&
-                  response.data.responseResult?.agendaIdMappings?.length > 0
-                ) {
-                  const newAgendas = {
-                    MeetingID: Number(object.MeetingID), // Meeting ID remains the same for all agendas
-                    UpdateFileList: object.MeetingAgendas.map((doc) => {
-                      const mainMatch =
-                        response.data.responseResult.agendaIdMappings.find(
-                          (item) => item.oldId === doc.ObjMeetingAgenda.PK_MAID
-                        );
+                const newAgendas = {
+                  MeetingID: Number(object.MeetingID), // Meeting ID remains the same for all agendas
+                  UpdateFileList: object.MeetingAgendas.map((doc) => {
+                    const mainMatch =
+                      Array.isArray(
+                        response.data.responseResult.agendaIdMappings
+                      ) &&
+                      response.data.responseResult.agendaIdMappings.length > 0
+                        ? response.data.responseResult.agendaIdMappings.find(
+                            (item) =>
+                              item.oldId === doc.ObjMeetingAgenda.PK_MAID
+                          )
+                        : null;
 
-                      // Only include agendas with attachments
-                      if (doc.MeetingAgendaAttachments.length > 0) {
-                        const AgendaID = String(
-                          mainMatch
-                            ? mainMatch.newId
-                            : doc.ObjMeetingAgenda.PK_MAID
-                        );
-                        const FileIds = doc.MeetingAgendaAttachments.map(
-                          (file) => ({
-                            PK_FileID: Number(file.OriginalAttachmentName),
-                          })
-                        );
+                    // Only include agendas with attachments
+                    if (doc.MeetingAgendaAttachments.length > 0) {
+                      const AgendaID = String(
+                        mainMatch
+                          ? mainMatch.newId
+                          : doc.ObjMeetingAgenda.PK_MAID
+                      );
+                      const FileIds = doc.MeetingAgendaAttachments.map(
+                        (file) => ({
+                          PK_FileID: Number(file.OriginalAttachmentName),
+                        })
+                      );
 
-                        return { AgendaID, FileIds };
-                      }
+                      return { AgendaID, FileIds };
+                    }
 
-                      return null; // Return null for agendas without attachments
-                    }).filter((agenda) => agenda !== null), // Remove null entries
-                  };
+                    return null; // Return null for agendas without attachments
+                  }).filter((agenda) => agenda !== null), // Remove null entries
+                };
 
-                  // Extract all OriginalAttachmentName values as numbers
-                  const attachmentIds = object.MeetingAgendas.flatMap(
-                    (agenda) =>
-                      agenda.MeetingAgendaAttachments.map((attachment) =>
-                        Number(attachment.OriginalAttachmentName)
-                      )
-                  );
+                // Extract all OriginalAttachmentName values as numbers
+                const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
+                  agenda.MeetingAgendaAttachments.map((attachment) =>
+                    Number(attachment.OriginalAttachmentName)
+                  )
+                );
 
-                  // Dispatch the updated data
-                  dispatch(
-                    CreateUpdateMeetingDataRoomMap(
-                      navigate,
-                      t,
-                      MappedData,
-                      attachmentIds,
-                      newAgendas,
-                      checkFlag,
-                      setEditFlag
-                    )
-                  );
-                }
+                // Dispatch the updated data
+                dispatch(
+                  CreateUpdateMeetingDataRoomMap(
+                    navigate,
+                    t,
+                    MappedData,
+                    attachmentIds,
+                    newAgendas,
+                    checkFlag,
+                    setEditFlag
+                  )
+                );
               } catch (error) {
                 console.log(
                   error,

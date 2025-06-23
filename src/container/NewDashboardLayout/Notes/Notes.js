@@ -17,7 +17,6 @@ import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import { Col, Row } from "react-bootstrap";
 import { formatToLocalTimezone } from "../../../commen/functions/date_formater";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
-import ModalAddNote from "../../notes/modalAddNote/ModalAddNote";
 import { useNotesContext } from "../../../context/NotesContext";
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -222,7 +221,6 @@ const Notes = () => {
           setGetNoteID={setGetNoteID}
         />
       )}
-      {createNotesModal && <ModalAddNote />}
     </>
   );
 };

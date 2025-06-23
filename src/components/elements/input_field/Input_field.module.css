@@ -177,6 +177,12 @@ body[dir="rtl"] .updateNotes_titleInput {
   padding-right: 50px !important;
 }
 
+@media screen and (max-width: 1224px) {
+  .meetingSearch {
+    width: 100% !important;
+  }
+}
+
 .meetinInnerSearch {
   position: relative !important;
   height: 39px !important;

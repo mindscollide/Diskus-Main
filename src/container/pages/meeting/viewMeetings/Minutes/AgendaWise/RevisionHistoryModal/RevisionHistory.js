@@ -283,7 +283,7 @@ const RevisionHistory = ({
                                     </p>
                                     <span>|</span>
                                     <p>
-                                      {t("Rejected")}:{" "}
+                                      {t("Reviewed")}:{" "}
                                       {
                                         revisionHistoryData?.mainMinute
                                           ?.reviewStats?.rejected
