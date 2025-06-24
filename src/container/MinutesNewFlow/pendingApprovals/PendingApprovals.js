@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
 import { Row, Col, Container, ProgressBar } from "react-bootstrap";
 import { useTranslation } from "react-i18next"; // Importing translation hook
@@ -33,13 +33,19 @@ import {
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 import { Checkbox, Dropdown, Menu } from "antd";
-
+import { MeetingContext } from "../../../context/MeetingContext";
 // Functional component for pending approvals section
 const PendingApproval = () => {
   const { t } = useTranslation(); // Translation hook
   const dispatch = useDispatch(); // Redux hook
   const navigate = useNavigate(); // Navigation hook
+  //newly implemented record
+  // Select the MQTT payloads from Redux
+  const AddedAsMinuteReviwer = useSelector(
+    (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload
+  );
 
+  console.log(AddedAsMinuteReviwer, "AddedAsMinuteReviwer");
   const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
     (state) =>
       state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
@@ -51,11 +57,6 @@ const PendingApproval = () => {
   const PendingApprovalCountDataData = useSelector(
     (state) => state.MinutesReducer.PendingApprovalCountData
   );
-  console.log(
-    PendingApprovalCountDataData,
-    "PendingApprovalCountDataDataPendingApprovalCountDataData"
-  );
-  // PendingApprovalCountData
 
   const getMinutesReviewerData = useSelector(
     (state) =>
@@ -73,11 +74,8 @@ const PendingApproval = () => {
     pendingMinutes: 0,
     pendingSignature: 0,
   });
+  const { pendingApprovalCount } = useContext(MeetingContext);
 
-  console.log(
-    pendingApprovalsCount,
-    "pendingApprovalsCountpendingApprovalsCount"
-  );
   const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
@@ -469,10 +467,9 @@ const PendingApproval = () => {
               {/* Buttons for reviewing minutes */}
               <Button
                 text={t("Review-minutes")}
-                icon={pendingApprovalsCount.pendingMinutes}
+                icon={pendingApprovalCount}
                 iconClass={
-                  reviewMinutesActive === false &&
-                  pendingApprovalsCount.pendingMinutes !== 0
+                  reviewMinutesActive === false && pendingApprovalCount !== 0
                     ? styles["pendingCountValue"]
                     : styles["pendingCountValue_hidden"]
                 }

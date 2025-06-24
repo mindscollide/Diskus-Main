@@ -124,15 +124,6 @@ const Talk = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
-  // Select the MQTT payloads from Redux
-  const AddedAsMinuteReviwer = useSelector(
-    (state) =>
-      state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload || []
-  );
-
-  console.log(AddedAsMinuteReviwer, "apiCountapiCountapiCount");
-  console.log(AddedAsMinuteReviwer.length, "apiCountapiCountapiCount");
-
   let currentLang = localStorage.getItem("i18nextLng");
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));

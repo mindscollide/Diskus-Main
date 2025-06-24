@@ -251,6 +251,7 @@ const Dashboard = () => {
     setIsVisible,
     setUnReadCountNotification,
     setPendingApprovalCount,
+    setPendingApprovalsCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -4486,7 +4487,6 @@ const Dashboard = () => {
             .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
         ) {
           dispatch(MinuteReviwerCount(data.payload));
-
           setPendingApprovalCount((prevCount) => (prevCount ?? 0) + 1);
         }
       }
