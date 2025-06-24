@@ -1,48 +1,22 @@
 {
-  "MeetingID": 5549,
-  "MeetingTitle": "Mindscollide ",
-  "MeetingDescription": "Mindscollide ",
-  "MeetingTypeID": 0,
-  "MeetingDate": "20250623",
-  "OrganizationId": 561,
-  "MeetingStartTime": "130000",
-  "MeetingEndTime": "130000",
-  "MeetingLocation": "Mindscollide ",
-  "IsVideoCall": false,
-  "IsChat": false,
-  "MeetingReminderID": [1],
-  "MeetingAgendas": [
-    {
-      "ObjMeetingAgenda": {
-        "PK_MAID": 5811,
-        "Title": "Mindscollide ",
-        "PresenterName": "SAIF UL ISLAM ",
-        "URLs": "",
-        "FK_MDID": 5549
-      },
-      "MeetingAgendaAttachments": [
-        {
-          "DisplayAttachmentName": "AssignmentP.docx",
-          "OriginalAttachmentName": "4956"
-        },
-        {
-          "DisplayAttachmentName": "Mehdi Audit log sp backup 13-05-2025.txt",
-          "OriginalAttachmentName": "4957"
-        }
-      ]
+  "action": "WorkFlow",
+  "senderID": 1351,
+  "receiverID": [1353],
+  "dateTime": "20250624121930",
+  "viewable": true,
+  "payload": {
+    "message": "MINUTE_REVIEWER_ADDED",
+    "data": {
+      "title": "Minutes MQTT Scenarion Checks ",
+      "workFlowID": 484,
+      "meetingID": 5563,
+      "status": "Pending",
+      "statusID": 1,
+      "requestedBy": "SAIF UL ISLAM ",
+      "requestedById": 1351,
+      "deadline": "20250625121835",
+      "isMinutePublished": false
     }
-  ],
-  "MeetingAttendees": [
-    {
-      "User": { "PK_UID": 1351 },
-      "MeetingAttendeeRole": { "PK_MARID": 1 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    },
-    {
-      "User": { "PK_UID": 1477 },
-      "MeetingAttendeeRole": { "PK_MARID": 2 },
-      "AttendeeAvailability": { "PK_AAID": 1 }
-    }
-  ],
-  "ExternalMeetingAttendees": []
+  },
+  "message": null
 }

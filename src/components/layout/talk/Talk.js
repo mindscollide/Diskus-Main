@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import "./Talk.css";
 import { Triangle } from "react-bootstrap-icons";
 import {
@@ -58,13 +58,15 @@ import {
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
 } from "../../../store/actions/Minutes_action.js";
 import { convertNumbersInString } from "../../../commen/functions/regex";
-
+import { clearMinuteReviewerMqtt } from "../../../store/actions/workflow_actions.js";
+import { MeetingContext } from "../../../context/MeetingContext";
 const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
-
+  const { pendingApprovalCount, setPendingApprovalCount } =
+    useContext(MeetingContext);
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const talkSocketUnreadMessageCount = useSelector(
@@ -122,6 +124,15 @@ const Talk = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
+  // Select the MQTT payloads from Redux
+  const AddedAsMinuteReviwer = useSelector(
+    (state) =>
+      state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload || []
+  );
+
+  console.log(AddedAsMinuteReviwer, "apiCountapiCountapiCount");
+  console.log(AddedAsMinuteReviwer.length, "apiCountapiCountapiCount");
+
   let currentLang = localStorage.getItem("i18nextLng");
 
   let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
@@ -150,8 +161,6 @@ const Talk = () => {
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
   const [missedCallCount, setMissedCallCount] = useState(0);
-
-  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
   // for video Icon Click
   const videoIconClick = () => {
@@ -219,6 +228,7 @@ const Talk = () => {
     dispatch
   );
   const handleMeetingPendingApprovals = async () => {
+    dispatch(clearMinuteReviewerMqtt());
     if (
       (scheduleMeetingPageFlagReducer === true ||
         viewProposeDateMeetingPageFlagReducer === true ||
@@ -472,8 +482,6 @@ const Talk = () => {
               className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
               onClick={handleMeetingPendingApprovals}
             >
-              {/* <span className="talk-count"></span> */}
-              {/* <span className={"talk-count"}> */}
               <span className={pendingApprovalCount === 0 ? "" : "talk-count"}>
                 {pendingApprovalCount === 0
                   ? ""

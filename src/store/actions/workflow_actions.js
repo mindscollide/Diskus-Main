@@ -2715,6 +2715,22 @@ const clearWorkFlowResponseMessage = (response) => {
   };
 };
 
+//Added as Minute Reviwer
+const MinuteReviwerCount = (response) => {
+  return {
+    type: actions.COUNT_FOR_ADDED_AS_MINUTE_REVIWER,
+    response: response,
+  };
+};
+
+//Clear as Minute Reviwer
+const clearMinuteReviewerMqtt = (response) => {
+  return {
+    type: actions.CLEAR_MINUTE_REVIEWER_MQTT,
+    response: response,
+  };
+};
+
 export {
   SignatureDocumentStatusChangeSignees,
   SignatureDocumentStatusChange,
@@ -2745,4 +2761,6 @@ export {
   addAnnoationSignatrueFlow,
   declineReasonApi,
   validateEncryptedStringSignatureDataApi,
+  MinuteReviwerCount,
+  clearMinuteReviewerMqtt,
 };
