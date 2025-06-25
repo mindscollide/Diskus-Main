@@ -251,7 +251,7 @@ const Dashboard = () => {
     setIsVisible,
     setUnReadCountNotification,
     setPendingApprovalCount,
-    setPendingApprovalsCount,
+    setreviewAndSignDocsCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -4443,6 +4443,7 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
+          setreviewAndSignDocsCount((prevCount) => (prevCount ?? 0) + 1);
         }
         if (
           data.payload.message

@@ -65,8 +65,11 @@ const Talk = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
-  const { pendingApprovalCount, setPendingApprovalCount } =
-    useContext(MeetingContext);
+  const {
+    pendingApprovalCount,
+    setPendingApprovalCount,
+    ReviewAndSignDocsCount,
+  } = useContext(MeetingContext);
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const talkSocketUnreadMessageCount = useSelector(
@@ -473,10 +476,20 @@ const Talk = () => {
               className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
               onClick={handleMeetingPendingApprovals}
             >
-              <span className={pendingApprovalCount === 0 ? "" : "talk-count"}>
-                {pendingApprovalCount === 0
-                  ? ""
-                  : convertNumbersInString(pendingApprovalCount, currentLang)}
+              <span
+                className={
+                  pendingApprovalCount || ReviewAndSignDocsCount
+                    ? "talk-count"
+                    : ""
+                }
+              >
+                {pendingApprovalCount || ReviewAndSignDocsCount
+                  ? convertNumbersInString(
+                      (pendingApprovalCount || 0) +
+                        (ReviewAndSignDocsCount || 0),
+                      currentLang
+                    )
+                  : ""}
               </span>
               <svg
                 width="35"
