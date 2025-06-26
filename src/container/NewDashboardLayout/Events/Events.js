@@ -221,7 +221,7 @@ const Events = () => {
     }
   }, [userProfileData]);
 
-  const meetingDashboardCalendarEvent = (data) => {
+  const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
     console.log("startMeetingRequest", data);
     const dashboardData = {
@@ -248,6 +248,7 @@ const Events = () => {
       isVideoCall: data.meetingDetails.isVideoCall,
       videoCallURL: data.meetingDetails.videoCallURL,
       talkGroupID: data.talkGroupID,
+      IsViewOpenOnly: val === 1 ? true : false,
     };
     console.log("startMeetingRequest", dashboardData);
     // Dispatch and navigate with no mutation
@@ -322,7 +323,8 @@ const Events = () => {
             <>
               <div
                 key={index}
-                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}>
+                className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}
+              >
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -330,7 +332,8 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : `${styles["event-details-block"]}`
-                  }>
+                  }
+                >
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -425,8 +428,9 @@ const Events = () => {
                     minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
-                    : ` ${styles["event-details"]}`
-                }>
+                    : ` ${styles["event-details"]} border-0 d-flex align-items-center justify-content-between`
+                }
+              >
                 <div
                   className={
                     (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -434,7 +438,8 @@ const Events = () => {
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
                       : ""
-                  }>
+                  }
+                >
                   <p className={styles["events-description"]}>
                     {upcomingEventsData.meetingDetails.title}
                   </p>
@@ -514,7 +519,19 @@ const Events = () => {
                       }}
                     />
                   ) : null
-                ) : null}
+                ) : (
+                  <Button
+                    text={t("View-meeting")}
+                    onClick={() => {
+                      meetingDashboardCalendarEvent(upcomingEventsData, 1);
+                      localStorage.setItem(
+                        "meetingTitle",
+                        upcomingEventsData.meetingDetails.title
+                      );
+                    }}
+                    className={styles["ViewMeetingButtonStyles"]}
+                  />
+                )}
               </div>
             </>
           )}
@@ -566,7 +583,7 @@ const Events = () => {
         <>
           {upComingEvents.length === 0 ? (
             <section className={styles["Events_Empty"]}>
-              <img src={noTask} alt='' width={300} draggable='false' />
+              <img src={noTask} alt="" width={300} draggable="false" />
               <span className={styles["No_UpcomingEvent_Text"]}>
                 {t("No-upcoming-events")}
               </span>

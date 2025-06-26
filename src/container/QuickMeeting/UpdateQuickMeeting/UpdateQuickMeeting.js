@@ -916,6 +916,9 @@ const UpdateQuickMeeting = ({
   };
   // for add another agenda main inputs handler
   const addAnOtherAgenda = async (e) => {
+    console.log("Update Scenario Checking");
+    console.log(fileForSend, "Update Scenario Checking");
+    console.log(attachments, "Update Scenario Checking");
     e.preventDefault();
     let previousAdendas = createMeeting.MeetingAgendas;
     if (editRecordFlag !== null && editRecordFlag === true) {
@@ -933,13 +936,19 @@ const UpdateQuickMeeting = ({
           // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
           let newFolder = [];
+          console.log(newfile, "Update Scenario Checking");
+
           const getSaveFilesRepsonse = await dispatch(
             saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
           );
+          console.log(newFolder, "Update Scenario Checking");
+
           if (
             getSaveFilesRepsonse.isExecuted &&
             getSaveFilesRepsonse.responseCode === 1
           ) {
+            console.log(getSaveFilesRepsonse, "Update Scenario Checking");
+
             getSaveFilesRepsonse.newFolder.forEach((fileData) => {
               let isFileNameAlreadyExist = fileforSend.findIndex(
                 (isExist) =>

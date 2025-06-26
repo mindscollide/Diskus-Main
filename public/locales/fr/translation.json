@@ -2387,5 +2387,7 @@
   "Logout-date": "Logout Date",
   "Logout-time": "Logout Time",
   "Logged-In": "Logged In",
-  "Logged-out": "Logged Out"
+  "Logged-out": "Logged Out",
+  "View-meeting": "View Meeting",
+  "Please-enter-Contact": "Please enter contact"
 }

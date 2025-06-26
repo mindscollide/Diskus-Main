@@ -209,6 +209,7 @@ import { DiskusGlobalUnreadNotificationCount } from "../../store/actions/UpdateU
 import CancelConfirmationModal from "../pages/meeting/cancelConfimationModal/CancelConfirmationModal";
 import { useMeetingContext } from "../../context/MeetingContext";
 import {
+  MinuteReviwerCount,
   SignatureDocumentActionByMe,
   SignatureDocumentReceived,
   SignatureDocumentReceivedMyMe,
@@ -249,6 +250,7 @@ const Dashboard = () => {
     stopRecordingState,
     setIsVisible,
     setUnReadCountNotification,
+    setPendingApprovalTabCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -4482,6 +4484,10 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: (prev.pendingSignature ?? 0) + 1,
+          }));
         }
         if (
           data.payload.message
@@ -4518,6 +4524,19 @@ const Dashboard = () => {
             )
         ) {
           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
+        }
+
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
+        ) {
+          dispatch(MinuteReviwerCount(data.payload));
+          // setPendingApprovalCount((prevCount) => (prevCount ?? 0) + 1);
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
+          }));
         }
       }
       if (data.action.toLowerCase() === "Settings".toLowerCase()) {

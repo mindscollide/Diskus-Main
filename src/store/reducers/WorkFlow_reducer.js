@@ -30,6 +30,7 @@ const initialState = {
   workflowsignaturedocumentActionByMe: null,
   signatureDocumentStatusChangeForSignees: null,
   validateEncryptedStringSignatureDataResponse: null,
+  addedAsMinuteReviwerMqttPayload: null,
 };
 
 const SignatureWorkflowReducer = (state = initialState, action) => {
@@ -578,6 +579,20 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
         Loading: false,
         validateEncryptedStringSignatureDataResponse: null,
         ResponseMessage: "",
+      };
+    }
+
+    case actions.COUNT_FOR_ADDED_AS_MINUTE_REVIWER: {
+      return {
+        ...state,
+        addedAsMinuteReviwerMqttPayload: action.response,
+      };
+    }
+
+    case actions.CLEAR_MINUTE_REVIEWER_MQTT: {
+      return {
+        ...state,
+        addedAsMinuteReviwerMqttPayload: [],
       };
     }
 
