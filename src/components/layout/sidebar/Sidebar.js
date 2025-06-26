@@ -353,6 +353,162 @@ const Sidebar = () => {
     );
   };
 
+  const handleMeetingNavigation = ({
+    targetPath,
+    navigateLocationKey,
+    handleWithCall,
+    handleNoCall,
+  }) => {
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    console.log("Check Route scenario's", targetPath);
+    console.log("Check Route scenario's", location.pathname);
+
+    if (isMeeting) {
+      console.log("Check Route scenario's");
+      if (location.pathname !== targetPath) {
+        console.log("Check Route scenario's");
+        navigate(targetPath);
+        return "";
+      }
+
+      if (!isMeetingVideo) {
+        console.log("Show end meeting modal");
+        dispatch(showEndMeetingModal(true));
+      } else {
+        console.log("Show end meeting modal");
+
+        if (
+          (activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null) &&
+          isMeetingVideo
+        ) {
+          console.log("Show end meeting modal");
+
+          console.log("No active call, go to no-call handler");
+          if (typeof handleNoCall === "function") {
+            handleNoCall();
+          }
+        } else {
+          console.log("Show end meeting modal");
+
+          if (isMeetingVideo && typeof handleWithCall === "function") {
+            console.log("Active call, go to with-call handler");
+            handleWithCall();
+          }
+        }
+      }
+
+      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+        localStorage.removeItem("navigateLocation");
+      }
+
+      localStorage.setItem("navigateLocation", navigateLocationKey);
+      return true; // block further click logic
+    }
+
+    if (endMeetingModal) {
+      console.log("End Meeting Modal is open — blocking navigation.");
+      return true;
+    }
+
+    const shouldRedirectToMeeting =
+      (scheduleMeetingsPageFlag ||
+        viewProposeDateMeetingsPageFlag ||
+        viewAdvanceMeetingsPublishPageFlag ||
+        viewAdvanceMeetingsUnpublishPageFlag ||
+        viewProposeOrganizerMeetingsPageFlag ||
+        proposeNewMeetingsPageFlag) &&
+      !viewMeetingsFlag;
+
+    if (shouldRedirectToMeeting) {
+      navigate("/Diskus/Meeting");
+    } else {
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("NotificationClickSendResponseByDate");
+      console.log("Check Route scenario's");
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      navigate(targetPath);
+    }
+
+    return false; // allow navigation
+  };
+
+  const handleSidebarNavigation = ({
+    targetPath,
+    navigateLocationKey,
+    handleWithCall,
+    handleNoCall,
+  }) => {
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    console.log("Check Route scenario's", targetPath);
+    console.log("Check Route scenario's");
+    if (isMeeting) {
+      if (location.pathname !== targetPath && !viewAdvanceMeetingModal ) {
+        console.log("Check Route scenario's");
+        navigate(targetPath);
+        return "";
+      }
+      console.log("Check Route scenario's");
+      if (!isMeetingVideo) {
+        console.log("Check Route scenario's");
+        dispatch(showEndMeetingModal(true));
+      } else {
+        console.log("Check Route scenario's");
+        if (
+          (activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null) &&
+          isMeetingVideo
+        ) {
+          console.log("Check Route scenario's");
+          handleNoCall();
+        } else {
+          console.log("Check Route scenario's");
+          if (isMeetingVideo) {
+            console.log("Check Route scenario's");
+            handleWithCall();
+          }
+        }
+      }
+
+      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+        console.log("Check Route scenario's");
+        localStorage.removeItem("navigateLocation");
+      }
+
+      localStorage.setItem("navigateLocation", navigateLocationKey);
+      return true;
+    }
+
+    if (endMeetingModal) {
+      console.log("End Meeting Modal is open — blocking navigation.");
+      return true;
+    }
+
+    const shouldRedirectToMeeting =
+      (scheduleMeetingsPageFlag ||
+        viewProposeDateMeetingsPageFlag ||
+        viewAdvanceMeetingsPublishPageFlag ||
+        viewAdvanceMeetingsUnpublishPageFlag ||
+        viewProposeOrganizerMeetingsPageFlag ||
+        proposeNewMeetingsPageFlag) &&
+      !viewMeetingsFlag;
+
+    if (shouldRedirectToMeeting) {
+      console.log("Check Route scenario's");
+      navigate("/Diskus/Meeting");
+    } else {
+      console.log("Check Route scenario's");
+      navigate(targetPath);
+    }
+
+    return false;
+  };
+
   console.log("activeCall", CurrentMeetingStatus);
   return (
     <>
@@ -803,79 +959,16 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      const isHost = JSON.parse(localStorage.getItem("isHost"));
-                      if (isMeeting) {
+                      const handled = handleMeetingNavigation({
+                        targetPath: "/Diskus/Meeting",
+                        navigateLocationKey: "Meeting",
+                        handleWithCall: handleMeetingSidebarClick,
+                        handleNoCall: handleMeetingSidebarClickNoCall,
+                      });
+                      if (handled) {
+                        e.preventDefault();
                         console.log("Check Route scenario's");
-                        if (!isMeetingVideo) {
-                          console.log("Check Route scenario's");
-                          dispatch(showEndMeetingModal(true)); // Show the modal
-                        } else {
-                          // Handle click action based on active call
-                          if (
-                            (activeCall === false ||
-                              activeCall === undefined ||
-                              activeCall === null) &&
-                            isMeetingVideo
-                          ) {
-                            console.log("Check Route scenario's");
-                            handleMeetingSidebarClickNoCall();
-                          } else {
-                            console.log("Check Route scenario's");
-                            if (isMeetingVideo) {
-                              console.log("Check Route scenario's");
-
-                              handleMeetingSidebarClick();
-                            }
-                          }
-                        }
-                        if (
-                          !isMeetingVideoHostCheck &&
-                          !isHost &&
-                          !isMeetingVideo
-                        ) {
-                          console.log("Check Route scenario's");
-                          localStorage.removeItem("navigateLocation");
-                          // navigate("/Diskus/Meeting");
-                        }
-                        localStorage.setItem("navigateLocation", "Meeting");
-
                         return;
-                      }
-
-                      // Block routing if the modal is already open
-                      if (endMeetingModal) {
-                        console.log(
-                          "End Meeting Modal is open — blocking navigation."
-                        );
-                        return;
-                      }
-
-                      // If user is not in a meeting, allow normal route logic
-                      const shouldRedirectToMeeting =
-                        (scheduleMeetingsPageFlag === true ||
-                          viewProposeDateMeetingsPageFlag === true ||
-                          viewAdvanceMeetingsPublishPageFlag === true ||
-                          viewAdvanceMeetingsUnpublishPageFlag === true ||
-                          viewProposeOrganizerMeetingsPageFlag === true ||
-                          proposeNewMeetingsPageFlag === true) &&
-                        viewMeetingsFlag === false;
-
-                      if (shouldRedirectToMeeting) {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/Meeting");
-                      } else {
-                        console.log("Check Route scenario's");
-                        localStorage.removeItem("AdvanceMeetingOperations");
-                        localStorage.removeItem("NotificationAdvanceMeetingID");
-                        localStorage.removeItem(
-                          "NotificationClickSendResponseByDate"
-                        );
-                        dispatch(viewAdvanceMeetingPublishPageFlag(false));
-                        navigate("/Diskus/Meeting");
                       }
                     }}
                   >
@@ -893,7 +986,17 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(13) ? (
                   <Nav.Link
                     as={Link}
-                    to={"/Diskus/dataroom"}
+                    to={
+                      (scheduleMeetingsPageFlag === true ||
+                        viewProposeDateMeetingsPageFlag === true ||
+                        viewAdvanceMeetingsPublishPageFlag === true ||
+                        viewAdvanceMeetingsUnpublishPageFlag === true ||
+                        viewProposeOrganizerMeetingsPageFlag === true ||
+                        proposeNewMeetingsPageFlag === true) &&
+                      viewMeetingsFlag === false
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/dataroom"
+                    }
                     draggable="false"
                     className={
                       location.pathname === "/Diskus/dataroom" ||
@@ -902,72 +1005,18 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      e.preventDefault();
+                      console.log(e, "Check Route scenario's");
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/dataroom",
+                        navigateLocationKey: "dataroom",
+                        handleWithCall: handleMeetingSidebarDataroom,
+                        handleNoCall: handleMeetingSidebarDataroomNoCall,
+                      });
 
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      const isHost = JSON.parse(localStorage.getItem("isHost"));
-                      if (isMeeting) {
+                      if (handled) {
                         console.log("Check Route scenario's");
-                        if (!isMeetingVideo) {
-                          console.log("Check Route scenario's");
-                          dispatch(showEndMeetingModal(true)); // Show the modal
-                        } else {
-                          // Handle click action based on active call
-                          if (
-                            (activeCall === false ||
-                              activeCall === undefined ||
-                              activeCall === null) &&
-                            isMeetingVideo
-                          ) {
-                            console.log("Check Route scenario's");
-                            handleMeetingSidebarDataroomNoCall();
-                          } else {
-                            console.log("Check Route scenario's");
-                            if (isMeetingVideo) {
-                              handleMeetingSidebarDataroom();
-                            }
-                          }
-                        }
-                        if (
-                          !isMeetingVideoHostCheck &&
-                          !isHost &&
-                          !isMeetingVideo
-                        ) {
-                          console.log("Check Route scenario's");
-                          localStorage.removeItem("navigateLocation");
-                          // navigate("/Diskus/dataroom");
-                        }
-                        localStorage.setItem("navigateLocation", "dataroom");
-
+                        e.preventDefault();
                         return;
-                      }
-
-                      // Block routing if the modal is already open
-                      if (endMeetingModal) {
-                        console.log(
-                          "End Meeting Modal is open — blocking navigation."
-                        );
-                        return;
-                      }
-
-                      // If user is not in a meeting, allow normal route logic
-                      const shouldRedirectToMeeting =
-                        (scheduleMeetingsPageFlag === true ||
-                          viewProposeDateMeetingsPageFlag === true ||
-                          viewAdvanceMeetingsPublishPageFlag === true ||
-                          viewAdvanceMeetingsUnpublishPageFlag === true ||
-                          viewProposeOrganizerMeetingsPageFlag === true ||
-                          proposeNewMeetingsPageFlag === true) &&
-                        viewMeetingsFlag === false;
-
-                      if (shouldRedirectToMeeting) {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/Meeting");
-                      } else {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/dataroom");
                       }
                     }}
                   >
@@ -986,7 +1035,17 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(18) ? (
                   <Nav.Link
                     as={Link}
-                    to={"/Diskus/resolution"}
+                    to={
+                      (scheduleMeetingsPageFlag === true ||
+                        viewProposeDateMeetingsPageFlag === true ||
+                        viewAdvanceMeetingsPublishPageFlag === true ||
+                        viewAdvanceMeetingsUnpublishPageFlag === true ||
+                        viewProposeOrganizerMeetingsPageFlag === true ||
+                        proposeNewMeetingsPageFlag === true) &&
+                      viewMeetingsFlag === false
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/resolution"
+                    }
                     disabled={false}
                     draggable="false"
                     className={
@@ -997,70 +1056,16 @@ const Sidebar = () => {
                     }
                     onClick={(e) => {
                       // Prevent default behavior
-                      e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      const isHost = JSON.parse(localStorage.getItem("isHost"));
-                      if (isMeeting) {
-                        console.log("Check Route scenario's");
-                        if (!isMeetingVideo) {
-                          console.log("Check Route scenario's");
-                          dispatch(showEndMeetingModal(true)); // Show the modal
-                        } else {
-                          // Handle click action based on active call
-                          if (
-                            (activeCall === false ||
-                              activeCall === undefined ||
-                              activeCall === null) &&
-                            isMeetingVideo
-                          ) {
-                            console.log("Check Route scenario's");
-                            handleMeetingSidebarResolutionsNoCall();
-                          } else {
-                            console.log("Check Route scenario's");
-                            if (isMeetingVideo) {
-                              handleMeetingSidebarResolutions();
-                            }
-                          }
-                        }
-                        if (
-                          !isMeetingVideoHostCheck &&
-                          !isHost &&
-                          !isMeetingVideo
-                        ) {
-                          console.log("Check Route scenario's");
-                          localStorage.removeItem("navigateLocation");
-                        }
-                        localStorage.setItem("navigateLocation", "resolution");
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/resolution",
+                        navigateLocationKey: "resolution",
+                        handleWithCall: handleMeetingSidebarResolutions,
+                        handleNoCall: handleMeetingSidebarResolutionsNoCall,
+                      });
 
+                      if (handled) {
+                        e.preventDefault();
                         return;
-                      }
-
-                      // Block routing if the modal is already open
-                      if (endMeetingModal) {
-                        console.log(
-                          "End Meeting Modal is open — blocking navigation."
-                        );
-                        return;
-                      }
-
-                      // If user is not in a meeting, allow normal route logic
-                      const shouldRedirectToMeeting =
-                        (scheduleMeetingsPageFlag === true ||
-                          viewProposeDateMeetingsPageFlag === true ||
-                          viewAdvanceMeetingsPublishPageFlag === true ||
-                          viewAdvanceMeetingsUnpublishPageFlag === true ||
-                          viewProposeOrganizerMeetingsPageFlag === true ||
-                          proposeNewMeetingsPageFlag === true) &&
-                        viewMeetingsFlag === false;
-
-                      if (shouldRedirectToMeeting) {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/Meeting");
-                      } else {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/resolution");
                       }
                     }}
                   >
@@ -1079,7 +1084,17 @@ const Sidebar = () => {
                 {checkFeatureIDAvailability(48) ? (
                   <Nav.Link
                     as={Link}
-                    to={"/Diskus/committee"}
+                    to={
+                      (scheduleMeetingsPageFlag === true ||
+                        viewProposeDateMeetingsPageFlag === true ||
+                        viewAdvanceMeetingsPublishPageFlag === true ||
+                        viewAdvanceMeetingsUnpublishPageFlag === true ||
+                        viewProposeOrganizerMeetingsPageFlag === true ||
+                        proposeNewMeetingsPageFlag === true) &&
+                      viewMeetingsFlag === false
+                        ? "/Diskus/Meeting"
+                        : "/Diskus/committee"
+                    }
                     disabled={false}
                     draggable="false"
                     className={
@@ -1091,71 +1106,14 @@ const Sidebar = () => {
                     onClick={(e) => {
                       // Prevent default behavior
                       e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/committee",
+                        navigateLocationKey: "committee",
+                        handleWithCall: handleMeetingSidebarCommittees,
+                        handleNoCall: handleMeetingSidebarCommitteesNoCall,
+                      });
 
-                      const isHost = JSON.parse(localStorage.getItem("isHost"));
-                      if (isMeeting) {
-                        console.log("Check Route scenario's");
-                        if (!isMeetingVideo) {
-                          console.log("Check Route scenario's");
-                          dispatch(showEndMeetingModal(true)); // Show the modal
-                        } else {
-                          // Handle click action based on active call
-                          if (
-                            (activeCall === false ||
-                              activeCall === undefined ||
-                              activeCall === null) &&
-                            isMeetingVideo
-                          ) {
-                            console.log("Check Route scenario's");
-                            handleMeetingSidebarCommitteesNoCall();
-                          } else {
-                            console.log("Check Route scenario's");
-                            if (isMeetingVideo) {
-                              handleMeetingSidebarCommittees();
-                            }
-                          }
-                        }
-                        if (
-                          !isMeetingVideoHostCheck &&
-                          !isHost &&
-                          !isMeetingVideo
-                        ) {
-                          console.log("Check Route scenario's");
-                          localStorage.removeItem("navigateLocation");
-                        }
-                        localStorage.setItem("navigateLocation", "committee");
-
-                        return;
-                      }
-
-                      // Block routing if the modal is already open
-                      if (endMeetingModal) {
-                        console.log(
-                          "End Meeting Modal is open — blocking navigation."
-                        );
-                        return;
-                      }
-
-                      // If user is not in a meeting, allow normal route logic
-                      const shouldRedirectToMeeting =
-                        (scheduleMeetingsPageFlag === true ||
-                          viewProposeDateMeetingsPageFlag === true ||
-                          viewAdvanceMeetingsPublishPageFlag === true ||
-                          viewAdvanceMeetingsUnpublishPageFlag === true ||
-                          viewProposeOrganizerMeetingsPageFlag === true ||
-                          proposeNewMeetingsPageFlag === true) &&
-                        viewMeetingsFlag === false;
-
-                      if (shouldRedirectToMeeting) {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/Meeting");
-                      } else {
-                        console.log("Check Route scenario's");
-                        navigate("/Diskus/committee");
-                      }
+                      if (handled) return;
                     }}
                   >
                     {/* CommitteeIcon */}
