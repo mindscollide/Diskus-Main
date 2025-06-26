@@ -9,6 +9,7 @@ import {
   TextField,
 } from "../../../../../components/elements";
 import { useNavigate } from "react-router-dom";
+import ReactFlagsSelect from "react-flags-select";
 import { regexOnlyCharacters } from "../../../../../commen/functions/regex";
 import { checkEmailExsist } from "../../../../../store/actions/Admin_Organization";
 import { validateEmailEnglishAndArabicFormat } from "../../../../../commen/functions/validations";
@@ -20,6 +21,7 @@ import {
   GetOrganizationSelectedPackagesByOrganizationIDApi,
   getOrganizationPackageUserStatsAPI,
 } from "../../../../../store/actions/UserManagementActions";
+import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 const AddUsers = () => {
   const { t } = useTranslation();
 
@@ -53,6 +55,8 @@ const AddUsers = () => {
     useState("");
   const [companyEmailValidate, setCompanyEmailValidate] = useState(false);
   const [totalUserCount, setTotalUserCount] = useState(0);
+  const [selected, setSelected] = useState("US");
+  const [selectedCountry, setSelectedCountry] = useState({});
   const [addUserFreeTrial, setAddUserFreeTrial] = useState({
     Name: {
       value: "",
@@ -71,7 +75,14 @@ const AddUsers = () => {
       errorMessage: "",
       errorStatus: false,
     },
+
+    Contact: {
+      value: "",
+      errorMessage: "",
+      errorStatus: false,
+    },
     isAdmin: 3,
+    CountyCode: 0,
   });
 
   // before my changes there's an request data going init this API
@@ -235,6 +246,28 @@ const AddUsers = () => {
         },
       });
     }
+
+    if (name === "Contact" && value !== "") {
+      if (value !== "") {
+        setAddUserFreeTrial({
+          ...addUserFreeTrial,
+          Contact: {
+            value: value.trimStart(),
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+      }
+    } else if (name === "Contact" && value === "") {
+      setAddUserFreeTrial({
+        ...addUserFreeTrial,
+        Contact: {
+          value: "",
+          errorMessage: "",
+          errorStatus: false,
+        },
+      });
+    }
   };
 
   //Onchange for CheckBox IsAdmin
@@ -306,7 +339,8 @@ const AddUsers = () => {
     if (
       addUserFreeTrial.Name.value !== "" &&
       addUserFreeTrial.Desgination.value !== "" &&
-      addUserFreeTrial.Email.value !== ""
+      addUserFreeTrial.Email.value !== "" &&
+      addUserFreeTrial.Contact.value !== ""
     ) {
       let data = {
         UserDataList: [
@@ -314,7 +348,7 @@ const AddUsers = () => {
             UserName: addUserFreeTrial.Name.value,
             OrganizationName: "",
             Designation: addUserFreeTrial.Desgination.value,
-            MobileNumber: "",
+            MobileNumber: addUserFreeTrial.Contact.value,
             UserEmail: addUserFreeTrial.Email.value,
             OrganizationID: Number(organizationID),
             RoleID: addUserFreeTrial.isAdmin,
@@ -361,8 +395,33 @@ const AddUsers = () => {
               ? true
               : addUserFreeTrial.Email.errorStatus,
         },
+        Contact: {
+          value: addUserFreeTrial.Contact.value,
+          errorMessage:
+            addUserFreeTrial.Contact.value === ""
+              ? t("Please-enter-Contact")
+              : addUserFreeTrial.Contact.errorMessage,
+          errorStatus:
+            addUserFreeTrial.Contact.value === ""
+              ? true
+              : addUserFreeTrial.Contact.errorStatus,
+        },
       });
     }
+  };
+
+  // React Flag Select OnChange
+  const handleSelect = (country) => {
+    setSelected(country);
+    setSelectedCountry(country);
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      return obj.primary === country;
+    });
+
+    setAddUserFreeTrial({
+      ...addUserFreeTrial,
+      CountyCode: a.id,
+    });
   };
 
   return (
@@ -529,6 +588,54 @@ const AddUsers = () => {
                   )}
                 </Col>
               </Row>
+            </Col>
+          </Row>
+          <div>
+            <span className={styles["NameCreateAddtional"]}>
+              {t("Contact")} <span className={styles["Steric"]}>*</span>
+            </span>
+          </div>
+          <Row>
+            <Col
+              lg={4}
+              md={4}
+              sm={4}
+              xs={12}
+              className={styles["react-User-Profile"]}
+            >
+              <ReactFlagsSelect
+                fullWidth={false}
+                selected={selected}
+                onSelect={handleSelect}
+                searchable={true}
+                placeholder={"Select Co...."}
+                customLabels={countryNameforPhoneNumber}
+                className={styles["userProfileFlagSelect"]}
+              />
+            </Col>
+            <Col lg={8} md={8} sm={8} xs={12}>
+              <TextField
+                placeholder={t("Contact")}
+                value={addUserFreeTrial.Contact.value}
+                name={"Contact"}
+                labelclass={"d-none"}
+                change={handleAddUsersFreeTrial}
+                applyClass={"updateNotes_titleInput"}
+              />
+            </Col>
+            <Col>
+              <p
+                className={
+                  addUserFreeTrial.Contact.errorStatus &&
+                  addUserFreeTrial.Contact.value === ""
+                    ? ` ${styles["errorMessage"]}`
+                    : `${styles["errorMessage_hidden"]}`
+                }
+              >
+                {addUserFreeTrial.Contact.value === ""
+                  ? t("Please-enter-Contact")
+                  : addUserFreeTrial.Contact.errorMessage}
+              </p>
             </Col>
           </Row>
         </Col>
