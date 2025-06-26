@@ -221,7 +221,7 @@ const Events = () => {
     }
   }, [userProfileData]);
 
-  const meetingDashboardCalendarEvent = (data) => {
+  const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
     console.log("startMeetingRequest", data);
     const dashboardData = {
@@ -248,6 +248,7 @@ const Events = () => {
       isVideoCall: data.meetingDetails.isVideoCall,
       videoCallURL: data.meetingDetails.videoCallURL,
       talkGroupID: data.talkGroupID,
+      IsViewOpenOnly: val === 1 ? true : false,
     };
     console.log("startMeetingRequest", dashboardData);
     // Dispatch and navigate with no mutation
@@ -412,19 +413,7 @@ const Events = () => {
                         );
                       }}
                     />
-                  ) : (
-                    <Button
-                      text={t("View-meeting")}
-                      className={styles["joining-Meeting-Upcoming"]}
-                      onClick={() => {
-                        meetingDashboardCalendarEvent(upcomingEventsData);
-                        localStorage.setItem(
-                          "meetingTitle",
-                          upcomingEventsData.meetingDetails.title
-                        );
-                      }}
-                    />
-                  )
+                  ) : null
                 ) : null}
               </div>
             </>
@@ -439,7 +428,7 @@ const Events = () => {
                     minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
-                    : ` ${styles["event-details"]}`
+                    : ` ${styles["event-details"]} border-0 d-flex align-items-center justify-content-between`
                 }
               >
                 <div
@@ -530,7 +519,19 @@ const Events = () => {
                       }}
                     />
                   ) : null
-                ) : null}
+                ) : (
+                  <Button
+                    text={t("View-meeting")}
+                    onClick={() => {
+                      meetingDashboardCalendarEvent(upcomingEventsData, 1);
+                      localStorage.setItem(
+                        "meetingTitle",
+                        upcomingEventsData.meetingDetails.title
+                      );
+                    }}
+                    className={styles["ViewMeetingButtonStyles"]}
+                  />
+                )}
               </div>
             </>
           )}

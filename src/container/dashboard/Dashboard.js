@@ -250,7 +250,6 @@ const Dashboard = () => {
     stopRecordingState,
     setIsVisible,
     setUnReadCountNotification,
-    setPendingApprovalCount,
     setPendingApprovalTabCount,
   } = useMeetingContext();
 

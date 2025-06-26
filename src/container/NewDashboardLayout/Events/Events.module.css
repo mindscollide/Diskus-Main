@@ -140,3 +140,19 @@ body[dir="rtl"] .event-details:hover {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+.ViewMeetingButtonStyles {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+
+.ViewMeetingButtonStyles:is(:active, :focus, :hover, :focus-visible) {
+  background: #6172d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
