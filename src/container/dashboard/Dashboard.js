@@ -251,7 +251,7 @@ const Dashboard = () => {
     setIsVisible,
     setUnReadCountNotification,
     setPendingApprovalCount,
-    setreviewAndSignDocsCount,
+    setPendingApprovalTabCount,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -4443,7 +4443,10 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
-          setreviewAndSignDocsCount((prevCount) => (prevCount ?? 0) + 1);
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: (prev.pendingSignature ?? 0) + 1,
+          }));
         }
         if (
           data.payload.message
@@ -4488,7 +4491,11 @@ const Dashboard = () => {
             .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
         ) {
           dispatch(MinuteReviwerCount(data.payload));
-          setPendingApprovalCount((prevCount) => (prevCount ?? 0) + 1);
+          // setPendingApprovalCount((prevCount) => (prevCount ?? 0) + 1);
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
+          }));
         }
       }
       if (data.action.toLowerCase() === "Settings".toLowerCase()) {

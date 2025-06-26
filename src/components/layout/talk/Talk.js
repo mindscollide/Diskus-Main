@@ -68,7 +68,7 @@ const Talk = () => {
   const {
     pendingApprovalCount,
     setPendingApprovalCount,
-    ReviewAndSignDocsCount,
+    pendingApprovalsTabCount,
   } = useContext(MeetingContext);
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
@@ -383,8 +383,6 @@ const Talk = () => {
       PendingApprovalCountData !== undefined
     ) {
       setPendingApprovalCount(PendingApprovalCountData.pendingApprovalsCount);
-    } else {
-      setPendingApprovalCount(0);
     }
   }, [PendingApprovalCountData]);
 
@@ -478,15 +476,17 @@ const Talk = () => {
             >
               <span
                 className={
-                  pendingApprovalCount || ReviewAndSignDocsCount
+                  pendingApprovalsTabCount.pendingMinutes ||
+                  pendingApprovalsTabCount.pendingSignature
                     ? "talk-count"
                     : ""
                 }
               >
-                {pendingApprovalCount || ReviewAndSignDocsCount
+                {pendingApprovalsTabCount.pendingMinutes ||
+                pendingApprovalsTabCount.pendingSignature
                   ? convertNumbersInString(
-                      (pendingApprovalCount || 0) +
-                        (ReviewAndSignDocsCount || 0),
+                      (pendingApprovalsTabCount.pendingMinutes || 0) +
+                        (pendingApprovalsTabCount.pendingSignature || 0),
                       currentLang
                     )
                   : ""}

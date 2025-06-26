@@ -70,14 +70,14 @@ const PendingApproval = () => {
   const [reviewMinutesActive, setReviewMinutesActive] = useState(true); // Default Review Minutes button to active
   const [reviewAndSignActive, setReviewAndSignActive] = useState(false);
   const [progress, setProgress] = useState([]);
-  const [pendingApprovalsCount, setPendingApprovalCount] = useState({
-    pendingMinutes: 0,
-    pendingSignature: 0,
-  });
-  const { pendingApprovalCount, ReviewAndSignDocsCount } =
-    useContext(MeetingContext);
 
-  console.log({ pendingApprovalCount, ReviewAndSignDocsCount }, "hello");
+  const {
+    pendingApprovalCount,
+    setPendingApprovalTabCount,
+    pendingApprovalsTabCount,
+  } = useContext(MeetingContext);
+
+  console.log({ pendingApprovalsTabCount }, "hello");
   const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
@@ -420,7 +420,11 @@ const PendingApproval = () => {
       if (PendingApprovalCountDataData !== null) {
         const { pendingMinuteReviews, pendingSignatures } =
           PendingApprovalCountDataData;
-        setPendingApprovalCount({
+        console.log(
+          PendingApprovalCountDataData,
+          "PendingApprovalCountDataData"
+        );
+        setPendingApprovalTabCount({
           pendingMinutes: pendingMinuteReviews,
           pendingSignature: pendingSignatures,
         });
@@ -469,9 +473,10 @@ const PendingApproval = () => {
               {/* Buttons for reviewing minutes */}
               <Button
                 text={t("Review-minutes")}
-                icon={pendingApprovalCount}
+                icon={pendingApprovalsTabCount.pendingMinutes}
                 iconClass={
-                  reviewMinutesActive === false && pendingApprovalCount !== 0
+                  reviewMinutesActive === false &&
+                  pendingApprovalsTabCount.pendingMinutes !== 0
                     ? styles["pendingCountValue"]
                     : styles["pendingCountValue_hidden"]
                 }
@@ -487,10 +492,11 @@ const PendingApproval = () => {
                 checkFeatureIDAvailability(21)) && (
                 <Button
                   text={t("Review-&-sign")}
-                  icon={ReviewAndSignDocsCount}
+                  icon={pendingApprovalsTabCount.pendingSignature}
                   // iconClass={styles["pendingSignatureValue"]}
                   iconClass={
-                    ReviewAndSignDocsCount !== 0 && !reviewAndSignActive
+                    pendingApprovalsTabCount.pendingSignature !== 0 &&
+                    !reviewAndSignActive
                       ? styles["pendingSignatureValue"]
                       : styles["pendingSignatureValue_hidden"]
                   }

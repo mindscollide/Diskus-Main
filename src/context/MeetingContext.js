@@ -251,8 +251,10 @@ export const MeetingProvider = ({ children }) => {
   //Work Flow pending approval count state Main out Icon
   const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
 
-  //Work Flow pending approval count state
-  const [ReviewAndSignDocsCount, setreviewAndSignDocsCount] = useState(0);
+  const [pendingApprovalsTabCount, setPendingApprovalTabCount] = useState({
+    pendingMinutes: 0,
+    pendingSignature: 0,
+  });
 
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
@@ -442,8 +444,8 @@ export const MeetingProvider = ({ children }) => {
     setViewAdvanceMeetingModalUnpublish,
     pendingApprovalCount,
     setPendingApprovalCount,
-    ReviewAndSignDocsCount,
-    setreviewAndSignDocsCount,
+    pendingApprovalsTabCount,
+    setPendingApprovalTabCount,
   };
 
   // Provide the state data to the context
