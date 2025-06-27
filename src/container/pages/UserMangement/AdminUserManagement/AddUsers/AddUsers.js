@@ -248,7 +248,7 @@ const AddUsers = () => {
     }
 
     if (name === "Contact" && value !== "") {
-      if (value !== "") {
+      if (/^\d+$/.test(value) || value === "") {
         setAddUserFreeTrial({
           ...addUserFreeTrial,
           Contact: {
@@ -257,16 +257,16 @@ const AddUsers = () => {
             errorStatus: false,
           },
         });
+      } else {
+        setAddUserFreeTrial({
+          ...addUserFreeTrial,
+          Contact: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
       }
-    } else if (name === "Contact" && value === "") {
-      setAddUserFreeTrial({
-        ...addUserFreeTrial,
-        Contact: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
     }
   };
 
@@ -352,7 +352,7 @@ const AddUsers = () => {
             UserEmail: addUserFreeTrial.Email.value,
             OrganizationID: Number(organizationID),
             RoleID: addUserFreeTrial.isAdmin,
-            FK_NumberWorldCountryID: Number(worldCountryID),
+            FK_NumberWorldCountryID: Number(addUserFreeTrial.CountyCode),
             PackageID: 4,
           },
         ],
