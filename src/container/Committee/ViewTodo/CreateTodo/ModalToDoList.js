@@ -39,8 +39,7 @@ import { maxFileSize } from "../../../../commen/functions/utils";
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const {  dateObject, current_value } =
-    get_CurrentDateTime();
+  const { dateObject, current_value } = get_CurrentDateTime();
   const [fileSize, setFileSize] = useState(0);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
@@ -363,75 +362,99 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   useEffect(() => {
     try {
-      if (
-        CommitteeReducer.getCommitteeByCommitteeID !== null &&
-        CommitteeReducer.getCommitteeByCommitteeID !== undefined
-      ) {
-        let getUserDetails =
-          CommitteeReducer.getCommitteeByCommitteeID.committeMembers;
+      const committee = CommitteeReducer.getCommitteeByCommitteeID;
+      if (committee && committee.committeMembers) {
+        const getUserDetails = committee.committeMembers;
 
-        let PresenterData = [];
-        getUserDetails.forEach((user, index) => {
-          PresenterData.push({
+        const PresenterData = getUserDetails.map((user) => ({
+          label: (
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className='d-flex gap-2 align-items-center'>
+                <img
+                  src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+                  height='16.45px'
+                  width='18.32px'
+                  draggable='false'
+                  alt=''
+                  className='border-rounded'
+                />
+                <span>{user.userName}</span>
+              </Col>
+            </Row>
+          ),
+          value: user.pK_UID,
+          name: user.userName,
+        }));
+
+        const foundCreator = getUserDetails.find(
+          (user) => Number(user.pK_UID) === Number(createrID)
+        );
+
+        if (foundCreator) {
+          setTaskAssignedTo([foundCreator.pK_UID]);
+          setPresenterValue({
             label: (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className='d-flex gap-2 align-items-center'>
-                    <img
-                      src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                      height='16.45px'
-                      width='18.32px'
-                      draggable='false'
-                      alt=''
-                      className='border-rounded'
-                    />
-                    <span>{user.userName}</span>
-                  </Col>
-                </Row>
-              </>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-2 align-items-center'>
+                  <img
+                    src={`data:image/jpeg;base64,${foundCreator.userProfilePicture.displayProfilePictureName}`}
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
+                    className='border-rounded'
+                  />
+                  <span>{foundCreator.userName}</span>
+                </Col>
+              </Row>
             ),
-            value: user.pK_UID,
-            name: user.userName,
+            value: foundCreator.pK_UID,
+            name: foundCreator.userName,
           });
-          if (Number(user.pK_UID) === Number(createrID)) {
-            setTaskAssignedTo([user.pK_UID]);
-            setPresenterValue({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                        className='border-rounded'
-                      />
-                      <span>{user.userName}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: user.pK_UID,
-              name: user.userName,
-            });
-          }
-        });
-        let sortAssginersArr = PresenterData.sort((a, b) =>
+        } else if (getUserDetails.length > 0) {
+          const fallbackUser = getUserDetails[0];
+          setTaskAssignedTo([fallbackUser.pK_UID]);
+          setPresenterValue({
+            label: (
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex gap-2 align-items-center'>
+                  <img
+                    src={`data:image/jpeg;base64,${fallbackUser.userProfilePicture.displayProfilePictureName}`}
+                    height='16.45px'
+                    width='18.32px'
+                    draggable='false'
+                    alt=''
+                    className='border-rounded'
+                  />
+                  <span>{fallbackUser.userName}</span>
+                </Col>
+              </Row>
+            ),
+            value: fallbackUser.pK_UID,
+            name: fallbackUser.userName,
+          });
+        }
+
+        const sortedAssigners = PresenterData.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
-        setAllPresenters(sortAssginersArr);
+        setAllPresenters(sortedAssigners);
       }
-    } catch {}
+    } catch (error) {
+      console.error("Error in committee useEffect:", error);
+    }
   }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   const handleDeleteAttendee = (data, index) => {
@@ -609,6 +632,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       applyClass='createtodo-description'
                       type='text'
                       as={"textarea"}
+                      value={task.Description}
                       rows='7'
                       placeholder={t("Description")}
                       maxLength={2000}

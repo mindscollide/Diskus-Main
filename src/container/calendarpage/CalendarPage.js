@@ -22,9 +22,7 @@ import {
   getCurrentDateTimeUTC,
 } from "../../commen/functions/date_formater";
 import TodoListModal from "../todolistModal/ModalToDoList";
-import {
-  clearResponseMessage,
-} from "../../store/actions/Get_List_Of_Assignees";
+import { clearResponseMessage } from "../../store/actions/Get_List_Of_Assignees";
 import { useTranslation } from "react-i18next";
 import { cleareMessage } from "../../store/actions/Admin_AddUser";
 import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
@@ -869,19 +867,18 @@ const CalendarPage = () => {
 
   return (
     <>
-      <div className="calendar_container">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
+      <div className='calendar_container'>
+        <Row className='d-flex justify-content-start align-items-center margin-bottom-15 mt-2'>
           <Col lg={2} md={2} sm={2} xs={12}>
-            <span className="Calender-heading">{t("Calendar")}</span>
+            <span className='Calender-heading'>{t("Calendar")}</span>
           </Col>
           <Col lg={2} md={2} sm={2}>
             <Row>
               <Col lg={12} md={12} sm={12}>
                 <Dropdown
-                  className="Calendar_CreateBtn"
+                  className='Calendar_CreateBtn'
                   onClick={eventClickHandler}
-                  align={"start"}
-                >
+                  align={"start"}>
                   <Dropdown.Toggle title={t("Create")}>
                     <Plus width={20} height={20} fontWeight={800} />
                     <span>{t("Create")}</span>
@@ -891,9 +888,8 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(1) ? (
                       <>
                         <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={handleCreateMeeting}
-                        >
+                          className='dropdown-item'
+                          onClick={handleCreateMeeting}>
                           {t("Schedule-a-meeting")}
                         </Dropdown.Item>
                       </>
@@ -901,9 +897,8 @@ const CalendarPage = () => {
                     {checkFeatureIDAvailability(14) ? (
                       <>
                         <Dropdown.Item
-                          className="dropdown-item"
-                          onClick={handleCreateTodo}
-                        >
+                          className='dropdown-item'
+                          onClick={handleCreateTodo}>
                           {t("Create-a-to-do-list")}
                         </Dropdown.Item>
                       </>
@@ -914,7 +909,7 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row className="align-items-center">
+        <Row className='align-items-center'>
           <Calendar
             events={calenderData}
             startDataUpdate={startDataUpdate}
@@ -922,7 +917,7 @@ const CalendarPage = () => {
             endDataUpdate={endDataUpdate}
             setEndDataUpdate={setEndDataUpdate}
             handleEventSelect={viewModalHandler}
-            className="calendar"
+            className='calendar'
             onChange={onChange}
             handleAddEvent={handleAddEvent}
             setCalendarView={setCalendarView}
@@ -950,8 +945,13 @@ const CalendarPage = () => {
           setShow={setMeetingModalShow}
         />
       )}
+      {todolistModalShow && (
+        <TodoListModal
+          show={todolistModalShow}
+          setShow={setTodolistModalShow}
+        />
+      )}
 
-      <TodoListModal show={todolistModalShow} setShow={setTodolistModalShow} />
       <Notification open={open} setOpen={setOpen} />
     </>
   );

@@ -8346,7 +8346,7 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Something-went-wrong")));
+              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }
@@ -8642,7 +8642,7 @@ const LeaveCurrentMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase()
                 )
             ) {
               dispatch(leaveMeetingFail(t("Something-went-wrong")));
@@ -8680,7 +8680,8 @@ const LeaveCurrentMeetingOtherMenus = (
   viewProposeOrganizerMeetingPageFlagReducer,
   proposeNewMeetingPageFlagReducer,
   viewMeetingFlagReducer,
-  location
+  location,
+  setViewAdvanceMeetingModal
 ) => {
   console.log(
     {
@@ -8699,6 +8700,7 @@ const LeaveCurrentMeetingOtherMenus = (
       proposeNewMeetingPageFlagReducer,
       viewMeetingFlagReducer,
       location,
+      setViewAdvanceMeetingModal
     },
     "Coming inside this block scopr"
   );
@@ -8740,7 +8742,8 @@ const LeaveCurrentMeetingOtherMenus = (
               viewProposeOrganizerMeetingPageFlagReducer,
               proposeNewMeetingPageFlagReducer,
               viewMeetingFlagReducer,
-              location
+              location,
+              setViewAdvanceMeetingModal
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -8788,6 +8791,7 @@ const LeaveCurrentMeetingOtherMenus = (
                   navigate,
                   dispatch,
                   location,
+                  setViewAdvanceMeetingModal,
                   flags: {
                     scheduleMeetingPageFlagReducer,
                     viewProposeDateMeetingPageFlagReducer,
@@ -8829,7 +8833,7 @@ const LeaveCurrentMeetingOtherMenus = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase()
                 )
             ) {
               dispatch(leaveMeetingFail(t("Something-went-wrong")));
@@ -10791,7 +10795,7 @@ const NewJoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Something-went-wrong")));
+              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }

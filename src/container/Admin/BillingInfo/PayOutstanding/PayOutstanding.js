@@ -81,6 +81,7 @@ const PayOutstanding = () => {
   const hadlePayInvoiceButton = () => {};
 
   const handleViewInvoice = () => {
+    console.log("hello");
     let Data = {
       OrganizationID:
         localStorage.getItem("organizationID") !== null
@@ -113,15 +114,16 @@ const PayOutstanding = () => {
   return (
     <>
       <Container>
-        <Row className='my-3 '>
-          <Col sm={12} md={8} lg={8} className='d-flex justify-content-end'>
+        <Row className="my-3 ">
+          <Col sm={12} md={8} lg={8} className="d-flex justify-content-end">
             <section className={styles["PayoutStandingCard"]}>
               <Row>
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className={styles["PayOutstanding_Heading"]}>
+                  className={styles["PayOutstanding_Heading"]}
+                >
                   {t("Pay-outstanding")}
                 </Col>
               </Row>
@@ -249,7 +251,7 @@ const PayOutstanding = () => {
                 }
               />
               <Row>
-                <Col sm={12} md={12} lg={12} className='mt-3 p-0'>
+                <Col sm={12} md={12} lg={12} className="mt-3 p-0">
                   <Button
                     text={t("Pay-invoice-now")}
                     className={
@@ -265,8 +267,8 @@ const PayOutstanding = () => {
                 </Col>
               </Row>
 
-              <Row className='p-0 my-2'>
-                <Col sm={12} md={6} lg={6} className='mt-2 ps-0'>
+              <Row className="p-0 my-2">
+                <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
                   <Button
                     text={t("View-invoice-detail")}
                     className={
@@ -277,7 +279,7 @@ const PayOutstanding = () => {
                     onClick={handleViewInvoice}
                   />
                 </Col>
-                <Col sm={12} md={6} lg={6} className='mt-2 pe-0'>
+                <Col sm={12} md={6} lg={6} className="mt-2 pe-0">
                   <Button
                     text={t("Download-invoice")}
                     className={
@@ -292,7 +294,7 @@ const PayOutstanding = () => {
             </section>
           </Col>
           <Col sm={12} md={1} lg={1}></Col>
-          <Col sm={12} md={3} lg={3} className='d-flex justify-content-center'>
+          <Col sm={12} md={3} lg={3} className="d-flex justify-content-center">
             <section className={styles["Assistance"]}>
               <Row>
                 <Col
@@ -300,26 +302,29 @@ const PayOutstanding = () => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className='d-flex justify-content-end'>
-                  <img src={crossIcon} alt='' className='cursor-pointer' />
+                  className="d-flex justify-content-end"
+                >
+                  <img src={crossIcon} alt="" className="cursor-pointer" />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
                   xs={12}
-                  className='d-flex justify-content-center'>
-                  <img src={CallingAssistant} alt='' />
+                  className="d-flex justify-content-center"
+                >
+                  <img src={CallingAssistant} alt="" />
                 </Col>
               </Row>
-              <Row className='mt-2'>
+              <Row className="mt-2">
                 <Col
                   sm={12}
                   md={12}
                   lg={12}
-                  className='d-flex flex-column flex-wrap text-center'>
+                  className="d-flex flex-column flex-wrap text-center"
+                >
                   <span className={styles["CallAssistantSubHeading"]}>
                     {t("If-you-need-any-assistance")}
                   </span>
@@ -328,8 +333,8 @@ const PayOutstanding = () => {
                   </span>
                 </Col>
               </Row>
-              <Row className='mt-2'>
-                <Col lg={12} md={12} sm={12} className='text-center'>
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12} className="text-center">
                   <span className={styles["BussniessmailStyles"]}>
                     {t("account@letsdiskus.com")}
                   </span>

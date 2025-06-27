@@ -64,7 +64,6 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import Recording from "./recording/Recording";
 const ViewMeetingModal = ({
   advanceMeetingModalID,
-  setViewAdvanceMeetingModal,
   setAdvanceMeetingModalID,
   unPublish,
   dataroomMapFolderId,
@@ -90,6 +89,7 @@ const ViewMeetingModal = ({
     resumeRecordingState,
     stopRecordingState,
     setStartRecordingState,
+    setViewAdvanceMeetingModal,
     setPauseRecordingState,
     setResumeRecordingState,
     setStopRecordingState,
@@ -562,6 +562,7 @@ const ViewMeetingModal = ({
       }
       //       console.log("Check LeaveCall new");dispatch(LeaveCall
       // (Data, navigate, t));
+      console.log("cehek location");
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];
@@ -570,6 +571,7 @@ const ViewMeetingModal = ({
       localStorage.setItem("isCaller", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
+      localStorage.removeItem("navigateLocation");
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
@@ -578,6 +580,9 @@ const ViewMeetingModal = ({
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
     } else {
+      console.log("cehek location");
+      localStorage.removeItem("navigateLocation");
+
       localStorage.setItem("isMeeting", false);
       let currentMeeting = localStorage.getItem("currentMeetingID");
       let leaveMeetingData = {

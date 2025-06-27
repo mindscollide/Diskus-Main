@@ -301,14 +301,12 @@ const Participants = ({
           }
         },
       },
-
       {
         title: t("Role"),
         dataIndex: "participantRole",
         key: "participantRole",
         align: "left",
         ellipsis: true,
-
         render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
@@ -353,14 +351,12 @@ const Participants = ({
           }
         },
       },
-
       {
         title: t("RSVP"),
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
         align: "left",
         ellipsis: true,
-
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
@@ -411,12 +407,10 @@ const Participants = ({
           }
         },
       },
-
       {
         dataIndex: "Close",
         key: "Close",
         ellipsis: true,
-
         render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||

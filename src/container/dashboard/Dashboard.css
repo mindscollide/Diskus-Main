@@ -45,11 +45,11 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 }
 
 .dashbaord_data {
-  width: 95%;
+  width: calc(100% - 100px);
   height: calc(100vh - 89px);
 }
 .talk_features_home {
-  width: 5%;
+  width: 20px;
 }
 .mainDashboardLayout {
   min-height: 100vh;

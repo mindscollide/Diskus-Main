@@ -51,6 +51,10 @@ export const MeetingProvider = ({ children }) => {
   // State for managing view flags and modals
   const [viewFlag, setViewFlag] = useState(false);
   const [viewAdvanceMeetingModal, setViewAdvanceMeetingModal] = useState(false);
+  const [
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
+  ] = useState(false);
   const [viewProposeDatePoll, setViewProposeDatePoll] = useState(false);
   const [advanceMeetingModalID, setAdvanceMeetingModalID] = useState(0);
   const [dataroomMapFolderId, setDataroomMapFolderId] = useState(0);
@@ -204,6 +208,9 @@ export const MeetingProvider = ({ children }) => {
   // Create a ref for the iframe element
   const iframeRef = useRef(null);
 
+  // For Incoming Calls Modal State
+  const [isVisible, setIsVisible] = useState(true);
+
   // Meeting BoardDeck
   const [boardDeckMeetingID, setBoardDeckMeetingID] = useState(0);
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
@@ -240,6 +247,14 @@ export const MeetingProvider = ({ children }) => {
 
   // For Web Notification Count
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
+
+  //Work Flow pending approval count state Main out Icon
+  const [pendingApprovalCount, setPendingApprovalCount] = useState(0);
+
+  const [pendingApprovalsTabCount, setPendingApprovalTabCount] = useState({
+    pendingMinutes: 0,
+    pendingSignature: 0,
+  });
 
   // Consolidate all states into a single object for easier passing to the context
   let statesData = {
@@ -421,8 +436,16 @@ export const MeetingProvider = ({ children }) => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    isVisible,
+    setIsVisible,
     unReadCountNotification,
     setUnReadCountNotification,
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
+    pendingApprovalCount,
+    setPendingApprovalCount,
+    pendingApprovalsTabCount,
+    setPendingApprovalTabCount,
   };
 
   // Provide the state data to the context

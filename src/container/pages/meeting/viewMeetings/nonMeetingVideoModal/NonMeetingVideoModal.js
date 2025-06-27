@@ -40,6 +40,7 @@ const NonMeetingVideoModal = () => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    setIsVisible,
   } = useMeetingContext();
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
@@ -163,9 +164,14 @@ const NonMeetingVideoModal = () => {
       (presenterViewHostFlag || presenterViewJoinFlag)
     ) {
       console.log("busyCall");
-      console.log("busyCall");
-      await onHandleClickForStopRecording();
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (isZoomEnabled) {
+        if (pauseRecordingState || resumeRecordingState) {
+          console.log("busyCall");
+          await onHandleClickForStopRecording();
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      }
+      setIsVisible(false);
       setLeavePresenterViewToJoinOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(false));
     } else if (
@@ -188,8 +194,13 @@ const NonMeetingVideoModal = () => {
 
       //Before Joining the Meeting Video we should need to make a LeaveCall for Dashboard Video
 
-      await onHandleClickForStopRecording();
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      if (isZoomEnabled) {
+        if (pauseRecordingState || resumeRecordingState) {
+          console.log("busyCall");
+          await onHandleClickForStopRecording();
+          await new Promise((resolve) => setTimeout(resolve, 100));
+        }
+      }
 
       let Data = {
         OrganizationID: currentOrganization,

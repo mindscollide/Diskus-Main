@@ -24,6 +24,7 @@ import {
   LeaveMeetingSideBarModalAction,
   searchNewUserMeeting,
   showEndMeetingModal,
+  viewAdvanceMeetingPublishPageFlag,
   viewMeetingFlag,
 } from "../../../store/actions/NewMeetingActions";
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
@@ -46,8 +47,10 @@ const Sidebar = () => {
     sceduleMeeting,
     setSceduleMeeting,
     setGoBackCancelModal,
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
   } = useMeetingContext();
-
+  console.log(viewAdvanceMeetingModal, "viewAdvanceMeetingModal");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -97,9 +100,40 @@ const Sidebar = () => {
   const LeaveMeetingSideBarModalTrigger = useSelector(
     (state) => state.NewMeetingreducer.LeaveMeetingSidebarModal
   );
+
+  const endMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.endMeetingModal
+  );
+
+  const showVideoIntimationMessegeModal = useSelector(
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
+  );
+
+  console.log(endMeetingModal, "endMeetingModalendMeetingModal");
+
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
   let Blur = localStorage.getItem("blur");
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+
+  console.log(
+    {
+      scheduleMeetingsPageFlag,
+      viewProposeDateMeetingsPageFlag,
+      viewAdvanceMeetingsPublishPageFlag,
+      viewAdvanceMeetingsUnpublishPageFlag,
+      viewProposeOrganizerMeetingsPageFlag,
+      proposeNewMeetingsPageFlag,
+      viewMeetingsFlag,
+      LeaveMeetingSideBarModalTrigger,
+      viewMeetingFlagReducer,
+    },
+    "Checkecbejkjbwekcb"
+  );
 
   const sidebarshow = useRef();
 
@@ -122,10 +156,25 @@ const Sidebar = () => {
 
   const handleMoreOptions = () => {
     setShowMore(!showMore);
+    console.log("Check new one");
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    if (isMeeting && isMeetingVideo) {
+      if (isMeetingVideoHostCheck) {
+        console.log("Check new one");
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
+    }
   };
 
   const handleMoreOptionActiveCall = () => {
     setShowMore(!showMore);
+    console.log("Check new one");
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(true));
     dispatch(normalizeVideoPanelFlag(false));
@@ -142,9 +191,9 @@ const Sidebar = () => {
   //Meeting SideBar Click
   const handleMeetingSidebarClick = () => {
     console.log("Checking");
-
     localStorage.setItem("navigateLocation", "Meeting");
     if (CurrentMeetingStatus === 10) {
+      console.log("Checking");
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(true));
@@ -157,8 +206,13 @@ const Sidebar = () => {
   );
 
   const handleMeetingSidebarClickNoCall = () => {
-    console.log("Checking");
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "Meeting");
+    console.log("Checking", editorRole);
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -173,7 +227,9 @@ const Sidebar = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
+      viewAdvanceMeetingModalUnpublish,
+      setViewAdvanceMeetingModalUnpublish
     );
   };
 
@@ -181,6 +237,7 @@ const Sidebar = () => {
   const handleMeetingSidebarDataroom = () => {
     console.log("Checking");
     localStorage.setItem("navigateLocation", "dataroom");
+    console.log(CurrentMeetingStatus, "CurrentMeetingStatus");
     if (CurrentMeetingStatus === 10) {
       dispatch(LeaveInitmationMessegeVideoMeetAction(true));
       dispatch(maximizeVideoPanelFlag(false));
@@ -190,7 +247,12 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarDataroomNoCall = () => {
-    console.log("Checking");
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
+
     localStorage.setItem("navigateLocation", "dataroom");
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
@@ -206,7 +268,9 @@ const Sidebar = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
+      viewAdvanceMeetingModalUnpublish,
+      setViewAdvanceMeetingModalUnpublish
     );
   };
 
@@ -222,7 +286,14 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarResolutionsNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "resolution");
+
+    console.log("Checking", editorRole);
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -237,7 +308,9 @@ const Sidebar = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
+      viewAdvanceMeetingModalUnpublish,
+      setViewAdvanceMeetingModalUnpublish
     );
   };
 
@@ -253,7 +326,13 @@ const Sidebar = () => {
   };
 
   const handleMeetingSidebarCommitteesNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
     localStorage.setItem("navigateLocation", "committee");
+    console.log("Checking", editorRole);
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -268,8 +347,166 @@ const Sidebar = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
+      viewAdvanceMeetingModalUnpublish,
+      setViewAdvanceMeetingModalUnpublish
     );
+  };
+
+  const handleMeetingNavigation = ({
+    targetPath,
+    navigateLocationKey,
+    handleWithCall,
+    handleNoCall,
+  }) => {
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    console.log("Check Route scenario's", targetPath);
+    console.log("Check Route scenario's", location.pathname);
+
+    if (isMeeting) {
+      console.log("Check Route scenario's");
+      if (location.pathname !== targetPath) {
+        console.log("Check Route scenario's");
+        navigate(targetPath);
+        return "";
+      }
+
+      if (!isMeetingVideo) {
+        console.log("Show end meeting modal");
+        dispatch(showEndMeetingModal(true));
+      } else {
+        console.log("Show end meeting modal");
+
+        if (
+          (activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null) &&
+          isMeetingVideo
+        ) {
+          console.log("Show end meeting modal");
+
+          console.log("No active call, go to no-call handler");
+          if (typeof handleNoCall === "function") {
+            handleNoCall();
+          }
+        } else {
+          console.log("Show end meeting modal");
+
+          if (isMeetingVideo && typeof handleWithCall === "function") {
+            console.log("Active call, go to with-call handler");
+            handleWithCall();
+          }
+        }
+      }
+
+      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+        localStorage.removeItem("navigateLocation");
+      }
+
+      localStorage.setItem("navigateLocation", navigateLocationKey);
+      return true; // block further click logic
+    }
+
+    if (endMeetingModal) {
+      console.log("End Meeting Modal is open — blocking navigation.");
+      return true;
+    }
+
+    const shouldRedirectToMeeting =
+      (scheduleMeetingsPageFlag ||
+        viewProposeDateMeetingsPageFlag ||
+        viewAdvanceMeetingsPublishPageFlag ||
+        viewAdvanceMeetingsUnpublishPageFlag ||
+        viewProposeOrganizerMeetingsPageFlag ||
+        proposeNewMeetingsPageFlag) &&
+      !viewMeetingsFlag;
+
+    if (shouldRedirectToMeeting) {
+      navigate("/Diskus/Meeting");
+    } else {
+      localStorage.removeItem("AdvanceMeetingOperations");
+      localStorage.removeItem("NotificationAdvanceMeetingID");
+      localStorage.removeItem("NotificationClickSendResponseByDate");
+      console.log("Check Route scenario's");
+      dispatch(viewAdvanceMeetingPublishPageFlag(false));
+      navigate(targetPath);
+    }
+
+    return false; // allow navigation
+  };
+
+  const handleSidebarNavigation = ({
+    targetPath,
+    navigateLocationKey,
+    handleWithCall,
+    handleNoCall,
+  }) => {
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    console.log("Check Route scenario's", targetPath);
+    console.log("Check Route scenario's");
+    if (isMeeting) {
+      if (location.pathname !== targetPath && !viewAdvanceMeetingModal ) {
+        console.log("Check Route scenario's");
+        navigate(targetPath);
+        return "";
+      }
+      console.log("Check Route scenario's");
+      if (!isMeetingVideo) {
+        console.log("Check Route scenario's");
+        dispatch(showEndMeetingModal(true));
+      } else {
+        console.log("Check Route scenario's");
+        if (
+          (activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null) &&
+          isMeetingVideo
+        ) {
+          console.log("Check Route scenario's");
+          handleNoCall();
+        } else {
+          console.log("Check Route scenario's");
+          if (isMeetingVideo) {
+            console.log("Check Route scenario's");
+            handleWithCall();
+          }
+        }
+      }
+
+      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+        console.log("Check Route scenario's");
+        localStorage.removeItem("navigateLocation");
+      }
+
+      localStorage.setItem("navigateLocation", navigateLocationKey);
+      return true;
+    }
+
+    if (endMeetingModal) {
+      console.log("End Meeting Modal is open — blocking navigation.");
+      return true;
+    }
+
+    const shouldRedirectToMeeting =
+      (scheduleMeetingsPageFlag ||
+        viewProposeDateMeetingsPageFlag ||
+        viewAdvanceMeetingsPublishPageFlag ||
+        viewAdvanceMeetingsUnpublishPageFlag ||
+        viewProposeOrganizerMeetingsPageFlag ||
+        proposeNewMeetingsPageFlag) &&
+      !viewMeetingsFlag;
+
+    if (shouldRedirectToMeeting) {
+      console.log("Check Route scenario's");
+      navigate("/Diskus/Meeting");
+    } else {
+      console.log("Check Route scenario's");
+      navigate(targetPath);
+    }
+
+    return false;
   };
 
   console.log("activeCall", CurrentMeetingStatus);
@@ -701,7 +938,6 @@ const Sidebar = () => {
                 checkFeatureIDAvailability(9) ? (
                   <Nav.Link
                     as={Link}
-                    
                     to={
                       (scheduleMeetingPageFlagReducer === true ||
                         viewProposeDateMeetingPageFlagReducer === true ||
@@ -723,15 +959,16 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      // Explicitly evaluate activeCall
-                      if (activeCall === false||activeCall===undefined||activeCall===null) {
-                        handleMeetingSidebarClickNoCall();
-                      } else {
-                        handleMeetingSidebarClick();
+                      const handled = handleMeetingNavigation({
+                        targetPath: "/Diskus/Meeting",
+                        navigateLocationKey: "Meeting",
+                        handleWithCall: handleMeetingSidebarClick,
+                        handleNoCall: handleMeetingSidebarClickNoCall,
+                      });
+                      if (handled) {
+                        e.preventDefault();
+                        console.log("Check Route scenario's");
+                        return;
                       }
                     }}
                   >
@@ -768,15 +1005,18 @@ const Sidebar = () => {
                         : "m-0 p-0 iconItemSideBarMain"
                     }
                     onClick={(e) => {
-                      e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      // Explicitly evaluate activeCall
-                      if (activeCall === false||activeCall===undefined||activeCall===null) {
-                        handleMeetingSidebarDataroomNoCall();
-                      } else {
-                        handleMeetingSidebarDataroom();
+                      console.log(e, "Check Route scenario's");
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/dataroom",
+                        navigateLocationKey: "dataroom",
+                        handleWithCall: handleMeetingSidebarDataroom,
+                        handleNoCall: handleMeetingSidebarDataroomNoCall,
+                      });
+
+                      if (handled) {
+                        console.log("Check Route scenario's");
+                        e.preventDefault();
+                        return;
                       }
                     }}
                   >
@@ -816,15 +1056,16 @@ const Sidebar = () => {
                     }
                     onClick={(e) => {
                       // Prevent default behavior
-                      e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      // Explicitly evaluate activeCall
-                      if (activeCall === false||activeCall===undefined||activeCall===null) {
-                        handleMeetingSidebarResolutionsNoCall();
-                      } else {
-                        handleMeetingSidebarResolutions();
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/resolution",
+                        navigateLocationKey: "resolution",
+                        handleWithCall: handleMeetingSidebarResolutions,
+                        handleNoCall: handleMeetingSidebarResolutionsNoCall,
+                      });
+
+                      if (handled) {
+                        e.preventDefault();
+                        return;
                       }
                     }}
                   >
@@ -865,15 +1106,14 @@ const Sidebar = () => {
                     onClick={(e) => {
                       // Prevent default behavior
                       e.preventDefault();
-                      const activeCall = JSON.parse(
-                        localStorage.getItem("activeCall")
-                      );
-                      // Explicitly evaluate activeCall
-                      if (activeCall === false||activeCall===undefined||activeCall===null) {
-                        handleMeetingSidebarCommitteesNoCall();
-                      } else {
-                        handleMeetingSidebarCommittees();
-                      }
+                      const handled = handleSidebarNavigation({
+                        targetPath: "/Diskus/committee",
+                        navigateLocationKey: "committee",
+                        handleWithCall: handleMeetingSidebarCommittees,
+                        handleNoCall: handleMeetingSidebarCommitteesNoCall,
+                      });
+
+                      if (handled) return;
                     }}
                   >
                     {/* CommitteeIcon */}
@@ -921,7 +1161,11 @@ const Sidebar = () => {
                           localStorage.getItem("activeCall")
                         );
                         // Explicitly evaluate activeCall
-                        if (activeCall === false||activeCall===undefined||activeCall===null) {
+                        if (
+                          activeCall === false ||
+                          activeCall === undefined ||
+                          activeCall === null
+                        ) {
                           handleMoreOptions();
                         } else {
                           handleMoreOptionActiveCall();

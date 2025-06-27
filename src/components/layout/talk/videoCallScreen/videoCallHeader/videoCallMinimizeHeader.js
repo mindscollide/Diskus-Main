@@ -221,6 +221,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
+  const VideoRecipentData = useSelector(
+    (state) => state.VideoMainReducer.VideoRecipentData
+  );
+
   const MinimizeVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
@@ -649,6 +653,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         CallTypeID: currentCallType,
       };
       await console.log("Check LeaveCall new");
+      if (isZoomEnabled) {
+        if (globallyScreenShare) {
+          console.log("Check LeaveCall new");
+          await dispatch(screenShareTriggeredGlobally(false));
+        }
+      }
       dispatch(LeaveCall(Data, navigate, t));
       leaveSuccess();
     }
@@ -1047,6 +1057,36 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     }
   };
 
+  const getMeetingTitle = () => {
+    const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    const callTypeID = Number(localStorage.getItem("callTypeID"));
+
+    if (isMeetingVideo) {
+      return meetingTitle?.trim();
+    }
+    if (presenterViewHostFlag || presenterViewJoinFlag) {
+      return meetingTitle?.trim();
+    }
+    if (callTypeID === 2 && !presenterViewHostFlag && !presenterViewJoinFlag) {
+      return t("Group-call");
+    }
+    if (
+      currentUserName !== VideoRecipentData.userName &&
+      Object.keys(VideoRecipentData).length > 0
+    ) {
+      return (
+        VideoRecipentData.userName ||
+        VideoRecipentData.recipients?.[0]?.userName
+      );
+    }
+
+    if (Object.keys(VideoRecipentData).length === 0) {
+      return callerName;
+    }
+
+    return null;
+  };
+
   return (
     <>
       <div className="videoCallGroupScreen-minmizeVideoCall">
@@ -1063,30 +1103,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               dispatch(minimizeVideoPanelFlag(false));
             }}
           >
-            <p className="title-heading">
-              {currentCallType === 2 ||
-              callTypeID === 2 ||
-              presenterViewFlag ||
-              isMeetingVideo
-                ? meetingTitle === ""
-                  ? t("Group-call")
-                  : meetingTitle
-                : currentUserName !==
-                    VideoMainReducer.VideoRecipentData.userName &&
-                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                  initiateVideoCallFlag === true
-                ? VideoMainReducer.VideoRecipentData.userName ||
-                  VideoMainReducer.VideoRecipentData.recipients[0].userName
-                : currentUserName !==
-                    VideoMainReducer.VideoRecipentData.userName &&
-                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                  initiateVideoCallFlag === false
-                ? VideoMainReducer.VideoRecipentData.userName ||
-                  VideoMainReducer.VideoRecipentData.recipients[0].userName
-                : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
-                ? callerName
-                : null}
-            </p>
+            <p className="title-heading">{getMeetingTitle()}</p>
           </Col>
 
           <Col lg={7} md={7} sm={12}>
@@ -1327,7 +1344,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       : presenterViewFlag && presenterViewJoinFlag
                       ? "presenterImage"
                       : globallyScreenShare
-                      ? "presenterImage"
+                      ? "globally-screenshare-presenterImage"
                       : "screenShare-Toggle inactive-state"
                   }
                 >
@@ -1947,14 +1964,21 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         callerID,
                         currentUserID
                       )}
-                      <img
-                        src={CallEndRedIcon}
-                        onClick={() =>
-                          minimizeEndCallParticipant(false, false, false, false)
-                        }
-                        alt="End Call"
-                        className="cursor-pointer"
-                      />
+                      <div className="minimize inactive-state">
+                        <img
+                          src={CallEndRedIcon}
+                          onClick={() =>
+                            minimizeEndCallParticipant(
+                              false,
+                              false,
+                              false,
+                              false
+                            )
+                          }
+                          alt="End Call"
+                          className="cursor-pointer"
+                        />
+                      </div>
                     </Tooltip>
                   )
                 )}

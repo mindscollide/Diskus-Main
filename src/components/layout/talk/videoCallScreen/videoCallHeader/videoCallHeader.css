@@ -160,7 +160,19 @@ img.normalize-Icon-Large {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer; /* Adjust cursor if needed */
+  cursor: not-allowed;
+  margin-right: 10px;
+}
+
+.globally-screenshare-presenterImage {
+  filter: brightness(0) saturate(100%) invert(80%) sepia(1%) saturate(20%)
+    hue-rotate(0deg) brightness(65%) contrast(85%) !important; /* Applying color instead of grayscale */
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: not-allowed;
   margin-right: 10px;
 }
 
@@ -510,32 +522,54 @@ span.participants-counter {
   font-weight: 600;
 }
 
+.main-icon-div {
+  display: flex;
+  position: relative;
+}
+
 span.participants-counter-For-Host {
   position: absolute;
-  top: 0;
-  right: 8px;
+  bottom: 25px;
+  left: 22px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   color: #fff;
   width: 16px;
+  height: 16px;
   border-radius: 100%;
   text-align: center;
-  align-items: center !important;
   font-size: 10px;
   font-weight: 600;
+  line-height: 16px;
+}
+
+span.HandRaise-Counter-for-participant {
+  position: absolute;
+  bottom: 25px;
+  left: 5px;
+  background: #f1b44c;
+  color: #fff;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
 }
 
 span.participants-counter-For-Host-waiting-counter {
   position: absolute;
-  top: 0;
-  right: -10px;
-  background: #55ce5c !important;
+  bottom: 25px;
+  left: 39px;
+  background: #55ce5c;
   color: #fff;
   width: 16px;
+  height: 16px;
   border-radius: 100%;
   text-align: center;
-  align-items: center !important;
   font-size: 10px;
   font-weight: 600;
+  line-height: 16px;
 }
 
 body[dir="rtl"] span.participants-counter-For-Host {

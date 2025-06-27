@@ -34,6 +34,11 @@ const ExpandedMenu = () => {
   const navigate = useNavigate();
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
+  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let isMeetingVideoHostCheck = JSON.parse(
+    localStorage.getItem("isMeetingVideoHostCheck")
+  );
   const {
     editorRole,
     minutes,
@@ -93,6 +98,10 @@ const ExpandedMenu = () => {
     (state) => state.NewMeetingreducer.viewMeetingFlag
   );
 
+  const endMeetingModal = useSelector(
+    (state) => state.NewMeetingreducer.endMeetingModal
+  );
+
   //Groups Sidebar Click
   const handleMeetingSidebarGroups = () => {
     localStorage.setItem("navigateLocation", "groups");
@@ -105,7 +114,14 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarGroupsNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
+
     localStorage.setItem("navigateLocation", "groups");
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -136,7 +152,13 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarPollsNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "polling");
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -167,7 +189,14 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarCalendarNoCall = () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
+
     localStorage.setItem("navigateLocation", "calendar");
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -198,7 +227,13 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarTodoNoCall = async () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "todolist");
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -228,7 +263,13 @@ const ExpandedMenu = () => {
   };
 
   const handleMeetingSidebarNotesNoCall = async () => {
+    dispatch(showEndMeetingModal(true));
+    dispatch(maximizeVideoPanelFlag(false));
+    dispatch(minimizeVideoPanelFlag(true));
+    dispatch(normalizeVideoPanelFlag(false));
+    console.log("Checking", editorRole);
     localStorage.setItem("navigateLocation", "Notes");
+
     SideBarGlobalNavigationFunction(
       viewAdvanceMeetingModal,
       editorRole,
@@ -247,23 +288,91 @@ const ExpandedMenu = () => {
     );
   };
 
+  const handleSidebarClickForExpand = ({
+    targetPath,
+    navigateLocationKey,
+    handleWithCall,
+    handleNoCall,
+  }) => {
+    const activeCall = JSON.parse(localStorage.getItem("activeCall"));
+    const isHost = JSON.parse(localStorage.getItem("isHost"));
+    console.log("Check Route scenario's");
+    if (isMeeting) {
+      console.log("Check Route scenario's");
+      if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {
+        console.log("Check Route scenario's");
+        navigate(targetPath);
+        return "";
+      }
+
+      console.log("Check Route scenario's");
+
+      if (!isMeetingVideo) {
+        console.log("Check Route scenario's");
+        // show Modal in which when anyone is not in the meeting Video
+        dispatch(showEndMeetingModal(true));
+      } else {
+        console.log("Check Route scenario's");
+        if (
+          (activeCall === false ||
+            activeCall === undefined ||
+            activeCall === null) &&
+          isMeetingVideo
+        ) {
+          //this will open when activeCall is false and this come from Host side
+          console.log("Check Route scenario's");
+          handleNoCall();
+        } else {
+          if (isMeetingVideo) {
+            console.log("Check Route scenario's");
+            //this will open when activeCall is true and this come from participant side
+            handleWithCall();
+          }
+        }
+      }
+
+      if (!isMeetingVideoHostCheck && !isHost && !isMeetingVideo) {
+        console.log("Check Route scenario's");
+        localStorage.removeItem("navigateLocation");
+      }
+
+      localStorage.setItem("navigateLocation", navigateLocationKey);
+      return true;
+    }
+
+    if (endMeetingModal) {
+      console.log("Check Route scenario's");
+      console.log("End Meeting Modal is open — blocking navigation.");
+      return true;
+    }
+
+    const shouldRedirectToMeeting =
+      (scheduleMeetingPageFlagReducer ||
+        viewProposeDateMeetingPageFlagReducer ||
+        viewAdvanceMeetingPublishPageFlagReducer ||
+        viewAdvanceMeetingUnpublishPageFlagReducer ||
+        viewProposeOrganizerMeetingPageFlagReducer ||
+        proposeNewMeetingPageFlagReducer) &&
+      !viewMeetingFlagReducer;
+
+    if (shouldRedirectToMeeting) {
+      console.log("Check Route scenario's");
+      navigate("/Diskus/Meeting");
+    } else {
+      console.log("Check Route scenario's");
+      navigate(targetPath);
+    }
+
+    return false;
+  };
+
   return (
     <Nav className={styles.iconGrid}>
       {/* Calendar Menu */}
       {checkFeatureIDAvailability(7) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-              ? "/Diskus/Meeting"
-              : "/Diskus/calendar"
-          }
+          to={"/Diskus/calendar"}
           eventKey="link-5"
           className={
             location.pathname === "/Diskus/calendar" ||
@@ -274,13 +383,14 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-            // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
-              handleMeetingSidebarCalendarNoCall();
-            } else {
-              handleMeetingSidebarCalendar();
-            }
+            const handled = handleSidebarClickForExpand({
+              targetPath: "/Diskus/calendar",
+              navigateLocationKey: "calendar",
+              handleWithCall: handleMeetingSidebarCalendar,
+              handleNoCall: handleMeetingSidebarCalendarNoCall,
+            });
+
+            if (handled) return;
           }}
         >
           <div
@@ -297,17 +407,7 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(17) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
-              ? "/Diskus/Meeting"
-              : "/Diskus/groups"
-          }
+          to={"/Diskus/groups"}
           disabled={false}
           draggable="false"
           className={
@@ -319,13 +419,14 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-            // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
-              handleMeetingSidebarGroupsNoCall();
-            } else {
-              handleMeetingSidebarGroups();
-            }
+            const handled = handleSidebarClickForExpand({
+              targetPath: "/Diskus/groups",
+              navigateLocationKey: "groups",
+              handleWithCall: handleMeetingSidebarGroups,
+              handleNoCall: handleMeetingSidebarGroupsNoCall,
+            });
+
+            if (handled) return;
           }}
         >
           {/* Grouo Icon */}
@@ -344,17 +445,7 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(14) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-              ? "/Diskus/Meeting"
-              : "/Diskus/todolist"
-          }
+          to={"/Diskus/todolist"}
           eventKey="link-3"
           className={
             location.pathname === "/Diskus/todolist" ||
@@ -365,13 +456,14 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-            // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
-              handleMeetingSidebarTodoNoCall();
-            } else {
-              handleMeetingSidebarTodo();
-            }
+            const handled = handleSidebarClickForExpand({
+              targetPath: "/Diskus/todolist",
+              navigateLocationKey: "todolist",
+              handleWithCall: handleMeetingSidebarTodo,
+              handleNoCall: handleMeetingSidebarTodoNoCall,
+            });
+
+            if (handled) return;
           }}
         >
           <div
@@ -389,17 +481,7 @@ const ExpandedMenu = () => {
         <Nav.Link
           as={Link}
           disabled={false}
-          to={
-            (scheduleMeetingPageFlagReducer === true ||
-              viewProposeDateMeetingPageFlagReducer === true ||
-              viewAdvanceMeetingPublishPageFlagReducer === true ||
-              viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-              viewProposeOrganizerMeetingPageFlagReducer === true ||
-              proposeNewMeetingPageFlagReducer === true) &&
-            viewMeetingFlagReducer === false
-              ? "/Diskus/Meeting"
-              : "/Diskus/Notes"
-          }
+          to={"/Diskus/Notes"}
           eventKey="link-4"
           className={
             location.pathname === "/Diskus/Notes" ||
@@ -410,13 +492,14 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-            // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
-              handleMeetingSidebarNotesNoCall();
-            } else {
-              handleMeetingSidebarNotes();
-            }
+            const handled = handleSidebarClickForExpand({
+              targetPath: "/Diskus/Notes",
+              navigateLocationKey: "Notes",
+              handleWithCall: handleMeetingSidebarNotes,
+              handleNoCall: handleMeetingSidebarNotesNoCall,
+            });
+
+            if (handled) return;
           }}
         >
           <div
@@ -433,17 +516,7 @@ const ExpandedMenu = () => {
       {checkFeatureIDAvailability(15) ? (
         <Nav.Link
           as={Link}
-          to={
-            (scheduleMeetingsPageFlag === true ||
-              viewProposeDateMeetingsPageFlag === true ||
-              viewAdvanceMeetingsPublishPageFlag === true ||
-              viewAdvanceMeetingsUnpublishPageFlag === true ||
-              viewProposeOrganizerMeetingsPageFlag === true ||
-              proposeNewMeetingsPageFlag === true) &&
-            viewMeetingsFlag === false
-              ? "/Diskus/Meeting"
-              : "/Diskus/polling"
-          }
+          to={"/Diskus/polling"}
           disabled={false}
           draggable="false"
           className={
@@ -455,13 +528,14 @@ const ExpandedMenu = () => {
           onClick={(e) => {
             // Prevent default behavior
             e.preventDefault();
-            const activeCall = JSON.parse(localStorage.getItem("activeCall"));
-            // Explicitly evaluate activeCall
-            if (activeCall === false||activeCall===undefined||activeCall===null) {
-              handleMeetingSidebarPollsNoCall();
-            } else {
-              handleMeetingSidebarPolls();
-            }
+            const handled = handleSidebarClickForExpand({
+              targetPath: "/Diskus/polling",
+              navigateLocationKey: "polling",
+              handleWithCall: handleMeetingSidebarPolls,
+              handleNoCall: handleMeetingSidebarPollsNoCall,
+            });
+
+            if (handled) return;
           }}
         >
           <div

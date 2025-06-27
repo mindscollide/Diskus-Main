@@ -69,8 +69,11 @@ const AddReviewers = ({
   //All Reviewers IDs
   const [selectReviewersArray, setSelectReviewersArray] = useState([]);
 
-  //Minute Date
-  const [minuteDate, setMinuteDate] = useState("");
+  const [minuteDate, setMinuteDate] = useState(
+    new Date(new Date().setDate(new Date().getDate() + 1))
+  );
+
+  console.log(minuteDate, "minuteDateminuteDate");
 
   //All Agenda wise minutes
   const [minuteDataAgenda, setMinuteDataAgenda] = useState([]);
@@ -125,7 +128,7 @@ const AddReviewers = ({
     console.log(minuteDateValueFormat, "utcFormattedutcFormattedutcFormatted");
     minuteDateValueFormat.setHours(23);
     minuteDateValueFormat.setMinutes(59);
-    minuteDateValueFormat.setSeconds(59);
+    minuteDateValueFormat.setSeconds(58);
     setMinuteDate(minuteDateValueFormat);
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar();
@@ -210,19 +213,32 @@ const AddReviewers = ({
       const generalMinutes = NewMeetingreducer.generalMinutes;
 
       if (generalMinutes && Object.keys(generalMinutes).length > 0) {
+        console.log(generalMinutes, "modifyDatemodifyDatemodifyDate");
+
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         const combinedData = transformDataGeneral(minutesData, documentsData);
+        console.log(
+          MinutesReducer.GetMinuteReviewFlowByMeetingIdData,
+          "modifyDatemodifyDatemodifyDate"
+        );
+
         if (
           MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
           MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== undefined &&
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
+          console.log(
+            MinutesReducer.GetMinuteReviewFlowByMeetingIdData,
+            "modifyDatemodifyDatemodifyDate"
+          );
+
           let date = resolutionResultTable(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
               ?.workFlow?.deadlineDatetime
           );
+
           setMinuteDate(date);
 
           let convertFinalData = combinedData;

@@ -647,7 +647,7 @@ const ManageUsers = () => {
         >
           <span className="position-relative">
             <TextField
-              placeholder={t("Search")}
+              placeholder={t("Search-on-user-name")}
               name={"SearchVal"}
               value={manangeUserSearch.searchValue}
               onKeyDown={handleKeyDownSearchManageUsers}

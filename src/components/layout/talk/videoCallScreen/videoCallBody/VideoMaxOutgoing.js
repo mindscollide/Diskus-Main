@@ -4,8 +4,11 @@ import { Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { videoOutgoingCallFlag } from "../../../../../store/actions/VideoFeature_actions";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const VideoOutgoing = () => {
+  const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const VideoRecipentData = useSelector(
@@ -14,6 +17,9 @@ const VideoOutgoing = () => {
   const CallRequestReceivedMQTTData = useSelector(
     (state) => state.VideoMainReducer.CallRequestReceivedMQTTData
   );
+
+  console.log(CallRequestReceivedMQTTData, "CallRequestReceivedMQTTData");
+
   let currentCallType = Number(localStorage.getItem("CallType"));
 
   useEffect(() => {
@@ -70,7 +76,7 @@ const VideoOutgoing = () => {
             <div className="Caller-Status">
               {Object.keys(CallRequestReceivedMQTTData).length > 0 &&
               CallRequestReceivedMQTTData.message ===
-                "VIDEO_CALL_UNANSWERED" ? (
+                t("VIDEO_CALL_UNANSWERED") ? (
                 <>{userNameCR} is unavailable</>
               ) : Object.keys(CallRequestReceivedMQTTData).length > 0 &&
                 CallRequestReceivedMQTTData.message === "VIDEO_CALL_RINGING" ? (

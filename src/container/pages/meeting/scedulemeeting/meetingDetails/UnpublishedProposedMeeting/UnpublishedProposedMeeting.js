@@ -86,7 +86,6 @@ const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
   setViewProposeOrganizerPoll,
   setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModalUnpublish,
   setSceduleMeeting,
   setEditMeeting,
   setCurrentMeetingID,
@@ -110,6 +109,8 @@ const UnpublishedProposedMeeting = ({
     setEditorRole,
     setEndMeetingConfirmationModal,
     setDeleteMeetingRecord,
+    setViewAdvanceMeetingModal,
+    viewAdvanceMeetingModal
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -195,8 +196,8 @@ const UnpublishedProposedMeeting = ({
 
   const handleOpenViewModal = async (data) => {
     setAdvanceMeetingModalID(data.pK_MDID);
-    setViewAdvanceMeetingModalUnpublish(true);
-    dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+    setViewAdvanceMeetingModal(true);
+    // dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
   };
 
   const handleEditMeeting = async (id, agendaContributorFlag, record) => {
@@ -244,7 +245,15 @@ const UnpublishedProposedMeeting = ({
   };
 
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
+    console.log(date.length, "datedate")
+    let newDate;
+    if (date.length > 8) {
+      let newDate2 = forRecentActivity(date);
+      newDate = moment(newDate2).format("DD MMMM YYYY");
+    } else {
+      newDate = moment(date).format("DD MMMM YYYY");
+    }
+
     return newDate;
   };
 

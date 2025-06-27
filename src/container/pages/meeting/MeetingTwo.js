@@ -164,7 +164,10 @@ const NewMeeting = () => {
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
+    viewAdvanceMeetingModalUnpublish,
+    setViewAdvanceMeetingModalUnpublish,
   } = useContext(MeetingContext);
+
   const { setResultresolution } = useResolutionContext();
 
   const meetingVideoRecording = useSelector(
@@ -255,6 +258,11 @@ const NewMeeting = () => {
   );
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
+  );
+  console.log(
+    viewAdvanceMeetingModal,
+    viewAdvanceMeetingsPublishPageFlag,
+    "viewAdvanceMeetingModalviewAdvanceMeetingModal"
   );
   //Proposed Meeting View Flag
   const ProposedMeetViewFlag = useSelector(
@@ -347,10 +355,7 @@ const NewMeeting = () => {
     useState(false);
   const [responseByDate, setResponseByDate] = useState("");
   const [radioValue, setRadioValue] = useState(1);
-  const [
-    viewAdvanceMeetingModalUnpublish,
-    setViewAdvanceMeetingModalUnpublish,
-  ] = useState(false);
+
   const [dashboardEventData, setDashboardEventData] = useState(null);
 
   //Filteration States Meeting Types
@@ -3049,59 +3054,81 @@ const NewMeeting = () => {
           dashboardEventData.statusID === "1" ||
           dashboardEventData.statusID === 1
         ) {
-          console.log("startMeetingRequest", dashboardEventData);
-          if (dashboardEventData.isQuickMeeting === true) {
+          if (dashboardEventData.IsViewOpenOnly) {
+            if (dashboardEventData.isQuickMeeting === true) {
+              let Data = { MeetingID: Number(dashboardEventData.pK_MDID) };
+              dispatch(
+                ViewMeeting(
+                  navigate,
+                  Data,
+                  t,
+                  setViewFlag,
+                  setEditFlag,
+                  setSceduleMeeting,
+                  1
+                )
+              );
+            } else {
+              setAdvanceMeetingModalID(Number(dashboardEventData.pK_MDID));
+              setViewAdvanceMeetingModal(true);
+              // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+            }
+            return;
+          } else {
             console.log("startMeetingRequest", dashboardEventData);
-            console.log("end meeting chaek");
-            dispatch(
-              UpdateOrganizersMeeting(
-                true,
-                navigate,
-                t,
-                4,
-                startMeetingRequest,
-                setEditorRole,
-                setAdvanceMeetingModalID,
-                setDataroomMapFolderId,
-                setSceduleMeeting,
-                setViewFlag,
-                setEditFlag
-              )
-            );
-          } else if (dashboardEventData.isQuickMeeting === false) {
-            console.log("end meeting chaek", dashboardEventData);
-            // ================== //
-            // dispatch(
-            //   UpdateOrganizersMeeting(
-            //     false,
-            //     navigate,
-            //     t,
-            //     3,
-            //     startMeetingRequest,
-            //     setEditorRole,
-            //     setAdvanceMeetingModalID,
-            //     setDataroomMapFolderId,
-            //     setViewAdvanceMeetingModal
-            //   )
-            // );
-            // localStorage.setItem(
-            //   "currentMeetingID",
-            //   dashboardEventData.pK_MDID
-            // );
-            // setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
-            // dispatch(viewMeetingFlag(true));
-            // setViewAdvanceMeetingModal(true);
-            // dispatch(viewAdvanceMeetingPublishPageFlag(true));
-            // dispatch(scheduleMeetingPageFlag(false));
-            // setEditorRole({
-            //   status: 10,
-            //   role: "Organizer",
-            //   isPrimaryOrganizer: false,
-            // });
-            // ================== //
-            console.log("startMeetingRequest", dashboardEventData);
+            if (dashboardEventData.isQuickMeeting === true) {
+              console.log("startMeetingRequest", dashboardEventData);
+              console.log("end meeting chaek");
+              dispatch(
+                UpdateOrganizersMeeting(
+                  true,
+                  navigate,
+                  t,
+                  4,
+                  startMeetingRequest,
+                  setEditorRole,
+                  setAdvanceMeetingModalID,
+                  setDataroomMapFolderId,
+                  setSceduleMeeting,
+                  setViewFlag,
+                  setEditFlag
+                )
+              );
+            } else if (dashboardEventData.isQuickMeeting === false) {
+              console.log("end meeting chaek", dashboardEventData);
+              // ================== //
+              // dispatch(
+              //   UpdateOrganizersMeeting(
+              //     false,
+              //     navigate,
+              //     t,
+              //     3,
+              //     startMeetingRequest,
+              //     setEditorRole,
+              //     setAdvanceMeetingModalID,
+              //     setDataroomMapFolderId,
+              //     setViewAdvanceMeetingModal
+              //   )
+              // );
+              // localStorage.setItem(
+              //   "currentMeetingID",
+              //   dashboardEventData.pK_MDID
+              // );
+              // setAdvanceMeetingModalID(dashboardEventData.pK_MDID);
+              // dispatch(viewMeetingFlag(true));
+              // setViewAdvanceMeetingModal(true);
+              // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+              // dispatch(scheduleMeetingPageFlag(false));
+              // setEditorRole({
+              //   status: 10,
+              //   role: "Organizer",
+              //   isPrimaryOrganizer: false,
+              // });
+              // ================== //
+              console.log("startMeetingRequest", dashboardEventData);
 
-            callStartMeetingFromEvents(dashboardEventData);
+              callStartMeetingFromEvents(dashboardEventData);
+            }
           }
         }
 
@@ -3846,8 +3873,7 @@ const NewMeeting = () => {
             setSceduleMeeting={setViewProposeDatePoll}
             setDataroomMapFolderId={setDataroomMapFolderId}
           />
-        ) : viewAdvanceMeetingModal &&
-          viewAdvanceMeetingsPublishPageFlag === true ? (
+        ) : viewAdvanceMeetingModal ? (
           <ViewMeetingModal
             advanceMeetingModalID={advanceMeetingModalID}
             setViewAdvanceMeetingModal={setViewAdvanceMeetingModal}
@@ -3899,81 +3925,69 @@ const NewMeeting = () => {
         ) : (
           <>
             <Row className="mt-2">
-              <Col
-                sm={12}
-                md={8}
-                lg={8}
-                className="d-flex gap-3 align-items-center"
-              >
+              <Col sm={12} md={12} lg={6} className="d-flex ">
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <ReactBootstrapDropdown
-                      className="SceduleMeetingButton"
-                      // onClick={eventClickHandler}
+                <span>
+                  <ReactBootstrapDropdown
+                    className="SceduleMeetingButton d-inline-block position-relative ms-2"
+                    // onClick={eventClickHandler}
+                  >
+                    <ReactBootstrapDropdown.Toggle
+                      title={t("Schedule-a-meeting")}
                     >
-                      <ReactBootstrapDropdown.Toggle
-                        title={t("Schedule-a-meeting")}
-                      >
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["schedule_button"]}
-                          >
-                            <Plus width={20} height={20} fontWeight={800} />
-                            <span> {t("Schedule-a-meeting")}</span>
-                          </Col>
-                        </Row>
-                      </ReactBootstrapDropdown.Toggle>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["schedule_button"]}
+                        >
+                          <Plus width={20} height={20} fontWeight={800} />
+                          <span> {t("Schedule-a-meeting")}</span>
+                        </Col>
+                      </Row>
+                    </ReactBootstrapDropdown.Toggle>
 
-                      <ReactBootstrapDropdown.Menu>
-                        {checkFeatureIDAvailability(1) ? (
+                    <ReactBootstrapDropdown.Menu>
+                      {checkFeatureIDAvailability(1) ? (
+                        <ReactBootstrapDropdown.Item
+                          className={styles["dropdown-item"]}
+                          onClick={CreateQuickMeetingFunc}
+                        >
+                          {t("Quick-meeting")}
+                        </ReactBootstrapDropdown.Item>
+                      ) : null}
+
+                      {checkFeatureIDAvailability(9) ? (
+                        <ReactBootstrapDropdown.Item
+                          className={styles["dropdown-item"]}
+                          onClick={openSceduleMeetingPage}
+                        >
+                          {t("Advance-meeting")}
+                        </ReactBootstrapDropdown.Item>
+                      ) : null}
+
+                      {checkFeatureIDAvailability(12) ? (
+                        <>
                           <ReactBootstrapDropdown.Item
                             className={styles["dropdown-item"]}
-                            onClick={CreateQuickMeetingFunc}
+                            onClick={openProposedNewMeetingPage}
                           >
-                            {t("Quick-meeting")}
+                            {t("Propose-new-meeting")}
                           </ReactBootstrapDropdown.Item>
-                        ) : null}
-
-                        {checkFeatureIDAvailability(9) ? (
-                          <ReactBootstrapDropdown.Item
-                            className={styles["dropdown-item"]}
-                            onClick={openSceduleMeetingPage}
-                          >
-                            {t("Advance-meeting")}
-                          </ReactBootstrapDropdown.Item>
-                        ) : null}
-
-                        {checkFeatureIDAvailability(12) ? (
-                          <>
-                            <ReactBootstrapDropdown.Item
-                              className={styles["dropdown-item"]}
-                              onClick={openProposedNewMeetingPage}
-                            >
-                              {t("Propose-new-meeting")}
-                            </ReactBootstrapDropdown.Item>
-                          </>
-                        ) : null}
-                      </ReactBootstrapDropdown.Menu>
-                    </ReactBootstrapDropdown>
-                  </Col>
-                </Row>
+                        </>
+                      ) : null}
+                    </ReactBootstrapDropdown.Menu>
+                  </ReactBootstrapDropdown>
+                </span>
               </Col>
-              <Col
-                sm={12}
-                md={4}
-                lg={4}
-                className="d-flex justify-content-end align-items-center"
-              >
+              <Col sm={12} md={12} lg={6} className="">
                 <span className="position-relative">
                   <TextField
-                    width={"490px"}
-                    placeholder={t("Search")}
+                    width={"100%"}
+                    placeholder={t("Search-on-meeting-title")}
                     applyClass={"meetingSearch"}
                     name={"SearchVal"}
                     labelclass="d-none"

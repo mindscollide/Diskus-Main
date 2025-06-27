@@ -53,6 +53,8 @@ const VideoMaxIncoming = () => {
     stopRecordingState,
     setStopRecordingState,
     iframeRef,
+    isVisible,
+    setIsVisible,
   } = useMeetingContext();
   const { VideoMainReducer, videoFeatureReducer } = useSelector(
     (state) => state
@@ -86,6 +88,7 @@ const VideoMaxIncoming = () => {
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
   let activeRoomID = localStorage.getItem("activeRoomID");
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  let presenterViewvideoURL = localStorage.getItem("presenterViewvideoURL");
 
   let RoomID =
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
@@ -97,7 +100,7 @@ const VideoMaxIncoming = () => {
       : initiateCallRoomID
       ? initiateCallRoomID
       : activeRoomID;
-  const [isVisible, setIsVisible] = useState(true);
+  console.log(isVisible, "Check new Visible");
 
   const [incomingCallerData, setIncomingCallerData] = useState([]);
 

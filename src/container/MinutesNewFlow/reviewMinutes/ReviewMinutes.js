@@ -1049,7 +1049,7 @@ const ReviewMinutes = () => {
                                                 4 ? (
                                                 <>
                                                   <Button
-                                                    text={t("Rejected")}
+                                                    text={t("Reviewed")}
                                                     className={
                                                       styles["Rejected-comment"]
                                                     }
@@ -2165,7 +2165,7 @@ const ReviewMinutes = () => {
                                                       4 ? (
                                                       <>
                                                         <Button
-                                                          text={t("Rejected")}
+                                                          text={t("Reviewed")}
                                                           className={
                                                             styles[
                                                               "Rejected-comment"
@@ -3213,7 +3213,7 @@ const ReviewMinutes = () => {
                                       ) : data.actorBundleStatusID === 4 ? (
                                         <>
                                           <Button
-                                            text={t("Rejected")}
+                                            text={t("Reviewed")}
                                             className={
                                               styles["Rejected-comment"]
                                             }

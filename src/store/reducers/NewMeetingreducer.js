@@ -2198,7 +2198,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         localStorage.setItem("AdvanceMeetingOpen", action.response);
         return {
           ...state,
-          viewAdvanceMeetingPublishPageFlag: action.response,
+          viewAdvanceMeetingPublishPageFlag: false,
         };
       }
 

@@ -140,6 +140,7 @@ import {
   formatKBtoMB,
   formatMB,
 } from "../../commen/functions/convertFileSizeInMB";
+import { useScrollerAuditBottom } from "../../commen/functions/useScrollerAuditBottom";
 
 const DataRoom = () => {
   let DataRoomString = localStorage.getItem("DataRoomEmail");
@@ -2980,7 +2981,7 @@ const DataRoom = () => {
   // api call onscroll
   const handleScroll = async (e) => {};
 
-  useTableScrollBottom(async () => {
+  useScrollerAuditBottom(async () => {
     if (getAllData.length !== totalRecords) {
       if (sRowsData <= totalRecords) {
         await dispatch(dataBehaviour(true));
@@ -3014,7 +3015,7 @@ const DataRoom = () => {
         }
       }
     }
-  });
+  }, 50);
 
   // const handleUploadDocuemtuploadOptions = () => { }
   useEffect(() => {
@@ -3527,6 +3528,7 @@ const DataRoom = () => {
                                         : true
                                     }
                                     height={"58vh"}
+                                  
                                     endMessage=""
                                     loader={
                                       getAllData.length <= totalRecords && (
@@ -3569,7 +3571,7 @@ const DataRoom = () => {
                                     onChange={handleSortChange}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ y: "53vh", x: "100%" }}
+                                    scroll={{ y: 400, x: "100%" }}
                                   />
                                 </>
                               ) : (
@@ -3822,7 +3824,7 @@ const DataRoom = () => {
                                     className={"DataRoom_Table"}
                                     rows={getAllData}
                                     pagination={false}
-                                    scroll={{ x: "100%", y: "53vh" }}
+                                    scroll={{ y: 400, x: "100%" }}
                                     footer={() => {
                                       return (
                                         DataRoomReducer.dataBehaviour && (

@@ -1251,7 +1251,7 @@ const SearchBarComponent = ({
       <TextField
         value={searchDataFields.Title}
         change={handleTitleSearch}
-        placeholder={t("Search")}
+        placeholder={t("Search-on-file-and-folder-name")}
         applyClass={"dataRoomSearchInput"}
         labelclass="d-none"
         onClick={searchbardropdownShow}

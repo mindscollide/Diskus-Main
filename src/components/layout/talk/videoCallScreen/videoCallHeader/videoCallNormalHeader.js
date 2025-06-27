@@ -248,10 +248,13 @@ const VideoCallNormalHeader = ({
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
-
+  // screenShareTriggeredGlobally
   const nonMeetingVideoCheckModal = useSelector(
     (state) => state.videoFeatureReducer.nonMeetingVideo
   );
+
+  console.log(globallyScreenShare, "globallyScreenShare");
+
   console.log(groupCallParticipantList, "groupCallParticipantList");
 
   console.log(nonMeetingVideoCheckModal, "nonMeetingVideoCheckModal");
@@ -291,6 +294,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  console.log({ VideoRecipentData, callerNameInitiate }, "callerNameInitiate");
 
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
@@ -510,6 +514,9 @@ const VideoCallNormalHeader = ({
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
     localStorage.setItem("handStatus", false);
+    setGroupVideoCallAccepted([]); // Clear list when component unmounts
+    setGroupCallParticipantList([]);
+    setUnansweredCallParticipant([]);
   }
 
   // after presenter view is true then this funct call
@@ -619,6 +626,12 @@ const VideoCallNormalHeader = ({
         CallTypeID: callTypeID,
       };
       console.log("Check LeaveCall new");
+      if (isZoomEnabled) {
+        if (globallyScreenShare) {
+          console.log("Check LeaveCall new");
+          await dispatch(screenShareTriggeredGlobally(false));
+        }
+      }
       dispatch(LeaveCall(Data, navigate, t));
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
@@ -683,7 +696,10 @@ const VideoCallNormalHeader = ({
         if (callerID === currentUserID) {
           let activeChatData = {
             id: VideoRecipentData.userID,
-            fullName: VideoRecipentData.userName,
+            fullName:
+              VideoRecipentData?.recipients?.[0]?.userName ??
+              VideoRecipentData?.userName ??
+              "",
             imgURL: "",
             messageBody: "",
             messageDate: "",
@@ -1022,6 +1038,9 @@ const VideoCallNormalHeader = ({
         }
       } else {
         if (isZoomEnabled) {
+          console.log("Check LeaveCall new", initiateCallRoomID);
+          console.log("Check LeaveCall new", activeRoomID);
+          console.log("Check LeaveCall new");
           RoomID = String(initiateCallRoomID);
         } else {
           RoomID = activeRoomID;
@@ -1035,8 +1054,8 @@ const VideoCallNormalHeader = ({
         IsCaller: isCaller ? true : false,
         CallTypeID: callTypeID,
       };
-      await console.log("Check LeaveCall new");
-      dispatch(LeaveCall(Data, navigate, t));
+      console.log("Check LeaveCall new");
+      await dispatch(LeaveCall(Data, navigate, t));
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];
@@ -1825,8 +1844,8 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
-          (presenterViewHostFlag && presenterViewFlag) ? (
+          {!presenterViewFlag && getMeetingHostInfo?.isHost ? (
+            // || (presenterViewHostFlag && presenterViewFlag)
             <div
               className={
                 LeaveCallModalFlag
@@ -1891,7 +1910,7 @@ const VideoCallNormalHeader = ({
           {(presenterViewFlag && presenterViewHostFlag) ||
           (isMeetingVideo && !presenterViewFlag && !presenterViewHostFlag) ||
           (currentCallType === 2 &&
-            !presenterViewFlag &&
+            !presenterViewJoinFlag &&
             !presenterViewHostFlag) ||
           (currentCallType === 3 &&
             !presenterViewFlag &&
@@ -2029,18 +2048,29 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <span className="participants-counter-For-Host">
-                    {getMeetingHostInfo?.isDashboardVideo &&
-                      convertNumbersInString(participantCounterList, lan)}
-                  </span>
-                  {participantWaitingListCounter > 0 && (
-                    <span className="participants-counter-For-Host-waiting-counter">
-                      {convertNumbersInString(
-                        participantWaitingListCounter,
-                        lan
-                      )}
+                  <div className="main-icon-div">
+                    {isMeetingVideo && isMeetingVideoHostCheck && (
+                      <>
+                        {handRaiseCounter > 0 && (
+                          <span className="HandRaise-Counter-for-participant">
+                            {convertNumbersInString(handRaiseCounter, lan)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    <span className="participants-counter-For-Host">
+                      {getMeetingHostInfo?.isDashboardVideo &&
+                        convertNumbersInString(participantCounterList, lan)}
                     </span>
-                  )}
+                    {participantWaitingListCounter > 0 && (
+                      <span className="participants-counter-For-Host-waiting-counter">
+                        {convertNumbersInString(
+                          participantWaitingListCounter,
+                          lan
+                        )}
+                      </span>
+                    )}
+                  </div>
                 </>
               )}
             </div>
@@ -2123,12 +2153,14 @@ const VideoCallNormalHeader = ({
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("Leave-call")
               }
             >
-              <img
-                className="inactive-state"
-                src={CallEndRedIcon}
-                onClick={endCallParticipant}
-                alt="End Call"
-              />
+              <div className="inactive-state">
+                <img
+                  className="cursor-pointer"
+                  src={CallEndRedIcon}
+                  onClick={endCallParticipant}
+                  alt="End Call"
+                />
+              </div>
             </Tooltip>
           ) : null}
 

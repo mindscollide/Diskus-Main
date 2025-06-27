@@ -756,7 +756,7 @@ const AgendaContributers = ({
   return (
     <>
       <section className='position-relative'>
-        <Row className='mt-5'>
+        <Row className='mt-3'>
           {/* {((Number(editorRole.status) === 9 ||
             Number(editorRole.status) === 8 ||
             Number(editorRole.status) === 10) &&
