@@ -326,9 +326,24 @@ const WebNotfication = ({
         if (currentURL.includes("/Diskus/Meeting")) {
           //If you already on the Meeting Page
           if (PayLoadData.IsQuickMeeting === true) {
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal,
+                4,
+                setVideoTalk,
+                setViewFlag
+              )
             );
           } else {
             localStorage.setItem("AdvanceMeetingOperations", true);
@@ -373,9 +388,24 @@ const WebNotfication = ({
         // Check if the current URL contains the target path
         if (currentURL.includes("/Diskus/Meeting")) {
           if (PayLoadData.IsQuickMeeting === true) {
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                4,
+                false,
+                setViewFlag
+              )
             );
           } else {
             localStorage.setItem("AdvanceMeetingOperations", true);
