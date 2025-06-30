@@ -432,10 +432,24 @@ const WebNotfication = ({
           //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
           if (PayLoadData.IsQuickMeeting === true) {
             navigate("/Diskus/Meeting");
-            localStorage.setItem("QuicMeetingOperations", true);
             localStorage.setItem(
-              "NotificationQuickMeetingID",
+              "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                4,
+                false,
+                setViewFlag
+              )
             );
           } else {
             navigate("/Diskus/Meeting");
