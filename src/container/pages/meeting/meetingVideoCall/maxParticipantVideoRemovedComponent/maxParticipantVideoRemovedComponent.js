@@ -103,7 +103,7 @@ const MaxParticipantVideoRemovedComponent = () => {
                     className="d-flex justify-content-center gap-2"
                   >
                     <Button
-                      text={t("Close-modal")}
+                      text={t("Close")}
                       onClick={onClickCloseModal}
                       className="Participant-closeModal-Button-Class"
                     />
