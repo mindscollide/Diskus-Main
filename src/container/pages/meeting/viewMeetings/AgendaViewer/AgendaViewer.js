@@ -593,7 +593,7 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent-successfully"), "error", setOpen);
+      showMessage(t("Email-sent-successfully"), "Success", setOpen);
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
@@ -903,8 +903,11 @@ const AgendaViewer = () => {
       } else if (value === 2) {
         let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
         let currentCallType = JSON.parse(localStorage.getItem("CallType"));
-        if (activeCallState && (currentCallType === 1 || currentCallType === 2)) {
-          console.log("Check Stop")
+        if (
+          activeCallState &&
+          (currentCallType === 1 || currentCallType === 2)
+        ) {
+          console.log("Check Stop");
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
