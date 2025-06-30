@@ -23,7 +23,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-
 }
 .dataroombreadCrumbs ol li span.ant-breadcrumb-link:not(:first-child) {
   padding: 5px;
@@ -34,9 +33,21 @@
   width: 100%;
   height: 25px;
   padding: 5px 10px;
-
 }
 .ant-popover.overClass .ant-popover-content {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1;
+}
+
+.searchResult_Document__control:has(
+    .searchResult_Document__value-container--has-value
+  ) {
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+.searchResult_Document__control:has(.searchResult_Document__value-container--has-value .searchResult_Document__single-value span) {
+  color: #fff !important;
+}
+.searchResult_Document__single-value  {
+  color: #fff !important;
 }
