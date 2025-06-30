@@ -1005,46 +1005,51 @@ const AgendaViewer = () => {
                         </Tooltip>
                       ) : null}
 
-                      {editorRole.status === 10 ||
-                      editorRole.status === "10" ? (
-                        <>
-                          {presenterViewFlag ? (
-                            <Tooltip>
-                              <div
-                                className={styles["Stop-presenter-view-class"]}
-                                onClick={() =>
-                                  onClickStopPresenter(
-                                    presenterViewHostFlag
-                                      ? 1
+                      {(editorRole.status === "10" ||
+                        editorRole.status === 10) &&
+                        videoTalk?.isVideoCall && (
+                          <>
+                            {presenterViewFlag ? (
+                              <Tooltip>
+                                <div
+                                  className={
+                                    styles["Stop-presenter-view-class"]
+                                  }
+                                  onClick={() =>
+                                    onClickStopPresenter(
+                                      presenterViewHostFlag
+                                        ? 1
+                                        : presenterViewJoinFlag
+                                        ? 3
+                                        : 2
+                                    )
+                                  }
+                                >
+                                  <img src={StopImage} />
+                                  <p>
+                                    {presenterViewHostFlag
+                                      ? t("Stop-presentation")
                                       : presenterViewJoinFlag
-                                      ? 3
-                                      : 2
-                                  )
-                                }
-                              >
-                                <img src={StopImage} />
-                                <p>
-                                  {presenterViewHostFlag
-                                    ? t("Stop-presentation")
-                                    : presenterViewJoinFlag
-                                    ? t("Leave-presentation")
-                                    : t("Join-presentation")}
-                                </p>
-                              </div>
-                            </Tooltip>
-                          ) : (
-                            <Tooltip>
-                              <div
-                                className={styles["Start-presenter-view-class"]}
-                                onClick={onClickStartPresenter}
-                              >
-                                <img src={PresenterView} />
-                                <p>{t("Start-presentation")}</p>
-                              </div>
-                            </Tooltip>
-                          )}
-                        </>
-                      ) : null}
+                                      ? t("Leave-presentation")
+                                      : t("Join-presentation")}
+                                  </p>
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              <Tooltip>
+                                <div
+                                  className={
+                                    styles["Start-presenter-view-class"]
+                                  }
+                                  onClick={onClickStartPresenter}
+                                >
+                                  <img src={PresenterView} />
+                                  <p>{t("Start-presentation")}</p>
+                                </div>
+                              </Tooltip>
+                            )}
+                          </>
+                        )}
 
                       {(editorRole.status === "10" ||
                         editorRole.status === 10) &&

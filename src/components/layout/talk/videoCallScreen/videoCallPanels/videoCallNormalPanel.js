@@ -86,6 +86,10 @@ const VideoPanelNormal = () => {
     setStopRecordingState,
     iframeRef,
     setHandRaiseCounter,
+    setLeavePresenterViewToJoinOneToOne,
+    leavePresenterViewToJoinOneToOne,
+    setJoiningOneToOneAfterLeavingPresenterView,
+    setLeaveMeetingVideoForOneToOneOrGroup,
   } = useMeetingContext();
 
   let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
@@ -242,6 +246,12 @@ const VideoPanelNormal = () => {
   const presenterViewFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewFlag
   );
+
+  const presenterStartedFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterStartedFlag
+  );
+  console.log(presenterStartedFlag, "presenterStartedFlag");
+
   console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
   console.log(iframeRef, "iframeRef");
 
@@ -472,7 +482,7 @@ const VideoPanelNormal = () => {
           dispatch(setVideoControlHost(false));
 
           localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
-
+          dispatch(minimizeVideoPanelFlag(false));
           dispatch(maximizeVideoPanelFlag(false));
           dispatch(maxParticipantVideoRemoved(true));
           // Participant room Id and usrrGuid
@@ -1252,6 +1262,46 @@ const VideoPanelNormal = () => {
                 };
                 console.log("busyCall");
                 dispatch(isSharedScreenTriggeredApi(navigate, t, data));
+              } else if (presenterViewFlag && presenterViewHostFlag) {
+                console.log("busyCall");
+                let isMeetingVideoHostCheck = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+                let videoCallURL = Number(localStorage.getItem("videoCallURL"));
+                let roomID = localStorage.getItem("acceptedRoomID");
+                let participantRoomId =
+                  localStorage.getItem("participantRoomId");
+
+                let RoomID =
+                  presenterViewFlag &&
+                  (presenterViewHostFlag || presenterViewJoinFlag)
+                    ? roomID
+                    : isMeetingVideoHostCheck
+                    ? newRoomID
+                    : participantRoomId;
+
+                if (presenterViewHostFlag) {
+                  console.log("busyCall");
+                  let data = {
+                    MeetingID: currentMeetingID,
+                    RoomID: String(RoomID),
+                    VideoCallUrl: videoCallURL,
+                  };
+                  sessionStorage.setItem("StopPresenterViewAwait", true);
+                  setLeavePresenterViewToJoinOneToOne(false);
+
+                  dispatch(
+                    stopPresenterViewMainApi(
+                      navigate,
+                      t,
+                      data,
+                      leavePresenterViewToJoinOneToOne ? 3 : 0,
+                      setLeaveMeetingVideoForOneToOneOrGroup,
+                      setJoiningOneToOneAfterLeavingPresenterView,
+                      setLeavePresenterViewToJoinOneToOne
+                    )
+                  );
+                }
               }
             }
 

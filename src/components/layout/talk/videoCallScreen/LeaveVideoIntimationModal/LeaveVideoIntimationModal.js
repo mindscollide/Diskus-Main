@@ -68,6 +68,7 @@ import {
 
 const LeaveVideoIntimationModal = () => {
   const dispatch = useDispatch();
+  const {setViewAdvanceMeetingModal} =useMeetingContext()
 
   const { t } = useTranslation();
 
@@ -163,11 +164,14 @@ const LeaveVideoIntimationModal = () => {
 
   //handle NO button
   const handleNoButtonLeaveVideoMeeting = () => {
+    localStorage.setItem("navigateLocation", "Meeting");
     dispatch(LeaveInitmationMessegeVideoMeetAction(false));
     localStorage.setItem("webNotifactionDataRoutecheckFlag", false);
   };
 
   const functionForMeetingVideoScenario = async () => {
+    console.log("Check Route scenario's");
+
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
@@ -221,34 +225,45 @@ const LeaveVideoIntimationModal = () => {
       FK_MDID: currentMeeting,
       DateTime: getCurrentDateTimeUTC(),
     };
-    await dispatch(
-      LeaveCurrentMeetingOtherMenus(
-        navigate,
-        t,
-        Data,
-        scheduleMeetingsPageFlag,
-        viewProposeDateMeetingsPageFlag,
-        viewAdvanceMeetingsPublishPageFlag,
-        viewAdvanceMeetingsUnpublishPageFlag,
-        viewProposeOrganizerMeetingsPageFlag,
-        proposeNewMeetingsPageFlag,
-        viewMeetingsFlag,
-        scheduleMeetingPageFlagReducer,
-        viewProposeDateMeetingPageFlagReducer,
-        viewAdvanceMeetingPublishPageFlagReducer,
-        viewAdvanceMeetingUnpublishPageFlagReducer,
-        viewProposeOrganizerMeetingPageFlagReducer,
-        proposeNewMeetingPageFlagReducer,
-        viewMeetingFlagReducer,
-        location
-      )
-    );
-    await dispatch(currentMeetingStatus(0));
+    console.log("Check Route scenario's");
+    console.log(location, "Check Route scenario's");
+    try {
+      console.log("Check Route scenario's");
+      await dispatch(
+        LeaveCurrentMeetingOtherMenus(
+          navigate,
+          t,
+          Data,
+          scheduleMeetingsPageFlag,
+          viewProposeDateMeetingsPageFlag,
+          viewAdvanceMeetingPublishPageFlag,
+          viewAdvanceMeetingsUnpublishPageFlag,
+          viewProposeOrganizerMeetingsPageFlag,
+          proposeNewMeetingsPageFlag,
+          viewMeetingsFlag,
+          scheduleMeetingPageFlagReducer,
+          viewProposeDateMeetingPageFlagReducer,
+          viewAdvanceMeetingPublishPageFlagReducer,
+          viewAdvanceMeetingUnpublishPageFlagReducer,
+          viewProposeOrganizerMeetingPageFlagReducer,
+          proposeNewMeetingPageFlagReducer,
+          viewMeetingFlagReducer,
+          location,
+          setViewAdvanceMeetingModal
+        )
+      );
+      await dispatch(currentMeetingStatus(0));
+    } catch (error) {
+      console.log(error, "error");
+    }
   };
 
   //handle Yes button
   const handleYesButtonLeaveVideoMeeting = async () => {
+    console.log("Check Route scenario's");
     try {
+      console.log("Check Route scenario's");
+
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let typeOfMeeting = localStorage.getItem("typeOfMeeting");
       let webNotifactionDataRoutecheckFlag = JSON.parse(
@@ -319,22 +334,59 @@ const LeaveVideoIntimationModal = () => {
         }
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/Meeting");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "todolist") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/todolist");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "calendar") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/calendar");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "Notes") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/Notes");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "dataroom") {
+        console.log("Check Route scenario's");
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/dataroom");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "groups") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/groups");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "committee") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/committee");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "resolution") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/resolution");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "polling") {
+        if (isMeetingVideo) {
+          console.log("Check Route scenario's");
+          navigate("/Diskus/polling");
+        }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "dataroomRecentAddedFiles") {
         functionForMeetingVideoScenario();

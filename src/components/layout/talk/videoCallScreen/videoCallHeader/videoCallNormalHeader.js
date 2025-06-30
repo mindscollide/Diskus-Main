@@ -294,6 +294,7 @@ const VideoCallNormalHeader = ({
   let isMeetingVideoHostCheck = JSON.parse(
     localStorage.getItem("isMeetingVideoHostCheck")
   );
+  console.log({ VideoRecipentData, callerNameInitiate }, "callerNameInitiate");
 
   let isCaller = JSON.parse(localStorage.getItem("isCaller"));
   let RoomID =
@@ -695,7 +696,10 @@ const VideoCallNormalHeader = ({
         if (callerID === currentUserID) {
           let activeChatData = {
             id: VideoRecipentData.userID,
-            fullName: VideoRecipentData.userName,
+            fullName:
+              VideoRecipentData?.recipients?.[0]?.userName ??
+              VideoRecipentData?.userName ??
+              "",
             imgURL: "",
             messageBody: "",
             messageDate: "",
@@ -1840,8 +1844,8 @@ const VideoCallNormalHeader = ({
             </div>
           )}
 
-          {(!presenterViewFlag && getMeetingHostInfo?.isHost) ||
-          (presenterViewHostFlag && presenterViewFlag) ? (
+          {!presenterViewFlag && getMeetingHostInfo?.isHost ? (
+            // || (presenterViewHostFlag && presenterViewFlag)
             <div
               className={
                 LeaveCallModalFlag
@@ -2044,18 +2048,29 @@ const VideoCallNormalHeader = ({
                 </>
               ) : (
                 <>
-                  <span className="participants-counter-For-Host">
-                    {getMeetingHostInfo?.isDashboardVideo &&
-                      convertNumbersInString(participantCounterList, lan)}
-                  </span>
-                  {participantWaitingListCounter > 0 && (
-                    <span className="participants-counter-For-Host-waiting-counter">
-                      {convertNumbersInString(
-                        participantWaitingListCounter,
-                        lan
-                      )}
+                  <div className="main-icon-div">
+                    {isMeetingVideo && isMeetingVideoHostCheck && (
+                      <>
+                        {handRaiseCounter > 0 && (
+                          <span className="HandRaise-Counter-for-participant">
+                            {convertNumbersInString(handRaiseCounter, lan)}
+                          </span>
+                        )}
+                      </>
+                    )}
+                    <span className="participants-counter-For-Host">
+                      {getMeetingHostInfo?.isDashboardVideo &&
+                        convertNumbersInString(participantCounterList, lan)}
                     </span>
-                  )}
+                    {participantWaitingListCounter > 0 && (
+                      <span className="participants-counter-For-Host-waiting-counter">
+                        {convertNumbersInString(
+                          participantWaitingListCounter,
+                          lan
+                        )}
+                      </span>
+                    )}
+                  </div>
                 </>
               )}
             </div>

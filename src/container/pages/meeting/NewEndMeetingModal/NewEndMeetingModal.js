@@ -29,6 +29,27 @@ import {
 } from "../../../../store/actions/VideoFeature_actions";
 
 const NewEndMeetingModal = () => {
+  const {
+    setCancelConfirmationModal,
+    setEditorRole,
+    setAdvanceMeetingModalID,
+    setViewAdvanceMeetingModal,
+    advanceMeetingModalID,
+  } = useMeetingContext();
+
+  const {
+    startRecordingState,
+    pauseRecordingState,
+    resumeRecordingState,
+    stopRecordingState,
+    setStartRecordingState,
+    setPauseRecordingState,
+    setResumeRecordingState,
+    setStopRecordingState,
+    iframeRef,
+  } = useContext(MeetingContext);
+  const navigate = useNavigate();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const presenterViewFlag = useSelector(
@@ -50,31 +71,9 @@ const NewEndMeetingModal = () => {
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  const {
-    setCancelConfirmationModal,
-    setEditorRole,
-    setAdvanceMeetingModalID,
-    setViewAdvanceMeetingModal,
-    advanceMeetingModalID,
-  } = useMeetingContext();
-
-  const {
-    startRecordingState,
-    pauseRecordingState,
-    resumeRecordingState,
-    stopRecordingState,
-    setStartRecordingState,
-    setPauseRecordingState,
-    setResumeRecordingState,
-    setStopRecordingState,
-    iframeRef,
-  } = useContext(MeetingContext);
-
   const endMeetingModal = useSelector(
     (state) => state.NewMeetingreducer.endMeetingModal
   );
-  const navigate = useNavigate();
-  const { t } = useTranslation();
 
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
@@ -124,10 +123,10 @@ const NewEndMeetingModal = () => {
   const handleClickContinue = async () => {
     // setCancelConfirmationModal(false);
 
-    let isMeeting = localStorage.getItem("isMeeting");
-    let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-    let isMeetingVideoHostCheck = localStorage.getItem(
-      "isMeetingVideoHostCheck"
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     let newRoomID = localStorage.getItem("newRoomId");
     let isGuid = localStorage.getItem("isGuid");
@@ -244,7 +243,7 @@ const NewEndMeetingModal = () => {
     }
 
     let leaveMeetingData = {
-      FK_MDID: Number(advanceMeetingModalID),
+      FK_MDID: Number(currentMeetingID),
       DateTime: getCurrentDateTimeUTC(),
     };
     await dispatch(
@@ -271,7 +270,7 @@ const NewEndMeetingModal = () => {
   };
   const handleClickDiscard = () => {
     console.log("NewEndLeaveMeeting");
-
+    localStorage.setItem("navigateLocation", "Meeting");
     dispatch(showEndMeetingModal(false));
   };
   return (
@@ -281,6 +280,8 @@ const NewEndMeetingModal = () => {
         setShow={dispatch(showEndMeetingModal)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
+        backdrop="static"
+        keyboard={false}
         className={styles["classOfMeetingModal"]}
         onHide={() => {
           dispatch(showEndMeetingModal(false));

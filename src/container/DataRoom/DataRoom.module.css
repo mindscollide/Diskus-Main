@@ -720,7 +720,7 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
 .Option_Document_button {
   font-size: 12px !important;
   font-weight: 600;
-  color: #5a5a5a !important;
+  /* color: #5a5a5a ; */
 }
 
 .Custome_range_options {

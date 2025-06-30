@@ -946,6 +946,39 @@ const Dashboard = () => {
     });
   };
 
+  const handRaisedWhileHostTransferFunc = async () => {
+    let participantRoomId = localStorage.getItem("participantRoomId");
+    let participantUID = localStorage.getItem("participantUID");
+    let newRoomId = localStorage.getItem("newRoomId");
+    let isGuid = localStorage.getItem("isGuid");
+
+    let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+    let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+    let isMeetingVideoHostCheck = JSON.parse(
+      localStorage.getItem("isMeetingVideoHostCheck")
+    );
+    let handStatus = JSON.parse(localStorage.getItem("handStatus"));
+
+    if (isMeeting) {
+      console.log("Check why host not transfer");
+      if (isMeetingVideo) {
+        console.log("Check why host not transfer");
+        if (handStatus) {
+          console.log("Check why host not transfer");
+
+          let data = {
+            RoomID: String(
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+            ),
+            UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
+            IsHandRaised: false,
+          };
+          await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
+        }
+      }
+    }
+  };
+
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1699,13 +1732,7 @@ const Dashboard = () => {
                 localStorage.getItem("isMeetingVideo")
               );
 
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
-              );
-              let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-              let isMeetingVideoHostChecker = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
-              );
+              handRaisedWhileHostTransferFunc();
 
               console.log(data.payload, "checkHostTransfer");
 
@@ -3195,6 +3222,7 @@ const Dashboard = () => {
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
           let CallType = Number(localStorage.getItem("CallType"));
+          console.log(existingData.length, "existingDatalength");
 
           //For Stop Recording while user reject the call
           if (isZoomEnabled) {
@@ -3204,22 +3232,6 @@ const Dashboard = () => {
               const iframe = iframeRef.current;
               if (iframe && iframe.contentWindow) {
                 console.log("Does Check Recording Stop");
-                iframe.contentWindow.postMessage(
-                  "RecordingStopMsgFromIframe",
-                  "*"
-                );
-              }
-            } else if (
-              isCaller &&
-              CallType === 2 &&
-              existingData.length === 1
-            ) {
-              console.log("Does Check Recording Stop Call Type 2");
-
-              // Assuming iframeRef is defined
-              const iframe = iframeRef.current;
-              if (iframe && iframe.contentWindow) {
-                console.log("Does Check Recording Stop Call Type 2");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
                   "*"
@@ -3452,11 +3464,12 @@ const Dashboard = () => {
               }
             }
             console.log("mqtt");
+            console.log(data.payload.message, "datapayloadmessage");
 
             setNotification({
               ...notification,
               notificationShow: true,
-              message: t("The-call-was-unanswered"),
+              message: t("VIDEO_CALL_UNANSWERED"),
             });
             setNotificationID(id);
             if (data.payload.callTypeID === 1) {
@@ -3489,6 +3502,7 @@ const Dashboard = () => {
               dispatch(
                 callRequestReceivedMQTT(data.payload, data.payload.message)
               );
+              console.log(data.payload.message, "datapayloadmessage");
             } else {
               let CallType = Number(localStorage.getItem("CallType"));
               if (CallType === 2) {
@@ -3498,51 +3512,79 @@ const Dashboard = () => {
                   const userExists = prevState.some(
                     (user) => user.recepientID === data.payload.recepientID
                   );
+
+                  console.log(userExists, "userExists");
                   if (!userExists) {
                     return [...prevState, data.payload];
                   }
                   return prevState;
                 });
               }
+              const participantWhoDidNotRespond = data.payload.recepientID;
 
-              let RecipentIDsOninitiateVideoCall =
+              // Step 1: Update RecipentIDsOninitiateVideoCall
+              let recipientIDsOnInitiate =
                 JSON.parse(
                   localStorage.getItem("RecipentIDsOninitiateVideoCall")
                 ) || [];
 
-              let existingData =
-                JSON.parse(localStorage.getItem("callerStatusObject")) || [];
-              console.log("mqtt", checkCallStatus(existingData));
-
-              if (RecipentIDsOninitiateVideoCall.length > 0) {
-                const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID
+              const recipientIndex = recipientIDsOnInitiate.indexOf(
+                participantWhoDidNotRespond
+              );
+              console.log("setLeaveOneToOne", recipientIndex);
+              if (recipientIndex !== -1) {
+                console.log("setLeaveOneToOne");
+                recipientIDsOnInitiate.splice(recipientIndex, 1);
+                localStorage.setItem(
+                  "RecipentIDsOninitiateVideoCall",
+                  JSON.stringify(recipientIDsOnInitiate)
                 );
-                if (index !== -1) {
-                  // Remove the matching value
-                  RecipentIDsOninitiateVideoCall.splice(index, 1);
-                  localStorage.setItem(
-                    "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall)
-                  );
-                  if (
-                    RecipentIDsOninitiateVideoCall.length === 0 &&
-                    existingData.length === 0
-                  ) {
-                    sessionStorage.setItem("NonMeetingVideoCall", false);
-                    localStorage.setItem("onlyLeaveCall", true);
-                    console.log("setLeaveOneToOne");
-                    setLeaveOneToOne(true);
-                    dispatch(videoChatMessagesFlag(false));
-                    dispatch(videoOutgoingCallFlag(false));
-                    dispatch(
-                      callRequestReceivedMQTT(
-                        data.payload,
-                        data.payload.message
-                      )
-                    );
-                  }
-                }
+              }
+
+              // Step 2: Filter out the participant who didn’t respond
+              let callerStatusList =
+                JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+              callerStatusList = callerStatusList.filter(
+                (obj) =>
+                  obj.participantId !== participantWhoDidNotRespond &&
+                  obj.CallStatus !== "Rejected" // Remove all Rejected
+              );
+
+              console.log("setLeaveOneToOne", callerStatusList);
+              localStorage.setItem(
+                "callerStatusObject",
+                JSON.stringify(callerStatusList)
+              );
+
+              // Step 3: Fetch updated arrays again
+              const remainingRecipients =
+                JSON.parse(
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                ) || [];
+              console.log("setLeaveOneToOne", remainingRecipients);
+
+              const remainingCallerStatus =
+                JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+              console.log(
+                "setLeaveOneToOne",
+                checkCallStatus(remainingCallerStatus)
+              );
+
+              // Step 4: Final condition
+              if (
+                remainingRecipients.length === 0 &&
+                remainingCallerStatus.length === 0
+              ) {
+                sessionStorage.setItem("NonMeetingVideoCall", false);
+                localStorage.setItem("onlyLeaveCall", true);
+                console.log("setLeaveOneToOne");
+                setLeaveOneToOne(true);
+                dispatch(videoChatMessagesFlag(false));
+                dispatch(videoOutgoingCallFlag(false));
+                dispatch(
+                  callRequestReceivedMQTT(data.payload, data.payload.message)
+                );
               }
             }
           }
