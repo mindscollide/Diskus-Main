@@ -126,6 +126,7 @@ body[dir="rtl"] .event-details:hover {
   white-space: nowrap;
   color: #6172d6;
   font-weight: 600;
+  max-width: 90% !important;
 }
 
 .events-dateTime {
@@ -147,6 +148,7 @@ body[dir="rtl"] .event-details:hover {
   border-radius: 4px !important;
   color: #fff !important;
   font-size: 12px !important;
+  width: 170px !important;
 }
 
 .ViewMeetingButtonStyles:is(:active, :focus, :hover, :focus-visible) {
@@ -154,5 +156,6 @@ body[dir="rtl"] .event-details:hover {
   border: none !important;
   border-radius: 4px !important;
   color: #fff !important;
+  width: 170px !important;
   font-size: 12px !important;
 }

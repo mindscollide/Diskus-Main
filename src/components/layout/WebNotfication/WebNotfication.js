@@ -848,6 +848,10 @@ const WebNotfication = ({
             "NotificationClickMeetingID",
             PayLoadData.MeetingID
           );
+          localStorage.setItem(
+            "NotificationClickSendResponseByDate",
+            PayLoadData.DeadlineDate
+          );
           //Here i will apply that if polls are not expired i will redirect it to the voting page
           // Get the current date in "YYYYMMDD" format
           const currentDate = new Date();
@@ -882,7 +886,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           localStorage.setItem(
-            "ProposedMeetOperationsDateSelectedSendResponseByDate",
+            "NotificationClickSendResponseByDate",
             PayLoadData.DeadlineDate
           );
         }

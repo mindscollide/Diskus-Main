@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Events.module.css";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
@@ -19,9 +19,10 @@ import {
   getMeetingStatusfromSocket,
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
-import { convertToArabicNumerals } from "../../../commen/functions/regex";
+import { MeetingContext } from "../../../context/MeetingContext";
 
 const Events = () => {
+  const { setEditorRole } = useContext(MeetingContext);
   const UpcomingEventsDataReducerData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
@@ -251,6 +252,16 @@ const Events = () => {
       IsViewOpenOnly: val === 1 ? true : false,
     };
     console.log("startMeetingRequest", dashboardData);
+    setEditorRole({
+      status: String(data.meetingDetails.statusID),
+      role:
+        data.participantRoleID === 2
+          ? "Participant"
+          : data.participantRoleID === 4
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: false,
+    });
     // Dispatch and navigate with no mutation
     dispatch(dashboardCalendarEvent({ ...dashboardData }));
     navigate("/Diskus/Meeting");
@@ -375,7 +386,19 @@ const Events = () => {
                         );
                       }}
                     />
-                  ) : null
+                  ) : (
+                    <Button
+                      text={t("View-meeting")}
+                      onClick={() => {
+                        meetingDashboardCalendarEvent(upcomingEventsData, 1);
+                        localStorage.setItem(
+                          "meetingTitle",
+                          upcomingEventsData.meetingDetails.title
+                        );
+                      }}
+                      className={styles["ViewMeetingButtonStyles"]}
+                    />
+                  )
                 ) : upcomingEventsData.meetingDetails.statusID === 10 ? (
                   upcomingEventsData.participantRoleID === 2 ? (
                     <Button
@@ -414,7 +437,19 @@ const Events = () => {
                       }}
                     />
                   ) : null
-                ) : null}
+                ) : (
+                  <Button
+                    text={t("View-meeting")}
+                    onClick={() => {
+                      meetingDashboardCalendarEvent(upcomingEventsData, 1);
+                      localStorage.setItem(
+                        "meetingTitle",
+                        upcomingEventsData.meetingDetails.title
+                      );
+                    }}
+                    className={styles["ViewMeetingButtonStyles"]}
+                  />
+                )}
               </div>
             </>
           ) : (
@@ -428,7 +463,7 @@ const Events = () => {
                     minutesDifference < remainingMinutesAgo) ||
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
-                    : ` ${styles["event-details"]} border-0 d-flex align-items-center justify-content-between`
+                    : ` ${styles["event-details"]}  d-flex align-items-center`
                 }
               >
                 <div
@@ -437,7 +472,7 @@ const Events = () => {
                       minutesDifference < remainingMinutesAgo) ||
                     upcomingEventsData.meetingDetails.statusID === 10
                       ? `${styles["event-details-block"]}`
-                      : ""
+                      : `${styles["event-details-block"]}`
                   }
                 >
                   <p className={styles["events-description"]}>

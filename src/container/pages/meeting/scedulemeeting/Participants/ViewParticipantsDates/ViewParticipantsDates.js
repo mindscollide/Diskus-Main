@@ -37,7 +37,7 @@ const ViewParticipantsDates = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  console.log(responseByDate, "responseByDateresponseByDateresponseByDate");
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
@@ -69,15 +69,29 @@ const ViewParticipantsDates = ({
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
 
-  const changeDateStartHandler2 = (date, value) => {
-    let newDate;
-    if (date?.length >= 4) {
-      let newDate2 = forRecentActivity(date);
-      newDate = moment(newDate2).format("DD MMMM YYYY");
-    } else {
-      newDate = moment(date).format("DD MMMM YYYY");
-    }
+  // const changeDateStartHandler2 = (date, value) => {
+  //   console.log(date, "changeDateStartHandler2");
+  //   let newDate;
+  //   if (date?.length >= 4) {
+  //     let newDate2 = forRecentActivity(date);
+  //     newDate = moment(newDate2).format("DD MMMM YYYY");
+  //   } else {
+  //     newDate = moment(date).format("DD MMMM YYYY");
+  //   }
+  //   console.log(newDate, "changeDateStartHandler2");
 
+  //   return newDate;
+  // };
+
+  const changeDateStartHandler2 = (date, value) => {
+    console.log(date, "changeDateStartHandler2");
+    let cleanedDate = date;
+    if (typeof date === "string" && /^\d{8}/.test(date)) {
+      cleanedDate = date.substring(0, 8);
+    }
+    const parsed = moment(cleanedDate, "YYYYMMDD");
+    const newDate = parsed.isValid() ? parsed.format("DD MMMM YYYY") : "";
+    console.log(newDate, "changeDateStartHandler2");
     return newDate;
   };
 
