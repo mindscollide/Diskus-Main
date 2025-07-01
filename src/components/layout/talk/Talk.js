@@ -56,6 +56,7 @@ import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
   GetMinuteReviewPendingApprovalsByReviewerId,
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
+  GetPendingApprovalsCount,
 } from "../../../store/actions/Minutes_action.js";
 import { convertNumbersInString } from "../../../commen/functions/regex";
 import { clearMinuteReviewerMqtt } from "../../../store/actions/workflow_actions.js";
@@ -65,11 +66,8 @@ const Talk = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
-  const {
-    pendingApprovalCount,
-    setPendingApprovalCount,
-    pendingApprovalsTabCount,
-  } = useContext(MeetingContext);
+  const { pendingApprovalsTabCount, setPendingApprovalTabCount } =
+    useContext(MeetingContext);
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const talkSocketUnreadMessageCount = useSelector(
@@ -378,11 +376,12 @@ const Talk = () => {
   }, [MissedCallCountData?.missedCallCount]);
 
   useEffect(() => {
-    if (
-      PendingApprovalCountData !== null &&
-      PendingApprovalCountData !== undefined
-    ) {
-      setPendingApprovalCount(PendingApprovalCountData.pendingApprovalsCount);
+    if (PendingApprovalCountData?.isExecuted) {
+      console.log(PendingApprovalCountData, "PendingApprovalCountData");
+      setPendingApprovalTabCount({
+        pendingSignature: PendingApprovalCountData.pendingSignatures ?? 0,
+        pendingMinutes: PendingApprovalCountData.pendingMinuteReviews ?? 0,
+      });
     }
   }, [PendingApprovalCountData]);
 
@@ -458,6 +457,11 @@ const Talk = () => {
   //   }
   // }, [ActiveChatBoxGS])
 
+  console.log(
+    pendingApprovalsTabCount.pendingMinutes,
+    pendingApprovalsTabCount.pendingSignature,
+    "IOS"
+  );
   return (
     <>
       <div ref={videoPanelRef} className={"talk_nav" + " " + currentLang}>
