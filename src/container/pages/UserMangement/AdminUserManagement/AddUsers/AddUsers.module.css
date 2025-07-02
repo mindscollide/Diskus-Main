@@ -24,6 +24,17 @@ body[dir="rtl"] .NameCreateAddtional {
   font-weight: 600 !important;
 }
 
+.NameCreateAddtionalContactField {
+  font-style: normal;
+  color: #6172d6 !important;
+  font-weight: 600;
+  font-size: 10px;
+}
+
+body[dir="rtl"] .NameCreateAddtionalContactField {
+  font-weight: 600 !important;
+}
+
 .Steric {
   color: #f16b6b !important;
 }
@@ -216,4 +227,12 @@ body[dir="rtl"] .isEmailUnique {
   border: thin solid #e1e1e1 !important;
   border-radius: 2px !important;
   background: transparent;
+}
+
+.ContactFdiv {
+  margin-top: -19px !important;
+}
+
+body[dir="rtl"] .ContactFdiv {
+  margin-top: -21px !important;
 }
