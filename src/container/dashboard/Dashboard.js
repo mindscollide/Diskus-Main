@@ -4495,6 +4495,11 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
         ) {
           dispatch(SignatureDocumentStatusChange(data.payload));
+          //here to decrease the signature count
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+          }));
         }
         if (
           data.payload.message
@@ -4535,6 +4540,18 @@ const Dashboard = () => {
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
+          }));
+        }
+        //Count Decrease when the Minute is Reviewed
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("MINUTE_REVIEW_RECIEVED_COUNT".toLowerCase())
+        ) {
+          //here you have remove the below logic
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingMinutes: Math.max((prev.pendingMinutes ?? 0) - 1, 0),
           }));
         }
       }
