@@ -1649,6 +1649,9 @@ const UpdateQuickMeeting = ({
       let membersData = [];
       let PresenterData = [];
       let usersData = [];
+      let userNamecopy = userName ?? "";
+      let fK_UID2 = fK_UID ?? "";
+      let userProfilePicturBobj = userProfilePicture ?? null;
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
@@ -1674,19 +1677,19 @@ const UpdateQuickMeeting = ({
                       className="d-flex gap-2 align-items-center"
                     >
                       <img
-                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        src={`data:image/jpeg;base64,${userProfilePicturBobj?.displayProfilePictureName}`}
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
                         alt=""
                       />
-                      <span>{userName}</span>
+                      <span>{userNamecopy}</span>
                     </Col>
                   </Row>
                 </>
               ),
-              value: fK_UID,
-              name: userName,
+              value: fK_UID2,
+              name: userNamecopy,
             });
             setPresenterValue({
               label: (
@@ -1699,27 +1702,27 @@ const UpdateQuickMeeting = ({
                       className="d-flex gap-2 align-items-center"
                     >
                       <img
-                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        src={`data:image/jpeg;base64,${userProfilePicturBobj?.displayProfilePictureName}`}
                         height="16.45px"
                         width="18.32px"
                         draggable="false"
                         alt=""
                       />
-                      <span>{userName}</span>
+                      <span>{userNamecopy}</span>
                     </Col>
                   </Row>
                 </>
               ),
-              value: fK_UID,
-              name: userName,
+              value: fK_UID2,
+              name: userNamecopy,
             });
             setDefaultObjMeetingAgenda({
               ...defaultMeetingAgenda,
-              PresenterName: userName,
+              PresenterName: userNamecopy,
             });
             setObjMeetingAgenda({
               ...objMeetingAgenda,
-              PresenterName: userName,
+              PresenterName: userNamecopy,
             });
           }
 

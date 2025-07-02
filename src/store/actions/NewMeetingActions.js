@@ -8216,7 +8216,8 @@ const JoinCurrentMeeting = (
   setSceduleMeeting,
   no,
   setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModal
+  setViewAdvanceMeetingModal,
+  NotificationCheckQuickMeet
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -8247,7 +8248,8 @@ const JoinCurrentMeeting = (
               setSceduleMeeting,
               no,
               setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal
+              setViewAdvanceMeetingModal,
+              NotificationCheckQuickMeet
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -8308,6 +8310,22 @@ const JoinCurrentMeeting = (
                 await dispatch(viewAdvanceMeetingPublishPageFlag(true));
                 await dispatch(scheduleMeetingPageFlag(false));
               }
+              //Work For Web Notification Quick  Meeting Joining
+              if (NotificationCheckQuickMeet) {
+                console.log("here i am");
+                let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
+                dispatch(
+                  ViewMeeting(
+                    navigate,
+                    viewMeetingData,
+                    t,
+                    setViewFlag,
+                    false,
+                    false,
+                    1
+                  )
+                );
+              }
               localStorage.setItem("currentMeetingID", Data.FK_MDID);
               await dispatch(currentMeetingStatus(10));
               let activeStatusOneToOne = JSON.parse(
@@ -8346,7 +8364,13 @@ const JoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
+              dispatch(
+                joinMeetingFail(
+                  t(
+                    "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time"
+                  )
+                )
+              );
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }
@@ -9741,7 +9765,8 @@ const GetMeetingStatusDataAPI = (
   FlagOnRouteClickAdvanceMeet,
   setViewAdvanceMeetingModal,
   Check,
-  setVideoTalk
+  setVideoTalk,
+  setViewFlag
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
@@ -9769,7 +9794,8 @@ const GetMeetingStatusDataAPI = (
               FlagOnRouteClickAdvanceMeet,
               setViewAdvanceMeetingModal,
               Check,
-              setVideoTalk
+              setVideoTalk,
+              setViewFlag
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -9873,6 +9899,32 @@ const GetMeetingStatusDataAPI = (
                   };
                   dispatch(
                     MinutesWorkFlowActorStatusNotificationAPI(Data, navigate, t)
+                  );
+                } else if (Check === 4) {
+                  let joinMeetingData = {
+                    VideoCallURL: response.data.responseResult.videoCallUrl,
+                    FK_MDID: Number(
+                      localStorage.getItem("NotificationAdvanceMeetingID")
+                    ),
+                    DateTime: getCurrentDateTimeUTC(),
+                  };
+
+                  dispatch(
+                    JoinCurrentMeeting(
+                      JSON.parse(
+                        localStorage.getItem("QuickMeetingCheckNotification")
+                      ),
+                      navigate,
+                      t,
+                      joinMeetingData,
+                      setViewFlag,
+                      false,
+                      false,
+                      0,
+                      false,
+                      false,
+                      true
+                    )
                   );
                 }
               } catch (error) {
@@ -10795,7 +10847,13 @@ const NewJoinCurrentMeeting = (
                   "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
-              dispatch(joinMeetingFail(t("Unable-to-join-the-meeting-at-this-time-please-try-after-some-time")));
+              dispatch(
+                joinMeetingFail(
+                  t(
+                    "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time"
+                  )
+                )
+              );
             } else {
               dispatch(joinMeetingFail(t("Something-went-wrong")));
             }

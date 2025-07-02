@@ -4532,7 +4532,6 @@ const Dashboard = () => {
             .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
         ) {
           dispatch(MinuteReviwerCount(data.payload));
-          // setPendingApprovalCount((prevCount) => (prevCount ?? 0) + 1);
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingMinutes: (prev.pendingMinutes ?? 0) + 1,

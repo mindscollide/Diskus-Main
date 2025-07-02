@@ -593,7 +593,7 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent-successfully"), "error", setOpen);
+      showMessage(t("Email-sent-successfully"), "Success", setOpen);
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {

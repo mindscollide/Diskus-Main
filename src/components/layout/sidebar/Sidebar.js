@@ -447,7 +447,7 @@ const Sidebar = () => {
     console.log("Check Route scenario's", targetPath);
     console.log("Check Route scenario's");
     if (isMeeting) {
-      if (location.pathname !== targetPath && !viewAdvanceMeetingModal ) {
+      if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {
         console.log("Check Route scenario's");
         navigate(targetPath);
         return "";

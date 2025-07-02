@@ -248,7 +248,7 @@ const AddUsers = () => {
     }
 
     if (name === "Contact" && value !== "") {
-      if (value !== "") {
+      if (/^\d+$/.test(value) || value === "") {
         setAddUserFreeTrial({
           ...addUserFreeTrial,
           Contact: {
@@ -257,16 +257,16 @@ const AddUsers = () => {
             errorStatus: false,
           },
         });
+      } else {
+        setAddUserFreeTrial({
+          ...addUserFreeTrial,
+          Contact: {
+            value: "",
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
       }
-    } else if (name === "Contact" && value === "") {
-      setAddUserFreeTrial({
-        ...addUserFreeTrial,
-        Contact: {
-          value: "",
-          errorMessage: "",
-          errorStatus: false,
-        },
-      });
     }
   };
 
@@ -352,7 +352,7 @@ const AddUsers = () => {
             UserEmail: addUserFreeTrial.Email.value,
             OrganizationID: Number(organizationID),
             RoleID: addUserFreeTrial.isAdmin,
-            FK_NumberWorldCountryID: Number(worldCountryID),
+            FK_NumberWorldCountryID: Number(addUserFreeTrial.CountyCode),
             PackageID: 4,
           },
         ],
@@ -592,7 +592,7 @@ const AddUsers = () => {
           </Row>
           <div>
             <span className={styles["NameCreateAddtional"]}>
-              {t("Contact")} <span className={styles["Steric"]}>*</span>
+              {t("Code")} <span className={styles["Steric"]}>*</span>
             </span>
           </div>
           <Row>
@@ -614,13 +614,19 @@ const AddUsers = () => {
               />
             </Col>
             <Col lg={8} md={8} sm={8} xs={12}>
+              <div className={styles["ContactFdiv"]}>
+                <span className={styles["NameCreateAddtional"]}>
+                  {t("Contact")} <span className={styles["Steric"]}>*</span>
+                </span>
+              </div>
               <TextField
                 placeholder={t("Contact")}
                 value={addUserFreeTrial.Contact.value}
                 name={"Contact"}
-                labelclass={"d-none"}
                 change={handleAddUsersFreeTrial}
-                applyClass={"updateNotes_titleInput"}
+                applyClass={
+                  "updateNotes_titleInputForContactFieldAdminUserFreeTrial"
+                }
               />
             </Col>
             <Col>

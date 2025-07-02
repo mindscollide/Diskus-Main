@@ -259,11 +259,6 @@ const NewMeeting = () => {
   const shareViaDataRoomPathConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
   );
-  console.log(
-    viewAdvanceMeetingModal,
-    viewAdvanceMeetingsPublishPageFlag,
-    "viewAdvanceMeetingModalviewAdvanceMeetingModal"
-  );
   //Proposed Meeting View Flag
   const ProposedMeetViewFlag = useSelector(
     (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
@@ -365,6 +360,7 @@ const NewMeeting = () => {
   const [visibleMeetingType, setVisibleMeetingType] = useState(false);
   //Filteration Work Meeting Status States
   const [visible, setVisible] = useState(false);
+  const [talkGroupID, setTalkGroupID] = useState(0);
   const [selectedValues, setSelectedValues] = useState([
     "10",
     "1",
@@ -1408,7 +1404,7 @@ const NewMeeting = () => {
       localStorage.removeItem("mtAgUpdate");
       localStorage.removeItem("viewMeetingLink");
       localStorage.removeItem("viewPublishMinutesLink");
-
+      dispatch(dashboardCalendarEvent(null));
       setResponseByDate("");
       setDashboardEventData(null);
       setEditFlag(false);
@@ -1585,7 +1581,6 @@ const NewMeeting = () => {
     setProposedNewMeeting(true);
   };
 
-  const [talkGroupID, setTalkGroupID] = useState(0);
   const groupChatInitiation = async (data) => {
     console.log(data, "datadatadata");
     if (data.talkGroupID !== 0) {
@@ -1657,8 +1652,6 @@ const NewMeeting = () => {
   const CreateQuickMeetingFunc = async () => {
     setQuickMeeting(true);
   };
-
-  const eventClickHandler = () => {};
 
   //Published Meeting Page
   const handlePublishedMeeting = async () => {
@@ -1997,6 +1990,7 @@ const NewMeeting = () => {
     }
     setVisible((prevVisible) => !prevVisible);
   };
+
   const handleClickChevronMeetingType = () => {
     if (visible) {
       setVisible(false);
@@ -2969,6 +2963,7 @@ const NewMeeting = () => {
       CalendarDashboardEventData !== null &&
       CalendarDashboardEventData !== undefined
     ) {
+      console.log("specific");
       try {
         let dashboardEventData = CalendarDashboardEventData;
 
@@ -3055,6 +3050,7 @@ const NewMeeting = () => {
           dashboardEventData.statusID === 1
         ) {
           if (dashboardEventData.IsViewOpenOnly) {
+            console.log("specific");
             if (dashboardEventData.isQuickMeeting === true) {
               let Data = { MeetingID: Number(dashboardEventData.pK_MDID) };
               dispatch(
@@ -3069,9 +3065,9 @@ const NewMeeting = () => {
                 )
               );
             } else {
+              console.log("specific");
               setAdvanceMeetingModalID(Number(dashboardEventData.pK_MDID));
               setViewAdvanceMeetingModal(true);
-              // dispatch(viewAdvanceMeetingPublishPageFlag(true));
             }
             return;
           } else {
@@ -3131,7 +3127,6 @@ const NewMeeting = () => {
             }
           }
         }
-
         dispatch(dashboardCalendarEvent(null));
       } catch (error) {
         console.log("dashboardCalendarEvent", error);
