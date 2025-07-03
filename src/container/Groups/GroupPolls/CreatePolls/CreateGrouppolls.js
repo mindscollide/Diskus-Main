@@ -516,6 +516,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
+                      onChange={changeDateStartHandler}
                       onFocusedDateChange={changeDateStartHandler}
                     />
                   </Col>
