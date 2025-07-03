@@ -1,22 +1,61 @@
 {
-  "action": "WorkFlow",
-  "senderID": 1351,
-  "receiverID": [1353],
-  "dateTime": "20250624121930",
-  "viewable": true,
-  "payload": {
-    "message": "MINUTE_REVIEWER_ADDED",
-    "data": {
-      "title": "Minutes MQTT Scenarion Checks ",
-      "workFlowID": 484,
-      "meetingID": 5563,
-      "status": "Pending",
-      "statusID": 1,
-      "requestedBy": "SAIF UL ISLAM ",
-      "requestedById": 1351,
-      "deadline": "20250625121835",
-      "isMinutePublished": false
+  "MeetingID": 5640,
+  "MeetingTitle": "FileCheck",
+  "MeetingDescription": "FileCheck",
+  "MeetingTypeID": 0,
+  "MeetingDate": "20250703",
+  "OrganizationId": 561,
+  "MeetingStartTime": "120000",
+  "MeetingEndTime": "120000",
+  "MeetingLocation": "FileCheck",
+  "IsVideoCall": false,
+  "IsChat": false,
+  "MeetingReminderID": [1],
+  "MeetingAgendas": [
+    {
+      "ObjMeetingAgenda": {
+        "PK_MAID": 5906,
+        "Title": "FileCheck",
+        "PresenterName": "SAIF UL ISLAM ",
+        "URLs": "",
+        "FK_MDID": 5640
+      },
+      "MeetingAgendaAttachments": [
+        {
+          "DisplayAttachmentName": "Backup Get Events.txt",
+          "OriginalAttachmentName": "5040",
+          "isNew": false
+        }
+      ]
+    },
+    {
+      "ObjMeetingAgenda": {
+        "PK_MAID": -767,
+        "Title": "se",
+        "PresenterName": "SAIF UL ISLAM ",
+        "URLs": "",
+        "FK_MDID": 5640
+      },
+      "MeetingAgendaAttachments": [
+        {
+          "DisplayAttachmentName": "Todays Script 02-05-2025.txt",
+          "OriginalAttachmentName": "5041",
+          "isNew": true
+        }
+      ]
     }
-  },
-  "message": null
+  ],
+  "MeetingAttendees": [
+    {
+      "User": { "PK_UID": 1351 },
+      "MeetingAttendeeRole": { "PK_MARID": 1 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    },
+    {
+      "User": { "PK_UID": 1353 },
+      "MeetingAttendeeRole": { "PK_MARID": 2 },
+      "AttendeeAvailability": { "PK_AAID": 1 }
+    }
+  ],
+  "ExternalMeetingAttendees": []
 }
