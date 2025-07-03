@@ -247,6 +247,12 @@ const getPendingApprovalsCount_Fail = (message, response) => {
   };
 };
 
+const clearPendingApprovalCount = () => {
+  return {
+    type: actions.GET_PENDINGAPPROVALSCOUNT_CLEAR,
+  };
+};
+
 // GetPendingApprovalsCount
 const GetPendingApprovalsCount = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -2708,4 +2714,5 @@ export {
   ResendUpdatedMinuteForReview,
   GetStatsForPublishingMinutesByWorkFlowId,
   MinutesWorkFlowActorStatusNotificationAPI,
+  clearPendingApprovalCount,
 };

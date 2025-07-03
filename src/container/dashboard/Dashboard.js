@@ -4507,6 +4507,10 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_ACTION_BY_ME".toLowerCase())
         ) {
           dispatch(SignatureDocumentActionByMe(data.payload));
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+          }));
           if (data.payload.data.status === "Signed") {
             showMessage(
               t("Document-has-been-signed-successfully"),
@@ -4548,11 +4552,16 @@ const Dashboard = () => {
             .toLowerCase()
             .includes("MINUTE_REVIEW_RECIEVED_COUNT".toLowerCase())
         ) {
-          //here you have remove the below logic
-          setPendingApprovalTabCount((prev) => ({
-            ...prev,
-            pendingMinutes: Math.max((prev.pendingMinutes ?? 0) - 1, 0),
-          }));
+          console.log(data.payload.pendingMinute, "IOS");
+          setPendingApprovalTabCount((prev) => {
+            if (prev.pendingMinutes !== data.payload.pendingMinute) {
+              return {
+                ...prev,
+                pendingMinutes: data.payload.pendingMinute,
+              };
+            }
+            return prev;
+          });
         }
       }
       if (data.action.toLowerCase() === "Settings".toLowerCase()) {

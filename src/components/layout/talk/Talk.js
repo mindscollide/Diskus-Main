@@ -54,6 +54,7 @@ import { useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
+  clearPendingApprovalCount,
   GetMinuteReviewPendingApprovalsByReviewerId,
   GetMinuteReviewPendingApprovalsStatsByReviewerId,
   GetPendingApprovalsCount,
@@ -376,12 +377,13 @@ const Talk = () => {
   }, [MissedCallCountData?.missedCallCount]);
 
   useEffect(() => {
-    if (PendingApprovalCountData?.isExecuted) {
+    if (PendingApprovalCountData !== null) {
       console.log(PendingApprovalCountData, "PendingApprovalCountData");
       setPendingApprovalTabCount({
         pendingSignature: PendingApprovalCountData.pendingSignatures ?? 0,
         pendingMinutes: PendingApprovalCountData.pendingMinuteReviews ?? 0,
       });
+      dispatch(clearPendingApprovalCount());
     }
   }, [PendingApprovalCountData]);
 
