@@ -773,10 +773,10 @@ body[dir="rtl"] .Back_ground_For_uploader_active {
   gap: 5px;
   justify-content: flex-start;
   height: 22px !important;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  cursor: pointer !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 .dataroom_location {
@@ -972,10 +972,10 @@ body[dir="rtl"] .dataroom_searchinput2 {
   max-width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
-  display: block !important;
+  display: f !important;
 }
 .fileRow {
-  display: flex;
+  display: block;
   align-items: center;
   width: 100% !important;
   text-overflow: ellipsis !important;

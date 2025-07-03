@@ -9459,6 +9459,9 @@ const LeaveMeetingVideo = (
                   "Meeting_MeetingServiceManager_LeaveMeetingVideo_04".toLowerCase()
                 )
             ) {
+              await dispatch(normalizeVideoPanelFlag(false));
+              await dispatch(maximizeVideoPanelFlag(false));
+              await dispatch(minimizeVideoPanelFlag(false));
               await dispatch(videoIconOrButtonState(false));
               await dispatch(screenShareTriggeredGlobally(false));
               await dispatch(participantVideoButtonState(false));
