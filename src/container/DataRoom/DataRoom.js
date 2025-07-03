@@ -1870,8 +1870,9 @@ const DataRoom = () => {
       ),
       dataIndex: "name",
       key: "name",
-      width: "128px",
+      width: "140px",
       align: "start",
+      ellipsis: true,
 
       render: (text, data) => {
         if (data.isShared) {
@@ -1950,7 +1951,7 @@ const DataRoom = () => {
                   title={text}
                   showArrow={false}
                   placement="top"
-                  className="d-flex gap-1"
+                  className="d-flex gap-1 align-items-center"
                 >
                   <img
                     src={getIconSource(getFileExtension(data.name))}
