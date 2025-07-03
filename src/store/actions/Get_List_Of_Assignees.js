@@ -344,6 +344,14 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
 
                     // Only include agendas with attachments
                     if (doc.MeetingAgendaAttachments.length > 0) {
+                      let checkIsNewFileExist =
+                        doc.MeetingAgendaAttachments.filter(
+                          (fileData, index) => fileData.isNew === true
+                        );
+                      console.log(
+                        checkIsNewFileExist.length,
+                        "checkIsNewFileExistcheckIsNewFileExistF"
+                      );
                       const AgendaID = String(
                         mainMatch
                           ? mainMatch.newId
@@ -362,9 +370,10 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   }).filter((agenda) => agenda !== null), // Remove null entries
                 };
 
-                // Extract all OriginalAttachmentName values as numbers
                 const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
-                  agenda.MeetingAgendaAttachments.map((attachment) =>
+                  agenda.MeetingAgendaAttachments.filter(
+                    (attachment) => attachment.isNew === true
+                  ).map((attachment) =>
                     Number(attachment.OriginalAttachmentName)
                   )
                 );

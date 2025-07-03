@@ -950,6 +950,7 @@ const UpdateQuickMeeting = ({
         const uploaded = saveResponse.newFolder.map((file) => ({
           DisplayAttachmentName: file.displayFileName,
           OriginalAttachmentName: String(file.pK_FileID),
+          isNew: true
         }));
   
         if (isEditMode) {
@@ -1432,6 +1433,7 @@ const UpdateQuickMeeting = ({
                     DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
                     OriginalAttachmentName:
                       atchmenDataaa.originalAttachmentName,
+                      isNew: false
                   });
                 }
               );

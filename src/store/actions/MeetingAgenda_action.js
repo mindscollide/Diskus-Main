@@ -858,6 +858,7 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
+              console.log(attachmentIds, "attachmentIdsattachmentIds");
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
@@ -876,7 +877,7 @@ const CreateUpdateMeetingDataRoomMap = (
                 );
               } else {
                 let createrID = localStorage.getItem("userID");
-                setShow(false)
+                setShow(false);
                 if (checkFlag === 4) {
                   dispatch(meetingLoaderDashboard(false));
                   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -969,20 +970,24 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
+              console.log(attachmentIds, "attachmentIdsattachmentIds");
+
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
               };
-              dispatch(
-                moveFilesAndFoldersApi(
-                  navigate,
-                  t,
-                  moveFilesandFolders,
-                  newAgendas,
-                  checkFlag,
-                  setShow
-                )
-              );
+              if (moveFilesandFolders.FileIds.length > 0) {
+                dispatch(
+                  moveFilesAndFoldersApi(
+                    navigate,
+                    t,
+                    moveFilesandFolders,
+                    newAgendas,
+                    checkFlag,
+                    setShow
+                  )
+                );
+              }
             }
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
