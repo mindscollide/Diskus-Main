@@ -550,6 +550,7 @@ const ViewMeeting = (
               );
               try {
                 if (Number(no) === 1) {
+                  console.log("saif coming");
                   setViewFlag(true);
                   localStorage.setItem("typeOfMeeting", "isQuickMeeting");
                   dispatch(scheduleMeetingPageFlag(false));

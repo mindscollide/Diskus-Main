@@ -326,9 +326,24 @@ const WebNotfication = ({
         if (currentURL.includes("/Diskus/Meeting")) {
           //If you already on the Meeting Page
           if (PayLoadData.IsQuickMeeting === true) {
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                setEditorRole,
+                true,
+                setViewAdvanceMeetingModal,
+                4,
+                setVideoTalk,
+                setViewFlag
+              )
             );
           } else {
             localStorage.setItem("AdvanceMeetingOperations", true);
@@ -373,9 +388,24 @@ const WebNotfication = ({
         // Check if the current URL contains the target path
         if (currentURL.includes("/Diskus/Meeting")) {
           if (PayLoadData.IsQuickMeeting === true) {
+            localStorage.setItem(
+              "NotificationAdvanceMeetingID",
+              PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
             let Data = { MeetingID: Number(PayLoadData.MeetingID) };
             dispatch(
-              ViewMeeting(navigate, Data, t, setViewFlag, false, false, 6)
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                4,
+                false,
+                setViewFlag
+              )
             );
           } else {
             localStorage.setItem("AdvanceMeetingOperations", true);
@@ -402,10 +432,24 @@ const WebNotfication = ({
           //Notification For Meeting Started For Participant (Create Update Started scenarios are same A/c SRS)
           if (PayLoadData.IsQuickMeeting === true) {
             navigate("/Diskus/Meeting");
-            localStorage.setItem("QuicMeetingOperations", true);
             localStorage.setItem(
-              "NotificationQuickMeetingID",
+              "NotificationAdvanceMeetingID",
               PayLoadData.MeetingID
+            );
+            localStorage.setItem("meetingTitle", PayLoadData.MeetingTitle);
+            let Data = { MeetingID: Number(PayLoadData.MeetingID) };
+            dispatch(
+              GetMeetingStatusDataAPI(
+                navigate,
+                t,
+                Data,
+                false,
+                false,
+                false,
+                4,
+                false,
+                setViewFlag
+              )
             );
           } else {
             navigate("/Diskus/Meeting");
@@ -804,6 +848,10 @@ const WebNotfication = ({
             "NotificationClickMeetingID",
             PayLoadData.MeetingID
           );
+          localStorage.setItem(
+            "NotificationClickSendResponseByDate",
+            PayLoadData.DeadlineDate
+          );
           //Here i will apply that if polls are not expired i will redirect it to the voting page
           // Get the current date in "YYYYMMDD" format
           const currentDate = new Date();
@@ -838,7 +886,7 @@ const WebNotfication = ({
             PayLoadData.MeetingID
           );
           localStorage.setItem(
-            "ProposedMeetOperationsDateSelectedSendResponseByDate",
+            "NotificationClickSendResponseByDate",
             PayLoadData.DeadlineDate
           );
         }

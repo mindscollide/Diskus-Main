@@ -1567,6 +1567,9 @@ const UpdateQuickMeeting = ({
       let membersData = [];
       let PresenterData = [];
       let usersData = [];
+      let userNamecopy = userName ?? "";
+      let fK_UID2 = fK_UID ?? "";
+      let userProfilePicturBobj = userProfilePicture ?? null;
       if (Number(checkFlag) === 6) {
         // Committees MembersData
         let CommitteeMembers =
@@ -1597,13 +1600,13 @@ const UpdateQuickMeeting = ({
                         draggable='false'
                         alt=''
                       />
-                      <span>{userName}</span>
+                      <span>{userNamecopy}</span>
                     </Col>
                   </Row>
                 </>
               ),
-              value: fK_UID,
-              name: userName,
+              value: fK_UID2,
+              name: userNamecopy,
             });
             setPresenterValue({
               label: (
@@ -1621,21 +1624,21 @@ const UpdateQuickMeeting = ({
                         draggable='false'
                         alt=''
                       />
-                      <span>{userName}</span>
+                      <span>{userNamecopy}</span>
                     </Col>
                   </Row>
                 </>
               ),
-              value: fK_UID,
-              name: userName,
+              value: fK_UID2,
+              name: userNamecopy,
             });
             setDefaultObjMeetingAgenda({
               ...defaultMeetingAgenda,
-              PresenterName: userName,
+              PresenterName: userNamecopy,
             });
             setObjMeetingAgenda({
               ...objMeetingAgenda,
-              PresenterName: userName,
+              PresenterName: userNamecopy,
             });
           }
 
