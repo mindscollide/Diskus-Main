@@ -110,7 +110,7 @@ const UnpublishedProposedMeeting = ({
     setEndMeetingConfirmationModal,
     setDeleteMeetingRecord,
     setViewAdvanceMeetingModal,
-    viewAdvanceMeetingModal
+    viewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
@@ -245,7 +245,7 @@ const UnpublishedProposedMeeting = ({
   };
 
   const changeDateStartHandler2 = (date) => {
-    console.log(date.length, "datedate")
+    console.log(date.length, "datedate");
     let newDate;
     if (date.length > 8) {
       let newDate2 = forRecentActivity(date);
