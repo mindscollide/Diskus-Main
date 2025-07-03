@@ -928,19 +928,13 @@ const Resolution = () => {
         let getVotignDeadline = forRecentActivity(data.votingDeadline);
         // Get the current date in "YYYYMMDDHHmmss" format
         const now = new Date();
-        const currentDateString =
-          now.getFullYear().toString() +
-          String(now.getMonth() + 1).padStart(2, "0") + // Month is 0-based
-          String(now.getDate()).padStart(2, "0") +
-          String(now.getHours()).padStart(2, "0") +
-          String(now.getMinutes()).padStart(2, "0") +
-          String(now.getSeconds()).padStart(2, "0");
+
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (now <= getVotignDeadline) {
               return (
                 <Button
-                  text={data.isAlreadyVoted === true && data.fK_VotingStatus_ID === 1 ? t("Voted") : t("Vote")}
+                  text={data.isAlreadyVoted === true ? t("Voted") : t("Vote")}
                   className={styles["Resolution-vote-btn"]}
                   onClick={() => getVoteDetailHandler(data.resolutionID, data)}
                 />

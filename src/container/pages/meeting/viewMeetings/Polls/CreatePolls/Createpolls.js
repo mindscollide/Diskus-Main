@@ -669,6 +669,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
+                      onChange={(value) => changeDateStartHandler(value)}
                       onFocusedDateChange={(value) =>
                         changeDateStartHandler(value)
                       }

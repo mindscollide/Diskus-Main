@@ -167,13 +167,6 @@ const Events = () => {
           )
         );
 
-        setUpComingEvents((upcomingeventData) =>
-          upcomingeventData.map((meetingData) => {
-            return (
-              Number(meetingData.meetingDetails.pK_MDID) !== Number(meetingID)
-            );
-          })
-        );
       } else if (
         MeetingStatusSocket.message
           .toLowerCase()
