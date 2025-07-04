@@ -4495,6 +4495,11 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
         ) {
           dispatch(SignatureDocumentStatusChange(data.payload));
+          //here to decrease the signature count
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+          }));
         }
         if (
           data.payload.message
@@ -4502,6 +4507,10 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_ACTION_BY_ME".toLowerCase())
         ) {
           dispatch(SignatureDocumentActionByMe(data.payload));
+          setPendingApprovalTabCount((prev) => ({
+            ...prev,
+            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+          }));
           if (data.payload.data.status === "Signed") {
             showMessage(
               t("Document-has-been-signed-successfully"),
@@ -4536,6 +4545,23 @@ const Dashboard = () => {
             ...prev,
             pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
           }));
+        }
+        //Count Decrease when the Minute is Reviewed
+        if (
+          data.payload.message
+            .toLowerCase()
+            .includes("MINUTE_REVIEW_RECIEVED_COUNT".toLowerCase())
+        ) {
+          console.log(data.payload.pendingMinute, "IOS");
+          setPendingApprovalTabCount((prev) => {
+            if (prev.pendingMinutes !== data.payload.pendingMinute) {
+              return {
+                ...prev,
+                pendingMinutes: data.payload.pendingMinute,
+              };
+            }
+            return prev;
+          });
         }
       }
       if (data.action.toLowerCase() === "Settings".toLowerCase()) {

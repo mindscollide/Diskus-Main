@@ -197,6 +197,13 @@ const MinutesReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.GET_PENDINGAPPROVALSCOUNT_CLEAR: {
+      return {
+        ...state,
+        PendingApprovalCountData: null,
+      };
+    }
+
     case actions.GET_MINUTEREVIEWSTATSFORORGANIZERBYMEETINGID_INIT: {
       return {
         ...state,

@@ -11,6 +11,7 @@ import {
   GetNotes,
   GetNotesByIdAPI,
   GetNotesById_Init,
+  RetrieveNotesDocumentAPI,
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
@@ -76,6 +77,12 @@ const Notes = () => {
         3
       )
     );
+
+    //Retrive Documents of the Notes
+    let Data = {
+      NoteID: Number(id),
+    };
+    await dispatch(RetrieveNotesDocumentAPI(navigate, Data, t));
   };
   // render Notes Data
   useEffect(() => {

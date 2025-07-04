@@ -590,58 +590,55 @@ const AddUsers = () => {
               </Row>
             </Col>
           </Row>
-          <div>
-            <span className={styles["NameCreateAddtional"]}>
-              {t("Code")} <span className={styles["Steric"]}>*</span>
-            </span>
-          </div>
-          <Row>
-            <Col
-              lg={4}
-              md={4}
-              sm={4}
-              xs={12}
-              className={styles["react-User-Profile"]}
-            >
-              <ReactFlagsSelect
-                fullWidth={false}
-                selected={selected}
-                onSelect={handleSelect}
-                searchable={true}
-                placeholder={"Select Co...."}
-                customLabels={countryNameforPhoneNumber}
-                className={styles["userProfileFlagSelect"]}
-              />
-            </Col>
-            <Col lg={8} md={8} sm={8} xs={12}>
-              <div className={styles["ContactFdiv"]}>
+          <Row className="mt-3">
+            <Col lg={12} md={12} sm={12}>
+              <div>
                 <span className={styles["NameCreateAddtional"]}>
-                  {t("Contact")} <span className={styles["Steric"]}>*</span>
+                  {t("Code")} <span className={styles["Steric"]}>*</span>
                 </span>
               </div>
-              <TextField
-                placeholder={t("Contact")}
-                value={addUserFreeTrial.Contact.value}
-                name={"Contact"}
-                change={handleAddUsersFreeTrial}
-                applyClass={
-                  "updateNotes_titleInputForContactFieldAdminUserFreeTrial"
-                }
-              />
-            </Col>
-            <Col>
-              <p
-                className={
-                  addUserFreeTrial.Contact.errorStatus &&
-                  addUserFreeTrial.Contact.value === ""
-                    ? ` ${styles["errorMessage"]}`
-                    : `${styles["errorMessage_hidden"]}`
-                }
-              >
-                {addUserFreeTrial.Contact.value === ""
-                  ? t("Please-enter-Contact")
-                  : addUserFreeTrial.Contact.errorMessage}
-              </p>
+              <Row>
+                <Col lg={5} md={5} sm={5} xs={12}>
+                  <ReactFlagsSelect
+                    fullWidth={false}
+                    selected={selected}
+                    onSelect={handleSelect}
+                    selectButtonClassName={styles["flagButton"]}
+                    searchable={true}
+                    customLabels={countryNameforPhoneNumber}
+                  />
+                </Col>
+                <Col lg={7} md={7} sm={7} xs={12}>
+                  <div className={styles["ContactFdiv"]}>
+                    <span className={styles["NameCreateAddtional"]}>
+                      {t("Contact")} <span className={styles["Steric"]}>*</span>
+                    </span>
+                  </div>
+                  <TextField
+                    placeholder={t("Contact")}
+                    value={addUserFreeTrial.Contact.value}
+                    name={"Contact"}
+                    change={handleAddUsersFreeTrial}
+                    applyClass={
+                      "updateNotes_titleInputForContactFieldAdminUserFreeTrial"
+                    }
+                  />
+                </Col>
+                <Col>
+                  <p
+                    className={
+                      addUserFreeTrial.Contact.errorStatus &&
+                      addUserFreeTrial.Contact.value === ""
+                        ? ` ${styles["errorMessage"]}`
+                        : `${styles["errorMessage_hidden"]}`
+                    }
+                  >
+                    {addUserFreeTrial.Contact.value === ""
+                      ? t("Please-enter-Contact")
+                      : addUserFreeTrial.Contact.errorMessage}
+                  </p>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </Col>

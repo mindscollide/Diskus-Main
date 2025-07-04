@@ -78,6 +78,7 @@ import {
   validateEncryptedStringViewMeetingLinkApi,
   clearMeetingState,
   emailRouteID,
+  ProposedMeetingViewFlagAction,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -1415,6 +1416,7 @@ const NewMeeting = () => {
       dispatch(viewAdvanceMeetingPublishPageFlag(false));
       dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
+      dispatch(ProposedMeetingViewFlagAction(false));
       dispatch(proposeNewMeetingPageFlag(false));
       setSearchFeilds({
         ...searchFields,
