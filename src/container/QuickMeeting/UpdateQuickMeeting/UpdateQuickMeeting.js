@@ -226,7 +226,7 @@ const UpdateQuickMeeting = ({
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
   console.log(
-    generateRandomAgendaID,
+    { fileForSend, attachments },
     "generateRandomAgendaIDgenerateRandomAgendaID"
   );
   const [fileSize, setFileSize] = useState(0);
@@ -914,45 +914,47 @@ const UpdateQuickMeeting = ({
           OriginalAttachmentName: "",
         };
         setAttachments((prev) => [...prev, fileData]);
-        setFileForSend([...fileForSend, uploadedFile]); // Append new file to the existing ones
+        setFileForSend((prev) => [...prev, uploadedFile]); // Append new file to the existing ones
       }
     });
   };
   const addAnOtherAgenda = async (e) => {
     e.preventDefault();
-  
+
     if (!objMeetingAgenda.Title) {
       handleMissingTitle();
       return;
     }
-  
+
     const isEditMode = editRecordFlag === true;
     let updatedAttachments = [...attachments];
-  
+
     if (fileForSend.length > 0) {
       setModalField(false);
-  
+
       let uploadedFiles = [];
       let filesToUpload = [];
-  
+
       await Promise.all(
         fileForSend.map((file) =>
-          dispatch(uploadDocumentsQuickMeetingApi(navigate, t, file, filesToUpload))
+          dispatch(
+            uploadDocumentsQuickMeetingApi(navigate, t, file, filesToUpload)
+          )
         )
       );
-  
+
       let savedFiles = [];
       const saveResponse = await dispatch(
         saveFilesQuickMeetingApi(navigate, t, filesToUpload, 0, savedFiles)
       );
-  
+
       if (saveResponse.isExecuted && saveResponse.responseCode === 1) {
         const uploaded = saveResponse.newFolder.map((file) => ({
           DisplayAttachmentName: file.displayFileName,
           OriginalAttachmentName: String(file.pK_FileID),
-          isNew: true
+          isNew: true,
         }));
-  
+
         if (isEditMode) {
           // Update existing file entries or push new ones
           uploaded.forEach((newFile) => {
@@ -971,7 +973,7 @@ const UpdateQuickMeeting = ({
         }
       }
     }
-  
+
     const newAgenda = {
       ObjMeetingAgenda: {
         ...objMeetingAgenda,
@@ -980,20 +982,20 @@ const UpdateQuickMeeting = ({
       },
       MeetingAgendaAttachments: updatedAttachments,
     };
-  
+
     let updatedAgendas = [...createMeeting.MeetingAgendas];
-  
+
     if (isEditMode) {
       updatedAgendas[editRecordIndex] = newAgenda;
     } else {
       updatedAgendas.push(newAgenda);
     }
-  
+
     setCreateMeeting((prev) => ({
       ...prev,
       MeetingAgendas: updatedAgendas,
     }));
-  
+
     // Cleanup
     seteditRecordFlag(false);
     seteditRecordIndex(null);
@@ -1003,10 +1005,10 @@ const UpdateQuickMeeting = ({
     setFileForSend([]);
     setModalField(false);
   };
-  
+
   const handleMissingTitle = () => {
     const agendas = [...createMeeting.MeetingAgendas];
-  
+
     const updatedAgendas = agendas.map((agenda, index) => {
       if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
         return {
@@ -1020,7 +1022,7 @@ const UpdateQuickMeeting = ({
       }
       return agenda;
     });
-  
+
     const newAgenda = {
       ObjMeetingAgenda: {
         ...objMeetingAgenda,
@@ -1030,17 +1032,16 @@ const UpdateQuickMeeting = ({
       },
       MeetingAgendaAttachments: [],
     };
-  
+
     updatedAgendas.push(newAgenda);
-  
+
     setCreateMeeting((prev) => ({
       ...prev,
       MeetingAgendas: updatedAgendas,
     }));
-  
+
     setModalField(true);
   };
-  
 
   //On Change Checkbox
   function onChange(e) {
@@ -1433,7 +1434,7 @@ const UpdateQuickMeeting = ({
                     DisplayAttachmentName: atchmenDataaa.displayAttachmentName,
                     OriginalAttachmentName:
                       atchmenDataaa.originalAttachmentName,
-                      isNew: false
+                    isNew: false,
                   });
                 }
               );

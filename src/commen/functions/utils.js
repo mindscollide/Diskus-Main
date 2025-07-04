@@ -2064,15 +2064,14 @@ export const SideBarGlobalNavigationFunction = async (
         localStorage.setItem("MeetingPageCurrent", 1);
         console.log("chek search meeting");
         await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        console.log(
-          typeof setViewAdvanceMeetingModal,
-          "setViewAdvanceMeetingModalsetViewAdvanceMeetingModal"
-        );
+   
         setViewAdvanceMeetingModal(false);
         console.log("Check Route Meeting");
 
         dispatch(viewMeetingFlag(false));
-        setViewAdvanceMeetingModalUnpublish(false);
+        isFunction(setViewAdvanceMeetingModalUnpublish) &&
+          setViewAdvanceMeetingModalUnpublish(false);
+
         localStorage.removeItem("NotificationAdvanceMeetingID");
         localStorage.removeItem("QuickMeetingCheckNotification");
         localStorage.removeItem("viewadvanceMeetingPolls");
