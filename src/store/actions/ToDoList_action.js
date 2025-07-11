@@ -475,9 +475,11 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
               dispatch(emptyCommentState());
 
               await dispatch(ViewToDoSuccess(response.data.responseResult));
+              dispatch(taskFromDashboardAction(0));
 
               if (typeof setViewFlagToDo === "function") {
                 setViewFlagToDo(true);
+                dispatch(taskFromDashboardAction(0));
               }
               await dispatch(SetLoaderFalse());
             } else if (
@@ -490,6 +492,7 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
               await dispatch(ViewToDoFail(t("No-records-found")));
               setViewFlagToDo(false);
               dispatch(AccessDeniedPolls(true));
+              dispatch(taskFromDashboardAction(0));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -499,18 +502,25 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
             ) {
               setViewFlagToDo(false);
               await dispatch(ViewToDoFail(t("Something-went-wrong")));
+              dispatch(taskFromDashboardAction(0));
             }
           } else {
             dispatch(ViewToDoFail(t("Something-went-wrong")));
+            dispatch(taskFromDashboardAction(0));
+
             setViewFlagToDo(false);
           }
         } else {
           dispatch(ViewToDoFail(t("Something-went-wrong")));
+          dispatch(taskFromDashboardAction(0));
+
           setViewFlagToDo(false);
         }
       })
       .catch((response) => {
         dispatch(ViewToDoFail(t("Something-went-wrong")));
+        dispatch(taskFromDashboardAction(0));
+
         setViewFlagToDo(false);
       });
   };
@@ -1676,7 +1686,7 @@ const saveTaskDocumentsApi = (
                   )
                 );
               }
-              dispatch(createUpdateTaskDataRoom_fail(""))
+              dispatch(createUpdateTaskDataRoom_fail(""));
               // Create Task from main TOdo list
               if (value === 1) {
                 setShow(false);
@@ -2208,7 +2218,15 @@ const validateEncryptedStringViewTaskDetailLinkApi = (
   };
 };
 
+const taskFromDashboardAction = (payload) => {
+  return {
+    type: actions.TASK_FROM_DASHBOARD,
+    payload,
+  };
+};
+
 export {
+  taskFromDashboardAction,
   validateEncryptedStringViewTaskDetailLinkApi,
   validateEncryptedStringViewTaskListLinkApi,
   getDashbardTaskDataApi,

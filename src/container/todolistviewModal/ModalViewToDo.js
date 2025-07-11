@@ -18,6 +18,7 @@ import { Row, Col } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
   deleteCommentApi,
+  taskFromDashboardAction,
 } from "./../../store/actions/ToDoList_action";
 import { getRandomUniqueNumber } from "../pages/meeting/scedulemeeting/Agenda/drageFunction";
 import { useDispatch, useSelector } from "react-redux";
@@ -132,6 +133,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
 
   useEffect(() => {
     if (Object.keys(TodoListReducerData).length > 0) {
+      dispatch(taskFromDashboardAction(0));
       let viewData = TodoListReducerData;
       setTask({
         ...task,

@@ -32,10 +32,17 @@ const initialState = {
   getDashboardTaskCountMQTT: null,
   viewTaskList: null,
   viewTaskDetailLink: null,
+  taskFromDashboard: 0,
 };
 
 const toDoListReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.TASK_FROM_DASHBOARD: {
+      return {
+        ...state,
+        taskFromDashboard: action.payload,
+      };
+    }
     case actions.TODOLIST_LOADER: {
       return {
         ...state,

@@ -383,6 +383,8 @@ const GetNotesByIdAPI = (
                 response.data.responseResult.getNotes,
                 "Notes_NotesServiceManager_GetNotesByNotesID_01"
               );
+              dispatch(notesFromDashboardAction(0));
+
               dispatch(
                 GetNotesById_Success(response.data.responseResult.getNotes, "")
               );
@@ -414,6 +416,8 @@ const GetNotesByIdAPI = (
                 )
             ) {
               dispatch(GetNotesById_Fail(""));
+              dispatch(notesFromDashboardAction(0));
+
               console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
             } else if (
               response.data.responseResult.responseMessage
@@ -423,22 +427,32 @@ const GetNotesByIdAPI = (
                 )
             ) {
               console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+              dispatch(notesFromDashboardAction(0));
+
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             } else {
               console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+              dispatch(notesFromDashboardAction(0));
+
               dispatch(GetNotesById_Fail(t("Something-went-wrong")));
             }
           } else {
             console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+            dispatch(notesFromDashboardAction(0));
+
             dispatch(GetNotesById_Fail(t("Something-went-wrong")));
           }
         } else {
           console.log("Notes_NotesServiceManager_GetNotesByNotesID_01");
+          dispatch(notesFromDashboardAction(0));
+
           dispatch(GetNotesById_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
         console.log(response, "Notes_NotesServiceManager_GetNotesByNotesID_01");
+        dispatch(notesFromDashboardAction(0));
+
         dispatch(GetNotesById_Fail(t("Something-went-wrong")));
       });
   };
@@ -1246,7 +1260,15 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
   };
 };
 
+const notesFromDashboardAction = (payload) => {
+  return {
+    type: actions.NOTES_FROM_DASHBOARD,
+    payload,
+  };
+};
+
 export {
+  notesFromDashboardAction,
   GetNotes,
   SaveNotesAPI,
   UpdateNotesAPI,

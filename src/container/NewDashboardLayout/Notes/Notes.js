@@ -13,6 +13,7 @@ import {
   GetNotesById_Init,
   RetrieveNotesDocumentAPI,
   getNotes_Init,
+  notesFromDashboardAction,
 } from "../../../store/actions/Notes_actions";
 import ModalViewNote from "../../notes/modalViewNote/ModalViewNote";
 import { Col, Row } from "react-bootstrap";
@@ -65,6 +66,7 @@ const Notes = () => {
   }, []);
   const OpenUpdateNotesModal = async (id) => {
     setGetNoteID(id);
+    dispatch(notesFromDashboardAction(id))
     await dispatch(GetNotesById_Init());
     dispatch(
       GetNotesByIdAPI(
@@ -93,7 +95,7 @@ const Notes = () => {
       ) {
         if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
           let notes = [];
-          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+          NotesReducer.GetAllNotesResponse.getNotes.forEach((data, index) => {
             notes.push(data);
           });
           setNotes(notes);

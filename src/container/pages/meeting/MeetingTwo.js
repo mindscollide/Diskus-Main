@@ -1228,7 +1228,7 @@ const NewMeeting = () => {
           // Handle the result here
 
           let Data = {
-            VideoCallURL: result.videoCallURL,
+            VideoCallURL: result.videoCallUrl,
             FK_MDID: Number(result.meetingID),
             DateTime: getCurrentDateTimeUTC(),
           };
@@ -1248,9 +1248,18 @@ const NewMeeting = () => {
               )
             );
           } else {
-            await setAdvanceMeetingModalID(Number(result.meetingID));
-            await setViewAdvanceMeetingModalUnpublish(true);
-            await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            let joinMeetingData = {
+              VideoCallURL: result.videoCallUrl,
+              FK_MDID: Number(result.meetingID),
+              DateTime: getCurrentDateTimeUTC(),
+            };
+            localStorage.setItem("videoCallURL", result.videoCallURL);
+            localStorage.setItem("currentMeetingID", Number(result.meetingID));
+            setVideoTalk({
+              isChat: result.isChat,
+              isVideoCall: result.isVideo,
+              talkGroupID: result.talkGroupId,
+            });
             setEditorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
@@ -1262,6 +1271,26 @@ const NewMeeting = () => {
                   : "Organizer",
               status: Number(result.meetingStatusId),
             });
+            localStorage.setItem("isMinutePublished", result.isMinutePublished);
+            localStorage.setItem("meetingTitle", result.title);
+            await setAdvanceMeetingModalID(Number(result.meetingID));
+            dispatch(
+              JoinCurrentMeeting(
+                false,
+                navigate,
+                t,
+                joinMeetingData,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting,
+                1,
+                setAdvanceMeetingModalID,
+                setViewAdvanceMeetingModal
+              )
+            );
+
+            // await setViewAdvanceMeetingModalUnpublish(true);
+            // await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
           }
           localStorage.removeItem("MeetingStr");
         })

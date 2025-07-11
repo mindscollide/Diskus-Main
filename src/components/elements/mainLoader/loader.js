@@ -2,6 +2,7 @@ import { Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useAuthContext } from "../../../context/AuthContext";
 
 const SpinComponent = () => {
   const auth = useSelector((state) => state.auth);
@@ -125,7 +126,11 @@ const SpinComponent = () => {
   useEffect(() => {
     let timeout;
 
-    if (isLoading && !DashboardRoute) {
+    if (
+      toDoListReducer.taskFromDashboard !== 0 ||
+      NotesReducer.notesFromDashboard !== 0 ||
+      (isLoading && !DashboardRoute)
+    ) {
       setShowLoader(true); // Show loader
     } else {
       // Hide loader after a short delay when loading completes
@@ -135,11 +140,11 @@ const SpinComponent = () => {
     }
 
     return () => clearTimeout(timeout);
-  }, [isLoading, DashboardRoute]);
+  }, [isLoading, DashboardRoute, toDoListReducer?.taskFromDashboard, NotesReducer?.notesFromDashboard]);
 
   if (showLoader) {
     return (
-      <section className="spinLoaderMain">
+      <section className='spinLoaderMain'>
         <Spin />
       </section>
     );
