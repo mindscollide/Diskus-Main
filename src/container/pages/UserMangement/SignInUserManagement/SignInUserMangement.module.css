@@ -2,7 +2,7 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  min-width: 360px !important;
+  max-width: 360px !important;
   height: auto;
   padding: 30px 41px !important;
   /* margin: 0px 40px; */
@@ -36,6 +36,12 @@ body[dir="rtl"] .signIn_heading {
 
 .Remember-Email-text {
   font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 400 !important;
+}
+
+.TermsfDiskus {
+  font-size: 12px !important;
   color: #5a5a5a !important;
   font-weight: 400 !important;
 }

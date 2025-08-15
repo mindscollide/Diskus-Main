@@ -168,16 +168,11 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
-  const presenterMeetingId = useSelector(
-    (state) => state.videoFeatureReducer.presenterMeetingId
-  );
 
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
-  const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
-  );
+
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
 
   let newRoomID = localStorage.getItem("newRoomId");
@@ -192,12 +187,7 @@ const AgendaViewer = () => {
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
 
-  //and this is already in Meeting Video Check
-  let alreadyInMeetingVideo = JSON.parse(
-    sessionStorage.getItem("alreadyInMeetingVideo")
-      ? sessionStorage.getItem("alreadyInMeetingVideo")
-      : false
-  );
+
 
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantUID = localStorage.getItem("participantUID");
@@ -225,7 +215,6 @@ const AgendaViewer = () => {
   const AgendaVideoResponseMessage = useSelector(
     (state) => state.videoFeatureReducer.ResponseMessage
   );
-  console.log(AgendaVideoResponseMessage, "ResponseMessageResponseMessage");
 
   const MaximizeHostVideoFlag = useSelector(
     (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
@@ -264,7 +253,6 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.enableDisableVideoState
   );
 
-  console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
@@ -275,14 +263,43 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
 
-  // start and stop Presenter View
-  // const startOrStopPresenter = useSelector(
-  //   (state) => state.videoFeatureReducer.startOrStopPresenter
-  // );
+  console.log("Video Feature Debug Data:", {
+    editorRole,
+    presenterViewFlag,
+    videoTalk,
+    presenterViewHostFlag,
+    presenterViewJoinFlag,
+    presenterStartedFlag,
+    newRoomID,
+    currentMeetingID,
+    callAcceptedRoomID,
+    participantRoomId,
+    isMeetingVideoHostCheck,
+    isZoomEnabled,
+    isMeetingVideo,
+    participantUID,
+    roomID,
+    isGuid,
+    RoomID,
+    UID,
+    GetAdvanceMeetingAgendabyMeetingIDForViewData,
+    cancelMeetingMaterial,
+    agendaResponseMessage,
+    AgendaVideoResponseMessage,
+    MaximizeHostVideoFlag,
+    NormalHostVideoFlag,
+    maximizeParticipantVideoFlag,
+    raisedUnRaisedParticipant,
+    normalParticipantVideoFlag,
+    maxParticipantVideoDeniedFlag,
+    maxParticipantVideoRemovedFlag,
+    nonMeetingVideo,
+    enableDisableVideoState,
+    participantEnableVideoState,
+    disableBeforeJoinZoom
+  });
+  
 
-  const leaveMeetingOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
-  );
   const [menuAgenda, setMenuAgenda] = useState(false);
 
   const closeMenuAgenda = useRef(null);

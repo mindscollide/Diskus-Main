@@ -13,7 +13,7 @@ import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
 import {
   cleareMessage,
@@ -279,6 +279,16 @@ const SignInUserManagement = () => {
                             onClick={loginHandler}
                             className={styles["Next_button_EmailVerify"]}
                           />
+                        </Col>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className='d-flex justify-content-center mt-2 '>
+                          <span className={styles['TermsfDiskus']}>
+                            By signing in you agree to our{" "}
+                            <Link to={"https://diskusboard.com/terms/"} target="_blank">Terms of Use</Link>
+                          </span>
                         </Col>
                       </Row>
                     </Form>
