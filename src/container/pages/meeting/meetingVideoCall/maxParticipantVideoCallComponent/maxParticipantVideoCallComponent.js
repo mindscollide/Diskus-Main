@@ -556,22 +556,19 @@ const ParticipantVideoCallComponent = () => {
             : isNormalPanel
             ? "max-videoParticipantsvideo-panel"
             : "max-videoParticipant-panel"
-        }
-      >
+        }>
         <Row>
           <Col
             lg={minimizeState ? 3 : 4}
             md={minimizeState ? 3 : 4}
             sm={12}
-            className="d-flex justify-content-start"
-          >
+            className='d-flex justify-content-start'>
             <p
               className={
                 minimizeState
                   ? "max-minimize-participant-title"
                   : "max-participant-title"
-              }
-            >
+              }>
               {participantMeetingTitle}
             </p>
           </Col>
@@ -579,68 +576,76 @@ const ParticipantVideoCallComponent = () => {
             lg={minimizeState ? 9 : 8}
             md={minimizeState ? 9 : 8}
             sm={12}
-            className="d-flex justify-content-end align-items-center gap-2"
-          >
-            <div className="max-videoParticipant-Icons-state">
+            className='d-flex justify-content-end align-items-center gap-2'>
+            <div className='max-videoParticipant-Icons-state'>
               {isMicEnabled ? (
-                <Tooltip placement="topRight" title={t("Enable-mic")}>
+                <Tooltip placement='topRight' title={t("Enable-mic")}>
                   <img
-                    dragable="false"
+                    dragable='false'
                     src={MicOff}
-                    className="cursor-pointer"
+                    className='cursor-pointer'
                     onClick={() => toggleAudio(false)}
-                    alt=""
+                    alt=''
                   />
                 </Tooltip>
               ) : (
-                <Tooltip placement="topRight" title={t("Disable-mic")}>
+                <Tooltip placement='topRight' title={t("Disable-mic")}>
                   <img
-                    dragable="false"
+                    dragable='false'
                     src={minimizeState ? MicOn : MicOn2}
                     onClick={() => toggleAudio(true)}
-                    className="cursor-pointer"
-                    alt=""
+                    className='cursor-pointer'
+                    alt=''
                   />
                 </Tooltip>
               )}
             </div>
-            <div className="max-videoParticipant-Icons-state">
+            <div className='max-videoParticipant-Icons-state'>
               {isWebCamEnabled ? (
-                <Tooltip placement="topRight" title={t("Enable-video")}>
+                <Tooltip placement='topRight' title={t("Enable-video")}>
                   <img
-                    dragable="false"
+                    dragable='false'
                     src={VideoOff}
                     onClick={() => toggleVideo(false)}
-                    alt=""
+                    alt=''
                   />
                 </Tooltip>
               ) : (
-                <Tooltip placement="topRight" title={t("Disable-video")}>
+                <Tooltip placement='topRight' title={t("Disable-video")}>
                   <img
-                    dragable="false"
+                    dragable='false'
                     src={minimizeState ? VideoOn : VideoOn2}
                     onClick={() => toggleVideo(true)}
-                    alt=""
+                    alt=''
                   />
                 </Tooltip>
               )}
             </div>
+
             <div
-              className="max-videoParticipant-Icons-state"
-              onClick={toggleMinimizeState}
-            >
-              <Tooltip placement="topRight" title={t("Minimize")}>
+              className='max-videoParticipant-Icons-state'
+              style={{ pointerEvents: minimizeState ? "none" : "auto" }}
+              onClick={toggleMinimizeState}>
+              <Tooltip placement='topRight' title={t("Minimize")}>
                 <img
-                  dragable="false"
+                  dragable='false'
                   src={minimizeState ? MinimizeIcon2 : MinimizeIcon}
-                  alt="MinimizeIcon"
+                  alt='MinimizeIcon'
                 />
               </Tooltip>
             </div>
-            <div className="max-videoParticipant-Icons-state">
-              <Tooltip placement="topRight" title={t("Collapse")}>
+            <div className='max-videoParticipant-Icons-state'>
+              <Tooltip
+                placement='topRight'
+                title={
+                  minimizeState
+                    ? t("Expand")
+                    : NormalizeIcon && isNormalPanel
+                    ? t("Expand")
+                    : t("Collapse")
+                }>
                 <img
-                  dragable="false"
+                  dragable='false'
                   src={
                     minimizeState
                       ? MinToNormalIcon
@@ -649,17 +654,17 @@ const ParticipantVideoCallComponent = () => {
                       : NormalizeIcon
                   }
                   onClick={onClickToNormalParticipantPanel}
-                  alt="ExpandIcon"
+                  alt='ExpandIcon'
                 />
               </Tooltip>
             </div>
-            <div className="max-videoParticipant-Icons-state">
-              <Tooltip placement="topRight" title={t("Leave-call")}>
+            <div className='max-videoParticipant-Icons-state'>
+              <Tooltip placement='topRight' title={t("Leave-call")}>
                 <img
-                  dragable="false"
+                  dragable='false'
                   src={EndCall}
                   onClick={() => onClickEndVideoCall(false)}
-                  alt="EndCall"
+                  alt='EndCall'
                 />
               </Tooltip>
             </div>
@@ -672,7 +677,7 @@ const ParticipantVideoCallComponent = () => {
               {
                 <>
                   <div
-                    className="max-videoParticipant-tag-name "
+                    className='max-videoParticipant-tag-name '
                     style={{
                       backgroundImage: `url(${ProfileUser})`,
                       backgroundSize: "33%",
@@ -683,10 +688,9 @@ const ParticipantVideoCallComponent = () => {
                         ? "44vh"
                         : "78vh",
                       backgroundPosition: "center center",
-                    }}
-                  >
-                    <div className="max-videoParticipant-gradient-sheet">
-                      <div className="avatar-class">
+                    }}>
+                    <div className='max-videoParticipant-gradient-sheet'>
+                      <div className='avatar-class'>
                         <video
                           ref={videoRef}
                           className={
@@ -707,26 +711,26 @@ const ParticipantVideoCallComponent = () => {
               <Col lg={4} md={4} sm={12}>
                 {isWaiting ? (
                   <>
-                    <div className="max-videoParticipant-component">
-                      <p className="max-videoParticipant-waiting-room-class">
+                    <div className='max-videoParticipant-component'>
+                      <p className='max-videoParticipant-waiting-room-class'>
                         {t("You-are-in-the-waiting-room")}
                       </p>
-                      <p className="max-Hostvideo-organizer-allow-class">
+                      <p className='max-Hostvideo-organizer-allow-class'>
                         {t("The-organizer-will-allow-you-to-join-shortly")}
                       </p>
                     </div>
                   </>
                 ) : !getReady ? (
                   <>
-                    <div className="max-videoParticipant-component">
+                    <div className='max-videoParticipant-component'>
                       <>
-                        <p className="max-videoParticipant-ready-to-join">
+                        <p className='max-videoParticipant-ready-to-join'>
                           {t("Ready-to-join")}
                         </p>
                         <Button
                           disableBtn={joinButton}
                           text={t("Join-now")}
-                          className="max-videoParticipant-Join-Now-Btn"
+                          className='max-videoParticipant-Join-Now-Btn'
                           onClick={joinNewApiVideoCallOnClick}
                         />
                       </>

@@ -7,7 +7,7 @@ import {
   Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png"
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
@@ -92,7 +92,7 @@ const SignInUserManagement = () => {
       showMessage(t("Please-enter-email"), "error", setOpen);
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      setErrorMessage(t("Error-should-be-in-email-format"));
+      showMessage(t("Error-should-be-in-email-format"), "error", setOpen);
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));

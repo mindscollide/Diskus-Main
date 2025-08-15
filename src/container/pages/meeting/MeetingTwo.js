@@ -3337,80 +3337,88 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
-      if (
-        MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
-      ) {
-        console.log("meetingDetails", MeetingStatusSocket);
-        let statusCheck = 0;
-        let meetingIDCheck = 0;
+      try {
+        if (
+          MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+        ) {
+          console.log("meetingDetails", MeetingStatusSocket);
+          let statusCheck = 0;
+          let meetingIDCheck = 0;
 
-        if (MeetingStatusSocket.hasOwnProperty("meeting")) {
-          statusCheck = MeetingStatusSocket.meeting.status;
-          meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
-          // If the 'meeting' key exists, do something
-          console.log("Meeting key exists:", MeetingStatusSocket);
-          // Your code for handling when 'meeting' key is present
-        } else {
-          // If the 'meeting' key does not exist, do something else
-          statusCheck = MeetingStatusSocket.meetingStatusID;
-          meetingIDCheck = MeetingStatusSocket.meetingID;
-          console.log("Meeting key does not exist. Handling alternative case.");
-          // Your
-        }
-        let meetingStatusID = statusCheck;
-        let meetingID = meetingIDCheck;
-        try {
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return {
-                  ...item,
-                  status: String(meetingStatusID),
-                };
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
-            });
-          });
-          setStartMeetingButton((prevStateStartBtn) => {
-            return prevStateStartBtn.filter(
-              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+          if (MeetingStatusSocket.hasOwnProperty("meeting")) {
+            statusCheck = MeetingStatusSocket.meeting.status;
+            meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
+            // If the 'meeting' key exists, do something
+            console.log("Meeting key exists:", MeetingStatusSocket);
+            // Your code for handling when 'meeting' key is present
+          } else {
+            // If the 'meeting' key does not exist, do something else
+            statusCheck = MeetingStatusSocket.meetingStatusID;
+            meetingIDCheck = MeetingStatusSocket.meetingID;
+            console.log(
+              "Meeting key does not exist. Handling alternative case."
             );
-          });
-        } catch (error) {
-          console.log(
-            error,
-            "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
-          );
-        }
-      } else if (
-        MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
-      ) {
-        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
-        let meetingID = MeetingStatusSocket?.meetingID;
-        try {
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return {
-                  ...item,
-                  status: String(meetingStatusID),
-                };
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
+            // Your
+          }
+          let meetingStatusID = statusCheck;
+          let meetingID = meetingIDCheck;
+          try {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
             });
-          });
-          setStartMeetingButton((prevStateStartBtn) => {
-            return prevStateStartBtn.filter(
-              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(meetingID)
+              );
+            });
+          } catch (error) {
+            console.log(
+              error,
+              "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
             );
-          });
-        } catch {}
+          }
+        } else if (
+          MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+        ) {
+          let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
+          let meetingID = MeetingStatusSocket?.meetingID;
+          try {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(meetingID)
+              );
+            });
+          } catch {}
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   }, [MeetingStatusSocket]);

@@ -642,8 +642,11 @@ const VideoNewParticipantList = () => {
                           </>
                         )
                       )}{" "}
-                      {((presenterViewHostFlag && presenterViewFlag) ||
-                        meetinHostInfo.isHost) &&
+                      {((presenterViewHostFlag && presenterViewFlag) 
+                      // ||
+                        // meetinHostInfo.isHost
+                      )
+                         &&
                       usersData.raiseHand ? (
                         <img
                           draggable="false"

@@ -361,7 +361,7 @@ const ParentAgenda = ({
                                 <Button
                                   text={
                                     data?.hasAlreadyVoted
-                                      ? t("View-your-vote")
+                                      ? t("Voted")
                                       : t("Cast-your-vote")
                                   }
                                   className={styles["CastYourVoteButton"]}

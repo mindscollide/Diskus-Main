@@ -3,19 +3,21 @@
     align-items: baseline;
     justify-content: start; */
   font-size: 22px !important;
+  margin: 0 !important;
   color: #6172d6 !important;
-  margin: auto;
+  /* margin: auto; */
   font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: 75%;
 }
 
 .title-for-presenter {
   font-size: 22px !important;
   color: #6172d6 !important;
-  margin: auto;
-  width: 45vw;
+  /* margin: auto; */
+  /* width: 45vw; */
   font-weight: 600;
   overflow: hidden;
   white-space: nowrap;

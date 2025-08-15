@@ -4720,7 +4720,7 @@ const UpdateAgendaWiseMinutesApiFunc = (
               await dispatch(
                 showUpdateMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-updated-and-is-a-review-minute")
+                  t("Minutes-revised-by-organizer")
                 )
               );
               if (resendFlag === true) {
@@ -5361,7 +5361,7 @@ const UpdateMinutesGeneralApiFunc = (
             await dispatch(
               showUpdateMinutesSuccess(
                 response.data.responseResult,
-                t("Record-updated-and-is-a-review-minute")
+                t("Minutes-revised-by-organizer")
               )
             );
             if (resendFlag === true) {

@@ -507,7 +507,7 @@ const SubAgendaMappingDragging = ({
                                                           text={
                                                             data?.hasAlreadyVoted
                                                               ? t(
-                                                                  "View-your-vote"
+                                                                  "Voted"
                                                                 )
                                                               : t(
                                                                   "Cast-your-vote"

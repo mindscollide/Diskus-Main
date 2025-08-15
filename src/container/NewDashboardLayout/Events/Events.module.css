@@ -112,15 +112,12 @@ body[dir="rtl"] .event-details:hover {
 }
 .event-details:hover .ViewMeetingButtonStyles {
   font-size: 12px !important;
-  width: 170px !important;
+  width: auto !important;
   background: #fff !important;
   border: none;
   border-radius: 4px !important;
   color: #6172d6 !important;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-
+  font-weight: 600 !important;
 }
 
 .event-details:hover p {
@@ -161,8 +158,9 @@ body[dir="rtl"] .event-details:hover {
   border-radius: 4px !important;
   color: #fff !important;
   font-size: 12px !important;
-  width: 170px !important;
-  font-weight: 600;
+  width: auto;
+  font-weight: 600 !important;
+  white-space: nowrap;
 }
 
 /* .ViewMeetingButtonStyles:is(:active, :focus, :hover, :focus-visible) {
@@ -176,7 +174,8 @@ body[dir="rtl"] .event-details:hover {
 
 .TodayViewMeetingButtonStyles {
   font-size: 12px !important;
-  width: 170px !important;
+  width: auto;
+
   background: #fff !important;
   border: none;
   border-radius: 4px !important;

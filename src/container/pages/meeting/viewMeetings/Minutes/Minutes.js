@@ -1109,7 +1109,7 @@ const Minutes = () => {
   console.log({ publishMinutesDataGeneral }, "resultedDataresultedData");
   console.log({ publishMinutesDataAgenda }, "resultedDataresultedData");
 
-  return JSON.parse(isMinutePublished) ? (
+  return isMinutePublished !== null && JSON.parse(isMinutePublished) ? (
     <>
       {publishMinutesDataAgenda.map((data, index) => {
         const isOpen = openIndices.includes(index);
