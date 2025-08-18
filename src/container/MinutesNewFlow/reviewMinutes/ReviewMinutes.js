@@ -1101,7 +1101,9 @@ const ReviewMinutes = () => {
                                   <Col lg={12} md={12} sm={12}>
                                     <div className={styles["wrapper-userlist"]}>
                                       <p>
-                                        {t("This minute is rejected by: ")}
+                                        {`${t(
+                                          "The-minute-has-been-sent-for-review-by"
+                                        )} : `}
                                         {parentMinutedata.declinedReviews
                                           .slice(0, 5)
                                           .map((usersList, index) => (
@@ -1543,9 +1545,9 @@ const ReviewMinutes = () => {
                                                 styles["wrapper-userlist"]
                                               }>
                                               <p>
-                                                {t(
-                                                  "This minute is rejected by: "
-                                                )}
+                                                {`${t(
+                                                  "The-minute-has-been-sent-for-review-by"
+                                                )} : `}
                                                 {historyData.declinedReviews
                                                   .slice(0, 5)
                                                   ?.map((usersList, index) => (
@@ -2168,9 +2170,9 @@ const ReviewMinutes = () => {
                                                 ]
                                               }>
                                               <p>
-                                                {t(
-                                                  "This minute is rejected by: "
-                                                )}
+                                                {`${t(
+                                                  "The-minute-has-been-sent-for-review-by"
+                                                )} : `}
                                                 {minuteDataSubminute.declinedReviews
                                                   .slice(0, 5)
                                                   .map((usersList, index) => (
@@ -2678,9 +2680,9 @@ const ReviewMinutes = () => {
                                                         ]
                                                       }>
                                                       <p>
-                                                        {t(
-                                                          "This minute is rejected by: "
-                                                        )}
+                                                        {`${t(
+                                                          "The-minute-has-been-sent-for-review-by"
+                                                        )} : `}
                                                         {historyData.declinedReviews
                                                           .slice(0, 5)
                                                           .map(
@@ -3136,7 +3138,9 @@ const ReviewMinutes = () => {
                         <Col lg={12} md={12} sm={12}>
                           <div className={styles["wrapper-userlist"]}>
                             <p>
-                              {t("This minute is rejected by: ")}
+                              {`${t(
+                                "The-minute-has-been-sent-for-review-by"
+                              )} : `}
                               {data.declinedReviews
                                 .slice(0, 5)
                                 .map((usersList, index) => (
@@ -3463,7 +3467,9 @@ const ReviewMinutes = () => {
                                 <Col lg={12} md={12} sm={12}>
                                   <div className={styles["wrapper-userlist"]}>
                                     <p>
-                                      {t("This minute is rejected by: ")}
+                                      {`${t(
+                                        "The-minute-has-been-sent-for-review-by"
+                                      )} : `}
                                       {historyData.declinedReviews
                                         .slice(0, 5)
                                         .map((usersList, index) => (

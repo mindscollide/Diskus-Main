@@ -157,7 +157,7 @@ const VideoCallNormalHeader = ({
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
-
+  console.log(audioControl, "audioControlaudioControl")
   //Video Control For host
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
@@ -208,6 +208,8 @@ const VideoCallNormalHeader = ({
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
+  console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom")
+  console.log(LeaveCallModalFlag, "LeaveCallModalFlag")
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
@@ -2023,7 +2025,7 @@ const VideoCallNormalHeader = ({
               ) : (
                 <>
                   <div className='main-icon-div'>
-                    {isMeetingVideo && isMeetingVideoHostCheck && (
+                    {isMeetingVideo &&  (
                       <>
                         {handRaiseCounter > 0 && (
                           <span className='HandRaise-Counter-for-participant'>
