@@ -36,12 +36,12 @@ const root = ReactDOM.createRoot(container, {
 });
 
 // Disable console methods in production for better security and performance
-// if (process.env.NODE_ENV === "production") {
-//   console.log = () => {};
-//   console.error = () => {};
-//   console.debug = () => {};
-//   console.warn = () => {};
-// }
+if (process.env.REACT_APP_ENV === "prod") {
+  console.log = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+  console.warn = () => {};
+}
 
 // Render the app with all providers
 // Root for Spinner or secondary element
