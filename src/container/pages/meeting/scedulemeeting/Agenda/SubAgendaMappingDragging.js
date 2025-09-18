@@ -552,7 +552,7 @@ const SubAgendaMappingDragging = ({
                                                 applyClass={"AgendaTextField"}
                                                 labelclass={"d-none"}
                                                 name={"subTitle"}
-                                                maxLength={290}
+                                                maxLength={100}
                                                 disable={
                                                   parentIslockedCheck ||
                                                   subAgendaData.isLocked ||
@@ -575,7 +575,7 @@ const SubAgendaMappingDragging = ({
                                                     : false
                                                 }
                                                 placeholder={t(
-                                                  "Sub-Agenda-title"
+                                                  "Sub-agenda-title"
                                                 )}
                                                 value={subAgendaData.subTitle}
                                                 change={(e) =>

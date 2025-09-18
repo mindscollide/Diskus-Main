@@ -516,7 +516,7 @@ const ParentAgenda = ({
                                 name={"title"}
                                 labelclass={"d-none"}
                                 placeholder={t("Agenda-title")}
-                                maxLength={290}
+                                maxLength={100}
                                 value={data.title}
                                 change={(e) => handleAgendaItemChange(index, e)}
                                 disable={

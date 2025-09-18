@@ -862,7 +862,7 @@
   "To-the-folder": "to the folder",
   "Please-allow-access": "Please allow access",
   "There-are-no-items-here": "There are no items here!",
-  "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings",
+  "Already-exists-in-this-location": "already exists in this location. Do you want to replace the file you're moving? Replacing the file won’t change the sharing settings",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
   "Send-notification-on-device": "Send Notification on Device",
   "Folder-removed": "Folder Removed",

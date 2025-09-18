@@ -183,74 +183,88 @@ const DocumentViewer = () => {
           officeWorker: true, // Enables Office file conversion
         },
         viewer.current
-      ).then((instance) => {
-        const { documentViewer, annotationManager, officeToPDFBuffer, PDFNet } =
-          instance.Core;
-        // Example usage:
-        const extension = getFileExtension(fileName);
+      )
+        .then((instance) => {
+          const { FitMode, setFitMode } = instance.UI;
+          const { documentViewer, annotationManager, officeToPDFBuffer } =
+            instance.Core;
+          // Example usage:
+          const extension = getFileExtension(fileName);
 
-        const mimeType = getMimeTypeFromFileName(fileName);
+          const mimeType = getMimeTypeFromFileName(fileName);
 
-        let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+          let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
-        // Check if the extension exists in the array (case-insensitive)
-        if (supportedFormats.includes(extension.toLowerCase())) {
-          instance.UI.loadDocument(blob, {
-            filename: fileName,
-          });
-        } else {
-          if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
-            try {
-              (async () => {
-                // Initialize Document Conversion
-                // Convert Blob into a File object
-                const file = new File([blob], `${fileName}`, {
-                  type: mimeType,
-                });
-                const buffer = await officeToPDFBuffer(file);
-                // Create a Blob for the converted PDF
-                const convertedBlob = new Blob([buffer], {
-                  type: "application/pdf",
-                });
-                // **Remove existing extension from fileName before appending '.pdf'**
-                const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
-                // Load the converted PDF into WebViewer
-                await instance.UI.loadDocument(convertedBlob, {
-                  filename: `${sanitizedFileName}.pdf`,
-                  extension: "pdf",
-                });
-              })();
-            } catch (error) {
-              console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
+          // Check if the extension exists in the array (case-insensitive)
+          if (supportedFormats.includes(extension.toLowerCase())) {
+            instance.UI.loadDocument(blob, {
+              filename: fileName,
+            });
+          } else {
+            if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
+              try {
+                (async () => {
+                  // Initialize Document Conversion
+                  // Convert Blob into a File object
+                  const file = new File([blob], `${fileName}`, {
+                    type: mimeType,
+                  });
+                  const buffer = await officeToPDFBuffer(file);
+                  // Create a Blob for the converted PDF
+                  const convertedBlob = new Blob([buffer], {
+                    type: "application/pdf",
+                  });
+                  // **Remove existing extension from fileName before appending '.pdf'**
+                  const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
+                  // Load the converted PDF into WebViewer
+                  await instance.UI.loadDocument(convertedBlob, {
+                    filename: `${sanitizedFileName}.pdf`,
+                    extension: "pdf",
+                  });
+                })();
+              } catch (error) {
+                console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
+              }
             }
           }
-        }
 
-        // Handle annotations
-        documentViewer.addEventListener("documentLoaded", () => {
-          annotationManager.setCurrentUser(localStorage.getItem("name"));
-          if (pdfResponseData.xfdfData) {
-            annotationManager.importAnnotations(pdfResponseData.xfdfData);
-          }
-        });
+          // Handle annotations
+          // documentViewer.addEventListener("documentLoaded", () => {
+          //   annotationManager.setCurrentUser(localStorage.getItem("name"));
+          //   if (pdfResponseData.xfdfData) {
+          //     documentViewer.setFitMode(FitMode.FitWidth);
+          //     annotationManager.importAnnotations(pdfResponseData.xfdfData);
+          //   }
+          // });
+          documentViewer.addEventListener("documentLoaded", () => {
+            annotationManager.setCurrentUser(localStorage.getItem("name"));
 
-        // Set permissions if needed
-        if (
-          Number(isPermission) === 1 ||
-          Number(isPermission) === 3
-        ) {
-          setPermissions(instance);
-        }
+            // ✅ Always fit to width on load
+            setFitMode(FitMode.FitWidth);
 
-        // Add custom save button
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "actionButton",
-            img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => saveAnnotations(annotationManager),
+            // ✅ Import annotations if XFDF exists
+            if (pdfResponseData.xfdfData) {
+              annotationManager.importAnnotations(pdfResponseData.xfdfData);
+            }
           });
+
+          // Set permissions if needed
+          if (Number(isPermission) === 1 || Number(isPermission) === 3) {
+            setPermissions(instance);
+          }
+
+          // Add custom save button
+          instance.UI.setHeaderItems((header) => {
+            header.push({
+              type: "actionButton",
+              img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+              onClick: async () => saveAnnotations(annotationManager),
+            });
+          });
+        })
+        .catch((error) => {
+          console.error("WebViewer initialization error:", error);
         });
-      });
     }
   }, [pdfResponseData.attachmentBlob]);
 
@@ -355,8 +369,8 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className="document-viewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='document-viewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
       <Notification open={open} setOpen={setOpen} />
     </>

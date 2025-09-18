@@ -382,11 +382,13 @@ const ViewSignatureDocument = () => {
         );
 
         const { documentViewer, annotationManager, Tools } = instance.Core;
-
+        const { FitMode, setFitMode } = instance.UI;
         // Add event listener for when the document is loaded
         documentViewer.addEventListener("documentLoaded", async () => {
           // Ensure the annotations are fully loaded
           await documentViewer.getAnnotationsLoadedPromise();
+
+          setFitMode(FitMode.FitWidth);
 
           // If XFDF data exists, import it
           if (pdfResponceData.xfdfData !== "" && annotationManager) {

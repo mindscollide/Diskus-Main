@@ -131,8 +131,8 @@ const CastVoteAgendaModal = ({
       <Modal
         show={castVoteAgendaPage}
         setShow={dispatch(showCastVoteAgendaModal)}
-        modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-none"}
+        modalHeaderClassName={"d-none"}
         onHide={() => {
           dispatch(showCastVoteAgendaModal(false));
         }}

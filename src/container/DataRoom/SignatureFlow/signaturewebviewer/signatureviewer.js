@@ -598,7 +598,7 @@ const SignatureViewer = () => {
 
         const { documentViewer, annotationManager, Annotations, Tools } =
           instance.Core;
-
+          const { FitMode, setFitMode } = instance.UI;
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
@@ -1059,6 +1059,7 @@ const SignatureViewer = () => {
         await documentViewer.getAnnotationsLoadedPromise();
 
         documentViewer.addEventListener("documentLoaded", async () => {
+          setFitMode(FitMode.FitWidth);
           if (pdfResponceData.xfdfData !== "" && annotationManager) {
             try {
               await annotationManager.importAnnotations(

@@ -263,7 +263,7 @@ const Participants = ({
         key: "participantTitle",
         ellipsis: true,
 
-        align: "left",
+        align: "center",
         render: (text, record) => {
           if (
             ((Number(editorRole.status) === 9 ||
@@ -305,7 +305,7 @@ const Participants = ({
         title: t("Role"),
         dataIndex: "participantRole",
         key: "participantRole",
-        align: "left",
+        align: "center",
         ellipsis: true,
         render: (text, record) => {
           if (
@@ -355,7 +355,7 @@ const Participants = ({
         title: t("RSVP"),
         dataIndex: "attendeeAvailability",
         key: "attendeeAvailability",
-        align: "left",
+        align: "center",
         ellipsis: true,
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {

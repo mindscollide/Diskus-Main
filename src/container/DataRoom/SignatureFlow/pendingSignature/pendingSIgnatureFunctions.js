@@ -223,6 +223,7 @@ export const readOnlyFreetextElements = (xmlString, userDataRead) => {
   freetextElements.forEach((freetextElement) => {
     const subject = freetextElement.getAttribute("subject");
     const userIdIndex = subject.lastIndexOf("-");
+    console.log(userIdIndex, subject, userDataRead, "userIdIndex");
     if (userIdIndex !== -1) {
       const userId = subject.substring(userIdIndex + 1);
       if (userDataRead.includes(Number(userId))) {
@@ -378,4 +379,30 @@ export const handleBlobFiles = (base64) => {
   }
 
   return new Blob([bytes], { type: "application/pdf" });
+};
+
+
+export const sanitizeXFDF = (xfdfString, documentViewer) => {
+  const parser = new DOMParser();
+  const xfdfDoc = parser.parseFromString(xfdfString, "text/xml");
+
+  const pageCount = documentViewer.getPageCount();
+  const annots = xfdfDoc.querySelectorAll("annots > *");
+
+  annots.forEach((annot) => {
+    let pageIndex = parseInt(annot.getAttribute("page"), 10);
+
+    // auto-correct 1-based indexes
+    if (pageIndex > 0 && pageIndex <= pageCount) {
+      annot.setAttribute("page", pageIndex - 1);
+    }
+
+    // drop invalid pages
+    if (isNaN(pageIndex) || pageIndex >= pageCount) {
+      console.warn(`Dropping invalid annotation on page ${pageIndex}`);
+      annot.parentNode.removeChild(annot);
+    }
+  });
+
+  return new XMLSerializer().serializeToString(xfdfDoc);
 };

@@ -705,7 +705,7 @@ const MeetingDetails = ({
       if (value.trimStart() !== "") {
         setMeetingDetails({
           ...meetingDetails,
-          MeetingTitle: value,
+          MeetingTitle: value.trimStart(),
         });
       } else {
         setMeetingDetails({

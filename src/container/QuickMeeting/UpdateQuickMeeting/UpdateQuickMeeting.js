@@ -71,6 +71,7 @@ const UpdateQuickMeeting = ({
   ModalTitle,
   checkFlag,
 }) => {
+  console.log(checkFlag, "checkFlagcheckFlag");
   //For Localization
   const { t } = useTranslation();
   const getStartTime = getStartTimeWithCeilFunction();
@@ -226,8 +227,8 @@ const UpdateQuickMeeting = ({
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
   console.log(
-    { fileForSend, attachments },
-    "generateRandomAgendaIDgenerateRandomAgendaID"
+    { allPresenters, attendeesParticipant },
+    "allPresentersallPresenters"
   );
   const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
@@ -1289,6 +1290,7 @@ const UpdateQuickMeeting = ({
 
           if (checkFlag !== 6 && checkFlag !== 8) {
             setAttendeesParticipant(PresenterData);
+            return;
           }
           setAllPresenters(PresenterData);
         } catch (error) {
@@ -1300,7 +1302,503 @@ const UpdateQuickMeeting = ({
     }
   }, [assigneesuser, checkFlag]);
 
+  useEffect(() => {
+    try {
+      let membersData = [];
+      let PresenterData = [];
+      let usersData = [];
+      let userNamecopy = userName ?? "";
+      let fK_UID2 = fK_UID ?? "";
+      let userProfilePicturBobj = userProfilePicture ?? null;
+      if (Number(checkFlag) === 6) {
+        // Committees MembersData
+        let CommitteeMembers =
+          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
+        if (
+          CommitteeMembers !== null &&
+          CommitteeMembers !== undefined &&
+          CommitteeMembers.length > 0
+        ) {
+          let findisCreatorFind = CommitteeMembers.find(
+            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+          console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
+          if (findisCreatorFind === undefined) {
+            setDefaultPresenter({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{userNamecopy}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID2,
+              name: userNamecopy,
+            });
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{userNamecopy}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID2,
+              name: userNamecopy,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userNamecopy,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userNamecopy,
+            });
+          } else {
+            setPresenterValue({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{userNamecopy}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: fK_UID2,
+              name: userNamecopy,
+            });
+            setDefaultObjMeetingAgenda({
+              ...defaultMeetingAgenda,
+              PresenterName: userNamecopy,
+            });
+            setObjMeetingAgenda({
+              ...objMeetingAgenda,
+              PresenterName: userNamecopy,
+            });
+          }
+
+          CommitteeMembers.forEach((committeesMember, index) => {
+            usersData.push({
+              creationDate: "",
+              creationTime: "",
+              designation: "",
+              displayProfilePictureName:
+                committeesMember.userProfilePicture.displayProfilePictureName,
+              emailAddress: committeesMember.email,
+              mobileNumber: "",
+              name: committeesMember.userName,
+              organization: localStorage.getItem("organizatioName"),
+              orignalProfilePictureName:
+                committeesMember.userProfilePicture.orignalProfilePictureName,
+              pK_UID: committeesMember.pK_UID,
+            });
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{committeesMember.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: committeesMember?.pK_UID,
+              name: committeesMember?.userName,
+            });
+            PresenterData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{committeesMember.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: committeesMember?.pK_UID,
+              name: committeesMember?.userName,
+            });
+          });
+          setAllPresenters(PresenterData);
+        }
+
+        setAttendeesParticipant(membersData);
+
+        setMeetingAttendeesList(usersData);
+      } else if (Number(checkFlag) === 8) {
+        let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
+        if (
+          GroupMembers !== null &&
+          GroupMembers !== undefined &&
+          GroupMembers.length > 0
+        ) {
+          GroupMembers.forEach((groupMemberData) => {
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{groupMemberData.userName}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: groupMemberData?.pK_UID,
+              name: groupMemberData?.userName,
+            });
+            PresenterData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{groupMemberData.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: groupMemberData?.pK_UID,
+              name: groupMemberData?.name,
+            });
+          });
+          setAllPresenters(PresenterData);
+        }
+        // Group MembersData
+      } else {
+        let allAssignees = assigneesuser;
+        if (
+          allAssignees !== undefined &&
+          allAssignees !== null &&
+          allAssignees.length !== 0
+        ) {
+          allAssignees.forEach((assigneeMember, index) => {
+            membersData.push({
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex gap-2 align-items-center'>
+                      <img
+                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
+                        height='16.45px'
+                        width='18.32px'
+                        draggable='false'
+                        alt=''
+                      />
+                      <span>{assigneeMember.name}</span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              value: assigneeMember?.pK_UID,
+              name: assigneeMember?.name,
+            });
+          });
+        }
+        // meeting Members
+      }
+    } catch {}
+  }, [checkFlag]);
+
   // for fetch data for edit from grid
+
+  // for api response of list of all assignees
+  useEffect(() => {
+    try {
+      let membersData = [];
+      let PresenterData = [];
+      let usersData = [];
+      const userNamecopy = userName ?? "";
+      const fK_UID2 = fK_UID ?? "";
+      const userProfilePicturBobj = userProfilePicture ?? null;
+      const organizationName = localStorage.getItem("organizatioName");
+
+      // Handle regular assignees (checkFlag not 6 or 8)
+      if (
+        Object.keys(assigneesuser).length > 0 &&
+        checkFlag !== 6 &&
+        checkFlag !== 8
+      ) {
+        const usersList = assigneesuser;
+        setMeetingAttendeesList(usersList);
+
+        usersList.forEach((user) => {
+          const userItem = createUserItem(
+            user?.displayProfilePictureName,
+            user.name,
+            user?.pK_UID,
+            user?.name
+          );
+          PresenterData.push(userItem);
+
+          if (Number(user.pK_UID) === Number(createrID)) {
+            setUserAsPresenter(
+              user?.displayProfilePictureName,
+              user?.name,
+              user?.pK_UID
+            );
+          }
+        });
+
+        setAttendeesParticipant(PresenterData);
+        setAllPresenters(PresenterData);
+        return;
+      }
+
+      // Handle Committees (checkFlag === 6)
+      if (Number(checkFlag) === 6) {
+        const CommitteeMembers =
+          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
+
+        if (CommitteeMembers?.length > 0) {
+          const findisCreatorFind = CommitteeMembers.find(
+            (userInfo) => Number(userInfo.pK_UID) === Number(createrID)
+          );
+
+          // Set presenter (creator) if not found in committee members
+          if (findisCreatorFind === undefined) {
+            setUserAsPresenter(
+              userProfilePicture?.displayProfilePictureName,
+              userNamecopy,
+              fK_UID2
+            );
+          } else {
+            // Set presenter values even if creator is found
+            setPresenterValue(
+              createUserItem(
+                userProfilePicture?.displayProfilePictureName,
+                userNamecopy,
+                fK_UID2,
+                userNamecopy
+              )
+            );
+            setDefaultObjMeetingAgenda((prev) => ({
+              ...prev,
+              PresenterName: userNamecopy,
+            }));
+            setObjMeetingAgenda((prev) => ({
+              ...prev,
+              PresenterName: userNamecopy,
+            }));
+          }
+
+          // Process committee members
+          CommitteeMembers.forEach((committeesMember) => {
+            const userProfile = committeesMember.userProfilePicture;
+
+            usersData.push({
+              creationDate: "",
+              creationTime: "",
+              designation: "",
+              displayProfilePictureName: userProfile.displayProfilePictureName,
+              emailAddress: committeesMember.email,
+              mobileNumber: "",
+              name: committeesMember.userName,
+              organization: organizationName,
+              orignalProfilePictureName: userProfile.orignalProfilePictureName,
+              pK_UID: committeesMember.pK_UID,
+            });
+
+            const memberItem = createUserItem(
+              userProfile.displayProfilePictureName,
+              committeesMember.userName,
+              committeesMember?.pK_UID,
+              committeesMember?.userName
+            );
+
+            membersData.push(memberItem);
+            PresenterData.push(memberItem);
+          });
+
+          setAllPresenters(PresenterData);
+          setAttendeesParticipant(membersData);
+          setMeetingAttendeesList(usersData);
+        }
+        return;
+      }
+
+      // Handle Groups (checkFlag === 8)
+      if (Number(checkFlag) === 8) {
+        const GroupMembers =
+          GroupsReducergetGroupByGroupIdResponse?.groupMembers;
+
+        if (GroupMembers?.length > 0) {
+          GroupMembers.forEach((groupMemberData) => {
+            const userProfile = groupMemberData.userProfilePicture;
+
+            const memberItem = createUserItem(
+              userProfile.displayProfilePictureName,
+              groupMemberData.userName,
+              groupMemberData?.pK_UID,
+              groupMemberData?.userName
+            );
+
+            const presenterItem = createUserItem(
+              userProfile.displayProfilePictureName,
+              groupMemberData.userName,
+              groupMemberData?.pK_UID,
+              groupMemberData?.userName
+            );
+
+            membersData.push(memberItem);
+            PresenterData.push(presenterItem);
+          });
+
+          setAllPresenters(PresenterData);
+          setAttendeesParticipant(membersData);
+        }
+        return;
+      }
+
+      // Default case for other checkFlag values
+      if (assigneesuser?.length > 0) {
+        assigneesuser.forEach((assigneeMember) => {
+          const memberItem = createUserItem(
+            assigneeMember?.displayProfilePictureName,
+            assigneeMember.name,
+            assigneeMember?.pK_UID,
+            assigneeMember?.name
+          );
+          membersData.push(memberItem);
+        });
+
+        setAttendeesParticipant(membersData);
+      }
+    } catch (error) {
+      console.log("Error in useEffect:", error);
+    }
+  }, [
+    assigneesuser,
+    checkFlag,
+    CommitteeReducergetCommitteeByCommitteeID,
+    GroupsReducergetGroupByGroupIdResponse,
+  ]);
+
+  // Helper function to create user item
+  const createUserItem = (profilePicture, name, value, userName) => ({
+    label: (
+      <>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className='d-flex gap-2 align-items-center'>
+            <img
+              src={`data:image/jpeg;base64,${profilePicture}`}
+              height='16.45px'
+              width='18.32px'
+              draggable='false'
+              alt=''
+            />
+            <span>{name}</span>
+          </Col>
+        </Row>
+      </>
+    ),
+    value: value,
+    name: userName,
+  });
+
+  // Helper function to set user as presenter
+  const setUserAsPresenter = (profilePicture, name, value) => {
+    const presenterItem = createUserItem(profilePicture, name, value, name);
+
+    setDefaultPresenter(presenterItem);
+    setPresenterValue(presenterItem);
+    setDefaultObjMeetingAgenda((prev) => ({
+      ...prev,
+      PresenterName: name,
+    }));
+    setObjMeetingAgenda((prev) => ({
+      ...prev,
+      PresenterName: name,
+    }));
+  };
 
   const meetingDateHandler = (date, format = "YYYYMMDD") => {
     if (createMeeting.MeetingStartTime !== "") {
@@ -1564,255 +2062,6 @@ const UpdateQuickMeeting = ({
     //   MeetingAgendaAttachments: datarecord.MeetingAgendaAttachments,
     // });
   };
-
-  useEffect(() => {
-    try {
-      let membersData = [];
-      let PresenterData = [];
-      let usersData = [];
-      let userNamecopy = userName ?? "";
-      let fK_UID2 = fK_UID ?? "";
-      let userProfilePicturBobj = userProfilePicture ?? null;
-      if (Number(checkFlag) === 6) {
-        // Committees MembersData
-        let CommitteeMembers =
-          CommitteeReducergetCommitteeByCommitteeID?.committeMembers;
-        if (
-          CommitteeMembers !== null &&
-          CommitteeMembers !== undefined &&
-          CommitteeMembers.length > 0
-        ) {
-          let findisCreatorFind = CommitteeMembers.find(
-            (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
-          );
-          console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
-          if (findisCreatorFind === undefined) {
-            setDefaultPresenter({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{userNamecopy}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: fK_UID2,
-              name: userNamecopy,
-            });
-            setPresenterValue({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${userProfilePicture?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{userNamecopy}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: fK_UID2,
-              name: userNamecopy,
-            });
-            setDefaultObjMeetingAgenda({
-              ...defaultMeetingAgenda,
-              PresenterName: userNamecopy,
-            });
-            setObjMeetingAgenda({
-              ...objMeetingAgenda,
-              PresenterName: userNamecopy,
-            });
-          }
-
-          CommitteeMembers.forEach((committeesMember, index) => {
-            usersData.push({
-              creationDate: "",
-              creationTime: "",
-              designation: "",
-              displayProfilePictureName:
-                committeesMember.userProfilePicture.displayProfilePictureName,
-              emailAddress: committeesMember.email,
-              mobileNumber: "",
-              name: committeesMember.userName,
-              organization: localStorage.getItem("organizatioName"),
-              orignalProfilePictureName:
-                committeesMember.userProfilePicture.orignalProfilePictureName,
-              pK_UID: committeesMember.pK_UID,
-            });
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{committeesMember.userName}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: committeesMember?.pK_UID,
-              name: committeesMember?.userName,
-            });
-            PresenterData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${committeesMember?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{committeesMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: committeesMember?.pK_UID,
-              name: committeesMember?.name,
-            });
-          });
-          setAllPresenters(PresenterData);
-        }
-
-        setAttendeesParticipant(membersData);
-
-        setMeetingAttendeesList(usersData);
-      } else if (Number(checkFlag) === 8) {
-        let GroupMembers = GroupsReducergetGroupByGroupIdResponse?.groupMembers;
-        if (
-          GroupMembers !== null &&
-          GroupMembers !== undefined &&
-          GroupMembers.length > 0
-        ) {
-          GroupMembers.forEach((groupMemberData) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{groupMemberData.userName}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: groupMemberData?.pK_UID,
-              name: groupMemberData?.userName,
-            });
-            PresenterData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${groupMemberData?.userProfilePicture.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{groupMemberData.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: groupMemberData?.pK_UID,
-              name: groupMemberData?.name,
-            });
-          });
-          setAllPresenters(PresenterData);
-        }
-        // Group MembersData
-      } else {
-        let allAssignees = assigneesuser;
-        if (
-          allAssignees !== undefined &&
-          allAssignees !== null &&
-          allAssignees.length !== 0
-        ) {
-          allAssignees.forEach((assigneeMember, index) => {
-            membersData.push({
-              label: (
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className='d-flex gap-2 align-items-center'>
-                      <img
-                        src={`data:image/jpeg;base64,${assigneeMember?.displayProfilePictureName}`}
-                        height='16.45px'
-                        width='18.32px'
-                        draggable='false'
-                        alt=''
-                      />
-                      <span>{assigneeMember.name}</span>
-                    </Col>
-                  </Row>
-                </>
-              ),
-              value: assigneeMember?.pK_UID,
-              name: assigneeMember?.name,
-            });
-          });
-        }
-        // meeting Members
-      }
-    } catch {}
-  }, [checkFlag]);
 
   // for add Attendees handler
   const addAttendees = () => {
@@ -2394,6 +2643,7 @@ const UpdateQuickMeeting = ({
     });
   };
   const filterFunc = (options, searchText) => {
+    console.log(options, searchText, "optionsoptions");
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -2795,7 +3045,7 @@ const UpdateQuickMeeting = ({
                                 {attachments.length > 0
                                   ? attachments.map((data, index) => {
                                       return (
-                                        <Col sm={4} md={4} lg={4}>
+                                        <Col sm={4} md={4} lg={4} key={index}>
                                           <AttachmentViewer
                                             id={Number(
                                               data.OriginalAttachmentName
@@ -2846,7 +3096,7 @@ const UpdateQuickMeeting = ({
                     {createMeeting.MeetingAgendas.length > 0
                       ? createMeeting.MeetingAgendas.map((data, index) => {
                           return (
-                            <div className='margin-top-20'>
+                            <div className='margin-top-20' key={index}>
                               <Accordian
                                 AccordioonHeader={data.ObjMeetingAgenda.Title}
                                 AccordioonBody={
@@ -2924,7 +3174,11 @@ const UpdateQuickMeeting = ({
                                               index
                                             ) => {
                                               return (
-                                                <Col sm={4} md={4} lg={4}>
+                                                <Col
+                                                  sm={4}
+                                                  md={4}
+                                                  lg={4}
+                                                  key={index}>
                                                   <AttachmentViewer
                                                     data={
                                                       MeetingAgendaAttachmentsData
@@ -3028,6 +3282,7 @@ const UpdateQuickMeeting = ({
                                       IconOnClick={() =>
                                         handleDeleteAttendee(atList, index)
                                       }
+                                      key={index}
                                     />
                                   );
                                 } else if (atList.role === 3) {
@@ -3041,6 +3296,7 @@ const UpdateQuickMeeting = ({
                                           ? false
                                           : true
                                       }
+                                      key={index}
                                     />
                                   );
                                 } else {
@@ -3081,6 +3337,7 @@ const UpdateQuickMeeting = ({
                                       IconOnClick={() =>
                                         handleDeleteAttendee(atList, index)
                                       }
+                                      key={index}
                                     />
                                   );
                                 } else {
@@ -3137,7 +3394,8 @@ const UpdateQuickMeeting = ({
                                   className='border p-2 minutes-box rounded my-2'
                                   sm={12}
                                   md={12}
-                                  lg={12}>
+                                  lg={12}
+                                  key={index}>
                                   <Row>
                                     <Col sm={1}>
                                       <span className='agendaIndex'>

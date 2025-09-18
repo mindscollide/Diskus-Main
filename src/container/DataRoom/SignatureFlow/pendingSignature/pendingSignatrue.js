@@ -24,6 +24,7 @@ import {
   revertProcessXmlForReadOnly,
   revertProcessXmlToHideFields,
   revertReadOnlyFreetextElements,
+  sanitizeXFDF,
 } from "./pendingSIgnatureFunctions";
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
@@ -41,10 +42,8 @@ const SignatureViewer = () => {
     ResponseMessage,
     getSignatureFileAnnotationResponse,
   } = useSelector((state) => state.SignatureWorkFlowReducer);
-  console.log(
-    getSignatureFileAnnotationResponse,
-    "getSignatureFileAnnotationResponsegetSignatureFileAnnotationResponse"
-  );
+  const workflowResponseMessage = useSelector((state) => state);
+
   // Parse the URL parameters to get the data
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
   const [Instance, setInstance] = useState(null);
@@ -81,12 +80,15 @@ const SignatureViewer = () => {
     creatorID: "",
     isCreator: 0,
   });
+
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
   const [readOnlyUsers, setReadOnlyUsers] = useState([]);
   const [removeXmlAfterFreetextHideDAta, setRemoveXmlAfterFreetextHideDAta] =
     useState([]);
+
+  // Refs
   const userAnnotationsCopyData = useRef(userAnnotationsCopy);
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
@@ -100,8 +102,9 @@ const SignatureViewer = () => {
   const removeXmlAfterFreetextHideDAtaRef = useRef(
     removeXmlAfterFreetextHideDAta
   );
-  // ===== this use for current state update get =====//
+  const webViewerInitializedRef = useRef(false);
 
+  // ===== this use for current state update get =====//
   useEffect(() => {
     userAnnotationsCopyData.current = userAnnotationsCopy;
   }, [userAnnotationsCopy]);
@@ -145,7 +148,14 @@ const SignatureViewer = () => {
   useEffect(() => {
     removeXmlAfterHideDAtaRef.current = removeXmlAfterHideDAta;
   }, [removeXmlAfterHideDAta]);
-  // === End === //
+
+  useEffect(() => {
+    if (ResponseMessage) {
+      try {
+        showMessage(ResponseMessage, "error", setOpen);
+      } catch (error) {}
+    }
+  }, [ResponseMessage]);
 
   // === Api calling === //
   async function apiCall(Data) {
@@ -154,31 +164,26 @@ const SignatureViewer = () => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (docWorkflowID !== null && docWorkflowID !== undefined) {
-        let Data = {
-          FileID: Number(docWorkflowID),
-        };
-        apiCall(Data);
-      }
-    };
-
-    fetchData();
-  }, []);
-  // === End === //
+    if (docWorkflowID) {
+      let Data = {
+        FileID: Number(docWorkflowID),
+      };
+      apiCall(Data);
+    }
+  }, [docWorkflowID]);
 
   // === checker for null array === //
   function containsNull(arr) {
     return arr.some((element) => element === null);
   }
-  // === End === //
 
   // === this is responce of GetAllFieldsByWorkFlowID ===//
   useEffect(() => {
-    if (getAllFieldsByWorkflowID !== null) {
+    if (getAllFieldsByWorkflowID) {
       try {
         let newFieldsData = [];
         let revertedData;
+
         if (
           getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
             .length > 0
@@ -203,8 +208,10 @@ const SignatureViewer = () => {
               });
             }
           );
+
           setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers);
           setReadOnlyUsers(getAllFieldsByWorkflowID.readOnlyUsers);
+
           function revert(data) {
             return data.map((item) => {
               const xmlField = item.xmlField
@@ -218,7 +225,7 @@ const SignatureViewer = () => {
                         "Input:",
                         str
                       );
-                      return null; // or handle the error as needed
+                      return null;
                     }
                   })
                 : [];
@@ -230,7 +237,7 @@ const SignatureViewer = () => {
               };
             });
           }
-          // this is using if we are getting null value for anotations
+
           if (
             containsNull(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
@@ -238,11 +245,10 @@ const SignatureViewer = () => {
             )
           ) {
             let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
-
             if (bundleModels?.length > 0) {
               let listOfUsers = [];
-              bundleModels.forEach((users, index) => {
-                users.actors.forEach((usersData, index) => {
+              bundleModels.forEach((users) => {
+                users.actors.forEach((usersData) => {
                   listOfUsers.push({
                     actorID: usersData.fK_WorkFlowActor_ID,
                     userID: usersData.pK_UID,
@@ -263,21 +269,22 @@ const SignatureViewer = () => {
           }
           setFieldsData(newFieldsData);
         }
-      } catch {}
+      } catch (error) {
+        console.error("Error processing fields data:", error);
+      }
     }
   }, [getAllFieldsByWorkflowID]);
-  // === End === //
 
   // === Get Workflow by FileID Api responce Update Also trigger when FieldsDatavalues update its contain color of users===//
   useEffect(() => {
-    if (getWorkfFlowByFileId !== null && getWorkfFlowByFileId !== undefined) {
+    if (getWorkfFlowByFileId) {
       try {
         let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
         if (bundleModels?.length > 0) {
           let listOfUsers = [];
           let signersData = [];
-          bundleModels.forEach((users, index) => {
-            users.actors.forEach((usersData, index) => {
+          bundleModels.forEach((users) => {
+            users.actors.forEach((usersData) => {
               listOfUsers.push({
                 name: usersData.name,
                 pk_UID: usersData.pK_UID,
@@ -293,10 +300,10 @@ const SignatureViewer = () => {
           setParticipants(listOfUsers);
           setLastParticipants(listOfUsers);
           setSelectedUser(listOfUsers[0].pk_UID);
-          // this is using if we are getting null value for anotations
+
           if (
-            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.bundleDetails
-              .length > 0
+            getAllFieldsByWorkflowID?.signatureWorkFlowFieldDetails
+              ?.bundleDetails?.length > 0
           ) {
             if (
               containsNull(
@@ -305,11 +312,10 @@ const SignatureViewer = () => {
               )
             ) {
               let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
-
               if (bundleModels?.length > 0) {
                 let listOfUsers = [];
-                bundleModels.forEach((users, index) => {
-                  users.actors.forEach((usersData, index) => {
+                bundleModels.forEach((users) => {
+                  users.actors.forEach((usersData) => {
                     listOfUsers.push({
                       actorID: usersData.fK_WorkFlowActor_ID,
                       userID: usersData.pK_UID,
@@ -322,8 +328,6 @@ const SignatureViewer = () => {
               }
             }
           }
-        } else {
-          // setOpenAddParticipentModal(true);
         }
 
         setPdfResponceData((prevData) => ({
@@ -343,17 +347,16 @@ const SignatureViewer = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error processing workflow data:", error);
+      }
     }
   }, [getWorkfFlowByFileId, FieldsData]);
-  // === End === //
 
-  // === Get  the file details by Id from API and Set it === //
+  // === Combined useEffect for processing API response and initializing WebViewer === //
   useEffect(() => {
-    if (
-      getSignatureFileAnnotationResponse !== null &&
-      getSignatureFileAnnotationResponse !== undefined
-    ) {
+    // Process API response when it arrives
+    if (getSignatureFileAnnotationResponse) {
       try {
         let currentUserID =
           localStorage.getItem("userID") !== null
@@ -386,6 +389,7 @@ const SignatureViewer = () => {
             });
           }
         });
+
         let newProcessXmlForReadOnly = processXmlForReadOnly(
           getSignatureFileAnnotationResponse.annotationString,
           ReadArray
@@ -396,44 +400,51 @@ const SignatureViewer = () => {
           newProcessXmlForReadOnly,
           HideArray
         );
-
         setRemoveXmlAfterHideDAta(removedItems);
         const readonlyFreetextXmlString = readOnlyFreetextElements(
           updatedXmlString,
           readOnlyUsersRef.current
         );
-        console.log("readOnlyUsersRef", readOnlyUsersRef);
+
         const { hideFreetextXmlString, removedHideFreetextElements } =
           hideFreetextElements(
             readonlyFreetextXmlString,
             hiddenUsersRef.current
           );
+
         setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
+
         setPdfResponceData((prevData) => ({
           ...prevData,
           xfdfData: hideFreetextXmlString,
           attachmentBlob: getSignatureFileAnnotationResponse.attachmentBlob,
         }));
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error processing signature file annotation:", error);
+      }
     }
-  }, [getSignatureFileAnnotationResponse]);
-  // === End === //
 
-  // === It's triggered when we update the blob file in our local state ===
-  useEffect(() => {
-    if (pdfResponceData.attachmentBlob !== "") {
-      try {
-        WebViewer(
-          {
-            path: "/webviewer/lib",
-            showLocalFilePicker: true,
-            fullAPI: true,
-            licenseKey:
-              "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
-          },
-          viewer.current
-        ).then(async (instance) => {
+    // Initialize WebViewer when blob is available and not already initialized
+    if (
+      pdfResponceData.attachmentBlob !== "" &&
+      !webViewerInitializedRef.current
+    ) {
+      const initializeWebViewer = async () => {
+        try {
+          const instance = await WebViewer(
+            {
+              path: "/webviewer/lib",
+              showLocalFilePicker: true,
+              fullAPI: true,
+              licenseKey:
+                "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd",
+            },
+            viewer.current
+          );
+
           setInstance(instance);
+          webViewerInitializedRef.current = true;
+
           instance.UI.loadDocument(
             handleBlobFiles(pdfResponceData.attachmentBlob),
             {
@@ -442,35 +453,34 @@ const SignatureViewer = () => {
           );
 
           const { documentViewer, annotationManager, Tools } = instance.Core;
-
-          // Add event listener for when the document is loaded
+          const { FitMode, setFitMode } = instance.UI;
           documentViewer.addEventListener("documentLoaded", async () => {
-            // Ensure the annotations are fully loaded
             await documentViewer.getAnnotationsLoadedPromise();
 
-            // If XFDF data exists, import it
             if (pdfResponceData.xfdfData !== "" && annotationManager) {
               try {
-                await annotationManager.importAnnotations(
-                  pdfResponceDataRef.current
+                const cleanedXFDF = sanitizeXFDF(
+                  pdfResponceDataRef.current,
+                  documentViewer
                 );
+                await annotationManager.importAnnotations(cleanedXFDF);
+                // ✅ Always fit to width on load
+                setFitMode(FitMode.FitWidth);
                 // Lock All Annotations
                 const annotations = annotationManager.getAnnotationsList();
                 annotations.forEach((annot) => {
-                  annot.Locked = true; // Prevent any modifications
-                  annot.ReadOnly = true; // Prevent editing
-                  annot.NoResize = true; // No resizing
-                  annot.NoMove = true; // No moving
-                  annot.NoRotate = true; // No rotating
+                  annot.Locked = true;
+                  annot.ReadOnly = true;
+                  annot.NoResize = true;
+                  annot.NoMove = true;
+                  annot.NoRotate = true;
+                  annotationManager.redrawAnnotation(annot);
                 });
-
-                annotationManager.redrawAnnotation(annotations);
               } catch (error) {
                 console.error("Error importing annotations:", error);
               }
             }
 
-            // Refresh to apply the changes
             documentViewer.refreshAll();
             documentViewer.updateView();
           });
@@ -528,7 +538,6 @@ const SignatureViewer = () => {
           // Custom header buttons
           const handleClickDeclineBtn = () => {
             setReasonModal(true);
-            // alert("Decline Button Clicked");
           };
 
           const handleClickCloseBtn = () => {
@@ -537,31 +546,23 @@ const SignatureViewer = () => {
 
           const handleClickSaveBtn = async () => {
             try {
-              const xfdfString = await annotationManager.exportAnnotations(); // this doc send to add annotationfilesofattachment
-              console.log(
-                { xfdfString, userAnnotationsRef },
-                "handleClickSaveBtnhandleClickSaveBtn"
-              );
+              const xfdfString = await annotationManager.exportAnnotations();
               let currentUserID =
                 localStorage.getItem("userID") !== null
                   ? Number(localStorage.getItem("userID"))
                   : 0;
-              // this one sent do save signature document
+
               let HideArray = [];
               let ReadArray = [];
 
               // Iterate over each object in the data array
               await userAnnotationsRef.current.forEach((obj) => {
-                // Check if userID does not match currentID
                 if (obj.userID !== currentUserID) {
-                  // Iterate over xml array in the current object
                   obj.xml.forEach((item) => {
-                    // Extract all 'name' attributes from ffield excluding font tag
                     let ffield = item.ffield;
                     let matches = ffield.match(/<ffield[^>]*\sname="([^"]+)"/g);
                     if (matches) {
                       matches.forEach((match) => {
-                        // Extract the name value and push into nameArray
                         let name = match.match(/name="([^"]+)"/)[1];
                         if (hiddenUsersRef.current.includes(obj.userID)) {
                           HideArray.push(name);
@@ -580,10 +581,6 @@ const SignatureViewer = () => {
                 xfdfString,
                 ReadArray
               );
-              console.log(
-                { newProcessXmlForReadOnly },
-                "handleClickSaveBtnhandleClickSaveBtn"
-              );
 
               const revertedHideFieldsXml = await revertProcessXmlToHideFields(
                 newProcessXmlForReadOnly,
@@ -595,6 +592,7 @@ const SignatureViewer = () => {
                   revertedHideFieldsXml,
                   readOnlyUsersRef.current
                 );
+
               const doc = new DOMParser().parseFromString(
                 afterAddReadOnlyFreetextElements,
                 "text/xml"
@@ -621,10 +619,6 @@ const SignatureViewer = () => {
                 afterAddRevertHideFreetextElements,
                 "text/xml"
               );
-              console.log(
-                { mainXmlDoc },
-                "handleClickSaveBtnhandleClickSaveBtn"
-              );
 
               function existsInMainXML(name, type, mainXmlDoc) {
                 const elements = mainXmlDoc.querySelectorAll(
@@ -632,6 +626,7 @@ const SignatureViewer = () => {
                 );
                 return elements.length > 0;
               }
+
               let covert = userAnnotationsRef.current.map((user) => {
                 let filteredXml = user.xml.filter((item) => {
                   const ffieldDoc = parser.parseFromString(
@@ -646,10 +641,7 @@ const SignatureViewer = () => {
                     ffieldDoc.documentElement.getAttribute("name");
                   const widgetName =
                     widgetDoc.documentElement.getAttribute("name");
-                  console.log(
-                    { ffieldName, widgetName },
-                    "handleClickSaveBtnhandleClickSaveBtn"
-                  );
+
                   return (
                     existsInMainXML(ffieldName, "ffield", mainXmlDoc) &&
                     existsInMainXML(widgetName, "widget", mainXmlDoc)
@@ -658,6 +650,7 @@ const SignatureViewer = () => {
 
                 return { ...user, xml: filteredXml };
               });
+
               let convertData = [];
               covert.forEach((data) => {
                 const xmlListStrings = data.xml.map((xmlObj) =>
@@ -669,7 +662,7 @@ const SignatureViewer = () => {
                 });
               });
 
-              // add annotation  of files attachment api
+              // add annotation of files attachment api
               let addAnnoatationofFilesAttachment = {
                 FileID: Number(docWorkflowID),
                 AnnotationString: afterAddRevertHideFreetextElements,
@@ -682,7 +675,7 @@ const SignatureViewer = () => {
                   : 0;
 
               let findActionBundleID = FieldsData.find(
-                (actorData, index) => Number(actorData.userID) === userID
+                (actorData) => Number(actorData.userID) === userID
               );
 
               // Update Actor Bundle Status APi Call
@@ -695,8 +688,6 @@ const SignatureViewer = () => {
               };
 
               let newData = { ActorsFieldValuesList: convertData };
-              console.log("readOnlyUsersRef", newData);
-              console.log("readOnlyUsersRef", userAnnotationsRef.current);
 
               dispatch(
                 addUpdateFieldValueApi(
@@ -711,39 +702,8 @@ const SignatureViewer = () => {
                 )
               );
             } catch (error) {
-              console.log(error, "handleClickSaveBtnhandleClickSaveBtn");
+              console.error("Error saving annotations:", error);
             }
-
-            // try {
-            //   const annots = await annotationManager.getAnnotationsList();
-            //   if (annots && annots.length > 0) {
-            //     // Log the annotations before deletion
-            //     console.log("Annotations before deletion:", annots);
-
-            //     // Process and delete annotations
-            //     await annotationManager.deleteAnnotations(annots);
-
-            //     // Log the annotations after deletion attempt
-            //     console.log("Annotations after deletion:", annots);
-
-            //     // Import new annotations
-            //     await annotationManager.importAnnotations(
-            //       afterAddRevertHideFreetextElements
-            //     );
-
-            //     // Redraw annotations
-            //     annotationManager.redrawAnnotation(
-            //       afterAddRevertHideFreetextElements
-            //     );
-            //   } else {
-            //     console.error(
-            //       "No annotations found or annotations list is empty."
-            //     );
-            //   }
-            // } catch (error) {
-            //   console.error("Error importing or drawing annotations:", error);
-            //   // Handle
-            // }
           };
 
           let ifUserExist = signerDataRef.current.find(
@@ -782,7 +742,6 @@ const SignatureViewer = () => {
                   SaveButton.style.margin = "10px 0 10px 10px";
                   SaveButton.style.border = "1px solid #6172d6";
                   SaveButton.onclick = handleClickSaveBtn;
-
                   return SaveButton;
                 },
               });
@@ -806,12 +765,14 @@ const SignatureViewer = () => {
               });
             });
           }
-        });
-      } catch (error) {}
-    }
-  }, [pdfResponceData.attachmentBlob]);
+        } catch (error) {
+          console.error("Error initializing WebViewer:", error);
+        }
+      };
 
-  // ==== End ====//
+      initializeWebViewer();
+    }
+  }, [getSignatureFileAnnotationResponse, pdfResponceData.attachmentBlob]);
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
@@ -823,8 +784,6 @@ const SignatureViewer = () => {
       xmlDoc.querySelectorAll("widget").forEach((widget) => {
         const widgetName = widget.getAttribute("name");
         const ffieldName = widget.getAttribute("field");
-        // const uniqueWidgetName = `${ffieldName}-${userSelect}`;
-        // widget.setAttribute("name", uniqueWidgetName);
         let widgetFound = false;
         userAnnotations.forEach((user) => {
           user.xml.forEach((xml) => {
@@ -835,7 +794,6 @@ const SignatureViewer = () => {
               );
               const widgetElement = widget;
               if (ffieldElement && widgetElement) {
-                // Only access outerHTML if elements are not null
                 xml.ffield = ffieldElement.outerHTML;
                 xml.widget = widgetElement.outerHTML;
                 widgetFound = true;
@@ -849,7 +807,6 @@ const SignatureViewer = () => {
         if (!widgetFound) {
           userAnnotations.forEach((user) => {
             if (user.userID === userSelect) {
-              // Assuming you want to add to the current user's annotations
               user.xml.push({
                 ffield: xmlDoc.querySelector(`ffield[name="${ffieldName}"]`)
                   .outerHTML,
@@ -861,9 +818,8 @@ const SignatureViewer = () => {
       });
       // Update the state with the modified userAnnotations
       setUserAnnotations(userAnnotations);
-      // }
     } catch (error) {
-      console.log(error);
+      console.error("Error updating XFDF:", error);
     }
   };
 
@@ -887,12 +843,11 @@ const SignatureViewer = () => {
       }
     }
   }, [participants]);
-  // ==== End ====//
 
-  // // === this is for update intance in ===//
+  // === this is for update instance ===//
   useEffect(() => {
     if (Instance) {
-      const { annotationManager, Annotations } = Instance.Core;
+      const { annotationManager } = Instance.Core;
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -912,29 +867,19 @@ const SignatureViewer = () => {
               userAnnotationsRef.current
             );
           } catch (error) {
-            console.error(error);
+            console.error("Error updating annotations:", error);
           }
         }
       );
     }
   }, [Instance]);
-  // === End ===//
-
-  // === this is for Response Message===//
-  // useEffect(() => {
-  //   if (ResponseMessage !== "" && ResponseMessage !== undefined) {
-  //     showMessage(ResponseMessage, "error", setOpen);
-  //     dispatch(clearWorkFlowResponseMessage());
-  //   }
-  // }, [ResponseMessage]);
-  // === End ===//
 
   const handleClickDeclineBtn = () => {
     if (declineReasonMessage !== "") {
       let userID = localStorage.getItem("userID");
 
       let findActorID = userAnnotationsRef.current.find(
-        (data, index) => Number(data.userID) === Number(userID)
+        (data) => Number(data.userID) === Number(userID)
       );
       if (findActorID !== undefined) {
         let Data = {
@@ -952,12 +897,11 @@ const SignatureViewer = () => {
           )
         );
       }
-
-      // setDeclineConfirmationModal
     } else {
       setDeclineErrorMessage(true);
     }
   };
+
   return (
     <>
       <div className='documnetviewer'>
