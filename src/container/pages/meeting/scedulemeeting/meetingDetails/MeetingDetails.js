@@ -1185,43 +1185,41 @@ const MeetingDetails = ({
               </Row>
 
               <Row>
-                <Row className='mt-1'>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className='d-flex flex-column flex-wrap'>
-                    <TextField
-                      label={
-                        <span className={styles["Meeting_type_heading"]}>
-                          {t("Add-notes")}
-                        </span>
-                      }
-                      applyClass='text-area-create-meeting'
-                      type='text'
-                      as={"textarea"}
-                      rows='5'
-                      name={"Notes"}
-                      change={HandleChange}
-                      placeholder={t("Note-for-this-meeting")}
-                      required={true}
-                      maxLength={1100}
-                      value={meetingDetails.Notes}
-                      disable={
-                        (Number(editorRole.status) === 9 ||
-                          Number(editorRole.status) === 8 ||
-                          Number(editorRole.status) === 10) &&
-                        editorRole.role === "Organizer" &&
-                        isEditMeeting === true
-                          ? true
-                          : editorRole.role === "Agenda Contributor" &&
-                            isEditMeeting === true
-                          ? true
-                          : false
-                      }
-                    />
-                  </Col>
-                </Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex flex-column flex-wrap'>
+                  <TextField
+                    label={
+                      <span className={styles["Meeting_type_heading"]}>
+                        {t("Add-notes")}
+                      </span>
+                    }
+                    applyClass='text-area-create-meeting'
+                    type='text'
+                    as={"textarea"}
+                    rows='5'
+                    name={"Notes"}
+                    change={HandleChange}
+                    placeholder={t("Note-for-this-meeting")}
+                    required={true}
+                    maxLength={1100}
+                    value={meetingDetails.Notes}
+                    disable={
+                      (Number(editorRole.status) === 9 ||
+                        Number(editorRole.status) === 8 ||
+                        Number(editorRole.status) === 10) &&
+                      editorRole.role === "Organizer" &&
+                      isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : false
+                    }
+                  />
+                </Col>
               </Row>
               <Row className='mt-3'>
                 <Col lg={4} md={4} sm={12}>

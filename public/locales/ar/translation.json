@@ -100,7 +100,7 @@
   "Discard-changes": "تجاهل التغييرات",
   "Cancel-meeting": "إلغاء الإجتماع",
   "Are-you-sure-you-want-to-schedule-this-meeting": "هل أنت متأكد أنك تريد جدولة هذا الاجتماع؟",
-  "Cancel": "إلغاء",
+  "Cancel": "يلغي",
   "Schedule": "جدول",
   "Are-you-sure-you-want-to-update-this-meeting": "هل أنت متأكد أنك تريد تحديث هذا الاجتماع؟",
   "Are-you-sure-you-want-to-cancel-this-meeting": "هل أنت متأكد أنك تريد إلغاء هذا الاجتماع؟",
@@ -2451,9 +2451,13 @@
   "Search-on-resolution-title": "Search on Resolution Title",
   "Search-on-user-name": "Search on User Name",
   "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time": "Unable to join the meeting at this time. Please try after some time",
-  "View-meeting": "View Meeting",
+  "View-meeting": " الاجتماع عرض ",
   "Please-enter-Contact": "Please enter contact",
   "Minutes-revised-by-organizer": "Minutes Revised by Organizer",
-  "The-minute-has-been-sent-for-review-by": "This minute is reviewed by"
+  "The-minute-has-been-sent-for-review-by": "This minute is reviewed by",
+  "Disable-mic": "تعطيل الميكروفون",
+  "Disable-video": " تعطيل الفيديو",
+  "Raise-hand": "ارفع اليد",
+  "Leave-meeting-video-call": "مغادرة اجتماع مكالمة فيديو"
 
 }
