@@ -1261,8 +1261,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               localStorage.removeItem("NotificationQuickMeetingID");
             } else {
               if (
-                allMeetingDetails.meetingStatus.status === "10" ||
-                allMeetingDetails.meetingStatus.status === 10
+                allMeetingDetails?.meetingStatus?.status === "10" ||
+                allMeetingDetails?.meetingStatus?.status === 10
               ) {
                 // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
                 setViewFlag(true);

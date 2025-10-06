@@ -346,7 +346,7 @@ const AddUsers = () => {
         UserDataList: [
           {
             UserName: addUserFreeTrial.Name.value,
-            OrganizationName: "",
+            OrganizationName:organizationNames,
             Designation: addUserFreeTrial.Desgination.value,
             MobileNumber: addUserFreeTrial.Contact.value,
             UserEmail: addUserFreeTrial.Email.value,
