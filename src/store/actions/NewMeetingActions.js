@@ -8724,7 +8724,7 @@ const LeaveCurrentMeetingOtherMenus = (
       proposeNewMeetingPageFlagReducer,
       viewMeetingFlagReducer,
       location,
-      setViewAdvanceMeetingModal
+      setViewAdvanceMeetingModal,
     },
     "Coming inside this block scopr"
   );
@@ -9386,6 +9386,8 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
+              sessionStorage.setItem("alreadyInMeetingVideo", false);
+
               await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
