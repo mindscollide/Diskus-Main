@@ -125,6 +125,8 @@ const VideoCallNormalHeader = ({
     setStopRecordingState,
   } = useContext(MeetingContext);
 
+  console.log(groupCallParticipantList, "groupCallParticipantList");
+
   const leaveModalPopupRef = useRef(null);
 
   const MaximizeVideoFlag = useSelector(
@@ -157,7 +159,7 @@ const VideoCallNormalHeader = ({
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
-  console.log(audioControl, "audioControlaudioControl")
+  console.log(audioControl, "audioControlaudioControl");
   //Video Control For host
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
@@ -208,8 +210,8 @@ const VideoCallNormalHeader = ({
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
-  console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom")
-  console.log(LeaveCallModalFlag, "LeaveCallModalFlag")
+  console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
+  console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
@@ -398,6 +400,7 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
+      
       setParticipantCounterList(getAllParticipantMain?.length);
     }
   }, [getAllParticipantMain]);
@@ -2025,7 +2028,7 @@ const VideoCallNormalHeader = ({
               ) : (
                 <>
                   <div className='main-icon-div'>
-                    {isMeetingVideo &&  (
+                    {isMeetingVideo && (
                       <>
                         {handRaiseCounter > 0 && (
                           <span className='HandRaise-Counter-for-participant'>
@@ -2035,13 +2038,30 @@ const VideoCallNormalHeader = ({
                       </>
                     )}
                     <span className='participants-counter-For-Host'>
-                      {getMeetingHostInfo?.isDashboardVideo &&
-                        convertNumbersInString(participantCounterList, lan)}
+                      {console.log(
+                        "isDashboardVideoCounter",
+                        participantCounterList,
+                        getMeetingHostInfo
+                      )}
+                      {getMeetingHostInfo?.isDashboardVideo ? (
+                        <>
+                          {convertNumbersInString(participantCounterList, lan)}
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          {convertNumbersInString(
+                            Array.isArray(groupCallParticipantList) &&
+                              groupCallParticipantList?.length,
+                            lan
+                          )}
+                        </>
+                      )}
                     </span>
                     {participantWaitingListCounter > 0 && (
                       <span className='participants-counter-For-Host-waiting-counter'>
                         {convertNumbersInString(
-                          participantWaitingListCounter,
+                         participantWaitingListCounter,
                           lan
                         )}
                       </span>

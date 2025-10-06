@@ -6,8 +6,8 @@
   height: 77vh !important;
   padding: 0px 10px;
   transform: rotateY(180deg);
-  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
-  -moz-transform:rotateY(180deg); /* Firefox */
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
 }
 
 .max-videoParticipant-panel {
@@ -22,7 +22,6 @@
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
   width: 90%;
   left: 65px;
-  
 }
 
 .max-videoParticipant-component {
@@ -155,6 +154,7 @@
   object-fit: cover !important;
   max-height: 43vh;
   padding: 0px 10px !important;
+  -webkit-transform: rotateY(180deg);
 }
 
 .video-max-minimize-videoParticipant-panel {

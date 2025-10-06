@@ -3950,7 +3950,7 @@ const NewMeeting = () => {
         ) : (
           <>
             <Row className='mt-2'>
-              <Col sm={12} md={12} lg={6} className='d-flex '>
+              <Col sm={12} md={12} lg={6} className='d-flex align-items-center  '>
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
@@ -4003,8 +4003,8 @@ const NewMeeting = () => {
                   </ReactBootstrapDropdown>
                 </span>
               </Col>
-              <Col sm={12} md={12} lg={6} className=''>
-                <span className='position-relative'>
+              <Col sm={12} md={12} lg={6} >
+                <div className='position-relative' >
                   <TextField
                     width={"100%"}
                     placeholder={t("Search-on-meeting-title")}
@@ -4137,7 +4137,7 @@ const NewMeeting = () => {
                       </Row>
                     </>
                   ) : null}
-                </span>
+                </div>
               </Col>
             </Row>
             <Row className='mt-2'>

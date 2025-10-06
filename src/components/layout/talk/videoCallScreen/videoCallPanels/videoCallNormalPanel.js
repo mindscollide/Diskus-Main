@@ -296,6 +296,14 @@ const VideoPanelNormal = () => {
   console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
 
   const [allParticipant, setAllParticipant] = useState([]);
+
+  const uniqueParticipants = allParticipant.reduce((acc, curr) => {
+    if (!acc.some(item => item.userID === curr.userID)) {
+      acc.push(curr);
+    }
+    return acc;
+  }, []);
+  
   console.log(allParticipant, "allParticipant123");
 
   const [participantsList, setParticipantsList] = useState([]);

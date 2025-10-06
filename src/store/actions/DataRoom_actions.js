@@ -39,6 +39,7 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import {
   fileFormatforSignatureFlow,
+  isFunction,
   openDocumentViewer,
 } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
@@ -283,6 +284,12 @@ const uploadDocumentsApi = (
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
       form.append("File", newJsonCreateFile.File);
+
+      console.log(
+        newJsonCreateFile.File,
+        newJsonCreateFile,
+        "newJsonCreateFile"
+      );
       axios({
         method: "post",
         url: dataRoomApi,
@@ -1414,30 +1421,36 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                   "DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase()
                 )
             ) {
-              if (Number(currentView) === 4) {
-                let Data = {
-                  UserID: Number(createrID),
-                  OrganizationID: Number(OrganizationID),
-                };
-                dispatch(getRecentDocumentsApi(navigate, t, Data));
-              } else {
-                if (folderId !== null) {
-                  dispatch(
-                    getFolderDocumentsApi(navigate, Number(folderId), t)
-                  );
+              try {
+                if (Number(currentView) === 4) {
+                  let Data = {
+                    UserID: Number(createrID),
+                    OrganizationID: Number(OrganizationID),
+                  };
+                  dispatch(getRecentDocumentsApi(navigate, t, Data));
                 } else {
-                  dispatch(
-                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                  );
+                  if (folderId !== null) {
+                    dispatch(
+                      getFolderDocumentsApi(navigate, Number(folderId), t)
+                    );
+                  } else {
+                    dispatch(
+                      getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                    );
+                  }
                 }
+
+                isFunction(setIsFileDelete) && setIsFileDelete(false);
+
+                dispatch(
+                  deleteFileDataroom_success(
+                    response.data.responseResult,
+                    t("Files-deleted-successfully")
+                  )
+                );
+              } catch (error) {
+                console.log(error);
               }
-              setIsFileDelete(false);
-              dispatch(
-                deleteFileDataroom_success(
-                  response.data.responseResult,
-                  t("Files-deleted-successfully")
-                )
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

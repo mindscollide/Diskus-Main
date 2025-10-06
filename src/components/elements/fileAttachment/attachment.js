@@ -64,20 +64,22 @@ const AttachmentViewer = ({
               </button>
             </>
           )}
-          {id !== 0 && getfileExtensionName !== "txt" && (
-            <>
-              <div className='divider mx-1'></div>
-              <button className='action-button' aria-label='View document'>
-                {/* <Eye size={20} /> */}
-                <img
-                  draggable={false}
-                  src={EyeIcon}
-                  alt=''
-                  onClick={handleEyeIcon}
-                />
-              </button>
-            </>
-          )}
+          {id !== 0 &&
+            getfileExtensionName !== "txt" &&
+            getfileExtensionName !== "pptx" && (
+              <>
+                <div className='divider mx-1'></div>
+                <button className='action-button' aria-label='View document'>
+                  {/* <Eye size={20} /> */}
+                  <img
+                    draggable={false}
+                    src={EyeIcon}
+                    alt=''
+                    onClick={handleEyeIcon}
+                  />
+                </button>
+              </>
+            )}
         </div>
       </div>
       {currentUser === Number(fk_UID) && (

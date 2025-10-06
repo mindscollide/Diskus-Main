@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -32,12 +32,36 @@ import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
-
+import { useMeetingContext } from "./context/MeetingContext";
+import { v4 as uuidv4 } from "uuid";
 const POLLING_INTERVAL = 60000; // 1 minute
+
+const MEETING_KEY = "ongoing_meeting_tab";
+const TABS_KEY = "open_tabs"; // to track all open tabs
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
+  const {
+    isMeetingVideo,
+    meetingId,
+    viewAdvanceMeetingModal,
+    iframeRef,
+    editorRole,
+  } = useMeetingContext();
+
+  console.log(
+    viewAdvanceMeetingModal,
+    iframeRef,
+    editorRole,
+    "meeting context in app js"
+  );
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
+
+  const [tabId] = useState(uuidv4); // unique per tab
+
+  const [tabCount, setTabCount] = useState(0);
+
+  console.log(tabCount, "tabCounttabCounttabCount");
   const auth = useSelector((state) => state.auth);
   const assignees = useSelector((state) => state.assignees);
   const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
@@ -130,6 +154,38 @@ const App = () => {
     return isAndroid || isIOS;
   };
   let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
+
+  // 🔄 Handle Tab Tracking
+  useEffect(() => {
+    // Add this tab to open_tabs
+    const openTabs = JSON.parse(localStorage.getItem(TABS_KEY)) || [];
+    const updatedTabs = [...new Set([...openTabs, tabId])]; // prevent duplicates
+    localStorage.setItem(TABS_KEY, JSON.stringify(updatedTabs));
+
+    // Cleanup on tab close
+    const handleUnload = () => {
+      const currentTabs = JSON.parse(localStorage.getItem(TABS_KEY)) || [];
+      const remaining = currentTabs.filter((id) => id !== tabId);
+      localStorage.setItem(TABS_KEY, JSON.stringify(remaining));
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+
+    // Watch for tab changes
+    const handleStorage = (event) => {
+      if (event.key === TABS_KEY) {
+        const updated = JSON.parse(localStorage.getItem(TABS_KEY)) || [];
+        setTabCount(updated.length);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      handleUnload();
+      window.removeEventListener("beforeunload", handleUnload);
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, [tabId]);
 
   useEffect(() => {
     const channel = new BroadcastChannel("auth");
@@ -313,7 +369,6 @@ const App = () => {
         router={router}
         future={{ v7_startTransition: true, v7_fetcherPersist: true }}
       />
-
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}
       {updateVersion && (

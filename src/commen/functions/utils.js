@@ -2048,40 +2048,47 @@ export const SideBarGlobalNavigationFunction = async (
       setViewAdvanceMeetingModal(false);
       navigate(navigateValue);
     } else {
-      console.log("Checking");
-      try {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-   
-        setViewAdvanceMeetingModal(false);
-        console.log("Check Route Meeting");
+      console.log(navigateValue, "Checking");
 
-        dispatch(viewMeetingFlag(false));
-        isFunction(setViewAdvanceMeetingModalUnpublish) &&
-          setViewAdvanceMeetingModalUnpublish(false);
+      if (navigateValue === "/Diskus/") {
+        console.log(navigateValue, "Checking");
+        navigate("/Diskus/");
+      } else {
+        try {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              currentView && Number(currentView) === 1 ? true : false,
+          };
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          console.log("chek search meeting");
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
 
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      } catch (error) {
-        console.log("Checking", error);
+          setViewAdvanceMeetingModal(false);
+          console.log("Check Route Meeting");
+
+          dispatch(viewMeetingFlag(false));
+          isFunction(setViewAdvanceMeetingModalUnpublish) &&
+            setViewAdvanceMeetingModalUnpublish(false);
+
+          localStorage.removeItem("NotificationAdvanceMeetingID");
+          localStorage.removeItem("QuickMeetingCheckNotification");
+          localStorage.removeItem("viewadvanceMeetingPolls");
+          localStorage.removeItem("NotificationClickPollID");
+          localStorage.removeItem("AdvanceMeetingOperations");
+          localStorage.removeItem("NotificationClickTaskID");
+          localStorage.removeItem("viewadvanceMeetingTask");
+        } catch (error) {
+          console.log("Checking", error);
+        }
       }
+      console.log("Checking");
     }
   } else if (sceduleMeeting) {
     setGoBackCancelModal(true);
