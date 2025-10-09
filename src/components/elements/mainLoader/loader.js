@@ -122,7 +122,6 @@ const SpinComponent = () => {
     UserMangementReducer?.Loading,
   ].some((loading) => loading);
 
-  console.log(isLoading, "isLoadingisLoadingisLoading");
   useEffect(() => {
     let timeout;
 

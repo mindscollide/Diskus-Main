@@ -16,14 +16,11 @@ import { CommitteeProvider } from "./context/CommitteeContext";
 import { PollsProvider } from "./context/PollsContext";
 import { NotesProvider } from "./context/NotesContext";
 import { ResolutionProvider } from "./context/ResolutionContext";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/routes";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 
 // Root container
 const container = document.getElementById("root");
-const newContainer = document.getElementById("mainSpinner");
 
 // Create the root with error handling (if applicable)
 const root = ReactDOM.createRoot(container, {

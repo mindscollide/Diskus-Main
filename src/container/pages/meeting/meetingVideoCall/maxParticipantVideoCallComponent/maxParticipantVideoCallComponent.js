@@ -559,8 +559,8 @@ const ParticipantVideoCallComponent = () => {
         }>
         <Row>
           <Col
-            lg={minimizeState ? 3 : 4}
-            md={minimizeState ? 3 : 4}
+            lg={minimizeState ? 3 : 6}
+            md={minimizeState ? 3 : 6}
             sm={12}
             className='d-flex justify-content-start'>
             <p
@@ -573,8 +573,8 @@ const ParticipantVideoCallComponent = () => {
             </p>
           </Col>
           <Col
-            lg={minimizeState ? 9 : 8}
-            md={minimizeState ? 9 : 8}
+            lg={minimizeState ? 9 : 6}
+            md={minimizeState ? 9 : 6}
             sm={12}
             className='d-flex justify-content-end align-items-center gap-2'>
             <div className='max-videoParticipant-Icons-state'>

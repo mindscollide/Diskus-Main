@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -28,7 +28,7 @@ import {
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
-import SpinComponent from "../../../../components/elements/mainLoader/loader";
+import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -64,6 +64,8 @@ const SignInUserManagement = () => {
     message: "",
     severity: "error",
   });
+
+  const [bestExperienceBox, setBestExperienceBox] = useState(false);
 
   //OnChange For Email
   const emailChangeHandler = (e) => {
@@ -133,7 +135,23 @@ const SignInUserManagement = () => {
     });
   };
 
+  const handleCloseBrowserExpModal = useCallback(() => {
+    setBestExperienceBox(false);
+  }, []);
+
   useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const vendor = navigator.vendor?.toLowerCase() || "";
+
+    const isChrome =
+      vendor.includes("google inc.") &&
+      userAgent.includes("chrome") &&
+      !userAgent.includes("edg") && // exclude Edge
+      !userAgent.includes("opr"); // exclude Opera
+
+    if (!isChrome) {
+      setBestExperienceBox(true);
+    }
     console.log("onChangeAllowMicrosoftCalenderSync", code);
     if (code) {
       localStorage.setItem("Ms", code);
@@ -176,6 +194,9 @@ const SignInUserManagement = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        {bestExperienceBox && (
+          <SwitchToChromeBox handleClickClose={handleCloseBrowserExpModal} />
+        )}
         {code ? (
           <></>
         ) : getpayemntString !== "" ? (
@@ -285,9 +306,13 @@ const SignInUserManagement = () => {
                           md={12}
                           lg={12}
                           className='d-flex justify-content-center mt-2 '>
-                          <span className={styles['TermsfDiskus']}>
+                          <span className={styles["TermsfDiskus"]}>
                             By signing in you agree to our{" "}
-                            <Link to={"https://diskusboard.com/terms/"} target="_blank">Terms of Use</Link>
+                            <Link
+                              to={"https://diskusboard.com/terms/"}
+                              target='_blank'>
+                              Terms of Use
+                            </Link>
                           </span>
                         </Col>
                       </Row>

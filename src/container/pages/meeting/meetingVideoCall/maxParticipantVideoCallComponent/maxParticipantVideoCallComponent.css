@@ -122,6 +122,9 @@
   color: #6172d6 !important;
   font-size: 20px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .max-minimize-participant-title {

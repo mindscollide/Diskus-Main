@@ -10130,6 +10130,11 @@ const validateEncryptedStringViewMeetingLinkApi = (
 };
 
 // Upload Documents Init
+const uploadDocument_Int_quickMeeting = () => {
+  return {
+    type: actions.QUICKMEETING_DOCUMENTS_UPLOAD_INIT,
+  };
+};
 
 // Upload Documents Success
 const uploadDocument_success_quickMeeting = (response, message) => {
@@ -10154,6 +10159,7 @@ const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
+    dispatch(uploadDocument_Int_quickMeeting());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);

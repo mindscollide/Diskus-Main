@@ -1401,19 +1401,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className=' MeetingViewTitleTextField p-0'>
-                      <p className='viewModalTitle'>
-                        {createMeeting.MeetingTitle.length < 100
-                          ? `${createMeeting.MeetingTitle}`
-                          : `${createMeeting.MeetingTitle.substring(
-                              0,
-                              110
-                            )}...`}
-                      </p>
+                    <Col lg={12} md={12} xs={12} className=' viewModalTitle '>
+                      {createMeeting.MeetingTitle.length < 100
+                        ? `${createMeeting.MeetingTitle}`
+                        : `${createMeeting.MeetingTitle.substring(0, 110)}...`}
                     </Col>
                   </Row>
 

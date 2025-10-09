@@ -125,7 +125,7 @@ const VideoCallNormalHeader = ({
     setStopRecordingState,
   } = useContext(MeetingContext);
 
-  console.log(groupCallParticipantList, "groupCallParticipantList");
+  console.log(groupVideoCallAccepted, "groupCallParticipantList");
 
   const leaveModalPopupRef = useRef(null);
 
@@ -386,6 +386,8 @@ const VideoCallNormalHeader = ({
     };
   }, []);
 
+  console.log(pendingCallParticipantList, "pendingCallParticipantList");
+
   useEffect(() => {
     if (
       pendingCallParticipantList !== undefined &&
@@ -400,7 +402,6 @@ const VideoCallNormalHeader = ({
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain)?.length > 0) {
-      
       setParticipantCounterList(getAllParticipantMain?.length);
     }
   }, [getAllParticipantMain]);
@@ -2045,11 +2046,20 @@ const VideoCallNormalHeader = ({
                       )}
                       {getMeetingHostInfo?.isDashboardVideo ? (
                         <>
+                          {console.log(
+                            "isFor Host or Participant",
+                            participantCounterList
+                          )}
+
                           {convertNumbersInString(participantCounterList, lan)}
                         </>
                       ) : (
                         <>
-                          {" "}
+                          {console.log(
+                            "isFor Host or Participant",
+                            groupCallParticipantList
+                          )}
+
                           {convertNumbersInString(
                             Array.isArray(groupCallParticipantList) &&
                               groupCallParticipantList?.length,
@@ -2061,7 +2071,7 @@ const VideoCallNormalHeader = ({
                     {participantWaitingListCounter > 0 && (
                       <span className='participants-counter-For-Host-waiting-counter'>
                         {convertNumbersInString(
-                         participantWaitingListCounter,
+                          participantWaitingListCounter,
                           lan
                         )}
                       </span>

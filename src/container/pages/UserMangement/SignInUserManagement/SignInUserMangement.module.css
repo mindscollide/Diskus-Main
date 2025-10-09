@@ -141,12 +141,13 @@ body[dir="rtl"] .Auth_Icon {
 }
 
 .Login_page_text {
-  display: flex;
-  margin-top: 10%;
-  flex-direction: column;
-  margin-left: 20px;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: flex
+  ;
+      margin-top: 200px;
+      flex-direction: column;
+      margin-left: 20px;
+      justify-content: flex-start;
+      align-items: flex-start;
 }
 
 .Login_page_text h1 {

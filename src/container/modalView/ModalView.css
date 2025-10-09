@@ -46,7 +46,9 @@ button.dataRoom {
 } */
 
 .modalMeetingViewBody {
-  min-height: 70vh !important;
+  /* min-height: 70vh !important; */
+  height: 100%;
+  min-height: 550px;
   padding: 30px 20px;
 }
 
@@ -515,8 +517,8 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   font-size: 25px !important;
   line-height: 32px !important;
   max-height: 100px !important;
-  height: 93px !important;
-  margin: 0 10px !important;
+  margin: 0 auto !important;
+  overflow-y: auto;
 }
 
 .MeetingViewDateTimeTextField {
