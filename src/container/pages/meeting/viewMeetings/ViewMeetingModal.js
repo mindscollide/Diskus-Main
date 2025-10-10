@@ -428,7 +428,8 @@ const ViewMeetingModal = ({
   const callBeforeLeave = async () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeetingVideo) {
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       localStorage.setItem("isMeetingVideo", false);
       let newName = localStorage.getItem("name");
       let currentMeetingID = JSON.parse(
@@ -486,7 +487,8 @@ const ViewMeetingModal = ({
             MeetingID: Number(currentMeetingID),
           };
           dispatch(LeaveMeetingVideo(Data, navigate, t));
-          localStorage.setItem("isMeeting", false);
+              localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
           let currentMeeting = localStorage.getItem("currentMeetingID");
           let leaveMeetingData = {
             FK_MDID: Number(currentMeeting),
@@ -540,7 +542,8 @@ const ViewMeetingModal = ({
           };
           dispatch(setRaisedUnRaisedParticiant(false));
           dispatch(LeaveMeetingVideo(Data, navigate, t));
-          localStorage.setItem("isMeeting", false);
+              localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
           let currentMeeting = localStorage.getItem("currentMeetingID");
           let leaveMeetingData = {
             FK_MDID: Number(currentMeeting),
@@ -583,7 +586,8 @@ const ViewMeetingModal = ({
       console.log("cehek location");
       localStorage.removeItem("navigateLocation");
 
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       let currentMeeting = localStorage.getItem("currentMeetingID");
       let leaveMeetingData = {
         FK_MDID: Number(currentMeeting),
@@ -669,7 +673,8 @@ const ViewMeetingModal = ({
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
         setAdvanceMeetingModalID(null);
-        localStorage.setItem("isMeeting", false);
+            localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
         setMeetingMaterial(false);
         setAgendaContributors(false);
         setorganizers(false);
@@ -682,7 +687,8 @@ const ViewMeetingModal = ({
         setAttendees(false);
         setactionsPage(false);
         setRecording(false);
-        localStorage.setItem("isMeeting", false);
+            localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
         callBeforeLeave();
       }
     };

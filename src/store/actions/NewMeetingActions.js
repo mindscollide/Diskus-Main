@@ -1483,7 +1483,8 @@ const FetchMeetingURLApi = (
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("CallType", 2);
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 2);
@@ -8262,7 +8263,9 @@ const JoinCurrentMeeting = (
                 )
             ) {
               dispatch(videoIconOrButtonState(false));
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
+              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
@@ -8631,7 +8634,8 @@ const LeaveCurrentMeeting = (
 
                 //   localStorage.setItem("activeCall", false);
 
-                //   localStorage.setItem("isMeeting", false);
+                //       localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
                 //   localStorage.setItem("meetingTitle", "");
                 //   localStorage.setItem("acceptedRecipientID", 0);
                 //   localStorage.setItem("acceptedRoomID", 0);
@@ -8799,7 +8803,8 @@ const LeaveCurrentMeetingOtherMenus = (
               dispatch(minimizeVideoPanelFlag(false));
 
               localStorage.setItem("activeCall", false);
-              localStorage.setItem("isMeeting", false);
+                  localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
               localStorage.setItem("meetingTitle", "");
               localStorage.setItem("acceptedRecipientID", 0);
               localStorage.setItem("acceptedRoomID", 0);
@@ -10778,7 +10783,8 @@ const NewJoinCurrentMeeting = (
                 )
             ) {
               dispatch(videoIconOrButtonState(false));
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",

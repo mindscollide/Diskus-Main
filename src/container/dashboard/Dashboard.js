@@ -186,6 +186,7 @@ import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
 import {
   checkFeatureIDAvailability,
   getLocalStorageItemNonActiveCheck,
+  getMeetingValues,
 } from "../../commen/functions/utils";
 import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
@@ -221,6 +222,7 @@ import {
   meetingVideoRecording,
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
+import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1487,6 +1489,7 @@ const Dashboard = () => {
                   };
                   dispatch(makeHostNow(meetingHost));
                   localStorage.setItem("isMeeting", true);
+                  sessionStorage.setItem("isMeeting", true);
                   localStorage.setItem("isMeetingVideo", false);
                   localStorage.removeItem("refinedVideoUrl");
                   localStorage.setItem("refinedVideoGiven", false);
@@ -1646,6 +1649,7 @@ const Dashboard = () => {
               dispatch(globalStateForVideoStream(true));
               // localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
+              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
               console.log("iframeiframe", data.payload.screenShare);
               console.log("iframeiframe", data.payload.userID);
@@ -4693,6 +4697,35 @@ const Dashboard = () => {
     }
   }, [MeetingStatusEnded]);
 
+  const [isMeetingLocal, setIsMeetingLocal] = useState(false);
+  const [isMeetingSession, setIsMeetingSession] = useState(false);
+  // Function to read current values
+  const getMeetingValues = () => {
+    const local = localStorage.getItem("isMeeting");
+    const session = sessionStorage.getItem("isMeeting");
+
+    setIsMeetingLocal(local ? JSON.parse(local) : false);
+    setIsMeetingSession(session ? JSON.parse(session) : false);
+  };
+
+  useEffect(() => {
+    // Run once initially
+    getMeetingValues();
+
+    // Listen for changes to storage (fires across tabs)
+    const handleStorageChange = (event) => {
+      if (event.key === "isMeeting") {
+        getMeetingValues();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
   return (
     <>
       <ConfigProvider
@@ -4709,7 +4742,15 @@ const Dashboard = () => {
             </Sider>
             <Content>
               <div className='dashbaord_data'>
-                <Outlet />
+                {isMeetingLocal ? (
+                  isMeetingSession ? (
+                    <Outlet />
+                  ) : (
+                    <AlreadyInMeeting />
+                  )
+                ) : (
+                  <Outlet />
+                )}
               </div>
               <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}

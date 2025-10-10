@@ -372,7 +372,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-    localStorage.setItem("isMeeting", true);
+          localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -479,7 +480,8 @@ const VideoPanelBodyRecent = () => {
       isDashboardVideo: false,
     };
     await dispatch(makeHostNow(meetingHost));
-    localStorage.setItem("isMeeting", true);
+          localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);

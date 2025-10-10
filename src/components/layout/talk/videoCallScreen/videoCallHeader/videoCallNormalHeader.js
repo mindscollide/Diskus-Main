@@ -687,7 +687,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);

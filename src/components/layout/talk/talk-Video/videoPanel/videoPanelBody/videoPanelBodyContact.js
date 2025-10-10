@@ -237,6 +237,7 @@ const VideoPanelBodyContact = () => {
     };
     await dispatch(makeHostNow(meetingHost));
     localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -372,6 +373,7 @@ const VideoPanelBodyContact = () => {
     };
     await dispatch(makeHostNow(meetingHost));
     localStorage.setItem("isMeeting", true);
+    sessionStorage.setItem("isMeeting", true);
     localStorage.removeItem("refinedVideoUrl");
     localStorage.removeItem("hostUrl");
     localStorage.setItem("refinedVideoGiven", false);
@@ -496,11 +498,11 @@ const VideoPanelBodyContact = () => {
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row>
-            <Col lg={12} md={12} sm={12} className="mt-2">
+            <Col lg={12} md={12} sm={12} className='mt-2'>
               <TextField
                 maxLength={200}
-                applyClass="form-control2"
-                name="Name"
+                applyClass='form-control2'
+                name='Name'
                 change={(e) => {
                   searchChat(e.target.value);
                 }}
@@ -517,37 +519,36 @@ const VideoPanelBodyContact = () => {
         VideoMainReducer.Loading === false ? (
           allUsers.map((userData, index) => {
             return (
-              <Row className="single-chat" key={index}>
-                <Col lg={1} md={1} sm={1} className="mt-4">
+              <Row className='single-chat' key={index}>
+                <Col lg={1} md={1} sm={1} className='mt-4'>
                   <Checkbox
                     checked={groupCallUsers.includes(userData.userID)}
                     onChange={() => groupCallUsersHandler(userData)}
                   />
                 </Col>
-                <Col lg={2} md={2} sm={2} className="bottom-border">
+                <Col lg={2} md={2} sm={2} className='bottom-border'>
                   <div
-                    className="video-profile-icon"
+                    className='video-profile-icon'
                     style={{
                       backgroundImage: `url('data:image/jpeg;base64,${userData.profilePicture.displayProfilePictureName}')`,
-                    }}
-                  ></div>
+                    }}></div>
                 </Col>
-                <Col lg={7} md={7} sm={7} className="bottom-border">
+                <Col lg={7} md={7} sm={7} className='bottom-border'>
                   <div className={"video-block"}>
-                    <p className="Video-chat-username m-0">
+                    <p className='Video-chat-username m-0'>
                       {userData.userName}
                     </p>
 
-                    <p className="video-chat-date m-0">
+                    <p className='video-chat-date m-0'>
                       {userData.organizationName}
                     </p>
                   </div>
                 </Col>
-                <Col lg={2} md={2} sm={2} className="video_call_icon mt-4">
-                  <Tooltip placement="bottomLeft" title={t("Start-video-call")}>
+                <Col lg={2} md={2} sm={2} className='video_call_icon mt-4'>
+                  <Tooltip placement='bottomLeft' title={t("Start-video-call")}>
                     <img
-                      alt=""
-                      className="cursor-pointer"
+                      alt=''
+                      className='cursor-pointer'
                       src={VideoCallIcon}
                       onClick={() => otoVideoCall(userData)}
                     />
@@ -566,7 +567,7 @@ const VideoPanelBodyContact = () => {
           <p>{t("No-users-available")}</p>
         )}
       </Container>
-      <div className="videocall-footer-panel">
+      <div className='videocall-footer-panel'>
         {VideoMainReducer.Loading === false ? (
           <VideoPanelFooter
             groupCallClick={initiateGroupCall}
@@ -585,27 +586,26 @@ const VideoPanelBodyContact = () => {
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"md"}
         ModalBody={
           <>
             <Container>
               <Row>
-                <Col lg={12} md={12} sm={12} className="text-center">
-                  <p className="disconnection-text">
+                <Col lg={12} md={12} sm={12} className='text-center'>
+                  <p className='disconnection-text'>
                     {" "}
                     {t("Are-you-sure-you-want-to-disconnect-this-call")}{" "}
                   </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     // text={
                     //   callerID === currentUserID || callerID === 0
@@ -615,7 +615,7 @@ const VideoPanelBodyContact = () => {
                     //     : null
                     // }
                     text={"Confirm"}
-                    className="confirmation-disconnection-button"
+                    className='confirmation-disconnection-button'
                     onClick={
                       isMeetingVideo
                         ? leavecallMeetingVideo
@@ -629,7 +629,7 @@ const VideoPanelBodyContact = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className="cancellation-disconnection-button"
+                    className='cancellation-disconnection-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>
@@ -645,7 +645,7 @@ const VideoPanelBodyContact = () => {
           setInitiateVideoModalGroup(false);
         }}
         setShow={setInitiateVideoModalGroup}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
         ModalBody={
@@ -656,13 +656,12 @@ const VideoPanelBodyContact = () => {
                   <p>{t("Group-call-disconnection")}</p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -671,7 +670,7 @@ const VideoPanelBodyContact = () => {
                         ? t("End Participant")
                         : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHostGroup
@@ -683,7 +682,7 @@ const VideoPanelBodyContact = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalGroup(false)}
                   />
                 </Col>

@@ -230,6 +230,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("activeRoomID", 0);
       console.log("mqtt");
       localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting");
+      sessionStorage.removeItem("isMeeting");
       localStorage.setItem("meetingVideoID", 0);
       localStorage.setItem("newCallerID", 0);
       const emptyArray = [];
@@ -2004,11 +2006,6 @@ export const SideBarGlobalNavigationFunction = async (
 ) => {
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-  let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
-  );
 
   console.log(
     { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
@@ -2377,4 +2374,11 @@ const handleMeetingCase = (
   dispatch(attendanceGlobalFlag(false));
   dispatch(uploadGlobalFlag(false));
   resetMeetingFlags(dispatch);
+};
+
+// Function to read storage values
+export const getMeetingValues = () => {
+  const local = localStorage.getItem("isMeeting");
+  const session = sessionStorage.getItem("isMeeting");
+  return { local, session };
 };

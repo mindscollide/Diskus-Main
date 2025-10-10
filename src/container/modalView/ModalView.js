@@ -815,7 +815,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
-        localStorage.setItem("isMeeting", false);
+            localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
         dispatch(removeCalenderDataFunc(null));
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -857,7 +858,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       localStorage.removeItem("participantUID");
       localStorage.removeItem("newRoomId");
       dispatch(presenterViewGlobalState(0, false, false, false));
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       dispatch(removeCalenderDataFunc(null));
       setEndMeetingConfirmationModal(false);
 
@@ -1048,7 +1050,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(maximizeVideoPanelFlag(false));
       await dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
