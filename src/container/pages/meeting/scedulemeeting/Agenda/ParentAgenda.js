@@ -776,7 +776,7 @@ const ParentAgenda = ({
                                     required={true}
                                     disable={
                                       data.isLocked
-                                        ? data.isLocked
+                                        ? true
                                         : editorRole.role === "Participant" ||
                                           editorRole.role ===
                                             "Agenda Contributor"

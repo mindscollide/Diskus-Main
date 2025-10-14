@@ -101,7 +101,6 @@ const SubDedaultDragger = ({
         });
       } else {
         fileList.forEach((fileData) => {
-
           let { isMorethan } = isFileSizeValid(fileData.size);
 
           if (!isMorethan) {
@@ -148,11 +147,13 @@ const SubDedaultDragger = ({
             {...Subprops}
             className={styles["dragdrop_attachment_create_resolution"]}
             disabled={
-              editorRole.role === "Participant" ||
-              (editorRole.role === "Agenda Contributor" &&
-                rows[index].subAgenda[subIndex].canEdit === false) ||
-              editorRole.status === "9" ||
-              editorRole.status === 9
+              rows[index].isLocked || rows[index].subAgenda[subIndex].isLocked
+                ? true
+                : editorRole.role === "Participant" ||
+                  (editorRole.role === "Agenda Contributor" &&
+                    rows[index].subAgenda[subIndex].canEdit === false) ||
+                  editorRole.status === "9" ||
+                  editorRole.status === 9
                 ? true
                 : Number(editorRole.status) === 10 &&
                   !isAgendaUpdateWhenMeetingActive

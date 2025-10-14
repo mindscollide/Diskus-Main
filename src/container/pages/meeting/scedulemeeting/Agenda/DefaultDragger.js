@@ -136,7 +136,8 @@ const DefaultDragger = ({
 
   // Initialize previousFileList to an empty array
   let previousFileList = [];
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
+  console.log(rows, "rowsInSubDefaultDragger");
+
   return (
     <>
       <Row key={index + 5} className='mt-4 mb-2'>
@@ -146,9 +147,11 @@ const DefaultDragger = ({
             className={styles["dragdrop_attachment_create_resolution"]}
             fileList={[]}
             disabled={
-              editorRole.role === "Participant" ||
-              (editorRole.role === "Agenda Contributor" &&
-                rows[index].canEdit === false)
+              rows[index].isLocked
+                ? true
+                : editorRole.role === "Participant" ||
+                  (editorRole.role === "Agenda Contributor" &&
+                    rows[index].canEdit === false)
                 ? true
                 : editorRole.status === 9 || editorRole.status === "9"
                 ? true

@@ -1249,7 +1249,7 @@ const addUpdateAdvanceMeetingAgenda = {
 
 // report download Attendance in Excel
 const downloadAttendanceReport = {
-  RequestMethod: "ServiceManager.AttendanceReport",
+  RequestMethod: "ServiceManager.DownloadAttendenceReportPDF",
 };
 
 const agendaVotingStatusUpdate = {

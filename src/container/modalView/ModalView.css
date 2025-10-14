@@ -543,6 +543,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border-radius: 4px !important;
   font-weight: 600 !important;
   margin-right: 10px;
+  white-space: nowrap;
 }
 
 .CopyLinkButton:is(:active, :hover, :focus, :focus-visible) {
@@ -554,6 +555,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
 }
 
 .JoinMeetingButton {
@@ -565,6 +567,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
 }
 
 .JoinMeetingButton:is(:active, :hover, :focus, :focus-visible) {
@@ -576,6 +579,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   color: #fff !important;
   border-radius: 4px !important;
   font-weight: 600 !important;
+  white-space: nowrap;
 }
 .meetingView_documents {
   max-height: 90px;

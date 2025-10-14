@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -4726,6 +4726,10 @@ const Dashboard = () => {
     };
   }, []);
 
+  const handleClickClose = useCallback(() => {
+    window.close();
+  }, []);
+
   return (
     <>
       <ConfigProvider
@@ -4742,15 +4746,18 @@ const Dashboard = () => {
             </Sider>
             <Content>
               <div className='dashbaord_data'>
-                {isMeetingLocal ? (
-                  isMeetingSession ? (
+                {
+                  <>
+                    {isMeetingLocal
+                      ? !isMeetingSession && (
+                          <AlreadyInMeeting
+                            handleClickClose={handleClickClose}
+                          />
+                        )
+                      : null}
                     <Outlet />
-                  ) : (
-                    <AlreadyInMeeting />
-                  )
-                ) : (
-                  <Outlet />
-                )}
+                  </>
+                }
               </div>
               <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}
