@@ -1816,7 +1816,7 @@ const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
                   );
                 }
               }
-              setIsFolderDelete(false);
+              isFunction(setIsFolderDelete) && setIsFolderDelete(false);
               dispatch(
                 deleteFolder_success(
                   response.data.responseResult,
