@@ -915,8 +915,7 @@ const Committee = () => {
                                   md={12}
                                   lg={12}
                                   className={styles["CommitteeNotFoundText"]}>
-                                  {t("Click")}
-                                  {t("Create-new-committee")}
+                                  {`${t("Click")} ${t("Create-new-committee")}`}
                                 </Col>
                                 <Col
                                   sm={12}

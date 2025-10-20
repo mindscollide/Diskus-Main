@@ -1136,10 +1136,14 @@ const Resolution = () => {
       width: "73px",
       sortDirections: ["descend", "ascend"],
       render: (text) => {
-        if (text === "Approved" || text === "Not Approved") {
+        if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
+        } else if (text === "Not Approved") {
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else {
-          <span className={styles["decision_text"]}>{text}</span>;
+          return <span className={styles["decision_text"]}>{text}</span>;
         }
       },
     },

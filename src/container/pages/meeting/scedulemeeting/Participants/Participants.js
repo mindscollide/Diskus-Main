@@ -39,6 +39,7 @@ import {
   pollsGlobalFlag,
   attendanceGlobalFlag,
   uploadGlobalFlag,
+  ParticipantsData,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 import { CancelParticipants } from "./CancelParticipants/CancelParticipants";
@@ -94,6 +95,10 @@ const Participants = ({
   //For participants Role
   useEffect(() => {
     callApiOnComponentMount();
+    return () => {
+      dispatch(ParticipantsData());
+
+    }
   }, []);
 
   //Opens Add more modal

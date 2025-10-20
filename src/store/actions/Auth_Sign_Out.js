@@ -69,8 +69,10 @@ const userLogOutApiFunc = (navigate, t) => {
                     "ERM_AuthService_AuthManager_LogOut_02".toLowerCase()
                   )
               ) {
+                await signOut(t("Successful"), dispatch);
                 dispatch(userlogOutFailed(t("Invalid Token")));
                 dispatch(showUpgradeNowModal(true));
+
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
@@ -78,13 +80,16 @@ const userLogOutApiFunc = (navigate, t) => {
                     "ERM_AuthService_AuthManager_LogOut_03".toLowerCase()
                   )
               ) {
+                await signOut(t("Successful"), dispatch);
                 dispatch(userlogOutFailed(t("Something-went-wrong")));
                 dispatch(showUpgradeNowModal(true));
               } else {
+                await signOut(t("Successful"), dispatch);
                 dispatch(userlogOutFailed(t("Something-went-wrong")));
                 dispatch(showUpgradeNowModal(true));
               }
             } else {
+              await signOut(t("Successful"), dispatch);
               dispatch(userlogOutFailed(t("Something-went-wrong")));
               dispatch(showUpgradeNowModal(true));
             }
