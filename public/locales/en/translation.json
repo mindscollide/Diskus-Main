@@ -2512,5 +2512,6 @@
   "Switch-to-chrome": "Switch to Chrome",
   "For-the-best-experience-please-use-diskus-in-google-chrome": "For the best experience, please use Diskus in Google Chrome.",
   "This-tab-will-become-active-again-once-you-leave-the-meeting": "This tab will become active again once you leave the meeting",
-  "Chat-not-found": "Chat not found"
+  "Chat-not-found": "Chat not found",
+  "You-are-currently-in-a-meeting-this-feature-cannot-be-accessed-right-now": "You are currently in a meeting. This feature cannot be accessed right now."
 }
