@@ -149,31 +149,51 @@ const SignInUserManagement = () => {
       !userAgent.includes("edg") && // exclude Edge
       !userAgent.includes("opr"); // exclude Opera
 
-    if (!isChrome) {
-      setBestExperienceBox(true);
-    }
-    console.log("onChangeAllowMicrosoftCalenderSync", code);
-    if (code) {
-      localStorage.setItem("Ms", code);
+    // Helper: detect Chrome Incognito
+    const checkIncognito = () => {
+      return new Promise((resolve) => {
+        const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+        if (!fs) return resolve(false);
+        fs(
+          window.TEMPORARY,
+          100,
+          () => resolve(false), // normal mode
+          () => resolve(true) // incognito mode
+        );
+      });
+    };
+
+    // Run logic
+    (async () => {
+      const isIncognito = isChrome ? await checkIncognito() : false;
+      const isAllowedBrowser = !isChrome && !isIncognito;
+
+      if (isAllowedBrowser) {
+        setBestExperienceBox(true); // show for non-Chrome browsers
+      }
+
       console.log("onChangeAllowMicrosoftCalenderSync", code);
-      window.close();
-    } else if (getpayemntString !== "") {
-      console.log("Payment_actionPayment_action");
-      const paymentStringValue = currentUrl.split("Payment_action=")[1];
-      let data = {
-        EncryptedString: paymentStringValue,
-      };
-      dispatch(paymentStatusApi(navigate, t, data));
-    } else {
-      localStorageManage(
-        emailRef,
-        dispatch,
-        setErrorMessage,
-        setErrorBar,
-        setRemeberEmail,
-        setEmail
-      );
-    }
+
+      if (code) {
+        localStorage.setItem("Ms", code);
+        console.log("onChangeAllowMicrosoftCalenderSync", code);
+        window.close();
+      } else if (getpayemntString !== "") {
+        console.log("Payment_actionPayment_action");
+        const paymentStringValue = currentUrl.split("Payment_action=")[1];
+        let data = { EncryptedString: paymentStringValue };
+        dispatch(paymentStatusApi(navigate, t, data));
+      } else {
+        localStorageManage(
+          emailRef,
+          dispatch,
+          setErrorMessage,
+          setErrorBar,
+          setRemeberEmail,
+          setEmail
+        );
+      }
+    })();
   }, []);
 
   useEffect(() => {

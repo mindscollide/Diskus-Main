@@ -486,7 +486,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
+          showMessage(t("Invalid-email-format"), "error", setOpen);
         }
       } else {
         setSignUpDetails({
@@ -635,7 +635,7 @@ const SignUpOrganizationUM = ({ setStoredStep }) => {
             setAgainCall(true);
           }
         } else {
-          showMessage(t("Email-should-be-in-email-format"), "error", setOpen);
+          showMessage(t("Invalid-email-format"), "error", setOpen);
         }
       } else {
         setSignUpDetails({

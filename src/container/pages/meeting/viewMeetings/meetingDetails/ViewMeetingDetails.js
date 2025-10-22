@@ -32,6 +32,7 @@ import {
   GetAllUserChats,
   GetGroupMessages,
   activeChat,
+  GetAllUsersGroupsRoomsList,
 } from "../../../../../store/actions/Talk_action";
 import {
   recentChatFlag,
@@ -179,6 +180,9 @@ const ViewMeetingDetails = ({}) => {
   let currentCallType = Number(localStorage.getItem("CallType"));
   let callTypeID = Number(localStorage.getItem("callTypeID"));
   let callerID = Number(localStorage.getItem("callerID"));
+
+  const [talkGroupID, setTalkGroupID] = useState(0);
+
 
   const [rows, setRows] = useState([
     {
@@ -642,43 +646,116 @@ const ViewMeetingDetails = ({}) => {
     showMessage(t("Link-copied"), "success", setOpen);
   };
 
-  const groupChatInitiation = (data) => {
-    if (
-      data.TalkGroupID !== 0 &&
-      AllUserChats.AllUserChatsData !== undefined &&
-      AllUserChats.AllUserChatsData !== null &&
-      AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      dispatch(createShoutAllScreen(false));
-      dispatch(addNewChatScreen(false));
-      dispatch(footerActionStatus(false));
-      dispatch(createGroupScreen(false));
-      dispatch(chatBoxActiveFlag(false));
-      dispatch(recentChatFlag(true));
-      dispatch(activeChatBoxGS(true));
-      dispatch(chatBoxActiveFlag(true));
-      dispatch(headerShowHideStatus(true));
-      dispatch(footerShowHideStatus(true));
+  // const groupChatInitiation = (data) => {
+  //   if (
+  //     data.TalkGroupID !== 0 &&
+  //     AllUserChats.AllUserChatsData !== undefined &&
+  //     AllUserChats.AllUserChatsData !== null &&
+  //     AllUserChats.AllUserChatsData.length !== 0
+  //   ) {
+  //     dispatch(createShoutAllScreen(false));
+  //     dispatch(addNewChatScreen(false));
+  //     dispatch(footerActionStatus(false));
+  //     dispatch(createGroupScreen(false));
+  //     dispatch(chatBoxActiveFlag(false));
+  //     dispatch(recentChatFlag(true));
+  //     dispatch(activeChatBoxGS(true));
+  //     dispatch(chatBoxActiveFlag(true));
+  //     dispatch(headerShowHideStatus(true));
+  //     dispatch(footerShowHideStatus(true));
+  //     let chatGroupData = {
+  //       UserID: parseInt(userID),
+  //       ChannelID: currentOrganization,
+  //       GroupID: data.TalkGroupID,
+  //       NumberOfMessages: 50,
+  //       OffsetMessage: 0,
+  //     };
+  //     dispatch(GetGroupMessages(navigate, chatGroupData, t));
+  //     dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
+
+  //     let allChatMessages = AllUserChats.AllUserChatsData.allMessages;
+  //     const foundRecord = allChatMessages.find(
+  //       (item) => item.id === data.TalkGroupID
+  //     );
+  //     if (foundRecord) {
+  //       dispatch(activeChat(foundRecord));
+  //     }
+  //     localStorage.setItem("activeOtoChatID", data.TalkGroupID);
+  //   }
+  // };
+  const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata");
+    if (data.TalkGroupID !== 0) {
+      await dispatch(createShoutAllScreen(false));
+      await dispatch(addNewChatScreen(false));
+      await dispatch(footerActionStatus(false));
+      await dispatch(createGroupScreen(false));
+      await dispatch(recentChatFlag(true));
+      await dispatch(activeChatBoxGS(true));
+      await dispatch(headerShowHideStatus(true));
+      await dispatch(footerShowHideStatus(true));
+      setTalkGroupID(data.TalkGroupID);
+      let currentUserId = localStorage.getItem("userID");
+      let currentOrganizationId = localStorage.getItem("organizationID");
       let chatGroupData = {
-        UserID: parseInt(userID),
-        ChannelID: currentOrganization,
+        UserID: parseInt(currentUserId),
+        ChannelID: currentOrganizationId,
         GroupID: data.TalkGroupID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
-      dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
-
-      let allChatMessages = AllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
-        (item) => item.id === data.TalkGroupID
+      await dispatch(
+        GetAllUserChats(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
       );
-      if (foundRecord) {
-        dispatch(activeChat(foundRecord));
-      }
-      localStorage.setItem("activeOtoChatID", data.TalkGroupID);
+      await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      await dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
     }
   };
+
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      talkGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages.allMessages.find(
+        (item) => item.id === talkGroupID
+      );
+      if (foundRecord) {
+        dispatch(chatBoxActiveFlag(true));
+        localStorage.setItem("activeOtoChatID", talkGroupID);
+
+        dispatch(activeChat(foundRecord));
+      } else {
+        showMessage(t("Chat-not-found"), "error", setOpen);
+        localStorage.removeItem("activeOtoChatID");
+        dispatch(chatBoxActiveFlag(false));
+      }
+      setTalkGroupID(0);
+    }
+  }, [AllUserChats.AllUserChatsData, talkGroupID])
 
   useEffect(() => {
     if (

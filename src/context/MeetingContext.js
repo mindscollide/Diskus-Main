@@ -129,6 +129,8 @@ export const MeetingProvider = ({ children }) => {
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
 
+  const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] = useState([]);
+  const [viewMeetingAgendaViewerRowData, setViewMeetingAgendaViewerRowData] = useState([]);
   // state for leave one to one  and Join Meeting Video
   const [leaveOneToOne, setLeaveOneToOne] = useState(false);
   const [joinMeetingVideoParticipant, setJoinMeetingVideoParticipant] =
@@ -446,6 +448,8 @@ export const MeetingProvider = ({ children }) => {
     setPendingApprovalCount,
     pendingApprovalsTabCount,
     setPendingApprovalTabCount,
+    setViewMeetingAgendaViewerRowData,
+    viewMeetingAgendaViewerRowData
   };
 
   // Provide the state data to the context

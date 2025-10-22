@@ -1388,7 +1388,7 @@ const Header2 = ({ isVideo }) => {
                     />
                     {unReadCountNotification !== 0 ? (
                       <span className='NotficationCountSpan'>
-                        {convertToArabicNumerals(unReadCountNotification)}
+                        {unReadCountNotification > 99 ? `${convertToArabicNumerals(`99`)}+`: convertToArabicNumerals(unReadCountNotification)}
                       </span>
                     ) : null}
                   </span>

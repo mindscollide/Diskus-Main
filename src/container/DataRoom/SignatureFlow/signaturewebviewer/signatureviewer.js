@@ -501,16 +501,26 @@ const SignatureViewer = () => {
   console.log(saveWorkFlowResponse, "saveWorkFlowResponsesaveWorkFlowResponse");
 
   //===  this is for covert blob file ===//
-  function handleBlobFiles(base64) {
-    const binaryString = window.atob(base64);
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
-    for (let i = 0; i < len; ++i) {
-      bytes[i] = binaryString.charCodeAt(i);
-    }
+  // function handleBlobFiles(base64) {
+  //   const binaryString = window.atob(base64);
+  //   const len = binaryString.length;
+  //   const bytes = new Uint8Array(len);
+  //   for (let i = 0; i < len; ++i) {
+  //     bytes[i] = binaryString.charCodeAt(i);
+  //   }
 
-    return new Blob([bytes], { type: "application/pdf" });
+  //   return new Blob([bytes], { type: "application/pdf" });
+  // }
+  function handleBlobFiles(base64String) {
+    const [meta, data] = base64String.split(",");
+    const mimeType = meta?.match(/:(.*?);/)?.[1] || "application/pdf";
+    const binary = window.atob(data);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; ++i) bytes[i] = binary.charCodeAt(i);
+    return new Blob([bytes], { type: mimeType });
   }
+  
   // ==== End ===//
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue

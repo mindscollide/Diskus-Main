@@ -38,8 +38,7 @@ import { useMeetingContext } from "../../../../../context/MeetingContext";
 const ParentAgenda = ({
   data,
   index,
-  rows,
-  setRows,
+
   agendaItemRemovedIndex,
   setAgendaItemRemovedIndex,
   setSubajendaRemoval,
@@ -113,7 +112,6 @@ const ParentAgenda = ({
       AgendaID: record.id ? record.id : record.subAgendaID,
       AgendaVotingID: record.agendaVotingID,
     };
-    console.log(rows, Data, "EnableCastVoteModalEnableCastVoteModal");
     await dispatch(GetAgendaAndVotingInfo(Data, navigate, t));
 
     dispatch(showCastVoteAgendaModal(true));
@@ -218,14 +216,13 @@ const ParentAgenda = ({
             editorRole.role === "Participant")
             ? "d-none"
             : ""
-        }
-      >
-        <span className="position-relative">
-          <Row key={data.id} className="mt-4 m-0 p-0">
+        }>
+        <span className='position-relative'>
+          <Row key={data.id} className='mt-4 m-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}
-              alt=""
+              alt=''
               className={
                 expandIndex === index && expand
                   ? styles["Arrow_Expanded"]
@@ -247,11 +244,10 @@ const ParentAgenda = ({
               }
               onClick={() => {
                 handleExpandedBtn(index, true);
-              }}
-            >
+              }}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <Row key={index + 2} className="mt-4">
+                  <Row key={index + 2} className='mt-4'>
                     <Col lg={8} md={8} sm={12}>
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
@@ -262,18 +258,17 @@ const ParentAgenda = ({
                         </span>
                       ) : null}
                     </Col>
-                    <Col lg={3} md={3} sm={12} className="p-0">
-                      <Row className="m-0">
+                    <Col lg={3} md={3} sm={12} className='p-0'>
+                      <Row className='m-0'>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex align-items-center justify-content-end gap-3 p-0"
-                        >
+                          className='d-flex align-items-center justify-content-end gap-3 p-0'>
                           <img
                             src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                             className={styles["Image"]}
-                            alt=""
+                            alt=''
                             draggable={false}
                           />
                           <p className={styles["agendaCreater"]}>
@@ -281,7 +276,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className="m-0 mt-2">
+                      <Row className='m-0 mt-2'>
                         <Col
                           lg={12}
                           md={12}
@@ -290,8 +285,7 @@ const ParentAgenda = ({
                             currentLanguage === "ar"
                               ? "p-0 text-start"
                               : "p-0 text-end"
-                          }
-                        >
+                          }>
                           {/* <p
                             className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                           >
@@ -373,7 +367,7 @@ const ParentAgenda = ({
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={1} md={1} sm={12} className="p-0"></Col>
+                    <Col lg={1} md={1} sm={12} className='p-0'></Col>
                   </Row>
                   {expandIndex === index && expand ? (
                     <>
@@ -416,28 +410,16 @@ const ParentAgenda = ({
                       }
 
                       {data.selectedRadio === 2 && (
-                        <Urls
-                          data={data}
-                          index={index}
-                          setRows={setRows}
-                          rows={rows}
-                        />
+                        <Urls data={data} index={index} />
                       )}
 
                       {data.selectedRadio === 3 && (
-                        <RequestContributor
-                          data={data}
-                          index={index}
-                          setRows={setRows}
-                          rows={rows}
-                        />
+                        <RequestContributor data={data} index={index} />
                       )}
                       <div className={styles["borderDesigningSubAgenda"]}>
                         <SubAgendaMappingDragging
                           data={data}
                           index={index}
-                          setRows={setRows}
-                          rows={rows}
                           subExpand={subExpand}
                           apllyLockOnParentAgenda={apllyLockOnParentAgenda}
                           subLockArry={subLockArry}
@@ -471,9 +453,7 @@ const ParentAgenda = ({
           </Row>
         </span>
         {NewMeetingreducer.viewVotesAgenda && <ViewVoteModal />}
-        {NewMeetingreducer.castVoteAgendaPage && (
-          <CastVoteAgendaModal setRows={setRows} rows={rows} />
-        )}
+        {NewMeetingreducer.castVoteAgendaPage && <CastVoteAgendaModal />}
       </div>
       <Notification open={open} setOpen={setOpen} />
     </>

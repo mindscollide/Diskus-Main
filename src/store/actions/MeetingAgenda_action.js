@@ -489,47 +489,54 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   t("Vote-casted-successfully")
                 )
               );
-              dispatch(showCastVoteAgendaModal(false));
-              if (isMainAgenda) {
-                setRows((rowData) => {
-                  return rowData.map((newData) => {
-                    console.log(newData, "setDatasetDatasetData");
-                    if (String(newData.id) === String(Data.AgendaID)) {
-                      return {
-                        ...newData,
-                        hasAlreadyVoted: true,
-                      };
-                    }
-                    // Return the original item if it doesn't match the condition
-                    return newData;
+              try {
+                console.log(typeof setRows, "typeoftypeof")
+
+                if (isMainAgenda) {
+                  setRows((rowData) => {
+                    return rowData.map((newData) => {
+                      console.log(newData, "setDatasetDatasetData");
+                      if (String(newData.id) === String(Data.AgendaID)) {
+                        return {
+                          ...newData,
+                          hasAlreadyVoted: true,
+                        };
+                      }
+                      // Return the original item if it doesn't match the condition
+                      return newData;
+                    });
                   });
-                });
-              } else {
-                setRows((rowData) => {
-                  console.log(rowData, "setDatasetDatasetData");
-                  return rowData.map((dataItem) => {
-                    if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
-                      return {
-                        ...dataItem,
-                        subAgenda: dataItem.subAgenda.map((subAgenda) => {
-                          if (
-                            String(subAgenda.subAgendaID) ===
-                            String(Data.AgendaID)
-                          ) {
-                            return {
-                              ...subAgenda,
-                              hasAlreadyVoted: true,
-                            };
-                          }
-                          return subAgenda;
-                        }),
-                      };
-                    }
-                    // Return the original item if it doesn't match the condition
-                    return dataItem;
+                } else {
+                  setRows((rowData) => {
+                    console.log(rowData, "setDatasetDatasetData");
+                    return rowData.map((dataItem) => {
+                      if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
+                        return {
+                          ...dataItem,
+                          subAgenda: dataItem.subAgenda.map((subAgenda) => {
+                            if (
+                              String(subAgenda.subAgendaID) ===
+                              String(Data.AgendaID)
+                            ) {
+                              return {
+                                ...subAgenda,
+                                hasAlreadyVoted: true,
+                              };
+                            }
+                            return subAgenda;
+                          }),
+                        };
+                      }
+                      // Return the original item if it doesn't match the condition
+                      return dataItem;
+                    });
                   });
-                });
+                }
+              } catch (error) {
+                console.log(error);
               }
+
+              dispatch(showCastVoteAgendaModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -1491,7 +1491,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                               "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData"
                                             );
                                             return (
-                                              <Col sm={4} md={4} lg={4}>
+                                              <Col sm={6} md={6} lg={6}>
                                                 <AttachmentViewer
                                                   id={Number(
                                                     MeetingAgendaAttachmentsData.OriginalAttachmentName
@@ -1663,7 +1663,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             "attachmentsListattachmentsListattachmentsList"
                           );
                           return (
-                            <Col sm={4} lg={4} md={4}>
+                            <Col sm={6} lg={6} md={6}>
                               <AttachmentViewer
                                 id={Number(data.OriginalAttachmentName)}
                                 handleEyeIcon={() => handeClickView(data)}

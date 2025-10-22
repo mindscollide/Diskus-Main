@@ -35,8 +35,6 @@ import { useMeetingContext } from "../../../../../context/MeetingContext";
 const SubAgendaMappingDragging = ({
   data,
   index,
-  setRows,
-  rows,
   apllyLockOnParentAgenda,
   subLockArry,
   setSubLockArray,
@@ -55,7 +53,7 @@ const SubAgendaMappingDragging = ({
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { editorRole } = useMeetingContext();
+  const { editorRole, viewMeetingAgendaViewerRowData } = useMeetingContext();
 
   const ResponseMessage = useSelector(
     (state) => state.MeetingAgendaReducer.ResponseMessage
@@ -93,11 +91,11 @@ const SubAgendaMappingDragging = ({
 
   // Initialize the subExpand state based on the number of rows and subAgendas
   useEffect(() => {
-    const initialState = rows.map((row) =>
+    const initialState = viewMeetingAgendaViewerRowData.map((row) =>
       Array(row.subAgenda.length).fill(false)
     );
     setSubExpand(initialState);
-  }, [rows]);
+  }, [viewMeetingAgendaViewerRowData]);
 
   const startVoting = (record) => {
     let Data = {
@@ -612,8 +610,6 @@ const SubAgendaMappingDragging = ({
                                               2 && (
                                               <SubUrls
                                                 subAgendaData={subAgendaData}
-                                                rows={rows}
-                                                setRows={setRows}
                                                 index={index}
                                                 subIndex={subIndex}
                                               />
@@ -622,8 +618,6 @@ const SubAgendaMappingDragging = ({
                                               3 && (
                                               <SubRequestContributor
                                                 subAgendaData={subAgendaData}
-                                                rows={rows}
-                                                setRows={setRows}
                                                 index={index}
                                                 subIndex={subIndex}
                                               />

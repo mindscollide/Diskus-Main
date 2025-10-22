@@ -1619,10 +1619,8 @@ const NewMeeting = () => {
       await dispatch(addNewChatScreen(false));
       await dispatch(footerActionStatus(false));
       await dispatch(createGroupScreen(false));
-      await dispatch(chatBoxActiveFlag(false));
       await dispatch(recentChatFlag(true));
       await dispatch(activeChatBoxGS(true));
-      await dispatch(chatBoxActiveFlag(true));
       await dispatch(headerShowHideStatus(true));
       await dispatch(footerShowHideStatus(true));
       setTalkGroupID(data.talkGroupID);
@@ -1673,7 +1671,13 @@ const NewMeeting = () => {
         (item) => item.id === talkGroupID
       );
       if (foundRecord) {
+        dispatch(chatBoxActiveFlag(true));
+
         dispatch(activeChat(foundRecord));
+      } else {
+        showMessage(t("Chat-not-found"), "error", setOpen);
+        localStorage.removeItem("activeOtoChatID");
+        dispatch(chatBoxActiveFlag(false));
       }
       localStorage.setItem("activeOtoChatID", talkGroupID);
       setTalkGroupID(0);
@@ -3950,7 +3954,11 @@ const NewMeeting = () => {
         ) : (
           <>
             <Row className='mt-2'>
-              <Col sm={12} md={12} lg={6} className='d-flex align-items-center  '>
+              <Col
+                sm={12}
+                md={12}
+                lg={6}
+                className='d-flex align-items-center  '>
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
@@ -4003,8 +4011,8 @@ const NewMeeting = () => {
                   </ReactBootstrapDropdown>
                 </span>
               </Col>
-              <Col sm={12} md={12} lg={6} >
-                <div className='position-relative' >
+              <Col sm={12} md={12} lg={6}>
+                <div className='position-relative'>
                   <TextField
                     width={"100%"}
                     placeholder={t("Search-on-meeting-title")}

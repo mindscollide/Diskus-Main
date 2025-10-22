@@ -2331,6 +2331,7 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_02".toLowerCase()
             ) {
               dispatch(searchDocumentsAndFoldersApi_fail(t("No-record-found")));
+              
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_03".toLowerCase()

@@ -66,7 +66,8 @@ const AttachmentViewer = ({
           )}
           {id !== 0 &&
             getfileExtensionName !== "txt" &&
-            getfileExtensionName !== "pptx" && (
+            getfileExtensionName !== "pptx" &&
+            getfileExtensionName !== "ppt" && (
               <>
                 <div className='divider mx-1'></div>
                 <button className='action-button' aria-label='View document'>

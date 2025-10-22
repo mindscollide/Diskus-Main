@@ -82,6 +82,7 @@ import { getCurrentDateTimeUTC } from "../../../../../commen/functions/date_form
 import {
   GetAllUserChats,
   GetAllUsers,
+  GetAllUsersGroupsRoomsList,
   GetGroupMessages,
   activeChat,
 } from "../../../../../store/actions/Talk_action";
@@ -112,6 +113,8 @@ const AgendaViewer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
+
   const { MeetingAgendaReducer, talkStateData } = useSelector((state) => state);
   const {
     editorRole,
@@ -134,9 +137,16 @@ const AgendaViewer = () => {
     pauseRecordingState,
     resumeRecordingState,
     stopRecordingState,
+    viewMeetingAgendaViewerRowData,
+    setViewMeetingAgendaViewerRowData,
   } = useMeetingContext();
 
-  console.log(videoTalk, "videoTalkvideoTalk");
+  console.log(
+    viewMeetingAgendaViewerRowData,
+    "viewMeetingAgendaViewerRowDataviewMeetingAgendaViewerRowData"
+  );
+
+  const [talkGroupID, setTalkGroupID] = useState(0);
 
   let activeCall = JSON.parse(localStorage.getItem("activeCall"));
 
@@ -168,7 +178,6 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
-
   const presenterStartedFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
@@ -186,8 +195,6 @@ const AgendaViewer = () => {
   );
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-
-
 
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let participantUID = localStorage.getItem("participantUID");
@@ -253,7 +260,6 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.enableDisableVideoState
   );
 
-
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
     (state) => state.videoFeatureReducer.participantEnableVideoState
@@ -296,9 +302,8 @@ const AgendaViewer = () => {
     nonMeetingVideo,
     enableDisableVideoState,
     participantEnableVideoState,
-    disableBeforeJoinZoom
+    disableBeforeJoinZoom,
   });
-  
 
   const [menuAgenda, setMenuAgenda] = useState(false);
 
@@ -316,7 +321,6 @@ const AgendaViewer = () => {
 
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
-  const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
   const [fullScreenView, setFullScreenView] = useState(false);
   const [agendaSelectOptionView, setAgendaSelectOptionView] = useState(false);
@@ -362,7 +366,7 @@ const AgendaViewer = () => {
 
     return () => {
       dispatch(clearAgendaReducerState());
-      setRows([]);
+      setViewMeetingAgendaViewerRowData([]);
     };
   }, []);
 
@@ -372,21 +376,25 @@ const AgendaViewer = () => {
       GetAdvanceMeetingAgendabyMeetingIDForViewData !== undefined &&
       GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
-      setRows(GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList);
+      setViewMeetingAgendaViewerRowData(
+        GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList
+      );
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
 
   useEffect(() => {
-    if (rows.length !== 0) {
+    if (viewMeetingAgendaViewerRowData.length !== 0) {
       // Check if any of the canView values is true
-      const anyCanViewTrue = rows.some((row) => row.canView);
+      const anyCanViewTrue = viewMeetingAgendaViewerRowData.some(
+        (row) => row.canView
+      );
 
       // Update the emptyStateRows state based on the condition
       setEmptyStateRows(!anyCanViewTrue);
     } else {
       setEmptyStateRows(false);
     }
-  }, [rows]);
+  }, [viewMeetingAgendaViewerRowData]);
 
   const menuPopupAgenda = () => {
     setMenuAgenda(!menuAgenda);
@@ -561,52 +569,79 @@ const AgendaViewer = () => {
     // }
   };
 
-  const groupChatInitiation = (talkGroupID) => {
-    if (
-      talkGroupID !== 0 &&
-      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
-      talkStateData.AllUserChats.AllUserChatsData !== null &&
-      talkStateData.AllUserChats.AllUserChatsData.length !== 0
-    ) {
-      dispatch(createShoutAllScreen(false));
-      dispatch(addNewChatScreen(false));
-      dispatch(footerActionStatus(false));
-      dispatch(createGroupScreen(false));
-      dispatch(chatBoxActiveFlag(false));
-      dispatch(recentChatFlag(true));
-      dispatch(activeChatBoxGS(true));
-      dispatch(chatBoxActiveFlag(true));
-      dispatch(headerShowHideStatus(true));
-      dispatch(footerShowHideStatus(true));
+  const groupChatInitiation = async (data) => {
+    console.log(data, "datadatadata");
+    if (data.talkGroupID !== 0) {
+      await dispatch(createShoutAllScreen(false));
+      await dispatch(addNewChatScreen(false));
+      await dispatch(footerActionStatus(false));
+      await dispatch(createGroupScreen(false));
+      await dispatch(recentChatFlag(true));
+      await dispatch(activeChatBoxGS(true));
+      await dispatch(headerShowHideStatus(true));
+      await dispatch(footerShowHideStatus(true));
+      setTalkGroupID(data.talkGroupID);
+      let currentUserId = localStorage.getItem("userID");
+      let currentOrganizationId = localStorage.getItem("organizationID");
       let chatGroupData = {
-        UserID: parseInt(userID),
-        ChannelID: currentOrganization,
-        GroupID: talkGroupID,
+        UserID: parseInt(currentUserId),
+        ChannelID: currentOrganizationId,
+        GroupID: data.talkGroupID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
-      dispatch(
+      await dispatch(
         GetAllUserChats(
           navigate,
-          parseInt(userID),
-          parseInt(currentOrganization),
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
           t
         )
       );
-      dispatch(GetGroupMessages(navigate, chatGroupData, t));
-      dispatch(GetAllUsers(navigate, parseInt(userID), currentOrganization, t));
+      await dispatch(GetGroupMessages(navigate, chatGroupData, t));
+      await dispatch(
+        GetAllUsers(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+      await dispatch(
+        GetAllUsersGroupsRoomsList(
+          navigate,
+          parseInt(currentUserId),
+          parseInt(currentOrganizationId),
+          t
+        )
+      );
+    }
+  };
 
-      let allChatMessages =
-        talkStateData.AllUserChats.AllUserChatsData.allMessages;
-      const foundRecord = allChatMessages.find(
+  useEffect(() => {
+    if (
+      AllUserChats?.AllUserChatsData !== null &&
+      AllUserChats?.AllUserChatsData !== undefined &&
+      Object.keys(AllUserChats?.AllUserChatsData).length > 0 &&
+      talkGroupID !== 0
+    ) {
+      let allChatMessages = AllUserChats?.AllUserChatsData;
+      const foundRecord = allChatMessages.allMessages.find(
         (item) => item.id === talkGroupID
       );
       if (foundRecord) {
+        dispatch(chatBoxActiveFlag(true));
+        localStorage.setItem("activeOtoChatID", talkGroupID);
+
         dispatch(activeChat(foundRecord));
+      } else {
+        showMessage(t("Chat-not-found"), "error", setOpen);
+        localStorage.removeItem("activeOtoChatID");
+        dispatch(chatBoxActiveFlag(false));
       }
-      localStorage.setItem("activeOtoChatID", talkGroupID);
+      setTalkGroupID(0);
     }
-  };
+  }, [AllUserChats.AllUserChatsData, talkGroupID]);
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
@@ -631,7 +666,7 @@ const AgendaViewer = () => {
       MeetingAgendaReducer.MeetingAgendaStartedData !== undefined &&
       MeetingAgendaReducer.MeetingAgendaStartedData !== null
     ) {
-      setRows((prevState) => {
+      setViewMeetingAgendaViewerRowData((prevState) => {
         const updatedState = prevState.map((item) => {
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
@@ -683,7 +718,7 @@ const AgendaViewer = () => {
       MeetingAgendaReducer.MeetingAgendaEndedData !== undefined &&
       MeetingAgendaReducer.MeetingAgendaEndedData !== null
     ) {
-      setRows((prevState) => {
+      setViewMeetingAgendaViewerRowData((prevState) => {
         const updatedState = prevState.map((item) => {
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
@@ -968,14 +1003,13 @@ const AgendaViewer = () => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center mt-3"
-            >
+              className='d-flex justify-content-center mt-3'>
               <img
                 draggable={false}
                 src={emptyContributorState}
-                width="274.05px"
-                alt=""
-                height="230.96px"
+                width='274.05px'
+                alt=''
+                height='230.96px'
                 className={styles["Image-Add-Agenda"]}
               />
             </Col>
@@ -985,8 +1019,7 @@ const AgendaViewer = () => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-center mt-3"
-            >
+              className='d-flex justify-content-center mt-3'>
               <span className={styles["Empty_state_heading"]}>
                 {t("No-agenda-availabe-to-discuss").toUpperCase()}
               </span>
@@ -1000,24 +1033,22 @@ const AgendaViewer = () => {
           (editorRole.role === "Agenda Contributor" ||
             editorRole.role === "Participant") ? null : (
             <>
-              {rows.length > 0 ? (
+              {viewMeetingAgendaViewerRowData.length > 0 ? (
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end align-items-center text-end gap-2 mt-3"
-                  >
+                    className='d-flex justify-content-end align-items-center text-end gap-2 mt-3'>
                     <div className={styles["icons-block"]}>
                       {videoTalk?.isChat ? (
-                        <Tooltip placement="topRight" title={t("Start-chat")}>
+                        <Tooltip placement='topRight' title={t("Start-chat")}>
                           <div
                             className={styles["box-agendas-leave"]}
                             onClick={() =>
                               groupChatInitiation(videoTalk?.talkGroupID)
-                            }
-                          >
-                            <img src={TalkInactiveIcon} alt="" />
+                            }>
+                            <img src={TalkInactiveIcon} alt='' />
                           </div>
                         </Tooltip>
                       ) : null}
@@ -1040,8 +1071,7 @@ const AgendaViewer = () => {
                                         ? 3
                                         : 2
                                     )
-                                  }
-                                >
+                                  }>
                                   <img src={StopImage} />
                                   <p>
                                     {presenterViewHostFlag
@@ -1058,8 +1088,7 @@ const AgendaViewer = () => {
                                   className={
                                     styles["Start-presenter-view-class"]
                                   }
-                                  onClick={onClickStartPresenter}
-                                >
+                                  onClick={onClickStartPresenter}>
                                   <img src={PresenterView} />
                                   <p>{t("Start-presentation")}</p>
                                 </div>
@@ -1072,9 +1101,8 @@ const AgendaViewer = () => {
                         editorRole.status === 10) &&
                         videoTalk?.isVideoCall && (
                           <Tooltip
-                            placement="topRight"
-                            title={t("Join-meeting-video")}
-                          >
+                            placement='topRight'
+                            title={t("Join-meeting-video")}>
                             <div
                               className={
                                 enableDisableVideoState ||
@@ -1087,11 +1115,10 @@ const AgendaViewer = () => {
                                 presenterViewFlag === false
                                   ? onClickVideoIconOpenVideo
                                   : undefined
-                              }
-                            >
+                              }>
                               <img
                                 src={VideocameraIcon}
-                                alt=""
+                                alt=''
                                 // onClick={
                                 //   presenterViewFlag === false
                                 //     ? onClickVideoIconOpenVideo
@@ -1104,10 +1131,9 @@ const AgendaViewer = () => {
                       <div
                         onClick={menuPopupAgenda}
                         className={styles["box-agendas"]}
-                        ref={closeMenuAgenda}
-                      >
-                        <Tooltip placement="topRight" title={t("More")}>
-                          <img src={MenuIcon} alt="" />
+                        ref={closeMenuAgenda}>
+                        <Tooltip placement='topRight' title={t("More")}>
+                          <img src={MenuIcon} alt='' />
                         </Tooltip>
                         <div
                           className={
@@ -1118,8 +1144,7 @@ const AgendaViewer = () => {
                               : `${
                                   styles["popup-agenda-menu"]
                                 } ${"opacity-0 pe-none"}`
-                          }
-                        >
+                          }>
                           <span
                             className={
                               editorRole.status === 9 ||
@@ -1132,8 +1157,7 @@ const AgendaViewer = () => {
                               editorRole.status === "9"
                                 ? participantModal
                                 : null
-                            }
-                          >
+                            }>
                             <img
                               width={20}
                               src={
@@ -1142,21 +1166,21 @@ const AgendaViewer = () => {
                                   ? ParticipantsInfo
                                   : ParticipantsInfoDisabled
                               }
-                              alt=""
+                              alt=''
                             />
                             {t("Participants-info")}
                           </span>
                           <span onClick={printModal}>
-                            <img width={20} src={PrintIcon} alt="" />
+                            <img width={20} src={PrintIcon} alt='' />
                             {t("Print")}
                           </span>
                           <span onClick={exportModal}>
-                            <img width={20} src={ExportIcon} alt="" />
+                            <img width={20} src={ExportIcon} alt='' />
 
                             {t("Export-pdf")}
                           </span>
-                          <span onClick={shareEmailModal} className="border-0">
-                            <img width={20} src={ShareIcon} alt="" />
+                          <span onClick={shareEmailModal} className='border-0'>
+                            <img width={20} src={ShareIcon} alt='' />
                             {t("Share-email")}
                           </span>
                         </div>
@@ -1166,57 +1190,62 @@ const AgendaViewer = () => {
                 </Row>
               ) : null}
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
-              >
+                onDragEnd={(result) =>
+                  onDragEnd(
+                    result,
+                    viewMeetingAgendaViewerRowData,
+                    setViewMeetingAgendaViewerRowData
+                  )
+                }>
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Agenda"]}
-                  >
-                    <Droppable droppableId="board" type="PARENT">
+                    className={styles["Scroller_Agenda"]}>
+                    <Droppable droppableId='board' type='PARENT'>
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
-                          {...provided.droppableProps}
-                        >
-                          {rows.length > 0 ? (
-                            rows.map((data, index) => {
-                              return (
-                                <>
-                                  <ParentAgenda
-                                    data={data}
-                                    index={index}
-                                    rows={rows}
-                                    setRows={setRows}
-                                    setFileDataAgenda={setFileDataAgenda}
-                                    fileDataAgenda={fileDataAgenda}
-                                    setAgendaName={setAgendaName}
-                                    agendaName={agendaName}
-                                    setAgendaIndex={setAgendaIndex}
-                                    agendaIndex={agendaIndex}
-                                    setSubAgendaIndex={setSubAgendaIndex}
-                                    subAgendaIndex={subAgendaIndex}
-                                    setMainAgendaRemovalIndex={
-                                      setMainAgendaRemovalIndex
-                                    }
-                                    agendaItemRemovedIndex={
-                                      agendaItemRemovedIndex
-                                    }
-                                    setAgendaItemRemovedIndex={
-                                      setAgendaItemRemovedIndex
-                                    }
-                                    setSubajendaRemoval={setSubajendaRemoval}
-                                    editorRole={editorRole}
-                                    advanceMeetingModalID={
-                                      advanceMeetingModalID
-                                    }
-                                    setShowMoreFilesView={setShowMoreFilesView}
-                                  />
-                                </>
-                              );
-                            })
+                          {...provided.droppableProps}>
+                          {viewMeetingAgendaViewerRowData.length > 0 ? (
+                            viewMeetingAgendaViewerRowData.map(
+                              (data, index) => {
+                                return (
+                                  <>
+                                    <ParentAgenda
+                                      data={data}
+                                      index={index}
+                                      setFileDataAgenda={setFileDataAgenda}
+                                      fileDataAgenda={fileDataAgenda}
+                                      setAgendaName={setAgendaName}
+                                      agendaName={agendaName}
+                                      setAgendaIndex={setAgendaIndex}
+                                      agendaIndex={agendaIndex}
+                                      setSubAgendaIndex={setSubAgendaIndex}
+                                      subAgendaIndex={subAgendaIndex}
+                                      setMainAgendaRemovalIndex={
+                                        setMainAgendaRemovalIndex
+                                      }
+                                      agendaItemRemovedIndex={
+                                        agendaItemRemovedIndex
+                                      }
+                                      setAgendaItemRemovedIndex={
+                                        setAgendaItemRemovedIndex
+                                      }
+                                      setSubajendaRemoval={setSubajendaRemoval}
+                                      editorRole={editorRole}
+                                      advanceMeetingModalID={
+                                        advanceMeetingModalID
+                                      }
+                                      setShowMoreFilesView={
+                                        setShowMoreFilesView
+                                      }
+                                    />
+                                  </>
+                                );
+                              }
+                            )
                           ) : (
                             <>
                               <Row>
@@ -1224,14 +1253,13 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center mt-3"
-                                >
+                                  className='d-flex justify-content-center mt-3'>
                                   <img
                                     draggable={false}
                                     src={emptyContributorState}
-                                    width="274.05px"
-                                    alt=""
-                                    height="230.96px"
+                                    width='274.05px'
+                                    alt=''
+                                    height='230.96px'
                                   />
                                 </Col>
                               </Row>
@@ -1240,11 +1268,9 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center mt-3"
-                                >
+                                  className='d-flex justify-content-center mt-3'>
                                   <span
-                                    className={styles["Empty_state_heading"]}
-                                  >
+                                    className={styles["Empty_state_heading"]}>
                                     {t("Add-agenda").toUpperCase()}
                                   </span>
                                 </Col>
@@ -1254,11 +1280,11 @@ const AgendaViewer = () => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="d-flex justify-content-center"
-                                >
+                                  className='d-flex justify-content-center'>
                                   <span
-                                    className={styles["Empty_state_Subheading"]}
-                                  >
+                                    className={
+                                      styles["Empty_state_Subheading"]
+                                    }>
                                     {t(
                                       "Add-some-purpose-start-by-creating-your-agenda"
                                     )}
@@ -1296,7 +1322,6 @@ const AgendaViewer = () => {
           setMeetingMaterial={setMeetingMaterial}
           setMinutes={setMinutes}
           rows={rows}
-          setRows={setRows}
           setMenuAgenda={setMenuAgenda}
           menuAgenda={menuAgenda}
           setParticipantInfoView={setParticipantInfoView}
@@ -1325,8 +1350,8 @@ const AgendaViewer = () => {
           setAdvanceMeetingModalID={setAdvanceMeetingModalID}
           setMeetingMaterial={setMeetingMaterial}
           setMinutes={setMinutes}
-          rows={rows}
-          setRows={setRows}
+          // rows={rows}
+          // setRows={setRows}
         />
       ) : null}
       {shareEmailView ? (
@@ -1357,10 +1382,10 @@ const AgendaViewer = () => {
           setInitiateVideoModalOto(false);
         }}
         setShow={setInitiateVideoModalOto}
-        modalFooterClassName="d-none"
+        modalFooterClassName='d-none'
         centered
         size={"sm"}
-        className="callCheckModal"
+        className='callCheckModal'
         ModalBody={
           <>
             <Container>
@@ -1369,13 +1394,12 @@ const AgendaViewer = () => {
                   <p> {t("Disconnect-current-call")} </p>
                 </Col>
               </Row>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={
                       callerID === currentUserID || callerID === 0
@@ -1384,7 +1408,7 @@ const AgendaViewer = () => {
                         ? t("End Participant")
                         : null
                     }
-                    className="leave-meeting-options__btn leave-meeting-red-button"
+                    className='leave-meeting-options__btn leave-meeting-red-button'
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
@@ -1396,7 +1420,7 @@ const AgendaViewer = () => {
 
                   <Button
                     text={t("Cancel")}
-                    className="leave-meeting-options__btn leave-meeting-gray-button"
+                    className='leave-meeting-options__btn leave-meeting-gray-button'
                     onClick={() => setInitiateVideoModalOto(false)}
                   />
                 </Col>

@@ -99,7 +99,6 @@ const SearchComponent = ({
   const calendRef = useRef();
   const { DataRoomReducer, assignees } = useSelector((state) => state);
   const [searchAllData, setSearchAllData] = useState([]);
-  console.log(searchAllData, "searchAllDatasearchAllData");
   const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
   const [dateValue, setDateValue] = useState(t("Date-modified"));
@@ -126,7 +125,7 @@ const SearchComponent = ({
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
 
-  console.log({ searchDataFields }, "searchDataFields");
+  console.log({ searchAllData, totalRecords, sRowsData }, "searchDataFields");
   useEffect(() => {
     if (assignees?.user && assignees?.user?.length === 0) {
       dispatch(allAssignessList(navigate, t, false));

@@ -12,10 +12,9 @@ import {
   CasteVoteForAgenda,
   meetingAgendaStartedMQTT,
 } from "../../../../../../../store/actions/MeetingAgenda_action";
+import { useMeetingContext } from "../../../../../../../context/MeetingContext";
 
 const CastVoteAgendaModal = ({
-  rows,
-  setRows,
   AgendaVotingModalStartedData,
 }) => {
   const { t } = useTranslation();
@@ -36,8 +35,9 @@ const CastVoteAgendaModal = ({
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
 
+  const {setViewMeetingAgendaViewerRowData,viewMeetingAgendaViewerRowData} = useMeetingContext()
+
   const [currentAgendaDetails, setCurrentAgendaDetails] = useState([]);
-  console.log(currentAgendaDetails, "currentAgendaDetailscurrentAgendaDetails");
   useEffect(() => {
     if (
       AgendaVotingInfoData !== undefined &&
@@ -101,7 +101,7 @@ const CastVoteAgendaModal = ({
       let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
       console.log("Cast Vote Data castVoteData", Data);
       console.log("Cast Vote Data castVoteData", isMainAgenda);
-      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setRows));
+      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setViewMeetingAgendaViewerRowData));
     } else {
       let Data = {
         AgendaID:
@@ -122,7 +122,7 @@ const CastVoteAgendaModal = ({
       console.log("Cast Vote Data castVoteData", Data);
       console.log("Cast Vote Data castVoteData", isMainAgenda);
 
-      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setRows));
+      dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setViewMeetingAgendaViewerRowData));
     }
   };
 
