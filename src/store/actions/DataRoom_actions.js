@@ -451,56 +451,7 @@ const uploadDocumentsApi = (
   }
 };
 
-// Save Folder API
-const saveFolderApi = () => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let Data = {};
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestMethod", saveFolderRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then((response) => {
-        if (response.data.responseCode === 417) {
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase()
-                )
-            ) {
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase()
-                )
-            ) {
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase()
-                )
-            ) {
-            }
-          } else {
-          }
-        } else {
-        }
-      })
-      .catch((error) => {});
-  };
-};
+
 
 // Get Folder Documents Init
 const getFolerDocuments_init = () => {
@@ -4150,7 +4101,6 @@ export {
   clearDataResponseMessage,
   getFolderDocumentsApi,
   shareFoldersApi,
-  saveFolderApi,
   shareFilesApi,
   createFolderApi,
   uploadDocumentsApi,

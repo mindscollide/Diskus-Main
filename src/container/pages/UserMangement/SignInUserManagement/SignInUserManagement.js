@@ -94,7 +94,7 @@ const SignInUserManagement = () => {
       showMessage(t("Please-enter-email"), "error", setOpen);
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      showMessage(t("Error-should-be-in-email-format"), "error", setOpen);
+      showMessage(t("Email-format-is-invalid"), "error", setOpen);
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));

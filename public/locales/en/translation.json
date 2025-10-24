@@ -625,7 +625,7 @@
   "Please-enter-a-valid-email": "Please enter a valid email",
   "Select-any-device": "Select any device",
   "Country-name": "Country Name",
-  "Error-should-be-in-email-format": "Error should be in Email Format",
+  "Email-format-is-invalid": "Email format is invalid",
   "Please-enter-email": "Please enter email",
   "Send-code": "Send Code",
   "No-activity": "No Activity",

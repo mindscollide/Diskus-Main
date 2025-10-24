@@ -168,6 +168,7 @@ const DocumentViewer = () => {
     "gif",
     "avif",
     "apng",
+    "txt",
   ];
 
   // Initialize WebViewer
@@ -186,46 +187,38 @@ const DocumentViewer = () => {
       )
         .then((instance) => {
           const { FitMode, setFitMode } = instance.UI;
-          const { documentViewer, annotationManager, officeToPDFBuffer } =
-            instance.Core;
+          const {
+            documentViewer,
+            annotationManager,
+            officeToPDFBuffer,
+            SupportedFileFormats,
+          } = instance.Core;
+
+          const { CLIENT } = SupportedFileFormats;
           // Example usage:
           const extension = getFileExtension(fileName);
 
           const mimeType = getMimeTypeFromFileName(fileName);
 
+          console.log(
+            { mimeType, extension, CLIENT },
+            "mimeTypemimeTypemimeType"
+          );
+
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
           // Check if the extension exists in the array (case-insensitive)
-          if (supportedFormats.includes(extension.toLowerCase())) {
+          if (CLIENT.includes(extension.toLowerCase())) {
             instance.UI.loadDocument(blob, {
               filename: fileName,
             });
           } else {
-            if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
-              try {
-                (async () => {
-                  // Initialize Document Conversion
-                  // Convert Blob into a File object
-                  const file = new File([blob], `${fileName}`, {
-                    type: mimeType,
-                  });
-                  const buffer = await officeToPDFBuffer(file);
-                  // Create a Blob for the converted PDF
-                  const convertedBlob = new Blob([buffer], {
-                    type: "application/pdf",
-                  });
-                  // **Remove existing extension from fileName before appending '.pdf'**
-                  const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
-                  // Load the converted PDF into WebViewer
-                  await instance.UI.loadDocument(convertedBlob, {
-                    filename: `${sanitizedFileName}.pdf`,
-                    extension: "pdf",
-                  });
-                })();
-              } catch (error) {
-                console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
-              }
-            }
+            showMessage(
+              t("file_format_not_supported_for_preview"),
+              "error",
+              setOpen
+            );
+            return;
           }
 
           // Handle annotations

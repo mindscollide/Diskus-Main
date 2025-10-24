@@ -2379,7 +2379,7 @@ const addUpdateSignatureFileAnnotationApi = (
               dispatch(
                 addUpdateSignatureFileAnnotation_success(
                   response.data.responseResult,
-                  t("Record-updated")
+                  ""
                 )
               );
             } else if (

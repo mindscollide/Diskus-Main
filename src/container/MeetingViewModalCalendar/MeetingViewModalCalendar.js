@@ -1026,9 +1026,9 @@ const MeetingViewModalCalendar = ({
                             data.DisplayAttachmentName.split(" ")[0];
                           return (
                             <Col
-                              sm={6}
-                              lg={3}
-                              md={3}
+                              sm={12}
+                              lg={6}
+                              md={6}
                               className="meeting-view-dataroom-attachment"
                               onClick={(e) => downloadClick(e, data)}
                             >
