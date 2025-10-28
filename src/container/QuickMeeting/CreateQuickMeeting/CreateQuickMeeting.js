@@ -765,7 +765,8 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
       }
       setModalField(false);
     } else {
-      if (objMeetingAgenda.Title) {
+      if (objMeetingAgenda.Title || !objMeetingAgenda.Title) {
+        // Common file upload logic
         if (fileForSend.length > 0) {
           setModalField(false);
           setObjMeetingAgenda(defaultMeetingAgenda);
@@ -773,23 +774,25 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
           let fileforSend = [];
           let newfile = [];
 
+          // Upload all files first
           const uploadPromises = fileForSend.map(async (newData) => {
-            // Return the promise from FileUploadToDo
             return await dispatch(
               uploadDocumentsQuickMeetingApi(navigate, t, newData, newfile)
             );
           });
-          // Wait for all uploadPromises to resolve
           await Promise.all(uploadPromises);
+
           let newFolder = [];
-          const getSaveFilesRepsonse = await dispatch(
+          const getSaveFilesResponse = await dispatch(
             saveFilesQuickMeetingApi(navigate, t, newfile, undefined, newFolder)
           );
+
+          // Prepare attachments
           if (
-            getSaveFilesRepsonse.isExecuted &&
-            getSaveFilesRepsonse.responseCode === 1
+            getSaveFilesResponse.isExecuted &&
+            getSaveFilesResponse.responseCode === 1
           ) {
-            getSaveFilesRepsonse.newFolder.forEach((fileData, index) => {
+            getSaveFilesResponse.newFolder.forEach((fileData) => {
               fileforSend.push({
                 DisplayAttachmentName: fileData.displayFileName,
                 OriginalAttachmentName: String(fileData.pK_FileID),
@@ -797,79 +800,69 @@ const CreateQuickMeeting = ({ ModalTitle, setShow, show, checkFlag }) => {
             });
           }
 
-          let previousAdendas = [...createMeeting.MeetingAgendas];
-          let newData = {
-            ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments: fileforSend,
-          };
-          previousAdendas.push(newData);
-          setCreateMeeting({
-            ...createMeeting,
-            MeetingAgendas: previousAdendas,
-          });
-          dispatch(uploaddocumentloader(false));
-          setFileForSend([]);
+          // Handle Title auto-generation if missing
+          let previousAgendas = [...createMeeting.MeetingAgendas];
+          let agendaCount = previousAgendas.length + 1;
 
-          setAttachments([]);
-        } else {
-          setModalField(false);
-          let previousAdendas = [...createMeeting.MeetingAgendas];
-          let newData = {
-            ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments: attachments,
-          };
-          previousAdendas.push(newData);
-          setCreateMeeting({
-            ...createMeeting,
-            MeetingAgendas: previousAdendas,
-          });
-          setObjMeetingAgenda(defaultMeetingAgenda);
-
-          setPresenterValue(defaultPresenter);
-
-          setAttachments([]);
-        }
-        // }
-      } else {
-        if (createMeeting.MeetingAgendas) {
-          // Get the current count of agendas (starting from 1)
-          const agendaCount = createMeeting.MeetingAgendas.length + 1;
-
-          // Modify the existing object to conditionally set the title
-          let previousAdendas = [...createMeeting.MeetingAgendas].map(
-            (agenda, index) => {
-              if (agenda.ObjMeetingAgenda.Title === "No Agenda Available") {
-                return {
-                  ...agenda,
-                  ObjMeetingAgenda: {
-                    ...agenda.ObjMeetingAgenda,
-                    Title: `Agenda ${index + 1}`,
-                  },
-                };
-              }
-              return agenda;
-            }
-          );
-
-          const newObjMeetingAgenda = {
+          let newObjMeetingAgenda = {
             ...objMeetingAgenda,
-            Title: `Agenda ${agendaCount}`,
-            PresenterName: userName,
+            Title:
+              objMeetingAgenda.Title && objMeetingAgenda.Title.trim() !== ""
+                ? objMeetingAgenda.Title
+                : `Agenda ${agendaCount}`,
+            PresenterName: objMeetingAgenda.PresenterName || userName,
           };
 
           let newData = {
             ObjMeetingAgenda: newObjMeetingAgenda,
-            MeetingAgendaAttachments: [],
+            MeetingAgendaAttachments: fileforSend,
           };
 
-          previousAdendas.push(newData);
+          previousAgendas.push(newData);
 
           setCreateMeeting({
             ...createMeeting,
-            MeetingAgendas: previousAdendas,
+            MeetingAgendas: previousAgendas,
           });
 
-          setModalField(true);
+          // Reset states
+          dispatch(uploaddocumentloader(false));
+          setFileForSend([]);
+          setAttachments([]);
+          setPresenterValue(defaultPresenter);
+        } else {
+          // When no files are uploaded
+          setModalField(false);
+
+          let previousAgendas = [...createMeeting.MeetingAgendas];
+          let agendaCount = previousAgendas.length + 1;
+
+          let newObjMeetingAgenda = {
+            ...objMeetingAgenda,
+            Title:
+              objMeetingAgenda.Title && objMeetingAgenda.Title.trim() !== ""
+                ? objMeetingAgenda.Title
+                : `Agenda ${agendaCount}`,
+            PresenterName:
+              objMeetingAgenda.PresenterName || userName || "Unknown Presenter",
+          };
+
+          let newData = {
+            ObjMeetingAgenda: newObjMeetingAgenda,
+            MeetingAgendaAttachments: attachments,
+          };
+
+          previousAgendas.push(newData);
+
+          setCreateMeeting({
+            ...createMeeting,
+            MeetingAgendas: previousAgendas,
+          });
+
+          // Reset after adding
+          setObjMeetingAgenda(defaultMeetingAgenda);
+          setPresenterValue(defaultPresenter);
+          setAttachments([]);
         }
       }
     }

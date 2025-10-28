@@ -19,6 +19,7 @@ const AttachmentViewer = ({
   id = 1,
   data,
   fk_UID = 1049,
+  canDelete = true,
   isQuickMeeting = false,
 }) => {
   let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
@@ -83,7 +84,7 @@ const AttachmentViewer = ({
             )}
         </div>
       </div>
-      {currentUser === Number(fk_UID) && (
+      {currentUser === Number(fk_UID) && canDelete && (
         <img
           src={CrossIcon}
           alt=''

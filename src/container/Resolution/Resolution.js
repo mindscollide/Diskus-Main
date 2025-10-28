@@ -574,7 +574,7 @@ const Resolution = () => {
       dataIndex: "decision",
       key: "decision",
       align: "center",
-      width: "76px",
+      width: "95px",
       render: (text) => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{t(text)}</span>;
@@ -940,37 +940,7 @@ const Resolution = () => {
                 />
               );
             }
-            // if (data.fK_VotingStatus_ID === 1) {
-            //   return (
-            //     <span className="d-flex justify-content-center">
-            //       <img draggable="false" src={thumbsup} alt="" />
-            //     </span>
-            //   );
-            // } else if (data.fK_VotingStatus_ID === 2) {
-            //   return (
-            //     <span className="d-flex justify-content-center">
-            //       <img draggable="false" src={thumbsdown} alt="" />
-            //     </span>
-            //   );
-            // } else if (data.fK_VotingStatus_ID === 3) {
-            //   if (currentDateString <= data.votingDeadline) {
-            //     return (
-            //       <Button
-            //         text={t("Vote")}
-            //         className={styles["Resolution-vote-btn"]}
-            //         onClick={() =>
-            //           getVoteDetailHandler(data.resolutionID, data)
-            //         }
-            //       />
-            //     );
-            //   }
-            // } else if (data.fK_VotingStatus_ID === 4) {
-            //   return (
-            //     <span className="d-flex justify-content-center">
-            //       <img draggable="false" src={AbstainvoterIcon} alt="" />
-            //     </span>
-            //   );
-            // }
+    
           } else {
             return <p className='text-center'></p>;
           }
@@ -996,7 +966,7 @@ const Resolution = () => {
             <span className={styles["decision_non_Approved"]}>{text}</span>
           );
         } else {
-          <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
@@ -1134,6 +1104,7 @@ const Resolution = () => {
       dataIndex: "decision",
       key: "decision",
       width: "73px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text) => {
         if (text === "Approved") {

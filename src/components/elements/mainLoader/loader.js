@@ -76,6 +76,7 @@ const SpinComponent = () => {
   const DashboardRoute =
     window.location.pathname === "/Diskus" ||
     window.location.pathname === "/Diskus/";
+  console.log({ NewMeetingreducer }, "NewMeetingreducerNewMeetingreducer");
   const isLoading = [
     NewMeetingreducer?.Loading,
     auth?.Loading,
@@ -139,7 +140,12 @@ const SpinComponent = () => {
     }
 
     return () => clearTimeout(timeout);
-  }, [isLoading, DashboardRoute, toDoListReducer?.taskFromDashboard, NotesReducer?.notesFromDashboard]);
+  }, [
+    isLoading,
+    DashboardRoute,
+    toDoListReducer?.taskFromDashboard,
+    NotesReducer?.notesFromDashboard,
+  ]);
 
   if (showLoader) {
     return (

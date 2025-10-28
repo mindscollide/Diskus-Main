@@ -65,22 +65,28 @@ const Documents = ({
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             ref={provided.innerRef}>
-                              <AttachmentViewer
-                                name={filesData.displayAttachmentName}
-                                fk_UID={filesData.fK_UID}
-                                id={0}
-                                handleClickRemove={
-                                  editorRole.role === "Participant" ||
-                                  editorRole.status === 9 ||
-                                  editorRole.status === "9" ||
-                                  (editorRole.role === "Agenda Contributor" &&
-                                    (filesData.fK_UID !== currentUserID ||
-                                      data.canEdit === false))
-                                    ? null
-                                    : () => CrossDocument(index, filesData)
-                                }
-                                data={filesData}
-                              />
+                            <AttachmentViewer
+                              name={filesData.displayAttachmentName}
+                              fk_UID={filesData.fK_UID}
+                              id={0}
+                              canDelete={
+                                editorRole.status === 10 ||
+                                editorRole.status === "10"
+                                  ? false
+                                  : true
+                              }
+                              handleClickRemove={
+                                editorRole.role === "Participant" ||
+                                editorRole.status === 9 ||
+                                editorRole.status === "9" ||
+                                (editorRole.role === "Agenda Contributor" &&
+                                  (filesData.fK_UID !== currentUserID ||
+                                    data.canEdit === false))
+                                  ? null
+                                  : () => CrossDocument(index, filesData)
+                              }
+                              data={filesData}
+                            />
                           </div>
                         )}
                       </Draggable>

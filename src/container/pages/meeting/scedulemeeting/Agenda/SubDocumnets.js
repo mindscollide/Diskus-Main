@@ -91,8 +91,13 @@ const SubDocumnets = ({
                                 name={subAgendaFiles.displayAttachmentName}
                                 fk_UID={subAgendaFiles.fK_UID}
                                 id={0}
+                                canDelete={
+                                  editorRole.status === 10 ||
+                                  editorRole.status === "10"
+                                    ? false
+                                    : true
+                                }
                                 handleClickRemove={
-                                  editorRole.role === "Participant" ||
                                   editorRole.status === 9 ||
                                   editorRole.status === "9" ||
                                   (editorRole.role === "Agenda Contributor" &&
