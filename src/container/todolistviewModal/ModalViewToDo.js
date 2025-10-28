@@ -63,6 +63,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
     (state) => state.postAssigneeComments.Comments
   );
 
+  const socketTodoStatusData = useSelector(
+    (state) => state.toDoListReducer.socketTodoStatusData
+  );
+
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -330,6 +334,33 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
       setDeleteCommentsId([]);
     }
   }, [viewFlagToDo]);
+
+  // Update MQTT Status
+  useEffect(() => {
+    try {
+      if (socketTodoStatusData !== null) {
+        let payloadData = socketTodoStatusData;
+        if (
+          payloadData.todoStatusID === 6 &&
+          task.PK_TID === payloadData.todoid
+        ) {
+          setViewFlagToDo(false);
+          dispatch(postComments(null));
+          setTaskAssigneeComments([]);
+          //task Object
+          setTask({
+            PK_TID: 0,
+            Title: "",
+            Description: "",
+            IsMainTask: true,
+            DeadLineDate: "",
+            DeadLineTime: "",
+            CreationDateTime: "",
+          });
+        }
+      }
+    } catch {}
+  }, [socketTodoStatusData]);
 
   const handleClickCommentSubmit = async (e, id) => {
     e.preventDefault();
