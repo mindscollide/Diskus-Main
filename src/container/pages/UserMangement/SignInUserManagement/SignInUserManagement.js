@@ -142,14 +142,44 @@ const SignInUserManagement = () => {
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const vendor = navigator.vendor?.toLowerCase() || "";
-
-    const isChrome =
-      vendor.includes("google inc.") &&
-      userAgent.includes("chrome") &&
-      !userAgent.includes("edg") && // exclude Edge
-      !userAgent.includes("opr"); // exclude Opera
-
-    // Helper: detect Chrome Incognito
+  
+    const detectBrowser = async () => {
+      // ✅ Step 1: Try identifying Brave by its built-in API
+      if (navigator.brave && (await navigator.brave.isBrave?.())) {
+        return "Brave";
+      }
+  
+      // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
+      if (
+        vendor.includes("google") &&
+        userAgent.includes("chrome") &&
+        !userAgent.includes("edg") &&
+        !userAgent.includes("opr")
+      )
+        return "Chrome";
+      if (userAgent.includes("edg") || userAgent.includes("edge"))
+        return "Edge";
+      if (userAgent.includes("firefox") || userAgent.includes("fxios"))
+        return "Firefox";
+      if (
+        userAgent.includes("safari") &&
+        !userAgent.includes("chrome") &&
+        !userAgent.includes("chromium")
+      )
+        return "Safari";
+      if (userAgent.includes("opr") || userAgent.includes("opera"))
+        return "Opera";
+      if (userAgent.includes("vivaldi")) return "Vivaldi";
+      if (userAgent.includes("ucbrowser")) return "UC Browser";
+      if (userAgent.includes("samsungbrowser")) return "Samsung Internet";
+      if (userAgent.includes("duckduckgo")) return "DuckDuckGo";
+      if (userAgent.includes("yabrowser")) return "Yandex Browser";
+      if (userAgent.includes("maxthon")) return "Maxthon";
+      if (userAgent.includes("puffin")) return "Puffin";
+      return "Unknown";
+    };
+  
+    // 🕵️ Detect Chrome Incognito mode
     const checkIncognito = () => {
       return new Promise((resolve) => {
         const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
@@ -162,26 +192,28 @@ const SignInUserManagement = () => {
         );
       });
     };
-
-    // Run logic
+  
+    // 🚀 Main logic wrapped in async IIFE
     (async () => {
-      const isIncognito = isChrome ? await checkIncognito() : false;
-      const isAllowedBrowser = !isChrome && !isIncognito;
-
-      if (isAllowedBrowser) {
-        setBestExperienceBox(true); // show for non-Chrome browsers
+      const browser = await detectBrowser();
+      console.log("Detected Browser:", browser);
+  
+      const isIncognito =
+        browser === "Chrome" ? await checkIncognito() : false;
+  
+      if (browser !== "Chrome") {
+        setBestExperienceBox(true);
       }
-
+  
+      console.log("Incognito Mode:", isIncognito);
       console.log("onChangeAllowMicrosoftCalenderSync", code);
-
+  
       if (code) {
         localStorage.setItem("Ms", code);
-        console.log("onChangeAllowMicrosoftCalenderSync", code);
         window.close();
       } else if (getpayemntString !== "") {
-        console.log("Payment_actionPayment_action");
         const paymentStringValue = currentUrl.split("Payment_action=")[1];
-        let data = { EncryptedString: paymentStringValue };
+        const data = { EncryptedString: paymentStringValue };
         dispatch(paymentStatusApi(navigate, t, data));
       } else {
         localStorageManage(
@@ -194,7 +226,8 @@ const SignInUserManagement = () => {
         );
       }
     })();
-  }, []);
+  }, [code, getpayemntString, currentUrl, dispatch, navigate, t, emailRef]);
+  
 
   useEffect(() => {
     if (adminReducerDeleteOrganizationResponseMessageData !== "") {
