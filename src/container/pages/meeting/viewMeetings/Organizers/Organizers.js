@@ -129,6 +129,7 @@ const Organizers = () => {
       },
 
       {
+        title: t("Role"),
         dataIndex: "isPrimaryOrganizer",
         key: "isPrimaryOrganizer",
         align: "center",

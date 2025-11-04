@@ -2006,11 +2006,11 @@ const GetUsersAuditListing = {
 
 // Audit Actions
 const GetUsersAuditActions = {
-  RequestMethod: "ServiceManager.GetUserAuditActions",
+  RequestMethod: "ServiceManager.GetUserAuditActionsForOA",
 };
 
 const AuditTrialReportExporttoExcel = {
-  RequestMethod: "ServiceManager.DownloadAuditReport",
+  RequestMethod: "ServiceManager.DownloadAuditReportForOA",
 };
 
 export {

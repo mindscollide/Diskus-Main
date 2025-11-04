@@ -1814,9 +1814,11 @@ const DataRoom = () => {
                   <span className={styles["threeDot__Icon"]}>
                     {record.isFolder
                       ? getMenuPopover(optionsforFolder)
-                      : ["pdf".toLowerCase(), "docx".toLowerCase()].includes(
-                          fileExtension.toLowerCase()
-                        )
+                      : [
+                          "pdf".toLowerCase(),
+                          "docx".toLowerCase(),
+                          "doc".toLowerCase(),
+                        ].includes(fileExtension.toLowerCase())
                       ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
                       : getMenuPopover(optionsforFile)}
                   </span>

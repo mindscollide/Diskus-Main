@@ -145,7 +145,6 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
   };
 };
 
-
 const downlooadUserloginHistory_init = () => {
   return {
     type: actions.EXPORT_USERLOGINHISTORY_INIT,
@@ -249,6 +248,15 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
       responseType: "arraybuffer",
     })
       .then(async (response) => {
+        // Handle ArrayBuffer case (optional)
+        if (response instanceof ArrayBuffer) {
+          try {
+            let resData = JSON.parse(
+              new TextDecoder().decode(new Uint8Array(response))
+            );
+            console.log(resData, "resData");
+          } catch {}
+        }
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(downloadAuditTrialReportApi(navigate, t, Data));

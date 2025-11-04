@@ -379,7 +379,7 @@ const GetAuditActionsAPI = (navigate, Data, t) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "Audit_AuditServiceManager_GetUserAuditActions_01".toLowerCase()
+              "Audit_AuditServiceManager_GetUserAuditActionsForOA_01".toLowerCase()
             ) {
               dispatch(AuditTrialViewActionModal(true));
               dispatch(
@@ -387,14 +387,20 @@ const GetAuditActionsAPI = (navigate, Data, t) => {
               );
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "Audit_AuditServiceManager_GetUserAuditActions_02".toLowerCase()
+              "Audit_AuditServiceManager_GetUserAuditActionsForOA_02".toLowerCase()
             ) {
               dispatch(AuditTrialViewActionModal(true));
               dispatch(GetAuditActionsFail(t("No-data-available")));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
-              "Audit_AuditServiceManager_GetUserAuditActions_03".toLowerCase()
+              "Audit_AuditServiceManager_GetUserAuditActionsForOA_03".toLowerCase()
             ) {
+              dispatch(GetAuditActionsFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Audit_AuditServiceManager_GetUserAuditActionsForOA_04".toLowerCase()
+            ) {
+              // This operation can only be performed by an admin user
               dispatch(GetAuditActionsFail(t("Something-went-wrong")));
             }
           } else {
