@@ -900,7 +900,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("Record-inserted"))
+                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -910,7 +910,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("Record-updated"))
+                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -920,7 +920,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("No-record-inserted"))
+                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -930,7 +930,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("No-record-updated"))
+                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
               );
             } else if (
               response.data.responseResult.responseMessage

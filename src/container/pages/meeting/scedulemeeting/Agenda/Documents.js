@@ -14,6 +14,8 @@ const Documents = ({
   fileForSend,
 }) => {
   const { editorRole } = useMeetingContext();
+
+  console.log("datafilesdatafilesdata", editorRole);
   const CrossDocument = (fileIndex, fileDataProp) => {
     console.log(fileDataProp, "fileDataPropfileDataProp");
     let optionscross = [...rows];
@@ -70,10 +72,12 @@ const Documents = ({
                               fk_UID={filesData.fK_UID}
                               id={0}
                               canDelete={
-                                editorRole.status === 10 ||
-                                editorRole.status === "10"
-                                  ? false
+                                Number(editorRole.status) === 10
+                                  ? editorRole.role === "Organizer"
                                   : true
+                              }
+                              isMeetingActive={
+                                Number(editorRole.status) === 10 ? true : false
                               }
                               handleClickRemove={
                                 editorRole.role === "Participant" ||

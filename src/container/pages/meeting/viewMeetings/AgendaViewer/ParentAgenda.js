@@ -258,13 +258,13 @@ const ParentAgenda = ({
                         </span>
                       ) : null}
                     </Col>
-                    <Col lg={3} md={3} sm={12} className='p-0'>
-                      <Row className='m-0'>
+                    <Col lg={4} md={4} sm={12} className=''>
+                      <Row className=''>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex align-items-center justify-content-end gap-3 p-0'>
+                          className='d-flex align-items-center justify-content-center gap-3 '>
                           <img
                             src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                             className={styles["Image"]}
@@ -276,7 +276,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className='m-0 mt-2'>
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
@@ -284,7 +284,7 @@ const ParentAgenda = ({
                           className={
                             currentLanguage === "ar"
                               ? "p-0 text-start"
-                              : "p-0 text-end"
+                              : "p-0 text-center"
                           }>
                           {/* <p
                             className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
@@ -367,7 +367,7 @@ const ParentAgenda = ({
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={1} md={1} sm={12} className='p-0'></Col>
+                    {/* <Col lg={1} md={1} sm={12} className='p-0'></Col> */}
                   </Row>
                   {expandIndex === index && expand ? (
                     <>

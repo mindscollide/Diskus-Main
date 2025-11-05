@@ -21,6 +21,7 @@ const AttachmentViewer = ({
   fk_UID = 1049,
   canDelete = true,
   isQuickMeeting = false,
+  isMeetingActive = false,
 }) => {
   let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
     getFileExtension(name)
@@ -84,13 +85,25 @@ const AttachmentViewer = ({
             )}
         </div>
       </div>
-      {currentUser === Number(fk_UID) && canDelete && (
-        <img
-          src={CrossIcon}
-          alt=''
-          className={styles["Cross_Icon"]}
-          onClick={handleClickRemove}
-        />
+      {isMeetingActive && canDelete ? (
+        <>
+          <img
+            src={CrossIcon}
+            alt=''
+            className={styles["Cross_Icon"]}
+            onClick={handleClickRemove}
+          />
+        </>
+      ) : (
+        currentUser === Number(fk_UID) &&
+        canDelete && (
+          <img
+            src={CrossIcon}
+            alt=''
+            className={styles["Cross_Icon"]}
+            onClick={handleClickRemove}
+          />
+        )
       )}
     </div>
     // <div className={styles["agendaFileAttachedView"]}>

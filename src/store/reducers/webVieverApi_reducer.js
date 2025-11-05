@@ -159,14 +159,14 @@ const webViewerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.meessag,
+        ResponseMessage: action.message,
       };
     }
     case actions.ADDANNOTATIONSOFDATAROOMATTACHEMENT_FAIL: {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.meessag,
+        ResponseMessage: action.message,
       };
     }
     case actions.GETANNOTATIONSOFDATAROOMATTACHEMENT_INIT: {

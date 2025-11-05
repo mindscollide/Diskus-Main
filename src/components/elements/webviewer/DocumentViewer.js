@@ -17,6 +17,10 @@ import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
 import "./DocumentViwer.css";
+import { checkXFDFContent } from "./utils";
+import CustomModal from "../modal/Modal";
+import { Col, Row } from "react-bootstrap";
+import CustomButton from "../button/Button";
 
 const DocumentViewer = () => {
   const viewer = useRef(null);
@@ -24,6 +28,9 @@ const DocumentViewer = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [instance, setInstance] = useState(null);
 
   // State Variables
   const [open, setOpen] = useState({
@@ -171,6 +178,44 @@ const DocumentViewer = () => {
     "txt",
   ];
 
+  // ✅ Warn on tab close/refresh
+  // ✅ Detect annotation changes and warn on tab close
+  useEffect(() => {
+    if (!instance) return;
+
+    const { annotationManager } = instance.Core;
+
+    // Detect changes
+    const handleAnnotationChange = (annots, action) => {
+      if (action === "add" || action === "modify" || action === "delete") {
+        setHasUnsavedChanges(true);
+      }
+    };
+
+    annotationManager.addEventListener(
+      "annotationChanged",
+      handleAnnotationChange
+    );
+
+    // Warn when closing tab
+    const handleBeforeUnload = (event) => {
+      if (hasUnsavedChanges) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      annotationManager.removeEventListener(
+        "annotationChanged",
+        handleAnnotationChange
+      );
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [instance, hasUnsavedChanges]);
+
   // Initialize WebViewer
   useEffect(() => {
     if (pdfResponseData.attachmentBlob) {
@@ -186,6 +231,7 @@ const DocumentViewer = () => {
         viewer.current
       )
         .then((instance) => {
+          setInstance(instance);
           const { FitMode, setFitMode } = instance.UI;
           const {
             documentViewer,
@@ -266,6 +312,7 @@ const DocumentViewer = () => {
     try {
       // Export annotations as XFDF
       const xfdfString = await annotationManager.exportAnnotations();
+
       // Prepare API data dynamically based on 'commingFrom'
       let apiData = { AnnotationString: xfdfString };
       switch (Number(commingFrom)) {
@@ -365,6 +412,7 @@ const DocumentViewer = () => {
       <div className='document-viewer'>
         <div className='webviewer' ref={viewer}></div>
       </div>
+     
       <Notification open={open} setOpen={setOpen} />
     </>
   );
