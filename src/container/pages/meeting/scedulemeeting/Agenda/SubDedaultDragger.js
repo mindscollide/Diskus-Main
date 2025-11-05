@@ -1,5 +1,5 @@
 import Dragger from "antd/lib/upload/Dragger";
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Notification } from "../../../../../components/elements";
 import styles from "./Agenda.module.css";
@@ -7,11 +7,9 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { useTranslation } from "react-i18next";
 import { getRandomUniqueNumber } from "./drageFunction";
 import {
-  MeetingContext,
   useMeetingContext,
 } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { maxFileSize } from "../../../../../commen/functions/utils";
 import { isFileSizeValid } from "../../../../../commen/functions/convertFileSizeInMB";
 
 const SubDedaultDragger = ({

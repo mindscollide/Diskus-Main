@@ -9,7 +9,6 @@ import DrapDropIcon from "../../../../../assets/images/Files_Upload_Agenda.png";
 import { getRandomUniqueNumber } from "./drageFunction";
 import { MeetingContext } from "../../../../../context/MeetingContext";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { maxFileSize } from "../../../../../commen/functions/utils";
 import { isFileSizeValid } from "../../../../../commen/functions/convertFileSizeInMB";
 
 const DefaultDragger = ({
