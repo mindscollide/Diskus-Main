@@ -230,6 +230,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("activeRoomID", 0);
       console.log("mqtt");
       localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting");
+      sessionStorage.removeItem("isMeeting");
       localStorage.setItem("meetingVideoID", 0);
       localStorage.setItem("newCallerID", 0);
       const emptyArray = [];
@@ -2004,11 +2006,6 @@ export const SideBarGlobalNavigationFunction = async (
 ) => {
   let userID = localStorage.getItem("userID");
   let currentView = localStorage.getItem("MeetingCurrentView");
-  let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
-  let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
-  let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
-  );
 
   console.log(
     { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
@@ -2048,41 +2045,47 @@ export const SideBarGlobalNavigationFunction = async (
       setViewAdvanceMeetingModal(false);
       navigate(navigateValue);
     } else {
-      console.log("Checking");
-      try {
-        let searchData = {
-          Date: "",
-          Title: "",
-          HostName: "",
-          UserID: Number(userID),
-          PageNumber: 1,
-          Length: 30,
-          PublishedMeetings:
-            currentView && Number(currentView) === 1 ? true : false,
-        };
-        localStorage.setItem("MeetingPageRows", 30);
-        localStorage.setItem("MeetingPageCurrent", 1);
-        console.log("chek search meeting");
-        await dispatch(searchNewUserMeeting(navigate, searchData, t));
-        console.log(
-          typeof setViewAdvanceMeetingModal,
-          "setViewAdvanceMeetingModalsetViewAdvanceMeetingModal"
-        );
-        setViewAdvanceMeetingModal(false);
-        console.log("Check Route Meeting");
+      console.log(navigateValue, "Checking");
 
-        dispatch(viewMeetingFlag(false));
-        setViewAdvanceMeetingModalUnpublish(false);
-        localStorage.removeItem("NotificationAdvanceMeetingID");
-        localStorage.removeItem("QuickMeetingCheckNotification");
-        localStorage.removeItem("viewadvanceMeetingPolls");
-        localStorage.removeItem("NotificationClickPollID");
-        localStorage.removeItem("AdvanceMeetingOperations");
-        localStorage.removeItem("NotificationClickTaskID");
-        localStorage.removeItem("viewadvanceMeetingTask");
-      } catch (error) {
-        console.log("Checking", error);
+      if (navigateValue === "/Diskus/") {
+        console.log(navigateValue, "Checking");
+        navigate("/Diskus/");
+      } else {
+        try {
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 30,
+            PublishedMeetings:
+              currentView && Number(currentView) === 1 ? true : false,
+          };
+          localStorage.setItem("MeetingPageRows", 30);
+          localStorage.setItem("MeetingPageCurrent", 1);
+          console.log("chek search meeting");
+          await dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+          setViewAdvanceMeetingModal(false);
+          console.log("Check Route Meeting");
+
+          dispatch(viewMeetingFlag(false));
+          isFunction(setViewAdvanceMeetingModalUnpublish) &&
+            setViewAdvanceMeetingModalUnpublish(false);
+
+          localStorage.removeItem("NotificationAdvanceMeetingID");
+          localStorage.removeItem("QuickMeetingCheckNotification");
+          localStorage.removeItem("viewadvanceMeetingPolls");
+          localStorage.removeItem("NotificationClickPollID");
+          localStorage.removeItem("AdvanceMeetingOperations");
+          localStorage.removeItem("NotificationClickTaskID");
+          localStorage.removeItem("viewadvanceMeetingTask");
+        } catch (error) {
+          console.log("Checking", error);
+        }
       }
+      console.log("Checking");
     }
   } else if (sceduleMeeting) {
     setGoBackCancelModal(true);
@@ -2371,4 +2374,11 @@ const handleMeetingCase = (
   dispatch(attendanceGlobalFlag(false));
   dispatch(uploadGlobalFlag(false));
   resetMeetingFlags(dispatch);
+};
+
+// Function to read storage values
+export const getMeetingValues = () => {
+  const local = localStorage.getItem("isMeeting");
+  const session = sessionStorage.getItem("isMeeting");
+  return { local, session };
 };

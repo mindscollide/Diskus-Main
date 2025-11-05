@@ -45,7 +45,7 @@ span.line {
 }
 
 .progress-value-wrapper-pending span {
-  color: #d8a709;
+  color: rgb(255, 195, 0);
 }
 
 .progress-value-wrapper-decline span {
@@ -75,7 +75,7 @@ p.pendingStatus {
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase !important;
-  color: #d8a709;
+  color: rgb(255, 195, 0);
 }
 
 p.signedStatus {

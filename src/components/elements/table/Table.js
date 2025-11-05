@@ -16,11 +16,11 @@ const CustomTable = ({
   footer,
   prefixClassName,
   size,
-  ref
+  ref,
 }) => {
   return (
     <>
-      <h4 className="labelTitle">{labelTitle}</h4>
+      <h4 className='labelTitle'>{labelTitle}</h4>
       <Table
         rowClassName={id}
         columns={column}
@@ -36,6 +36,7 @@ const CustomTable = ({
         scroll={scroll}
         ref={ref}
         size={size}
+        showSorterTooltip={false}
       />
     </>
   );

@@ -602,6 +602,12 @@ const addUpdateFieldValueApi = (
                 )
             ) {
               dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+            } else if (
+              "WorkFlow_WorkFlowServiceManager_AddUpdateFieldValue_05".toLowerCase()
+            ) {
+              // dispatch(addUpdateFieldValue_fail(t("You-donot-have-rights")));
+              dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
+
             } else {
               dispatch(addUpdateFieldValue_fail(t("Something-went-wrong")));
             }
@@ -2243,7 +2249,7 @@ const getSignatureFileAnnotationApi = (navigate, t, Data) => {
               dispatch(
                 getSignatureFileAnnotation_success(
                   response.data.responseResult,
-                  t("Record-found")
+                  ""
                 )
               );
             } else if (
@@ -2373,7 +2379,7 @@ const addUpdateSignatureFileAnnotationApi = (
               dispatch(
                 addUpdateSignatureFileAnnotation_success(
                   response.data.responseResult,
-                  t("Record-updated")
+                  ""
                 )
               );
             } else if (

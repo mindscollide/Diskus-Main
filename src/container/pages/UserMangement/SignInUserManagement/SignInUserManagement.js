@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
@@ -7,13 +7,13 @@ import {
   Loader,
 } from "../../../../components/elements";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
-import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png"
+import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 
 import styles from "./SignInUserMangement.module.css";
 import DiskusAuthPageLogo from "../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { validationEmail } from "../../../../commen/functions/validations";
 import {
   cleareMessage,
@@ -28,7 +28,7 @@ import {
 import { localStorageManage } from "../../../../commen/functions/locallStorageManage";
 import MobileAppPopUpModal from "../ModalsUserManagement/MobileAppPopUpModal/MobileAppPopUpModal";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
-import SpinComponent from "../../../../components/elements/mainLoader/loader";
+import SwitchToChromeBox from "../../../../components/elements/SwitchToChromeBox/SwitchToChromeBox";
 
 const SignInUserManagement = () => {
   const navigate = useNavigate();
@@ -65,6 +65,8 @@ const SignInUserManagement = () => {
     severity: "error",
   });
 
+  const [bestExperienceBox, setBestExperienceBox] = useState(false);
+
   //OnChange For Email
   const emailChangeHandler = (e) => {
     let value = e.target.value;
@@ -92,7 +94,7 @@ const SignInUserManagement = () => {
       showMessage(t("Please-enter-email"), "error", setOpen);
     } else if (validationEmail(email) === false) {
       setErrorBar(true);
-      setErrorMessage(t("Error-should-be-in-email-format"));
+      showMessage(t("Email-format-is-invalid"), "error", setOpen);
     } else {
       setErrorBar(false);
       dispatch(validationEmailAction(email, navigate, t));
@@ -133,30 +135,99 @@ const SignInUserManagement = () => {
     });
   };
 
-  useEffect(() => {
-    console.log("onChangeAllowMicrosoftCalenderSync", code);
-    if (code) {
-      localStorage.setItem("Ms", code);
-      console.log("onChangeAllowMicrosoftCalenderSync", code);
-      window.close();
-    } else if (getpayemntString !== "") {
-      console.log("Payment_actionPayment_action");
-      const paymentStringValue = currentUrl.split("Payment_action=")[1];
-      let data = {
-        EncryptedString: paymentStringValue,
-      };
-      dispatch(paymentStatusApi(navigate, t, data));
-    } else {
-      localStorageManage(
-        emailRef,
-        dispatch,
-        setErrorMessage,
-        setErrorBar,
-        setRemeberEmail,
-        setEmail
-      );
-    }
+  const handleCloseBrowserExpModal = useCallback(() => {
+    setBestExperienceBox(false);
   }, []);
+
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const vendor = navigator.vendor?.toLowerCase() || "";
+  
+    const detectBrowser = async () => {
+      // ✅ Step 1: Try identifying Brave by its built-in API
+      if (navigator.brave && (await navigator.brave.isBrave?.())) {
+        return "Brave";
+      }
+  
+      // ✅ Step 2: Fallbacks using userAgent and vendor (for other browsers)
+      if (
+        vendor.includes("google") &&
+        userAgent.includes("chrome") &&
+        !userAgent.includes("edg") &&
+        !userAgent.includes("opr")
+      )
+        return "Chrome";
+      if (userAgent.includes("edg") || userAgent.includes("edge"))
+        return "Edge";
+      if (userAgent.includes("firefox") || userAgent.includes("fxios"))
+        return "Firefox";
+      if (
+        userAgent.includes("safari") &&
+        !userAgent.includes("chrome") &&
+        !userAgent.includes("chromium")
+      )
+        return "Safari";
+      if (userAgent.includes("opr") || userAgent.includes("opera"))
+        return "Opera";
+      if (userAgent.includes("vivaldi")) return "Vivaldi";
+      if (userAgent.includes("ucbrowser")) return "UC Browser";
+      if (userAgent.includes("samsungbrowser")) return "Samsung Internet";
+      if (userAgent.includes("duckduckgo")) return "DuckDuckGo";
+      if (userAgent.includes("yabrowser")) return "Yandex Browser";
+      if (userAgent.includes("maxthon")) return "Maxthon";
+      if (userAgent.includes("puffin")) return "Puffin";
+      return "Unknown";
+    };
+  
+    // 🕵️ Detect Chrome Incognito mode
+    const checkIncognito = () => {
+      return new Promise((resolve) => {
+        const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+        if (!fs) return resolve(false);
+        fs(
+          window.TEMPORARY,
+          100,
+          () => resolve(false), // normal mode
+          () => resolve(true) // incognito mode
+        );
+      });
+    };
+  
+    // 🚀 Main logic wrapped in async IIFE
+    (async () => {
+      const browser = await detectBrowser();
+      console.log("Detected Browser:", browser);
+  
+      const isIncognito =
+        browser === "Chrome" ? await checkIncognito() : false;
+  
+      if (browser !== "Chrome") {
+        setBestExperienceBox(true);
+      }
+  
+      console.log("Incognito Mode:", isIncognito);
+      console.log("onChangeAllowMicrosoftCalenderSync", code);
+  
+      if (code) {
+        localStorage.setItem("Ms", code);
+        window.close();
+      } else if (getpayemntString !== "") {
+        const paymentStringValue = currentUrl.split("Payment_action=")[1];
+        const data = { EncryptedString: paymentStringValue };
+        dispatch(paymentStatusApi(navigate, t, data));
+      } else {
+        localStorageManage(
+          emailRef,
+          dispatch,
+          setErrorMessage,
+          setErrorBar,
+          setRemeberEmail,
+          setEmail
+        );
+      }
+    })();
+  }, [code, getpayemntString, currentUrl, dispatch, navigate, t, emailRef]);
+  
 
   useEffect(() => {
     if (adminReducerDeleteOrganizationResponseMessageData !== "") {
@@ -176,6 +247,9 @@ const SignInUserManagement = () => {
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
+        {bestExperienceBox && (
+          <SwitchToChromeBox handleClickClose={handleCloseBrowserExpModal} />
+        )}
         {code ? (
           <></>
         ) : getpayemntString !== "" ? (
@@ -279,6 +353,20 @@ const SignInUserManagement = () => {
                             onClick={loginHandler}
                             className={styles["Next_button_EmailVerify"]}
                           />
+                        </Col>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className='d-flex justify-content-center mt-2 '>
+                          <span className={styles["TermsfDiskus"]}>
+                            By signing in you agree to our{" "}
+                            <Link
+                              to={"https://diskusboard.com/terms/"}
+                              target='_blank'>
+                              Terms of Use
+                            </Link>
+                          </span>
                         </Col>
                       </Row>
                     </Form>

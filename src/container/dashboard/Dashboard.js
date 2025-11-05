@@ -1,5 +1,5 @@
 import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
 import CancelButtonModal from "../pages/meeting/closeMeetingTab/CancelModal";
@@ -18,7 +18,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
 import VideoMaxIncoming from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming";
-
+import { v4 as uuidv4 } from "uuid";
 import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
@@ -186,6 +186,7 @@ import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
 import {
   checkFeatureIDAvailability,
   getLocalStorageItemNonActiveCheck,
+  getMeetingValues,
 } from "../../commen/functions/utils";
 import { Col, Row } from "react-bootstrap";
 import InternetConnectivityModal from "../pages/UserMangement/ModalsUserManagement/InternetConnectivityModal/InternetConnectivityModal";
@@ -221,6 +222,7 @@ import {
   meetingVideoRecording,
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
+import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -1487,6 +1489,7 @@ const Dashboard = () => {
                   };
                   dispatch(makeHostNow(meetingHost));
                   localStorage.setItem("isMeeting", true);
+                  sessionStorage.setItem("isMeeting", true);
                   localStorage.setItem("isMeetingVideo", false);
                   localStorage.removeItem("refinedVideoUrl");
                   localStorage.setItem("refinedVideoGiven", false);
@@ -1646,6 +1649,7 @@ const Dashboard = () => {
               dispatch(globalStateForVideoStream(true));
               // localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
+              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("activeCall", true);
               console.log("iframeiframe", data.payload.screenShare);
               console.log("iframeiframe", data.payload.userID);
@@ -4693,33 +4697,76 @@ const Dashboard = () => {
     }
   }, [MeetingStatusEnded]);
 
+  const [isMeetingLocal, setIsMeetingLocal] = useState(false);
+  const [isMeetingSession, setIsMeetingSession] = useState(false);
+  // Function to read current values
+  const getMeetingValues = () => {
+    const local = localStorage.getItem("isMeeting");
+    const session = sessionStorage.getItem("isMeeting");
+
+    setIsMeetingLocal(local ? JSON.parse(local) : false);
+    setIsMeetingSession(session ? JSON.parse(session) : false);
+  };
+
+  useEffect(() => {
+    // Run once initially
+    getMeetingValues();
+
+    // Listen for changes to storage (fires across tabs)
+    const handleStorageChange = (event) => {
+      if (event.key === "isMeeting") {
+        getMeetingValues();
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  const handleClickClose = useCallback(() => {
+    window.close();
+  }, []);
+
   return (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className="sidebar_layout" width={60}>
+            <Sider className='sidebar_layout' width={60}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className="dashbaord_data">
-                <Outlet />
+              <div className='dashbaord_data'>
+                {
+                  <>
+                    {isMeetingLocal
+                      ? !isMeetingSession && (
+                          <AlreadyInMeeting
+                            handleClickClose={handleClickClose}
+                          />
+                        )
+                      : null}
+                    <Outlet />
+                  </>
+                }
               </div>
-              <div className="talk_features_home">
+              <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt="" draggable="false" />
+              <img src={IconMetroAttachment} alt='' draggable='false' />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -4736,8 +4783,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -4763,25 +4810,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
                   <>
-                    <Row className="mb-1">
+                    <Row className='mb-1'>
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className="d-flex justify-content-center">
+                          <Col className='d-flex justify-content-center'>
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className="text-center mt-4">
+                          <Col className='text-center mt-4'>
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -4797,13 +4844,12 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-3">
+                    <Row className='mb-3'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}

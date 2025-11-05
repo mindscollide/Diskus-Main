@@ -3,19 +3,21 @@
     align-items: baseline;
     justify-content: start; */
   font-size: 22px !important;
+  margin: 0 !important;
   color: #6172d6 !important;
-  margin: auto;
+  /* margin: auto; */
   font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  max-width: 95%;
 }
 
 .title-for-presenter {
   font-size: 22px !important;
   color: #6172d6 !important;
-  margin: auto;
-  width: 45vw;
+  /* margin: auto; */
+  /* width: 45vw; */
   font-weight: 600;
   overflow: hidden;
   white-space: nowrap;
@@ -297,7 +299,7 @@ body[dir="rtl"] .minimize-leave-meeting-options {
 .screenShare-Toggle:focus-visible {
   background: #6172d6;
   border-color: transparent;
-  padding: 8px;
+  /* padding: 8px; */
   outline: none;
   width: 40px;
   height: 40px;
@@ -457,13 +459,14 @@ body[dir="rtl"] .video_maximize_icon img {
 
 .active-state {
   background: #6172d6;
-  height: 40px;
-  width: 40px;
+  /* height: 40px; */
+  /* width: 40px; */
+  padding: 7px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
-  margin-right: 10px;
+  border-radius: 50%;
+  /* margin-right: 10px; */
 }
 
 .meeting-Recording-State {
@@ -472,8 +475,8 @@ body[dir="rtl"] .video_maximize_icon img {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
-  margin-right: 10px;
+  border-radius: 50%;
+  /* margin-right: 10px; */
 }
 
 .inactive-state {
@@ -483,7 +486,7 @@ body[dir="rtl"] .video_maximize_icon img {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .active-state-end {
@@ -493,9 +496,9 @@ body[dir="rtl"] .video_maximize_icon img {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
+  border-radius: 5%;
   cursor: pointer;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 .minimize.active-state-end {
@@ -505,7 +508,7 @@ body[dir="rtl"] .video_maximize_icon img {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
+  border-radius: 50%;
   cursor: pointer;
 }
 
@@ -573,9 +576,10 @@ span.participants-counter-For-Host-waiting-counter {
 }
 
 body[dir="rtl"] span.participants-counter-For-Host {
+
   position: absolute;
-  top: 0;
-  left: 0px;
+  /* top: 0; */
+  left: 22px;
   right: auto;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   color: #fff;
@@ -646,7 +650,7 @@ button.participant-toggle:hover {
   padding-bottom: 10px;
   margin-bottom: 10px;
   border-bottom: 1px solid #e1e1e1;
-  margin-right: 10px;
+  /* margin-right: 10px; */
 }
 
 img.image-style {
@@ -795,7 +799,7 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
 .Start-Record-Button {
   height: auto;
   width: 30px;
-  margin-right: 8px;
+  /* margin-right: 8px; */
 }
 
 .start-Recording-div {

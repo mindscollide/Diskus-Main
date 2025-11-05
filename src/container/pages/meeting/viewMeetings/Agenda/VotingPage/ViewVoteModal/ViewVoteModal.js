@@ -229,7 +229,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
         show={viewVotesAgenda}
         setShow={dispatch(showviewVotesAgenda)}
         modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalHeaderClassName={"d-none"}
         onHide={() => {
           dispatch(showviewVotesAgenda(false));
         }}
@@ -267,7 +267,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
             </Row>
             {enablePieChart === true ? (
               <>
-                <Row className="mt-4">
+                <Row>
                   <Col
                     lg={12}
                     md={12}
@@ -277,7 +277,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                     <section className={styles["BackGroundForDonutChart"]}>
                       <Chart
                         width={"600px"}
-                        height={"300px"}
+                        height={"260px"}
                         chartType="PieChart"
                         loader={<div>Loading Chart</div>}
                         data={barChartData}
@@ -310,7 +310,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               </>
             ) : (
               <>
-                <Row className="mt-4">
+                <Row >
                   <Col
                     lg={12}
                     md={12}
@@ -320,7 +320,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                     <section className={styles["TranForm"]}>
                       <Chart
                         width={"600px"}
-                        height={"300px"}
+                        height={"260px"}
                         chartType="ColumnChart"
                         loader={<div>Loading Chart</div>}
                         data={barChartData}
@@ -365,7 +365,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={MeetingColoumns}
-                  scroll={{ y: "15vh" }}
+                  scroll={{ y: "25vh" }}
                   pagination={false}
                   className="Polling_table"
                   rows={votingResults}

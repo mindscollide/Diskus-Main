@@ -659,7 +659,8 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(maxHostVideoCallPanel(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("CallType", 2);
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
               sessionStorage.setItem("alreadyInMeetingVideo", true);
               let Data = { RoomID: response.data.responseResult.roomID };

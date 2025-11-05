@@ -625,7 +625,7 @@
   "Please-enter-a-valid-email": "Please enter a valid email",
   "Select-any-device": "Select any device",
   "Country-name": "Country Name",
-  "Error-should-be-in-email-format": "Error should be in Email Format",
+  "Email-format-is-invalid": "Email format is invalid",
   "Please-enter-email": "Please enter email",
   "Send-code": "Send Code",
   "No-activity": "No Activity",
@@ -863,7 +863,7 @@
   "To-the-folder": "to the folder",
   "Please-allow-access": "Please allow access",
   "There-are-no-items-here": "There are no items here!",
-  "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings",
+  "Already-exists-in-this-location": "already exists in this location. Do you want to replace the file you're moving? Replacing the file won’t change the sharing settings",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
   "Send-notification-on-device": "Send Notification on Device",
   "Folder-removed": "Folder Removed",
@@ -2506,5 +2506,13 @@
   "Search-on-user-name": "Search on User Name",
   "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time": "Unable to join the meeting at this time. Please try after some time",
   "View-meeting": "View Meeting",
-  "Please-enter-Contact": "Please enter contact"
+  "Please-enter-Contact": "Please enter contact",
+  "Minutes-revised-by-organizer": "Minutes Revised by Organizer",
+  "The-minute-has-been-sent-for-review-by": "This minute is reviewed by",
+  "Switch-to-chrome": "Switch to Chrome",
+  "For-the-best-experience-please-use-diskus-in-google-chrome": "For the best experience, please use Diskus in Google Chrome.",
+  "This-tab-will-become-active-again-once-you-leave-the-meeting": "This tab will become active again once you leave the meeting",
+  "Chat-not-found": "Chat not found",
+  "You-are-currently-in-a-meeting-this-feature-cannot-be-accessed-right-now": "You are currently in a meeting. This feature cannot be accessed right now.",
+  "File-is-saved-successfully": "File is saved successfully"
 }

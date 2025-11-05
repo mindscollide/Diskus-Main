@@ -1037,14 +1037,16 @@ const enterPasswordvalidation = (value, navigate, t) => {
           clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
 
-          dispatch(enterPasswordFail("Something-went-wrong"));
+          dispatch(enterPasswordFail(t("Something-went-wrong")));
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_26:
           clearLocalStorageAtloginresponce(dispatch, 2, navigate);
           dispatch(LoginFlowRoutes(1));
           dispatch(
             enterPasswordFail(
-              "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+              t(
+                "Organization-is-currently-locked-please-contact-the-global-Admin-for-further-assistance"
+              )
             )
           );
           break;
@@ -1076,7 +1078,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
           dispatch(
             enterPasswordFail(
-              "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user"
+              t(
+                "Password-verified-and-subscription-is-closed-and-this-is-an-admin-user"
+              )
             )
           );
           break;
@@ -1086,7 +1090,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
           dispatch(
             enterPasswordFail(
-              "Password-verified-and-subscription-is-closed-and-this-is-an-admin"
+              t(
+                "Password-verified-and-subscription-is-closed-and-this-is-an-admin"
+              )
             )
           );
           break;
@@ -1095,9 +1101,9 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            enterPasswordFail(
+            enterPasswordFail(t(
               "Password-verified-and-subscription-is-closed-and-this-is-an-user"
-            )
+            ))
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_32:

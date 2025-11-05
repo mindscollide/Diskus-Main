@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import {
+  DataRoomAllFilesDownloads,
   reportDownload,
   settingDownloadApi,
 } from "../../commen/apis/Api_ends_points";
@@ -97,44 +98,50 @@ const DownloadFile = (navigate, data, t) => {
   };
 };
 
-// const download Report Attendance main API
+// ✅ Download Attendance Report (PDF)
 const downloadAttendanceReportApi = (navigate, t, downloadData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let form = new FormData();
+  const token = JSON.parse(localStorage.getItem("token"));
+  const form = new FormData();
+
   form.append("RequestMethod", downloadAttendanceReport.RequestMethod);
   form.append("RequestData", JSON.stringify(downloadData));
+
   return async (dispatch) => {
     await dispatch(DownloadLoaderStart());
-    axios({
-      method: "post",
-      url: reportDownload,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template.xlsx",
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      },
-      responseType: "arraybuffer",
-    })
-      .then(async (response) => {
-        if (response.status === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
-        } else if (response.status === 200) {
-          const url = window.URL.createObjectURL(new Blob([response.data]));
 
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "download-Attendance-Report.xlsx");
-          document.body.appendChild(link);
-          link.click();
-          dispatch(SetLoaderFalseDownload(false));
-        }
-      })
-      .catch((response) => {
-        dispatch(downloadFail(response));
+    try {
+      const response = await axios({
+        method: "post",
+        url: DataRoomAllFilesDownloads,
+        data: form,
+        headers: {
+          _token: token, // ✅ Only token header required
+        },
+        responseType: "blob", // ✅ Important for PDF
       });
+
+      if (response.status === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(downloadAttendanceReportApi(navigate, t, downloadData));
+        return;
+      }
+
+      if (response.status === 200) {
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "Attendance-Report.pdf");
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        dispatch(SetLoaderFalseDownload(false));
+      }
+    } catch (error) {
+      dispatch(downloadFail(error));
+    }
   };
 };
 
@@ -241,6 +248,15 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
       responseType: "arraybuffer",
     })
       .then(async (response) => {
+        // Handle ArrayBuffer case (optional)
+        if (response instanceof ArrayBuffer) {
+          try {
+            let resData = JSON.parse(
+              new TextDecoder().decode(new Uint8Array(response))
+            );
+            console.log(resData, "resData");
+          } catch {}
+        }
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(downloadAuditTrialReportApi(navigate, t, Data));

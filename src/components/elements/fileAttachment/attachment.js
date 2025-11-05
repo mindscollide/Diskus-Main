@@ -19,7 +19,9 @@ const AttachmentViewer = ({
   id = 1,
   data,
   fk_UID = 1049,
+  canDelete = true,
   isQuickMeeting = false,
+  isMeetingActive = false,
 }) => {
   let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
     getFileExtension(name)
@@ -64,29 +66,44 @@ const AttachmentViewer = ({
               </button>
             </>
           )}
-          {id !== 0 && getfileExtensionName !== "txt" && (
-            <>
-              <div className='divider mx-1'></div>
-              <button className='action-button' aria-label='View document'>
-                {/* <Eye size={20} /> */}
-                <img
-                  draggable={false}
-                  src={EyeIcon}
-                  alt=''
-                  onClick={handleEyeIcon}
-                />
-              </button>
-            </>
-          )}
+          {id !== 0 &&
+            getfileExtensionName !== "txt" &&
+            getfileExtensionName !== "pptx" &&
+            getfileExtensionName !== "ppt" && (
+              <>
+                <div className='divider mx-1'></div>
+                <button className='action-button' aria-label='View document'>
+                  {/* <Eye size={20} /> */}
+                  <img
+                    draggable={false}
+                    src={EyeIcon}
+                    alt=''
+                    onClick={handleEyeIcon}
+                  />
+                </button>
+              </>
+            )}
         </div>
       </div>
-      {currentUser === Number(fk_UID) && (
-        <img
-          src={CrossIcon}
-          alt=''
-          className={styles["Cross_Icon"]}
-          onClick={handleClickRemove}
-        />
+      {isMeetingActive && canDelete ? (
+        <>
+          <img
+            src={CrossIcon}
+            alt=''
+            className={styles["Cross_Icon"]}
+            onClick={handleClickRemove}
+          />
+        </>
+      ) : (
+        currentUser === Number(fk_UID) &&
+        canDelete && (
+          <img
+            src={CrossIcon}
+            alt=''
+            className={styles["Cross_Icon"]}
+            onClick={handleClickRemove}
+          />
+        )
       )}
     </div>
     // <div className={styles["agendaFileAttachedView"]}>

@@ -1228,7 +1228,7 @@ const NewMeeting = () => {
           // Handle the result here
 
           let Data = {
-            VideoCallURL: result.videoCallURL,
+            VideoCallURL: result.videoCallUrl,
             FK_MDID: Number(result.meetingID),
             DateTime: getCurrentDateTimeUTC(),
           };
@@ -1248,9 +1248,18 @@ const NewMeeting = () => {
               )
             );
           } else {
-            await setAdvanceMeetingModalID(Number(result.meetingID));
-            await setViewAdvanceMeetingModalUnpublish(true);
-            await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
+            let joinMeetingData = {
+              VideoCallURL: result.videoCallUrl,
+              FK_MDID: Number(result.meetingID),
+              DateTime: getCurrentDateTimeUTC(),
+            };
+            localStorage.setItem("videoCallURL", result.videoCallURL);
+            localStorage.setItem("currentMeetingID", Number(result.meetingID));
+            setVideoTalk({
+              isChat: result.isChat,
+              isVideoCall: result.isVideo,
+              talkGroupID: result.talkGroupId,
+            });
             setEditorRole({
               ...editorRole,
               isPrimaryOrganizer: false,
@@ -1262,6 +1271,26 @@ const NewMeeting = () => {
                   : "Organizer",
               status: Number(result.meetingStatusId),
             });
+            localStorage.setItem("isMinutePublished", result.isMinutePublished);
+            localStorage.setItem("meetingTitle", result.title);
+            await setAdvanceMeetingModalID(Number(result.meetingID));
+            dispatch(
+              JoinCurrentMeeting(
+                false,
+                navigate,
+                t,
+                joinMeetingData,
+                setViewFlag,
+                setEditFlag,
+                setSceduleMeeting,
+                1,
+                setAdvanceMeetingModalID,
+                setViewAdvanceMeetingModal
+              )
+            );
+
+            // await setViewAdvanceMeetingModalUnpublish(true);
+            // await dispatch(viewAdvanceMeetingUnpublishPageFlag(true));
           }
           localStorage.removeItem("MeetingStr");
         })
@@ -1590,10 +1619,8 @@ const NewMeeting = () => {
       await dispatch(addNewChatScreen(false));
       await dispatch(footerActionStatus(false));
       await dispatch(createGroupScreen(false));
-      await dispatch(chatBoxActiveFlag(false));
       await dispatch(recentChatFlag(true));
       await dispatch(activeChatBoxGS(true));
-      await dispatch(chatBoxActiveFlag(true));
       await dispatch(headerShowHideStatus(true));
       await dispatch(footerShowHideStatus(true));
       setTalkGroupID(data.talkGroupID);
@@ -1644,7 +1671,13 @@ const NewMeeting = () => {
         (item) => item.id === talkGroupID
       );
       if (foundRecord) {
+        dispatch(chatBoxActiveFlag(true));
+
         dispatch(activeChat(foundRecord));
+      } else {
+        showMessage(t("Chat-not-found"), "error", setOpen);
+        localStorage.removeItem("activeOtoChatID");
+        dispatch(chatBoxActiveFlag(false));
       }
       localStorage.setItem("activeOtoChatID", talkGroupID);
       setTalkGroupID(0);
@@ -3308,80 +3341,88 @@ const NewMeeting = () => {
 
   useEffect(() => {
     if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
-      if (
-        MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
-      ) {
-        console.log("meetingDetails", MeetingStatusSocket);
-        let statusCheck = 0;
-        let meetingIDCheck = 0;
+      try {
+        if (
+          MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
+        ) {
+          console.log("meetingDetails", MeetingStatusSocket);
+          let statusCheck = 0;
+          let meetingIDCheck = 0;
 
-        if (MeetingStatusSocket.hasOwnProperty("meeting")) {
-          statusCheck = MeetingStatusSocket.meeting.status;
-          meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
-          // If the 'meeting' key exists, do something
-          console.log("Meeting key exists:", MeetingStatusSocket);
-          // Your code for handling when 'meeting' key is present
-        } else {
-          // If the 'meeting' key does not exist, do something else
-          statusCheck = MeetingStatusSocket.meetingStatusID;
-          meetingIDCheck = MeetingStatusSocket.meetingID;
-          console.log("Meeting key does not exist. Handling alternative case.");
-          // Your
-        }
-        let meetingStatusID = statusCheck;
-        let meetingID = meetingIDCheck;
-        try {
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return {
-                  ...item,
-                  status: String(meetingStatusID),
-                };
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
-            });
-          });
-          setStartMeetingButton((prevStateStartBtn) => {
-            return prevStateStartBtn.filter(
-              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+          if (MeetingStatusSocket.hasOwnProperty("meeting")) {
+            statusCheck = MeetingStatusSocket.meeting.status;
+            meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
+            // If the 'meeting' key exists, do something
+            console.log("Meeting key exists:", MeetingStatusSocket);
+            // Your code for handling when 'meeting' key is present
+          } else {
+            // If the 'meeting' key does not exist, do something else
+            statusCheck = MeetingStatusSocket.meetingStatusID;
+            meetingIDCheck = MeetingStatusSocket.meetingID;
+            console.log(
+              "Meeting key does not exist. Handling alternative case."
             );
-          });
-        } catch (error) {
-          console.log(
-            error,
-            "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
-          );
-        }
-      } else if (
-        MeetingStatusSocket.message
-          .toLowerCase()
-          .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
-      ) {
-        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
-        let meetingID = MeetingStatusSocket?.meetingID;
-        try {
-          setRow((rowsData) => {
-            return rowsData.map((item) => {
-              if (item.pK_MDID === meetingID) {
-                return {
-                  ...item,
-                  status: String(meetingStatusID),
-                };
-              } else {
-                return item; // Return the original item if the condition is not met
-              }
+            // Your
+          }
+          let meetingStatusID = statusCheck;
+          let meetingID = meetingIDCheck;
+          try {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
             });
-          });
-          setStartMeetingButton((prevStateStartBtn) => {
-            return prevStateStartBtn.filter(
-              (newBtn, index) => Number(newBtn.meetingID) !== Number(meetingID)
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(meetingID)
+              );
+            });
+          } catch (error) {
+            console.log(
+              error,
+              "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
             );
-          });
-        } catch {}
+          }
+        } else if (
+          MeetingStatusSocket.message
+            .toLowerCase()
+            .includes("MEETING_STATUS_EDITED_CANCELLED".toLowerCase())
+        ) {
+          let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
+          let meetingID = MeetingStatusSocket?.meetingID;
+          try {
+            setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
+            setStartMeetingButton((prevStateStartBtn) => {
+              return prevStateStartBtn.filter(
+                (newBtn, index) =>
+                  Number(newBtn.meetingID) !== Number(meetingID)
+              );
+            });
+          } catch {}
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   }, [MeetingStatusSocket]);
@@ -3913,7 +3954,11 @@ const NewMeeting = () => {
         ) : (
           <>
             <Row className='mt-2'>
-              <Col sm={12} md={12} lg={6} className='d-flex '>
+              <Col
+                sm={12}
+                md={12}
+                lg={6}
+                className='d-flex align-items-center  '>
                 <span className={styles["NewMeetinHeading"]}>
                   {t("Meetings")}
                 </span>
@@ -3966,8 +4011,8 @@ const NewMeeting = () => {
                   </ReactBootstrapDropdown>
                 </span>
               </Col>
-              <Col sm={12} md={12} lg={6} className=''>
-                <span className='position-relative'>
+              <Col sm={12} md={12} lg={6}>
+                <div className='position-relative'>
                   <TextField
                     width={"100%"}
                     placeholder={t("Search-on-meeting-title")}
@@ -4100,7 +4145,7 @@ const NewMeeting = () => {
                       </Row>
                     </>
                   ) : null}
-                </span>
+                </div>
               </Col>
             </Row>
             <Row className='mt-2'>

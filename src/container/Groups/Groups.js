@@ -564,7 +564,7 @@ const Groups = () => {
                       {groupsData.length > 0 ? (
                         groupsData.map((data, index) => {
                           return (
-                            <Col lg={3} md={3} sm={12} className='mb-3'>
+                            <Col lg={3} md={3} sm={12} className='mb-3' key={index}>
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}

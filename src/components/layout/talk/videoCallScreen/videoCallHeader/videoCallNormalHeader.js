@@ -125,6 +125,8 @@ const VideoCallNormalHeader = ({
     setStopRecordingState,
   } = useContext(MeetingContext);
 
+  console.log(groupVideoCallAccepted, "groupCallParticipantList");
+
   const leaveModalPopupRef = useRef(null);
 
   const MaximizeVideoFlag = useSelector(
@@ -157,7 +159,7 @@ const VideoCallNormalHeader = ({
   const audioControl = useSelector(
     (state) => state.videoFeatureReducer.audioControlHost
   );
-
+  console.log(audioControl, "audioControlaudioControl");
   //Video Control For host
   const videoControl = useSelector(
     (state) => state.videoFeatureReducer.videoControlHost
@@ -208,6 +210,8 @@ const VideoCallNormalHeader = ({
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
+  console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
+  console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
     (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
@@ -381,6 +385,8 @@ const VideoCallNormalHeader = ({
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
+
+  console.log(pendingCallParticipantList, "pendingCallParticipantList");
 
   useEffect(() => {
     if (
@@ -681,7 +687,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -1485,43 +1492,38 @@ const VideoCallNormalHeader = ({
 
   return (
     <>
-      <Row className="mb-4">
-        <Col lg={3} md={3} sm={12} className="mt-1">
+      <Row className='mb-4'>
+        <Col
+          lg={8}
+          md={8}
+          sm={12}
+          className='mt-1 d-flex justify-content-start align-items-center gap-2'>
           <p
             className={
               presenterViewFlag && MinimizeVideoFlag && isMeetingVideo
                 ? "title-for-presenter"
                 : "title-heading"
-            }
-          >
+            }>
             {getMeetingTitle()}
           </p>
-        </Col>
-
-        <Col
-          lg={3}
-          md={3}
-          sm={12}
-          className="d-flex justify-content-center align-items-center mt-1"
-        >
           {MaximizeVideoFlag === true &&
             showNotification === true &&
             !presenterViewFlag && (
-              <div className="Notification-maximize">
-                <p className="Notification-text">
+              <div className='Notification-maximize'>
+                <p className='Notification-text'>
                   {t("Minimize-call-to-see-the-screen")}
                 </p>
                 <img
-                  className="cursor-pointer"
+                  className='cursor-pointer'
                   src={CloseNotification}
                   onClick={closeNotification}
-                  alt="Close Notification"
+                  alt='Close Notification'
                 />
               </div>
             )}
         </Col>
 
-        <Col lg={6} md={6} sm={12} className="normal-screen-top-icons">
+        <Col lg={4} md={4} sm={12} className='normal-screen-top-icons'>
           <div
             className={
               LeaveCallModalFlag === true ||
@@ -1532,8 +1534,7 @@ const VideoCallNormalHeader = ({
                   !presenterViewHostFlag
                 ? "cursor-pointer meeting-Recording-State"
                 : "inactive-state"
-            }
-          >
+            }>
             {isZoomEnabled && (
               <>
                 {isMeeting &&
@@ -1546,9 +1547,8 @@ const VideoCallNormalHeader = ({
                     {/* if Recording is start */}
                     {startRecordingState && (
                       <div
-                        className="start-Recording-div"
-                        onClick={onStartRecording}
-                      >
+                        className='start-Recording-div'
+                        onClick={onStartRecording}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
                           title={t("Start-recording")}
@@ -1556,12 +1556,11 @@ const VideoCallNormalHeader = ({
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"
                               : ""
-                          }
-                        >
+                          }>
                           <img
                             src={StartRecordLarge}
-                            className="Start-Record-Button"
-                            alt="Record"
+                            className='Start-Record-Button'
+                            alt='Record'
                           />
                         </Tooltip>
                       </div>
@@ -1577,16 +1576,15 @@ const VideoCallNormalHeader = ({
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"
                               : ""
-                          }
-                        >
+                          }>
                           <img
                             src={StartRecordSmall}
                             onClick={onStopRecording}
-                            className="Bunch-Start-Record-Button-2"
-                            alt="Record"
+                            className='Bunch-Start-Record-Button-2'
+                            alt='Record'
                           />
                         </Tooltip>
-                        <p className="Recording-text">{t("Recording...")}</p>
+                        <p className='Recording-text'>{t("Recording...")}</p>
 
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1595,13 +1593,12 @@ const VideoCallNormalHeader = ({
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"
                               : ""
-                          }
-                        >
+                          }>
                           <img
                             src={RecordStart}
                             onClick={onPauseRecording}
-                            className="Bunch-Start-Record-Button"
-                            alt="Record"
+                            className='Bunch-Start-Record-Button'
+                            alt='Record'
                           />
                         </Tooltip>
                       </div>
@@ -1610,8 +1607,7 @@ const VideoCallNormalHeader = ({
                     {/* if Recording is Pause and Resume */}
                     {resumeRecordingState && (
                       <div
-                        className={"Record-Start-BackgroundRed-VideoMeeting"}
-                      >
+                        className={"Record-Start-BackgroundRed-VideoMeeting"}>
                         <p className={"RecordingPaused-text-videoMeeting"}>
                           {t("Recording-paused")}
                         </p>
@@ -1622,12 +1618,11 @@ const VideoCallNormalHeader = ({
                             presenterViewFlag
                               ? "zindexing-for-presenter-tooltip"
                               : ""
-                          }
-                        >
+                          }>
                           <img
                             src={RecordPlay}
-                            className="Bunch-Start-RecordingPaused-Button"
-                            alt="Record"
+                            className='Bunch-Start-RecordingPaused-Button'
+                            alt='Record'
                             onClick={onResumeRecording}
                           />
                         </Tooltip>
@@ -1647,8 +1642,7 @@ const VideoCallNormalHeader = ({
                 : !isMicActive
                 ? "cursor-pointer active-state"
                 : "inactive-state"
-            }
-          >
+            }>
             <Tooltip
               placement={presenterViewFlag ? "bottom" : "topRight"}
               title={
@@ -1662,8 +1656,7 @@ const VideoCallNormalHeader = ({
               }
               overlayClassName={
                 presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
-              }
-            >
+              }>
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
@@ -1681,7 +1674,7 @@ const VideoCallNormalHeader = ({
                     ? null
                     : disableMic()
                 }
-                alt="Mic"
+                alt='Mic'
               />
             </Tooltip>
           </div>
@@ -1693,8 +1686,7 @@ const VideoCallNormalHeader = ({
                 : !isVideoActive
                 ? "cursor-pointer active-state"
                 : "inactive-state"
-            }
-          >
+            }>
             <Tooltip
               placement={presenterViewFlag ? "bottom" : "topRight"}
               overlayClassName={
@@ -1708,8 +1700,7 @@ const VideoCallNormalHeader = ({
                   : isVideoActive
                   ? t("Disable-video")
                   : t("Enable-video")
-              }
-            >
+              }>
               <img
                 src={
                   getMeetingHostInfo?.isDashboardVideo
@@ -1727,7 +1718,7 @@ const VideoCallNormalHeader = ({
                     ? null
                     : disableVideo()
                 }
-                alt="Video"
+                alt='Video'
               />
             </Tooltip>
           </div>
@@ -1743,8 +1734,7 @@ const VideoCallNormalHeader = ({
                 : globallyScreenShare
                 ? "presenterImage"
                 : "screenShare-Toggle inactive-state"
-            }
-          >
+            }>
             <Tooltip
               placement={presenterViewFlag ? "bottom" : "topRight"}
               overlayClassName={
@@ -1754,8 +1744,7 @@ const VideoCallNormalHeader = ({
                 isScreenActive || (presenterViewFlag && presenterViewHostFlag)
                   ? t("Stop-sharing")
                   : t("Screen-share")
-              }
-            >
+              }>
               <img
                 onClick={
                   (!presenterViewFlag && !globallyScreenShare) ||
@@ -1764,7 +1753,7 @@ const VideoCallNormalHeader = ({
                     : null
                 }
                 src={NonActiveScreenShare}
-                alt="Screen Share"
+                alt='Screen Share'
               />
             </Tooltip>
           </div>
@@ -1786,8 +1775,7 @@ const VideoCallNormalHeader = ({
                     !raisedUnRaisedParticipant
                   ? "inactive-state"
                   : "cursor-pointer active-state"
-              }
-            >
+              }>
               <Tooltip
                 placement={
                   presenterViewJoinFlag && !presenterViewHostFlag
@@ -1809,8 +1797,7 @@ const VideoCallNormalHeader = ({
                     : raisedUnRaisedParticipant
                     ? t("Lower-hand")
                     : t("Raise-hand")
-                }
-              >
+                }>
                 <img
                   onClick={() =>
                     getMeetingHostInfo?.isHost
@@ -1838,7 +1825,7 @@ const VideoCallNormalHeader = ({
                       ? LowerHand
                       : RaiseHand
                   }
-                  alt="Raise Hand"
+                  alt='Raise Hand'
                 />
               </Tooltip>
             </div>
@@ -1851,19 +1838,17 @@ const VideoCallNormalHeader = ({
                 LeaveCallModalFlag
                   ? "grayScaleImage"
                   : "screenShare-Toggle inactive-state"
-              }
-            >
+              }>
               <Tooltip
                 placement={presenterViewFlag ? "bottom" : "topRight"}
                 overlayClassName={
                   presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
                 }
-                title={t("Copy-link")}
-              >
+                title={t("Copy-link")}>
                 <img
                   onClick={copyToClipboardd}
                   src={CopyLink}
-                  alt="Copy Link"
+                  alt='Copy Link'
                 />
               </Tooltip>
             </div>
@@ -1880,15 +1865,13 @@ const VideoCallNormalHeader = ({
                       : presenterViewFlag && !presenterViewHostFlag
                       ? "presenterImage"
                       : "screenShare-Toggle"
-                  }
-                >
+                  }>
                   <Tooltip
                     placement={presenterViewFlag ? "bottom" : "topRight"}
                     overlayClassName={
                       presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
                     }
-                    title={t("Layout")}
-                  >
+                    title={t("Layout")}>
                     <img
                       className={"cursor-pointer"}
                       onClick={
@@ -1899,7 +1882,7 @@ const VideoCallNormalHeader = ({
                           : layoutCurrentChange
                       }
                       src={showTile ? TileView : SidebarView}
-                      alt="Layout Change"
+                      alt='Layout Change'
                     />
                   </Tooltip>
                 </div>
@@ -1918,17 +1901,17 @@ const VideoCallNormalHeader = ({
             <div className={"position-relative"}>
               {ParticipantPopupFlag === true ? (
                 <>
-                  <div className="cursor-pointer active-state">
+                  <div className='cursor-pointer active-state'>
                     <img
                       src={ActiveParticipantIcon}
                       onClick={() => {
                         const role = getMeetingHostInfo.isHost ? 1 : 2;
                         closeParticipantHandler(role, true);
                       }}
-                      alt="Active participants"
+                      alt='Active participants'
                     />
                   </div>
-                  <div className="participants-list">
+                  <div className='participants-list'>
                     {isCaller && (
                       <>
                         {groupCallParticipantList !== null &&
@@ -1961,23 +1944,22 @@ const VideoCallNormalHeader = ({
                                   );
 
                                 return (
-                                  <Row className="m-0" key={index}>
-                                    <Col className="p-0" lg={7} md={7} sm={12}>
-                                      <p className="participant-name">
+                                  <Row className='m-0' key={index}>
+                                    <Col className='p-0' lg={7} md={7} sm={12}>
+                                      <p className='participant-name'>
                                         {participantData.name}
                                       </p>
                                     </Col>
                                     <Col
-                                      className="d-flex justify-content-end align-items-baseline gap-3 p-0"
+                                      className='d-flex justify-content-end align-items-baseline gap-3 p-0'
                                       lg={5}
                                       md={5}
-                                      sm={12}
-                                    >
+                                      sm={12}>
                                       {isMatchingParticipant ? (
                                         <>
                                           <Row>
                                             <Col>
-                                              <p className="participant-state">
+                                              <p className='participant-state'>
                                                 {t("Accepted")}
                                               </p>
                                             </Col>
@@ -1987,14 +1969,14 @@ const VideoCallNormalHeader = ({
                                         <>
                                           <Row>
                                             <Col>
-                                              <p className="participant-state">
+                                              <p className='participant-state'>
                                                 {t("Unanswered")}
                                               </p>
                                             </Col>
                                           </Row>
                                         </>
                                       ) : (
-                                        <p className="participant-state">
+                                        <p className='participant-state'>
                                           {displayStatus}
                                         </p>
                                       )}
@@ -2009,14 +1991,13 @@ const VideoCallNormalHeader = ({
                   </div>
                 </>
               ) : (
-                <Tooltip placement="topRight" title={t("Participants")}>
+                <Tooltip placement='topRight' title={t("Participants")}>
                   <div
                     className={
                       LeaveCallModalFlag === true
                         ? "grayScaleImage"
                         : "inactive-state"
-                    }
-                  >
+                    }>
                     <img
                       src={ParticipantsIcon}
                       onClick={() => {
@@ -2032,7 +2013,7 @@ const VideoCallNormalHeader = ({
                           : true;
                         closeParticipantHandler(role, flag);
                       }}
-                      alt="Participants"
+                      alt='Participants'
                     />
                   </div>
                 </Tooltip>
@@ -2041,29 +2022,55 @@ const VideoCallNormalHeader = ({
               {presenterViewFlag && presenterViewHostFlag ? (
                 <>
                   {handRaiseCounter > 0 && (
-                    <span className="HandRaise-Counter-for-Presenter">
+                    <span className='HandRaise-Counter-for-Presenter'>
                       {convertNumbersInString(handRaiseCounter, lan)}
                     </span>
                   )}
                 </>
               ) : (
                 <>
-                  <div className="main-icon-div">
-                    {isMeetingVideo && isMeetingVideoHostCheck && (
+                  <div className='main-icon-div'>
+                    {isMeetingVideo && (
                       <>
                         {handRaiseCounter > 0 && (
-                          <span className="HandRaise-Counter-for-participant">
+                          <span className='HandRaise-Counter-for-participant'>
                             {convertNumbersInString(handRaiseCounter, lan)}
                           </span>
                         )}
                       </>
                     )}
-                    <span className="participants-counter-For-Host">
-                      {getMeetingHostInfo?.isDashboardVideo &&
-                        convertNumbersInString(participantCounterList, lan)}
+                    <span className='participants-counter-For-Host'>
+                      {console.log(
+                        "isDashboardVideoCounter",
+                        participantCounterList,
+                        getMeetingHostInfo
+                      )}
+                      {getMeetingHostInfo?.isDashboardVideo ? (
+                        <>
+                          {console.log(
+                            "isFor Host or Participant",
+                            participantCounterList
+                          )}
+
+                          {convertNumbersInString(participantCounterList, lan)}
+                        </>
+                      ) : (
+                        <>
+                          {console.log(
+                            "isFor Host or Participant",
+                            groupCallParticipantList
+                          )}
+
+                          {convertNumbersInString(
+                            Array.isArray(groupCallParticipantList) &&
+                              groupCallParticipantList?.length,
+                            lan
+                          )}
+                        </>
+                      )}
                     </span>
                     {participantWaitingListCounter > 0 && (
-                      <span className="participants-counter-For-Host-waiting-counter">
+                      <span className='participants-counter-For-Host-waiting-counter'>
                         {convertNumbersInString(
                           participantWaitingListCounter,
                           lan
@@ -2084,13 +2091,12 @@ const VideoCallNormalHeader = ({
                     LeaveCallModalFlag === true
                       ? "grayScaleImage"
                       : "screenShare-Toggle inactive-state"
-                  }
-                >
-                  <Tooltip placement="topRight" title={t("Chat")}>
+                  }>
+                  <Tooltip placement='topRight' title={t("Chat")}>
                     <img
                       onClick={onClickCloseChatHandler}
                       src={ChatIcon}
-                      alt="Chat"
+                      alt='Chat'
                     />
                   </Tooltip>
                 </div>
@@ -2103,27 +2109,25 @@ const VideoCallNormalHeader = ({
             overlayClassName={
               presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
             }
-            title={t("Minimize")}
-          >
+            title={t("Minimize")}>
             <div
               onClick={minimizeVideoPanel}
               className={
                 LeaveCallModalFlag === true
                   ? "grayScaleImage"
                   : "inactive-state"
-              }
-            >
-              <img src={MinimizeIcon} alt="Minimize" />
+              }>
+              <img src={MinimizeIcon} alt='Minimize' />
             </div>
           </Tooltip>
 
           {LeaveCallModalFlag === true && callerID === currentUserID ? (
-            <div className="active-state-end">
+            <div className='active-state-end'>
               <Tooltip title={t("Cancel")}>
                 <img
                   onClick={cancelLeaveCallOption}
                   src={videoEndIcon}
-                  alt="End Call"
+                  alt='End Call'
                 />
               </Tooltip>
             </div>
@@ -2132,14 +2136,13 @@ const VideoCallNormalHeader = ({
             <Tooltip
               title={
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("End-call")
-              }
-            >
-              <div className="inactive-state">
+              }>
+              <div className='inactive-state'>
                 <img
-                  className="cursor-pointer"
+                  className='cursor-pointer'
                   src={CallEndRedIcon}
                   onClick={openVideoPanel}
-                  alt="End Call"
+                  alt='End Call'
                 />
               </div>
             </Tooltip>
@@ -2151,14 +2154,13 @@ const VideoCallNormalHeader = ({
               }
               title={
                 isMeetingVideo ? t("Leave-meeting-video-call") : t("Leave-call")
-              }
-            >
-              <div className="inactive-state">
+              }>
+              <div className='inactive-state'>
                 <img
-                  className="cursor-pointer"
+                  className='cursor-pointer'
                   src={CallEndRedIcon}
                   onClick={endCallParticipant}
-                  alt="End Call"
+                  alt='End Call'
                 />
               </div>
             </Tooltip>
@@ -2176,8 +2178,7 @@ const VideoCallNormalHeader = ({
                   : MaximizeVideoFlag
                   ? t("Collapse")
                   : null
-              }
-            >
+              }>
               <div
                 className={
                   LeaveCallModalFlag === true
@@ -2186,8 +2187,7 @@ const VideoCallNormalHeader = ({
                       (presenterViewHostFlag || presenterViewJoinFlag)
                     ? "presenterImage"
                     : "inactive-state"
-                }
-              >
+                }>
                 <img
                   src={
                     NormalizeVideoFlag
@@ -2226,12 +2226,12 @@ const VideoCallNormalHeader = ({
         <>
           <div ref={leaveModalPopupRef}>
             {LeaveCallModalFlag === true && !MinimizeVideoFlag ? (
-              <div className="leave-meeting-options leave-meeting-options-position">
-                <div className="leave-meeting-options__inner">
+              <div className='leave-meeting-options leave-meeting-options-position'>
+                <div className='leave-meeting-options__inner'>
                   {editorRole.role === "Organizer" ? (
                     <>
                       <Button
-                        className="leave-meeting-options__btn leave-meeting-red-button"
+                        className='leave-meeting-options__btn leave-meeting-red-button'
                         text={
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
@@ -2244,15 +2244,15 @@ const VideoCallNormalHeader = ({
                         onClick={() => leaveCall(false, false, false, false)}
                       />
                       <Button
-                        className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        className='leave-meeting-options__btn leave-meeting-gray-button'
+                        text='Cancel'
                         onClick={closeVideoPanel}
                       />
                     </>
                   ) : (
                     <>
                       <Button
-                        className="leave-meeting-options__btn leave-meeting-red-button"
+                        className='leave-meeting-options__btn leave-meeting-red-button'
                         text={
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
@@ -2266,8 +2266,8 @@ const VideoCallNormalHeader = ({
                       />
 
                       <Button
-                        className="leave-meeting-options__btn leave-meeting-gray-button"
-                        text="Cancel"
+                        className='leave-meeting-options__btn leave-meeting-gray-button'
+                        text='Cancel'
                         onClick={closeVideoPanel}
                       />
                     </>

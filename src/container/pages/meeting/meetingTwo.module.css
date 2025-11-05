@@ -54,11 +54,13 @@
   right: 0 !important;
   width: auto;
   top: 5px;
-  margin-right: 7px;
+  margin-right: 8px;
 }
 
 .Search-Box_meeting {
-  width: 502px !important;
+  max-width: 100%;
+  width: 100%;
+  /* width: 502px !important; */
   height: 242px !important;
   background: #fff;
   border: 1px solid #e1e1e1;

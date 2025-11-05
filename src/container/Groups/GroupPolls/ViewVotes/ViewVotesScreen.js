@@ -74,7 +74,7 @@ const ViewVotesScreen = () => {
                   ? votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
-                          <Col lg={12} md={12} sm={12} className="mt-2">
+                          <Col lg={12} md={12} sm={12} className="mt-2" key={index}>
                             <section>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
@@ -126,7 +126,7 @@ const ViewVotesScreen = () => {
                 pollAttendiesOpptionsVise.map((pollParticipantData, index) => {
                   return (
                     <>
-                      <Row className="mt-3">
+                      <Row className="mt-3" key={index}>
                         <Col lg={12} md={12} sm={12}>
                           <Row className="mt-1">
                             <Col lg={12} md={12} sm={12}>
@@ -146,6 +146,7 @@ const ViewVotesScreen = () => {
                                           lg={6}
                                           md={6}
                                           sm={6}
+                                          key={index}
                                           className={
                                             styles[
                                               "Scroller_View_Published_Polls"

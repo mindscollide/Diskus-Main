@@ -975,7 +975,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   display: f !important;
 }
 .fileRow {
-  display: block;
+  display: flex;
   align-items: center;
   width: 100% !important;
   text-overflow: ellipsis !important;

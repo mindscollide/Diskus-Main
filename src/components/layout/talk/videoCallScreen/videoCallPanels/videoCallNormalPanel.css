@@ -158,6 +158,19 @@ body[dir="rtl"] .videoCallScreen {
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
   overflow: auto;
 }
+body[dir="rtl"] .Participants-Lists {
+  background: #fff !important;
+  border-radius: 4px !important;
+  padding: 10px 10px !important;
+  position: absolute !important;
+  width: 230px !important;
+  top: 39px !important;
+  height: 190px !important;
+  box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
+  overflow: auto !important;
+  right: auto !important;
+  left: 158px;
+}
 
 .Participant-name-title {
   font-weight: 700;

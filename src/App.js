@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -32,82 +32,23 @@ import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
-
+import { useMeetingContext } from "./context/MeetingContext";
+import { v4 as uuidv4 } from "uuid";
 const POLLING_INTERVAL = 60000; // 1 minute
+
+const TABS_KEY = "open_tabs"; // to track all open tabs
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
-  const auth = useSelector((state) => state.auth);
-  const assignees = useSelector((state) => state.assignees);
-  const CommitteeReducer = useSelector((state) => state.CommitteeReducer);
-  const toDoListReducer = useSelector((state) => state.toDoListReducer);
-  const getTodosStatus = useSelector((state) => state.getTodosStatus);
-  const downloadReducer = useSelector((state) => state.downloadReducer);
-  const todoStatus = useSelector((state) => state.todoStatus);
-  const uploadReducer = useSelector((state) => state.uploadReducer);
-  const settingReducer = useSelector((state) => state.settingReducer);
-  const fAQsReducer = useSelector((state) => state.fAQsReducer);
-  const meetingIdReducer = useSelector((state) => state.meetingIdReducer);
-  const calendarReducer = useSelector((state) => state.calendarReducer);
-  const postAssigneeComments = useSelector(
-    (state) => state.postAssigneeComments
-  );
-  const VideoChatReducer = useSelector((state) => state.VideoChatReducer);
-  const minuteofMeetingReducer = useSelector(
-    (state) => state.minuteofMeetingReducer
-  );
-  const countryNamesReducer = useSelector((state) => state.countryNamesReducer);
-  const GetSubscriptionPackage = useSelector(
-    (state) => state.GetSubscriptionPackage
-  );
-  const Authreducer = useSelector((state) => state.Authreducer);
-  const roleListReducer = useSelector((state) => state.roleListReducer);
-  const NotesReducer = useSelector((state) => state.NotesReducer);
-  const GroupsReducer = useSelector((state) => state.GroupsReducer);
-  const ResolutionReducer = useSelector((state) => state.ResolutionReducer);
-  const RealtimeNotification = useSelector(
-    (state) => state.RealtimeNotification
-  );
-  const OrganizationBillingReducer = useSelector(
-    (state) => state.OrganizationBillingReducer
-  );
-  const PollsReducer = useSelector((state) => state.PollsReducer);
-  const NewMeetingreducer = useSelector((state) => state.NewMeetingreducer);
-  const LanguageReducer = useSelector((state) => state.LanguageReducer);
-  const webViewer = useSelector((state) => state.webViewer);
-  const MeetingOrganizersReducer = useSelector(
-    (state) => state.MeetingOrganizersReducer
-  );
-  const MeetingAgendaReducer = useSelector(
-    (state) => state.MeetingAgendaReducer
-  );
-  const attendanceMeetingReducer = useSelector(
-    (state) => state.attendanceMeetingReducer
-  );
-  const actionMeetingReducer = useSelector(
-    (state) => state.actionMeetingReducer
-  );
-  const AgendaWiseAgendaListReducer = useSelector(
-    (state) => state.AgendaWiseAgendaListReducer
-  );
-  const DataRoomReducer = useSelector((state) => state.DataRoomReducer);
-  const DataRoomFileAndFoldersDetailsReducer = useSelector(
-    (state) => state.DataRoomFileAndFoldersDetailsReducer
-  );
-  const SignatureWorkFlowReducer = useSelector(
-    (state) => state.SignatureWorkFlowReducer
-  );
-  const UserMangementReducer = useSelector(
-    (state) => state.UserMangementReducer
-  );
-  const adminReducer = useSelector((state) => state.adminReducer);
-  const UserReportReducer = useSelector((state) => state.UserReportReducer);
-  const MinutesReducer = useSelector((state) => state.MinutesReducer);
+  const {
+    isMeetingVideo,
+    meetingId,
+    viewAdvanceMeetingModal,
+    iframeRef,
+    editorRole,
+  } = useMeetingContext();
 
-  const UserManagementModals = useSelector(
-    (state) => state.UserManagementModals
-  );
+  const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
   const [open, setOpen] = useState({
     open: false,
@@ -129,8 +70,8 @@ const App = () => {
 
     return isAndroid || isIOS;
   };
-  let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
 
+  let RSVPRouteforApp = localStorage.getItem("mobilePopUpAppRoute");
   useEffect(() => {
     const channel = new BroadcastChannel("auth");
 
@@ -208,91 +149,6 @@ const App = () => {
     // Clear interval on component unmount
     return () => clearInterval(intervalId);
   }, [currentVersion]);
-  const isLoading = [
-    NewMeetingreducer?.Loading,
-    auth?.Loading,
-    assignees?.Loading,
-    MeetingOrganizersReducer?.LoadingMeetingOrganizer,
-    MeetingOrganizersReducer?.Loading,
-    PollsReducer?.Loading,
-    CommitteeReducer?.Loading,
-    toDoListReducer?.Loading,
-    todoStatus?.Loading,
-    getTodosStatus?.Loading,
-    MeetingAgendaReducer?.Loading,
-    actionMeetingReducer?.Loading,
-    AgendaWiseAgendaListReducer?.loading,
-    downloadReducer?.Loading,
-    attendanceMeetingReducer?.Loading,
-    webViewer?.Loading,
-    LanguageReducer?.Loading,
-    uploadReducer?.Loading,
-    settingReducer?.Loading,
-    fAQsReducer?.Loading,
-    meetingIdReducer?.Loading,
-    calendarReducer?.Loading,
-    postAssigneeComments?.Loading,
-    VideoChatReducer?.Loading,
-    minuteofMeetingReducer?.Loading,
-    countryNamesReducer?.Loading,
-    GetSubscriptionPackage?.Loading,
-    Authreducer?.Loading,
-    roleListReducer?.Loading,
-    NotesReducer?.Loading,
-    GroupsReducer?.Loading,
-    GroupsReducer?.getAllLoading,
-    ResolutionReducer?.Loading,
-    RealtimeNotification?.Loading,
-    OrganizationBillingReducer?.Loading,
-    DataRoomReducer?.Loading,
-    MinutesReducer?.Loading,
-    UserManagementModals?.Loading,
-    DataRoomFileAndFoldersDetailsReducer?.Loading,
-    SignatureWorkFlowReducer?.Loading,
-    adminReducer?.Loading,
-    UserReportReducer?.Loading,
-    UserMangementReducer?.Loading,
-  ].some((loading) => loading);
-
-  const [showLoader, setShowLoader] = useState(false);
-
-  const [progress, setProgress] = useState(0);
-  useEffect(() => {
-    let progressInterval;
-
-    if (isLoading) {
-      setShowLoader(true); // Show loader
-      setProgress(0); // Start progress from 0%
-
-      // Increment progress gradually
-      progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev < 90) {
-            return prev + 2; // Gradually increase (up to 90%)
-          } else {
-            return prev; // Pause near 90% while still loading
-          }
-        });
-      }, 100); // Adjust speed of increment
-    } else {
-      // When loading completes, animate from current progress to 100%
-      progressInterval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev < 100) {
-            return prev + 2; // Gradually increase from 90% to 100%
-          } else {
-            clearInterval(progressInterval); // Clear interval at 100%
-            const timeout = setTimeout(() => {
-              setShowLoader(false); // Hide loader after reaching 100%
-            }, 300); // Optional delay to display full progress
-            return () => clearTimeout(timeout);
-          }
-        });
-      }, 50); // Faster increment for the remaining 10%
-    }
-    // Cleanup interval when `isLoading` changes or component unmounts
-    return () => clearInterval(progressInterval);
-  }, [isLoading]);
 
   useEffect(() => {
     if (
@@ -313,7 +169,6 @@ const App = () => {
         router={router}
         future={{ v7_startTransition: true, v7_fetcherPersist: true }}
       />
-
       {/* Calling a component or modal in which Iframe calling through their SourceLink  */}
       {paymentProcessModal && <OpenPaymentForm />}
       {updateVersion && (

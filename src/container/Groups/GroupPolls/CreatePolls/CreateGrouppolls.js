@@ -591,7 +591,7 @@ const CreateGroupPolls = ({ setCreatepoll, view }) => {
                         ? members.map((data, index) => {
                             return (
                               <>
-                                <Col lg={6} md={6} sm={6} className="mt-3">
+                                <Col lg={6} md={6} sm={6} className="mt-3" key={index}>
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <section

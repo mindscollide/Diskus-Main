@@ -232,11 +232,12 @@ const BoardDeckModal = ({
       fetchVideo: boardDeckpublishedChecks.isVideoCall
         ? boarddeckOptions.video
         : false,
-      fetchAgendaWithAttachments:
-        boardDeckpublishedChecks.isAgendaWithAttachmentExist
-          ? boarddeckOptions.Agenda
-          : false,
-      fetchAgenda: boarddeckOptions.Agenda,
+      // fetchAgendaWithAttachments:
+      //   boardDeckpublishedChecks.isAgendaWithAttachmentExist
+      //     ? boarddeckOptions.Agenda
+      //     : false,
+      fetchAgendaWithAttachments: boarddeckOptions.Agenda,
+      // fetchAgenda: boarddeckOptions.Agenda,
     };
     dispatch(BoardDeckPDFDownloadApi(navigate, t, data, setBoarddeckOptions));
   };

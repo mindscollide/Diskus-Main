@@ -1,0 +1,71 @@
+.ChromeExperience_Wrapper {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center; /* top align */
+}
+
+.Chrome_Backdrop {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(20px);
+  background-color: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+  pointer-events: none;
+}
+
+.ChromeExperience_Box {
+  position: relative;
+  max-width: 524px;
+  padding: 30px 50px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); */
+  text-align: center;
+  pointer-events: auto; /* box clickable if needed */
+}
+.ChromeExperience_Box_Cross {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+.Chrome_Heading {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 100%;
+  text-align: center;
+  color: #6172d6;
+}
+
+.Chrome_Tagline {
+  margin-top: 30px;
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: #5a5a5a;
+  line-height: 25px;
+}
+.Closebtn {
+  margin-top: 10px;
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fb9494 !important;
+  color: #fff;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+.Closebtn:is(:hover, :focus, :active, :focus-visible, :visited) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fb9494;
+  color: #fff;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}

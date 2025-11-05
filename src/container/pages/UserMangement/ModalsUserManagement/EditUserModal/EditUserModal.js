@@ -276,7 +276,7 @@ const EditUserModal = ({ editModalData }) => {
         MobileNumber: editUserModalValues.MobileNumber.value,
         RoleID: editUserModalValues.isAdminUser,
         OrganizationID: Number(organizationID),
-        PackageID: isTrialCheck ? 4 : Number(editPakageID),
+        PackageID: Number(editPakageID),
         FK_NumberWorldCountryID: Number(editModalData.fK_WorldCountryID),
       };
       //The True is The Flag for AllOrganization User After Editing the User
@@ -338,7 +338,7 @@ const EditUserModal = ({ editModalData }) => {
                       </span>
                     </Col>
                   </Row>
-                  <Row className="mt-4">
+                  <Row className='mt-4'>
                     <Col lg={12} md={12} sm={12} xs={12}>
                       <TextField
                         placeholder={t("Full-name")}
@@ -366,8 +366,7 @@ const EditUserModal = ({ editModalData }) => {
                           editUserModalValues.Name.value === ""
                             ? ` ${styles["errorMessage"]}`
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {editUserModalValues.Name.errorMessage}
                       </p>
                     </Col>
@@ -400,8 +399,7 @@ const EditUserModal = ({ editModalData }) => {
                           editUserModalValues.Desgiantion.value === ""
                             ? ` ${styles["errorMessage"]}`
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {editUserModalValues.Desgiantion.errorMessage}
                       </p>
                     </Col>
@@ -416,14 +414,13 @@ const EditUserModal = ({ editModalData }) => {
                       md={3}
                       sm={3}
                       xs={12}
-                      className={styles["react-flag"]}
-                    >
+                      className={styles["react-flag"]}>
                       <ReactFlagsSelect
-                        name="reactFlag"
+                        name='reactFlag'
                         fullWidth={false}
                         selected={selected} // Set the selected value from state
                         selectedSize={8}
-                        className="menu-flags"
+                        className='menu-flags'
                         onSelect={handleSelect}
                         searchable={true}
                         placeholder={"Select Co...."}
@@ -434,12 +431,12 @@ const EditUserModal = ({ editModalData }) => {
                       <Form.Control
                         placeholder={t("Enter-phone-number")}
                         className={styles["formcontrol-Phone-Input-Textfield"]}
-                        applyClass="form-control2"
+                        applyClass='form-control2'
                         maxLength={15}
                         minLength={4}
                         onChange={handleUpdateModal}
                         value={editUserModalValues.MobileNumber.value}
-                        name="MobileNumber"
+                        name='MobileNumber'
                       />
                       <Col>
                         <p
@@ -447,8 +444,7 @@ const EditUserModal = ({ editModalData }) => {
                             editUserModalValues.MobileNumber.value === ""
                               ? ` ${styles["errorMessage"]}`
                               : `${styles["errorMessage_hidden"]}`
-                          }
-                        >
+                          }>
                           {editUserModalValues.MobileNumber.errorMessage}
                         </p>
                       </Col>
@@ -459,8 +455,7 @@ const EditUserModal = ({ editModalData }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="flex-column flex-wrap"
-                    >
+                      className='flex-column flex-wrap'>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Role")}
                       </span>
@@ -470,13 +465,12 @@ const EditUserModal = ({ editModalData }) => {
                           md={12}
                           sm={12}
                           xs={12}
-                          className="d-flex gap-2"
-                        >
+                          className='d-flex gap-2'>
                           <Checkbox
-                            classNameCheckBoxP="m-0 p-0"
+                            classNameCheckBoxP='m-0 p-0'
                             checked={editUserModalValues.isAdminUser === 4}
                             onChange={handleIsAdminCheckbox}
-                            classNameDiv=""
+                            classNameDiv=''
                           />
                           <span className={styles["AdminAlsoClass"]}>
                             {t("Is-admin-also")}
@@ -498,7 +492,7 @@ const EditUserModal = ({ editModalData }) => {
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <Select
-                            name="PackageAssigned"
+                            name='PackageAssigned'
                             value={packageAssignedValue}
                             options={packageAssignedOption}
                             onChange={handlePackageAssigned}
@@ -508,7 +502,7 @@ const EditUserModal = ({ editModalData }) => {
                       </Row>
                     </>
                   )}
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Status")}
@@ -524,13 +518,12 @@ const EditUserModal = ({ editModalData }) => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-3">
+                  <Row className='mt-3'>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex flex-column flex-wrap"
-                    >
+                      className='d-flex flex-column flex-wrap'>
                       <span className={styles["NameCreateAddtional"]}>
                         {t("Organization")}
                       </span>
@@ -553,8 +546,7 @@ const EditUserModal = ({ editModalData }) => {
                   md={12}
                   sm={12}
                   xs={12}
-                  className="d-flex justify-content-end"
-                >
+                  className='d-flex justify-content-end'>
                   <Button
                     text={t("Update")}
                     className={styles["EdituserModalUpdateButton"]}

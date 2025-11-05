@@ -644,11 +644,7 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
                   "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                AddAnnotationsOnResolutionAttachementSuccess(
-                  t("Record-inserted")
-                )
-              );
+              dispatch(AddAnnotationsOnResolutionAttachementSuccess(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -656,11 +652,7 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
                   "Resolution_ResolutionServiceManager_AddAnnotationOnResolutionAttachement_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                AddAnnotationsOnResolutionAttachementSuccess(
-                  t("Record-updated")
-                )
-              );
+              dispatch(AddAnnotationsOnResolutionAttachementSuccess(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -755,7 +747,12 @@ const GetAnnotationsOfDataroomAttachementFail = (message) => {
   };
 };
 
-const getAnnotationsOfDataroomAttachement = (navigate, t, data, html = false) => {
+const getAnnotationsOfDataroomAttachement = (
+  navigate,
+  t,
+  data,
+  html = false
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(GetAnnotationsOfDataroomAttachementinit());
@@ -776,7 +773,9 @@ const getAnnotationsOfDataroomAttachement = (navigate, t, data, html = false) =>
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data, html));
+          dispatch(
+            getAnnotationsOfDataroomAttachement(navigate, t, data, html)
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -901,7 +900,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("Record-inserted"))
+                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -911,7 +910,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("Record-updated"))
+                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -921,7 +920,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("No-record-inserted"))
+                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -931,7 +930,7 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("No-record-updated"))
+                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
               );
             } else if (
               response.data.responseResult.responseMessage

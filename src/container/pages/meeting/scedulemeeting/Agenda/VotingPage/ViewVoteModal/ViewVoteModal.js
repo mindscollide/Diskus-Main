@@ -210,7 +210,7 @@ const ViewVoteModal = () => {
         show={viewVotesAgenda}
         setShow={dispatch(showviewVotesAgenda)}
         modalFooterClassName={"d-block"}
-        modalHeaderClassName={"d-block"}
+        modalHeaderClassName={"d-none"}
         onHide={() => {
           dispatch(showviewVotesAgenda(false));
         }}

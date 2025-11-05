@@ -49,12 +49,7 @@ const Loader = ({ progress }) => {
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          {/* <img
-            src={DikusGIF}
-            className={styles["LoadderImageclass"]}
-            alt="My GIF Icon"
-            draggable="false"
-          /> */}
+          
           {!location.toLowerCase().includes("/Diskus/".toLowerCase()) &&
           !location.toLowerCase().includes("/Admin/".toLowerCase()) ? (
             <>

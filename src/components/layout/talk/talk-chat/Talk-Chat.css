@@ -1692,7 +1692,7 @@ p.groupinfo-createdon {
 }
 
 .users-list-groupinfo {
-  height: 130px;
+  height: 15vh;
   overflow: hidden auto;
 }
 

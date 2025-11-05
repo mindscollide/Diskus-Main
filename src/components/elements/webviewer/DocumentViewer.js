@@ -17,6 +17,10 @@ import { useTranslation } from "react-i18next";
 import { Notification } from "../index";
 import { showMessage } from "../snack_bar/utill";
 import "./DocumentViwer.css";
+import { checkXFDFContent } from "./utils";
+import CustomModal from "../modal/Modal";
+import { Col, Row } from "react-bootstrap";
+import CustomButton from "../button/Button";
 
 const DocumentViewer = () => {
   const viewer = useRef(null);
@@ -24,6 +28,9 @@ const DocumentViewer = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Use React Router's useLocation hook
   const { t } = useTranslation();
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [instance, setInstance] = useState(null);
 
   // State Variables
   const [open, setOpen] = useState({
@@ -168,7 +175,46 @@ const DocumentViewer = () => {
     "gif",
     "avif",
     "apng",
+    "txt",
   ];
+
+  // ✅ Warn on tab close/refresh
+  // ✅ Detect annotation changes and warn on tab close
+  useEffect(() => {
+    if (!instance) return;
+
+    const { annotationManager } = instance.Core;
+
+    // Detect changes
+    const handleAnnotationChange = (annots, action) => {
+      if (action === "add" || action === "modify" || action === "delete") {
+        setHasUnsavedChanges(true);
+      }
+    };
+
+    annotationManager.addEventListener(
+      "annotationChanged",
+      handleAnnotationChange
+    );
+
+    // Warn when closing tab
+    const handleBeforeUnload = (event) => {
+      if (hasUnsavedChanges) {
+        event.preventDefault();
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      annotationManager.removeEventListener(
+        "annotationChanged",
+        handleAnnotationChange
+      );
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [instance, hasUnsavedChanges]);
 
   // Initialize WebViewer
   useEffect(() => {
@@ -183,74 +229,81 @@ const DocumentViewer = () => {
           officeWorker: true, // Enables Office file conversion
         },
         viewer.current
-      ).then((instance) => {
-        const { documentViewer, annotationManager, officeToPDFBuffer, PDFNet } =
-          instance.Core;
-        // Example usage:
-        const extension = getFileExtension(fileName);
+      )
+        .then((instance) => {
+          setInstance(instance);
+          const { FitMode, setFitMode } = instance.UI;
+          const {
+            documentViewer,
+            annotationManager,
+            officeToPDFBuffer,
+            SupportedFileFormats,
+          } = instance.Core;
 
-        const mimeType = getMimeTypeFromFileName(fileName);
+          const { CLIENT } = SupportedFileFormats;
+          // Example usage:
+          const extension = getFileExtension(fileName);
 
-        let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+          const mimeType = getMimeTypeFromFileName(fileName);
 
-        // Check if the extension exists in the array (case-insensitive)
-        if (supportedFormats.includes(extension.toLowerCase())) {
-          instance.UI.loadDocument(blob, {
-            filename: fileName,
-          });
-        } else {
-          if (["docx", "xlsx", "pptx"].includes(extension.toLowerCase())) {
-            try {
-              (async () => {
-                // Initialize Document Conversion
-                // Convert Blob into a File object
-                const file = new File([blob], `${fileName}`, {
-                  type: mimeType,
-                });
-                const buffer = await officeToPDFBuffer(file);
-                // Create a Blob for the converted PDF
-                const convertedBlob = new Blob([buffer], {
-                  type: "application/pdf",
-                });
-                // **Remove existing extension from fileName before appending '.pdf'**
-                const sanitizedFileName = fileName.replace(/\.[^/.]+$/, ""); // Removes the last extension
-                // Load the converted PDF into WebViewer
-                await instance.UI.loadDocument(convertedBlob, {
-                  filename: `${sanitizedFileName}.pdf`,
-                  extension: "pdf",
-                });
-              })();
-            } catch (error) {
-              console.log("pdfResponseDatapdf Conversion failed:", error); // Logs full error object
+          console.log(
+            { mimeType, extension, CLIENT },
+            "mimeTypemimeTypemimeType"
+          );
+
+          let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
+
+          // Check if the extension exists in the array (case-insensitive)
+          if (CLIENT.includes(extension.toLowerCase())) {
+            instance.UI.loadDocument(blob, {
+              filename: fileName,
+            });
+          } else {
+            showMessage(
+              t("file_format_not_supported_for_preview"),
+              "error",
+              setOpen
+            );
+            return;
+          }
+
+          // Handle annotations
+          // documentViewer.addEventListener("documentLoaded", () => {
+          //   annotationManager.setCurrentUser(localStorage.getItem("name"));
+          //   if (pdfResponseData.xfdfData) {
+          //     documentViewer.setFitMode(FitMode.FitWidth);
+          //     annotationManager.importAnnotations(pdfResponseData.xfdfData);
+          //   }
+          // });
+          documentViewer.addEventListener("documentLoaded", () => {
+            annotationManager.setCurrentUser(localStorage.getItem("name"));
+
+            // ✅ Always fit to width on load
+            setFitMode(FitMode.FitWidth);
+
+            // ✅ Import annotations if XFDF exists
+            if (pdfResponseData.xfdfData) {
+              annotationManager.importAnnotations(pdfResponseData.xfdfData);
             }
-          }
-        }
-
-        // Handle annotations
-        documentViewer.addEventListener("documentLoaded", () => {
-          annotationManager.setCurrentUser(localStorage.getItem("name"));
-          if (pdfResponseData.xfdfData) {
-            annotationManager.importAnnotations(pdfResponseData.xfdfData);
-          }
-        });
-
-        // Set permissions if needed
-        if (
-          Number(isPermission) === 1 ||
-          Number(isPermission) === 3
-        ) {
-          setPermissions(instance);
-        }
-
-        // Add custom save button
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "actionButton",
-            img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
-            onClick: async () => saveAnnotations(annotationManager),
           });
+
+          // Set permissions if needed
+          if (Number(isPermission) === 1 || Number(isPermission) === 3) {
+            setPermissions(instance);
+          }
+
+          // Add custom save button
+          instance.UI.setHeaderItems((header) => {
+            header.push({
+              type: "actionButton",
+              img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
+              onClick: async () => saveAnnotations(annotationManager),
+            });
+          });
+        })
+        .catch((error) => {
+          console.error("WebViewer initialization error:", error);
         });
-      });
     }
   }, [pdfResponseData.attachmentBlob]);
 
@@ -259,6 +312,7 @@ const DocumentViewer = () => {
     try {
       // Export annotations as XFDF
       const xfdfString = await annotationManager.exportAnnotations();
+
       // Prepare API data dynamically based on 'commingFrom'
       let apiData = { AnnotationString: xfdfString };
       switch (Number(commingFrom)) {
@@ -355,9 +409,10 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className="document-viewer">
-        <div className="webviewer" ref={viewer}></div>
+      <div className='document-viewer'>
+        <div className='webviewer' ref={viewer}></div>
       </div>
+     
       <Notification open={open} setOpen={setOpen} />
     </>
   );

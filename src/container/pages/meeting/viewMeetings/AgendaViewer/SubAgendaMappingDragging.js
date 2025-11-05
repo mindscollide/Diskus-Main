@@ -35,8 +35,6 @@ import { useMeetingContext } from "../../../../../context/MeetingContext";
 const SubAgendaMappingDragging = ({
   data,
   index,
-  setRows,
-  rows,
   apllyLockOnParentAgenda,
   subLockArry,
   setSubLockArray,
@@ -55,7 +53,7 @@ const SubAgendaMappingDragging = ({
   const { t } = useTranslation();
   //Timepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { editorRole } = useMeetingContext();
+  const { editorRole, viewMeetingAgendaViewerRowData } = useMeetingContext();
 
   const ResponseMessage = useSelector(
     (state) => state.MeetingAgendaReducer.ResponseMessage
@@ -93,11 +91,11 @@ const SubAgendaMappingDragging = ({
 
   // Initialize the subExpand state based on the number of rows and subAgendas
   useEffect(() => {
-    const initialState = rows.map((row) =>
+    const initialState = viewMeetingAgendaViewerRowData.map((row) =>
       Array(row.subAgenda.length).fill(false)
     );
     setSubExpand(initialState);
-  }, [rows]);
+  }, [viewMeetingAgendaViewerRowData]);
 
   const startVoting = (record) => {
     let Data = {
@@ -214,40 +212,33 @@ const SubAgendaMappingDragging = ({
                     editorRole.role === "Participant")
                     ? "d-none"
                     : ""
-                }
-              >
+                }>
                 <Droppable
                   key={`sub-agenda-${index}-${subIndex}`}
                   droppableId={`sub-agenda-${index}-${subIndex}`}
-                  type="SUB_AGENDA"
-                >
+                  type='SUB_AGENDA'>
                   {(provided) => (
                     <div ref={provided.innerRef} {...provided.droppableProps}>
                       <Draggable
                         key={subAgendaData.subAgendaID}
                         draggableId={`subAgenda-${subAgendaData.subAgendaID}`}
                         index={subIndex}
-                        isDragDisabled={true}
-                      >
+                        isDragDisabled={true}>
                         {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.draggableProps}
-                          >
+                            {...provided.draggableProps}>
                             <Row>
                               <Col
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["Subagenda_Scroller"]}
-                              >
+                                className={styles["Subagenda_Scroller"]}>
                                 <section
-                                  className={styles["Padding_SubAgenda"]}
-                                >
+                                  className={styles["Padding_SubAgenda"]}>
                                   <Row
                                     key={subAgendaData.subAgendaID}
-                                    className="mt-3"
-                                  >
+                                    className='mt-3'>
                                     <Col lg={1} md={1} sm={1}></Col>
                                     <Col
                                       lg={11}
@@ -261,31 +252,29 @@ const SubAgendaMappingDragging = ({
                                             subAgendaData.length === 1
                                           ? `${styles["SubajendaBox"]} ${styles["borderTopNone"]}`
                                           : styles["SubajendaBox"]
-                                      }
-                                    >
+                                      }>
                                       <Row isDragging={snapshot.isDragging}>
                                         <Col
                                           lg={12}
                                           md={12}
                                           sm={12}
-                                          className={styles["SubAgendaSection"]}
-                                        >
-                                          <Row className="mt-2 mb-2">
+                                          className={
+                                            styles["SubAgendaSection"]
+                                          }>
+                                          <Row className='mt-2 mb-2'>
                                             <Col
                                               lg={8}
                                               md={8}
                                               sm={12}
-                                              className="position-relative p-0"
-                                            >
-                                              <span className="subAgendaBorderClass"></span>
+                                              className='position-relative p-0'>
+                                              <span className='subAgendaBorderClass'></span>
 
                                               <span
                                                 className={
                                                   styles[
                                                     "SubAgendaTitle_Heading"
                                                   ]
-                                                }
-                                              >
+                                                }>
                                                 {index +
                                                   1 +
                                                   "." +
@@ -299,52 +288,41 @@ const SubAgendaMappingDragging = ({
                                                   styles[
                                                     "SubAgenda_Description"
                                                   ]
-                                                }
-                                              >
+                                                }>
                                                 {subAgendaData.description}
                                               </span>
                                             </Col>
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={12}
-                                              className="p-0"
-                                            >
-                                              <Row className="m-0">
+                                            <Col lg={4} md={4} sm={12}>
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
-                                                  className="d-flex align-items-center justify-content-end gap-3 p-0"
-                                                >
+                                                  className='d-flex align-items-center justify-content-center gap-3 '>
                                                   <img
                                                     src={`data:image/jpeg;base64,${subAgendaData?.userProfilePicture?.displayProfilePictureName}`}
                                                     className={styles["Image"]}
-                                                    alt=""
+                                                    alt=''
                                                     draggable={false}
                                                   />
                                                   <p
                                                     className={
                                                       styles["agendaCreater"]
-                                                    }
-                                                  >
+                                                    }>
                                                     {
                                                       subAgendaData?.presenterName
                                                     }
                                                   </p>
                                                 </Col>
                                               </Row>
-                                              <Row className="m-0">
+                                              <Row className='m-0'>
                                                 <Col
                                                   lg={12}
                                                   md={12}
                                                   sm={12}
                                                   className={
-                                                    currentLanguage === "ar"
-                                                      ? "p-0 text-start"
-                                                      : "p-0 text-end"
-                                                  }
-                                                >
+                                                    "d-flex align-items-center justify-content-center gap-3 "
+                                                  }>
                                                   {/* <p
                                                     className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                                                   >
@@ -506,9 +484,7 @@ const SubAgendaMappingDragging = ({
                                                         <Button
                                                           text={
                                                             data?.hasAlreadyVoted
-                                                              ? t(
-                                                                  "View-your-vote"
-                                                                )
+                                                              ? t("Voted")
                                                               : t(
                                                                   "Cast-your-vote"
                                                                 )
@@ -530,12 +506,6 @@ const SubAgendaMappingDragging = ({
                                                 </Col>
                                               </Row>
                                             </Col>
-                                            <Col
-                                              lg={1}
-                                              md={1}
-                                              sm={12}
-                                              className="p-0"
-                                            ></Col>
                                           </Row>
                                           <>
                                             {
@@ -549,8 +519,7 @@ const SubAgendaMappingDragging = ({
                                                     styles[
                                                       "filesParentClassSubAgenda"
                                                     ]
-                                                  }
-                                                >
+                                                  }>
                                                   {subAgendaData.subfiles
                                                     .slice(0, 3)
                                                     .map(
@@ -612,8 +581,6 @@ const SubAgendaMappingDragging = ({
                                               2 && (
                                               <SubUrls
                                                 subAgendaData={subAgendaData}
-                                                rows={rows}
-                                                setRows={setRows}
                                                 index={index}
                                                 subIndex={subIndex}
                                               />
@@ -622,8 +589,6 @@ const SubAgendaMappingDragging = ({
                                               3 && (
                                               <SubRequestContributor
                                                 subAgendaData={subAgendaData}
-                                                rows={rows}
-                                                setRows={setRows}
                                                 index={index}
                                                 subIndex={subIndex}
                                               />
@@ -640,8 +605,7 @@ const SubAgendaMappingDragging = ({
                                     lg={11}
                                     md={11}
                                     sm={12}
-                                    className="position-relative"
-                                  >
+                                    className='position-relative'>
                                     {hasNextViewFalse ? null : (
                                       <React.Fragment>
                                         <span
@@ -649,15 +613,13 @@ const SubAgendaMappingDragging = ({
                                             isLastIndex
                                               ? "last-width-class"
                                               : ""
-                                          }`}
-                                        ></span>
+                                          }`}></span>
                                         <span
                                           className={`separatorSubAgendaHeight ${
                                             isLastIndex
                                               ? "last-height-class"
                                               : ""
-                                          }`}
-                                        ></span>
+                                          }`}></span>
                                       </React.Fragment>
                                     )}
                                   </Col>

@@ -570,6 +570,7 @@ const uploadFile = (
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(file));
       form.append("File", file);
+      console.log(file, "filefile")
       await axios({
         method: "post",
         url: dataRoomApi,

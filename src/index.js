@@ -16,14 +16,11 @@ import { CommitteeProvider } from "./context/CommitteeContext";
 import { PollsProvider } from "./context/PollsContext";
 import { NotesProvider } from "./context/NotesContext";
 import { ResolutionProvider } from "./context/ResolutionContext";
-import { RouterProvider } from "react-router-dom";
-import { router } from "./routes/routes";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 
 // Root container
 const container = document.getElementById("root");
-const newContainer = document.getElementById("mainSpinner");
 
 // Create the root with error handling (if applicable)
 const root = ReactDOM.createRoot(container, {
@@ -36,12 +33,12 @@ const root = ReactDOM.createRoot(container, {
 });
 
 // Disable console methods in production for better security and performance
-// if (process.env.NODE_ENV === "production") {
-//   console.log = () => {};
-//   console.error = () => {};
-//   console.debug = () => {};
-//   console.warn = () => {};
-// }
+if (process.env.REACT_APP_ENV === "prod") {
+  console.log = () => {};
+  console.error = () => {};
+  console.debug = () => {};
+  console.warn = () => {};
+}
 
 // Render the app with all providers
 // Root for Spinner or secondary element

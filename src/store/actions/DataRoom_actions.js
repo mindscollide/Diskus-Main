@@ -39,6 +39,7 @@ import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import {
   fileFormatforSignatureFlow,
+  isFunction,
   openDocumentViewer,
 } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
@@ -283,6 +284,12 @@ const uploadDocumentsApi = (
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
       form.append("File", newJsonCreateFile.File);
+
+      console.log(
+        newJsonCreateFile.File,
+        newJsonCreateFile,
+        "newJsonCreateFile"
+      );
       axios({
         method: "post",
         url: dataRoomApi,
@@ -444,56 +451,7 @@ const uploadDocumentsApi = (
   }
 };
 
-// Save Folder API
-const saveFolderApi = () => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let Data = {};
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestMethod", saveFolderRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then((response) => {
-        if (response.data.responseCode === 417) {
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase()
-                )
-            ) {
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase()
-                )
-            ) {
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase()
-                )
-            ) {
-            }
-          } else {
-          }
-        } else {
-        }
-      })
-      .catch((error) => {});
-  };
-};
+
 
 // Get Folder Documents Init
 const getFolerDocuments_init = () => {
@@ -1414,30 +1372,36 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
                   "DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase()
                 )
             ) {
-              if (Number(currentView) === 4) {
-                let Data = {
-                  UserID: Number(createrID),
-                  OrganizationID: Number(OrganizationID),
-                };
-                dispatch(getRecentDocumentsApi(navigate, t, Data));
-              } else {
-                if (folderId !== null) {
-                  dispatch(
-                    getFolderDocumentsApi(navigate, Number(folderId), t)
-                  );
+              try {
+                if (Number(currentView) === 4) {
+                  let Data = {
+                    UserID: Number(createrID),
+                    OrganizationID: Number(OrganizationID),
+                  };
+                  dispatch(getRecentDocumentsApi(navigate, t, Data));
                 } else {
-                  dispatch(
-                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
-                  );
+                  if (folderId !== null) {
+                    dispatch(
+                      getFolderDocumentsApi(navigate, Number(folderId), t)
+                    );
+                  } else {
+                    dispatch(
+                      getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                    );
+                  }
                 }
+
+                isFunction(setIsFileDelete) && setIsFileDelete(false);
+
+                dispatch(
+                  deleteFileDataroom_success(
+                    response.data.responseResult,
+                    t("Files-deleted-successfully")
+                  )
+                );
+              } catch (error) {
+                console.log(error);
               }
-              setIsFileDelete(false);
-              dispatch(
-                deleteFileDataroom_success(
-                  response.data.responseResult,
-                  t("Files-deleted-successfully")
-                )
-              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1803,7 +1767,7 @@ const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
                   );
                 }
               }
-              setIsFolderDelete(false);
+              isFunction(setIsFolderDelete) && setIsFolderDelete(false);
               dispatch(
                 deleteFolder_success(
                   response.data.responseResult,
@@ -2318,6 +2282,7 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_02".toLowerCase()
             ) {
               dispatch(searchDocumentsAndFoldersApi_fail(t("No-record-found")));
+              
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_03".toLowerCase()
@@ -4136,7 +4101,6 @@ export {
   clearDataResponseMessage,
   getFolderDocumentsApi,
   shareFoldersApi,
-  saveFolderApi,
   shareFilesApi,
   createFolderApi,
   uploadDocumentsApi,

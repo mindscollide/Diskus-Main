@@ -774,7 +774,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 if (renderdata.role === 2) {
                                   return (
                                     <>
-                                      <Col lg={6} md={6} sm={6}>
+                                      <Col lg={6} md={6} sm={6} key={index}>
                                         <section
                                           className={
                                             styles["Outer_Border-Line"]
@@ -905,7 +905,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               groupMembers.map((data, index) => {
                                 if (data.role === 1) {
                                   return (
-                                    <Col lg={6} md={6} sm={6}>
+                                    <Col lg={6} md={6} sm={6}  key={index}>
                                       <section
                                         className={styles["Outer_Border-Line"]}
                                       >
@@ -1087,6 +1087,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             md={6}
                                             sm={6}
                                             className="mt-3"
+                                            key={index}
                                           >
                                             <Row className="d-flex gap-2">
                                               <Col lg={2} md={2} sm={12}>
@@ -1209,6 +1210,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                       lg={4}
                                       md={4}
                                       sm={4}
+                                      key={index}
                                       // className="position-relative gap-2"
                                     >
                                       <AttachmentViewer

@@ -1,7 +1,7 @@
-import { DateTime } from "luxon";
 import moment from "moment";
 import { formatDistanceToNow, format, parse, isSameDay } from "date-fns";
 import { enUS, arSA } from "date-fns/locale";
+import "moment/locale/ar"; // import Arabic locale (or other locales you support)
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
   return `${value[0]}${value[1]}${value[2]}`;
@@ -244,13 +244,13 @@ export const _justShowDateformat = (dateTime) => {
     : `${formattedDay} ${formattedMonth}, ${formattedYear}`;
 };
 
-export const _justShowDateformatBilling = (dateTime, locale) => {
+export const _justShowDateformatBilling = (dateTime) => {
   if (!dateTime || dateTime.length < 14) {
     return "Invalid date";
   }
 
-  // Format date string into ISO format
-  const fullDateyear =
+  // Convert dateTime string into ISO format
+  const isoString =
     dateTime.slice(0, 4) +
     "-" +
     dateTime.slice(4, 6) +
@@ -262,57 +262,19 @@ export const _justShowDateformatBilling = (dateTime, locale) => {
     dateTime.slice(10, 12) +
     ":" +
     dateTime.slice(12, 14) +
-    ".000Z";
+    "Z";
 
-  const date = new Date(fullDateyear);
+  const locale = localStorage.getItem("i18nextLng") || "en"; // get locale from localStorage
+  moment.locale(locale); // set locale globally for this instance
 
-  // Define month names in English and Arabic
-  const monthNamesEn = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
-  const monthNamesAr = [
-    "يناير",
-    "فبراير",
-    "مارس",
-    "أبريل",
-    "مايو",
-    "يونيو",
-    "يوليو",
-    "أغسطس",
-    "سبتمبر",
-    "أكتوبر",
-    "نوفمبر",
-    "ديسمبر",
-  ];
+  // Format date according to the locale
+  const formattedDate = moment(isoString).format("DD-MMM-YYYY");
 
-  // Select month names based on locale
-  const monthNames = locale === "ar" ? monthNamesAr : monthNamesEn;
-
-  // Format the date components
-  const formattedDay = String(date.getDate()).padStart(2, "0");
-  const formattedMonth = monthNames[date.getMonth()];
-  const formattedYear = date.getFullYear();
-
-  // Format the date as "D-MMM-YYYY"
-  const formattedDate = `${formattedDay}-${formattedMonth}-${formattedYear}`;
-
-  // Return formatted date with Arabic or English numerals based on locale
+  // If Arabic, convert digits to Arabic numerals
   return locale === "ar"
-    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]) // Replace digits with Arabic numerals
+    ? formattedDate.replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d])
     : formattedDate;
 };
-
 export const _justShowDay = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +

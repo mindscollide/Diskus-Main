@@ -1483,7 +1483,8 @@ const FetchMeetingURLApi = (
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("CallType", 2);
               console.log("leavecallMeetingVideo");
               localStorage.setItem("callTypeID", 2);
@@ -4720,7 +4721,7 @@ const UpdateAgendaWiseMinutesApiFunc = (
               await dispatch(
                 showUpdateMinutesSuccess(
                   response.data.responseResult,
-                  t("Record-updated-and-is-a-review-minute")
+                  t("Minutes-revised-by-organizer")
                 )
               );
               if (resendFlag === true) {
@@ -5361,7 +5362,7 @@ const UpdateMinutesGeneralApiFunc = (
             await dispatch(
               showUpdateMinutesSuccess(
                 response.data.responseResult,
-                t("Record-updated-and-is-a-review-minute")
+                t("Minutes-revised-by-organizer")
               )
             );
             if (resendFlag === true) {
@@ -8262,7 +8263,9 @@ const JoinCurrentMeeting = (
                 )
             ) {
               dispatch(videoIconOrButtonState(false));
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
+              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
@@ -8631,7 +8634,8 @@ const LeaveCurrentMeeting = (
 
                 //   localStorage.setItem("activeCall", false);
 
-                //   localStorage.setItem("isMeeting", false);
+                //       localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
                 //   localStorage.setItem("meetingTitle", "");
                 //   localStorage.setItem("acceptedRecipientID", 0);
                 //   localStorage.setItem("acceptedRoomID", 0);
@@ -8724,7 +8728,7 @@ const LeaveCurrentMeetingOtherMenus = (
       proposeNewMeetingPageFlagReducer,
       viewMeetingFlagReducer,
       location,
-      setViewAdvanceMeetingModal
+      setViewAdvanceMeetingModal,
     },
     "Coming inside this block scopr"
   );
@@ -8799,7 +8803,8 @@ const LeaveCurrentMeetingOtherMenus = (
               dispatch(minimizeVideoPanelFlag(false));
 
               localStorage.setItem("activeCall", false);
-              localStorage.setItem("isMeeting", false);
+                  localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
               localStorage.setItem("meetingTitle", "");
               localStorage.setItem("acceptedRecipientID", 0);
               localStorage.setItem("acceptedRoomID", 0);
@@ -9386,6 +9391,8 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isWebCamEnabled", false);
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
+              sessionStorage.setItem("alreadyInMeetingVideo", false);
+
               await dispatch(setAudioControlHost(false));
               console.log("videoHideUnHideForHost");
               await dispatch(setVideoControlHost(false));
@@ -10128,6 +10135,11 @@ const validateEncryptedStringViewMeetingLinkApi = (
 };
 
 // Upload Documents Init
+const uploadDocument_Int_quickMeeting = () => {
+  return {
+    type: actions.QUICKMEETING_DOCUMENTS_UPLOAD_INIT,
+  };
+};
 
 // Upload Documents Success
 const uploadDocument_success_quickMeeting = (response, message) => {
@@ -10152,6 +10164,7 @@ const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
+    dispatch(uploadDocument_Int_quickMeeting());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
@@ -10770,7 +10783,8 @@ const NewJoinCurrentMeeting = (
                 )
             ) {
               dispatch(videoIconOrButtonState(false));
-              localStorage.setItem("isMeeting", true);
+                    localStorage.setItem("isMeeting", true);
+  sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",

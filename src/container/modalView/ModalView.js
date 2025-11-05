@@ -815,7 +815,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         dispatch(setVideoControlHost(false));
         let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
         leaveMeeting(currentMeetingID, false, false);
-        localStorage.setItem("isMeeting", false);
+            localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
         dispatch(removeCalenderDataFunc(null));
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -857,7 +858,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       localStorage.removeItem("participantUID");
       localStorage.removeItem("newRoomId");
       dispatch(presenterViewGlobalState(0, false, false, false));
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       dispatch(removeCalenderDataFunc(null));
       setEndMeetingConfirmationModal(false);
 
@@ -1048,7 +1050,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(maximizeVideoPanelFlag(false));
       await dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
-      localStorage.setItem("isMeeting", false);
+          localStorage.setItem("isMeeting", false);
+      sessionStorage.removeItem("isMeeting")
       localStorage.setItem("meetingTitle", "");
       localStorage.setItem("acceptedRecipientID", 0);
       localStorage.setItem("acceptedRoomID", 0);
@@ -1261,8 +1264,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               localStorage.removeItem("NotificationQuickMeetingID");
             } else {
               if (
-                allMeetingDetails.meetingStatus.status === "10" ||
-                allMeetingDetails.meetingStatus.status === 10
+                allMeetingDetails?.meetingStatus?.status === "10" ||
+                allMeetingDetails?.meetingStatus?.status === 10
               ) {
                 // leaveMeeting(allMeetingDetails.meetingDetails.pK_MDID);
                 setViewFlag(true);
@@ -1301,7 +1304,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         : "isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
-                    text={t("Agenda")}
+                    text={t("Agenda-viewer")}
                     onClick={changeSelectAgenda}
                     datatut='show-agenda'
                   />
@@ -1401,19 +1404,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className=' MeetingViewTitleTextField p-0'>
-                      <p className='viewModalTitle'>
-                        {createMeeting.MeetingTitle.length < 100
-                          ? `${createMeeting.MeetingTitle}`
-                          : `${createMeeting.MeetingTitle.substring(
-                              0,
-                              110
-                            )}...`}
-                      </p>
+                    <Col lg={12} md={12} xs={12} className=' viewModalTitle '>
+                      {createMeeting.MeetingTitle.length < 100
+                        ? `${createMeeting.MeetingTitle}`
+                        : `${createMeeting.MeetingTitle.substring(0, 110)}...`}
                     </Col>
                   </Row>
 
@@ -1497,7 +1491,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                               "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData"
                                             );
                                             return (
-                                              <Col sm={4} md={4} lg={4}>
+                                              <Col sm={6} md={6} lg={6}>
                                                 <AttachmentViewer
                                                   id={Number(
                                                     MeetingAgendaAttachmentsData.OriginalAttachmentName
@@ -1669,7 +1663,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             "attachmentsListattachmentsListattachmentsList"
                           );
                           return (
-                            <Col sm={4} lg={4} md={4}>
+                            <Col sm={6} lg={6} md={6}>
                               <AttachmentViewer
                                 id={Number(data.OriginalAttachmentName)}
                                 handleEyeIcon={() => handeClickView(data)}

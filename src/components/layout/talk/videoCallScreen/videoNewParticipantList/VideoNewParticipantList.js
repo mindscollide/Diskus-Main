@@ -510,19 +510,18 @@ const VideoNewParticipantList = () => {
           : filteredWaitingParticipants.length === 0
           ? styles["Waiting-New-Participant-List-when-no-participantwaiting"]
           : styles["Waiting-New-Participant-List"]
-      }
-    >
+      }>
       <Row>
-        <Col sm={12} md={12} lg={12} className="d-flex justify-content-between">
+        <Col sm={12} md={12} lg={12} className='d-flex justify-content-between'>
           <span className={styles["Waiting-New-Participant-List_box_title"]}>
             {t("People")}
           </span>
           <img
-            draggable="false"
+            draggable='false'
             src={CrossIcon}
             onClick={() => dispatch(participantWaitingListBox(false))}
             style={{ display: "block", objectFit: "cover", cursor: "pointer" }}
-            alt=""
+            alt=''
           />
         </Col>
       </Row>
@@ -569,12 +568,12 @@ const VideoNewParticipantList = () => {
       <Col sm={12} md={12} lg={12}>
         <div className={styles["Waiting-New-Participant-hosttab"]}>
           <Row>
-            <Col sm={6} md={6} lg={6} className="d-flex justify-content-start">
+            <Col sm={6} md={6} lg={6} className='d-flex justify-content-start'>
               <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
                 {t("Participants")}
               </p>
             </Col>
-            <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
+            <Col sm={6} md={6} lg={6} className='d-flex justify-content-end'>
               {filteredParticipants.length > 1 && (
                 <Button
                   text={isForAll ? t("Unmute-all") : t("Mute-all")}
@@ -594,21 +593,19 @@ const VideoNewParticipantList = () => {
             filteredWaitingParticipants.length === 0
               ? styles["Waiting-New-ParticipantNameList-when-nowaiting-data"]
               : styles["Waiting-New-ParticipantNameList"]
-          }
-        >
+          }>
           {filteredParticipants.length > 0 ? (
             filteredParticipants.map((usersData, index) => {
               console.log(usersData, "usersDatausersData");
               return (
                 <>
-                  <Row className="hostBorder m-0">
+                  <Row className='hostBorder m-0'>
                     <Col
-                      className="p-0 d-flex align-items-center"
+                      className='p-0 d-flex align-items-center'
                       lg={7}
                       md={7}
-                      sm={12}
-                    >
-                      <p className="participant-name">{usersData?.name}</p>
+                      sm={12}>
+                      <p className='participant-name'>{usersData?.name}</p>
                       {presenterViewFlag ? (
                         presenterViewHostFlag &&
                         PresenterHostuserID === usersData.userID ? (
@@ -646,16 +643,16 @@ const VideoNewParticipantList = () => {
                         meetinHostInfo.isHost) &&
                       usersData.raiseHand ? (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={GoldenHandRaised}
-                          alt=""
+                          alt=''
                           width={"22px"}
                           height={"22px"}
-                          className="handraised-participant"
+                          className='handraised-participant'
                         />
                       ) : (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={
                             isMeetingVideoHostCheck
                               ? presenterViewFlag
@@ -674,8 +671,8 @@ const VideoNewParticipantList = () => {
                               ? MenuRaiseHand
                               : null
                           }
-                          alt=""
-                          className="handraised-participant"
+                          alt=''
+                          className='handraised-participant'
                         />
                       )}
                       {!presenterViewHostFlag &&
@@ -683,146 +680,146 @@ const VideoNewParticipantList = () => {
                       usersData.isHost ? (
                         JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={VideoDisable}
-                            width="18px"
-                            height="18px"
-                            alt="Video Disabled"
-                            className="handraised-participant"
+                            width='18px'
+                            height='18px'
+                            alt='Video Disabled'
+                            className='handraised-participant'
                           />
                         ) : (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={VideoOn}
-                            width="18px"
-                            height="18px"
-                            alt="Video On"
-                            className="handraised-participant"
+                            width='18px'
+                            height='18px'
+                            alt='Video On'
+                            className='handraised-participant'
                           />
                         )
                       ) : presenterViewHostFlag &&
                         PresenterHostuserID === usersData.userID ? (
                         JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={VideoDisable}
-                            width="18px"
-                            height="18px"
-                            alt="Video Disabled"
-                            className="handraised-participant"
+                            width='18px'
+                            height='18px'
+                            alt='Video Disabled'
+                            className='handraised-participant'
                           />
                         ) : (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={VideoOn}
-                            width="18px"
-                            height="18px"
-                            alt="Video On"
-                            className="handraised-participant"
+                            width='18px'
+                            height='18px'
+                            alt='Video On'
+                            className='handraised-participant'
                           />
                         )
                       ) : usersData.hideCamera ? (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={VideoDisable}
-                          width="18px"
-                          height="18px"
-                          alt="Video Disabled"
-                          className="handraised-participant"
+                          width='18px'
+                          height='18px'
+                          alt='Video Disabled'
+                          className='handraised-participant'
                         />
                       ) : (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={VideoOn}
-                          width="18px"
-                          height="18px"
-                          alt="Video On"
-                          className="handraised-participant"
+                          width='18px'
+                          height='18px'
+                          alt='Video On'
+                          className='handraised-participant'
                         />
                       )}
                     </Col>
 
                     <Col
-                      className="
+                      className='
                         d-flex
                         justify-content-end
                         align-items-baseline
                         gap-2
-                        p-0"
+                        p-0'
                       lg={5}
                       md={5}
-                      sm={12}
-                    >
+                      sm={12}>
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&
                       usersData.isHost ? (
                         JSON.parse(localStorage.getItem("isMicEnabled")) ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={MicDisabled}
-                            width="19px"
-                            height="19px"
-                            alt="Microphone Disabled"
+                            width='19px'
+                            height='19px'
+                            alt='Microphone Disabled'
                           />
                         ) : (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={MicOnEnabled}
-                            width="15px"
-                            height="19px"
-                            alt="Microphone Enabled"
+                            width='15px'
+                            height='19px'
+                            alt='Microphone Enabled'
                           />
                         )
                       ) : presenterViewHostFlag &&
                         PresenterHostuserID === usersData.userID ? (
                         JSON.parse(localStorage.getItem("isMicEnabled")) ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={MicDisabled}
-                            width="19px"
-                            height="19px"
-                            alt="Microphone Disabled"
+                            width='19px'
+                            height='19px'
+                            alt='Microphone Disabled'
                           />
                         ) : (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={MicOnEnabled}
-                            width="15px"
-                            height="19px"
-                            alt="Microphone Enabled"
+                            width='15px'
+                            height='19px'
+                            alt='Microphone Enabled'
                           />
                         )
                       ) : usersData.mute ? (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={MicDisabled}
-                          width="19px"
-                          height="19px"
-                          alt="Microphone Disabled"
+                          width='19px'
+                          height='19px'
+                          alt='Microphone Disabled'
                         />
                       ) : (
                         <img
-                          draggable="false"
+                          draggable='false'
                           src={MicOnEnabled}
-                          width="15px"
-                          height="19px"
-                          alt="Microphone Enabled"
+                          width='15px'
+                          height='19px'
+                          alt='Microphone Enabled'
                         />
                       )}
                       {presenterViewFlag ? (
                         PresenterHostuserID !== usersData.userID ? (
                           <Dropdown>
-                            <Dropdown.Toggle className="participant-toggle">
-                              <img draggable="false" src={Menu} alt="" />
+                            <Dropdown.Toggle className='participant-toggle'>
+                              <img draggable='false' src={Menu} alt='' />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                               {!presenterViewFlag && !presenterViewHostFlag && (
                                 <>
                                   {usersData.isGuest === false ? (
                                     <Dropdown.Item
-                                      className="participant-dropdown-item"
-                                      onClick={() => makeHostOnClick(usersData)}
-                                    >
+                                      className='participant-dropdown-item'
+                                      onClick={() =>
+                                        makeHostOnClick(usersData)
+                                      }>
                                       {t("Make-host")}
                                     </Dropdown.Item>
                                   ) : null}
@@ -833,13 +830,12 @@ const VideoNewParticipantList = () => {
                                 <>
                                   {usersData.isHost === false ? (
                                     <Dropdown.Item
-                                      className="participant-dropdown-item"
+                                      className='participant-dropdown-item'
                                       onClick={() =>
                                         removeParticipantMeetingOnClick(
                                           usersData
                                         )
-                                      }
-                                    >
+                                      }>
                                       {t("Remove")}
                                     </Dropdown.Item>
                                   ) : null}
@@ -848,22 +844,20 @@ const VideoNewParticipantList = () => {
                               {usersData.mute === false ? (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() =>
                                       muteUnmuteByHost(usersData, true)
-                                    }
-                                  >
+                                    }>
                                     {t("Mute")}
                                   </Dropdown.Item>
                                 </>
                               ) : (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() =>
                                       muteUnmuteByHost(usersData, false)
-                                    }
-                                  >
+                                    }>
                                     {t("UnMute")}
                                   </Dropdown.Item>
                                 </>
@@ -871,28 +865,26 @@ const VideoNewParticipantList = () => {
                               {usersData.hideCamera === false ? (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() => {
                                       hideUnHideVideoParticipantByHost(
                                         usersData,
                                         true
                                       );
-                                    }}
-                                  >
+                                    }}>
                                     {t("Hide-video")}
                                   </Dropdown.Item>
                                 </>
                               ) : (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() => {
                                       hideUnHideVideoParticipantByHost(
                                         usersData,
                                         false
                                       );
-                                    }}
-                                  >
+                                    }}>
                                     {t("UnHide-video")}
                                   </Dropdown.Item>
                                 </>
@@ -903,17 +895,18 @@ const VideoNewParticipantList = () => {
                       ) : (
                         !usersData.isHost && (
                           <Dropdown>
-                            <Dropdown.Toggle className="participant-toggle">
-                              <img draggable="false" src={Menu} alt="" />
+                            <Dropdown.Toggle className='participant-toggle'>
+                              <img draggable='false' src={Menu} alt='' />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
                               {!presenterViewFlag && !presenterViewHostFlag && (
                                 <>
                                   {usersData.isGuest === false ? (
                                     <Dropdown.Item
-                                      className="participant-dropdown-item"
-                                      onClick={() => makeHostOnClick(usersData)}
-                                    >
+                                      className='participant-dropdown-item'
+                                      onClick={() =>
+                                        makeHostOnClick(usersData)
+                                      }>
                                       {t("Make-host")}
                                     </Dropdown.Item>
                                   ) : null}
@@ -924,13 +917,12 @@ const VideoNewParticipantList = () => {
                                 <>
                                   {usersData.isHost === false ? (
                                     <Dropdown.Item
-                                      className="participant-dropdown-item"
+                                      className='participant-dropdown-item'
                                       onClick={() =>
                                         removeParticipantMeetingOnClick(
                                           usersData
                                         )
-                                      }
-                                    >
+                                      }>
                                       {t("Remove")}
                                     </Dropdown.Item>
                                   ) : null}
@@ -939,22 +931,20 @@ const VideoNewParticipantList = () => {
                               {usersData.mute === false ? (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() =>
                                       muteUnmuteByHost(usersData, true)
-                                    }
-                                  >
+                                    }>
                                     {t("Mute")}
                                   </Dropdown.Item>
                                 </>
                               ) : (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() =>
                                       muteUnmuteByHost(usersData, false)
-                                    }
-                                  >
+                                    }>
                                     {t("UnMute")}
                                   </Dropdown.Item>
                                 </>
@@ -962,28 +952,26 @@ const VideoNewParticipantList = () => {
                               {usersData.hideCamera === false ? (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() => {
                                       hideUnHideVideoParticipantByHost(
                                         usersData,
                                         true
                                       );
-                                    }}
-                                  >
+                                    }}>
                                     {t("Hide-video")}
                                   </Dropdown.Item>
                                 </>
                               ) : (
                                 <>
                                   <Dropdown.Item
-                                    className="participant-dropdown-item"
+                                    className='participant-dropdown-item'
                                     onClick={() => {
                                       hideUnHideVideoParticipantByHost(
                                         usersData,
                                         false
                                       );
-                                    }}
-                                  >
+                                    }}>
                                     {t("UnHide-video")}
                                   </Dropdown.Item>
                                 </>
@@ -1000,7 +988,7 @@ const VideoNewParticipantList = () => {
           ) : (
             <>
               <Row>
-                <Col className="d-flex justify-content-center align-item-center">
+                <Col className='d-flex justify-content-center align-item-center'>
                   <p>{t("No-participant")}</p>
                 </Col>
               </Row>
@@ -1021,8 +1009,7 @@ const VideoNewParticipantList = () => {
                       <p
                         className={
                           styles["Waiting-New-Participant-Hosts-Title"]
-                        }
-                      >
+                        }>
                         {t("Waiting-for-entry")}
                       </p>
                     </Col>
@@ -1036,11 +1023,10 @@ const VideoNewParticipantList = () => {
                     NormalizeVideoFlag
                       ? styles["AcceptAndDeniedManual_Nor"]
                       : styles["AcceptAndDeniedManual"]
-                  }
-                >
+                  }>
                   {filteredWaitingParticipants.length > 0 && (
                     <>
-                      <Row className="mb-3">
+                      <Row className='mb-3'>
                         <Col sm={6} md={6} lg={6}>
                           <Button
                             className={
@@ -1062,18 +1048,17 @@ const VideoNewParticipantList = () => {
                       </Row>
 
                       {filteredWaitingParticipants.map((data, index) => (
-                        <Row className="mb-2" key={data.guid}>
+                        <Row className='mb-2' key={data.guid}>
                           <Col
                             sm={5}
                             md={5}
                             lg={5}
-                            className="d-flex align-items-center gap-2"
-                          >
+                            className='d-flex align-items-center gap-2'>
                             <img
-                              draggable="false"
+                              draggable='false'
                               src={UserImage}
                               className={styles["participantImage"]}
-                              alt=""
+                              alt=''
                             />
                             <span className={styles["participant_name"]}>
                               {data.name}
@@ -1083,8 +1068,7 @@ const VideoNewParticipantList = () => {
                             sm={7}
                             md={7}
                             lg={7}
-                            className="d-flex align-items-center gap-2"
-                          >
+                            className='d-flex align-items-center gap-2'>
                             <Button
                               className={
                                 styles[

@@ -625,7 +625,6 @@
   "Please-enter-a-valid-email": "Please enter a valid email",
   "Select-any-device": "Select any device",
   "Country-name": "Country Name",
-  "Error-should-be-in-email-format": "Error should be in Email Format",
   "Please-enter-email": "Please enter email",
   "Send-code": "Send Code",
   "No-activity": "No Activity",
@@ -862,7 +861,7 @@
   "To-the-folder": "to the folder",
   "Please-allow-access": "Please allow access",
   "There-are-no-items-here": "There are no items here!",
-  "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings",
+  "Already-exists-in-this-location": "already exists in this location. Do you want to replace the file you're moving? Replacing the file won’t change the sharing settings",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
   "Send-notification-on-device": "Send Notification on Device",
   "Folder-removed": "Folder Removed",
@@ -2389,5 +2388,6 @@
   "Logged-In": "Logged In",
   "Logged-out": "Logged Out",
   "View-meeting": "View Meeting",
-  "Please-enter-Contact": "Please enter contact"
+  "Please-enter-Contact": "Please enter contact",
+  "Minutes-revised-by-organizer": "Minutes Revised-by Organizer"
 }

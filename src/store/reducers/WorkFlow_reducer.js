@@ -150,6 +150,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.ADD_UPDATE_FIELD_VALUE_FAIL: {
+      console.log(action, "ADD_UPDATE_FIELD_VALUE_FAIL")
       return {
         ...state,
         Loading: false,

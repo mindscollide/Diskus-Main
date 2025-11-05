@@ -19,7 +19,7 @@ export const mqttConnection = (subscribeID, dispatch) => {
     // Construct the correct broker URL
 
     if (process.env.REACT_APP_ENV === "dev") {
-      newClient = new Paho.Client("192.168.18.241", 8228, clientId);
+      newClient = new Paho.Client("192.168.18.243", 8228, clientId);
     } else {
       const brokerUrl = `wss://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
 

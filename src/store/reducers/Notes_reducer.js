@@ -15,9 +15,16 @@ const initialState = {
   saveFilesNotes: null,
   uploadDocumentNotes: null,
   deleteNotesDocument: null,
+  notesFromDashboard: 0,
 };
 const NotesReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.NOTES_FROM_DASHBOARD: {
+      return {
+        ...state,
+        notesFromDashboard: action.payload,
+      };
+    }
     case actions.ADD_NOTES_INIT: {
       return {
         ...state,

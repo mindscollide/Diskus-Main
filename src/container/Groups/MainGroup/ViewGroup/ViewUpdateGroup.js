@@ -322,6 +322,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                               md={6}
                               sm={12}
                               className={styles["group-head-info"]}
+                              key={index}
                             >
                               <Row>
                                 <Col lg={3} md={3} sm={12}>
@@ -382,7 +383,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                   {viewGroupDetails.GroupMembers !== null
                     ? viewGroupDetails.GroupMembers.map((data, index) => {
                         return (
-                          <Col lg={6} md={6} sm={12} className="mt-3">
+                          <Col lg={6} md={6} sm={12} className="mt-3" key={index}>
                             <Row>
                               <Col lg={3} md={3} sm={12}>
                                 <img
@@ -474,7 +475,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                   ? fileAttachments.map((data, index) => {
                       return (
                         <>
-                          <Col lg={4} md={4} sm={4}>
+                          <Col lg={4} md={4} sm={4} key={index}>
                             <AttachmentViewer
                               data={data}
                               fk_UID={data.fk_UserID}
