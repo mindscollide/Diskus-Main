@@ -147,7 +147,10 @@ const DefaultDragger = ({
             className={styles["dragdrop_attachment_create_resolution"]}
             fileList={[]}
             disabled={
-              rows[index].isLocked
+              Number(editorRole.status) === 10 &&
+              editorRole.role !== "Organizer"
+                ? true 
+                : rows[index].isLocked
                 ? true
                 : editorRole.role === "Participant" ||
                   (editorRole.role === "Agenda Contributor" &&

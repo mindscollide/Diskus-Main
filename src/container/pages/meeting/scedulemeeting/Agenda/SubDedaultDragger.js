@@ -147,7 +147,11 @@ const SubDedaultDragger = ({
             {...Subprops}
             className={styles["dragdrop_attachment_create_resolution"]}
             disabled={
-              rows[index].isLocked || rows[index].subAgenda[subIndex].isLocked
+              Number(editorRole.status) === 10 &&
+              editorRole.role !== "Organizer"
+                ? true
+                : rows[index].isLocked ||
+                  rows[index].subAgenda[subIndex].isLocked
                 ? true
                 : editorRole.role === "Participant" ||
                   (editorRole.role === "Agenda Contributor" &&
