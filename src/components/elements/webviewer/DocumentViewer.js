@@ -403,7 +403,9 @@ const DocumentViewer = () => {
   useEffect(() => {
     if (ResponseMessage) {
       showMessage(ResponseMessage, "success", setOpen);
-      dispatch(ClearMessageAnnotations());
+      setTimeout(() => {
+        dispatch(ClearMessageAnnotations());
+      }, 4000);
     }
   }, [ResponseMessage]);
 
@@ -412,7 +414,7 @@ const DocumentViewer = () => {
       <div className='document-viewer'>
         <div className='webviewer' ref={viewer}></div>
       </div>
-     
+
       <Notification open={open} setOpen={setOpen} />
     </>
   );
