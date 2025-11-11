@@ -1,6 +1,6 @@
 import * as actions from "../action_types";
 import { toDoListApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
+
 import {
   getMeetingTasksAction,
   uploadDocumentsRequestMethod,
@@ -11,12 +11,15 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { showCancelActions } from "./NewMeetingActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
+
 // get Meeting By Group ID Init
 const getMeetingTask_Init = () => {
   return {
     type: actions.GET_MEETING_TASKS_ACTION_INIT,
   };
 };
+
 // get Meeting by Group ID Success
 const getMeetingTask_Success = (response, message) => {
   return {
@@ -25,6 +28,7 @@ const getMeetingTask_Success = (response, message) => {
     message: message,
   };
 };
+
 // get Meeting by Group ID Failed
 const getMeetingTask_Fail = (message) => {
   return {
@@ -35,20 +39,13 @@ const getMeetingTask_Fail = (message) => {
 
 // Get Meeting by Group ID
 const getMeetingTaskMainApi = (navigate, t, meetingTaskData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingTask_Init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(meetingTaskData));
     form.append("RequestMethod", getMeetingTasksAction.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    axiosInstance.post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -133,23 +130,17 @@ const uploadActionMeetingApi = (
   dataroomMapFolderId,
   newFolder
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
+  
   return async (dispatch) => {
     dispatch(actionMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    await axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -182,15 +173,6 @@ const uploadActionMeetingApi = (
                 FileSize: Number(response.data.responseResult.fileSizeOnDisk),
                 FileSizeOnDisk: Number(response.data.responseResult.fileSize),
               });
-              // await dispatch(
-              //   saveFilesTaskApi(
-              //     navigate,
-              //     t,
-              //     response.data.responseResult,
-              //     dataroomMapFolderId,
-              //     newFolder
-              //   )
-              // );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -214,7 +196,6 @@ const uploadActionMeetingApi = (
         } else {
           dispatch(actionMeetingFail(t("Something-went-wrong")));
         }
-        // }
       })
       .catch((error) => {
         dispatch(actionMeetingFail(t("Something-went-wrong")));
@@ -253,7 +234,6 @@ const mapTaskAgendaMainApi = (
   setCreateaTask,
   setCreateTaskID
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
 
   return (dispatch) => {
@@ -261,14 +241,8 @@ const mapTaskAgendaMainApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(mapTaskData));
     form.append("RequestMethod", mapTaskWithMeetingAgenda.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    axiosInstance.post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -308,7 +282,6 @@ const mapTaskAgendaMainApi = (
               dispatch(getMeetingTaskMainApi(navigate, t, Data));
               setCreateaTask(false);
               setCreateTaskID(0);
-              // setShow(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -347,6 +320,7 @@ const saveTaskDocumentsAndAssignees_init = () => {
     type: actions.SAVETASKDOCUMENTSANDASSIGNEES_INIT,
   };
 };
+
 const saveTaskDocumentsAndAssignees_success = (response, message) => {
   return {
     type: actions.SAVETASKDOCUMENTSANDASSIGNEES_SUCCESS,
@@ -354,12 +328,14 @@ const saveTaskDocumentsAndAssignees_success = (response, message) => {
     message: message,
   };
 };
+
 const saveTaskDocumentsAndAssignees_fail = (message) => {
   return {
     type: actions.SAVETASKDOCUMENTSANDASSIGNEES_FAIL,
     message: message,
   };
 };
+
 const saveTaskDocumentsAndAssigneesApi = (
   navigate,
   Data,
@@ -369,21 +345,13 @@ const saveTaskDocumentsAndAssigneesApi = (
   newData,
   setCreateTaskID
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(saveTaskDocumentsAndAssignees_init());
     let form = new FormData();
     form.append("RequestMethod", saveTaskandAssgineesRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    axiosInstance.post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -504,21 +472,13 @@ const saveMeetingActionsDocuments = (
   setCreateTaskID,
   currentMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return async (dispatch) => {
     dispatch(saveTaskDocuments_init());
     let form = new FormData();
     form.append("RequestMethod", saveTaskDocuments.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    await axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -622,21 +582,13 @@ const removeMapTaskFail = (message) => {
 };
 
 const removeMapMainApi = (navigate, t, dataDelete) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(removeMapTaskInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(dataDelete));
     form.append("RequestMethod", removeTaskMeetingMapping.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    
+    axiosInstance.post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -655,8 +607,7 @@ const removeMapMainApi = (navigate, t, dataDelete) => {
               let userID = localStorage.getItem("userID");
               let meetingpageRow = localStorage.getItem("MeetingPageRows");
               let meetingPageCurrent = 
-                localStorage.getItem("MeetingPageCurrent"
-              );
+                localStorage.getItem("MeetingPageCurrent");
               let meetingTaskData = {
                 MeetingID: Number(dataDelete.MeetingID),
                 Date: "",
