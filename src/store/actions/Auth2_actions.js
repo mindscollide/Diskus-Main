@@ -39,7 +39,6 @@ import {
 } from "../../commen/functions/responce_message";
 import { changeNewLanguage } from "./Language_actions";
 import { endMeetingStatusApi } from "./NewMeetingActions";
-import axiosInstance from "../../commen/functions/axiosInstance";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -475,7 +474,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
     const formData = getFormData(data, userPasswordVerify);
 
     try {
-      const response = await axiosInstance.post(authenticationApi, formData);
+      const response = await axios.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
         clearLocalStorageAtloginresponce(dispatch, 1, navigate);
         dispatch(enterPasswordFail("Something-went-wrong"));
@@ -1724,7 +1723,7 @@ const createPasswordAction = (value, navigate, t) => {
     const formData = getFormData(data, userPasswordCreation);
 
     try {
-      const response = await axiosInstance.post(authenticationApi, formData);
+      const response = await axios.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
         dispatch(createPasswordFail("Something-went-wrong"));
         return;

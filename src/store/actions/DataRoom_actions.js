@@ -44,7 +44,6 @@ import {
 } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
-import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -873,7 +872,9 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
       );
       form.append("RequestData", JSON.stringify(Data));
 
-      const response = await axiosInstance.post(dataRoomApi, form);
+      const response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

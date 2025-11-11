@@ -3,7 +3,6 @@ import axios from "axios";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getTimeZOne } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import axiosInstance from "../../commen/functions/axiosInstance";
 
 const timeZoneSuccess = (response, message) => {
   return {
@@ -27,7 +26,9 @@ const getTimeZone = (navigate, t) => {
       const form = new FormData();
       form.append("RequestMethod", getTimeZOne.RequestMethod);
 
-      const response = await axiosInstance.post(settingApi, form);
+      const response = await axios.post(settingApi, form, {
+        headers: { _token: token },
+      });
 
       const { responseCode, responseResult } = response.data;
 
@@ -41,24 +42,12 @@ const getTimeZone = (navigate, t) => {
         const message = responseResult.responseMessage.toLowerCase();
 
         // Dynamic handling of response messages
-        if (
-          message.includes(
-            "settings_settingsservicemanager_getalltimezones_01".toLowerCase()
-          )
-        ) {
+        if (message.includes("settings_settingsservicemanager_getalltimezones_01".toLowerCase())) {
           dispatch(timeZoneSuccess(responseResult.timeZones, ""));
           return responseResult.timeZones; // Return successful result
-        } else if (
-          message.includes(
-            "settings_settingsservicemanager_getalltimezones_02".toLowerCase()
-          )
-        ) {
+        } else if (message.includes("settings_settingsservicemanager_getalltimezones_02".toLowerCase())) {
           dispatch(timeZoneFail(t("No-records-found")));
-        } else if (
-          message.includes(
-            "settings_settingsservicemanager_getalltimezones_03".toLowerCase()
-          )
-        ) {
+        } else if (message.includes("settings_settingsservicemanager_getalltimezones_03".toLowerCase())) {
           dispatch(timeZoneFail(t("Something-went-wrong")));
         } else {
           dispatch(timeZoneFail(t("Unexpected-response-message")));

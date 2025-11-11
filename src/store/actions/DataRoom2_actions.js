@@ -11,7 +11,6 @@ import {
   updateAndOpenByAndDescriptionRM,
 } from "../../commen/apis/Api_config";
 import { showFileDetailsModal } from "./DataRoom_actions";
-import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getFileandFolderDetail_Init = () => {
   return {
@@ -428,7 +427,9 @@ const validateEncryptedStringViewFileLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axiosInstance.post(dataRoomApi, form);
+      let response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -576,7 +577,9 @@ const validateEncryptedStringViewFolderLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axiosInstance.post(dataRoomApi, form);
+      let response = await axios.post(dataRoomApi, form, {
+        headers: { _token: token },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

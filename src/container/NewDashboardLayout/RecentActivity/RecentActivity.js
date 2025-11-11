@@ -49,16 +49,19 @@ const RecentActivity = () => {
 
   return (
     <>
+      {" "}
       <span className={styles["RecentActivity_Title"]}>
         {t("Recent-activity")}
       </span>
-  
       <div className={styles["RecentAcitivy_newDashboard"]}>
-        {Spinner ? (
-          <section className={styles["dashboard_recentActivity_empty"]}>
-            <Spin />
-          </section>
-        ) : !recentActivityData || recentActivityData.length === 0 ? (
+        {" "}
+        {Spinner === true ? (
+          <>
+            <section className={styles["dashboard_recentActivity_empty"]}>
+              <Spin />
+            </section>
+          </>
+        ) : recentActivityData.length === 0 ? (
           <ResultMessage
             icon={
               <img
@@ -70,33 +73,50 @@ const RecentActivity = () => {
             }
             className="recent-activity-text"
           />
-        ) : (
-          recentActivityData.map((activity) => {
-            const { pK_NTID, description } = activity.notificationTypes;
+        ) : recentActivityData !== null && recentActivityData !== undefined ? (
+          recentActivityData.map((recentActivityData) => {
             return (
-              <div
-                key={pK_NTID + activity.creationDateTime}
-                className={styles["imageNotificationCard"]}
-              >
-                {/* Since all IDs use the same icon, you can simplify */}
-                <img src={DemoIcon} width={46} height={46} alt="" />
-  
-                {description}
-  
-                <p className="d-flex justify-content-end mx-1">
+              <>
+                <div
+                  key={recentActivityData.notificationTypes.pK_NTID}
+                  className={styles["imageNotificationCard"]}
+                >
+                  {recentActivityData.notificationTypes.pK_NTID === 1 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 2 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 3 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 4 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 5 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 6 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 7 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 8 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : recentActivityData.notificationTypes.pK_NTID === 9 ? (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  ) : (
+                    <img src={DemoIcon} width={46} height={46} alt="" />
+                  )}
+                  {recentActivityData.notificationTypes.description}
+                </div>
+                <p className="d-flex justify-content-end  mx-1">
                   {timePassed(
-                    forRecentActivity(activity.creationDateTime),
+                    forRecentActivity(recentActivityData.creationDateTime),
                     currentLanguage
                   )}
                 </p>
-              </div>
+              </>
             );
           })
-        )}
+        ) : null}
       </div>
     </>
   );
-  
 };
 
 export default RecentActivity;

@@ -549,9 +549,7 @@ const ViewMeetingDetails = ({}) => {
     dispatch(leaveCallModal(false));
     setInitiateVideoModalOto(false);
     dispatch(participantPopup(false));
-    // localStorage.setItem("activeCall", true);
-
-    localStorage.setItem("activeCall", false);
+    localStorage.setItem("activeCall", true);
     localStorage.setItem("callerID", 0);
     localStorage.setItem("recipentCalledID", 0);
     dispatch(callRequestReceivedMQTT({}, ""));
@@ -594,9 +592,7 @@ const ViewMeetingDetails = ({}) => {
     setInitiateVideoModalOto(false);
     dispatch(participantPopup(false));
     localStorage.setItem("CallType", 0);
-    // localStorage.setItem("activeCall", true);
-
-    localStorage.setItem("activeCall", false);
+    localStorage.setItem("activeCall", true);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", true);

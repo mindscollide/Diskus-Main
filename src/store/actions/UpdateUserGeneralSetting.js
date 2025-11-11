@@ -10,7 +10,6 @@ import {
 import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
-import axiosInstance from "../../commen/functions/axiosInstance";
 
 const updateUserSettinginit = () => {
   return {
@@ -806,7 +805,11 @@ const getMicrosoftValidToken = (
     form.append("RequestMethod", validateMicrosoftToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     try {
-      const response = await axiosInstance.post(getCalender, form);
+      const response = await axios.post(getCalender, form, {
+        headers: {
+          _token: token,
+        },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

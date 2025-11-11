@@ -235,7 +235,6 @@ const Dashboard = () => {
 
   const dispatch = useDispatch();
   const {
-    editorRole,
     cancelConfirmationModal,
     setPresenterForOneToOneOrGroup,
     setLeaveOneToOne,
@@ -1651,10 +1650,7 @@ const Dashboard = () => {
               // localStorage.setItem("CallType", 2);
               localStorage.setItem("isMeeting", true);
               sessionStorage.setItem("isMeeting", true);
-
-              // localStorage.setItem("activeCall", true);
-              //     sessionStorage.setItem("activeCallSessionforOtoandGroup", true)
-
+              localStorage.setItem("activeCall", true);
               console.log("iframeiframe", data.payload.screenShare);
               console.log("iframeiframe", data.payload.userID);
               localStorage.setItem("acceptedRecipientID", data.payload.userID);
@@ -3170,7 +3166,6 @@ const Dashboard = () => {
             localStorage.setItem("recipentID", data.payload.recepientID);
             localStorage.setItem("recipentName", data.payload.recepientName);
             localStorage.setItem("activeCall", true);
-            sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
             localStorage.setItem("activeRoomID", data.payload.roomID);
             localStorage.setItem("CallType", data.payload.callTypeID);
             console.log("leavecallMeetingVideo");
@@ -3834,8 +3829,6 @@ const Dashboard = () => {
 
                 localStorage.setItem("newCallerID", callerID);
                 localStorage.setItem("activeCall", true);
-                sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
-
                 localStorage.setItem("activeRoomID", acceptedRoomID);
               } else if (data.payload.callerID === callerID) {
                 console.log("Check 123");
@@ -4706,31 +4699,13 @@ const Dashboard = () => {
 
   const [isMeetingLocal, setIsMeetingLocal] = useState(false);
   const [isMeetingSession, setIsMeetingSession] = useState(false);
-  const [activeCallOtoAndGroupCallLocal, setActiveCallOtoAndGroupCallLocal] =
-    useState(false);
-  const [
-    activeCallOtoAndGroupCallSession,
-    setActiveCallOtoAndGroupCallSession,
-  ] = useState(false);
   // Function to read current values
   const getMeetingValues = () => {
     const local = localStorage.getItem("isMeeting");
     const session = sessionStorage.getItem("isMeeting");
-    const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
-    const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup"
-    );
 
     setIsMeetingLocal(local ? JSON.parse(local) : false);
     setIsMeetingSession(session ? JSON.parse(session) : false);
-    // setActiveCallOtoAndGroupCallLocal(
-    //   isActiveOtoAndGroupCall ? JSON.parse(isActiveOtoAndGroupCall) : false
-    // );
-    // setActiveCallOtoAndGroupCallSession(
-    //   isActiveOtoAndGroupCallTab
-    //     ? JSON.parse(isActiveOtoAndGroupCallTab)
-    //     : false
-    // );
   };
 
   useEffect(() => {
@@ -4771,29 +4746,18 @@ const Dashboard = () => {
             </Sider>
             <Content>
               <div className='dashbaord_data'>
-                <>
-                  {/* When checking one and group call */}
-                  {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
-                    ? (!isMeetingSession ||
-                        !activeCallOtoAndGroupCallSession) &&
-                      !(
-                        Number(editorRole.status) === 10 ||
-                        location.pathname.includes("documentViewer")
-                      ) && (
-                        <AlreadyInMeeting handleClickClose={handleClickClose} />
-                      )
-                    : null} */}
-                  {isMeetingLocal
-                    ? !isMeetingSession &&
-                      !(
-                        Number(editorRole.status) === 10 ||
-                        location.pathname.includes("documentViewer")
-                      ) && (
-                        <AlreadyInMeeting handleClickClose={handleClickClose} />
-                      )
-                    : null}
-                  <Outlet />
-                </>
+                {
+                  <>
+                    {isMeetingLocal
+                      ? !isMeetingSession && (
+                          <AlreadyInMeeting
+                            handleClickClose={handleClickClose}
+                          />
+                        )
+                      : null}
+                    <Outlet />
+                  </>
+                }
               </div>
               <div className='talk_features_home'>
                 {activateBlur ? null : roleRoute ? null : <Talk />}

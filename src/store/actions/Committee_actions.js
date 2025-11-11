@@ -26,7 +26,6 @@ import {
 import { GetAllUserChats } from "./Talk_action";
 import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
-import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -1626,6 +1625,7 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
+      let token = JSON.parse(localStorage.getItem("token"));
 
       dispatch(validateEncryptedStringViewCommitteeListLink_Init());
 
@@ -1636,7 +1636,9 @@ const validateEncryptedStringViewCommitteeListLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axiosInstance.post(getCommitteesApi, form);
+      let response = await axios.post(getCommitteesApi, form, {
+        headers: { _token: token },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -1797,7 +1799,9 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axiosInstance.post(getCommitteesApi, form);
+      let response = await axios.post(getCommitteesApi, form, {
+        headers: { _token: token },
+      });
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
