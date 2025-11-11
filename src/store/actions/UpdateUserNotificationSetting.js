@@ -9,6 +9,7 @@ import { RefreshToken } from "../actions/Auth_action";
 import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
 import { isFunction } from "../../commen/functions/utils";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const updateusernotificationinit = () => {
   return {
@@ -118,14 +119,8 @@ const DiskusWebNotificationActionMethodAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", DiskusWebNotification.RequestMethod);
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

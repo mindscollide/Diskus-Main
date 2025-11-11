@@ -23,6 +23,7 @@ import { GetAllUserChats } from "./Talk_action";
 import axios from "axios";
 import { isFunction } from "../../commen/functions/utils";
 import { AccessDeniedPolls } from "./Polls_actions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const clearMessagesGroup = () => {
   return {
@@ -1633,9 +1634,7 @@ const validateEncryptedStringViewGroupsListLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(getGroupsApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(getGroupsApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -1792,9 +1791,7 @@ const validateEncryptedStringViewGroupDetailLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(getGroupsApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(getGroupsApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

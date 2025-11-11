@@ -32,6 +32,7 @@ import {
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
 import { emptyCommentState } from "./Post_AssigneeComments";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const ClearMappingFolderID = () => {
   return {
@@ -1937,9 +1938,7 @@ const validateEncryptedStringViewTaskListLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(toDoListApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(toDoListApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -2096,9 +2095,7 @@ const validateEncryptedStringViewTaskDetailLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(toDoListApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(toDoListApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

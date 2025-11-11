@@ -139,6 +139,7 @@ import {
   updateGroupPageFlag,
   viewGroupPageFlag,
 } from "./Groups_actions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const boardDeckModal = (response) => {
   return {
@@ -10015,9 +10016,7 @@ const validateEncryptedStringViewMeetingLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(meetingApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(meetingApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -10277,9 +10276,7 @@ const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
       form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(requestData));
 
-      let response = await axios.post(dataRoomApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
