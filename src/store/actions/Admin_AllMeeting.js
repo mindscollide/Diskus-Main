@@ -5,9 +5,9 @@ import {
   OrganizationMeetingStatus,
 } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
-import axios from "axios";
 import { getAdminURLs, meetingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const allMeetingInit = () => {
   return {
@@ -52,15 +52,9 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
     let form = new FormData();
     form.append("RequestMethod", AllMeetingOrganization.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -87,10 +81,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
                 )
             ) {
               await dispatch(
-                allMeetingSuccess(
-                  response.data.responseResult,
-                  ""
-                )
+                allMeetingSuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -165,15 +156,9 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
     let form = new FormData();
     form.append("RequestMethod", OrganizationMeetingStatus.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(getAdminURLs, form)
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -278,15 +263,8 @@ const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
     let form = new FormData();
     form.append("RequestMethod", deleteOrganizationMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -367,14 +345,9 @@ const GetMeetingStatus = (navigate, t) => {
     dispatch(getMeetingStatusInit());
     let form = new FormData();
     form.append("RequestMethod", getMeetingStatus.RequestMethod);
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

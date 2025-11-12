@@ -16,7 +16,7 @@ import {
   addAnnotationOnDataroomAttachment,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import axios from "axios";
+import axiosInstance from "../../commen/functions/axiosInstance";
 // for get annotations
 const GetAnnotationsOfToDoAttachementinit = () => {
   return {
@@ -51,14 +51,9 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", getAnnotationOfToDoAttachement.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(toDoListApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -154,14 +149,9 @@ const addAnnotationsOnToDoAttachement = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", addAnnotationOnToDoAttachement.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(toDoListApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -270,20 +260,14 @@ const GetAnnotationsOfNotesAttachementFail = (message) => {
 };
 
 const getAnnotationsOfNotesAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(GetAnnotationsOfNotesAttachementinit());
     let form = new FormData();
     form.append("RequestMethod", getAnnotationOfNotesAttachment.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: getNotesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(getNotesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -382,14 +366,8 @@ const addAnnotationsOnNotesAttachement = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", addAnnotationOnNotesAttachment.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: getNotesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -508,14 +486,9 @@ const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
       getAnnotationOfResolutionAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(getResolutionApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -623,14 +596,10 @@ const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
       addAnnotationOnResolutionAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    await axiosInstance
+      .post(getResolutionApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -762,14 +731,9 @@ const getAnnotationsOfDataroomAttachement = (
       getAnnotationOfDataroomAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -869,7 +833,6 @@ const AddAnnotationsOnDataroomAttachementFail = (message) => {
 };
 
 const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(AddAnnotationsOnDataroomAttachementinit());
     let form = new FormData();
@@ -878,14 +841,8 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
       addAnnotationOnDataroomAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+    .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -900,7 +857,9 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
+                AddAnnotationsOnDataroomAttachementSuccess(
+                  t("File-is-saved-successfully")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -910,7 +869,9 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementSuccess(t("File-is-saved-successfully"))
+                AddAnnotationsOnDataroomAttachementSuccess(
+                  t("File-is-saved-successfully")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -920,7 +881,9 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnDataroomAttachementFail(
+                  t("Something-went-wrong")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -930,7 +893,9 @@ const addAnnotationsOnDataroomAttachement = (navigate, t, data) => {
                 )
             ) {
               dispatch(
-                AddAnnotationsOnDataroomAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnDataroomAttachementFail(
+                  t("Something-went-wrong")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage

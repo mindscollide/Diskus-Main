@@ -1,8 +1,8 @@
 import * as actions from "../action_types";
 import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
 import { LoginFlowRoutes } from "./UserManagementActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const forgotPasswordInit = () => {
   return {
@@ -37,11 +37,9 @@ const changePasswordRequest = (email, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", forgetpassword.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -79,7 +77,7 @@ const changePasswordRequest = (email, t, navigate) => {
               )
             );
             localStorage.setItem("LoginFlowPageRoute", 12);
-            dispatch(LoginFlowRoutes(12));  
+            dispatch(LoginFlowRoutes(12));
             // navigate("/forgotpasswordVerification");
           } else if (
             response.data.responseResult.responseMessage

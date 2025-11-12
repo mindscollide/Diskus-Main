@@ -5,10 +5,10 @@ import {
   IsOrganizationExsists,
 } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
-import axios from "axios";
 import { AuditAPi, getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { setLoader } from "./Auth2_actions";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const organizationInit = (response, message) => {
   return {
@@ -70,12 +70,9 @@ const checkOraganisation = (
     let form = new FormData();
     form.append("RequestMethod", IsOrganizationExsists.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
+    axiosInstance
+      .post(getAdminURLs, form)
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-    })
       .then(async (response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -158,11 +155,8 @@ const checkEmailExsist = (
     form.append("RequestMethod", IsOrganizationEmailExsists.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-    })
+    axiosInstance
+    .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -289,14 +283,8 @@ const GetAuditListingAPI = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", GetUsersAuditListing.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: AuditAPi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(AuditAPi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -363,14 +351,9 @@ const GetAuditActionsAPI = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", GetUsersAuditActions.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: AuditAPi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(AuditAPi, form)
+ 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

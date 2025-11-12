@@ -29,6 +29,7 @@ import {
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
 import { isFunction } from "../../commen/functions/utils";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
@@ -142,19 +143,12 @@ const getListOfDefaultRejectionComments_Fail = (message, response) => {
 
 //ListOfDefaultRejectionComments
 const ListOfDefaultRejectionComments = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getListOfDefaultRejectionComments_Init());
     let form = new FormData();
     form.append("RequestMethod", listOfDefaultRejectionComments.RequestMethod);
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

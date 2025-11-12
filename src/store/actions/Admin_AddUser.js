@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import {
   AddOrganizationUser,
   allOrganizationUsers,
@@ -7,10 +6,9 @@ import {
   editOrganizationUser,
   OrganizationUserListStatistics,
 } from "../../commen/apis/Api_config";
-import {
-  getAdminURLs,
-} from "../../commen/apis/Api_ends_points";
+import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 const addUserInit = () => {
   return {
     type: actions.ADMIN_ADDUSER_INIT,
@@ -39,20 +37,13 @@ const addUserAction = (
   setAllowedLimitModal,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(addUserInit());
     let form = new FormData();
     form.append("RequestMethod", AddOrganizationUser.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -219,20 +210,14 @@ const OrganizationUserListStatisticsFail = (message) => {
 };
 
 const OrganizationUserListStatisticsAction = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(OrganizationUserListStatisticsInit());
     let form = new FormData();
     form.append("RequestMethod", OrganizationUserListStatistics.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -327,20 +312,13 @@ const allUserListFail = (message) => {
   };
 };
 const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(allUserListInit());
     let form = new FormData();
     form.append("RequestMethod", allOrganizationUsers.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -436,20 +414,13 @@ const editUserAction = (
   t,
   setIsUserNotUpdate
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(editUserInit());
     let form = new FormData();
     form.append("RequestMethod", editOrganizationUser.RequestMethod);
     form.append("RequestData", JSON.stringify(updateData));
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -569,20 +540,13 @@ const deleteUserAction = (
   newData,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(deleteUserInit());
     let form = new FormData();
     form.append("RequestMethod", deleteOrganizationUser.RequestMethod);
     form.append("RequestData", JSON.stringify(dataForDelete));
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import {
   GetSubscriptionPackagesByOrganizationID,
   updateSubscriptionPackage,
@@ -9,6 +8,7 @@ import {
   getAdminURLs,
 } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const packageUpgradeInit = () => {
   return {
@@ -49,14 +49,9 @@ const packagesforUpgrade = (navigate, t) => {
       GetSubscriptionPackagesByOrganizationID.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -136,14 +131,9 @@ const updateSubscribePackage = (navigate, ID, t) => {
     let form = new FormData();
     form.append("RequestMethod", updateSubscriptionPackage.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

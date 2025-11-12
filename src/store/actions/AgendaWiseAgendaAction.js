@@ -1,9 +1,9 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { GetAllAgendaWiseMinutesApiFunc } from "./NewMeetingActions";
 import { getAllAgendaForAgendaWise } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getAllAgendaForAgendaWiseInit = () => ({
   type: actions.GET_ALL_AGENDAWISE_AGENDA_INIT,
@@ -35,14 +35,7 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
     form.append("RequestMethod", getAllAgendaForAgendaWise.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(meetingApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

@@ -1,7 +1,7 @@
 import * as actions from "../action_types";
 import { changepassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const changepasswordinit = () => {
   return {
@@ -40,11 +40,9 @@ const changePasswordFunc = (changePasswordData, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", changepassword.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           dispatch(

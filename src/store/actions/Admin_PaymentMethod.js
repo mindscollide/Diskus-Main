@@ -1,7 +1,7 @@
-import axios from "axios";
 import { paymentMethodsRequestMethod } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getPaymentMethod_init = () => {
   return {
@@ -22,19 +22,13 @@ const getPaymentMethod_fail = (message) => {
   };
 };
 const getPaymentMethodApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getPaymentMethod_init());
     let form = new FormData();
     form.append("RequestMethod", paymentMethodsRequestMethod.RequestMethod);
-    await axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
+
       .then((response) => {
         if (response.data.responseCode === 417) {
         } else if (response.data.responseCode === 200) {
