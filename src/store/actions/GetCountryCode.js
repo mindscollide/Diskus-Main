@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getCountryCode } from "../../commen/apis/Api_config";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const countryCodeInit = () => {
   return {
@@ -30,14 +31,8 @@ const getCountryCodeFunc = () => {
     let form = new FormData();
     form.append("RequestMethod", getCountryCode.RequestMethod);
 
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(settingApi, form)
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           dispatch(

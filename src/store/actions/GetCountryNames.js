@@ -4,6 +4,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { setLoader } from "./Auth2_actions";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getCountryNamesInit = () => {
   return {
@@ -27,19 +28,11 @@ const getCountryNameFail = (message) => {
 };
 
 const getCountryNamesAction = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getCountryNamesInit());
     let form = new FormData();
     form.append("RequestMethod", getCountryNames.RequestMethod);
-    await axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  await axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));

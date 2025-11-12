@@ -3,6 +3,7 @@ import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { uploadDocument } from "../../commen/apis/Api_config";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const UploadLoaderStart = () => {
   return {
@@ -57,14 +58,8 @@ const FileUploadToDo = (navigate, data, t, newfile, route) => {
 
   return async (dispatch) => {
     dispatch(UploadLoaderStart());
-    await axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await   axiosInstance
+    .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -148,14 +143,8 @@ const FileUploadToDo2 = (navigate, data, t) => {
 
   return async (dispatch) => {
     dispatch(UploadLoaderStart());
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

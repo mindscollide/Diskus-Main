@@ -55,6 +55,7 @@ import {
   boardDeckModal,
   showShareViaDataRoomPathConfirmation,
 } from "./NewMeetingActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -108,11 +109,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
       "RequestMethod",
       SaveOrganizationAndPakageSelection.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then((response) => {
         try {
           if (response.data.responseCode === 200) {
@@ -1029,21 +1026,12 @@ const getOrganizationSelectedPakagesFailed = (message) => {
 };
 
 const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getOrganizationSelectedPakagesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getOrganizationSelectedPakages.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1232,19 +1220,11 @@ const getAllUserTypePackagesFail = (message) => {
 };
 
 const getAllUserTypePackagesApi = (navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllUserTypePackagesInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllUserTypePackages.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1342,11 +1322,7 @@ const ResendForgotPasswordCodeApi = (
     let form = new FormData();
     form.append("RequestMethod", ResendForgotPasswordCode.RequestMethod);
     form.append("RequestData", JSON.stringify(verificationData));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1518,20 +1494,12 @@ const paymentInitiateFailApi = (message) => {
 };
 
 const paymentInitiateMainApi = (navigate, t, newData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentInitiateInitApi());
     let form = new FormData();
     form.append("RequestMethod", PaymentInitiateStepperThree.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2022,20 +1990,12 @@ const paymentStatusFailed = (response, message) => {
 };
 
 const paymentStatusApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentStatusInit());
     let form = new FormData();
     form.append("RequestMethod", paymentStatus.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

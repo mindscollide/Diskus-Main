@@ -3,6 +3,7 @@ import { settingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
 import { getFaqs } from "../../commen/apis/Api_config";
 import axios from "axios";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const SetLoaderFalse = () => {
   return {
@@ -35,14 +36,8 @@ const GetUserFAQs = (navigate, t) => {
     dispatch(faqsInit());
     let form = new FormData();
     form.append("RequestMethod", getFaqs.RequestMethod);
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

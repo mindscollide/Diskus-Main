@@ -45,7 +45,6 @@ const GetAnnotationsOfToDoAttachementFail = (message) => {
 };
 
 const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(GetAnnotationsOfToDoAttachementinit());
     let form = new FormData();
@@ -143,7 +142,6 @@ const AddAnnotationsOnToDoAttachementFail = (message) => {
 };
 
 const addAnnotationsOnToDoAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(AddAnnotationsOnToDoAttachementinit());
     let form = new FormData();

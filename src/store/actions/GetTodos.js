@@ -6,6 +6,7 @@ import { RefreshToken } from "./Auth_action";
 import { getTaskCommitteeIDApi, getTasksByGroupIDApi } from "./Polls_actions";
 import { getMeetingTaskMainApi } from "./Action_Meeting";
 import { SearchTodoListApi } from "./ToDoList_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getTodoStatusInit = () => {
   return {
@@ -46,19 +47,11 @@ const updateTodoStatusFail = (message) => {
   };
 };
 const getTodoStatus = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoStatusInit());
     let form = new FormData();
     form.append("RequestMethod", todosStatus.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(toDoListApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -117,7 +110,6 @@ const updateTodoStatusFunc = (
   value,
   currentMeetingID
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let meetingPage = localStorage.getItem("todoListPage");
   let meetingRow = localStorage.getItem("todoListRow");
@@ -131,14 +123,7 @@ const updateTodoStatusFunc = (
     let form = new FormData();
     form.append("RequestMethod", updateTodoStatus.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(toDoListApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

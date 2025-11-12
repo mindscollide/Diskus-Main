@@ -12,6 +12,7 @@ import {
   clearLocalStorageAtloginresponce,
   handleNavigation,
 } from "../../commen/functions/utils";
+import axiosInstance from "../../commen/functions/axiosInstance";
 const TwoFaAuthenticateInit = () => {
   return {
     type: actions.CHECKINGAUTHENTICATEAFA_INIT,
@@ -32,7 +33,6 @@ const TwoFaAuthenticateFail = (message) => {
 };
 
 const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserID: JSON.parse(userID),
     Device: "Browser",
@@ -44,14 +44,7 @@ const TwoFaAuthenticate = (t, OrganiztionID, userID, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", TwoFaAuthenticateRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -187,20 +180,12 @@ const sendTwoFacOtpFail = (message) => {
 
 // t, navigate, Data, selectDevice, setCurrentStep; Previous Props
 const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
     let form = new FormData();
     form.append("RequestMethod", sendTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -397,21 +382,12 @@ const sendTwoFacAction = (t, navigate, Data, setSeconds, setMinutes) => {
 };
 
 const resendTwoFacAction = (t, Data, navigate, setSeconds, setMinutes) => {
-  // let Data = {Data }
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(sendTwoFacOtpInit());
     let form = new FormData();
     form.append("RequestMethod", sendTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -630,20 +606,12 @@ const verifyOtpFacFail = (message) => {
 };
 
 const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(verifyOtpFacInit());
     let form = new FormData();
     form.append("RequestMethod", verifyTwoFacOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -6,6 +6,7 @@ import {
   getOrganizationLevelSettings,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getOrganizationLevelSettingInit = () => {
   return {
@@ -41,14 +42,8 @@ const getOrganizationLevelSetting = (navigate, t) => {
     form.append("RequestData", JSON.stringify(data));
 
     return new Promise((resolve, reject) => {
-      axios({
-        method: "post",
-        url: settingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance
+      .post(settingApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t))
@@ -205,14 +200,8 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
     let form = new FormData();
     form.append("RequestMethod", updateOrganizationLevelSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));

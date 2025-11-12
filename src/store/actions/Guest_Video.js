@@ -32,6 +32,7 @@ import {
   toggleParticipantsVisibility,
 } from "./VideoFeature_actions";
 import { isArray } from "lodash";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const guestVideoNavigationScreen = (response) => {
   return {
@@ -75,14 +76,8 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
     form.append("RequestMethod", getMeetingGuestVideoURL.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -166,12 +161,8 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
     );
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {},
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshToken(navigate, t));
@@ -286,12 +277,8 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
     form.append("RequestMethod", joinGuestVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {},
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
@@ -428,14 +415,8 @@ const admitRejectAttendeeMainApi = (
     let form = new FormData();
     form.append("RequestMethod", admitRejectAttendee.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -579,11 +560,8 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
     form.append("RequestMethod", raiseUnRaisedHand.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -672,14 +650,8 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
     let form = new FormData();
     form.append("RequestMethod", transferMeetingHost.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -794,14 +766,8 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", removeParticipantMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -907,14 +873,8 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", guestLeaveMeetingVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1025,12 +985,8 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
     let form = new FormData();
     form.append("RequestMethod", muteUnMuteSelf.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1119,14 +1075,8 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
     let form = new FormData();
     form.append("RequestMethod", hideUnHideVideoSelf.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

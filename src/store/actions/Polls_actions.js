@@ -35,6 +35,7 @@ import {
   SetMeetingPollsApiFunc,
 } from "./NewMeetingActions";
 import { isFunction } from "../../commen/functions/utils";
+import axiosInstance from "../../commen/functions/axiosInstance";
 const clearPollsMesseges = () => {
   return {
     type: actions.CLEAR_POLLS_MESSAGES,
@@ -1656,21 +1657,13 @@ const getTaskGroupIdFail = (message) => {
 };
 
 const getTasksByGroupIDApi = (navigate, t, newData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getTaskGroupIdInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskGroupIDApi.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1740,21 +1733,13 @@ const setTaskGroupFail = (message) => {
 };
 
 const setTasksByGroupApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(setTaskGroupInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setGroupTaskApi.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1830,21 +1815,13 @@ const getTaskCommitteeIdFail = (message) => {
 };
 
 const getTaskCommitteeIDApi = (navigate, t, newData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getTaskCommitteeIdInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(newData));
     form.append("RequestMethod", getTaskByCommitteeIDApi.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1916,21 +1893,13 @@ const setTaskCommitteeFail = (message) => {
 };
 
 const setTasksByCommitteeApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(setTaskCommitteeInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setCommitteeTaskApi.RequestMethod);
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

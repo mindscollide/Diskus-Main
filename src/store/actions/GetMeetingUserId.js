@@ -8,6 +8,7 @@ import {
   searchUserMeetings,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const SetLoaderFalse = () => {
   return {
@@ -93,14 +94,8 @@ const getMeetingUserId = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", getMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -180,14 +175,8 @@ const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
     let form = new FormData();
     form.append("RequestMethod", getWeekMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -270,14 +259,8 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -338,14 +321,8 @@ const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -441,14 +418,8 @@ const searchUserMeeting = (navigate, searchData, t) => {
     let form = new FormData();
     form.append("RequestMethod", searchUserMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         console.log("chek search meeting");
         if (response.data.responseCode === 417) {

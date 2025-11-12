@@ -67,11 +67,8 @@ const createOrganization = (data, navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", createOrganizationRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
+
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -263,21 +260,13 @@ const validationEmailFail = (message) => {
 };
 
 const validationEmailAction = (email, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
     dispatch(validationEmailInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", userEmailValidation.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1576,11 +1565,7 @@ const verificationEmailOTP = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", userEmailVerification.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2785,11 +2770,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getSelectedPacakge_Detail.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2884,14 +2865,7 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", changepassword.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2998,11 +2972,7 @@ const organizationPackageReselection = (
     let form = new FormData();
     form.append("RequestMethod", OrganizationPackageReselection.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -3169,11 +3139,7 @@ const updatePasswordAction = (value, navigate, t) => {
       "RequestMethod",
       passswordUpdationOnForgetPassword.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3408,11 +3374,7 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
       "RequestMethod",
       ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3526,14 +3488,7 @@ const validatePasswordActionApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", ValidateUserPasswordRM.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: JSON.parse(localStorage.getItem("token")),
-      },
-    })
+    axiosInstance.post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));

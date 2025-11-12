@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { resendOTP } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const resendOTPInit = () => {
   return {
@@ -30,11 +31,8 @@ const ResendOTP = (t, verificationData, setSeconds, setMinutes) => {
     let form = new FormData();
     form.append("RequestMethod", resendOTP.RequestMethod);
     form.append("RequestData", JSON.stringify(verificationData));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance.post(authenticationApi, form)
+
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
