@@ -9,7 +9,6 @@ import {
   updateProfilePictureRM,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
-import axios from "axios";
 import { getUserDetails, getUserSetting } from "../actions/GetUserSetting";
 import axiosInstance from "../../commen/functions/axiosInstance";
 

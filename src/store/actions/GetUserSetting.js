@@ -7,7 +7,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { findAndSetConfigValue } from "../../commen/functions/utils";
 import { RefreshToken } from "../actions/Auth_action";
-import axios from "axios";
+
 import { currentUserPicture } from "./Minutes_action";
 import axiosInstance from "../../commen/functions/axiosInstance";
 

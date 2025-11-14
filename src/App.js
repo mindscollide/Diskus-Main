@@ -25,7 +25,6 @@ import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagemen
 import { Notification } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
-import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
@@ -34,6 +33,7 @@ import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
 import { useMeetingContext } from "./context/MeetingContext";
 import { v4 as uuidv4 } from "uuid";
+import axiosInstance from "./commen/functions/axiosInstance";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const TABS_KEY = "open_tabs"; // to track all open tabs
@@ -115,7 +115,7 @@ const App = () => {
     // Function to fetch the current version from version.json
     const fetchVersion = async () => {
       try {
-        const response = await axios.get("/version.json", {
+        const response = await axiosInstance.get("/version.json", {
           cache: "no-store",
         });
         return response.data.version;

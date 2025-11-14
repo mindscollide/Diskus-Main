@@ -1,6 +1,5 @@
 import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
 import {
   updateOrganizationLevelSettings,
   getOrganizationLevelSettings,

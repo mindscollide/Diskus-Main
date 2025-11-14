@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getTimeZOne } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";

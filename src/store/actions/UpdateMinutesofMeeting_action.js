@@ -1,8 +1,9 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { RefreshToken } from "./Auth_action";
 import { updateMinuteofMeetings } from "../../commen/apis/Api_config";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const meetinOfMeetingInit = () => {
   return {
@@ -25,20 +26,13 @@ const meetinOfMeetingFail = (response, message) => {
 };
 
 const updateMeetingOfMinutes = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());
     let form = new FormData();
     form.append("RequestMethod", updateMinuteofMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

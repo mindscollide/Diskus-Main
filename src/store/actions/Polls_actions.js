@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
@@ -144,14 +144,8 @@ const searchPollsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", searcPollsRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -232,14 +226,8 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deltePolls.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -344,14 +332,8 @@ const SavePollsApi = (navigate, Data, t, value, currentMeeting) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", savePollsRequestMethod.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -501,14 +483,8 @@ const castVoteApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", castVote.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -693,14 +669,8 @@ const getPollsByPollIdApi = (navigate, data, check, t, setEditPolls) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(getPollsByPollIdApi(navigate, data, check, t));
@@ -846,14 +816,8 @@ const viewVotesApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", viewvotes.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(viewVotesApi(navigate, data, t));
@@ -947,14 +911,8 @@ const getAllCommitteesandGroups = (navigate, t, flag) => {
       "RequestMethod",
       getAllCommittesandGroupsforPolls.RequestMethod
     );
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1046,14 +1004,8 @@ const updatePollsApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updatePolls.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1286,14 +1238,8 @@ const GetPollsByCommitteeIDapi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollbyCommitteeIdRM.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1385,14 +1331,8 @@ const getPollsByGroupMainApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getPollByGroupIDApi.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1470,14 +1410,8 @@ const setGroupPollsMainApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", setGroupPollsApi.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1563,14 +1497,8 @@ const setCommitteePollsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", setCommitteePollsRM.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1984,14 +1912,8 @@ const deleteCommitteePollApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteCommitteePollRM.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2082,14 +2004,8 @@ const deleteGroupPollApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteGroupPollsRM.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2179,14 +2095,8 @@ const deleteMeetingPollApi = (navigate, t, data, currentMeeting) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", deleteMeetingPollsRM.RequestMethod);
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2267,14 +2177,8 @@ const getPollsByPollIdforCommitteeApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2366,14 +2270,8 @@ const getPollByPollIdforGroups = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2464,14 +2362,8 @@ const getPollByPollIdforMeeting = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getPollByPollID.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(
@@ -2588,14 +2480,8 @@ const validateStringPollApi = (emailString, navigate, t, RouteNo, dispatch) => {
     form.append("RequestMethod", ValidateEmailRelatedStringPolls.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2774,14 +2660,8 @@ const UpdatedCastVoteAPI = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", updateCastVotePolls.RequestMethod);
-    await axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    }).then(async (response) => {
+    await     axiosInstance.post(pollApi, form)
+    .then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
         dispatch(

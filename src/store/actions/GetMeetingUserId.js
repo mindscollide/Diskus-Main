@@ -7,7 +7,7 @@ import {
   upcomingEvents,
   searchUserMeetings,
 } from "../../commen/apis/Api_config";
-import axios from "axios";
+
 import axiosInstance from "../../commen/functions/axiosInstance";
 
 const SetLoaderFalse = () => {

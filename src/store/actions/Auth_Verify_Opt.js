@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { resendOTP } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import axiosInstance from "../../commen/functions/axiosInstance";

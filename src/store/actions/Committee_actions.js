@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import {
   dataRoomApi,
   getCommitteesApi,
@@ -70,14 +70,7 @@ const uploadDocumentsCommitteesApi = (
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -182,14 +175,7 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -291,14 +277,8 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestMethod", getCommitteesByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(getCommitteesApi, form)
+ 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -410,14 +390,8 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestMethod", getCommitteesByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -531,14 +505,8 @@ const getCommitteesbyCommitteeId = (
     let form = new FormData();
     form.append("RequestMethod", getCommitteeByIdRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         console.log(
           "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
@@ -695,14 +663,8 @@ const createcommittee = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", createCommitteeRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -815,14 +777,8 @@ const getCommitteeTypes = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getallOrganizationCommitteType.RequestMethod);
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -903,14 +859,8 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
       "RequestMethod",
       getallOrganizationCommitteMemberRole.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -993,14 +943,8 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
       "RequestMethod",
       updateCommitteeStatusRequestMethod.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1072,14 +1016,8 @@ const updateCommittee = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updateCommitteeRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1211,14 +1149,8 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
       "RequestMethod",
       CommitteeAndGroupMappingRequestMethod.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getCommitteesApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+       axiosInstance.post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1291,14 +1223,8 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
       "RequestMethod",
       CreateUpdateCommitteeDatarRoomRM.RequestMethod
     );
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1420,14 +1346,7 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", saveCommitteeDocumentsRM.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1509,14 +1428,7 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", reteriveCommitteeDocumentsRM.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -1,7 +1,7 @@
 import * as actions from "../action_types";
 import { postComment } from "../../commen/apis/Api_config";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
+
 import { RefreshToken } from "./Auth_action";
 import axiosInstance from "../../commen/functions/axiosInstance";
 

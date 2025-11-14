@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   getVideoCallParticipantsAndWaitingList,
   getVideoCallParticipantsForGuest,
@@ -22,6 +21,7 @@ import { VideoCallResponse } from "./VideoMain_actions";
 import { hideUnhideSelfMainApi, muteUnMuteSelfMainApi } from "./Guest_Video";
 import { Store } from "emoji-mart";
 import store from "../store";
+import axiosInstance from "../../commen/functions/axiosInstance";
 const videoChatPanel = (response) => {
   return {
     type: actions.VIDEO_CHAT_FLAG,
@@ -335,14 +335,8 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
     form.append("RequestMethod", muteUnMuteParticipant.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -448,14 +442,8 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
     form.append("RequestMethod", hideUnHidePaticipantVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -578,14 +566,8 @@ const getParticipantMeetingJoinMainApi = (
     form.append("RequestMethod", joinMeetingVideoRequest.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -873,15 +855,7 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
       getVideoCallParticipantsAndWaitingList.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1054,11 +1028,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
       getVideoCallParticipantsForGuest.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-    })
+    axiosInstance.post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1332,14 +1302,8 @@ const openPresenterViewMainApi = (
     form.append("RequestMethod", openPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1512,14 +1476,8 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
     form.append("RequestMethod", startPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1654,14 +1612,8 @@ const stopPresenterViewMainApi = (
     form.append("RequestMethod", stopPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(newdata));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1859,14 +1811,8 @@ const stopPresenterViewMainApiTest = (
         form.append("RequestMethod", stopPresenterView.RequestMethod);
         form.append("RequestData", JSON.stringify(newdata));
 
-        const response = await axios({
-          method: "post",
-          url: meetingApi,
-          data: form,
-          headers: {
-            _token: token,
-          },
-        });
+        const response = await  axiosInstance
+        .post(meetingApi, form)
 
         const res = response.data;
 
@@ -2018,14 +1964,8 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
     form.append("RequestMethod", joinPresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2196,14 +2136,8 @@ const leavePresenterViewMainApi = (
     form.append("RequestMethod", leavePresenterView.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2439,14 +2373,8 @@ const leavePresenterViewMainApiTest = (
       form.append("RequestData", JSON.stringify(data));
 
       try {
-        const response = await axios({
-          method: "post",
-          url: meetingApi,
-          data: form,
-          headers: {
-            _token: token,
-          },
-        });
+        const response = await  axiosInstance
+        .post(meetingApi, form)
 
         const resData = response.data;
 
@@ -2687,14 +2615,7 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", participantOfGroupCall.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2799,7 +2720,6 @@ const isSharedScreenFail = (message) => {
 };
 
 const isSharedScreenTriggeredApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
     dispatch(isSharedScreenInit());
@@ -2807,14 +2727,8 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
     form.append("RequestMethod", isSharedScreenCall.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

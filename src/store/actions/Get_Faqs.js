@@ -2,7 +2,7 @@ import * as actions from "../action_types";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
 import { getFaqs } from "../../commen/apis/Api_config";
-import axios from "axios";
+
 import axiosInstance from "../../commen/functions/axiosInstance";
 
 const SetLoaderFalse = () => {

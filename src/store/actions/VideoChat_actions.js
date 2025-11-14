@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 
 import {
   getAttachmentByMeetingId,
@@ -13,6 +12,7 @@ import {
   DataRoomAllFilesDownloads,
 } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const showMinutes = (response) => {
   return {
@@ -61,14 +61,8 @@ const getMeetingAgendas = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", getAgendasByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -123,14 +117,8 @@ const getMeetingAttachments = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", getAttachmentByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -193,14 +181,8 @@ const updateAgendaAttachment = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", updateAgendaAttachments.RequestMethod);
     form.append("RequestData", JSON.stringify(AgendaAttachments));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -252,13 +234,7 @@ const DownloadCallRecording = (Data, navigate, t, utcDate, utcTime) => {
   form.append("RequestData", JSON.stringify(Data));
   return (dispatch) => {
     dispatch(downloadCallRecording_init());
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
-      headers: {
-        _token: token,
-      },
+    axiosInstance.post(DataRoomAllFilesDownloads, form, {
       responseType: "blob",
     })
       .then(async (response) => {
@@ -302,15 +278,10 @@ const DownloadMeetingRecording = (
   form.append("RequestData", JSON.stringify(Data));
   return (dispatch) => {
     dispatch(downloadCallRecording_init());
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
-      headers: {
-        _token: token,
-      },
+    axiosInstance.post(DataRoomAllFilesDownloads, form, {
       responseType: "blob",
     })
+
       .then(async (response) => {
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));

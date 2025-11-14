@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { uploadDocument } from "../../commen/apis/Api_config";

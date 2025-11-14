@@ -33,7 +33,6 @@ import {
   meetingApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import {
   openPaymentProcessModal,
@@ -356,14 +355,7 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", ExtendOrganizationTrial.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -468,14 +460,7 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AddOrganizationsUser.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -568,14 +553,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", EditOrganizationsUser.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -713,14 +691,7 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -801,14 +772,7 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -918,14 +882,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
       "RequestMethod",
       GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1127,14 +1084,7 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
       "RequestMethod",
       OrganizationPackageDetailsAndUserStats.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1400,14 +1350,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1611,14 +1554,7 @@ const getCancelSubscriptionReasonApi = (navigate, t) => {
     dispatch(cancelSubscriptionReasonInit());
     let form = new FormData();
     form.append("RequestMethod", CancelSubReasons.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1702,14 +1638,7 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
       CancelOrganizationsSubscriptions.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1858,14 +1787,7 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", requestOrganizationTrialExtend.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2148,14 +2070,7 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
     let form = new FormData();
     form.append("RequestMethod", changeSelectedSubscription.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2261,14 +2176,7 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       CancelTrailandUpdageOrganiztionRM.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2376,14 +2284,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
       downgradeOrganizationSubscription.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2482,14 +2383,7 @@ const getOrganizationWalletApi = (navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", getOrganizationWallet.RequestMethod);
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2569,14 +2463,7 @@ const BoardDeckSendEmailApi = (
     let form = new FormData();
     form.append("RequestMethod", BoardDeckSendEmail.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2677,16 +2564,10 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
   let meetingName = localStorage.getItem("meetingTitle");
   return async (dispatch) => {
     await dispatch(BoardDeckDownloadPDF_init());
-
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
-      headers: {
-        _token: token,
-      },
+    axiosInstance.post(DataRoomAllFilesDownloads, form, {
       responseType: "arraybuffer",
     })
+  
       .then(async (response) => {
         if (response.status === 200) {
           console.log(response.status, "responsestatus");
@@ -2760,14 +2641,8 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", validateVideoRecordingURL.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2842,7 +2717,6 @@ const BoardDeckValidateIsMinutesPublished_failed = (message) => {
 };
 
 const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(BoardDeckValidateIsMinutesPublished_init());
     let form = new FormData();
@@ -2851,14 +2725,8 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
       GetMeetingBoardDeckCredentialsStatus.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

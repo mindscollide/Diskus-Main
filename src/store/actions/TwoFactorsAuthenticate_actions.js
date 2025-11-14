@@ -1,6 +1,6 @@
 import * as actions from "../action_types";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
+
 import {
   TwoFaAuthenticateRequestMethod,
   sendTwoFacOTP,

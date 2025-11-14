@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import {
   dataRoomApi,
   meetingApi,
@@ -834,14 +834,7 @@ const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
     form.append("RequestMethod", GetMeetingNewFrequencyReminder.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(meetingApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -2449,14 +2442,8 @@ const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", getPollsByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2614,14 +2601,8 @@ const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
     let form = new FormData();
     form.append("RequestMethod", SetMeetingPolls.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(pollApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3574,14 +3555,7 @@ const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
       form.append("RequestData", JSON.stringify(Data));
       form.append("RequestMethod", getAllGeneralMiintuesDocument.RequestMethod);
 
-      axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance.post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -3704,14 +3678,7 @@ const GetAllGeneralMinutesApiFunc = (
     form.append("RequestMethod", getGeneralMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(meetingApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -3819,14 +3786,7 @@ const uploadDocumentsMeetingMinutesApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3934,14 +3894,7 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -4046,14 +3999,7 @@ const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", SaveGeneralWiseSavingDocuments.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -4138,14 +4084,7 @@ const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", RetriveGeneralMinutesDocuments.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -4336,14 +4275,8 @@ const GetAllAgendaWiseMinutesApiFunc = (
     form.append("RequestMethod", getAllAgendaWiseMinutes.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await    axiosInstance
+      .post(meetingApi, form)
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -4978,14 +4911,7 @@ const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
       let form = new FormData();
       form.append("RequestData", JSON.stringify(Data));
       form.append("RequestMethod", saveDocumentAgendaWiseMinutes.RequestMethod);
-      const response = await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -5094,14 +5020,8 @@ const UpdateMinutesGeneralApiFunc = (
     form.append("RequestMethod", UpdateGeneralMinutes.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await    axiosInstance
+      .post(meetingApi, form)
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -5261,14 +5181,7 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -5382,14 +5295,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -5494,14 +5400,7 @@ const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", RetriveAgendaWiseDocuments.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -5599,14 +5498,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", DeleteDocumentGenralMinute.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -5724,14 +5616,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", DeleteAgendaWiseDocuments.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -5886,14 +5771,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
       "RequestMethod",
       CreateUpdateMeetingDataroomMapped.RequestMethod
     );
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -6619,14 +6497,7 @@ const UpdateMeetingUserApiFunc = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         try {
           if (response.data.responseCode === 417) {
@@ -6795,14 +6666,7 @@ const UpdateMeetingUserForAgendaContributor = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -6964,14 +6828,7 @@ const UpdateMeetingUserForOrganizers = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", UpdateMeetingUserhit.RequestMethod);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -7151,14 +7008,7 @@ const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
     form.append("RequestMethod", getAllagendaWiseDocumentsApi.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -7256,14 +7106,8 @@ const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
     form.append("RequestMethod", inviteForCollaboration.RequestMethod);
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await    axiosInstance
+      .post(meetingApi, form)
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -7384,14 +7228,8 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
     );
 
     try {
-      const response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await    axiosInstance
+      .post(meetingApi, form)
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -8824,14 +8662,8 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
       );
       form.append("RequestData", JSON.stringify(Data));
 
-      let response = await axios({
-        method: "post",
-        url: meetingApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      let response = await    axiosInstance
+      .post(meetingApi, form)
 
       if (response.data.responseCode === 417) {
         // Token expired, refresh token and retry
@@ -9901,14 +9733,7 @@ const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await     axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -10137,14 +9962,7 @@ const moveFilesAndFoldersApi = (
     let form = new FormData();
     form.append("RequestMethod", MoveFilesToFoldersRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+        axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -10240,7 +10058,6 @@ const getMeetingRecordingFilesApi = (
   Data,
   setStepDownloadModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getMeetingRecordingFiles_init());
 
@@ -10365,14 +10182,7 @@ const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
     ); // Replace with actual request method
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: dataRoomApi, // Replace with actual API URL
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -6,7 +6,6 @@ import {
   updateUserNotificationSetting,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
-import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
 import { isFunction } from "../../commen/functions/utils";
 import axiosInstance from "../../commen/functions/axiosInstance";

@@ -1,7 +1,7 @@
 import { getCountryNames } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { setLoader } from "./Auth2_actions";
 import { RefreshToken } from "./Auth_action";
 import axiosInstance from "../../commen/functions/axiosInstance";

@@ -5,9 +5,9 @@ import {
   getOrganizationByID,
 } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
-import axios from "axios";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getAllOrganizationRolesinit = (response) => {
   return {
@@ -40,14 +40,8 @@ const GetAllOrganizationRoles = (navigate, t) => {
     form.append("RequestMethod", getAllOrganizationRoles.RequestMethod);
     // form.append("RequestData", JSON.stringify(object));
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -120,14 +114,8 @@ const GetAllUserRoles = (navigate, t) => {
     form.append("RequestMethod", getAllUserRoles.RequestMethod);
     // form.append("RequestData", JSON.stringify(object));
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -200,14 +188,8 @@ const GetOrganizationByID = (navigate, object, t) => {
     form.append("RequestMethod", getOrganizationByID.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -281,14 +263,8 @@ const GetAllUserStatus = (navigate, t) => {
     form.append("RequestMethod", getAllUserStatus.RequestMethod);
     // form.append("RequestData", JSON.stringify(object));
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
