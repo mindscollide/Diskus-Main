@@ -34,6 +34,7 @@ import { useAuthContext } from "./context/AuthContext";
 import { useMeetingContext } from "./context/MeetingContext";
 import { v4 as uuidv4 } from "uuid";
 import axiosInstance from "./commen/functions/axiosInstance";
+import axios from "axios";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const TABS_KEY = "open_tabs"; // to track all open tabs
@@ -115,9 +116,11 @@ const App = () => {
     // Function to fetch the current version from version.json
     const fetchVersion = async () => {
       try {
-        const response = await axiosInstance.get("/version.json", {
+        const response = await axios.get("/version.json", {
           cache: "no-store",
         });
+
+        console.log(response, "responseresponse")
         return response.data.version;
       } catch (error) {
         console.error("Error fetching version:", error);

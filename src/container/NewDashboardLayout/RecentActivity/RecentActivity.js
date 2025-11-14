@@ -52,7 +52,7 @@ const RecentActivity = () => {
       <span className={styles["RecentActivity_Title"]}>
         {t("Recent-activity")}
       </span>
-  
+
       <div className={styles["RecentAcitivy_newDashboard"]}>
         {Spinner ? (
           <section className={styles["dashboard_recentActivity_empty"]}>
@@ -64,39 +64,38 @@ const RecentActivity = () => {
               <img
                 src={TodoMessageIcon1}
                 width={200}
-                alt=""
-                draggable="false"
+                alt=''
+                draggable='false'
               />
             }
-            className="recent-activity-text"
+            className='recent-activity-text'
           />
         ) : (
           recentActivityData.map((activity) => {
             const { pK_NTID, description } = activity.notificationTypes;
             return (
-              <div
-                key={pK_NTID + activity.creationDateTime}
-                className={styles["imageNotificationCard"]}
-              >
-                {/* Since all IDs use the same icon, you can simplify */}
-                <img src={DemoIcon} width={46} height={46} alt="" />
-  
-                {description}
-  
-                <p className="d-flex justify-content-end mx-1">
+              <>
+                <div
+                  key={pK_NTID + activity.creationDateTime}
+                  className={styles["imageNotificationCard"]}>
+                  {/* Since all IDs use the same icon, you can simplify */}
+                  <img src={DemoIcon} width={46} height={46} alt='' />
+
+                  {description}
+                </div>
+                <p className='d-flex justify-content-end mx-1'>
                   {timePassed(
                     forRecentActivity(activity.creationDateTime),
                     currentLanguage
                   )}
                 </p>
-              </div>
+              </>
             );
           })
         )}
       </div>
     </>
   );
-  
 };
 
 export default RecentActivity;

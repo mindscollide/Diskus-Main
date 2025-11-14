@@ -1,16 +1,15 @@
 // src/api/axiosInstance.js
 import axios from "axios";
 import { signOut } from "../../store/actions/Auth_Sign_Out";
-import store from "../../store/store"; // 👈 import your store
+import store from "../../store/store";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_BASE_URL, // optional if you use absolute URLs
+  baseURL: process.env.REACT_APP_BASE_URL,
 });
 
-// Add a request interceptor
+// ------------------- REQUEST -------------------
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Automatically add token from localStorage or redux
     const token = localStorage.getItem("token");
     if (token) {
       config.headers._token = JSON.parse(token);
@@ -20,15 +19,41 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Add a response interceptor
+// ------------------- RESPONSE -------------------
 axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
+  (response) => {
+    console.log("SUCCESS:", response.data);
+
+    const code = Number(response?.data?.responseCode);
+    const message = (response?.data?.errorMessage || "")
+      .toLowerCase()
+      .trim();
+
+    console.log("SUCCESS →", code, message);
+
+    if (code === 401 && message === "tokens does not match") {
       console.warn("Unauthorized - redirecting to login...");
-      
+      signOut("Session expired", store.dispatch);
+      return;
+    }
+
+    return response;
+  },
+  (error) => {
+    console.log("ERROR:", error);
+
+    const code = Number(error?.response?.data?.responseCode);
+    const message = (error?.response?.data?.errorMessage || "")
+      .toLowerCase()
+      .trim();
+
+    console.log("ERROR →", code, message);
+
+    if (code === 401 && message === "tokens does not match") {
+      console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
     }
+
     return Promise.reject(error);
   }
 );
