@@ -513,7 +513,6 @@ const SubAgendaMappingDragging = ({
                                                   : styles["SubAgendaArrow"]
                                               }
                                               onClick={() => {
-                                                parentIslockedCheck ||
                                                   handleSubMenuExpand(
                                                     index,
                                                     subIndex
@@ -869,7 +868,6 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                    parentIslockedCheck ||
                                                       handleSubMenuExpand(
                                                         index,
                                                         subIndex
@@ -896,7 +894,6 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                    parentIslockedCheck ||
                                                       handleSubMenuExpand(
                                                         index,
                                                         subIndex

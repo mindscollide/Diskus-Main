@@ -7217,7 +7217,6 @@ const validateEncryptedStringUserAvailibilityForMeetingApi = (
   Data,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(validateEmptyStringUserAvailibilityInit());
     let form = new FormData();
