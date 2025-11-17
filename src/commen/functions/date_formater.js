@@ -1963,3 +1963,46 @@ export const AuditTrialDateTimeFunctionViewActionDetails = (
   // Format: YYYY-MM-DD | hh:mm A
   return momentObj.format("YYYY-MM-DD | hh:mm A");
 };
+
+
+
+export const newDateTimeFormatterForOTPResend = (dateTime) => {
+  if (!dateTime || dateTime.length < 14) {
+    return "Invalid date";
+  }
+
+  // Get locale from localStorage (default: "en")
+  const locale = localStorage.getItem("i18nextLng") || "en";
+
+  // Build ISO date format
+  const isoDate =
+    `${dateTime.slice(0, 4)}-${dateTime.slice(4, 6)}-${dateTime.slice(6, 8)}T` +
+    `${dateTime.slice(8, 10)}:${dateTime.slice(10, 12)}:${dateTime.slice(12, 14)}.000Z`;
+
+  const m = moment(isoDate).locale(locale);
+
+  // English format
+  let formatted = m.format("HH:mm:ss [on] DD-MMM-YYYY");
+
+  // Arabic formatting
+  if (locale === "ar") {
+    const monthsAr = [
+      "يناير","فبراير","مارس","أبريل","مايو","يونيو",
+      "يوليو","أغسطس","سبتمبر","أكتوبر","نوفمبر","ديسمبر"
+    ];
+
+    const monthIndex = m.month();
+
+    // Replace month
+    formatted = formatted.replace(m.format("MMM"), monthsAr[monthIndex]);
+
+    // Replace "on" → "في"
+    formatted = formatted.replace("on", "في");
+
+    // Convert digits → Arabic numerals
+    formatted = formatted.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]);
+  }
+
+  return formatted;
+};
+

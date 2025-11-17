@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -31,23 +31,13 @@ import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
-import { useMeetingContext } from "./context/MeetingContext";
-import { v4 as uuidv4 } from "uuid";
-import axiosInstance from "./commen/functions/axiosInstance";
+
 import axios from "axios";
 const POLLING_INTERVAL = 60000; // 1 minute
 
-const TABS_KEY = "open_tabs"; // to track all open tabs
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const {
-    isMeetingVideo,
-    meetingId,
-    viewAdvanceMeetingModal,
-    iframeRef,
-    editorRole,
-  } = useMeetingContext();
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
@@ -120,7 +110,7 @@ const App = () => {
           cache: "no-store",
         });
 
-        console.log(response, "responseresponse")
+        console.log(response, "responseresponse");
         return response.data.version;
       } catch (error) {
         console.error("Error fetching version:", error);

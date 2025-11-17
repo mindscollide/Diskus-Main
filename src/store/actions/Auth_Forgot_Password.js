@@ -3,6 +3,7 @@ import { forgetpassword } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import { LoginFlowRoutes } from "./UserManagementActions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { newDateTimeFormatterForOTPResend } from "../../commen/functions/date_formater";
 
 const forgotPasswordInit = () => {
   return {
@@ -103,6 +104,20 @@ const changePasswordRequest = (email, t, navigate) => {
               )
           ) {
             dispatch(forgotPasswordFail(t("Something-went-wrong")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "ERM_AuthService_AuthManager_ForgotPassword_07".toLowerCase()
+              )
+          ) {
+            let nextAttemptDate = response.data.responseResult.nextAttemptDate;
+            let nextAttemptTime = response.data.responseResult.nextAttemptTime;
+            let dateTimeValue = newDateTimeFormatterForOTPResend(
+              `${nextAttemptDate}${nextAttemptTime}`
+            );
+            let newMessage = `${t("Please try again after")} ${dateTimeValue}`;
+            dispatch(forgotPasswordFail(newMessage));
           } else {
             dispatch(forgotPasswordFail(t("Something-went-wrong")));
           }

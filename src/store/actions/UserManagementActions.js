@@ -55,6 +55,7 @@ import {
   showShareViaDataRoomPathConfirmation,
 } from "./NewMeetingActions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { newDateTimeFormatterForOTPResend } from "../../commen/functions/date_formater";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -1277,7 +1278,7 @@ const ResendForgotPasswordCodeApi = (
         if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_01"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_03"
           ) {
             let newMessage = t("Successful");
             dispatch(
@@ -1290,7 +1291,7 @@ const ResendForgotPasswordCodeApi = (
             setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_04"
           ) {
             let newMessage = t("Unsuccessful");
             dispatch(ResendForgotPasswordCodefail(newMessage));
@@ -1298,9 +1299,17 @@ const ResendForgotPasswordCodeApi = (
             setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_05"
           ) {
             let newMessage = t("Something-went-wrong");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            setSeconds(0);
+            setMinutes(0);
+          } else if(response.data.responseResult.responseMessage.toLowerCase() === "ERM_AuthService_AuthManager_ResendForgotPasswordCode_07".toLocaleUpperCase()) {
+            let nextAttemptDate = response.data.responseResult.nextAttemptDate;
+            let nextAttemptTime = response.data.responseResult.nextAttemptTime;
+            let dateTimeValue = newDateTimeFormatterForOTPResend(`${nextAttemptDate}${nextAttemptTime}`);
+            let newMessage = `${t("Please try again after")} ${dateTimeValue};`
             dispatch(ResendForgotPasswordCodefail(newMessage));
             setSeconds(0);
             setMinutes(0);
