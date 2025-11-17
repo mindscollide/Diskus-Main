@@ -443,7 +443,7 @@ const SubAgendaMappingDragging = ({
                                                 expandSubIndex === subIndex &&
                                                 subExpand
                                                   ? t("Hide-details")
-                                                  : t("Show-more")}
+                                                  : t("Show-details")}
                                               </span>
                                               {subAgendaData.subfiles.length >
                                               0 ? (

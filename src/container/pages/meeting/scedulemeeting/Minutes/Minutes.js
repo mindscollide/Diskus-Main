@@ -1071,7 +1071,7 @@ const Minutes = ({
                                     onClick={() => handleshowMore(index)}>
                                     {generalShowMore === index
                                       ? t("Hide-details")
-                                      : t("Show-more")}
+                                      : t("Show-details")}
                                   </span>
                                 </Col>
                               </Row>

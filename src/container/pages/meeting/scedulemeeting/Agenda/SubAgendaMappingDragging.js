@@ -875,7 +875,6 @@ const SubAgendaMappingDragging = ({
                                                   }}
                                                 />
                                               ) : (
-                                                // t("Show-more")
                                                 <Button
                                                   text={t(
                                                     "Description-and-attachement"

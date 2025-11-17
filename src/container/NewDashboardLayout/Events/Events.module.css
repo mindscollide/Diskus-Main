@@ -198,3 +198,12 @@ body[dir="rtl"] .event-details:hover {
   justify-content: center;
   align-items: center;
 }
+
+.ShowMoreText {
+  text-align: center;
+  color: #6172d6 !important;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
