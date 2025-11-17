@@ -26,8 +26,6 @@ const Loader = ({ progress }) => {
     t("Authenticating-your-credentials"),
     t("Generating-secure-token"),
     t("Authenticating-identity"),
-    t("Authenticating-your-credentials"),
-    t("Containing-&-encrypting-network"),
     t("Authenticating-identity-&-encrypting-network"),
     t("Welcome-to-the-admin-panel-your-trusted-control-center"),
     t("Protecting-your-data-during-onboarding"),

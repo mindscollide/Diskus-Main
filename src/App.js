@@ -39,6 +39,51 @@ const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
 
+  useEffect(() => {
+    const syncSessionAndRedirect = () => {
+      const localToken = localStorage.getItem("token");
+      const localUser = localStorage.getItem("userID");
+      const sessionToken = sessionStorage.getItem("token");
+      const sessionUser = sessionStorage.getItem("userID");
+      const isAlreadyInDashboard =
+        window.location.pathname.startsWith("/Diskus/");
+
+      // Step 1: Sync sessionStorage if different from localStorage
+      if (localToken && localUser) {
+        if (
+          (sessionToken !== localToken || sessionUser !== localUser) &&
+          isAlreadyInDashboard
+        ) {
+          sessionStorage.setItem("token", localToken);
+          sessionStorage.setItem("userID", localUser);
+          window.location.reload(); // reload to reflect new user session
+          return;
+        }
+      }
+
+      // Step 2: Redirect to dashboard if token exists but not on dashboard
+      if (!isAlreadyInDashboard && localToken && localUser) {
+        window.location.replace("/Diskus/");
+      }
+    };
+
+    // Run on initial load
+    syncSessionAndRedirect();
+
+    // Listen for tab visibility changes
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        syncSessionAndRedirect();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
   const [open, setOpen] = useState({
