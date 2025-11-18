@@ -20,9 +20,12 @@ import {
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
 import { MeetingContext } from "../../../context/MeetingContext";
+import MoreEvents from "./moreEvents/MoreEvents";
 
 const Events = () => {
   const { setEditorRole } = useContext(MeetingContext);
+
+  const [showMoreEventModal, setShowMoreEventModal] = useState(false);
   const UpcomingEventsDataReducerData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
@@ -66,10 +69,13 @@ const Events = () => {
     try {
       if (UpcomingEventsDataReducerData?.upcomingEvents.length > 0) {
         setIsShowMore(UpcomingEventsDataReducerData?.isMoreAvailable);
-        console.log(UpcomingEventsDataReducerData, "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData")
+        console.log(
+          UpcomingEventsDataReducerData,
+          "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
+        );
         // Create a new array with updated objects without mutating the original state
-        const updatedUpcomingEvents = UpcomingEventsDataReducerData.upcomingEvents.map(
-          (event) => {
+        const updatedUpcomingEvents =
+          UpcomingEventsDataReducerData.upcomingEvents.map((event) => {
             // Assuming statusID is within each event object
             return {
               ...event, // Spread the properties of the original event object
@@ -78,8 +84,7 @@ const Events = () => {
                 statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
               },
             };
-          }
-        );
+          });
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
@@ -87,7 +92,10 @@ const Events = () => {
         setUpComingEvents([]);
       }
     } catch (error) {
-      console.log(error, "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData")
+      console.log(
+        error,
+        "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
+      );
 
       // Log any errors for debugging
     }
@@ -611,7 +619,11 @@ const Events = () => {
             </div>
           );
         })}
-        {isShowMore && <p className={styles["ShowMoreText"]} onClick={handleClickShowMore}>{t("Show-more")}</p>}
+        {isShowMore && (
+          <p className={styles["ShowMoreText"]} onClick={handleClickShowMore}>
+            {t("Show-more")}
+          </p>
+        )}
       </>
     );
   };
@@ -998,10 +1010,18 @@ const Events = () => {
       UserID: parseInt(createrID),
       IsShowMore: true,
     };
-    dispatch(GetUpcomingEvents(navigate, Data2, t));
-  }
+    dispatch(
+      GetUpcomingEvents(navigate, Data2, t, true, setShowMoreEventModal)
+    );
+  };
   return (
     <>
+      {showMoreEventModal && (
+        <MoreEvents
+          moreEventModal={showMoreEventModal}
+          setMoreEventModal={setShowMoreEventModal}
+        />
+      )}
       {Spinner === true ? (
         <Spin />
       ) : (

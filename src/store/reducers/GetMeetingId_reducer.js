@@ -19,6 +19,7 @@ const initialState = {
   MeetingStatusEnded: null,
   GroupMeetingMQTT: null,
   CommitteeMeetingMQTT: null,
+  moreEventsLoader: false
 };
 
 //Get meetingreducer
@@ -158,19 +159,19 @@ const meetingIdReducer = (state = initialState, action) => {
     case actions.SHOWMORE_UPCOMINGEVENTS_INIT:
       return {
         ...state,
-        Loading: true,
+        moreEventsLoader: true,
       };
     case actions.SHOWMORE_UPCOMINGEVENTS_SUCCESS:
       return {
         ...state,
-        Loading: false,
+        moreEventsLoader: false,
         showMoreUpcomingData: action.response,
         ResponseMessage: action.message,
       };
     case actions.SHOWMORE_UPCOMINGEVENTS_FAIL:
       return {
         ...state,
-        Loading: false,
+        moreEventsLoader: false,
         showMoreUpcomingData: null,
         ResponseMessage: action.message,
       };

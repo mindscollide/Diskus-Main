@@ -129,6 +129,7 @@ const SpinComponent = () => {
     if (
       toDoListReducer.taskFromDashboard !== 0 ||
       NotesReducer.notesFromDashboard !== 0 ||
+      meetingIdReducer?.moreEventsLoader ||
       (isLoading && !DashboardRoute)
     ) {
       setShowLoader(true); // Show loader
@@ -145,6 +146,7 @@ const SpinComponent = () => {
     DashboardRoute,
     toDoListReducer?.taskFromDashboard,
     NotesReducer?.notesFromDashboard,
+    meetingIdReducer?.moreEventsLoader
   ]);
 
   if (showLoader) {

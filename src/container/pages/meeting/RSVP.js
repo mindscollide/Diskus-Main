@@ -50,10 +50,10 @@ const RSVP = () => {
     console.log(urlKey, "paramsparamsparamsparams");
 
     if (getValue) {
-      localStorage.setItem("RSVP", urlKey);
+      localStorage.setItem("RSVP", getValue);
     }
 
-    const finalKey = urlKey || localStorage.getItem("RSVP");
+    const finalKey = getValue || localStorage.getItem("RSVP");
 
     if (!finalKey) return;
 

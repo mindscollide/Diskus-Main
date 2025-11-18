@@ -271,7 +271,7 @@ const getShowMoreUpcomingEvent_fail = (message) => {
 };
 
 //Get Week meetings
-const GetUpcomingEvents = (navigate, data, t, loader) => {
+const GetUpcomingEvents = (navigate, data, t, loader, setShowMoreEventModal) => {
   return (dispatch) => {
     if (data.IsShowMore) {
       dispatch(getShowMoreUpcomingEvent_init());
@@ -286,7 +286,7 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetUpcomingEvents(navigate, data, t));
+          dispatch(GetUpcomingEvents(navigate, data, t, loader, setShowMoreEventModal));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -304,6 +304,7 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
                   )
                 );
                 dispatch(SetSpinnerFalse());
+                setShowMoreEventModal(true)
                 return;
               }
               await dispatch(

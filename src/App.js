@@ -45,8 +45,9 @@ const App = () => {
       const localUser = localStorage.getItem("userID");
       const sessionToken = sessionStorage.getItem("token");
       const sessionUser = sessionStorage.getItem("userID");
-      const isAlreadyInDashboard =
-        window.location.pathname.startsWith("/Diskus/");
+      const isAlreadyInDashboard = window.location.pathname
+        .toLowerCase()
+        .includes("Diskus".toLowerCase());
 
       // Step 1: Sync sessionStorage if different from localStorage
       if (localToken && localUser) {
