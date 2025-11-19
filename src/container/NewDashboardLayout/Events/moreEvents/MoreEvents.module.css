@@ -158,8 +158,7 @@ body[dir="rtl"] .event-details:hover {
 .Moreevents_container {
   max-height: 400px;
   overflow-y: auto;
-  /* min-height: 120px; */
-  padding-right: 8px;
+  padding-right: 10px;
 }
 
 .Moreevents_container_title {
@@ -169,4 +168,7 @@ body[dir="rtl"] .event-details:hover {
 }
 .Moreevents_container_header {
   padding: 10px 1rem 0 1rem !important;
+}
+.Moreevents_container_body {
+  padding: 0 1rem !important;
 }

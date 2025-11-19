@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import {
   showCancelModalmeetingDeitals,
+  showEndMeetingModal,
   uploadGlobalFlag,
 } from "../../../store/actions/NewMeetingActions";
 import {
@@ -519,6 +520,55 @@ const Header2 = ({ isVideo }) => {
     setShowWebNotification(!showWebNotification);
   };
 
+  const handleClickLogo = (e) => {
+    console.log("Checking route");
+    e.preventDefault();
+
+    if (!location.pathname.includes("/Admin")) {
+      // It Means user is in Diskus User Dashboard
+      if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+        // Check if user is in advance meeting modal and meeting is ongoing
+        dispatch(showEndMeetingModal(true));
+      } else {
+        try {
+          const activeCall = localStorage.getItem("activeCall");
+          console.log("Checking route", activeCall);
+
+          // Check if activeCall exists and is a valid JSON
+          if (activeCall !== null) {
+            console.log("Checking route");
+
+            const parsedActiveCall = JSON.parse(activeCall);
+
+            // Explicitly evaluate activeCall
+            if (parsedActiveCall === false) {
+              homePageDashboardClickNoCall();
+            } else {
+              homePageDashboardClick();
+            }
+          } else {
+            console.log("Checking route");
+
+            // Handle case when activeCall is null or not available
+            console.warn("activeCall is not available in localStorage");
+          }
+        } catch (error) {
+          console.log("Checking route");
+
+          // Handle any errors that occur during parsing or function calls
+          console.error(
+            "Error processing activeCall from localStorage:",
+            error
+          );
+        }
+      }
+
+      console.log("Checking route", viewAdvanceMeetingModal, editorRole);
+    } else {
+      navigate("/Diskus");
+    }
+  };
+
   return (
     <>
       {activateBlur ? (
@@ -545,6 +595,7 @@ const Header2 = ({ isVideo }) => {
                 alt=''
                 width={120}
                 draggable='false'
+                onClick={handleClickLogo}
               />
             </Navbar.Brand>
             <Nav className='ml-auto align-items-center'>
@@ -863,50 +914,52 @@ const Header2 = ({ isVideo }) => {
                     : "/Admin/ManageUsers"
                   : "/Diskus"
               }
-              onClick={(e) => {
-                // Prevent default behavior
-                e.preventDefault();
-                if (!location.pathname.includes("/Admin")) {
-                  console.log("Checking route");
+              onClick={handleClickLogo}
+              // onClick={(e) => {
+              //   // Prevent default behavior
+              //   e.preventDefault();
+              //   if (!location.pathname.includes("/Admin")) {
+              //     console.log("Checking route");
 
-                  try {
-                    const activeCall = localStorage.getItem("activeCall");
-                    console.log("Checking route", activeCall);
+              //     try {
+              //       const activeCall = localStorage.getItem("activeCall");
+              //       console.log("Checking route", activeCall);
 
-                    // Check if activeCall exists and is a valid JSON
-                    if (activeCall !== null) {
-                      console.log("Checking route");
+              //       // Check if activeCall exists and is a valid JSON
+              //       if (activeCall !== null) {
+              //         console.log("Checking route");
 
-                      const parsedActiveCall = JSON.parse(activeCall);
+              //         const parsedActiveCall = JSON.parse(activeCall);
 
-                      // Explicitly evaluate activeCall
-                      if (parsedActiveCall === false) {
-                        homePageDashboardClickNoCall();
-                      } else {
-                        homePageDashboardClick();
-                      }
-                    } else {
-                      console.log("Checking route");
+              //         // Explicitly evaluate activeCall
+              //         if (parsedActiveCall === false) {
+              //           homePageDashboardClickNoCall();
+              //         } else {
+              //           homePageDashboardClick();
+              //         }
+              //       } else {
+              //         console.log("Checking route");
 
-                      // Handle case when activeCall is null or not available
-                      console.warn(
-                        "activeCall is not available in localStorage"
-                      );
-                    }
-                  } catch (error) {
-                    console.log("Checking route");
+              //         // Handle case when activeCall is null or not available
+              //         console.warn(
+              //           "activeCall is not available in localStorage"
+              //         );
+              //       }
+              //     } catch (error) {
+              //       console.log("Checking route");
 
-                    // Handle any errors that occur during parsing or function calls
-                    console.error(
-                      "Error processing activeCall from localStorage:",
-                      error
-                    );
-                  }
-                } else {
-                  console.log("Checking route");
-                  navigate("/Diskus");
-                }
-              }}>
+              //       // Handle any errors that occur during parsing or function calls
+              //       console.error(
+              //         "Error processing activeCall from localStorage:",
+              //         error
+              //       );
+              //     }
+              //   } else {
+              //     console.log("Checking route");
+              //     navigate("/Diskus");
+              //   }
+              // }}
+              >
               <img
                 src={
                   currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader
@@ -1388,7 +1441,9 @@ const Header2 = ({ isVideo }) => {
                     />
                     {unReadCountNotification !== 0 ? (
                       <span className='NotficationCountSpan'>
-                        {unReadCountNotification > 99 ? `${convertToArabicNumerals(`99`)}+`: convertToArabicNumerals(unReadCountNotification)}
+                        {unReadCountNotification > 99
+                          ? `${convertToArabicNumerals(`99`)}+`
+                          : convertToArabicNumerals(unReadCountNotification)}
                       </span>
                     ) : null}
                   </span>

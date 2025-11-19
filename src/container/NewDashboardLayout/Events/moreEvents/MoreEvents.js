@@ -146,6 +146,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
       ModalTitle={<>Events</>}
       modalTitleClassName={styles["Moreevents_container_title"]}
       modalHeaderClassName={styles["Moreevents_container_header"]}
+      modalBodyClassName={styles["Moreevents_container_body"]}
       ModalBody={
         <>
           <div className={styles["Moreevents_container"]}>

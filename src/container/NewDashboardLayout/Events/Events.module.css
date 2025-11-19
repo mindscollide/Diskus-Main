@@ -191,7 +191,7 @@ body[dir="rtl"] .event-details:hover {
 }
 
 .ShowMoreText {
-  text-align: center;
+  text-align: right;
   color: #6172d6 !important;
   font-size: 12px;
   font-weight: 600;

@@ -8305,6 +8305,270 @@ const LeaveCurrentMeeting = (
   };
 };
 
+const newLeaveCurrentMeeting = (
+  navigate,
+  t,
+  Data,
+  isQuickMeeting,
+  setViewFlag,
+  setEditorRole,
+  setAdvanceMeetingModalID,
+  setViewAdvanceMeetingModal,
+  setEndMeetingConfirmationModal
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let userID = localStorage.getItem("userID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
+  let roomID = localStorage.getItem("acceptedRoomID");
+  let userGUID = localStorage.getItem("userGUID");
+  let ViewCommitteeID = localStorage.getItem("ViewCommitteeID");
+  let ViewGroupID = localStorage.getItem("ViewGroupID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  return async (dispatch) => {
+    await dispatch(leaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", leaveMeeting.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            LeaveCurrentMeeting(
+              navigate,
+              t,
+              Data,
+              isQuickMeeting,
+              setViewFlag,
+              setEditorRole,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal,
+              setEndMeetingConfirmationModal
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_01".toLowerCase()
+                )
+            ) {
+              localStorage.removeItem("meetingTitle");
+              localStorage.removeItem("typeOfMeeting");
+              localStorage.removeItem("currentMeetingID");
+              localStorage.removeItem("currentMeetingLS");
+              localStorage.setItem("AdvanceMeetingOpen", false);
+              localStorage.setItem("isMeetingVideoHostCheck", false);
+              dispatch(showEndMeetingModal(false));
+              if (typeof setViewAdvanceMeetingModal === "function") {
+                setViewAdvanceMeetingModal(false);
+              }
+              try {
+                dispatch(currentMeetingStatus(0));
+
+                if (isQuickMeeting) {
+                  dispatch(
+                    leaveMeetingQuickSuccess(
+                      response.data.responseResult,
+                      t("Successful")
+                    )
+                  );
+                  console.log("Checking ");
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
+                  if (ViewCommitteeID !== null) {
+                    let userID = localStorage.getItem("userID");
+
+                    let searchData = {
+                      CommitteeID: Number(ViewCommitteeID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(
+                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                    );
+                  } else if (ViewGroupID !== null) {
+                    let searchData = {
+                      GroupID: Number(ViewGroupID),
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: 1,
+                      Length: 50,
+                      PublishedMeetings: true,
+                    };
+                    dispatch(getMeetingbyGroupApi(navigate, t, searchData));
+                  } else {
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
+                    };
+                    console.log("chek search meeting");
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
+                  }
+                } else {
+                  dispatch(
+                    leaveMeetingAdvancedSuccess(
+                      response.data.responseResult,
+                      t("Successful")
+                    )
+                  );
+                  if (typeof setEndMeetingConfirmationModal === "function") {
+                    setEndMeetingConfirmationModal(false);
+                  }
+                  if (
+                    localStorage.getItem("navigateLocation") === "resolution"
+                  ) {
+                    navigate("/Diskus/resolution");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "dataroom"
+                  ) {
+                    navigate("/Diskus/dataroom");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "committee"
+                  ) {
+                    navigate("/Diskus/committee");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "groups"
+                  ) {
+                    navigate("/Diskus/groups");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "polling"
+                  ) {
+                    navigate("/Diskus/polling");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "calendar"
+                  ) {
+                    navigate("/Diskus/calendar");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "todolist"
+                  ) {
+                    navigate("/Diskus/todolist");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "Notes"
+                  ) {
+                    navigate("/Diskus/Notes");
+                  } else if (
+                    localStorage.getItem("navigateLocation") === "MainDashBoard"
+                  ) {
+                    console.log("navigateLocation");
+                    navigate("/Diskus/");
+                  } else {
+                    let searchData = {
+                      Date: "",
+                      Title: "",
+                      HostName: "",
+                      UserID: Number(userID),
+                      PageNumber: Number(meetingPageCurrent),
+                      Length: Number(meetingpageRow),
+                      PublishedMeetings:
+                        currentView && Number(currentView) === 1 ? true : false,
+                    };
+                    console.log("chek search meeting");
+                    await dispatch(
+                      searchNewUserMeeting(navigate, searchData, t)
+                    );
+                    localStorage.removeItem("folderDataRoomMeeting");
+                    setEditorRole({ status: null, role: null });
+                    setAdvanceMeetingModalID(null);
+
+                    dispatch(viewAdvanceMeetingPublishPageFlag(false));
+                    dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
+                  }
+                }
+
+                // let newName = localStorage.getItem("name");
+                // let Data = {
+                //   RoomID: roomID,
+                //   UserGUID: userGUID,
+                //   Name: String(newName),
+                // };
+                // if (roomID !== "0" && userGUID !== null) {
+                //   dispatch(normalizeVideoPanelFlag(false));
+                //   dispatch(maximizeVideoPanelFlag(false));
+                //   dispatch(minimizeVideoPanelFlag(false));
+
+                //   localStorage.setItem("activeCall", false);
+
+                //       localStorage.setItem("isMeeting", false);
+                sessionStorage.removeItem("isMeeting");
+                //   localStorage.setItem("meetingTitle", "");
+                //   localStorage.setItem("acceptedRecipientID", 0);
+                //   localStorage.setItem("acceptedRoomID", 0);
+                //   localStorage.setItem("activeRoomID", 0);
+                //   localStorage.setItem("meetingVideoID", 0);
+                //   localStorage.setItem("MicOff", true);
+                //   localStorage.setItem("VidOff", true);
+                //   dispatch(LeaveMeetingVideo(Data, navigate, t));
+                // }
+              } catch (error) {
+                console.log(error);
+              }
+
+              setViewFlag(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_02".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Unsuccessful")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_04".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Join-Log-Not-Found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_LeaveMeeting_05".toLowerCase()
+                )
+            ) {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            } else {
+              dispatch(leaveMeetingFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(leaveMeetingFail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(leaveMeetingFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(leaveMeetingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const LeaveCurrentMeetingOtherMenus = (
   navigate,
   t,
@@ -10607,4 +10871,5 @@ export {
   requestMeetingRecordingTranscript_clear,
   meetingTranscriptDownloaded,
   clearProposedWiseData,
+  newLeaveCurrentMeeting
 };
