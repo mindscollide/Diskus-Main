@@ -464,6 +464,11 @@ const GuestVideoReducer = (state = initialState, action) => {
         muteUnMuteParticpantorGuestByHost: action.response,
       };
     }
+    case actions.CLEAR_RESPONSEMESSAGE_GUESTREDUCER:
+      return {
+        ...state,
+        ResponseMessage: "",
+      };
     default:
       return { ...state };
   }

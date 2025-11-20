@@ -568,6 +568,9 @@ const Header2 = ({ isVideo }) => {
       navigate("/Diskus");
     }
   };
+  if (location.pathname.includes("meetingDocumentViewer")) {
+    return null;
+  }
 
   return (
     <>
@@ -959,7 +962,7 @@ const Header2 = ({ isVideo }) => {
               //     navigate("/Diskus");
               //   }
               // }}
-              >
+            >
               <img
                 src={
                   currentLanguage === "ar" ? DiskusLogoArabic : DiskusLogoHeader

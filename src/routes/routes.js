@@ -79,6 +79,7 @@ import {
 import { ErrorBoundary } from "react-error-boundary";
 import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
 import UserSettingsWrapper from "./UserSettingsWrapper.js";
+import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/meetingDocumentViewer.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -255,6 +256,19 @@ export const router = createBrowserRouter(
                   onError={logErrors}
                 >
                   <DocumentViewer />
+                </ErrorBoundary>
+              </RouteWrapperUser>
+            }
+          />
+            <Route
+            path="meetingDocumentViewer"
+            element={
+              <RouteWrapperUser name="documentViewer">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <MeetingDocumentViewer />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }

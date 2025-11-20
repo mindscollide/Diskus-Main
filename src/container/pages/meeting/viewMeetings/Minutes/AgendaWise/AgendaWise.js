@@ -482,12 +482,35 @@ const AgendaWise = ({
       ext === "xlx" ||
       ext === "xlsx"
     ) {
-      window.open(
-        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      if (Number(editorRole.status) === 10) {
+        window.open(
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+            pdfDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        window.open(
+          `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      }
     }
+    // if (
+    //   ext === "pdf" ||
+    //   ext === "doc" ||
+    //   ext === "docx" ||
+    //   ext === "xlx" ||
+    //   ext === "xlsx"
+    // ) {
+    //   window.open(
+    //     `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+    //     "_blank",
+    //     "noopener noreferrer"
+    //   );
+    // }
   };
 
   const handleResetBtnFunc = () => {
@@ -1186,7 +1209,7 @@ const AgendaWise = ({
                         <p className={styles["agenda-title"]}>
                           {index + 1 + "." + " " + data.agendaTitle}
                         </p>
-                  
+
                         <span className='d-flex align-items-start justify-content-center'>
                           {isRejectedMemberHas.length > 0 && (
                             <Tooltip

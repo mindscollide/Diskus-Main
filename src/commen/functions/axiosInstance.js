@@ -25,13 +25,14 @@ axiosInstance.interceptors.response.use(
     console.log("SUCCESS:", response.data);
 
     const code = Number(response?.data?.responseCode);
-    const message = (response?.data?.errorMessage || "")
-      .toLowerCase()
-      .trim();
+    const message = (response?.data?.errorMessage || "").toLowerCase().trim();
 
     console.log("SUCCESS →", code, message);
 
-    if (code === 401 && message === "tokens does not match") {
+    if (
+      code === 401 &&
+      (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
+    ) {
       console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
       return;
@@ -49,7 +50,10 @@ axiosInstance.interceptors.response.use(
 
     console.log("ERROR →", code, message);
 
-    if (code === 401 && message === "tokens does not match") {
+    if (
+      code === 401 &&
+      (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
+    ) {
       console.warn("Unauthorized - redirecting to login...");
       signOut("Session expired", store.dispatch);
     }

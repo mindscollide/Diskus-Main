@@ -19,7 +19,7 @@ import { showMessage } from "../snack_bar/utill";
 import "./meetingDocumentViewer.css";
 
 
-const meetingDocumentViewer = () => {
+const MeetingDocumentViewer = () => {
   const viewer = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -417,4 +417,4 @@ const meetingDocumentViewer = () => {
   );
 };
 
-export default meetingDocumentViewer;
+export default MeetingDocumentViewer;

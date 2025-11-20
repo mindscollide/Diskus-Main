@@ -77,7 +77,7 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -162,7 +162,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshToken(navigate, t));
@@ -278,7 +278,7 @@ const joinGuestVideoMainApi = (navigate, t, data, setJoinButton) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           //   await dispatch(RefreshToken(navigate, t));
@@ -416,7 +416,7 @@ const admitRejectAttendeeMainApi = (
     form.append("RequestMethod", admitRejectAttendee.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -503,10 +503,19 @@ const admitRejectAttendeeMainApi = (
                   "Meeting_MeetingServiceManager_AdmitRejectAttendee_03".toLowerCase()
                 )
             ) {
+              if (typeof setLoadingAdmit === "function") {
+                setLoadingAdmit(false);
+                setLoadingDeny(false);
+              }
               dispatch(guestJoinPopup(false));
               await dispatch(admitRejectFail(t("Something-went-wrong")));
             }
           } else {
+            if (typeof setLoadingAdmit === "function") {
+              setLoadingAdmit(false);
+              setLoadingDeny(false);
+            }
+            dispatch(guestJoinPopup(false));
             await dispatch(admitRejectFail(t("Something-went-wrong")));
           }
         } else {
@@ -561,7 +570,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -651,7 +660,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
     form.append("RequestMethod", transferMeetingHost.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -767,7 +776,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
     form.append("RequestMethod", removeParticipantMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -874,7 +883,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
     form.append("RequestMethod", guestLeaveMeetingVideo.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -986,7 +995,7 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
     form.append("RequestMethod", muteUnMuteSelf.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1076,7 +1085,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
     form.append("RequestMethod", hideUnHideVideoSelf.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1207,7 +1216,8 @@ const getVideoCallParticipantsGuestMainApi = (Data, navigate, t) => {
       getVideoCallParticipantsForGuest.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(videoApi, form)
+    axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1336,7 +1346,13 @@ const participantHideUnhideVideo = (response) => {
   };
 };
 
+const clearGuestVideoReducerResponseMessage = () => {
+  return {
+    type: actions.CLEAR_RESPONSEMESSAGE_GUESTREDUCER,
+  };
+};
 export {
+  clearGuestVideoReducerResponseMessage,
   getMeetingGuestVideoMainApi,
   validateEncryptGuestVideoMainApi,
   joinGuestVideoMainApi,

@@ -12,6 +12,7 @@ import { DataRoomDownloadFileApiFunc } from "../../../../../../store/actions/Dat
 import { Col, Row } from "react-bootstrap";
 import { getFileExtension } from "../../../../../DataRoom/SearchFunctionality/option";
 import { fileFormatforSignatureFlow } from "../../../../../../commen/functions/utils";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const AllFilesModal = ({
   setShowMoreFilesView,
@@ -25,6 +26,7 @@ const AllFilesModal = ({
   setSubAgendaIndex,
 }) => {
   const navigate = useNavigate();
+  const { editorRole } = useMeetingContext();
 
   const dispatch = useDispatch();
 
@@ -62,12 +64,29 @@ const AllFilesModal = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (fileFormatforSignatureFlow.includes(ext)) {
-      window.open(
-        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      if (Number(editorRole.status) === 10) {
+        window.open(
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+            pdfDataJson
+          )}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        window.open(
+          `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      }
     }
+    // if (fileFormatforSignatureFlow.includes(ext)) {
+    //   window.open(
+    //     `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+    //     "_blank",
+    //     "noopener noreferrer"
+    //   );
+    // }
   };
 
   return (
@@ -77,8 +96,8 @@ const AllFilesModal = ({
         modalFooterClassName={"d-block"}
         modalHeaderClassName={"d-block"}
         onHide={() => setShowMoreFilesView(false)}
-        size="md"
-        className="allFileModalClass"
+        size='md'
+        className='allFileModalClass'
         ModalTitle={
           <>
             <Row>
@@ -127,13 +146,12 @@ const AllFilesModal = ({
         }
         ModalFooter={
           <>
-            <Row className="mt-4">
+            <Row className='mt-4'>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
-              >
+                className='d-flex justify-content-end gap-2'>
                 <Button
                   onClick={closeAllFileModal}
                   text={t("Close")}

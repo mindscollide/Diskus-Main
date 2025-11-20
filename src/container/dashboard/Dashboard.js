@@ -4787,7 +4787,7 @@ const Dashboard = () => {
                     ? !isMeetingSession &&
                       !(
                         Number(editorRole.status) === 10 ||
-                        location.pathname.includes("documentViewer")
+                        location.pathname.includes("meetingDocumentViewer")
                       ) && (
                         <AlreadyInMeeting handleClickClose={handleClickClose} />
                       )

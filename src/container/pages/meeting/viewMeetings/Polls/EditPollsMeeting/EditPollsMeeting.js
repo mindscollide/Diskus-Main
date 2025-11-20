@@ -736,6 +736,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                     options={memberSelect}
                     components={animatedComponents}
                     filterOption={customFilter}
+                    isDisabled={checkForPollStatus}
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}

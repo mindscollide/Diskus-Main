@@ -172,12 +172,28 @@ const ParentAgenda = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (fileFormatforSignatureFlow.includes(ext)) {
-      window.open(
-        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-        "_blank",
-        "noopener noreferrer"
-      );
+      if(Number(editorRole.status) === 10 ) {
+        window.open(
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      } else {
+        window.open(
+          `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+      }
+  
     }
+    // if (fileFormatforSignatureFlow.includes(ext)) {
+    //   window.open(
+    //     `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+    //     "_blank",
+    //     "noopener noreferrer"
+    //   );
+    // }
   };
 
   // useEffect(() => {
