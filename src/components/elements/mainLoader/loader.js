@@ -146,13 +146,13 @@ const SpinComponent = () => {
     DashboardRoute,
     toDoListReducer?.taskFromDashboard,
     NotesReducer?.notesFromDashboard,
-    meetingIdReducer?.moreEventsLoader
+    meetingIdReducer?.moreEventsLoader,
   ]);
 
   if (showLoader) {
     return (
       <section className='spinLoaderMain'>
-        <Spin />
+        <Spin size='large' tip='Loading' />
       </section>
     );
   } else {
