@@ -779,7 +779,6 @@ const Actions = () => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <>
-                <section className={"HeightDefined"}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <TableToDo
@@ -791,7 +790,8 @@ const Actions = () => {
                         rows={actionsRows}
                         locale={{
                           emptyText: (
-                            <>
+                            <section className="d-flex justify-content-center align-items-center h-100 flex-column pt-5">
+
                               <Row className="mt-0">
                                 <Col
                                   lg={12}
@@ -803,6 +803,7 @@ const Actions = () => {
                                     alt=""
                                     draggable={false}
                                     src={EmptyStates}
+                                    width={200}
                                   />
                                 </Col>
                               </Row>
@@ -832,7 +833,7 @@ const Actions = () => {
                                   </span>
                                 </Col>
                               </Row>
-                            </>
+                            </section>
                           ), //
                         }}
                       />
@@ -876,7 +877,6 @@ const Actions = () => {
                       </Col>
                     </Row>
                   )}
-                </section>
               </>
               {/* <Row className="mt-3">
                 <Col

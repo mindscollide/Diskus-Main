@@ -157,6 +157,7 @@ body[dir="rtl"] .event-details:hover {
 
 .Moreevents_container {
   max-height: 400px;
+  min-height: 350px;
   overflow-y: auto;
   padding-right: 10px;
 }

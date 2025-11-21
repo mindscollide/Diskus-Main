@@ -820,7 +820,7 @@ const Participants = ({
                           <img
                             draggable={false}
                             src={emptyContributorState}
-                            width="274.05px"
+                            width={200}
                             className="cursor-pointer"
                             alt=""
                             height="230.96px"
