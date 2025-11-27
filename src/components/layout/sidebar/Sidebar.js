@@ -362,6 +362,7 @@ const Sidebar = () => {
   }) => {
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
+    localStorage.setItem("navigateLocation", navigateLocationKey);
     console.log("Check Route scenario's", targetPath);
     console.log("Check Route scenario's", location.pathname);
 

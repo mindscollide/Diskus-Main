@@ -686,6 +686,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         const startMeetingRequest = {
           MeetingID: Number(record.pK_MDID),
           StatusID: 10,
+          VideoCallURL: record.videoCallURL,
         };
         let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
         const currentDateObj = new Date(
@@ -747,7 +748,8 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                             "",
                             "",
                             setViewMeetingModal,
-                            setEditMeetingModal
+                            setEditMeetingModal,
+                            record
                           )
                         );
                         localStorage.setItem("meetingTitle", record.title);

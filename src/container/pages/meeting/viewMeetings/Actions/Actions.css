@@ -140,6 +140,7 @@ body[dir="rtl"] .Create_Task_Button {
   user-select: none !important;
   margin-top: 5px;
 }
+
 .Action_title {
   font-size: 12px !important;
   font-weight: 600 !important;
@@ -152,6 +153,7 @@ body[dir="rtl"] .Create_Task_Button {
   user-select: none !important;
   width: 200px;
 }
+
 .action-delete-cursor {
   cursor: pointer !important;
 }
@@ -209,11 +211,11 @@ body[dir="rtl"] .Create_Task_Button {
 /* NewActions Css */
 p.todolist-title-col {
   cursor: pointer;
-  margin: 0px 10px;
+  /* margin: 0px 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 200px !important;
-  overflow: hidden;
+  overflow: hidden; */
   font-size: 14px;
   font-weight: 600 !important;
   color: #2197d7 !important;
@@ -298,10 +300,7 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(1) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -317,10 +316,7 @@ body[dir="rtl"]
   text-align: center;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(6) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -434,12 +430,7 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
   margin-top: -3px;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-thead
-  > tr
-  > th.deadLineTodo {
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLineTodo {
   text-align: center !important;
   padding-right: 0 !important;
 }
@@ -488,12 +479,7 @@ body[dir="rtl"] .Completed {
   font-weight: 600 !important;
 }
 
-.filterValues-dropdown
-  div
-  .rc-virtual-list
-  .rc-virtual-list-holder
-  div
-  .rc-virtual-list-holder-inner {
+.filterValues-dropdown div .rc-virtual-list .rc-virtual-list-holder div .rc-virtual-list-holder-inner {
   display: block !important;
   width: auto;
 }
@@ -515,11 +501,7 @@ body[dir="rtl"] .PaginationStyle-TodoList {
   padding: 8px 10px !important;
 }
 
-.Status-Todo
-  div
-  .rc-virtual-list
-  .rc-virtual-list-holder
-  .rc-virtual-list-holder-inner {
+.Status-Todo div .rc-virtual-list .rc-virtual-list-holder .rc-virtual-list-holder-inner {
   display: block !important;
 }
 
@@ -530,23 +512,16 @@ td.ant-table-column-sort {
 .ToDo .ant-table .ant-table-body {
   padding-right: 10px;
 }
-.ToDo
-  .ant-table
-  .ant-table-body
-  .ant-table-tbody
-  > tr.ant-table-placeholder:hover
-  > td {
+
+.ToDo .ant-table .ant-table-body .ant-table-tbody>tr.ant-table-placeholder:hover>td {
   background: none;
   border: none;
 }
-.ToDo
-  .ant-table
-  .ant-table-body
-  .ant-table-tbody
-  > tr.ant-table-placeholder
-  > td {
+
+.ToDo .ant-table .ant-table-body .ant-table-tbody>tr.ant-table-placeholder>td {
   border: none;
 }
+
 .NotaskTodolist {
   color: #e4e4e4;
   font-size: 24px;
@@ -555,6 +530,7 @@ td.ant-table-column-sort {
   font-weight: 600;
   margin-top: 20px;
 }
+
 .todolist_main_section {
   min-height: calc(100vh - 20vh);
   display: flex;
@@ -562,6 +538,7 @@ td.ant-table-column-sort {
   justify-content: space-between;
   overflow: hidden !important;
 }
+
 .custom-class {
   font-weight: 600;
 }

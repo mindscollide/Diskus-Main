@@ -136,7 +136,7 @@ const Actions = () => {
         dispatch(ViewToDoList(navigate, Data, t, setViewTaskModal, null));
       }
     }
-    return () => {};
+    return () => { };
   }, []);
 
   // dispatch Api in useEffect
@@ -217,7 +217,7 @@ const Actions = () => {
           });
         }
       }
-    } catch {}
+    } catch { }
   }, [socketTodoStatusData]);
 
   useEffect(() => {
@@ -345,7 +345,8 @@ const Actions = () => {
       ),
       dataIndex: "title",
       key: "title",
-      width: "25%",
+      ellipsis: true,
+      width: "35%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -361,7 +362,7 @@ const Actions = () => {
       }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
+          className="todolist-title-col m-0"
           title={text}
           onClick={(e) => viewActionModal(record)}
         >
@@ -384,8 +385,9 @@ const Actions = () => {
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "25%",
       align: "center",
+      width: "15%",
+
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -432,10 +434,11 @@ const Actions = () => {
           </span>
         </>
       ),
-      width: "25%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       align: "center",
+      width: "15%",
+
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -501,7 +504,7 @@ const Actions = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "10%",
+      width: "15%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -531,8 +534,9 @@ const Actions = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      align: "center",
       width: "15%",
+
+      align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -561,14 +565,14 @@ const Actions = () => {
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending  custom-class "
-                    : text.pK_TSID === 3
-                    ? "Upcoming  custom-class "
-                    : text.pK_TSID === 4
-                    ? "Cancelled  custom-class "
-                    : text.pK_TSID === 5
-                    ? "Completed  custom-class "
-                    : null
+                      ? "Pending  custom-class "
+                      : text.pK_TSID === 3
+                        ? "Upcoming  custom-class "
+                        : text.pK_TSID === 4
+                          ? "Cancelled  custom-class "
+                          : text.pK_TSID === 5
+                            ? "Completed  custom-class "
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -589,14 +593,14 @@ const Actions = () => {
                 text.pK_TSID === 1
                   ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
-                  : null
+                    ? "Pending  custom-class color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                      ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                        ? "Cancelled   custom-class color-5a5a5a text-center my-1"
+                        : text.pK_TSID === 5
+                          ? "Completed   custom-class color-5a5a5a  text-center my-1"
+                          : null
               }
             >
               {text.status}
@@ -612,6 +616,7 @@ const Actions = () => {
       dataIndex: "",
       key: "taskCreator",
       width: "5%",
+
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (
@@ -666,7 +671,7 @@ const Actions = () => {
         setOriginalData([]);
         setTotalRecords(0);
       }
-    } catch {}
+    } catch { }
   }, [todoListMeetingTask]);
 
   useEffect(() => {
@@ -779,104 +784,104 @@ const Actions = () => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <TableToDo
-                        sortDirections={["descend", "ascend"]}
-                        column={ActionsColoumn}
-                        scroll={scroll}
-                        pagination={false}
-                        className={"ToDo"}
-                        rows={actionsRows}
-                        locale={{
-                          emptyText: (
-                            <section className="d-flex justify-content-center align-items-center h-100 flex-column pt-5">
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <TableToDo
+                      sortDirections={["descend", "ascend"]}
+                      column={ActionsColoumn}
+                      scroll={scroll}
+                      pagination={false}
+                      className={"ToDo"}
+                      rows={actionsRows}
+                      locale={{
+                        emptyText: (
+                          <section className="d-flex justify-content-center align-items-center h-100 flex-column pt-5">
 
-                              <Row className="mt-0">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <img
-                                    alt=""
-                                    draggable={false}
-                                    src={EmptyStates}
-                                    width={200}
-                                  />
-                                </Col>
-                              </Row>
-                              <Row className="mt-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={"Empty-State_Heading"}>
-                                    {t("Create-tasks-instantly")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={"EmptyState_SubHeading"}>
-                                    {t(
-                                      "Assign-tasks-in-real-time-while-the-meeting-is-underway"
-                                    )}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </section>
-                          ), //
-                        }}
-                      />
+                            <Row className="mt-0">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <img
+                                  alt=""
+                                  draggable={false}
+                                  src={EmptyStates}
+                                  width={200}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className="mt-2">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={"Empty-State_Heading"}>
+                                  {t("Create-tasks-instantly")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={"EmptyState_SubHeading"}>
+                                  {t(
+                                    "Assign-tasks-in-real-time-while-the-meeting-is-underway"
+                                  )}
+                                </span>
+                              </Col>
+                            </Row>
+                          </section>
+                        ), //
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                {Object.keys(actionsRows).length > 0 && (
+                  <Row className="">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            "pagination-groups-table d-flex justify-content-center"
+                          }
+                        >
+                          <span className="PaginationStyle-TodoList">
+                            <CustomPagination
+                              onChange={handleForPagination}
+                              current={currentPage}
+                              showSizer={true}
+                              total={totalRecords}
+                              pageSizeOptionsValues={[
+                                "10",
+                                "25",
+                                "50",
+                                "100",
+                              ]}
+                              pageSize={currentPageSize}
+                            />
+                          </span>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
-
-                  {Object.keys(actionsRows).length > 0 && (
-                    <Row className="">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={
-                              "pagination-groups-table d-flex justify-content-center"
-                            }
-                          >
-                            <span className="PaginationStyle-TodoList">
-                              <CustomPagination
-                                onChange={handleForPagination}
-                                current={currentPage}
-                                showSizer={true}
-                                total={totalRecords}
-                                pageSizeOptionsValues={[
-                                  "10",
-                                  "25",
-                                  "50",
-                                  "100",
-                                ]}
-                                pageSize={currentPageSize}
-                              />
-                            </span>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  )}
+                )}
               </>
               {/* <Row className="mt-3">
                 <Col
