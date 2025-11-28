@@ -2464,5 +2464,6 @@
   "Chat-not-found": "Chat not found",
   "Email-format-is-invalid": "Email format is invalid",
   "File-is-saved-successfully": "File is saved successfully",
-  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime"
+  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
+  "Please-try-again-after": "Please try again after"
 }

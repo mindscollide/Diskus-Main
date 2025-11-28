@@ -116,7 +116,7 @@ const changePasswordRequest = (email, t, navigate) => {
             let dateTimeValue = newDateTimeFormatterForOTPResend(
               `${nextAttemptDate}${nextAttemptTime}`
             );
-            let newMessage = `${t("Please try again after")} ${dateTimeValue}`;
+            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue}`;
             dispatch(forgotPasswordFail(newMessage));
           } else {
             dispatch(forgotPasswordFail(t("Something-went-wrong")));

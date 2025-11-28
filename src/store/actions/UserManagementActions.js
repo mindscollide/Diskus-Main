@@ -1342,7 +1342,7 @@ const ResendForgotPasswordCodeApi = (
             let dateTimeValue = newDateTimeFormatterForOTPResend(
               `${nextAttemptDate}${nextAttemptTime}`
             );
-            let newMessage = `${t("Please try again after")} ${dateTimeValue};`;
+            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue};`;
             dispatch(ResendForgotPasswordCodefail(newMessage));
             setSeconds(0);
             setMinutes(0);

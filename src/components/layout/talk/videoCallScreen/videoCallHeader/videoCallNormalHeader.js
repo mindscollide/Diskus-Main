@@ -1945,15 +1945,15 @@ const VideoCallNormalHeader = ({
 
                                 return (
                                   <Row className='m-0' key={index}>
-                                    <Col className='p-0' lg={7} md={7} sm={12}>
+                                    <Col className='p-0' lg={8} md={8} sm={12}>
                                       <p className='participant-name'>
                                         {participantData.name}
                                       </p>
                                     </Col>
                                     <Col
                                       className='d-flex justify-content-end align-items-baseline gap-3 p-0'
-                                      lg={5}
-                                      md={5}
+                                      lg={4}
+                                      md={4}
                                       sm={12}>
                                       {isMatchingParticipant ? (
                                         <>

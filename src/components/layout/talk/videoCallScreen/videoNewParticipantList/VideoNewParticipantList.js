@@ -602,8 +602,8 @@ const VideoNewParticipantList = () => {
                   <Row className='hostBorder m-0'>
                     <Col
                       className='p-0 d-flex align-items-center'
-                      lg={7}
-                      md={7}
+                      lg={8}
+                      md={8}
                       sm={12}>
                       <p className='participant-name'>{usersData?.name}</p>
                       {presenterViewFlag ? (
@@ -746,8 +746,8 @@ const VideoNewParticipantList = () => {
                         align-items-baseline
                         gap-2
                         p-0'
-                      lg={5}
-                      md={5}
+                      lg={4}
+                      md={4}
                       sm={12}>
                       {!presenterViewHostFlag &&
                       !presenterViewJoinFlag &&
