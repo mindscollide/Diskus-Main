@@ -1513,7 +1513,7 @@
   "Arabic": "عربي",
   "French": "Français",
   "Are-you-sure-you-want-to-leave": "Are you sure you want to leave",
-  "The-meeting": "the meeting",
+  "The-meeting": "the meeting?",
   "End-for-all": "End for All",
   "End-for-me": "End for Me",
   "Publish-the-meeting": "Publish the meeting",
@@ -2515,5 +2515,6 @@
   "Chat-not-found": "Chat not found",
   "You-are-currently-in-a-meeting-this-feature-cannot-be-accessed-right-now": "You are currently in a meeting. This feature cannot be accessed right now.",
   "File-is-saved-successfully": "File is saved successfully",
-  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime"
+  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
+  "Please-try-again-after": "Please try again after"
 }

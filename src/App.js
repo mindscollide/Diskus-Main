@@ -158,7 +158,6 @@ const App = () => {
           cache: "no-store",
         });
 
-        console.log(response, "responseresponse");
         return response.data.version;
       } catch (error) {
         console.error("Error fetching version:", error);

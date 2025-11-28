@@ -45,7 +45,7 @@ const Task = () => {
       title: t("Task"),
       dataIndex: "title",
       key: "title",
-      width: "35%",
+      width: "50%",
       className: "titleDashboard",
       ellipsis: true,
       align: locale === "en" ? "left" : "right",
@@ -61,7 +61,7 @@ const Task = () => {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
-      width: "40%",
+      width: "30%",
       className: "deadlineDashboard",
       ellipsis: true,
       align: "center",
@@ -170,7 +170,7 @@ const Task = () => {
           setRowToDo(sortedTasks.slice(0, 15));
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [SocketTodoActivityData]);
 
   // Update MQTT Status
@@ -196,16 +196,16 @@ const Task = () => {
                       payloadData.todoStatusID === 1
                         ? "In Progress"
                         : payloadData.todoStatusID === 2
-                        ? "Pending"
-                        : payloadData.todoStatusID === 3
-                        ? "Upcoming"
-                        : payloadData.todoStatusID === 4
-                        ? "Cancelled"
-                        : payloadData.todoStatusID === 5
-                        ? "Completed"
-                        : payloadData.todoStatusID === 6
-                        ? "Deleted"
-                        : payloadData.todoStatusID === 7,
+                          ? "Pending"
+                          : payloadData.todoStatusID === 3
+                            ? "Upcoming"
+                            : payloadData.todoStatusID === 4
+                              ? "Cancelled"
+                              : payloadData.todoStatusID === 5
+                                ? "Completed"
+                                : payloadData.todoStatusID === 6
+                                  ? "Deleted"
+                                  : payloadData.todoStatusID === 7,
                   },
                 };
                 return newObj;
@@ -215,7 +215,7 @@ const Task = () => {
           });
         }
       }
-    } catch {}
+    } catch { }
   }, [socketTodoStatusData]);
 
   useEffect(() => {

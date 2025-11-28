@@ -1477,7 +1477,7 @@
   "Arabic": "عربي",
   "French": "Français",
   "Are-you-sure-you-want-to-leave": "هل انت متاكد انك تريد ان تغادر",
-  "The-meeting": "الاجتماع",
+  "The-meeting": "الاجتماع?",
   "End-for-all": "انهاء للجميع",
   "End-for-me": "انهاء لأجلي",
   "Publish-the-meeting": "نشر الاجتماع",
@@ -2464,5 +2464,6 @@
   "Chat-not-found": "Chat not found",
   "Email-format-is-invalid": "Email format is invalid",
   "File-is-saved-successfully": "File is saved successfully",
-  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime"
+  "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
+  "Please-try-again-after": "Please try again after"
 }

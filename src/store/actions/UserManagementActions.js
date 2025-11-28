@@ -1335,14 +1335,19 @@ const ResendForgotPasswordCodeApi = (
             setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage.toLowerCase() ===
-            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_07".toLocaleUpperCase()
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_07".toLowerCase()
           ) {
             let nextAttemptDate = response.data.responseResult.nextAttemptDate;
             let nextAttemptTime = response.data.responseResult.nextAttemptTime;
             let dateTimeValue = newDateTimeFormatterForOTPResend(
               `${nextAttemptDate}${nextAttemptTime}`
             );
-            let newMessage = `${t("Please try again after")} ${dateTimeValue};`;
+            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue};`;
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            setSeconds(0);
+            setMinutes(0);
+          } else {
+            let newMessage = t("Something-went-wrong");
             dispatch(ResendForgotPasswordCodefail(newMessage));
             setSeconds(0);
             setMinutes(0);
