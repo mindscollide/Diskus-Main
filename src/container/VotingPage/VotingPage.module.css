@@ -259,7 +259,7 @@ body[dir="rtl"] .Voters_voteResolution {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
 }
 
 body[dir="rtl"] .Total_voters_voteResolution {

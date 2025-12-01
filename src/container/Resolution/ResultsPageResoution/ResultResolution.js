@@ -18,7 +18,11 @@ import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
 
-const ResultResolution = ({ setResultresolution }) => {
+const ResultResolution = ({
+  setResultresolution,
+  isResolutionClosed,
+  setIsResolutionClosed,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -96,6 +100,12 @@ const ResultResolution = ({ setResultresolution }) => {
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
+
+  useEffect(() => {
+    return () => {
+      setIsResolutionClosed(false);
+    };
+  }, []);
   const closeResolutionHandleClick = () => {
     dispatch(
       closeResolutionApi(
@@ -112,9 +122,9 @@ const ResultResolution = ({ setResultresolution }) => {
     try {
       if (ResolutionReducergetResolutionResult !== null) {
         let resolutionresult = ResolutionReducergetResolutionResult;
-        let isAbstainValue = resolutionresult.abstainVotes
+        let isAbstainValue = resolutionresult.abstainVotes;
         setApproved(resolutionresult.approvedVotes);
-        setAbstain( isAbstainValue || 0);
+        setAbstain(isAbstainValue || 0);
         setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
@@ -139,7 +149,7 @@ const ResultResolution = ({ setResultresolution }) => {
   }, [ResolutionReducergetResolutionResult]);
   return (
     <section>
-      <Row className="my-2">
+      <Row className='my-2'>
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_Heading_resolution"]}>
             {t("Result")}
@@ -150,24 +160,24 @@ const ResultResolution = ({ setResultresolution }) => {
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_page_paper"]}>
             <Row>
-              <Col lg={5} md={5} sm={12} className="d-flex gap-2">
+              <Col lg={5} md={5} sm={12} className='d-flex gap-2'>
                 <span className={styles["results_paper_heading"]}>
                   {resolutionTitle || ""}{" "}
                   {isVotingMethodId === 2 ? (
                     <img
                       src={SeceretBallotingIcon}
-                      height="23.19px"
-                      width="23.19px"
-                      alt=""
-                      draggable="false"
+                      height='23.19px'
+                      width='23.19px'
+                      alt=''
+                      draggable='false'
                     />
                   ) : (
                     <img
                       src={result}
-                      alt=""
-                      height="23.19px"
-                      width="23.19px"
-                      draggable="false"
+                      alt=''
+                      height='23.19px'
+                      width='23.19px'
+                      draggable='false'
                     />
                   )}
                 </span>
@@ -176,8 +186,7 @@ const ResultResolution = ({ setResultresolution }) => {
                 sm={12}
                 md={7}
                 lg={7}
-                className="d-flex align-items-center justify-content-end"
-              >
+                className='d-flex align-items-center justify-content-end'>
                 <span className={styles["voting_method_heading"]}>
                   {t("Voting-method") + " : "}{" "}
                 </span>{" "}
@@ -189,15 +198,14 @@ const ResultResolution = ({ setResultresolution }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className='mt-2'>
               <Col lg={4} md={4} sm={12}>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Row>
                       <Col
                         lg={12}
@@ -217,15 +225,13 @@ const ResultResolution = ({ setResultresolution }) => {
                             ? // Tie State
                               styles["Tie_state"]
                             : null
-                        }
-                      >
-                        <Row className="mt-4">
+                        }>
+                        <Row className='mt-4'>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <img
                               src={
                                 decisionId === 1
@@ -238,10 +244,10 @@ const ResultResolution = ({ setResultresolution }) => {
                                   ? Tie
                                   : null
                               }
-                              width="36.98px"
-                              height="37px"
-                              alt=""
-                              draggable="false"
+                              width='36.98px'
+                              height='37px'
+                              alt=''
+                              draggable='false'
                             />
                           </Col>
                         </Row>
@@ -250,8 +256,7 @@ const ResultResolution = ({ setResultresolution }) => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justify-content-center"
-                          >
+                            className='d-flex justify-content-center'>
                             <span className={styles["status_vote_resolution"]}>
                               {Number(decisionId) === 1
                                 ? t("Pending")
@@ -274,10 +279,9 @@ const ResultResolution = ({ setResultresolution }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Chart
-                      chartType="ColumnChart"
+                      chartType='ColumnChart'
                       width={"100%"}
                       height={"auto"}
                       radius={10}
@@ -287,13 +291,12 @@ const ResultResolution = ({ setResultresolution }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <span className={styles["Total_voters"]}>
                       {t("Total-voters")}
                       <span className={styles["No_of_Votes"]}>
@@ -307,25 +310,23 @@ const ResultResolution = ({ setResultresolution }) => {
                 lg={1}
                 md={1}
                 sm={false}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["line_Resultesolution"]}></span>
               </Col>
               <Col lg={7} md={7} sm={12}>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["voters_heading_result"]}>
                       {t("Voters")}
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Result-Screen_scroller"]}
-                  >
+                    className={styles["Result-Screen_scroller"]}>
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
@@ -336,8 +337,7 @@ const ResultResolution = ({ setResultresolution }) => {
                                   md={6}
                                   sm={6}
                                   key={data.pK_RV_ID}
-                                  className="mt-1"
-                                >
+                                  className='mt-1'>
                                   <EmployeeinfoCard
                                     Employeename={data.username}
                                     Employeeemail={data.email}
@@ -355,10 +355,10 @@ const ResultResolution = ({ setResultresolution }) => {
                                             ? Abstain
                                             : null
                                         }
-                                        width="20px"
-                                        height="20px"
-                                        alt=""
-                                        draggable="false"
+                                        width='20px'
+                                        height='20px'
+                                        alt=''
+                                        draggable='false'
                                       />
                                     }
                                   />
@@ -370,19 +370,18 @@ const ResultResolution = ({ setResultresolution }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className='mt-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="CreateMeetingInput FontArabicRegular "
-                  >
+                    className='CreateMeetingInput FontArabicRegular '>
                     <TextField
-                      applyClass="text-area-close-resolution"
-                      type="text"
+                      applyClass='text-area-close-resolution'
+                      type='text'
                       as={"textarea"}
                       size={400}
-                      rows="5"
+                      rows='5'
                       placeholder={t("Note")}
                       required={true}
                       maxLength={500}
@@ -390,19 +389,18 @@ const ResultResolution = ({ setResultresolution }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className='mt-5'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end gap-2 mt-4"
-                  >
+                    className='d-flex justify-content-end gap-2 mt-4'>
                     <Button
                       text={t("Close")}
                       className={styles["Close_Btn_Resultresolution"]}
                       onClick={() => setResultresolution(false)}
                     />
-                    {ButtonTab !== 2 && (
+                    {!isResolutionClosed && (
                       <Button
                         text={t("Close-resolution")}
                         className={
