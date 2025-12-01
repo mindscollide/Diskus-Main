@@ -271,6 +271,7 @@ const Task = () => {
               pagination={false}
               size='small'
               rowKey='id'
+              bordered={false}
               rowClassName={(record, index) => {
                 if (Number(record?.taskCreator?.pK_UID) === creatorID) {
                   return "AssignedToMe";

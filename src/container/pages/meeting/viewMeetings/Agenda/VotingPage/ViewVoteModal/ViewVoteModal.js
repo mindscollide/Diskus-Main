@@ -191,62 +191,35 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
     dispatch(ViewAgendaVotingResults(Data, navigate, t));
   }, []);
 
-  // useEffect(() => {
-  //   if (
-  //     ViewAgendaVotingResultData !== null &&
-  //     ViewAgendaVotingResultData !== undefined &&
-  //     ViewAgendaVotingResultData.length !== 0
-  //   ) {
-  //     setPieChartData(
-  //       ViewAgendaVotingResultData.votingResults.map((result) => [
-  //         result.answer,
-  //         result.votes,
-  //       ])
-  //     );
-  //     setVotingResults(ViewAgendaVotingResultData.votingResults);
-  //   } else {
-  //     setVotingResults(null);
-  //   }
-  // }, [ViewAgendaVotingResultData]);
   useEffect(() => {
-    const results = ViewAgendaVotingResultData?.votingResults;
-
-    // --- If no results, avoid rendering charts ---
-    if (!results || results.length === 0) {
-      setPieChartData([]);
-      setBarChartData([]);
-      return;
+    if (
+      ViewAgendaVotingResultData !== null &&
+      ViewAgendaVotingResultData !== undefined &&
+      ViewAgendaVotingResultData.length !== 0
+    ) {
+      setPieChartData(
+        ViewAgendaVotingResultData.votingResults.map((result) => [
+          result.answer,
+          result.votes,
+        ])
+      );
+      setVotingResults(ViewAgendaVotingResultData.votingResults);
+    } else {
+      setVotingResults(null);
     }
-
-    // --- PIE CHART DATA (must not contain "style") ---
-    const pieData = [
-      ["Answer", "Votes"],
-      ...results.map((r) => [r.answer || "N/A", r.votes || 0]),
-    ];
-    setPieChartData(pieData);
-
-    // --- BAR CHART DATA (supports style column) ---
-    const barData = [
-      ["Category", "Votes", { role: "style" }],
-      ...results.map((r, index) => [
-        r.answer || "N/A",
-        r.votes || 0,
-        colorCodes[index % colorCodes.length],
-      ]),
-    ];
-    setBarChartData(barData);
   }, [ViewAgendaVotingResultData]);
 
-  // useEffect(() => {
-  //   const chartDataArray = [["Category", "Votes", { role: "style" }]];
 
-  //   pieChartData.forEach((dataPoint, index) => {
-  //     const color = colorCodes[index % colorCodes.length];
-  //     chartDataArray.push([dataPoint[0], dataPoint[1], color]);
-  //   });
+  useEffect(() => {
+    const chartDataArray = [["Category", "Votes", { role: "style" }]];
 
-  //   setBarChartData(chartDataArray);
-  // }, [pieChartData]);
+    pieChartData.forEach((dataPoint, index) => {
+      const color = colorCodes[index % colorCodes.length];
+      chartDataArray.push([dataPoint[0], dataPoint[1], color]);
+    });
+
+    setBarChartData(chartDataArray);
+  }, [pieChartData]);
 
   return (
     <section>
