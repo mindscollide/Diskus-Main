@@ -1728,9 +1728,37 @@ const Dashboard = () => {
               // dispatch(participantVideoNavigationScreen(3));
             } else if (
               data.payload.message.toLowerCase() ===
-              "TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
+              "AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
             ) {
-              // dispatch(makeParticipantHost(data.payload, true));
+              try {
+                const isGuid = localStorage.getItem("isGuid");
+                console.log("HostTransferEvent");
+
+                const newHostGuid = data.payload.newHost?.guid;
+                console.log("HostTransferEvent");
+
+                // Check if the current user's guid matches the mqtt newHost guid
+                if (isGuid !== newHostGuid) {
+                  // Send HostTransferEvent to iframe
+                  const iframe = iframeRef.current;
+                  if (iframe && iframe.contentWindow) {
+                    const msg = `HostTransferEvent_#_${newHostGuid}`;
+                    setTimeout(() => {
+                      iframe.contentWindow.postMessage(msg, "*");
+                      console.log("HostTransferEvent sent to iframe:", msg);
+                    }, 1000);
+                  }
+                } else {
+                  console.log(
+                    "Current host guid does not match MQTT newHost guid"
+                  );
+                }
+              } catch (err) {
+                console.error(
+                  "Error handling AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY MQTT:",
+                  err
+                );
+              }
             } else if (
               data.payload.message.toLowerCase() ===
               "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
@@ -4759,18 +4787,19 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ? null : <Header2 />}
           <Layout>
-            <Sider className='sidebar_layout' width={60}>
+            <Sider className="sidebar_layout" width={60}>
               <Sidebar />
             </Sider>
             <Content>
-              <div className='dashbaord_data'>
+              <div className="dashbaord_data">
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -4795,14 +4824,14 @@ const Dashboard = () => {
                   <Outlet />
                 </>
               </div>
-              <div className='talk_features_home'>
+              <div className="talk_features_home">
                 {activateBlur ? null : roleRoute ? null : <Talk />}
               </div>
             </Content>
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
+              <img src={IconMetroAttachment} alt="" draggable="false" />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -4819,8 +4848,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -4846,25 +4875,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
                   <>
-                    <Row className='mb-1'>
+                    <Row className="mb-1">
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className='d-flex justify-content-center'>
+                          <Col className="d-flex justify-content-center">
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
+                              alt=""
+                              draggable="false"
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className='text-center mt-4'>
+                          <Col className="text-center mt-4">
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -4880,12 +4909,13 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
+                    <Row className="mb-3">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
