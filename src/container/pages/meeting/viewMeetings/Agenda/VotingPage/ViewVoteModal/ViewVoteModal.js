@@ -73,8 +73,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <span className={styles["Title"]}>{t("Answer")}</span>
             </Col>
           </Row>
@@ -102,8 +101,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <span className={styles["Title"]}>{t("Percentage")}</span>
             </Col>
           </Row>
@@ -115,14 +113,14 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
       render: (text, record) => (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
               {record.participantsVoted.map((participant, index) => (
                 <img
                   key={index}
-                  alt=""
+                  alt=''
                   src={`data:image/jpeg;base64,${participant.userProfilePicture.displayProfilePictureName}`}
-                  height="22px"
-                  width="22px"
+                  height='22px'
+                  width='22px'
                   className={styles["Image"]}
                 />
               ))}
@@ -131,9 +129,9 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <Progress
-                className="VoteModalAgenda"
+                className='VoteModalAgenda'
                 percent={text}
-                size="small"
+                size='small'
               />
             </Col>
           </Row>
@@ -151,8 +149,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               lg={12}
               md={12}
               sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
+              className='d-flex gap-2 align-items-center'>
               <span className={styles["Title"]}>{t("Vote")}</span>
             </Col>
           </Row>
@@ -212,6 +209,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
     }
   }, [ViewAgendaVotingResultData]);
 
+
   useEffect(() => {
     const chartDataArray = [["Category", "Votes", { role: "style" }]];
 
@@ -243,8 +241,8 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-2">
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+            <Row className='mt-2'>
+              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                 <Button
                   text={t("Bar-graph")}
                   className={
@@ -272,13 +270,12 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <section className={styles["BackGroundForDonutChart"]}>
                       <Chart
                         width={"600px"}
                         height={"260px"}
-                        chartType="PieChart"
+                        chartType='PieChart'
                         loader={<div>Loading Chart</div>}
                         data={barChartData}
                         options={{
@@ -310,18 +307,17 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
               </>
             ) : (
               <>
-                <Row >
+                <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <section className={styles["TranForm"]}>
                       <Chart
                         width={"600px"}
                         height={"260px"}
-                        chartType="ColumnChart"
+                        chartType='ColumnChart'
                         loader={<div>Loading Chart</div>}
                         data={barChartData}
                         options={{
@@ -367,7 +363,7 @@ const ViewVoteModal = ({ advanceMeetingModalID }) => {
                   column={MeetingColoumns}
                   scroll={{ y: "25vh" }}
                   pagination={false}
-                  className="Polling_table"
+                  className='Polling_table'
                   rows={votingResults}
                 />
               </Col>

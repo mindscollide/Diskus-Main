@@ -1949,8 +1949,8 @@ const VideoPanelNormal = () => {
                                           className="mb-1"
                                         >
                                           <Col
-                                            lg={6}
-                                            md={6}
+                                            lg={7}
+                                            md={7}
                                             sm={12}
                                             className="d-flex justify-content-start"
                                           >
@@ -1959,8 +1959,8 @@ const VideoPanelNormal = () => {
                                             </p>{" "}
                                           </Col>
                                           <Col
-                                            lg={6}
-                                            md={6}
+                                            lg={5}
+                                            md={5}
                                             sm={12}
                                             className="d-flex justify-content-end gap-2"
                                           >

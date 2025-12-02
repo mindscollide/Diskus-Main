@@ -66,8 +66,9 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    await axiosInstance.post(dataRoomApi, form)
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -155,14 +156,15 @@ const uploadDocument_fail = (message) => {
 const uploadDocumentsResolutionApi = (navigate, t, data, folderID, newfile) => {
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
-  
+
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    
-    await axiosInstance.post(dataRoomApi, form)
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -248,8 +250,9 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestMethod", updateResolutionDataRoomMapRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(dataRoomApi, form)
+
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -379,14 +382,15 @@ const saveResolutionDocuments_fail = (message) => {
 const saveResolutionDocumentsApi = (navigate, t, data) => {
   let currentView = localStorage.getItem("ButtonTab");
   let resolutionView = localStorage.getItem("resolutionView");
-  
+
   return (dispatch) => {
     dispatch(saveResolutionDocuments_init());
     let form = new FormData();
     form.append("RequestMethod", saveResolutionDocumentsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    
-    axiosInstance.post(dataRoomApi, form)
+
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -524,8 +528,9 @@ const getAllVotingMethods = (navigate, t, loader) => {
     dispatch(getAllVoting_Init());
     let form = new FormData();
     form.append("RequestMethod", getAllVotingRequestMethod.RequestMethod);
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -599,8 +604,9 @@ const getAllResolutionStatus = (navigate, t, loader) => {
     dispatch(getAllResolutionStatus_Init());
     let form = new FormData();
     form.append("RequestMethod", getAllVotingStatusRequestMethod.RequestMethod);
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -690,14 +696,15 @@ const getResolutions = (
         ? votingDateLine
         : "",
   };
-  
+
   return (dispatch) => {
     dispatch(getResolutions_Init());
     let form = new FormData();
     form.append("RequestMethod", getResolutionsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -760,8 +767,9 @@ const createResolution = (navigate, Data, voters, t) => {
     let form = new FormData();
     form.append("RequestMethod", scheduleResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -905,8 +913,9 @@ const updateResolution = (
       addUpdateResolutionRequestMethod.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data2));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1056,8 +1065,9 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
     let form = new FormData();
     form.append("RequestMethod", getResolutionByIDRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1136,10 +1146,17 @@ const getResolutionResult_Success = (response, message) => {
 const getResolutionResult_Fail = (message) => {
   return {
     type: actions.GET_RESOLUTION_RESULTS_DETAILS_FAIL,
-    message: message
-  }
-}
-const getResolutionResult = (navigate, id, t, setResultresolution) => {
+    message: message,
+  };
+};
+const getResolutionResult = (
+  navigate,
+  id,
+  t,
+  setResultresolution,
+  setIsResolutionClosed,
+  isClosed
+) => {
   let userID = JSON.parse(localStorage.getItem("userID"));
   let Data = {
     ResolutionID: JSON.parse(id),
@@ -1150,12 +1167,22 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
     let form = new FormData();
     form.append("RequestMethod", getResolutionResultsDetails.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getResolutionResult(navigate, id, t, setResultresolution));
+          dispatch(
+            getResolutionResult(
+              navigate,
+              id,
+              t,
+              setResultresolution,
+              setIsResolutionClosed,
+              isClosed
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1165,6 +1192,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               dispatch(
                 getResolutionResult_Success(response.data.responseResult, "")
               );
+              setIsResolutionClosed(isClosed);
               setResultresolution(true);
               dispatch(resultResolutionFlag(true));
               localStorage.setItem("ResolutionID", id);
@@ -1225,8 +1253,9 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
     let form = new FormData();
     form.append("RequestMethod", getVoteDetailsByID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1309,8 +1338,9 @@ const cancelResolutionApi = (
     let form = new FormData();
     form.append("RequestMethod", cancelResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1406,8 +1436,9 @@ const closeResolutionApi = (
     let form = new FormData();
     form.append("RequestMethod", closeResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1488,14 +1519,15 @@ const updateVote_Fail = (message) => {
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
-  
+
   return (dispatch) => {
     dispatch(updateVote_Init());
     let form = new FormData();
     form.append("RequestMethod", updateVoteRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1597,8 +1629,9 @@ const getVoterResolution = (
     let form = new FormData();
     form.append("RequestMethod", getVoterResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    
-    axiosInstance.post(getResolutionApi, form)
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1685,7 +1718,8 @@ const validateStringResolutionApi = (
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axiosInstance.post(getResolutionApi, form)
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1870,7 +1904,7 @@ const getAllGroupsandCommitteesforResolution = (navigate, t) => {
   let Data = {
     OrganizationID: OrganizationID,
   };
-  
+
   return (dispatch) => {
     dispatch(getAllcommittesandGroups_init());
     let form = new FormData();
@@ -1879,8 +1913,9 @@ const getAllGroupsandCommitteesforResolution = (navigate, t) => {
       "RequestMethod",
       getAllCommittesandGroupsforPolls.RequestMethod
     );
-    
-    axiosInstance.post(pollApi, form)
+
+    axiosInstance
+      .post(pollApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
