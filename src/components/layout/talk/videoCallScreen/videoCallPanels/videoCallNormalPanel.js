@@ -1358,6 +1358,11 @@ const VideoPanelNormal = () => {
             console.log("recording Resume");
             break;
 
+          case "HostTransferEvent":
+            console.log("HostTransferEvent");
+
+            break;
+
           default:
             console.log(
               "handlePostMessage share screen Unknown message received:",
@@ -1789,7 +1794,8 @@ const VideoPanelNormal = () => {
                     (presenterViewHostFlag || presenterViewJoinFlag)
                   ? "Presenter-Max-VideoPanel"
                   : "max-video-panel more-zindex"
-              }>
+              }
+            >
               {FullLoader === true ? (
                 <>
                   <LoaderPanelVideoScreen
@@ -1849,7 +1855,8 @@ const VideoPanelNormal = () => {
                             participantWaitinglistBox)
                             ? 9
                             : 12
-                        }>
+                        }
+                      >
                         <div
                           className={
                             presenterViewFlag &&
@@ -1864,7 +1871,8 @@ const VideoPanelNormal = () => {
                                 MaximizeVideoFlag === true
                               ? "normal-avatar-large"
                               : ""
-                          }>
+                          }
+                        >
                           {console.log("iframeiframe", isMeetingHost)}
                           {console.log("iframeiframe", callerURL)}
                           <>
@@ -1872,11 +1880,11 @@ const VideoPanelNormal = () => {
                               <iframe
                                 src={callerURL}
                                 ref={iframeRef}
-                                title='Live Video'
-                                width='100%'
-                                height='100%'
-                                frameBorder='0'
-                                allow='camera;microphone;display-capture'
+                                title="Live Video"
+                                width="100%"
+                                height="100%"
+                                frameBorder="0"
+                                allow="camera;microphone;display-capture"
                               />
                             )}
                           </>
@@ -1896,7 +1904,8 @@ const VideoPanelNormal = () => {
                                 participantWaitinglistBox
                                   ? "ParticipantsWaiting_In"
                                   : "ParticipantsWaiting_Out"
-                              } ps-0`}>
+                              } ps-0`}
+                            >
                               {/* <VideoCallParticipants /> */}
 
                               {/* this is new Host Panel */}
@@ -1910,11 +1919,11 @@ const VideoPanelNormal = () => {
                       ) : isMeeting && isMeetingVideo && !isMeetingHost ? (
                         <>
                           {participantsVisible && (
-                            <div className='Participants-Lists'>
+                            <div className="Participants-Lists">
                               <>
                                 <Row>
                                   <Col lg={10} md={10} sm={10}>
-                                    <p className='Participant-name-title'>
+                                    <p className="Participant-name-title">
                                       {t("Participants")}
                                     </p>
                                   </Col>
@@ -1922,10 +1931,10 @@ const VideoPanelNormal = () => {
                                     <img
                                       draggable={false}
                                       src={BlackCrossIcon}
-                                      alt=''
+                                      alt=""
                                       className={"cursor-pointer"}
-                                      width='8px'
-                                      height='8px'
+                                      width="8px"
+                                      height="8px"
                                       onClick={closeParticipantsList}
                                     />
                                   </Col>
@@ -1937,13 +1946,15 @@ const VideoPanelNormal = () => {
                                       <>
                                         <Row
                                           key={participant.guid}
-                                          className='mb-1'>
+                                          className="mb-1"
+                                        >
                                           <Col
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className='d-flex justify-content-start'>
-                                            <p className='participantModal_name'>
+                                            className="d-flex justify-content-start"
+                                          >
+                                            <p className="participantModal_name">
                                               {participant.name}
                                             </p>{" "}
                                           </Col>
@@ -1951,12 +1962,13 @@ const VideoPanelNormal = () => {
                                             lg={6}
                                             md={6}
                                             sm={12}
-                                            className='d-flex justify-content-end gap-2'>
+                                            className="d-flex justify-content-end gap-2"
+                                          >
                                             <img
                                               src={VideoOff}
-                                              width='20px'
-                                              height='20px'
-                                              alt='Video Off'
+                                              width="20px"
+                                              height="20px"
+                                              alt="Video Off"
                                               style={{
                                                 visibility:
                                                   participant.hideCamera
@@ -1967,9 +1979,9 @@ const VideoPanelNormal = () => {
 
                                             <img
                                               src={MicOff}
-                                              width='20px'
-                                              height='20px'
-                                              alt='Mic Mute'
+                                              width="20px"
+                                              height="20px"
+                                              alt="Mic Mute"
                                               style={{
                                                 visibility: participant.mute
                                                   ? "visible"
@@ -1978,9 +1990,9 @@ const VideoPanelNormal = () => {
                                             />
                                             <img
                                               src={Raisehandselected}
-                                              width='20px'
-                                              height='20px'
-                                              alt='raise hand'
+                                              width="20px"
+                                              height="20px"
+                                              alt="raise hand"
                                               style={{
                                                 visibility:
                                                   participant.raiseHand
