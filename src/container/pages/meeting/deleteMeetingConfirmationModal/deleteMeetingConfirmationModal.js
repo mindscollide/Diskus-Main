@@ -73,7 +73,7 @@ const DeleteMeetingConfirmationModal = () => {
               </Col>
               <Col sm={12} md={12} lg={12} className='mt-4'>
                 <TextField
-                  type={showPassword ? "password" : "text"}
+                  type={showPassword ? "text" : "password"}
                   label={"Password"}
                   value={passwordValue}
                   change={(e) => setPasswordValue(e.target.value)}
@@ -84,7 +84,7 @@ const DeleteMeetingConfirmationModal = () => {
                   iconclassname={styles["iconclassname"]}
                   labelclass={styles["labelclass"]}
                   inputicon={
-                    showPassword ? (
+                    !showPassword ? (
                       <img
                         src={PasswordEyeIcon}
                         width={20}

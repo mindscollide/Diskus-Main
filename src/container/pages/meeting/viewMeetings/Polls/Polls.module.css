@@ -73,14 +73,11 @@ body[dir="rtl"] .Create_polls_Button {
 }
 
 .DateClass {
-  color: #2197d7 !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
   font-size: 12px !important;
-  display: inline-block !important;
-  width: 80% !important;
   overflow: hidden !important;
   white-space: nowrap !important;
-  text-overflow: ellipsis !important;
   cursor: pointer !important;
 }
 
