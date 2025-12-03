@@ -42,16 +42,8 @@ const CreateAddtionalUsersModal = () => {
 
   let OrganizatioName = localStorage.getItem("organizatioName");
 
-  const { UserManagementModals, UserMangementReducer } = useSelector(
-    (state) => state
-  );
-
   const UserManagementModalscreateAdditionalModalsData = useSelector(
     (state) => state.UserManagementModals.createAdditionalModals
-  );
-
-  const UserMangementReducerLoadingData = useSelector(
-    (state) => state.UserMangementReducer.Loading
   );
 
   //States
@@ -262,17 +254,17 @@ const CreateAddtionalUsersModal = () => {
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-1">
+              <Row className='mt-1'>
                 <Col lg={12} md={12} sm={12} className={styles["RedSrtip"]}>
                   <span className={styles["RedStripContent"]}>
                     {t("Maximum-20-users-can-be-created-in-trial-version")}
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12} xs={12}>
                   <TextField
-                    name="Name"
+                    name='Name'
                     value={createAddionalUsers.Name.value}
                     change={createAddiotionalUsersHandler}
                     placeholder={t("Full-name")}
@@ -297,8 +289,7 @@ const CreateAddtionalUsersModal = () => {
                           createAddionalUsers.Name.value === ""
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {createAddionalUsers.Name.errorMessage}
                       </p>
                     </Col>
@@ -306,7 +297,7 @@ const CreateAddtionalUsersModal = () => {
                 </Col>
               </Row>
 
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <TextField
                     placeholder={t("Email")}
@@ -319,7 +310,7 @@ const CreateAddtionalUsersModal = () => {
                       </>
                     }
                     applyClass={"updateNotes_titleInput"}
-                    name="Email"
+                    name='Email'
                     value={createAddionalUsers.Email.value}
                     change={createAddiotionalUsersHandler}
                   />
@@ -330,8 +321,7 @@ const CreateAddtionalUsersModal = () => {
                           createAddionalUsers.Email.value === ""
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {createAddionalUsers.Email.errorMessage}
                       </p>
                     </Col>
@@ -350,7 +340,7 @@ const CreateAddtionalUsersModal = () => {
                     }
                     applyClass={"updateNotes_titleInput"}
                     value={createAddionalUsers.Designation.value}
-                    name="Designation"
+                    name='Designation'
                     change={createAddiotionalUsersHandler}
                   />
                   <Row>
@@ -360,22 +350,20 @@ const CreateAddtionalUsersModal = () => {
                           createAddionalUsers.Designation.value === ""
                             ? ` ${styles["errorMessage"]} `
                             : `${styles["errorMessage_hidden"]}`
-                        }
-                      >
+                        }>
                         {createAddionalUsers.Designation.errorMessage}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-4">
+              <Row className='mt-4'>
                 <Col
                   lg={5}
                   md={5}
                   sm={12}
                   xs={12}
-                  className="d-flex flex-column flex-wrap"
-                >
+                  className='d-flex flex-column flex-wrap'>
                   <span className={styles["NameCreateAddtional"]}>
                     {t("Organization")}
                   </span>
@@ -386,16 +374,15 @@ const CreateAddtionalUsersModal = () => {
                   md={5}
                   sm={12}
                   xs={12}
-                  className="flex-column flex-wrap"
-                >
+                  className='flex-column flex-wrap'>
                   <span className={styles["NameCreateAddtional"]}>
                     {t("Select-role")}
                   </span>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Checkbox
-                        classNameCheckBoxP="m-0 p-0"
-                        classNameDiv=""
+                        classNameCheckBoxP='m-0 p-0'
+                        classNameDiv=''
                         checked={createAddionalUsers.isAdminCheck}
                         onChange={HandleCheck}
                       />
@@ -410,8 +397,7 @@ const CreateAddtionalUsersModal = () => {
                   md={2}
                   sm={12}
                   xs={12}
-                  className={styles["buttonStyles"]}
-                >
+                  className={styles["buttonStyles"]}>
                   <Button
                     onClick={handleAddMember}
                     text={
@@ -422,11 +408,10 @@ const CreateAddtionalUsersModal = () => {
                             md={12}
                             sm={12}
                             xs={12}
-                            className="d-flex justify-content-center align-items-center"
-                          >
+                            className='d-flex justify-content-center align-items-center'>
                             <img
                               src={plusFaddes}
-                              alt=""
+                              alt=''
                               className={styles["PlusIcons"]}
                             />
                           </Col>
@@ -437,20 +422,19 @@ const CreateAddtionalUsersModal = () => {
                   />
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
                   xs={12}
-                  className={styles["Scroller_Users"]}
-                >
+                  className={styles["Scroller_Users"]}>
                   <Row>
                     {members.map((data, index) => {
                       console.log(data, "membersmembersmembers");
                       return (
                         <>
-                          <Col lg={6} md={6} sm={12} className="mt-2">
+                          <Col lg={6} md={6} sm={12} className='mt-2'>
                             <Row>
                               <Col lg={12} md={12} sm={12}>
                                 <AddtionalUserCard
@@ -460,11 +444,11 @@ const CreateAddtionalUsersModal = () => {
                                   Icon={
                                     <img
                                       src={CrossIcon}
-                                      width="18px"
-                                      height="18px"
-                                      alt=""
-                                      draggable="false"
-                                      className="cursor-pointer"
+                                      width='18px'
+                                      height='18px'
+                                      alt=''
+                                      draggable='false'
+                                      className='cursor-pointer'
                                       onClick={() => handleCrossIcon(index)}
                                     />
                                   }
@@ -489,8 +473,7 @@ const CreateAddtionalUsersModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-end gap-2"
-                >
+                  className='d-flex justify-content-end gap-2'>
                   <Button
                     text={t("Skip")}
                     className={styles["SkipandResetButtonClass"]}
