@@ -513,8 +513,7 @@ const TodoList = () => {
       dataIndex: "taskCreator",
       key: "taskCreator",
       align: "center",
-
-      width: "15%",
+      width: "20%",
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -561,7 +560,7 @@ const TodoList = () => {
           </span>
         </>
       ),
-      width: "15%",
+      width: "20%",
       dataIndex: "taskAssignedTo",
       align: "center",
 
@@ -665,7 +664,7 @@ const TodoList = () => {
       dataIndex: "status",
       key: "status",
       align: "center",
-      width: "15%",
+      width: "10%",
 
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
@@ -746,7 +745,7 @@ const TodoList = () => {
       dataIndex: "taskCreator",
       key: "taskCreator",
       align: "center",
-      width: "10%",
+      width: "5%",
       render: (text, record) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(createrID)) {
           return (
@@ -932,8 +931,13 @@ const TodoList = () => {
   ]);
 
   const scroll = {
-    y: "65vh",
-    x: rowsToDo.length === 0 ? "hidden" : "auto",
+    y: "64vh",
+    scrollbar: {
+      // You can adjust the width and distance as needed
+      verticalWidth: 20, // Width of the vertical scrollbar
+      handleSize: 10, // Distance between data and scrollbar
+      // Other scrollbar options
+    },
   };
 
   const handleIconClick = () => {
@@ -1050,7 +1054,7 @@ const TodoList = () => {
             <Col sm={12} md={12} lg={12}>
               <TableToDo
                 column={columnsToDo}
-                className={"Resolution_table"}
+                className={"ToDo"}
                 pagination={false}
                 rows={rowsToDo}
                 scroll={scroll}

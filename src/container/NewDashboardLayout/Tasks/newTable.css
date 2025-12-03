@@ -35,6 +35,9 @@
   background-color: #fff !important;
   border: 1px solid #000 !important;
 }
+.newDashboardTable table tr {
+  outline: none !important;
+}
 .newDashboardTable table:not(:nth-child(1)) {
   width: 100% !important;
   border-spacing: 0 10px !important;
@@ -42,6 +45,7 @@
 .newDashboardTable table {
   width: 100% !important;
   border-spacing: 0 10px !important;
+  outline: none !important;
 }
 .newDashboardTable table .ant-table-tbody .ant-table-measure-row {
   visibility: collapse !important;
@@ -51,20 +55,25 @@
   tr.AssignedByMe
   td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
   color: #949494;
+  outline: none !important;
 }
 
 .newDashboardTable td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
   font-size: 12px !important;
   color: #5a5a5a;
   font-weight: 600;
+  border: none !important;
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
+  outline: none !important;
 }
 
 .newDashboardTable td.ant-table-cell.statusDashboard {
   font-size: 10px !important;
   color: #5a5a5a;
   font-weight: 600;
+  border: none !important;
+
   border-top-right-radius: 5px !important;
   border-bottom-right-radius: 5px !important;
 }
@@ -77,11 +86,16 @@
   font-size: 10px !important;
   font-weight: 500 !important;
   color: #5a5a5a !important;
+  border: none !important;
+  outline: none !important;
 }
 
 .status_value {
   font-weight: 500 !important;
   text-align: center;
+}
+.newDashboardTable .ant-table-tbody:is(:focus,:focus-visible,:hover) {
+  outline: none !important;
 }
 
 .newDashboardTable .ant-table-tbody > tr.AssignedToMe.ant-table-row:hover > td,
@@ -117,6 +131,24 @@
   border-bottom-right-radius: 0px !important;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+  outline: none !important;
+}
+.newDashboardTable
+  .ant-table-tbody
+  > tr.ant-table-row:hover
+  > td.titleDashboard,
+.newDashboardTable
+  .ant-table-tbody
+  > tr
+  > td.ant-table-cell-row-hover.titleDashboard:is(:focus-visible, :focus) {
+  transition: none !important;
+  border: 1px solid #000 !important;
+  border-right: none !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  outline: none !important;
 }
 body[dir="rtl"]
   .newDashboardTable
@@ -134,6 +166,8 @@ body[dir="rtl"]
   border-bottom-left-radius: 0px !important;
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  outline: none !important;
+
 }
 
 .newDashboardTable
@@ -148,6 +182,8 @@ body[dir="rtl"]
   border: 1px solid #000 !important;
   border-left: none !important;
   border-right: none !important;
+  outline: none !important;
+
 }
 
 .newDashboardTable
@@ -165,6 +201,8 @@ body[dir="rtl"]
   border-bottom-left-radius: 0px !important;
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  outline: none !important;
+
 }
 body[dir="rtl"]
   .newDashboardTable
@@ -182,6 +220,7 @@ body[dir="rtl"]
   border-bottom-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
   border-bottom-right-radius: 0px !important;
+  outline: none !important;
 }
 .task-title {
   color: #5a5a5a !important;

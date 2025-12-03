@@ -129,8 +129,10 @@ export const MeetingProvider = ({ children }) => {
   const [callType, setCallType] = useState(0);
   const [typeOfMeeting, setTypeOfMeeting] = useState("");
 
-  const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] = useState([]);
-  const [viewMeetingAgendaViewerRowData, setViewMeetingAgendaViewerRowData] = useState([]);
+  const [viewMeetingAgendaBuilderRowData, setViewMeetingAgendaBuilderRowData] =
+    useState([]);
+  const [viewMeetingAgendaViewerRowData, setViewMeetingAgendaViewerRowData] =
+    useState([]);
   // state for leave one to one  and Join Meeting Video
   const [leaveOneToOne, setLeaveOneToOne] = useState(false);
   const [joinMeetingVideoParticipant, setJoinMeetingVideoParticipant] =
@@ -191,6 +193,7 @@ export const MeetingProvider = ({ children }) => {
   const [unansweredCallParticipant, setUnansweredCallParticipant] = useState(
     []
   );
+  const [inCallParticipantsList, setInCallParticipantsList] = useState([]);
 
   // state for handRaise Counter
   const [handRaiseCounter, setHandRaiseCounter] = useState(0);
@@ -218,7 +221,7 @@ export const MeetingProvider = ({ children }) => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [stepDownloadModal, setStepDownloadModal] = useState(1);
   const [downloadMeetinModal, setDownloadMeeting] = useState(false);
-// 
+  //
   const [isLeaveMeetingModal, setIsLeaveMeetingModal] = useState(false);
 
   // Effect to update the agenda update state based on user profile data
@@ -249,9 +252,9 @@ export const MeetingProvider = ({ children }) => {
     // dispatch(UpdateMeetingStatus())
   };
 
-  const leaveMeetingFunction = () => {}
+  const leaveMeetingFunction = () => {};
 
-  const leaveMeetingVideoFunction = () => {}
+  const leaveMeetingVideoFunction = () => {};
 
   // For Web Notification Count
   const [unReadCountNotification, setUnReadCountNotification] = useState(0);
@@ -455,7 +458,9 @@ export const MeetingProvider = ({ children }) => {
     pendingApprovalsTabCount,
     setPendingApprovalTabCount,
     setViewMeetingAgendaViewerRowData,
-    viewMeetingAgendaViewerRowData
+    viewMeetingAgendaViewerRowData,
+    inCallParticipantsList,
+    setInCallParticipantsList,
   };
 
   // Provide the state data to the context

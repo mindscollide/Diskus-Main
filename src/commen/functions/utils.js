@@ -545,6 +545,7 @@ export const extractActionFromUrl = (url) => {
 };
 
 const NewfileFormatforSignatureFlow = [
+  
   // PDF Formats
   "pdf",
   "fdf",
@@ -573,6 +574,7 @@ const NewfileFormatforSignatureFlow = [
   "odp",
   "wpf",
   "txt",
+  
   // Image Formats
   "bmp",
   "wmf",

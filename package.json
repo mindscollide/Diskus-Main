@@ -88,6 +88,7 @@
     "react-select": "^5.7.2",
     "react-select-country-list": "^2.2.3",
     "react-time-picker": "^6.5.0",
+    "recharts": "^3.5.1",
     "redux-devtools-extension": "^2.13.9",
     "rsuite": "^5.33.1",
     "web-vitals": "^2.1.4",

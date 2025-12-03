@@ -1,6 +1,6 @@
 p.todolist-title-col {
   cursor: pointer;
-  margin: 0px 10px;
+  margin: 0px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

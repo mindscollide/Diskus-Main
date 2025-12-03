@@ -153,7 +153,7 @@ body[dir="rtl"] .Card_border2 {
   min-height: 39px;
   overflow: hidden;
   width: 100%;
-  word-break: break-all;
+  word-wrap: break-word;
   overflow-y: auto;
 }
 .scrollable-title::-webkit-scrollbar {

@@ -11,6 +11,7 @@ import {
   getIconSource,
 } from "../../../container/DataRoom/SearchFunctionality/option";
 import { Tooltip } from "antd";
+import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
 const AttachmentViewer = ({
   handleClickDownload,
   handleEyeIcon,
@@ -67,9 +68,7 @@ const AttachmentViewer = ({
             </>
           )}
           {id !== 0 &&
-            getfileExtensionName !== "txt" &&
-            getfileExtensionName !== "pptx" &&
-            getfileExtensionName !== "ppt" && (
+            fileFormatforSignatureFlow.includes(getfileExtensionName) && (
               <>
                 <div className='divider mx-1'></div>
                 <button className='action-button' aria-label='View document'>

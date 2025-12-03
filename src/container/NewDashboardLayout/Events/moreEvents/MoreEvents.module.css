@@ -89,15 +89,13 @@ body[dir="rtl"] .event-details:hover {
 .Start-Meeting-Upcoming:is(:hover, :active, :focus, :focus-visible, :target) {
   width: 125px;
   height: auto;
-  font-size: 11px;
+  font-size: 12px;
   background: #fff !important;
   border: none;
   border-radius: 4px !important;
   color: #6172d6 !important;
   font-weight: 600;
   white-space: nowrap;
-  overflow: hidden;
-  display: block;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -125,14 +123,13 @@ body[dir="rtl"] .event-details:hover {
   ) {
   width: 125px !important;
   height: auto !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   background: #fff !important;
   border: none !important;
   border-radius: 4px !important;
   color: #6172d6 !important;
   font-weight: 600 !important;
   white-space: nowrap !important;
-  overflow: hidden !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
