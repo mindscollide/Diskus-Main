@@ -1,7 +1,7 @@
 import Form from "react-bootstrap/Form";
 import "./Radio.css";
 export const Radio3 = ({ values, value, onChange }) => {
-  console.log(values, value);
+  
   return (
     <>
       <Form.Check

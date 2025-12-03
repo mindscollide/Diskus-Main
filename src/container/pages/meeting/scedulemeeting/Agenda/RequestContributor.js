@@ -31,7 +31,7 @@ const RequestContributor = ({
       updatedRows[index].mainNote = value;
     }
     setRows(updatedRows);
-    console.log(updatedRows, "MainNoteReqContributor");
+    
   };
   // Function to handle changes in main agenda Main Request Contributor Url text field
   // const handleMainAgendaAdditionalFieldChangeRequestContributorURL = (
@@ -45,7 +45,7 @@ const RequestContributor = ({
   //     updatedRows[index].requestContributorURl = value;
   //   }
   //   setRows(updatedRows);
-  //   console.log(updatedRows, "MainRequestContributorName");
+  //   
   // };
 
   // useEffect(() => {
@@ -68,7 +68,7 @@ const RequestContributor = ({
   }, [getAllAgendaContributors]);
 
   const handleSelectChange = (index, value) => {
-    console.log(value, "valuevaluevalue");
+    
     const updatedAgendaItems = [...rows];
     let SelectValue = {
       value: value.value,

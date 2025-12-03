@@ -27,7 +27,7 @@ const GetAdvanceMeetingAgendabyMeetingIDForAgendaWiseMinutes = (
   currentMeeting,
   setAddReviewers
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(getAllAgendaForAgendaWiseInit());
     let form = new FormData();

@@ -14,7 +14,7 @@ const Urls = ({ data, index, setRows, rows, editorRole }) => {
       updatedRows[index].urlFieldMain = value;
     }
     setRows(updatedRows);
-    console.log(updatedRows, "UrlMainAgendaUrlMainAgenda");
+    
   };
 
   return (

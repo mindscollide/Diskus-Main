@@ -37,7 +37,7 @@ const ViewParticipantsDates = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(responseByDate, "responseByDateresponseByDateresponseByDate");
+  
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
@@ -56,7 +56,7 @@ const ViewParticipantsDates = ({
   );
 
   const [prposedData, setPrposedData] = useState([]);
-  console.log(prposedData, "prposedData");
+  
   const [noneOfAbove, setNoneOfAbove] = useState([]);
   const [meetingDeatils, setMeetingDeatils] = useState({
     MeetingTitle: "",
@@ -70,7 +70,7 @@ const ViewParticipantsDates = ({
   );
 
   // const changeDateStartHandler2 = (date, value) => {
-  //   console.log(date, "changeDateStartHandler2");
+  //   
   //   let newDate;
   //   if (date?.length >= 4) {
   //     let newDate2 = forRecentActivity(date);
@@ -78,20 +78,20 @@ const ViewParticipantsDates = ({
   //   } else {
   //     newDate = moment(date).format("DD MMMM YYYY");
   //   }
-  //   console.log(newDate, "changeDateStartHandler2");
+  //   
 
   //   return newDate;
   // };
 
   const changeDateStartHandler2 = (date, value) => {
-    console.log(date, "changeDateStartHandler2");
+    
     let cleanedDate = date;
     if (typeof date === "string" && /^\d{8}/.test(date)) {
       cleanedDate = date.substring(0, 8);
     }
     const parsed = moment(cleanedDate, "YYYYMMDD");
     const newDate = parsed.isValid() ? parsed.format("DD MMMM YYYY") : "";
-    console.log(newDate, "changeDateStartHandler2");
+    
     return newDate;
   };
 
@@ -169,7 +169,7 @@ const ViewParticipantsDates = ({
         let datesarry = [];
         userWiseMeetingProposed.forEach((datesData, index) => {
           if (Number(datesData.userID) === Number(currentUserId)) {
-            console.log(datesData, "newDatanewDatanewData");
+            
             datesData.selectedProposedDates.forEach((newData, index) => {
               if (
                 newData.proposedDate === "10000101" &&
@@ -251,7 +251,7 @@ const ViewParticipantsDates = ({
       } else {
       }
     } catch (error) {
-      console.log(error, "catchError");
+      
     }
   }, [userWiseMeetingProposed]);
 
@@ -391,7 +391,7 @@ const ViewParticipantsDates = ({
       Length: 50,
       PublishedMeetings: false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     setViewProposeDatePoll(false);
@@ -460,7 +460,7 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(data, "prposedData");
+                          
 
                           const isChecked =
                             data.isSelected &&

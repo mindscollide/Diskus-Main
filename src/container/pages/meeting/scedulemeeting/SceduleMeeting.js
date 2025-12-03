@@ -80,8 +80,8 @@ const SceduleMeeting = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(editorRole.role, "navigatenavigate");
-  console.log(getALlMeetingTypes, "navigatenavigate");
+  
+  
   const apiCallsForComponentMound = async () => {
     try {
       // // Meeting Type Drop Down API
@@ -424,7 +424,7 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-          console.log("chek search meeting");
+          
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
@@ -432,7 +432,7 @@ const SceduleMeeting = ({
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
-  console.log({ NewMeetingreducer, currentMeeting }, "NewMeetingreducer");
+  
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
@@ -466,7 +466,7 @@ const SceduleMeeting = ({
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-          console.log("chek search meeting");
+          
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {

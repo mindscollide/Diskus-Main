@@ -44,7 +44,7 @@ const calendarLoader = (loader) => {
   };
 };
 const getCalendarDataResponse = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -129,13 +129,13 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
           // dispatch(getCalendarDataInit(false));
         });
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 };
 
 const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     try {
       // dispatch(getCalendarDataInit(flag));
@@ -226,7 +226,7 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
           // dispatch(calendarLoader(false));
         });
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 };
@@ -255,7 +255,7 @@ const getEventsType_fail = (message) => {
   };
 };
 const getEventsTypes = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return async (dispatch) => {
     await dispatch(getEventsType_init());
@@ -333,7 +333,7 @@ const getEventsDetails_fail = (message) => {
   };
 };
 const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(getEventsDetails_init());

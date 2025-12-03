@@ -38,7 +38,7 @@ const createFolder_fail = (message) => {
 const createFolderApi = (navigate, folder, t, setAddfolder) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
     FolderName: folder,
@@ -129,7 +129,7 @@ const uploadDocumentsApi = (
   setShowbarupload,
   setTasksAttachments
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let startTime = Date.now();
   return (dispatch) => {
     // dispatch(uploadDocument_init())
@@ -251,7 +251,7 @@ const saveFilesApi = (
   setShowbarupload,
   setTasksAttachments
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -355,7 +355,7 @@ const CreateFolderEmpty = () => {
 };
 // Folder Exist API
 const CheckFolderisExist = (navigate, folderName, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
@@ -446,7 +446,7 @@ const createFolder = (
 ) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let Data = {
     FolderName: folder.FolderName,
@@ -536,14 +536,14 @@ const uploadFile = (
   netDisconnect
   // axiosCancelToken
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   if (!netDisconnect) {
     return async (dispatch) => {
       let form = new FormData();
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(file));
       form.append("File", file);
-      console.log(file, "filefile");
+      
       await axiosInstance
         .post(dataRoomApi, form)
         .then(async (response) => {
@@ -629,7 +629,7 @@ const saveFilesandFoldersApi = (
   filePath,
   netDisconnect
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {

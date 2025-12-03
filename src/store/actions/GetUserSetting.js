@@ -54,7 +54,7 @@ const setRecentActivityDataNotification = (response) => {
 };
 
 const getUserSetting = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let userID = localStorage.getItem("userID");
   let userSettingData = {
     UserID: JSON.parse(userID),
@@ -65,7 +65,7 @@ const getUserSetting = (navigate, t, loader) => {
     form.append("RequestMethod", getUserSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(userSettingData));
     await axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -94,8 +94,7 @@ const getUserSetting = (navigate, t, loader) => {
                   ? true
                   : false;
 
-              console.log("configValue", Boolean(configValue)); // Outputs the configValue or null if not found
-              console.log("configValue", configValue); // Outputs the configValue or null if not found
+              // Outputs the configValue or null if not found
 
               localStorage.setItem("isZoomEnabled", configValue);
               const microsoftClientId =
@@ -118,11 +117,6 @@ const getUserSetting = (navigate, t, loader) => {
                   "officeEventColor",
                   response.data.responseResult.userSettings.officeEventColor
                 );
-
-                console.log(
-                  "Client ID",
-                  response.data.responseResult.userSettings.configurations
-                );
               } else {
                 localStorage.removeItem("officeEventColor");
               }
@@ -136,10 +130,6 @@ const getUserSetting = (navigate, t, loader) => {
                 localStorage.setItem(
                   "googleEventColor",
                   response.data.responseResult.userSettings.googleEventColor
-                );
-                console.log(
-                  "Client ID",
-                  response.data.responseResult.userSettings.configurations
                 );
               } else {
                 localStorage.removeItem("googleEventColor");
@@ -237,7 +227,6 @@ const getUserSetting = (navigate, t, loader) => {
                   false
                 )
               );
-              // navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_02"
@@ -311,7 +300,7 @@ const getUserDetails = (
   OrganizationID,
   setUserProfileModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let userSettingData = {
     UserID: JSON.parse(userID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -321,8 +310,8 @@ const getUserDetails = (
     let form = new FormData();
     form.append("RequestMethod", getuserdetails.RequestMethod);
     form.append("RequestData", JSON.stringify(userSettingData));
-     axiosInstance
-    .post(settingApi, form)
+    axiosInstance
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -428,14 +417,13 @@ const updateuserprofile = (
   setNameEanble,
   setUser
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(updateprofileinit());
     let form = new FormData();
     form.append("RequestMethod", updateProfileData.RequestMethod);
     form.append("RequestData", JSON.stringify(updateData));
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

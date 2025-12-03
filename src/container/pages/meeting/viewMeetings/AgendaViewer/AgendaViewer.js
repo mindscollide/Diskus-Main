@@ -141,10 +141,7 @@ const AgendaViewer = () => {
     setViewMeetingAgendaViewerRowData,
   } = useMeetingContext();
 
-  console.log(
-    viewMeetingAgendaViewerRowData,
-    "viewMeetingAgendaViewerRowDataviewMeetingAgendaViewerRowData"
-  );
+  
 
   const [talkGroupID, setTalkGroupID] = useState(0);
 
@@ -182,7 +179,7 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.presenterStartedFlag
   );
 
-  console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
+  
 
   let newRoomID = localStorage.getItem("newRoomId");
   let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
@@ -269,41 +266,7 @@ const AgendaViewer = () => {
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
 
-  console.log("Video Feature Debug Data:", {
-    editorRole,
-    presenterViewFlag,
-    videoTalk,
-    presenterViewHostFlag,
-    presenterViewJoinFlag,
-    presenterStartedFlag,
-    newRoomID,
-    currentMeetingID,
-    callAcceptedRoomID,
-    participantRoomId,
-    isMeetingVideoHostCheck,
-    isZoomEnabled,
-    isMeetingVideo,
-    participantUID,
-    roomID,
-    isGuid,
-    RoomID,
-    UID,
-    GetAdvanceMeetingAgendabyMeetingIDForViewData,
-    cancelMeetingMaterial,
-    agendaResponseMessage,
-    AgendaVideoResponseMessage,
-    MaximizeHostVideoFlag,
-    NormalHostVideoFlag,
-    maximizeParticipantVideoFlag,
-    raisedUnRaisedParticipant,
-    normalParticipantVideoFlag,
-    maxParticipantVideoDeniedFlag,
-    maxParticipantVideoRemovedFlag,
-    nonMeetingVideo,
-    enableDisableVideoState,
-    participantEnableVideoState,
-    disableBeforeJoinZoom,
-  });
+  
 
   const [menuAgenda, setMenuAgenda] = useState(false);
 
@@ -446,7 +409,7 @@ const AgendaViewer = () => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -488,7 +451,7 @@ const AgendaViewer = () => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -563,14 +526,14 @@ const AgendaViewer = () => {
       )
     );
     // if (flag) {
-    //   console.log("mqtt mqmqmqmqmqmq");
+    //   
     //   await dispatch(leaveMeetingOnlogout(false));
     //   dispatch(userLogOutApiFunc(navigate, t));
     // }
   };
 
   const groupChatInitiation = async (talkChatID) => {
-    console.log(talkChatID, "datadatadata");
+    
     if (talkChatID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -629,7 +592,7 @@ const AgendaViewer = () => {
       const foundRecord = allChatMessages.allMessages.find(
         (item) => item.id === talkGroupID
       );
-      console.log(AllUserChats,talkGroupID, "AllUserChatsAllUserChats");
+      
 
       if (foundRecord) {
         dispatch(chatBoxActiveFlag(true));
@@ -673,7 +636,7 @@ const AgendaViewer = () => {
           if (
             item.id === MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
           ) {
-            console.log("Updating main item:", item);
+            
             return {
               ...item,
               voteOwner: {
@@ -788,11 +751,11 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (joinMeetingVideoParticipant) {
-      console.log("onClickVideoIconOpenVideo");
+      
       dispatch(participantVideoButtonState(true));
       // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
       if (!participantEnableVideoState) {
-        console.log("onClickVideoIconOpenVideo");
+        
         // if(isMeetingVideoHostCheck){
 
         // }else{
@@ -811,7 +774,7 @@ const AgendaViewer = () => {
     setResumeRecordingState(false);
     setStopRecordingState(false);
 
-    console.log("onClickVideoIconOpenVideo");
+    
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
@@ -820,23 +783,23 @@ const AgendaViewer = () => {
     );
 
     if (nonMeetingCheck) {
-      console.log("onClickVideoIconOpenVideo");
+      
       dispatch(nonMeetingVideoGlobalModal(true));
     } else {
       if (!isMeetingVideoHostCheck) {
-        console.log("onClickVideoIconOpenVideo");
+        
         dispatch(participantVideoButtonState(true));
         // Jab ParticipantEnableVideoState False hoga tab maxParticipantVideoPanel open hoga
         if (!participantEnableVideoState) {
-          console.log("onClickVideoIconOpenVideo");
+          
           dispatch(maxParticipantVideoCallPanel(true));
         }
       } else {
-        console.log("onClickVideoIconOpenVideo");
+        
         localStorage.setItem("isMeetingVideoHostCheck", true);
         dispatch(videoIconOrButtonState(true));
         if (!enableDisableVideoState) {
-          console.log("onClickVideoIconOpenVideo");
+          
           let data = {
             MeetingId: Number(currentMeeting),
             VideoCallURL: String(currentMeetingVideoURL),
@@ -845,8 +808,8 @@ const AgendaViewer = () => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          console.log("onClickVideoIconOpenVideo");
-          console.log("No Need To Hit");
+          
+          
         }
       }
     }
@@ -860,15 +823,15 @@ const AgendaViewer = () => {
     dispatch(participantWaitingListBox(false));
     dispatch(toggleParticipantsVisibility(false));
     if (activeCallState && !isMeetingVideo) {
-      console.log("maximizeParticipantVideoFlag");
+      
       setStartPresenterViewOrLeaveOneToOne(true);
       await dispatch(nonMeetingVideoGlobalModal(true));
     } else if (isMeetingVideo) {
-      console.log("maximizeParticipantVideoFlag");
+      
       if (raisedUnRaisedParticipant) {
-        console.log("maximizeParticipantVideoFlag");
+        
         if (!isZoomEnabled || !disableBeforeJoinZoom) {
-          console.log("maximizeParticipantVideoFlag");
+          
           let data = {
             RoomID: String(RoomID),
             UID: String(UID),
@@ -879,10 +842,10 @@ const AgendaViewer = () => {
       }
 
       if (isWaiting) {
-        console.log("maximizeParticipantVideoFlag");
+        
         dispatch(closeWaitingParticipantVideoStream(true));
       } else {
-        console.log("maximizeParticipantVideoFlag");
+        
         localStorage.setItem("acceptedRoomID", RoomID);
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
@@ -892,13 +855,13 @@ const AgendaViewer = () => {
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
     } else {
-      console.log("maximizeParticipantVideoFlag", isWaiting);
-      console.log("maximizeParticipantVideoFlag", maximizeParticipantVideoFlag);
+      
+      
       if (isWaiting) {
-        console.log("maximizeParticipantVideoFlag");
+        
         dispatch(closeWaitingParticipantVideoStream(true));
       } else if (maximizeParticipantVideoFlag) {
-        console.log("maximizeParticipantVideoFlag");
+        
         dispatch(videoIconOrButtonState(false));
         dispatch(participantVideoButtonState(false));
         dispatch(maxParticipantVideoCallPanel(false));
@@ -912,7 +875,7 @@ const AgendaViewer = () => {
           openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
         );
       } else {
-        console.log("maximizeParticipantVideoFlag");
+        
         dispatch(maxParticipantVideoCallPanel(false));
         let data = {
           VideoCallURL: String(currentMeetingVideoURL || ""),
@@ -928,7 +891,7 @@ const AgendaViewer = () => {
   };
 
   const onClickStopPresenter = async (value) => {
-    console.log("onClickStopPresenter", value);
+    
     try {
       setStartRecordingState(false);
       setPauseRecordingState(false);
@@ -936,7 +899,7 @@ const AgendaViewer = () => {
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
       // if (presenterMeetingId === currentMeeting) {
-      console.log("Check Stop");
+      
       if (value === 1) {
         if (presenterStartedFlag) {
           let data = {
@@ -944,7 +907,7 @@ const AgendaViewer = () => {
             RoomID: RoomID,
           };
           sessionStorage.setItem("StopPresenterViewAwait", true);
-          console.log(data, "presenterViewJoinFlag");
+          
           dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
         } else {
           let data = {
@@ -961,17 +924,17 @@ const AgendaViewer = () => {
           activeCallState &&
           (currentCallType === 1 || currentCallType === 2)
         ) {
-          console.log("Check Stop");
+          
           setPresenterForOneToOneOrGroup(true);
           dispatch(nonMeetingVideoGlobalModal(true));
         } else {
-          console.log("onClickStopPresenter", value);
+          
           let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
           let data = {
             VideoCallURL: String(currentMeetingVideoURL),
             WasInVideo: isMeetingVideo ? true : false,
           };
-          console.log("onClickStopPresenter", data);
+          
           dispatch(joinPresenterViewMainApi(navigate, t, data));
         }
       } else if (value === 3) {

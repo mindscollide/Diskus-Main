@@ -5,7 +5,7 @@ const PrivateRoutes = () => {
   const currentUrl = window.location.href;
 
   const navigate = useNavigate();
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+  
 
 
   // Effect hook to perform actions based on the current URL
@@ -122,7 +122,7 @@ const PrivateRoutes = () => {
             .toLowerCase()
             .includes("Diskus/polling?PollExpire_action=".toLowerCase())
         ) {
-          console.log("pollExpirepollExpirepollExpire", currentUrl);
+          
           const parts = currentUrl.split("action=")[1];
           localStorage.setItem("pollExpire", parts);
           // Add action-specific logic here if needed
@@ -147,7 +147,7 @@ const PrivateRoutes = () => {
         ) {
           // Add action-specific logic here if needed
           const parts = currentUrl.split("action=")[1];
-          console.log(parts, "pollingpolling");
+          
 
           localStorage.setItem("poUpda", parts);
         }
@@ -221,7 +221,7 @@ const PrivateRoutes = () => {
         ) {
           let getValue = getActionValue(currentUrl, "id_action=");
           // let getValue = getActionValue(currentUrl, "id_action=");
-          console.log(getValue, "getValuegetValuegetValue");
+          
 
           localStorage.setItem("committeeView_Id", getValue);
         }
@@ -232,7 +232,7 @@ const PrivateRoutes = () => {
             .includes("Diskus/committee?action".toLowerCase())
         ) {
           let getValue = getActionValue(currentUrl, "action=");
-          console.log(getValue, "getValuegetValue");
+          
           localStorage.setItem("committeeList", getValue);
         }
         // Group View
@@ -349,7 +349,7 @@ const PrivateRoutes = () => {
           localStorage.setItem("docSignedAction", getValue);
         }
       } catch (error) {
-        console.log(error, "errorerrorerrorerror");
+        
       }
       if (
         currentUrl
@@ -375,10 +375,7 @@ const PrivateRoutes = () => {
     (RoleID === 3 || RoleID === 4) && (Blur === undefined || Blur === null)
       ? true
       : null;
-  console.log(
-    { currentUser, token },
-    "PrivateRoutesPrivateRoutesPrivateRoutes"
-  );
+  
 
 
   return currentUser && token ? (

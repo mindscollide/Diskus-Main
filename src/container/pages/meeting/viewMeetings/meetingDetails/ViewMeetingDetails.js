@@ -275,7 +275,7 @@ const ViewMeetingDetails = ({}) => {
         )
       );
     } else {
-      console.log("Notes to be handled");
+      
       let Data = {
         MeetingID:
           advanceMeetingModalID === "0" ||
@@ -411,7 +411,7 @@ const ViewMeetingDetails = ({}) => {
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+        
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.removeItem("folderDataRoomMeeting");
         setEditorRole({ status: null, role: null });
@@ -437,7 +437,7 @@ const ViewMeetingDetails = ({}) => {
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingStatus = MeetingData.meetingStatus.status;
-        // console.log("meetingStatus", getmeetingStatus);
+        // 
         setMeetingStatus(Number(getmeetingStatus));
         let getmeetingType = MeetingData.meetingType;
         setMeetingDetailsData({
@@ -523,7 +523,7 @@ const ViewMeetingDetails = ({}) => {
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -567,7 +567,7 @@ const ViewMeetingDetails = ({}) => {
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -633,7 +633,7 @@ const ViewMeetingDetails = ({}) => {
           };
           dispatch(getParticipantMeetingJoinMainApi(navigate, t, data));
         } else {
-          console.log("No Need To Hit");
+          
         }
       }
     }
@@ -688,7 +688,7 @@ const ViewMeetingDetails = ({}) => {
   //   }
   // };
   const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
+    
     if (data.TalkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -833,7 +833,7 @@ const ViewMeetingDetails = ({}) => {
                     text={t("End-meeting")}
                     className={styles["LeaveMeetinButton"]}
                     onClick={() => {
-                      console.log("end meeting chaek");
+                      
                       setEndMeetingConfirmationModal(true);
                     }}
                   />

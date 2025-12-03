@@ -74,7 +74,7 @@ const CreateTask = ({
   const [error, seterror] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  console.log(fileForSend, "fileForSendfileForSend")
+  
   const [selectedTask, setSelectedTask] = useState({
     value: 0,
     label: "",
@@ -568,7 +568,7 @@ const CreateTask = ({
           );
         }
       }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+      
       let sortAssginersArr = newmembersArray.sort((a, b) =>
         a.name.localeCompare(b.name)
       );
@@ -805,7 +805,7 @@ const CreateTask = ({
                         <Col className={styles["Scroller_Actions_Page"]}>
                           <Row className='ps-3'>
                             {taskAttachments.map((data, index) => {
-                              console.log(data, "datadatadata");
+                              
                               return (
                                 <>
                                   <Col lg={2} md={2} sm={2}>

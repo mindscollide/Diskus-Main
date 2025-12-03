@@ -53,7 +53,7 @@ const ModalAddNote = ({ ModalTitle }) => {
   const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
-  console.log(fileForSend, "fileForSendfileForSend");
+  
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -92,7 +92,7 @@ const ModalAddNote = ({ ModalTitle }) => {
     let searchIndex = tasksAttachments.TasksAttachments;
     setFileForSend((prev) => {
       return prev.filter((fileData, index) => {
-        console.log(index, "fileDatafileData");
+        
         return fileData.name !== data.DisplayAttachmentName;
       });
     });
@@ -290,7 +290,7 @@ const ModalAddNote = ({ ModalTitle }) => {
     let newFolder = [];
     let newfile = [];
     if (fileForSend.length > 0) {
-      console.log(fileForSend, "fileForSendfileForSend");
+      
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsNotesApi(

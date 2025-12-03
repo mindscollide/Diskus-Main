@@ -294,7 +294,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
           );
         }
       }
-      console.log(newmembersArray, "pollMeetingDatapollMeetingData");
+      
 
       setmemberSelect(newmembersArray);
     } else {

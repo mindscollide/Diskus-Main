@@ -99,8 +99,8 @@ const CastVoteAgendaModal = ({
         ],
       };
       let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
-      console.log("Cast Vote Data castVoteData", Data);
-      console.log("Cast Vote Data castVoteData", isMainAgenda);
+      
+      
       dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setViewMeetingAgendaViewerRowData));
     } else {
       let Data = {
@@ -119,8 +119,8 @@ const CastVoteAgendaModal = ({
         ],
       };
       let isMainAgenda = currentAgendaDetails && "id" in currentAgendaDetails;
-      console.log("Cast Vote Data castVoteData", Data);
-      console.log("Cast Vote Data castVoteData", isMainAgenda);
+      
+      
 
       dispatch(CasteVoteForAgenda(Data, navigate, t, isMainAgenda, setViewMeetingAgendaViewerRowData));
     }

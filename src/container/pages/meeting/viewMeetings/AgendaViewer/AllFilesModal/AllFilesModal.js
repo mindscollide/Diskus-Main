@@ -55,7 +55,7 @@ const AllFilesModal = ({
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
+    
     let Data = {
       taskId: Number(record.originalAttachmentName),
       commingFrom: 4,

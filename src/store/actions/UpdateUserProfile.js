@@ -35,7 +35,7 @@ const updateuserprofilefail = (message, response) => {
 const updateUserProfile = (navigate, userProfileData, t) => {
   let currentUserID = localStorage.getItem("userID");
 
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     UserProfile: {
       PK_UID: userProfileData.PK_UID,

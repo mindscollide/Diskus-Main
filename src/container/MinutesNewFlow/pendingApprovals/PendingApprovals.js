@@ -45,7 +45,7 @@ const PendingApproval = () => {
     (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload
   );
 
-  console.log(AddedAsMinuteReviwer, "AddedAsMinuteReviwer");
+  
   const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
     (state) =>
       state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
@@ -62,7 +62,7 @@ const PendingApproval = () => {
     (state) =>
       state.SignatureWorkFlowReducer.validateEncryptedStringMinuteReviewData
   );
-  console.log(getMinutesReviewerData, "getMinutesReviewerData");
+  
   //Getting current Language
   let lang = localStorage.getItem("i18nextLng");
 
@@ -77,7 +77,7 @@ const PendingApproval = () => {
     pendingApprovalsTabCount,
   } = useContext(MeetingContext);
 
-  console.log({ pendingApprovalsTabCount }, "hello");
+  
   const [sortOrderMeetingTitle, setSortOrderMeetingTitle] = useState(null);
   const [sortOrderReviewRequest, setSortOrderReviewRequest] = useState(null);
   const [sortOrderLeaveDateTime, setSortOrderLeaveDateTime] = useState(null);
@@ -360,7 +360,7 @@ const PendingApproval = () => {
       dispatch(pendingApprovalPage(false));
     }
   }, []);
-  console.log(docSignAction, "docSignActiondocSignAction");
+  
 
   useEffect(() => {
     if (reviewMinutesLink !== null) {
@@ -420,10 +420,7 @@ const PendingApproval = () => {
       if (PendingApprovalCountDataData !== null) {
         const { pendingMinuteReviews, pendingSignatures } =
           PendingApprovalCountDataData;
-        console.log(
-          PendingApprovalCountDataData,
-          "PendingApprovalCountDataData"
-        );
+        
         setPendingApprovalTabCount({
           pendingMinutes: pendingMinuteReviews,
           pendingSignature: pendingSignatures,

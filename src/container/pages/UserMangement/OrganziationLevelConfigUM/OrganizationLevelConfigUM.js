@@ -137,11 +137,11 @@ const OrganizationLevelConfigUM = () => {
         const organizationSettings = await dispatch(
           getOrganizationLevelSetting(navigate, t)
         );
-        console.log("Organization Settings:", organizationSettings);
+        
 
         // Call the second API function and handle its result
         const timeZones = await dispatch(getTimeZone(navigate, t));
-        console.log("Time Zones:", timeZones);
+        
         const autoResolutionsOptionsData = autoResolutionsOptionsValues(30);
         setAutoCloseResolutionOptions(autoResolutionsOptionsData);
       } catch (error) {
@@ -185,10 +185,7 @@ const OrganizationLevelConfigUM = () => {
       ) {
         let organizationSettings =
           settingReducerGetOrganizationLevelSettingResponseData;
-        console.log(
-          organizationSettings,
-          "organizationSettingsorganizationSettings"
-        );
+        
         setOrganizationSetting({
           Is2FAEnabled: organizationSettings.is2FAEnabled,
           EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
@@ -415,7 +412,7 @@ const OrganizationLevelConfigUM = () => {
   };
 
   const handleChangeAutoCloseResolution = (event) => {
-    console.log(event, "handleChangeAutoCloseResolution");
+    
     setAutoCloseResolution(event);
   };
   const onChangeIsTwoFaceEnabled = (e) => {
@@ -960,7 +957,7 @@ const OrganizationLevelConfigUM = () => {
         userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
       AutoCloseResolutionDays: autoCloseResolution?.value || 1,
     };
-    console.log(Data, "AutoCloseResolutionDaysAutoCloseResolutionDays");
+    
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
 

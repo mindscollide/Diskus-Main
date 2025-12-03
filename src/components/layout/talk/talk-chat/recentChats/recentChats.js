@@ -254,7 +254,7 @@ const RecentChats = () => {
         ]);
       }
     } catch (error) {
-      console.log("ERROR");
+      
     }
   }, [talkStateData.PushChatData]);
 

@@ -59,10 +59,7 @@ const MinutesReducer = (state = initialState, action) => {
           ResponseMessage: action.message,
         };
       } catch (error) {
-        console.log(
-          "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-          error
-        );
+        
       }
     }
 

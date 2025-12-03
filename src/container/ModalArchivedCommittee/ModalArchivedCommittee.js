@@ -104,7 +104,7 @@ const ModalArchivedCommittee = ({
         dispatch(realtimeCommitteeStatusResponse(null));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducerrealtimeCommitteeStatus]);
 

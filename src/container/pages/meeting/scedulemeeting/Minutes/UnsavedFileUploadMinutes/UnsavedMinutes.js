@@ -28,7 +28,7 @@ const UnsavedMinutes = ({
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleYesFunctionality = () => {
-    console.log(useCase, "useCaseuseCaseuseCase");
+    
     if (useCase) {
       if (useCase === 1) {
         // Pervious Button
@@ -56,7 +56,7 @@ const UnsavedMinutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+        
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         setFileAttachments([]);
       }

@@ -29,8 +29,8 @@ const Header = ({ searchVisible }) => {
     setExpand(!isExpand);
   };
   useEffect(() => {
-    console.log(location);
-    console.log(isMeeting);
+    
+    
     location.pathname === "/onboard" ? setMeeting(true) : setMeeting(false);
     setIsOpen(true);
   }, [location]);

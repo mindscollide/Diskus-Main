@@ -76,7 +76,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
   //task Object
@@ -187,7 +187,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    console.log(data, "uploadFilesToDouploadFilesToDo");
+    
     let filesArray = Object.values(data.target.files);
     let totalFiles =
       filesArray.length + tasksAttachments.TasksAttachments.length;
@@ -327,9 +327,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         );
       }
 
-      console.log(newFolder, "newFoldernewFoldernewFolder");
+      
       let newAttachmentData = newFolder.map((data, index) => {
-        console.log(data, "newFoldernewFoldernewFolder");
+        
         return {
           DisplayAttachmentName: data.DisplayAttachmentName,
           OriginalAttachmentName: data.pK_FileID.toString(),
@@ -350,7 +350,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 5, setShow)
       );
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   };
 
@@ -476,7 +476,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
-    console.log(item, "itemitemitem");
+    
     setPresenterValue(item);
     setTaskAssignedTo([item.value]);
   };

@@ -72,7 +72,7 @@ const ViewProposedMeetingModal = () => {
         });
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   }, [getAllMeetingDetails]);
 
@@ -86,7 +86,7 @@ const ViewProposedMeetingModal = () => {
         setParticipants(getAllSavedparticipantsData);
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   }, [getAllSavedparticipantsData]);
 
@@ -103,13 +103,13 @@ const ViewProposedMeetingModal = () => {
       } else {
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerror");
+      
     }
   }, [getAllProposedDatesData]);
 
   //Handling Cancel Button OnClick
   const hadleCancelButtonClick = () => {
-    console.log("Click");
+    
     let meetingpageRow = localStorage.getItem("MeetingPageRows");
     let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
     let userID = localStorage.getItem("userID");
@@ -166,7 +166,7 @@ const ViewProposedMeetingModal = () => {
                 {Array.isArray(meetingProposedDates) &&
                 meetingProposedDates.length > 0 ? (
                   meetingProposedDates.map((dateData, index) => {
-                    console.log(dateData, "dateData");
+                    
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
                       dateData,
                       locale

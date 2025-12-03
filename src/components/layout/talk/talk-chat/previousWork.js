@@ -1491,12 +1491,7 @@ const TalkChat = () => {
     setAllCheckState(false);
   }
 
-  console.log(
-    "todayCheckState",
-    todayCheckState,
-    allCheckState,
-    customCheckState
-  );
+  
 
   const downloadChat = () => {
     let Data = {
@@ -4036,9 +4031,7 @@ const TalkChat = () => {
             talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
               .data;
 
-          console.log(
-            "checkLengthcheckLength",
-            Object.keys(checkLength).length
+          .length
           );
           // Function to update messageStatus in allOtoMessages state
           setAllOtoMessages((prevAllOtoMessages) =>
@@ -8108,10 +8101,7 @@ const TalkChat = () => {
                                 allBroadcastMessages.length > 0 ? (
                                 allBroadcastMessages.map(
                                   (messageData, index) => {
-                                    console.log(
-                                      "All Broadcast Messages",
-                                      messageData
-                                    );
+                                    
                                     var ext = messageData.attachmentLocation
                                       .split(".")
                                       .pop();

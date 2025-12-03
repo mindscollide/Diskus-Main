@@ -38,7 +38,7 @@ const packageUpgradeFail = (message) => {
 };
 
 const packagesforUpgrade = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = { OrganizationID: organizationID };
   return (dispatch) => {
@@ -116,7 +116,7 @@ const updateSubscribePackageFail = (message) => {
 };
 
 const updateSubscribePackage = (navigate, ID, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let tenureOfSuscriptionID = JSON.parse(
     localStorage.getItem("TenureOfSuscriptionID")

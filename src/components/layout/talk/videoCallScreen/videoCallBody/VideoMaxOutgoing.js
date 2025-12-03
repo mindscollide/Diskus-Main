@@ -18,7 +18,7 @@ const VideoOutgoing = () => {
     (state) => state.VideoMainReducer.CallRequestReceivedMQTTData
   );
 
-  console.log(CallRequestReceivedMQTTData, "CallRequestReceivedMQTTData");
+  
 
   let currentCallType = Number(localStorage.getItem("CallType"));
 
@@ -30,7 +30,7 @@ const VideoOutgoing = () => {
 
     // Play the audio when the component mounts
     audioElement.play();
-    console.log("busyCall");
+    
 
     // const timer = setTimeout(() => {
     //   // Dispatch action to update global state
@@ -41,7 +41,7 @@ const VideoOutgoing = () => {
     // }, timeValue)
 
     return () => {
-      console.log("busyCall");
+      
       audioElement.pause();
       dispatch(videoOutgoingCallFlag(false));
       audioElement.currentTime = 0;

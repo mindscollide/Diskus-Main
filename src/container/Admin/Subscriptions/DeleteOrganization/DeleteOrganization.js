@@ -44,7 +44,7 @@ const DeleteOrganization = () => {
       )
     );
   };
-  console.log("adminReduceradminReduceradminReducer", adminReducer);
+  
   useEffect(() => {
     if (adminReducer.DeleteOrganizationResponseMessage !== "") {
       showMessage(

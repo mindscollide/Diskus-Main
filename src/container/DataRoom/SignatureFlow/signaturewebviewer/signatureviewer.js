@@ -56,7 +56,7 @@ const SignatureViewer = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [orderCheckBox, setOrderCheckbox] = useState(false);
   const [copyOfSigners, setCopyOfSigners] = useState([]);
-  console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
+  
 
   // Document Send Modal Work
   // Start From there
@@ -195,10 +195,7 @@ const SignatureViewer = () => {
               });
             }
           );
-          console.log(
-            "userAnnotations",
-            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
-          );
+          
 
           // function revert(data) {
           //   return data.map((item) => {
@@ -271,7 +268,7 @@ const SignatureViewer = () => {
           setFieldsData(newFieldsData);
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [getAllFieldsByWorkflowID]);
@@ -288,7 +285,7 @@ const SignatureViewer = () => {
           let isOrderChecked = bundleModels.some(
             (bundleData, index) => bundleData.dependencies.length > 0
           );
-          console.log(isOrderChecked, "isOrderCheckedisOrderChecked");
+          
           setOrderCheckbox(isOrderChecked);
           bundleModels.forEach((users, index) => {
             users.actors.forEach((usersData, index) => {
@@ -303,7 +300,7 @@ const SignatureViewer = () => {
               });
             });
           });
-          console.log(signersData, "signersDatasignersData");
+          
 
           setCopyOfSigners(signersData);
 
@@ -409,13 +406,10 @@ const SignatureViewer = () => {
           getDataroomAnnotation.annotationString
         );
       }
-      console.log(
-        "userAnnotations userAnnotations",
-        getDataroomAnnotation.annotationString
-      );
+      
     }
   }, [getDataroomAnnotation]);
-  console.log("userAnnotations userAnnotations", userAnnotations);
+  
 
   // === End === //
 
@@ -484,7 +478,7 @@ const SignatureViewer = () => {
             });
           });
         });
-        console.log(signersData, "signersDatasignersData");
+        
 
         setCopyOfSigners(signersData);
         setSignerData(signersData);
@@ -498,7 +492,7 @@ const SignatureViewer = () => {
     } catch (error) {}
   }, [saveWorkFlowResponse]);
   // === End === //
-  console.log(saveWorkFlowResponse, "saveWorkFlowResponsesaveWorkFlowResponse");
+  
 
   //===  this is for covert blob file ===//
   function handleBlobFiles(base64) {
@@ -516,13 +510,7 @@ const SignatureViewer = () => {
 
   // this will generate my xfdf files for user base and send into AddUpdateFieldValue
   const updateXFDF = (action, xmlString, userSelectID, userAnnotations) => {
-    console.log(
-      "userAnnotations updateXFDF",
-      action,
-      xmlString,
-      userSelectID,
-      userAnnotations
-    );
+    
     try {
       let userSelect = parseInt(userSelectID);
       // Iterate over each user's annotations
@@ -548,7 +536,7 @@ const SignatureViewer = () => {
                 xml.widget = widgetElement.outerHTML;
                 widgetFound = true;
               } else {
-                console.log("Element not found:", ffieldName, widgetName);
+                
               }
             }
           });
@@ -568,11 +556,11 @@ const SignatureViewer = () => {
         }
       });
       // Update the state with the modified userAnnotations
-      console.log("userAnnotations userAnnotations in", userAnnotations);
+      
       setUserAnnotations(userAnnotations);
       // }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -655,7 +643,7 @@ const SignatureViewer = () => {
           handleOpenModal();
         };
 
-        console.log("selectedUserRef.current", selectedUserRef.current);
+        
         const handleClickTItle = () => {
           try {
             const letsGet = getActorColorByUserID(
@@ -680,7 +668,7 @@ const SignatureViewer = () => {
             annotation.StrokeStyle = "solid"; // Style of the border
 
             // Log the annotation object for debugging
-            console.log("Annotation Object:", annotation);
+            
 
             // Add the annotation to the document
             annotationManager.addAnnotation(annotation);
@@ -714,7 +702,7 @@ const SignatureViewer = () => {
             annotation.StrokeStyle = "solid"; // Style of the border
 
             // Log the annotation object for debugging
-            console.log("Annotation Object:", annotation);
+            
 
             // Add the annotation to the document
             annotationManager.addAnnotation(annotation);
@@ -748,7 +736,7 @@ const SignatureViewer = () => {
             annotation.StrokeStyle = "solid"; // Style of the border
 
             // Log the annotation object for debugging
-            console.log("Annotation Object:", annotation);
+            
 
             // Add the annotation to the document
             annotationManager.addAnnotation(annotation);
@@ -763,7 +751,7 @@ const SignatureViewer = () => {
         };
 
         const handleClickSaveBtn = async () => {
-          console.log(signerDataRef, signerData, "signerDataRef");
+          
 
           // status of 1 for save button
           const doc = documentViewer.getDocument();
@@ -1113,20 +1101,17 @@ const SignatureViewer = () => {
   //       freetextElement.parentNode.removeChild(freetextElement);
   //     });
   //   });
-  //   console.log("removeHandlerForPrticipantDelete", xmlDoc);
+  //   
 
   //   // Serialize the modified XML back to a string
   //   const serializer = new XMLSerializer();
   //   const modifiedXFDFString = serializer.serializeToString(xmlDoc);
-  //   console.log("removeHandlerForPrticipantDelete", modifiedXFDFString);
+  //   
 
   //   return modifiedXFDFString;
   const handleOpenModal = () => {
-    console.log(
-      copySignersData,
-      "copySignersDatacopySignersDatacopySignersData"
-    );
-    console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
+    
+    
     if (copySignersData.current.length > 0) {
       setSignerData(copySignersData.current);
     }
@@ -1190,7 +1175,7 @@ const SignatureViewer = () => {
     // Serialize the modified XML back to a string
     const serializer = new XMLSerializer();
     const modifiedXFDFString = serializer.serializeToString(xmlDoc);
-    console.log("Modified XFDF String:", modifiedXFDFString);
+    
 
     return modifiedXFDFString;
   }
@@ -1206,7 +1191,7 @@ const SignatureViewer = () => {
         annotations,
         usersNotInParticipants
       );
-      console.log("removeHandlerForPrticipantDelete", modifiedXFDF);
+      
 
       // Remove existing annotations
       const annots = annotationManager.getAnnotationsList();
@@ -1239,7 +1224,7 @@ const SignatureViewer = () => {
       if (usersNotInParticipants.length > 0) {
         setLastParticipants(participants);
         removeHandlerForPrticipantDelete(usersNotInParticipants);
-        console.log("removeHandlerForPrticipantDelete");
+        
       } else {
         setLastParticipants(participants);
       }
@@ -1255,7 +1240,7 @@ const SignatureViewer = () => {
   };
   // ==== End ====//
 
-  console.log("annotationsColorRecord", annotationsColorRecordRef.current);
+  
   // === this is for update intance in ===//
   useEffect(() => {
     if (Instance) {

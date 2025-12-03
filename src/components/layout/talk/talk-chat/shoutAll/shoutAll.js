@@ -111,7 +111,7 @@ const ShoutAll = () => {
 
   const chatClick = (record) => {
     dispatch(chatBoxActiveFlag(true));
-    console.log("chatClick Record", record);
+    
     let broadcastMessagesData = {
       UserID: currentUserId,
       BroadcastID: record.id,

@@ -25,7 +25,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
   let NotificationClickViewGroupID = localStorage.getItem(
     "NotifcationClickViewGroupID"
   );
-  console.log(NotificationClickViewGroupID, "NotificationClickViewGroupID");
+  
   const [currentViewGroup, setCurrentViewGroup] = useState(
     viewGroupTab !== undefined && viewGroupTab !== 0 ? viewGroupTab : 1
   );
@@ -44,7 +44,7 @@ const ViewGrouppage = ({ setViewGroupPage, currentTab, viewGroupTab }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
 
     return () => {

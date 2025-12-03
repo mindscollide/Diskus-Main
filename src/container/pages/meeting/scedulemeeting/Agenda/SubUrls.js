@@ -11,21 +11,15 @@ const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
   const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(value, name, "valuevaluevalue");
+    
 
     const updatedRows = [...rows];
-    console.log(
-      updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio,
-      "updatedRowsupdatedRows"
-    );
+    
     if (name === "SubAgendaUrlRadioField") {
       updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio = value;
-      console.log(
-        updatedRows[index].subAgenda[subIndex].subAgendaUrlFieldRadio,
-        "updatedRowsupdatedRows"
-      );
+      
     }
-    console.log(updatedRows, "SubAgendaUrlRadioField");
+    
     setRows(updatedRows);
   };
   return (

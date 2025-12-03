@@ -25,7 +25,7 @@ import {
   maxFileSize,
 } from "../../../../commen/functions/utils";
 const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
-  console.log(committeeStatus, "committeeStatus");
+  
   const { Dragger } = Upload;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -163,11 +163,11 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
             committeeMembers: committeedetails.committeMembers,
           });
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
     return () => {};
   }, [getCommitteeByCommitteeID]);

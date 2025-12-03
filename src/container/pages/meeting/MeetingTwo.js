@@ -430,14 +430,14 @@ const NewMeeting = () => {
       try {
         const { meetingID, fileID } = meetingVideoRecording;
 
-        console.log(meetingVideoRecording, "meetingIDmeetingID");
+        
         setRow((prevRows) => {
           return prevRows.map((meetingRecord) => {
             if (
               Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
               meetingRecord?.isPrimaryOrganizer === true
             ) {
-              console.log(meetingRecord, "meetingIDmeetingID");
+              
 
               return {
                 ...meetingRecord,
@@ -449,11 +449,11 @@ const NewMeeting = () => {
         });
         dispatch(meetingVideoRecording(null));
 
-        console.log(rows, "meetingRecords");
+        
       } catch (error) {}
     }
   }, [meetingVideoRecording]);
-  console.log(rows, "meetingRecords");
+  
 
   useEffect(() => {
     try {
@@ -466,7 +466,7 @@ const NewMeeting = () => {
               t
             )
           );
-          console.log(getResponse, "viewFol_action");
+          
           if (
             getResponse.isExecuted === true &&
             getResponse.responseCode === 1
@@ -512,7 +512,7 @@ const NewMeeting = () => {
         action();
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [reviewSubmittedMinutesLink]);
 
@@ -526,7 +526,7 @@ const NewMeeting = () => {
             t
           )
         );
-        console.log(getResponse, "viewFol_action");
+        
 
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           const {
@@ -680,11 +680,8 @@ const NewMeeting = () => {
         const formattedCurrentDate = `${currentDate.getFullYear()}${String(
           currentDate.getMonth() + 1
         ).padStart(2, "0")}${String(currentDate.getDate()).padStart(2, "0")}`;
-        console.log(
-          StoredNotificationClickProposedMeetingDate,
-          "storedDatestoredDatestoredDate"
-        );
-        console.log(formattedCurrentDate, "storedDatestoredDatestoredDate");
+        
+        
         // Compare stored date with the current date
         if (
           StoredNotificationClickProposedMeetingDate <= formattedCurrentDate
@@ -708,7 +705,7 @@ const NewMeeting = () => {
       } else if (
         JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true
       ) {
-        console.log("ComingIN");
+        
         //Notification if the Organizer clicks on the proposed meeting date submission Notification
         let searchData = {
           Date: "",
@@ -738,7 +735,7 @@ const NewMeeting = () => {
         const getResponse = await dispatch(
           validateEncryptedStringViewMeetingLinkApi(getURL, navigate, t)
         );
-        console.log(getResponse, "viewFol_action");
+        
         if (getResponse.isExecuted === true && getResponse.responseCode === 1) {
           const {
             attendeeId,
@@ -779,7 +776,7 @@ const NewMeeting = () => {
         localStorage.removeItem("viewPublishMinutesLink");
       } else {
         if (meetingpageRow !== null && meetingPageCurrent !== null) {
-          console.log(meetingpageRow, "QuicMeetingOperations");
+          
           let searchData = {
             Date: "",
             Title: "",
@@ -805,7 +802,7 @@ const NewMeeting = () => {
           if (
             JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
           ) {
-            console.log("QuicMeetingOperations");
+            
             let NotificationClickQuickMeetingID = localStorage.getItem(
               "NotificationQuickMeetingID"
             );
@@ -819,13 +816,13 @@ const NewMeeting = () => {
             JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) ===
             true
           ) {
-            console.log("AdvanceOperations");
+            
             setViewAdvanceMeetingModal(true);
             dispatch(viewAdvanceMeetingPublishPageFlag(true));
             dispatch(scheduleMeetingPageFlag(false));
           }
         } else {
-          console.log("QuicMeetingOperations");
+          
           let searchData = {
             Date: "",
             Title: "",
@@ -856,7 +853,7 @@ const NewMeeting = () => {
         if (
           JSON.parse(localStorage.getItem("QuicMeetingOperations")) === true
         ) {
-          console.log("QuicMeetingOperations");
+          
           let NotificationClickQuickMeetingID = localStorage.getItem(
             "NotificationQuickMeetingID"
           );
@@ -869,7 +866,7 @@ const NewMeeting = () => {
         if (
           JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true
         ) {
-          console.log("AdvanceOperations");
+          
           setViewAdvanceMeetingModal(true);
           dispatch(viewAdvanceMeetingPublishPageFlag(true));
           dispatch(scheduleMeetingPageFlag(false));
@@ -882,7 +879,7 @@ const NewMeeting = () => {
         await dispatch(GetAllMeetingTypesNewFunction(navigate, t, false));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -1307,7 +1304,7 @@ const NewMeeting = () => {
       try {
         validateStringEmailApi(meetingCanc, navigate, t, 4, dispatch)
           .then(async (result) => {
-            console.log(result, "resultresultresult");
+            
             // Handle the result here
             if (result.isQuickMeeting === true) {
               let requestDataForMeetingDetails = {
@@ -1342,7 +1339,7 @@ const NewMeeting = () => {
       // Meeting Update Route 4
       validateStringEmailApi(MeetinUpd, navigate, t, 4, dispatch)
         .then(async (result) => {
-          console.log(result, "resultresultresult");
+          
           // Handle the result here
           if (result.isQuickMeeting === true) {
             let requestDataForMeetingDetails = {
@@ -1510,7 +1507,7 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchFeilds({
       ...searchFields,
@@ -1534,7 +1531,7 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
 
     setSearchMeeting(false);
@@ -1613,7 +1610,7 @@ const NewMeeting = () => {
   };
 
   const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
+    
     if (data.talkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -1706,7 +1703,7 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
@@ -1742,7 +1739,7 @@ const NewMeeting = () => {
     ) {
       await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
     }
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.setItem("MeetingCurrentView", 2);
     localStorage.setItem("MeetingPageRows", 30);
@@ -1765,7 +1762,7 @@ const NewMeeting = () => {
     isQuickMeeting,
     status
   ) => {
-    console.log("handleViewMeeting", videoCallURL, id, isQuickMeeting, status);
+    
     try {
       if (status === "10" || status === 10) {
         if (isQuickMeeting) {
@@ -1852,7 +1849,7 @@ const NewMeeting = () => {
         }
       }
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
     setSearchFeilds({
       ...searchFields,
@@ -1970,7 +1967,7 @@ const NewMeeting = () => {
   };
 
   const downloadVideoCall = (data) => {
-    console.log("downloadVideoCalldownloadVideoCall");
+    
     let utcDateTime = resolutionResultTable(
       data.dateOfMeeting + data.meetingStartTime
     );
@@ -2125,7 +2122,7 @@ const NewMeeting = () => {
   );
 
   const handleClickDownloadBtn = (record) => {
-    console.log("recordrecordrecord", record);
+    
     if (record.isVideoCall && record.isRecordingAvailable) {
       setIsDownloadAvailable(true);
     }
@@ -2164,7 +2161,7 @@ const NewMeeting = () => {
       align: currentLanguage === "en" ? "left" : "right",
       width: "115px",
       render: (text, record) => {
-        console.log(text, record, "ashashkdgahsgashdgh");
+        
         // if (record.isQuickMeeting) {
         //   dispatch(viewMeetingFlag(true));
         // }
@@ -2349,7 +2346,7 @@ const NewMeeting = () => {
           (data) => meetingType === Number(data.value)
         );
 
-        console.log(matchedFilter, "matchedFiltermatchedFilter");
+        
         return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : t(matchedFilter)
@@ -2424,7 +2421,7 @@ const NewMeeting = () => {
       width: "80px",
       align: "center",
       render: (text, record) => {
-        console.log("end meeting chaek", record);
+        
         const startMeetingRequest = {
           VideoCallURL: record.videoCallURL,
           MeetingID: Number(record.pK_MDID),
@@ -2524,11 +2521,7 @@ const NewMeeting = () => {
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting"]}
                     onClick={() => {
-                      console.log(
-                        "end meeting chaek",
-                        startMeetingRequest,
-                        record
-                      );
+                      
                       dispatch(
                         UpdateOrganizersMeeting(
                           record.isQuickMeeting,
@@ -2726,7 +2719,7 @@ const NewMeeting = () => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log(record, "checkIsPrimaryOrganizercheckIsPrimaryOrganizer");
+        
         const isQuickMeeting = record.isQuickMeeting;
         let checkIsPrimaryOrganizer = record.isPrimaryOrganizer;
         if (
@@ -2902,7 +2895,7 @@ const NewMeeting = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSearchText("");
     setentereventIcon(false);
@@ -2916,10 +2909,7 @@ const NewMeeting = () => {
 
   // Enter Press click handler on input field
   const handleKeyPress = async (event) => {
-    console.log(
-      meetingPageCurrent,
-      "meetingPageCurrentmeetingPageCurrentmeetingPageCurrent"
-    );
+    
     if (event.key === "Enter" && searchText !== "") {
       let searchData = {
         Date: "",
@@ -2931,7 +2921,7 @@ const NewMeeting = () => {
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
         PublishedMeetings: Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
+      
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
       setentereventIcon(true);
     }
@@ -2943,7 +2933,7 @@ const NewMeeting = () => {
       MeetingID: Number(dashboardEventData.pK_MDID),
       StatusID: 10,
     };
-    console.log("startMeetingRequest", dashboardEventData);
+    
     await dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -2990,7 +2980,7 @@ const NewMeeting = () => {
       CalendarDashboardEventData !== null &&
       CalendarDashboardEventData !== undefined
     ) {
-      console.log("specific");
+      
       try {
         let dashboardEventData = CalendarDashboardEventData;
 
@@ -3004,7 +2994,7 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 2
         ) {
-          console.log("startMeetingRequest", dashboardEventData);
+          
           handleViewMeeting(
             dashboardEventData.videoCallURL,
             dashboardEventData.pK_MDID,
@@ -3029,7 +3019,7 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 4
         ) {
-          console.log("startMeetingRequest", dashboardEventData);
+          
           handleViewMeeting(
             dashboardEventData.videoCallURL,
             dashboardEventData.pK_MDID,
@@ -3053,7 +3043,7 @@ const NewMeeting = () => {
             dashboardEventData.statusID === 10) &&
           dashboardEventData.participantRoleID === 1
         ) {
-          console.log("startMeetingRequest", dashboardEventData);
+          
           setEditorRole({
             status: dashboardEventData.statusID,
             role: "Organizer",
@@ -3077,7 +3067,7 @@ const NewMeeting = () => {
           dashboardEventData.statusID === 1
         ) {
           if (dashboardEventData.IsViewOpenOnly) {
-            console.log("specific");
+            
             if (dashboardEventData.isQuickMeeting === true) {
               let Data = { MeetingID: Number(dashboardEventData.pK_MDID) };
               dispatch(
@@ -3092,16 +3082,16 @@ const NewMeeting = () => {
                 )
               );
             } else {
-              console.log("specific");
+              
               setAdvanceMeetingModalID(Number(dashboardEventData.pK_MDID));
               setViewAdvanceMeetingModal(true);
             }
             return;
           } else {
-            console.log("startMeetingRequest", dashboardEventData);
+            
             if (dashboardEventData.isQuickMeeting === true) {
-              console.log("startMeetingRequest", dashboardEventData);
-              console.log("end meeting chaek");
+              
+              
               dispatch(
                 UpdateOrganizersMeeting(
                   true,
@@ -3118,7 +3108,7 @@ const NewMeeting = () => {
                 )
               );
             } else if (dashboardEventData.isQuickMeeting === false) {
-              console.log("end meeting chaek", dashboardEventData);
+              
               // ================== //
               // dispatch(
               //   UpdateOrganizersMeeting(
@@ -3148,7 +3138,7 @@ const NewMeeting = () => {
               //   isPrimaryOrganizer: false,
               // });
               // ================== //
-              console.log("startMeetingRequest", dashboardEventData);
+              
 
               callStartMeetingFromEvents(dashboardEventData);
             }
@@ -3156,7 +3146,7 @@ const NewMeeting = () => {
         }
         dispatch(dashboardCalendarEvent(null));
       } catch (error) {
-        console.log("dashboardCalendarEvent", error);
+        
         dispatch(dashboardCalendarEvent(null));
       }
     }
@@ -3180,7 +3170,7 @@ const NewMeeting = () => {
               return agenda.objMeetingAgenda.canView === true;
             });
           });
-          console.log("handleViewMeeting", copyMeetingData);
+          
           setRow(copyMeetingData);
           setDublicatedrows(copyMeetingData);
         }
@@ -3199,10 +3189,10 @@ const NewMeeting = () => {
           (meetingData, index) =>
             Number(currentMeetingIDCalendar) === Number(meetingData.pK_MDID)
         );
-        console.log(findMeeting, "findMeetingfindMeeting");
+        
       }
     } catch (error) {
-      console.log(error, "findMeetingfindMeeting");
+      
     }
   }, [calendarMainMeeting]);
 
@@ -3250,7 +3240,7 @@ const NewMeeting = () => {
         });
         dispatch(meetingParticipantRemoved(null));
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [mqttMeetingPrAdded, mqtMeetingPrRemoved]);
@@ -3306,7 +3296,7 @@ const NewMeeting = () => {
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
@@ -3331,7 +3321,7 @@ const NewMeeting = () => {
             setRow([newMeetingData, ...rows]);
           }
         } catch (error) {
-          console.log(error, "Meeting Created and Published");
+          
         }
       };
 
@@ -3347,7 +3337,7 @@ const NewMeeting = () => {
             .toLowerCase()
             .includes("MEETING_STATUS_EDITED_STARTED".toLowerCase())
         ) {
-          console.log("meetingDetails", MeetingStatusSocket);
+          
           let statusCheck = 0;
           let meetingIDCheck = 0;
 
@@ -3355,15 +3345,13 @@ const NewMeeting = () => {
             statusCheck = MeetingStatusSocket.meeting.status;
             meetingIDCheck = MeetingStatusSocket.meeting.pK_MDID;
             // If the 'meeting' key exists, do something
-            console.log("Meeting key exists:", MeetingStatusSocket);
+            
             // Your code for handling when 'meeting' key is present
           } else {
             // If the 'meeting' key does not exist, do something else
             statusCheck = MeetingStatusSocket.meetingStatusID;
             meetingIDCheck = MeetingStatusSocket.meetingID;
-            console.log(
-              "Meeting key does not exist. Handling alternative case."
-            );
+            
             // Your
           }
           let meetingStatusID = statusCheck;
@@ -3388,10 +3376,7 @@ const NewMeeting = () => {
               );
             });
           } catch (error) {
-            console.log(
-              error,
-              "meetingIDmeetingIDmeetingIDmeetingIDmeetingIDmeetingID"
-            );
+            
           }
         } else if (
           MeetingStatusSocket.message
@@ -3422,7 +3407,7 @@ const NewMeeting = () => {
           } catch {}
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [MeetingStatusSocket]);
@@ -3479,7 +3464,7 @@ const NewMeeting = () => {
         }
       }
     } catch (eror) {
-      console.log(eror);
+      
     }
   }, [MeetingStatusEnded, CurrentMeetingURL]);
 
@@ -3510,7 +3495,7 @@ const NewMeeting = () => {
         };
         updateMeeting();
       } catch (error) {
-        console.log(error, "error");
+        
       }
     }
   }, [allMeetingsSocketData]);
@@ -3547,7 +3532,7 @@ const NewMeeting = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [GroupMeetingMQTT]);
 
@@ -3565,7 +3550,7 @@ const NewMeeting = () => {
       } else {
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [ResponseMessages]);
 
@@ -3587,14 +3572,14 @@ const NewMeeting = () => {
         dispatch(clearResponseNewMeetingReducerMessage(""));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [ResponseMessage]);
 
   useEffect(() => {
     try {
       if (dashboardEventData !== null && dashboardEventData !== undefined) {
-        console.log(dashboardEventData, "dashboardEventDatadashboardEventData");
+        
         let startMeetingRequest = {
           VideoCallURL: dashboardEventData.videoCallURL,
           MeetingID: Number(dashboardEventData.pK_MDID),
@@ -3674,7 +3659,7 @@ const NewMeeting = () => {
               // setIsOrganisers(isOrganiser);
             } else if (meeting.status === "1" || meeting.status === 1) {
               if (meeting.isQuickMeeting === true) {
-                console.log("end meeting chaek");
+                
                 dispatch(
                   UpdateOrganizersMeeting(
                     true,
@@ -3690,9 +3675,9 @@ const NewMeeting = () => {
                     setEditFlag
                   )
                 );
-                console.log("end meeting chaek");
+                
               } else if (meeting.isQuickMeeting === false) {
-                console.log("end meeting chaek");
+                
                 dispatch(
                   UpdateOrganizersMeeting(
                     false,
@@ -3729,7 +3714,7 @@ const NewMeeting = () => {
         setDashboardEventData(null);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [dashboardEventData]);
 
@@ -3770,7 +3755,7 @@ const NewMeeting = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      
     }
 
     dispatch(meetingNotConductedMQTT(null));
@@ -3780,13 +3765,13 @@ const NewMeeting = () => {
     if (meetingReminderNotification !== null) {
       try {
         const meetingData = meetingReminderNotification.meetingDetails;
-        console.log(meetingData, "meetingDetailsmeetingDetails");
+        
         setRow((rowsData) => {
           // Find the index of the row that matches the condition
           const rowIndex = rowsData.findIndex(
             (rowData) => rowData.pK_MDID === meetingData.pK_MDID
           );
-          console.log(rowIndex, "rowIndexrowIndex");
+          
           // If a matching row is found, create a new array with the updated row
           if (rowIndex !== -1) {
             const updatedRowsData = [...rowsData];
@@ -3820,7 +3805,7 @@ const NewMeeting = () => {
           return rowsData;
         });
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [meetingReminderNotification]);
@@ -3829,7 +3814,7 @@ const NewMeeting = () => {
     try {
       if (globalFunctionWebnotificationFlag) {
         if (webNotifactionDataRoutecheckFlag) {
-          console.log("webNotifactionDataRoutecheckFlag");
+          
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
           let currentURL = window.location.href;
           WebNotificationExportRoutFunc(
@@ -3854,7 +3839,7 @@ const NewMeeting = () => {
           dispatch(webnotificationGlobalFlag(false));
         }
       }
-      console.log("webNotifactionDataRoutecheckFlag");
+      
     } catch (error) {}
 
     return () => {};

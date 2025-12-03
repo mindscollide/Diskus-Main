@@ -141,7 +141,7 @@ const MeetingMaterial = ({
   };
   //  handle Click download a file
   const handleClickDownload = (record) => {
-    console.log("editorRoleeditorRole", editorRole, record);
+    
     if (
       (editorRole.role.toLowerCase() === "Organizer".toLowerCase() ||
         editorRole.role.toLowerCase() === "Agenda Contributor".toLowerCase()) &&
@@ -328,7 +328,7 @@ const MeetingMaterial = ({
     setIsPublishedState(isPublishedGlobal);
   }, [meetingMaterialData, isPublishedGlobal]);
 
-  console.log("isPublishedGlobalisPublishedGlobal", isPublishedGlobal);
+  
 
   const handleCancelButton = async () => {
     let searchData = {
@@ -341,7 +341,7 @@ const MeetingMaterial = ({
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setSceduleMeeting(false);
   };
@@ -364,7 +364,7 @@ const MeetingMaterial = ({
   };
   const handlePublish = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateOrganizersMeeting(
         false,

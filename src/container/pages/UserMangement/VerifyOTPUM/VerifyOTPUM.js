@@ -53,7 +53,7 @@ const VerifyOTPUM = () => {
 
 
   const verifyOTPClickHandler = (e) => {
-    console.log("hello");
+    
     e.preventDefault();
 
     if (verifyOTP.length !== 6) {

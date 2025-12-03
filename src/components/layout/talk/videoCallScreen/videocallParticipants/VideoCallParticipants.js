@@ -21,12 +21,12 @@
 //   const [meettingID, setMeetingID] = useState(0);
 //   const navigate = useNavigate();
 //   const { t } = useTranslation();
-//   console.log("Iam Video Call ");
+//   
 //   const [participantsList, setPartcipantList] = useState([]);
-//   console.log(participantsList, "participantsListData");
+//   
 //   let roomID = localStorage.getItem("newRoomId");
 //   const { editorRole } = useContext(MeetingContext);
-//   console.log(editorRole, "editorRoleeditorRole");
+//   
 
 //   const dispatch = useDispatch();
 //   const [searchValue, setSearchValue] = useState("");
@@ -44,7 +44,7 @@
 //       try {
 //         setPartcipantList(videoFeatureReducer.participantWaitingList);
 //       } catch (error) {
-//         console.log(error, "errorerror");
+//         
 //       }
 //     } else {
 //       setPartcipantList([]);
@@ -57,7 +57,7 @@
 //       RoomId: String(roomID),
 //       IsRequestAccepted: flag === 1 ? true : false,
 //       AttendeeResponseList: participantsList.map((participantData, index) => {
-//         console.log(participantData, "mahdahahshahs");
+//         
 //         return {
 //           IsGuest: participantData.isGuest,
 //           UID: participantData.guid,
@@ -71,7 +71,7 @@
 //     );
 //   };
 //   const handleClickAcceptAndReject = (participantInfo, flag) => {
-//     console.log(participantInfo, "participantInfo");
+//     
 //     let Data = {
 //       MeetingId: participantInfo.meetingID,
 //       RoomId: String(roomID),
@@ -88,10 +88,7 @@
 //       admitRejectAttendeeMainApi(Data, navigate, t, false, participantsList)
 //     );
 //   };
-//   console.log(
-//     videoFeatureReducer,
-//     "videoFeatureReducer.participantWaitingListvideoFeatureReducer.participantWaitingList"
-//   );
+//   
 //   return (
 //     <section
 //       className={
@@ -154,10 +151,7 @@
 //           >
 //             {participantsList?.length > 0 &&
 //               participantsList.map((data, index) => {
-//                 console.log(
-//                   data,
-//                   "participantsListparticipantsListparticipantsList"
-//                 );
+//                 
 //                 return (
 //                   <Row className="mb-2" key={data.uid}>
 //                     <Col

@@ -133,7 +133,7 @@ const FullScreenAgendaModal = ({
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
   useEffect(() => {
-    console.log("Agenda View Full");
+    
     if (rows.length !== 0) {
       const anyCanViewTrue = rows.some((row) => row.canView);
       setEmptyStateRows(!anyCanViewTrue);
@@ -145,14 +145,14 @@ const FullScreenAgendaModal = ({
   const [initiateVideoModalOto, setInitiateVideoModalOto] = useState(false);
 
   const leaveCallHost = () => {
-    console.log("Agenda View Full");
+    
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
       IsCaller: true,
       CallTypeID: currentCallType,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -187,7 +187,7 @@ const FullScreenAgendaModal = ({
   };
 
   const leaveCallParticipant = () => {
-    console.log("Agenda View Full");
+    
     let roomID = localStorage.getItem("acceptedRoomID");
     let Data = {
       OrganizationID: currentOrganization,
@@ -195,7 +195,7 @@ const FullScreenAgendaModal = ({
       IsCaller: false,
       CallTypeID: callTypeID,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     let Data2 = {
       VideoCallURL: currentMeetingVideoURL,
@@ -253,34 +253,34 @@ const FullScreenAgendaModal = ({
   };
 
   const menuPopupAgenda = () => {
-    console.log("Agenda View Full");
+    
     setMenuAgendaFull(!menuAgendaFull);
   };
 
   const participantModal = () => {
-    console.log("Agenda View Full");
+    
     setParticipantInfoView(!participantInfoView);
   };
 
   const printModal = () => {
-    console.log("Agenda View Full");
+    
     dispatch(printAgenda(true));
     setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const exportModal = () => {
-    console.log("Agenda View Full");
+    
     dispatch(exportAgenda(true));
     setAgendaSelectOptionView(!agendaSelectOptionView);
   };
 
   const shareEmailModal = () => {
-    console.log("Agenda View Full");
+    
     setShareEmailView(!shareEmailView);
   };
 
   const groupChatInitiation = (talkGroupID) => {
-    console.log("Agenda View Full");
+    
     if (
       talkGroupID !== 0 &&
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
@@ -333,14 +333,14 @@ const FullScreenAgendaModal = ({
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
+        
         leaveMeeting(true);
       }
     } catch {}
   }, [leaveMeetingOnLogoutResponse]);
 
   const leaveMeeting = async (flag) => {
-    console.log("Agenda View Full");
+    
     let leaveMeetingData = {
       FK_MDID: Number(currentMeeting),
       DateTime: getCurrentDateTimeUTC(),
@@ -357,16 +357,16 @@ const FullScreenAgendaModal = ({
         setViewAdvanceMeetingModal
       )
     );
-    console.log("mqtt mqmqmqmqmqmq", flag);
+    
     if (flag) {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       await dispatch(leaveMeetingOnlogout(false));
       dispatch(userLogOutApiFunc(navigate, t));
     }
   };
 
   const handleOutsideClick = (event) => {
-    console.log("Agenda View Full");
+    
     event.preventDefault();
     if (
       closeMenuAgenda.current &&
@@ -378,7 +378,7 @@ const FullScreenAgendaModal = ({
   };
 
   useEffect(() => {
-    console.log("Agenda View Full");
+    
     document.addEventListener("click", handleOutsideClick);
     return () => {
       document.removeEventListener("click", handleOutsideClick);
@@ -386,7 +386,7 @@ const FullScreenAgendaModal = ({
   }, [menuAgendaFull]);
 
   const onClickVideoIconOpenVideo = () => {
-    console.log("Agenda View Full");
+    
     let isMeetingVideoHostCheck = JSON.parse(
       localStorage.getItem("isMeetingVideoHostCheck")
     );
@@ -399,7 +399,7 @@ const FullScreenAgendaModal = ({
           ? 10
           : 2,
     };
-    console.log(meetingVideoData, "meetingVideoData");
+    
 
     if (meetingVideoData.roleID === 2) {
       dispatch(maxParticipantVideoCallPanel(true));

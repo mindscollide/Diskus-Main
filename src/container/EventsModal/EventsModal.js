@@ -41,7 +41,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
 
   const meetingDashboardCalendarEvent = (data) => {
-    console.log("startMeetingRequest", data);
+    
     dispatch(dashboardCalendarEvent(data));
     localStorage.setItem("meetingTitle", data.title);
     navigate("/Diskus/Meeting");
@@ -66,7 +66,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
       }
     }
   }, [settingReducer?.UserProfileData]);
-  console.log("participantRoleID", events);
+  
   return (
     <Modal
       show={eventModal}
@@ -84,7 +84,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
             <Col sm={12} lg={12} md={12} className={styles["eventsBox"]}>
               {events.length > 0 &&
                 events.map((eventData, index) => {
-                  console.log("eventDataeventData", eventData);
+                  
 
                   let meetingDateTime =
                     eventData.eventDate + eventData.startTime;

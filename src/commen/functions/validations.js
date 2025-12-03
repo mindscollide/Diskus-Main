@@ -9,10 +9,9 @@ export const validationEmail = (value) => {
   var mailformat = /^[a-zA-Z0-9._%+-]{1,64}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (mailformat.test(value)) {
-    console.log(mailformat.test(value), mailformat, "mailformatmailformat");
+  
     return true;
   } else {
-    console.log(mailformat.test(value), mailformat, "mailformatmailformat");
 
     return false;
   }

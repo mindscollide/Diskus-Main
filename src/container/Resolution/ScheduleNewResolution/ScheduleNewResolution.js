@@ -444,7 +444,7 @@ const ScheduleNewResolution = () => {
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setVoters(voters_Data);
@@ -514,7 +514,7 @@ const ScheduleNewResolution = () => {
                   "error",
                   setOpen
                 );
-                console.log("user Already Non Voter List");
+                
               }
             } else {
               showMessage(t("This-voter-already-exist"), "error", setOpen);
@@ -609,7 +609,7 @@ const ScheduleNewResolution = () => {
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setNonVoters(nonVotersData);

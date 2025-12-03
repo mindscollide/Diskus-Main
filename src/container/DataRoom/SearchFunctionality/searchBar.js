@@ -35,7 +35,7 @@ const SearchBarComponent = ({
   setSearchResultFields,
   searchResultsFields,
 }) => {
-  console.log("searchDataFieldssearchDataFields");
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -266,7 +266,7 @@ const SearchBarComponent = ({
 
   // this for document selection on search dropdown
   const handleChangeDocuments = (documentID) => {
-    console.log(documentID, "handleChangeDocuments");
+    
     if (documentID === 1) {
       setSearchDataFields({
         ...searchDataFields,
@@ -736,13 +736,13 @@ const SearchBarComponent = ({
       dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     }
     setSearchTabOpen(true);
-    console.log(OptionsDocument, "handleChangeDocuments");
+    
 
     // Replace Promise with simple find
     const selectedOption = OptionsDocument(t).find(
       (option) => option.value === documentID
     );
-    console.log(selectedOption, "handleChangeDocuments");
+    
 
     if (selectedOption) {
       setSearchResultFields({
@@ -1171,14 +1171,8 @@ const SearchBarComponent = ({
   };
 
   // this is search button handler of serach modal
-  console.log(
-    searchDataFields.LastModifiedStartDate,
-    "searchDocumentsAndFoldersApi"
-  );
-  console.log(
-    searchDataFields.LastModifiedEndDate,
-    "searchDocumentsAndFoldersApi"
-  );
+  
+  
   const handleSearch = async () => {
     let data = {
       UserID: parseInt(userID),
@@ -1209,8 +1203,8 @@ const SearchBarComponent = ({
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
-    console.log(data, "searchDocumentsAndFoldersApi");
-    console.log("searchDocumentsAndFoldersApi");
+    
+    
     await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     setSelectedStartDate(null);
     setSelectedEndDate(null);

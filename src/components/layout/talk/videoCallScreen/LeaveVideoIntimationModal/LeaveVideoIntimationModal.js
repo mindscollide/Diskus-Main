@@ -158,7 +158,7 @@ const LeaveVideoIntimationModal = () => {
   const globallyScreenShare = useSelector(
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
-  console.log(LeaveVideoIntiminationNotificationClickData, "first");
+  
 
   //Local States
 
@@ -170,7 +170,7 @@ const LeaveVideoIntimationModal = () => {
   };
 
   const functionForMeetingVideoScenario = async () => {
-    console.log("Check Route scenario's");
+    
 
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -189,12 +189,12 @@ const LeaveVideoIntimationModal = () => {
           );
           let participantUID = localStorage.getItem("participantUID");
 
-          console.log("busyCall");
+          
 
           //For Participant Stop Screen Share API
           if (isZoomEnabled) {
             if (isSharedSceenEnable && !globallyScreenShare) {
-              console.log("busyCall");
+              
               let data = {
                 RoomID: participantRoomId,
                 ShareScreen: false,
@@ -225,10 +225,10 @@ const LeaveVideoIntimationModal = () => {
       FK_MDID: currentMeeting,
       DateTime: getCurrentDateTimeUTC(),
     };
-    console.log("Check Route scenario's");
-    console.log(location, "Check Route scenario's");
+    
+    
     try {
-      console.log("Check Route scenario's");
+      
       await dispatch(
         LeaveCurrentMeetingOtherMenus(
           navigate,
@@ -254,15 +254,15 @@ const LeaveVideoIntimationModal = () => {
       );
       await dispatch(currentMeetingStatus(0));
     } catch (error) {
-      console.log(error, "error");
+      
     }
   };
 
   //handle Yes button
   const handleYesButtonLeaveVideoMeeting = async () => {
-    console.log("Check Route scenario's");
+    
     try {
-      console.log("Check Route scenario's");
+      
 
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       let typeOfMeeting = localStorage.getItem("typeOfMeeting");
@@ -290,7 +290,7 @@ const LeaveVideoIntimationModal = () => {
         dispatch(participantWaitingListBox(false));
         dispatch(toggleParticipantsVisibility(false));
         // if (presenterMeetingId === currentMeeting) {
-        console.log("Check Stop");
+        
         if (presenterViewHostFlag) {
           if (presenterStartedFlag) {
             let data = {
@@ -298,7 +298,7 @@ const LeaveVideoIntimationModal = () => {
               RoomID: RoomID,
             };
             sessionStorage.setItem("StopPresenterViewAwait", true);
-            console.log(data, "presenterViewJoinFlag");
+            
             await dispatch(stopPresenterViewMainApiTest(navigate, t, data, 0));
           } else {
             let data = {
@@ -335,56 +335,56 @@ const LeaveVideoIntimationModal = () => {
         dispatch(LeaveInitmationMessegeVideoMeetAction(false));
       } else if (NavigationLocation === "Meeting") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/Meeting");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "todolist") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/todolist");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "calendar") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/calendar");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "Notes") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/Notes");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "dataroom") {
-        console.log("Check Route scenario's");
+        
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/dataroom");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "groups") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/groups");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "committee") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/committee");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "resolution") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/resolution");
         }
         functionForMeetingVideoScenario();
       } else if (NavigationLocation === "polling") {
         if (isMeetingVideo) {
-          console.log("Check Route scenario's");
+          
           navigate("/Diskus/polling");
         }
         functionForMeetingVideoScenario();
@@ -400,7 +400,7 @@ const LeaveVideoIntimationModal = () => {
         functionForMeetingVideoScenario();
       }
     } catch (error) {
-      console.log(error, "NavigationError");
+      
     }
   };
 

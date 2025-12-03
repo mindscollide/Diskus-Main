@@ -50,7 +50,7 @@ const ApprovalSend = () => {
       state.SignatureWorkFlowReducer.workflowSignaturedocumentStatusChange
   );
 
-  console.log({ workflowsignaturedocumentbyme }, "globalStateglobalState");
+  
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const ApprovalSend = () => {
     title: 0,
     statusID: [],
   });
-  console.log(sortingData, "sortingDatasortingData");
+  
   const [reviewAndSignatureStatus, setReviewAndSignatureStatus] = useState([]);
   const [defaultreviewAndSignatureStatus, setDefaultReviewAndSignatureStatus] =
     useState([]);
@@ -221,7 +221,7 @@ const ApprovalSend = () => {
         },
       }),
       render: (text, record) => {
-        console.log(record, "texttexttext");
+        
         return (
           <span
             className="d-flex gap-2 align-items-center cursor-pointer"
@@ -374,7 +374,7 @@ const ApprovalSend = () => {
   ];
 
   const handleClickSignatoriesList = (record) => {
-    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
@@ -454,7 +454,7 @@ const ApprovalSend = () => {
           }
         }
       } catch (error) {
-        console.log("Something Went Wrong", error);
+        
         setApprovalsData([]);
         setTotalRecords(0);
         setPageNo(1);
@@ -496,7 +496,7 @@ const ApprovalSend = () => {
           setDefaultReviewAndSignatureStatus(defaultStatus);
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [SignatureWorkFlowReducer.getAllPendingApprovalStatuses]);
@@ -570,18 +570,9 @@ const ApprovalSend = () => {
       spin
     />
   );
-  console.log(
-    rowsDataLength <= totalRecords,
-    totalRecords,
-    rowsDataLength,
-    "handleScrollhandleScroll"
-  );
+  
   useTableScrollBottom(async (hasReachedBottom) => {
-    console.log(
-      hasReachedBottom,
-      approvalsData.length > 0 && rowsDataLength <= totalRecords,
-      "hasReachedBottom"
-    );
+    
 
     if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
       setIsScrolling(true);

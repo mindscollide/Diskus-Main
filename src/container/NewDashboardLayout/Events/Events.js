@@ -69,10 +69,7 @@ const Events = () => {
     try {
       if (UpcomingEventsDataReducerData?.upcomingEvents.length > 0) {
         setIsShowMore(UpcomingEventsDataReducerData?.isMoreAvailable);
-        console.log(
-          UpcomingEventsDataReducerData,
-          "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
-        );
+        
         // Create a new array with updated objects without mutating the original state
         const updatedUpcomingEvents =
           UpcomingEventsDataReducerData.upcomingEvents.map((event) => {
@@ -88,14 +85,11 @@ const Events = () => {
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
-        console.log("upComingEvents", upComingEvents);
+        
         setUpComingEvents([]);
       }
     } catch (error) {
-      console.log(
-        error,
-        "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
-      );
+      
 
       // Log any errors for debugging
     }
@@ -118,8 +112,8 @@ const Events = () => {
   useEffect(() => {
     try {
       if (MQTTUpcomingEvents) {
-        console.log("upComingEventsmqtt", upComingEvents);
-        console.log("upComingEventsmqtt", MQTTUpcomingEvents);
+        
+        
 
         // Ensure no duplicates by filtering out any existing record with the same pK_MDID
         let filteredEvents = upComingEvents.filter(
@@ -159,7 +153,7 @@ const Events = () => {
 
         // Update state with the final, filtered, sorted events
         setUpComingEvents(filteredEvents);
-        console.log("Final updated events:", filteredEvents);
+        
       }
     } catch (error) {
       console.error("Error processing MQTT data:", error);
@@ -217,10 +211,7 @@ const Events = () => {
             remainsData?.configKey?.toLowerCase() ===
             "Join_Meeting_Before_Minutes".toLowerCase()
         );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
-        );
+        
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
         }
@@ -230,7 +221,7 @@ const Events = () => {
 
   const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
-    console.log("startMeetingRequest", data);
+    
     const dashboardData = {
       isPrimaryOrganizer: data.isPrimaryOrganizer,
       isMinutePublished: data.meetingDetails.isMinutePublished,
@@ -257,7 +248,7 @@ const Events = () => {
       talkGroupID: data.talkGroupID,
       IsViewOpenOnly: val === 1 ? true : false,
     };
-    console.log("startMeetingRequest", dashboardData);
+    
     setEditorRole({
       status: String(data.meetingDetails.statusID),
       role:
@@ -273,7 +264,7 @@ const Events = () => {
     navigate("/Diskus/Meeting");
   };
   const upcomingEventsHandler = (upComingEvents) => {
-    console.log("upComingEvents", upComingEvents);
+    
 
     // Separate today's meetings and upcoming meetings
     const todaysMeetings = [];
@@ -297,7 +288,7 @@ const Events = () => {
         }
       });
     } catch (error) {
-      console.log(error);
+      
     }
 
     // Render all meetings (today's first, then upcoming)
@@ -628,7 +619,7 @@ const Events = () => {
     );
   };
   // const upcomingEventsHandler = (upComingEvents) => {
-  //   console.log("upComingEvents", upComingEvents);
+  //   
   //   // First find if there are any meetings happening today
   //   let todayMeeting;
   //   try {
@@ -640,9 +631,9 @@ const Events = () => {
   //       return isSame;
   //     });
   //   } catch (error) {
-  //     console.log(error);
+  //     
   //   }
-  //   console.log(todayMeeting, "todayMeetingtodayMeeting")
+  //   
   //   let flag = false;
   //   let indexforUndeline = null;
   //   try {
@@ -656,11 +647,11 @@ const Events = () => {
   //       }
   //     });
   //   } catch (error) {
-  //     console.log(error);
+  //     
   //   }
 
   //   return upComingEvents.map((upcomingEventsData, index) => {
-  //     console.log(upcomingEventsData, "upcomingEventsData");
+  //     
 
   //     if (!upcomingEventsData?.meetingEvent) {
   //       console.warn("DataIsMissing", upcomingEventsData);
@@ -700,7 +691,7 @@ const Events = () => {
   //     let { isSame } = isSameAsToday(
   //       `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
   //     );
-  //     console.log(isSame, "isSameisSame");
+  //     
   //     return (
   //       <>
   //         {isSame ? (
@@ -982,11 +973,11 @@ const Events = () => {
 
           dispatch(mqttCurrentMeetingEnded(null));
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [MeetingStatusEnded]);
 

@@ -43,7 +43,7 @@ const UpdatedCancelSubscription = () => {
     try {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, []);
 
@@ -56,7 +56,7 @@ const UpdatedCancelSubscription = () => {
         setCancelSubscription(data.organizationSubscriptions);
       }
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 

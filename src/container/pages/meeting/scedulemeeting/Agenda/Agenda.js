@@ -102,7 +102,7 @@ const Agenda = ({
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
 
-  console.log(allSavedPresenters, "allSavedPresentersallSavedPresenters");
+  
   const [allUsersRC, setAllUsersRC] = useState([]);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
@@ -173,10 +173,7 @@ const Agenda = ({
         ...NewMeetingreducer.getMeetingusers.meetingAgendaContributors,
       ];
       if (allPresentersReducer.length > 0) {
-        console.log(
-          allPresentersReducer,
-          "allPresentersReducerallPresentersReducer"
-        );
+        
         const mappedPresenters = allPresentersReducer.map((presenter) => ({
           value: presenter.userID,
           name: presenter.userName,
@@ -231,8 +228,8 @@ const Agenda = ({
       canEdit: false,
       canView: false,
     };
-    console.log("add newMainAgenda", newMainAgenda);
-    console.log("add newMainAgenda", rows);
+    
+    
     setRows([...rows, newMainAgenda]);
   };
 
@@ -302,7 +299,7 @@ const Agenda = ({
 
     if (fileForSend.length > 0) {
       const uploadPromises = fileForSend.map(async (newData) => {
-        console.log("newDatanewData", newData);
+        
         await dispatch(
           UploadDocumentsAgendaApi(
             navigate,
@@ -314,7 +311,7 @@ const Agenda = ({
           )
         );
       });
-      console.log("uploadPromisesuploadPromises", uploadPromises);
+      
       // Wait for all promises to resolve
       await Promise.all(uploadPromises); //till here the files get upload
       await dispatch(
@@ -329,7 +326,7 @@ const Agenda = ({
     }
     // await Promise.all(
     //   fileForSend.map(async (newData) => {
-    //     console.log("newDatanewData", newData);
+    //     
     //     try {
     //       const result = await dispatch(
     //         UploadDocumentsAgendaApi(
@@ -343,10 +340,10 @@ const Agenda = ({
     //       if (result && result.success) {
     //         newfile = [...newfile, result.dummyData];
     //         // setNewFile((prevState) => [...prevState, result.dummyData]);
-    //         console.log("newfilenewfile", newfile);
-    //         console.log("newfoldernewfolder", newFolder);
+    //         
+    //         
     //       }
-    //       console.log("resultresult", result);
+    //       
     //     } catch (error) {
     //       console.error(error);
     //     }
@@ -355,7 +352,7 @@ const Agenda = ({
 
     // Convert date fields to UTC
     const convertedRows = convertDateFieldsToUTC(rows);
-    console.log("newfile", newfile);
+    
 
     // // Save files
     // await dispatch(
@@ -364,10 +361,7 @@ const Agenda = ({
 
     // Process data and update properties
     let cleanedData = removeProperties(convertedRows);
-    console.log(
-      { newFolder, cleanedData },
-      "newFoldernewFoldernewFoldernewFolder"
-    );
+    
     let mappingObject = {};
     newFolder.forEach((folder) => {
       mappingObject[folder.displayAttachmentName] = folder.pK_FileID.toString();
@@ -391,10 +385,7 @@ const Agenda = ({
         })),
       })),
     }));
-    console.log(
-      { newFolder, cleanedData, mappingObject, updatedData },
-      "newFoldernewFoldernewFoldernewFolder"
-    );
+    
     // Clear fileForSend array
     setFileForSend([]);
 
@@ -523,7 +514,7 @@ const Agenda = ({
         for (let subIndex = 0; subIndex < row.subAgenda.length; subIndex++) {
           const subAgendaItem = row.subAgenda[subIndex];
 
-          console.log(subAgendaItem, "rowrowrow");
+          
           if (subAgendaItem.subfiles.length > 10) {
             showMessage(
               t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
@@ -630,7 +621,7 @@ const Agenda = ({
         }
       }
     }
-    console.log(fileForSend, "rowrowrow");
+    
 
     if (shouldResetFileForSend) {
       setFileForSend([]);
@@ -654,9 +645,9 @@ const Agenda = ({
       if (rows.length === 1) {
         updatedRows[0].presenterID = allSavedPresenters[0]?.value;
         updatedRows[0].presenterName = allSavedPresenters[0]?.label;
-        console.log("add newMainAgenda", updatedRows);
+        
         setRows(updatedRows);
-        console.log("updated Rows ROWS ROWS");
+        
       }
     }
   }, [allSavedPresenters, allUsersRC]);
@@ -667,7 +658,7 @@ const Agenda = ({
         try {
           let newData = MeetingAgendaData.agendaList;
           let isPublishedAgenda = MeetingAgendaData.isPublished;
-          console.log(newData, isPublishedAgenda, "checkingMAinAgenda");
+          
           let generateAgendaData = newData.map((agendaItem) => {
             const { id, presenterID, userID, subAgenda, files, ...rest } =
               agendaItem;
@@ -730,11 +721,11 @@ const Agenda = ({
               files: agendaItem.files ? [...agendaItem.files] : [],
             };
           });
-          console.log("add newMainAgenda", generateAgendaData);
+          
           setRows(generateAgendaData);
           setIsPublishedState(isPublishedAgenda);
         } catch (error) {
-          console.log(error, "error");
+          
         }
       } else {
         let newData = {
@@ -759,7 +750,7 @@ const Agenda = ({
           canView: true,
           canEdit: true,
         };
-        console.log("add newMainAgenda", newData);
+        
         setRows([newData]);
       }
     }
@@ -778,8 +769,8 @@ const Agenda = ({
       let newData =
         MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData.agendaList;
 
-      console.log("add newMainAgenda", newData);
-      console.log("updated Rows ROWS ROWS", newData);
+      
+      
       setRows((prevRows) => {
         const updatedRows = newData.map((agendaItem) => {
           const {
@@ -933,11 +924,7 @@ const Agenda = ({
           } else {
             areSubAgendasEmpty = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmpty,
-            areSubAgendasEmpty
-          );
+          
           // Include only non-empty items
           return !(isAgendaEmpty && areSubAgendasEmpty);
         });
@@ -991,11 +978,7 @@ const Agenda = ({
           } else {
             areSubAgendasEmptyCR = true;
           }
-          console.log(
-            "result agenda empty non empty",
-            isAgendaEmptyCR,
-            areSubAgendasEmptyCR
-          );
+          
 
           // Include only non-empty items
           return !(isAgendaEmptyCR && areSubAgendasEmptyCR);
@@ -1005,8 +988,8 @@ const Agenda = ({
       });
     } else {
       // Your existing logic for handling other cases
-      console.log("updated Rows ROWS ROWS", rows);
-      console.log("add newMainAgenda", rows);
+      
+      
       setRows(rows);
     }
   }, [MeetingAgendaReducer.GetAgendaWithMeetingIDForImportData]);
@@ -1080,9 +1063,9 @@ const Agenda = ({
   //   }
   // }, [rows.length]);
 
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+  
 
-  console.log("Agenda Data", rows);
+  
 
   return (
     <>
@@ -1137,10 +1120,7 @@ const Agenda = ({
                             {...provided.droppableProps}>
                             {rows.length > 0
                               ? rows.map((data, index) => {
-                                  console.log(
-                                    data,
-                                    "datadatadatadata Checking"
-                                  );
+                                  
                                   return (
                                     <>
                                       <div

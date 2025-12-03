@@ -72,7 +72,7 @@ const ViewDetailsModal = ({
   });
   const [documentActivityDetails, setDocumentActivityDetails] = useState(null);
 
-  console.log({ documentDetails }, "documentDetailsdocumentDetails");
+  
 
   const handleDetialsButton = () => {
     setDetailsState(true);
@@ -269,7 +269,7 @@ const ViewDetailsModal = ({
                             {documentDetails?.sharedUsers.length > 0 &&
                               documentDetails?.sharedUsers.map(
                                 (data, index) => {
-                                  console.log(data, "datadatadata");
+                                  
                                   return (
                                     <img
                                       src={`data:image/jpeg;base64,${data.base64Img}`}
@@ -606,7 +606,7 @@ const ViewDetailsModal = ({
 
                     {documentActivityDetails?.today?.length > 0 &&
                       documentActivityDetails?.today.map((todayData, index) => {
-                        console.log(todayData, "todayDatatodayDatatodayData");
+                        
                         return (
                           <>
                             <Row className='mt-2'>

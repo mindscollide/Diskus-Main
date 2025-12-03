@@ -10,7 +10,7 @@ import "antd/dist/antd.min.css";
 export const TodoList = () => {
   function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log("totally custom!")
+      
     );
 
     return (

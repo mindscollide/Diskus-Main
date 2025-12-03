@@ -445,7 +445,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       };
     }
     case actions.REMOVE_COMMITTEE_MEMBER: {
-      console.log(action, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
+      
 
       return {
         ...state,

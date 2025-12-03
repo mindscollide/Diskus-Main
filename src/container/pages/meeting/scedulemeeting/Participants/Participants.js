@@ -110,7 +110,7 @@ const Participants = ({
   // handling save and next button
   const handleNextButton = () => {
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -208,7 +208,7 @@ const Participants = ({
       });
     });
   };
-  console.log(isEditMeeting, "isEditMeetingisEditMeeting");
+  
   const handleCancelingRow = (record) => {
     if (isEditMeeting) {
       if (rspvRows.length === 1) {

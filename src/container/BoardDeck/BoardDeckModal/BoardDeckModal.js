@@ -56,7 +56,7 @@ const BoardDeckModal = ({
       };
       dispatch(BoardDeckValidateIsMinutesPublishedAPI(navigate, t, data));
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -84,7 +84,7 @@ const BoardDeckModal = ({
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getMinutesPublishedData]);
 
@@ -188,7 +188,7 @@ const BoardDeckModal = ({
 
   const handleRadioChange = (value) => {
     setRadioValue(value);
-    console.log("valuevaluevalue", value);
+    
   };
 
   const handleCancelButton = () => {
@@ -209,7 +209,7 @@ const BoardDeckModal = ({
     setStepDownloadModal(1);
   };
 
-  console.log(boardDeckpublishedChecks, "boardDeckpublishedChecks");
+  
 
   const handleDownloadButton = () => {
     let data = {

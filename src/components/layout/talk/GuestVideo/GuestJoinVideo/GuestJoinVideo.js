@@ -43,7 +43,7 @@ const GuestJoinVideo = ({
   const setStreamStop = useSelector(
     (state) => state.GuestVideoReducer.setStreamStop
   );
-  console.log(getValidateStringData, "getValidateRoomIdgetValidateRoomId");
+  
 
   const videoRef = useRef(null);
   const audioRef = useRef(null);
@@ -63,12 +63,9 @@ const GuestJoinVideo = ({
   const [validateRoomId, setValidateRoomId] = useState("");
   const [validateHostEmail, setValidateHostEmail] = useState("");
   const [joinButton, setJoinButton] = useState(false);
-  console.log(joinButton, "joinButtonjoinButton");
+  
 
-  console.log(
-    { validateRoomId, validateHostEmail },
-    "validateRoomIdvalidateRoomId"
-  );
+  
 
   const getRejoin = sessionStorage.getItem("isRejoining") === "true";
 
@@ -78,8 +75,8 @@ const GuestJoinVideo = ({
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
-    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
-    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    
+    
     dispatch(setVoiceControleGuest(!enable));
     if (enable) {
       sessionStorage.setItem("isMicEnabled", true);
@@ -111,8 +108,8 @@ const GuestJoinVideo = ({
 
   // Toggle Video (Webcam)
   const toggleVideo = (enable) => {
-    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
-    console.log("enableVideo", !enable);
+    
+    
     sessionStorage.setItem("enableVideo", !enable);
     dispatch(setVideoCameraGuest(!enable));
 
@@ -198,10 +195,7 @@ const GuestJoinVideo = ({
   useEffect(() => {
     const savedName = sessionStorage.getItem("guestName");
     const isRejoining = sessionStorage.getItem("isRejoining") === "true";
-    console.log(
-      { savedName, isRejoining },
-      "isRejoiningisRejoiningisRejoiningF"
-    );
+    
     if (isRejoining) {
       setJoinName(savedName || ""); // Populate name from storage
       setGetReady(false); // Ensure waiting state is not active

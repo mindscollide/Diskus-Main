@@ -254,7 +254,7 @@ const getAllUserChatsFail = (response, message) => {
 
 //Get all user chats
 const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: parseInt(currentUserId),
@@ -364,7 +364,7 @@ const getOTOUserMessagesFail = (response, message) => {
 
 //Get OTO all user chats
 const GetOTOUserMessages = (navigate, chatOTOData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: parseInt(chatOTOData.UserID),
@@ -462,7 +462,7 @@ const getOTOUserUndeliveredMessagesFail = (response, message) => {
 
 //Get OTO undelivered user chats
 const GetOTOUserUndeliveredMessages = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -550,7 +550,7 @@ const getGroupMessagesFail = (response, message) => {
 
 //get Group Messages
 const GetGroupMessages = (navigate, chatGroupData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: chatGroupData.UserID,
@@ -649,7 +649,7 @@ const getBroacastMessagesFail = (response, message) => {
 
 //get Broadcast Messages
 const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: parseInt(broadcastMessagesData.UserID),
@@ -746,7 +746,7 @@ const getArchivedDataByUserIDFail = (response, message) => {
 
 //GetArchivedDataByUserID
 const GetArchivedDataByUserID = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -830,7 +830,7 @@ const getFlagMessagesFail = (response, message) => {
 
 //get flag messsages
 const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: parseInt(currentUserId),
@@ -916,7 +916,7 @@ const getFollowMessagesFail = (response, message) => {
 
 //get follow messsages
 const GetFollowMessages = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1000,7 +1000,7 @@ const getRecentTagsFail = (response, message) => {
 
 //get recent tags
 const GetRecentTags = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1084,7 +1084,7 @@ const getTagsMessagesFail = (response, message) => {
 
 //get tags messages
 const GetTagsMessages = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1170,7 +1170,7 @@ const getMessageSentReceiveTimeFail = (response, message) => {
 
 //get message send receive time
 const GetMessageSentReceiveTime = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       Message: {
@@ -1255,7 +1255,7 @@ const getRecentFlagCountFail = (response, message) => {
 
 //get recent flag count
 const GetRecentFlagCount = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1339,7 +1339,7 @@ const getRecentFollowDataCountFail = (response, message) => {
 
 //GetRecentFollowDataCount
 const GetRecentFollowDataCount = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1426,7 +1426,7 @@ const getAllRecentTagsCountFail = (response, message) => {
 
 //getAllRecentTagsCount
 const GetAllRecentTagsCount = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1510,7 +1510,7 @@ const getRecentDataArchiveCountFail = (response, message) => {
 
 //getRecentDataArchiveCount
 const GetRecentDataArchiveCount = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1597,7 +1597,7 @@ const getBlockedUsersCountFail = (response, message) => {
 
 //GetBlockedUsersCount
 const GetBlockedUsersCount = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: 5,
@@ -1679,7 +1679,7 @@ const getBlockedUsersFail = (response, message) => {
 
 //GetBlockedUsers
 const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: parseInt(currentUserId),
@@ -1764,7 +1764,7 @@ const getAllUsersFail = (response, message) => {
 
 //GetAllUsers
 const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: currentUserId,
@@ -1854,7 +1854,7 @@ const GetAllUsersGroupsRoomsList = (
   currentOrganizationId,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       UserID: currentUserId,
@@ -1944,7 +1944,7 @@ const getActiveUsersByGroupIDFail = (response, message) => {
 
 //GetActiveUsersByGroupID
 const GetActiveUsersByGroupID = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       GroupID: 14,
@@ -2027,7 +2027,7 @@ const getActiveUsersByRoomIDFail = (response, message) => {
 
 //GetActiveUsersByRoomID
 const GetActiveUsersByRoomID = (t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let Data = {
     TalkRequest: {
       RoomId: 324,
@@ -2110,7 +2110,7 @@ const getActiveUsersByBroadcastIDFail = (response, message) => {
 
 //GetActiveUsersByBroadcastID
 const GetActiveUsersByBroadcastID = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getActiveUsersByBroadcastIDInit());
     let form = new FormData();
@@ -2189,7 +2189,7 @@ const OtoMessageRetryFlag = (response) => {
 
 //Insert OTO Messages
 const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserName = localStorage.getItem("userNameChat");
 
   // let unsentMessageObject =
@@ -2383,7 +2383,7 @@ const GroupPrivateSendNotification = (message) => {
 
 //Insert Private Group Messages
 const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let unsentMessageObject =
     JSON.parse(localStorage.getItem("unsentMessage")) || [];
   let messageUnsent = [];
@@ -2515,7 +2515,7 @@ const BlockUnblockUserNotification = (message) => {
 
 //Block Unblock a user
 const BlockUnblockUser = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let Data = {
     TalkRequest: {
@@ -2609,7 +2609,7 @@ const deleteSingleMessageFail = (message) => {
 };
 
 const DeleteSingleMessage = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let data = {
     TalkRequest: {
@@ -2684,7 +2684,7 @@ const broadcastMessageSendNotification = (message) => {
 
 //Insert Private Group Messages
 const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(broadcastMessageSendInit());
     let form = new FormData();
@@ -2778,7 +2778,7 @@ const createShoutAllFail = (message) => {
 
 //CreatePrivateGroup
 const CreateShoutAll = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -2868,7 +2868,7 @@ const createPrivateGroupNotification = (response, message) => {
 
 //CreatePrivateGroup
 const CreatePrivateGroup = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(createPrivateGroupInit());
     let form = new FormData();
@@ -2958,7 +2958,7 @@ const getPrivateGroupMembersFail = (response, message) => {
 
 //Get all private group members
 const GetAllPrivateGroupMembers = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let Data = {
     TalkRequest: {
@@ -3034,7 +3034,7 @@ const updatePrivateGroupNotification = (response, message) => {
 
 //Update Private Group
 const UpdatePrivateGroup = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(updatePrivateGroupInit());
     let form = new FormData();
@@ -3119,7 +3119,7 @@ const MarkStarredMessageNotification = (message) => {
 
 //Star Unstar A message
 const MarkStarredUnstarredMessage = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let Data = {
     TalkRequest: {
@@ -3212,7 +3212,7 @@ const LeaveGroupNotification = (response, message) => {
 
 //Star Unstar A message
 const LeaveGroup = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let Data = {
     TalkRequest: {
@@ -3317,7 +3317,7 @@ const deletShoutFail = (message) => {
 
 //Get all user chats
 const DeleteShout = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -3401,7 +3401,7 @@ const updateShoutAllFail = (message) => {
 
 //Update Shout All
 const UpdateShoutAll = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserId = localStorage.getItem("userID");
   let currentOrganizationId = localStorage.getItem("organizationID");
   return (dispatch) => {
@@ -3497,7 +3497,7 @@ const insertBulkMessagesFail = (message) => {
 
 //Update Shout All
 const InsertBulkMessages = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(insertBulkMessagesInit());
     let form = new FormData();
@@ -3574,7 +3574,7 @@ const downloadChatFail = (message) => {
 
 //Download Chat
 const DownloadChat = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(downloadChatInit());
     let form = new FormData();
@@ -3584,7 +3584,7 @@ const DownloadChat = (object, t, navigate) => {
       .post(talkApiReport, form)
 
       .then(async (response) => {
-        console.log("Talk Chat Response", response);
+        
         const blob = new Blob([response.data], { type: "application/txt" });
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -3600,7 +3600,7 @@ const DownloadChat = (object, t, navigate) => {
 };
 
 const PrintChat = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(downloadChatInit());
     let form = new FormData();
@@ -3609,7 +3609,7 @@ const PrintChat = (object, t, navigate) => {
     axiosInstance
       .post(talkApiReport, form)
       .then(async (response) => {
-        console.log("Talk Chat Response", response);
+        
         const printWindow = window.open("", "_blank");
         printWindow.document.write("<pre>" + response.data + "</pre>");
         printWindow.document.close();
@@ -3644,7 +3644,7 @@ const emailChatFail = (message) => {
 
 //Email Chat
 const EmailChat = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(emailChatInit());
     let form = new FormData();
@@ -3731,7 +3731,7 @@ const updateMessageAcknowledgementFail = (message) => {
 
 //UpdateMessageAcknowledgement
 const UpdateMessageAcknowledgement = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(updateMessageAcknowledgementInit());
     let form = new FormData();
@@ -3841,7 +3841,7 @@ const getAllStarredMessagesFail = (message) => {
 
 //Get All Starred Messages
 const GetAllStarredMessages = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllStarredMessagesInit());
     let form = new FormData();
@@ -3941,7 +3941,7 @@ const multipleMessagesDeletedFail = (message) => {
 
 //Delete Multiple Messages
 const DeleteMultipleMessages = (object, t, navigate) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(multipleMessagesDeletedInit());
     let form = new FormData();
@@ -4016,8 +4016,8 @@ const getImageData = (response) => {
 };
 
 const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
-  console.log("DataDataData", Data);
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+  
   let form = new FormData();
   form.append("RequestMethod", downloadAttachmentTalk.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));

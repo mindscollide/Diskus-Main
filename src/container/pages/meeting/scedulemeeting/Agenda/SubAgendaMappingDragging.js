@@ -106,7 +106,7 @@ const SubAgendaMappingDragging = ({
   //     label: value.label,
   //   };
   //   updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
-  //   console.log(updatedRows, "SubagendaSelectSubagendaSelect");
+  //   
   //   setRows(updatedRows);
   // };
 
@@ -139,7 +139,7 @@ const SubAgendaMappingDragging = ({
     }
     // const updatedRows = [...rows];
     // updatedRows[index].subAgenda[subIndex].startDate = date;
-    // console.log(updatedRows, "startCasestartCasestartCase");
+    // 
     // setRows(updatedRows);
   };
 
@@ -400,10 +400,10 @@ const SubAgendaMappingDragging = ({
       </>
     ),
   }));
-  // console.log(allSavedPresenters, "allSavedPresentersallSaved");
+  // 
 
   const filterSubAgendaFunc = (options, searchText) => {
-    // console.log(options, "filterFuncfilterFunc");
+    // 
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {

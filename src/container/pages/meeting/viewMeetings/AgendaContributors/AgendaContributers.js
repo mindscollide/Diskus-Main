@@ -46,7 +46,7 @@ const AgendaContributers = () => {
   const [cancelModalView, setCancelModalView] = useState(false);
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);
-  console.log(columnsData, "columnsDatacolumnsData");
+  
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -114,7 +114,7 @@ const AgendaContributers = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));
@@ -161,7 +161,7 @@ const AgendaContributers = () => {
           align: "left",
           ellipsis: true,
           render: (text, record) => {
-            console.log(record);
+            
             if (record.attendeeAvailability === 1) {
               return (
                 <img

@@ -95,7 +95,7 @@ const Organizers = ({
 
   const UserID = localStorage.getItem("userID");
 
-  console.log(UserID, "recordrecordrecord");
+  
   const { editorRole, setEditorRole } = useContext(MeetingContext);
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -249,7 +249,7 @@ const Organizers = ({
         align: "center",
         ellipsis: "120px",
         render: (text, record, rowIndex) => {
-          console.log(record, "isPrimaryOrganizerisPrimaryOrganizer");
+          
           return (
             <Row>
               <Col
@@ -395,7 +395,7 @@ const Organizers = ({
         align: "left",
 
         render: (text, record) => {
-          console.log(record, "recordrecordrecord");
+          
           if (
             record.isPrimaryOrganizer ||
             Number(record.userID) === Number(UserID)
@@ -659,7 +659,7 @@ const Organizers = ({
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
     let Data = { MeetingID: currentMeeting, StatusID: 1 };
-    console.log("end meeting chaek");
+    
     dispatch(
       UpdateOrganizersMeeting(
         false,
@@ -919,10 +919,7 @@ const Organizers = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
-  console.log(
-    "MeetingOrganizersReducerMeetingOrganizersReducer",
-    MeetingOrganizersReducer
-  );
+  
 
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));

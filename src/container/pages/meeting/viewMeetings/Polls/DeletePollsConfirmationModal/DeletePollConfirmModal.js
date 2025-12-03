@@ -22,7 +22,7 @@ const DeletePollConfirmModal = ({ pollID }) => {
   };
 
   const handleYesFunctionality = () => {
-    console.log(pollID, "handleDeletePoll");
+    
     let data = {
       PollID: Number(pollID),
       MeetingID: parseInt(advanceMeetingModalID),

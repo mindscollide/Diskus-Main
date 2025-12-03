@@ -47,7 +47,7 @@ const VideoMain = () => {
     DataRoomFileAndFoldersDetailsReducer,
     SignatureWorkFlowReducer,
   } = useSelector((state) => state);
-  console.log("hell");
+  
   return (
     <>
       <div

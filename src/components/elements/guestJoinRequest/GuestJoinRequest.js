@@ -35,15 +35,12 @@ const GuestJoinRequest = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
+  
 
   const [getRoomId, setGetRoomId] = useState("");
 
   // let roomID = localStorage.getItem("activeRoomID");
-  console.log(
-    GuestVideoReducer?.admitGuestUserRequestData,
-    "waitingOnParticipantwaitingOnParticipant"
-  );
+  
   const {
     name = "",
     meetingID = "",
@@ -56,19 +53,8 @@ const GuestJoinRequest = () => {
     isGuest = true,
   } = GuestVideoReducer?.admitGuestUserRequestData || {};
 
-  console.log(GuestVideoReducer?.admitGuestUserRequestData, "Datatatacatcas");
-  console.log(
-    name,
-    meetingID,
-    guid,
-    UserID,
-    email,
-    hideCamera,
-    raiseHand,
-    mute,
-    isGuest,
-    "Datatatacatcas"
-  );
+  
+  
 
   useEffect(() => {
     if (GuestVideoReducer?.admitGuestUserRequestData !== null) {
@@ -80,12 +66,12 @@ const GuestJoinRequest = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
-    console.log("hell");
+    
 
     const list = videoFeatureReducer.waitingParticipantsList;
 
     if (list?.length) {
-      console.log(list, "usersDatausersData");
+      
 
       const uniqueByGuid = Object.values(
         list.reduce((acc, item) => {
@@ -113,7 +99,7 @@ const GuestJoinRequest = () => {
       IsRequestAccepted: flag === 1 ? true : false,
       AttendeeResponseList: filteredWaitingParticipants.map(
         (participantData, index) => {
-          console.log(participantData, "mahdahahshahs");
+          
           return {
             IsGuest: participantData.isGuest,
             UID: participantData.guid,

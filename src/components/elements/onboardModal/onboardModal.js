@@ -24,7 +24,7 @@ const CustomOnboardModal = ({
   const { OnBoardModal } = state;
 
   const handleShow = () => {
-    console.log("modalTitle", show);
+    
     dispatch(showModalStepsOnboard(true));
     setCurrentStep(3);
     dispatch(showIsDetailOnboard(true));

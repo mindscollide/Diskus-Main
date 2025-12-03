@@ -45,12 +45,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
   const { NewMeetingreducer, MeetingAgendaReducer, MeetingOrganizersReducer } =
     useSelector((state) => state);
-  console.log(
-    NewMeetingreducer,
-    MeetingAgendaReducer,
-    MeetingOrganizersReducer,
-    ""
-  );
+  
   const [addOptions, setAddOptions] = useState(false);
   const [open, setOpen] = useState({
     open: false,
@@ -225,19 +220,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
 
     fetchData();
   }, []); // Add dependencies for re-execution if needed
-  console.log(
-    "GetCurrentAgendaDetails vote :",
-    MeetingAgendaReducer.GetCurrentAgendaDetails
-  );
-  console.log(
-    "getAllSavedparticipants vote : ",
-    NewMeetingreducer.getAllSavedparticipants
-  );
-  console.log(
-    "MeetingAgendaVotingDetailsData vote :",
-    MeetingAgendaReducer.MeetingAgendaVotingDetailsData
-  );
-  console.log("agendaDetails vote :", agendaDetails);
+  
+  
+  
+  
 
   useEffect(() => {
     try {
@@ -255,7 +241,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [MeetingAgendaReducer.GetCurrentAgendaDetails]);
 
@@ -270,7 +256,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         setMeetingParticipants(NewMeetingreducer.getAllSavedparticipants);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
@@ -411,7 +397,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
             MeetingAgendaReducer.MeetingAgendaVotingDetailsData
               .agendaVotingDetails.userID
         );
-      console.log("matchedOrganizer", matchedOrganizer);
+      
       if (matchedOrganizer !== undefined) {
         setIsOrganizer({
           value: matchedOrganizer.userID,
@@ -439,10 +425,10 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           userID: matchedOrganizer.userID,
         });
       }
-      console.log("Going in the condition");
+      
       let agendaVotingDetails =
         MeetingAgendaReducer.MeetingAgendaVotingDetailsData.agendaVotingDetails;
-      console.log("Going in the condition", agendaVotingDetails);
+      
       setAgendaDetails({
         ...agendaDetails,
         userID: agendaVotingDetails.userID,
@@ -456,7 +442,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         isvotingClosed: false,
       });
       let votingAnswerData = agendaVotingDetails.votingAnswers;
-      console.log(votingAnswerData, "votingAnswerDatavotingAnswerData");
+      
       if (Array.isArray(votingAnswerData) && votingAnswerData.length > 0) {
         let newAnswers = [];
         votingAnswerData.forEach((item) => {
@@ -515,7 +501,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
         AgendaVotingID: agendaDetails.agendaVotingID,
       }));
 
-      console.log("votingOptionData", typeof votingOptionData);
+      
       if (Object.keys(votingOptionData).length > 2) {
         let Data = {
           MeetingID: currentMeeting,
@@ -532,7 +518,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
           },
         };
 
-        console.log("Save Agenda Voting Data", Data);
+        
         dispatch(SaveAgendaVoting(Data, navigate, t, currentMeeting));
         dispatch(getAgendaVotingDetails_success([], ""));
         setAgendaDetails({
@@ -598,7 +584,7 @@ const VoteModal = ({ setenableVotingPage, currentMeeting }) => {
     localStorage.setItem("currentAgendaVotingID", 0);
   };
 
-  console.log("Going in the agenda Details condition", agendaDetails);
+  
 
   return (
     <section>

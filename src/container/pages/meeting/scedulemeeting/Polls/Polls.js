@@ -95,7 +95,7 @@ const Polls = ({
   const [pageSize, setPageSize] = useState(50);
   const [totalRecords, setTotalRecords] = useState(0);
   const [viewPublishedPoll, setViewPublishedPoll] = useState(false);
-  console.log(currentMeeting, "currentMeetingcurrentMeeting");
+  
   // Unpublished Poll
   const [unPublished, setUnPublished] = useState(false);
   const [open, setOpen] = useState({
@@ -178,7 +178,7 @@ const Polls = ({
         dispatch(createPollMeetingMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollMeeting]);
 
@@ -206,7 +206,7 @@ const Polls = ({
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [pollingSocket]);
 
@@ -224,7 +224,7 @@ const Polls = ({
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollDelete]);
 

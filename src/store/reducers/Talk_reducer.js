@@ -1674,11 +1674,11 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_GROUP_LEFT: {
-      console.log(action.response, "talkStateDatatalkStateData");
+      
 
       let copyAllUserChatsData = { ...state.AllUserChats.AllUserChatsData };
 
-      console.log(copyAllUserChatsData, "talkStateDatatalkStateData");
+      
 
       const groupIDToRemove = action.response.data[0].groupID;
 
@@ -1689,7 +1689,7 @@ const talkReducer = (state = initialState, action) => {
         }
       );
 
-      console.log(filteredAllMessages, "talkStateDatatalkStateData");
+      
 
       copyAllUserChatsData.allMessages = filteredAllMessages;
 

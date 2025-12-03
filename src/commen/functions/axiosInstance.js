@@ -22,12 +22,12 @@ axiosInstance.interceptors.request.use(
 // ------------------- RESPONSE -------------------
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log("SUCCESS:", response.data);
+    
 
     const code = Number(response?.data?.responseCode);
     const message = (response?.data?.errorMessage || "").toLowerCase().trim();
 
-    console.log("SUCCESS →", code, message);
+    
 
     if (
       code === 401 &&
@@ -41,14 +41,14 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("ERROR:", error);
+    
 
     const code = Number(error?.response?.data?.responseCode);
     const message = (error?.response?.data?.errorMessage || "")
       .toLowerCase()
       .trim();
 
-    console.log("ERROR →", code, message);
+    
 
     if (
       code === 401 &&

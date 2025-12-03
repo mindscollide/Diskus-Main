@@ -96,7 +96,7 @@ const BlockedUsersList = () => {
     } catch {}
   };
 
-  console.log("Get Blocked Users", blockedUsersData);
+  
 
   useEffect(() => {
     // Check if the userID in mqttUnblockedResponse matches any id in allChatData

@@ -166,7 +166,7 @@ const VideoPanelBodyContact = () => {
       };
       sessionStorage.setItem("NonMeetingVideoCall", true);
       localStorage.setItem("CallType", Data.CallTypeID);
-      console.log("leavecallMeetingVideo");
+      
       localStorage.setItem("callTypeID", Data.CallTypeID);
       dispatch(InitiateVideoCall(Data, navigate, t));
       localStorage.setItem("isCaller", true);
@@ -209,7 +209,7 @@ const VideoPanelBodyContact = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
         localStorage.setItem("callerID", currentUserID);
-        console.log("leavecallMeetingVideo");
+        
         localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(groupCallRecipients(groupCallActiveUsers));
@@ -223,12 +223,12 @@ const VideoPanelBodyContact = () => {
   };
 
   const deselectAllUsers = () => {
-    console.log("Function Clicked");
+    
     setGroupCallUsers([]);
     setGroupCallActiveUsers([]);
   };
   const leavecallMeetingVideo = async () => {
-    console.log("leavecallMeetingVideo");
+    
     const emptyArray = [];
     const meetingHost = {
       isHost: false,
@@ -244,7 +244,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
     await dispatch(setAudioControlHost(false));
-    console.log("videoHideUnHideForHost");
+    
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
@@ -257,12 +257,12 @@ const VideoPanelBodyContact = () => {
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     localStorage.setItem("recipentCalledID", userCalledID);
     let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
-    console.log("leavecallMeetingVideo", meetinHostInfo);
+    
     let currentMeetingID = JSON.parse(localStorage.getItem("currentMeetingID"));
     let newUserGUID = meetinHostInfo?.isHost
       ? localStorage.getItem("isGuid")
       : localStorage.getItem("participantUID");
-    console.log("leavecallMeetingVideo", newUserGUID);
+    
     let newName = localStorage.getItem("name");
     let newRoomID = meetinHostInfo?.isHost
       ? localStorage.getItem("newRoomId")
@@ -308,7 +308,7 @@ const VideoPanelBodyContact = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -343,7 +343,7 @@ const VideoPanelBodyContact = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -364,7 +364,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("isMeetingVideo", false);
   };
   const leaveCallOnMeetingVideoForGroup = async () => {
-    console.log("leavecallMeetingVideo");
+    
     const emptyArray = [];
     const meetingHost = {
       isHost: false,
@@ -379,7 +379,7 @@ const VideoPanelBodyContact = () => {
     localStorage.setItem("refinedVideoGiven", false);
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
-    console.log("videoHideUnHideForHost");
+    
     await dispatch(setAudioControlHost(false));
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
@@ -412,7 +412,7 @@ const VideoPanelBodyContact = () => {
   };
 
   const leaveCallHostGroup = async () => {
-    console.log("leaveCallHostGroup");
+    
 
     if (isMeetingVideo) {
       await leaveCallOnMeetingVideoForGroup();
@@ -423,7 +423,7 @@ const VideoPanelBodyContact = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      console.log("Check LeaveCall new");
+      
       dispatch(LeaveCall(Data, navigate, t));
     }
     let Data2 = {
@@ -449,7 +449,7 @@ const VideoPanelBodyContact = () => {
   };
 
   const leaveCallParticipantGroup = async () => {
-    console.log("leaveCallHostGroup");
+    
     let roomID = localStorage.getItem("acceptedRoomID");
 
     let Data2 = {
@@ -466,7 +466,7 @@ const VideoPanelBodyContact = () => {
         IsCaller: false,
         CallTypeID: callTypeID,
       };
-      console.log("Check LeaveCall new");
+      
       dispatch(LeaveCall(Data, navigate, t));
     }
     dispatch(InitiateVideoCall(Data2, navigate, t));

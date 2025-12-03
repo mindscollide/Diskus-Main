@@ -158,7 +158,7 @@ const Attendence = ({
               sm={12}
               className="d-flex align-items-center gap-4"
             >
-              {console.log("attendanceStatusID:", text)}
+              {}
               {/* Add this line for debugging */}
               {text === 1 ? (
                 <>
@@ -348,7 +348,7 @@ const Attendence = ({
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
+      
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEditorRole({ status: null, role: null });

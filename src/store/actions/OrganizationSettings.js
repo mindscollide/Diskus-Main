@@ -102,7 +102,7 @@ const getOrganizationLevelSetting = (navigate, t) => {
 };
 
 // const getOrganizationLevelSetting = (navigate, t) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//   
 //   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
 //   let data = {
 //     OrganizationID: organizationID,
@@ -189,7 +189,7 @@ const updateOrganizationLevelSettingFail = (message) => {
 };
 
 const updateOrganizationLevelSetting = (navigate, updateData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let data = {
     organizationSettings: updateData,
   };

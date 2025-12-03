@@ -214,7 +214,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   const [replyFeature, setReplyFeature] = useState(false);
 
   const [allMessages, setAllMessages] = useState([]);
-  console.log(allMessages, "allMessagesallMessagesallMessages");
+  
   const [allUsers, setAllUsers] = useState([]);
 
   const [allUsersGroupsRooms, setAllUsersGroupsRooms] = useState([]);
@@ -1470,7 +1470,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const editShoutFunction = () => {
-    console.log("Click");
+    
     let Data = {
       TalkRequest: {
         BroadcastID: talkStateData.ActiveChatData.id,
@@ -1498,7 +1498,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
 
   useEffect(() => {
     let allChatMessages = talkStateData.AllMessagesData;
-    console.log(allChatMessages, "allChatMessages");
+    
 
     if (
       allChatMessages !== undefined &&
@@ -1511,7 +1511,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       allChatMessages !== null &&
       talkStateData.ActiveChatData.messageType === "G"
     ) {
-      console.log(allChatMessages, "allChatMessages");
+      
       groupMessages(allChatMessages.groupMessages, setAllMessages);
     } else if (
       allChatMessages !== undefined &&
@@ -2377,10 +2377,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
       let mqttInsertGroupMessageData =
         talkStateData.talkSocketData.socketInsertGroupMessageData.data[0];
       let frMessages = mqttInsertGroupMessageData.frMessages;
-      console.log(
-        "mqttInsertGroupMessageDatamqttInsertGroupMessageData",
-        mqttInsertGroupMessageData
-      );
+      
       if (
         frMessages !== "Direct Message" &&
         frMessages.length > 0 &&
@@ -3214,7 +3211,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   };
 
   const DownloadFileFunction = (data, ext) => {
-    console.log("DataDataData", data);
+    
     let Data = {
       TalkRequest: {
         AttachmentId: data.attachmentId,
@@ -4267,10 +4264,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
                                 "G" &&
                               talkStateData.ChatSpinner === false ? (
                               allMessages.map((messageData, index) => {
-                                console.log(
-                                  messageData,
-                                  "messageDatamessageDatamessageData"
-                                );
+                                
                                 var ext = messageData.attachmentLocation
                                   .split(".")
                                   .pop();

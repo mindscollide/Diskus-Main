@@ -32,7 +32,7 @@ const UserProfileModal = ({ ModalTitle, user, setUser }) => {
     },
   });
 
-  console.log(userProfileEdit.ProfilePicture, "");
+  
   const [nameEnable, setNameEanble] = useState(true);
   const [erorbar, setErrorBar] = useState(false);
   let currentLanguage = localStorage.getItem("i18nextLng");

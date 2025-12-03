@@ -61,7 +61,7 @@ const uploadDocumentsCommitteesApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -162,7 +162,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API
 const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let createrID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -193,17 +193,14 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
             ) {
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "fileIdsfileIds");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(fileIds, "newFileID");
+                  
 
                   return newFolder.push({ pK_FileID: newFileID.pK_FileID });
                 });
               } catch (error) {
-                console.log(
-                  error,
-                  "fileIdsfileIdsfileIdsfileIdsfileIdsfileIds"
-                );
+                
               }
 
               await dispatch(
@@ -261,7 +258,7 @@ const getallcommitteebyuserid_fail = (message) => {
 };
 
 const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
   let Data = {
@@ -374,7 +371,7 @@ const getArcheivedCommittees_fail = (message) => {
 };
 
 const getAllArcheivedCommittees = (navigate, t, currentPage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
   let Data = {
@@ -499,7 +496,7 @@ const getCommitteesbyCommitteeId = (
   setArchivedCommittee,
   flag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getCommitteByCommitteeID_Init());
     let form = new FormData();
@@ -508,10 +505,7 @@ const getCommitteesbyCommitteeId = (
        axiosInstance.post(getCommitteesApi, form)
 
       .then(async (response) => {
-        console.log(
-          "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
-          response
-        );
+        
 
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -573,7 +567,7 @@ const getCommitteesbyCommitteeId = (
                   dispatch(viewCommitteePageFlag(true));
                 }
               } catch (error) {
-                console.log(error, "Saiferrorerrorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -653,7 +647,7 @@ const createcommittee_fail = (message) => {
 };
 
 const createcommittee = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -771,7 +765,7 @@ const getCommitteeTypes_Fail = (message) => {
 };
 
 const getCommitteeTypes = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getCommitteeTypes_Init());
     let form = new FormData();
@@ -850,7 +844,7 @@ const getCommitteeMembersRole_Fail = (message) => {
 };
 
 const getCommitteeMembersRole = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getCommitteeMembersRole_Init());
     let form = new FormData();
@@ -932,7 +926,7 @@ const updateCommitteeStatus_Fail = (message) => {
 };
 
 const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1009,7 +1003,7 @@ const updateCommittee_Fail = (message) => {
 };
 
 const updateCommittee = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   // let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(updatecommittee_Init());
@@ -1138,7 +1132,7 @@ const assignGroup_Failt = (message) => {
 };
 
 const assignGroups = (navigate, Data, t, setMarketingTeam) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1213,7 +1207,7 @@ const createUpdateCommitteeDocuments_fail = (message) => {
 
 // Create and Update Committees Api
 const createUpdateCommitteeApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(createUpdateCommitteeDocuments_init());
@@ -1338,7 +1332,7 @@ const saveCommitteeDocuments_fail = (message) => {
 
 // Save Committee Documents
 const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
   return (dispatch) => {
@@ -1421,7 +1415,7 @@ const reteriveCommitteeDocuments_fail = (message) => {
 };
 // Reterive Committee Documents
 const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(reteriveCommitteeDocuments_init());
@@ -1506,7 +1500,7 @@ const viewCommitteePageFlag = (response) => {
 };
 
 const removeCommitteeMemberMQTT = (response) => {
-  console.log(response, "removeCommitteeMemberMQTTremoveCommitteeMemberMQTT");
+  
   return {
     type: actions.REMOVE_COMMITTEE_MEMBER,
     response: response,
@@ -1698,7 +1692,7 @@ const validateEncryptedStringViewCommitteeDetailLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateEncryptedStringViewCommitteeDetailLink_Init());
 

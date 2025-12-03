@@ -436,7 +436,7 @@ const handlegetAllMeetingTypesFailed = (message, loader) => {
 };
 
 const GetAllMeetingTypesNewFunction = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(handlegetAllMeetingTypesInit());
     let form = new FormData();
@@ -535,7 +535,7 @@ const SaveMeetingDetialsNewApiFunction = (
   setProposedNewMeeting,
   flag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(handleSaveMeetingInit());
     let form = new FormData();
@@ -647,7 +647,7 @@ const SaveMeetingDetialsNewApiFunction = (
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
                   };
-                  console.log("chek search meeting");
+                  
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
                   let Data = {
@@ -827,7 +827,7 @@ const handlegetallReminderFrequencyFailed = (message) => {
 
 //Functions Get All Meeting Reminder Frequency API
 const GetAllMeetingRemindersApiFrequencyNew = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(handlegetallReminderFrequencyInit());
     let form = new FormData();
@@ -919,7 +919,7 @@ const handleReucrringFailed = (message, loader) => {
 
 //Functions Get All Meeting Recurring API
 const GetAllMeetingRecurringApiNew = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(handleReucrringSInit());
     let form = new FormData();
@@ -999,7 +999,7 @@ const SearchMeeting_Fail = (message) => {
   };
 };
 const searchNewUserMeeting = (navigate, Data, t, val) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
@@ -1010,7 +1010,7 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          console.log("chek search meeting");
+          
           dispatch(searchNewUserMeeting(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1044,7 +1044,7 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                   dispatch(webnotificationGlobalFlag(true));
                 }
               } catch (error) {
-                console.log(error);
+                
               }
               if (
                 JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
@@ -1054,11 +1054,11 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
                   JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
                 ) {
                   //Notification Work
-                  console.log("ComingIN");
+                  
                   //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
                   dispatch(showSceduleProposedMeeting(true));
                 } else {
-                  console.log("ComingIN");
+                  
                   //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
                   localStorage.removeItem("MeetingStatusID");
                   localStorage.removeItem("ProposedMeetingOrganizer");
@@ -1191,7 +1191,7 @@ const showAddMoreParticipantsFailed = (message) => {
 
 //Function For GetAll Groups And Committeess For Partcipants
 const GetAllCommitteesUsersandGroupsParticipants = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showAddMoreParticipantsInit());
     let form = new FormData();
@@ -1280,7 +1280,7 @@ const showParticipantsRolesFailed = (message) => {
 };
 
 const GetAllParticipantsRoleNew = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(showParticipantsRolesInit());
     let form = new FormData();
@@ -1370,12 +1370,12 @@ const FetchMeetingURLApi = (
   currentMeetingTitle,
   meetingID
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(MeetingUrlSpinner(true));
     let form = new FormData();
     let videoMeetingID = Number(meetingID);
-    console.log(videoMeetingID, "videoMeetingIDvideoMeetingID");
+    
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", FetchVideoUrl.RequestMethod);
     axiosInstance
@@ -1430,14 +1430,14 @@ const FetchMeetingURLApi = (
                 CallTypeID: currentCallType,
               };
               if (activeCallStatus === true && meetingStatus === false) {
-                console.log("Check LeaveCall new");
+                
                 dispatch(LeaveCall(Data, navigate, t));
                 localStorage.setItem("isCaller", false);
               }
               localStorage.setItem("isMeeting", true);
               sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("CallType", 2);
-              console.log("leavecallMeetingVideo");
+              
               localStorage.setItem("callTypeID", 2);
               localStorage.setItem("activeCall", true);
               localStorage.setItem("callerID", 9999);
@@ -1453,10 +1453,10 @@ const FetchMeetingURLApi = (
               );
               dispatch(callRequestReceivedMQTT({}, ""));
               if (flag === 0) {
-                console.log("Flag True");
+                
                 dispatch(maximizeVideoPanelFlag(true));
               } else {
-                console.log("Flag False");
+                
                 dispatch(normalizeVideoPanelFlag(true));
               }
               dispatch(videoChatPanel(false));
@@ -1538,7 +1538,7 @@ const saveParcipantsProposeMeetingAPI = (
   setProposedNewMeeting,
   setSceduleMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(saveParcipantsProposeMeetingInit());
     let form = new FormData();
@@ -1692,7 +1692,7 @@ const SaveparticipantsApi = (
   loader,
   setProposedNewMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showSavedParticipantsInit());
     let form = new FormData();
@@ -1738,7 +1738,7 @@ const SaveparticipantsApi = (
                   SendResponsebyDate: ResponseDate,
                   ProposedDates: rows,
                 };
-                console.log(Data, "sendResponseByate");
+                
                 dispatch(
                   setProposedMeetingDateApiFunc(
                     Data,
@@ -1822,7 +1822,7 @@ const getAllAgendaContributor_fail = (message) => {
 };
 
 const getAllAgendaContributorApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllAgendaContributor_init());
     let form = new FormData();
@@ -1922,7 +1922,7 @@ const saveAgendaContributors_fail = (message) => {
 };
 
 const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   let getAllData = {
     MeetingID:
@@ -2049,7 +2049,7 @@ const showAllMeetingParticipantsFailed = (message) => {
 //Get All Saved  participants API Function
 
 const GetAllSavedparticipantsAPI = (Data, navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showAllMeetingParticipantsInit());
     let form = new FormData();
@@ -2166,7 +2166,7 @@ const sendNotificationParticipantsFailed = (message) => {
 
 //Send Notification API Function
 const SendNotificationApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(sendNotificationParticipantsInit());
     let form = new FormData();
@@ -2266,7 +2266,7 @@ const GetAllMeetingDetailsApiFunc = (
   flag,
   role
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(showGetAllMeetingDetialsInit());
     let form = new FormData();
@@ -2334,7 +2334,7 @@ const GetAllMeetingDetailsApiFunc = (
                     GetAllMeetingRecurringApiNew(navigate, t, false)
                   );
                 } else if (flag === 2) {
-                  console.log("Flag for proposed meeting Edit flow only");
+                  
                 }
               } else {
                 await dispatch(
@@ -2362,7 +2362,7 @@ const GetAllMeetingDetailsApiFunc = (
               );
               try {
                 setSceduleMeeting(true);
-                console.log("rolerole goes in this check");
+                
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
                 if (role === "Agenda Contributor") {
@@ -2436,7 +2436,7 @@ const showPollsByMeetingIdFailed = (message) => {
 };
 //Api FUnctions For Getting All polls By Meeting ID
 const GetAllPollsByMeetingIdApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showPollsByMeetingIdInit());
     let form = new FormData();
@@ -2517,7 +2517,7 @@ const showGetAllMeetingUsersFailed = (response, message) => {
 
 //get all meeting users Api function
 const GetAllMeetingUserApiFunc = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showGetAllMeetingUsersInit());
     let form = new FormData();
@@ -2595,7 +2595,7 @@ const showSetMeetingPollsFailed = (message) => {
 };
 
 const SetMeetingPollsApiFunc = (Data, navigate, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showSetMeetingPollsInit());
     let form = new FormData();
@@ -2688,7 +2688,7 @@ const cleareAllProposedMeetingDates = () => {
   };
 };
 const GetAllProposedMeetingDateApiFunc = (Data, navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showGetAllProposedMeetingDatesInit());
     let form = new FormData();
@@ -2797,7 +2797,7 @@ const setProposedMeetingDateApiFunc = (
 ) => {
   return (dispatch) => {
     dispatch(showPrposedMeetingDateInit());
-    let token = JSON.parse(localStorage.getItem("token"));
+    
     let form = new FormData();
     form.append("RequestMethod", SettingMeetingProposedDates.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -2834,7 +2834,7 @@ const setProposedMeetingDateApiFunc = (
               );
               if (flag === true) {
                 setProposedNewMeeting(false);
-                console.log("saif i am here");
+                
                 let userID = localStorage.getItem("userID");
                 let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 let meetingPageCurrent =
@@ -2853,7 +2853,7 @@ const setProposedMeetingDateApiFunc = (
                   Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
                   PublishedMeetings: false,
                 };
-                console.log("chek search meeting");
+                
                 dispatch(searchNewUserMeeting(navigate, searchData, t));
               } else {
                 let NewData = {
@@ -2936,7 +2936,7 @@ const SetMeetingResponseApiFunc = (
   t,
   setViewProposeDatePoll
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showPrposedMeetingReponsneInit());
     let form = new FormData();
@@ -2981,7 +2981,7 @@ const SetMeetingResponseApiFunc = (
                 Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
                 PublishedMeetings: false,
               };
-              console.log("chek search meeting");
+              
               dispatch(searchNewUserMeeting(navigate, searchData, t));
             } else if (
               response.data.responseResult.responseMessage
@@ -3054,7 +3054,7 @@ const meetingMaterialFail = (message) => {
 
 //Aun work on meeting Material Main API
 const getMeetingMaterialAPI = (navigate, t, meetingMaterialData, rows, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(meetingMaterialInit());
     let form = new FormData();
@@ -3135,7 +3135,7 @@ const showUpdateMeetingAgendaLockStatusFailed = (message) => {
   };
 };
 const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showUpdateMeetingAgendaLockStatusInit());
     let form = new FormData();
@@ -3207,7 +3207,7 @@ const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, callback) => {
   };
 };
 // const UpateMeetingStatusLockApiFunc = (navigate, t, Data, value, flag) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//   
 //   return (dispatch) => {
 //     dispatch(showUpdateMeetingAgendaLockStatusInit());
 //     let form = new FormData();
@@ -3311,7 +3311,7 @@ const showGetAllUserAgendaRightsFailed = (message) => {
 };
 
 const GetAllUserAgendaRightsApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showGetAllUserAgendaRightsInit());
     let form = new FormData();
@@ -3390,7 +3390,7 @@ const SaveUserAttachmentPermissionsFailed = (message) => {
 };
 
 const SaveUserAttachmentsPermissionApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(SaveUserAttachmentPermissionsInit());
     let form = new FormData();
@@ -3473,7 +3473,7 @@ const ShowADDGeneralMinutesFailed = (message) => {
 };
 
 const ADDGeneralMinutesApiFunc = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(ShowADDGeneralMinutesInit());
     let form = new FormData();
@@ -3548,7 +3548,7 @@ const showRetriveGeneralMinutesDocsMeetingFailed = (message) => {
 };
 
 const DocumentsOfMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     return new Promise((resolve, reject) => {
       let form = new FormData();
@@ -3671,7 +3671,7 @@ const GetAllGeneralMinutesApiFunc = (
   currentMeeting,
   flag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showAllGeneralMinutesInit());
     let form = new FormData();
@@ -3778,7 +3778,7 @@ const uploadDocumentsMeetingMinutesApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -3881,7 +3881,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for genral Minutes
 const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -3912,16 +3912,16 @@ const saveFilesMeetingMinutesApi = (navigate, t, data, folderID, newFolder) => {
             ) {
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "newFileID");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(newFileID, "newFileID");
+                  
 
                   return newFolder.push({
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
               } catch (error) {
-                console.log(error, "newFileID");
+                
               }
               await dispatch(
                 saveFiles_success(
@@ -3993,7 +3993,7 @@ const showSaveMinutesDocsFailed = (message) => {
 //SAVE GROUPS DOCUMENTS API
 
 const SaveMinutesDocumentsApiFunc = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showSaveMinutesDocsInit());
     let form = new FormData();
@@ -4078,7 +4078,7 @@ const showRetriveGeneralMinutesDocsFailed = (message) => {
 };
 
 const RetriveDocumentsMeetingGenralMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showRetriveGeneralMinutesDocsInit());
     let form = new FormData();
@@ -4176,7 +4176,7 @@ const clearProposedWiseData = () => {
   };
 };
 const getUserProposedWiseApi = (navigate, t, proposedData, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getProposedWiseInit());
     let form = new FormData();
@@ -4267,7 +4267,7 @@ const GetAllAgendaWiseMinutesApiFunc = (
   setAddReviewers,
   clickFlag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showGetAllAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4405,7 +4405,7 @@ const UpdateAgendaWiseMinutesApiFunc = (
   setFileForSend,
   setisEdit
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showUpdateAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4569,7 +4569,7 @@ const DeleteAgendaWiseMinutesApiFunc = (
   currentMeeting,
   id
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseMinutesInit());
     let form = new FormData();
@@ -4690,7 +4690,7 @@ const DeleteGeneralMinutesFailed = (message) => {
 };
 
 const DeleteGeneralMinutesApiFunc = (navigate, Data, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(DeleteGeneralMinutesInit());
     let form = new FormData();
@@ -4811,7 +4811,7 @@ const AddAgendaWiseMinutesApiFunc = (
   t,
   setAgendaOptionValue
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showAgendaWiseAddMinutesInit());
     let form = new FormData();
@@ -4903,7 +4903,7 @@ const showSavedAgendaWiseDocumentFailed = (message) => {
 };
 
 const SaveAgendaWiseDocumentsApiFunc = (navigate, Data, t, id) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showSavedAgendaWiseDocumentInit());
 
@@ -5011,7 +5011,7 @@ const UpdateMinutesGeneralApiFunc = (
   isAgenda,
   fileUploadFlag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentMeeting = JSON.parse(localStorage.getItem("currentMeetingID"));
   return async (dispatch) => {
     dispatch(showUpdateMinutesInit());
@@ -5174,7 +5174,7 @@ const uploadDocumentsMeetingAgendaWiseMinutesApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -5283,7 +5283,7 @@ const saveFilesMeetingagendaWiseMinutesApi = (
   folderID,
   newFolder
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? Number(folderID) : 0,
@@ -5313,16 +5313,16 @@ const saveFilesMeetingagendaWiseMinutesApi = (
             ) {
               try {
                 let fileIds = response.data.responseResult.fileID;
-                console.log(fileIds, "newFileID");
+                
                 fileIds.map((newFileID, index) => {
-                  console.log(newFileID, "newFileID");
+                  
 
                   return newFolder.push({
                     pK_FileID: newFileID.pK_FileID,
                   });
                 });
               } catch (error) {
-                console.log(error, "newFileID");
+                
               }
               await dispatch(
                 saveFiles_success_agenda_wise(
@@ -5394,7 +5394,7 @@ const showRetriveAgendaWiseDocumentsFailed = (message) => {
 };
 
 const AgendaWiseRetriveDocumentsMeetingMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showRetriveAgendaWiseDocumentsInit());
     let form = new FormData();
@@ -5492,7 +5492,7 @@ const DeleteGeneralMinuteDocumentsApiFunc = (
   currentMeeting,
   MinuteData
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showDeleteGeneralMeetingDocumentsInit());
     let form = new FormData();
@@ -5610,7 +5610,7 @@ const DeleteAgendaWiseMinutesDocumentsApiFunc = (
   currentMeeting,
   id
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showDeleteAgendaWiseDocumentInit());
     let form = new FormData();
@@ -5762,7 +5762,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   flag,
   setSceduleMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(showCreateUpdateMeetingDataRoomInit());
     let form = new FormData();
@@ -5990,7 +5990,7 @@ const getMeetingbyGroup_fail = (message) => {
 
 // Get Meeting by Group ID
 const getMeetingbyGroupApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMeetingbyGroup_init());
     let form = new FormData();
@@ -6066,7 +6066,7 @@ const setMeetingByGroupID_fail = (message) => {
   };
 };
 const setMeetingByGroupIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(setMeetingByGroupID_init());
     let form = new FormData();
@@ -6160,7 +6160,7 @@ const getMeetingByCommitteeID_fail = (message) => {
   };
 };
 const getMeetingByCommitteeIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMeetingByCommitteeID_init());
     let form = new FormData();
@@ -6238,7 +6238,7 @@ const setMeetingbyCommitteeID_fail = (message) => {
   };
 };
 const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(setMeetingbyCommitteeID_init());
     let form = new FormData();
@@ -6342,8 +6342,8 @@ const scheduleMeetingMainApi = (
   setSceduleMeeting,
   MeetingID
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  console.log(MeetingID, "MeetingIDMeetingIDMeetingID");
+  
+  
   return (dispatch) => {
     dispatch(scheduleMeetingInit());
     let form = new FormData();
@@ -6386,7 +6386,7 @@ const scheduleMeetingMainApi = (
               let MeetingData = {
                 MeetingID: Number(getMeetingID),
               };
-              console.log(MeetingData, "MeetingIDMeetingIDMeetingID");
+              
               await dispatch(
                 GetAllMeetingDetailsApiFunc(
                   navigate,
@@ -6491,7 +6491,7 @@ const UpdateMeetingUserApiFunc = (
   setProposedNewMeeting,
   setSceduleMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(UpdateMeetingUserInit());
     let form = new FormData();
@@ -6660,7 +6660,7 @@ const UpdateMeetingUserForAgendaContributor = (
   isEditFlag,
   notifyMessageField
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(UpdateMeetingUserAgendaContributorInit());
     let form = new FormData();
@@ -6822,7 +6822,7 @@ const UpdateMeetingUserForOrganizers = (
   notificationMessage,
   setIsEdit
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(UpdateMeetingUserOrganizersInit());
     let form = new FormData();
@@ -7000,7 +7000,7 @@ const showAllDocumentsAgendaWiseMinutesFailed = (message) => {
 };
 
 const AllDocumentsForAgendaWiseMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showAllDocumentsAgendaWiseMinutesInit());
     let form = new FormData();
@@ -7098,7 +7098,7 @@ const showIniviteToCollaborateFailed = (message) => {
 };
 
 const InviteToCollaborateMinutesApiFunc = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(showIniviteToCollaborateInit());
     let form = new FormData();
@@ -7168,7 +7168,7 @@ const meetingStatusProposedMqtt = (response) => {
 };
 
 const meetingStatusPublishedMqtt = (response) => {
-  console.log(response, "meetingStatusPublishedMqttmeetingStatusPublishedMqtt");
+  
   return {
     type: actions.MQTT_MEETING_STATUS_PUBLISHED,
     response: response,
@@ -7396,7 +7396,7 @@ const getUserProposedDatesFail = (message) => {
 };
 
 const getUserWiseProposedDatesMainApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getUserProposedDatesInit());
     let form = new FormData();
@@ -7591,8 +7591,8 @@ const endMeetingStatusApi = (
   route,
   setDeleteMeetingConfirmationModal
 ) => {
-  console.log("end meeting chaek");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+  
   let leaveMeetingData = {
     FK_MDID: Number(Data.MeetingID),
     DateTime: getCurrentDateTimeUTC(),
@@ -7847,7 +7847,7 @@ const JoinCurrentMeeting = (
   setViewAdvanceMeetingModal,
   NotificationCheckQuickMeet
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
@@ -7909,10 +7909,7 @@ const JoinCurrentMeeting = (
               );
               if (isQuickMeeting === true) {
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
-                console.log(
-                  { no, viewMeetingData },
-                  "viewMeetingDataviewMeetingData"
-                );
+                
                 if (no !== 11) {
                   await dispatch(
                     ViewMeeting(
@@ -7936,7 +7933,7 @@ const JoinCurrentMeeting = (
               }
               //Work For Web Notification Quick  Meeting Joining
               if (NotificationCheckQuickMeet) {
-                console.log("here i am");
+                
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
                 dispatch(
                   ViewMeeting(
@@ -7959,16 +7956,16 @@ const JoinCurrentMeeting = (
               let presenterViewStatus =
                 response.data.responseResult.isPresenterViewStarted;
               if (presenterViewStatus && !activeStatusOneToOne) {
-                console.log("busyCall 21");
+                
 
                 let data = {
                   VideoCallURL: String(Data.VideoCallURL),
                   WasInVideo: false,
                 };
-                console.log("onClickStopPresenter", data);
+                
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
-                console.log("busyCall 21");
+                
                 localStorage.setItem("JoinpresenterForonetoone", true);
                 dispatch(nonMeetingVideoGlobalModal(true));
                 dispatch(presenterViewGlobalState(0, true, false, false));
@@ -8052,7 +8049,7 @@ const LeaveCurrentMeeting = (
   setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
@@ -8113,7 +8110,7 @@ const LeaveCurrentMeeting = (
                       t("Successful")
                     )
                   );
-                  console.log("Checking ");
+                  
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
@@ -8156,7 +8153,7 @@ const LeaveCurrentMeeting = (
                       PublishedMeetings:
                         currentView && Number(currentView) === 1 ? true : false,
                     };
-                    console.log("chek search meeting");
+                    
                     await dispatch(
                       searchNewUserMeeting(navigate, searchData, t)
                     );
@@ -8210,7 +8207,7 @@ const LeaveCurrentMeeting = (
                   } else if (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
-                    console.log("navigateLocation");
+                    
                     navigate("/Diskus/");
                   } else {
                     let searchData = {
@@ -8223,7 +8220,7 @@ const LeaveCurrentMeeting = (
                       PublishedMeetings:
                         currentView && Number(currentView) === 1 ? true : false,
                     };
-                    console.log("chek search meeting");
+                    
                     await dispatch(
                       searchNewUserMeeting(navigate, searchData, t)
                     );
@@ -8261,7 +8258,7 @@ const LeaveCurrentMeeting = (
                 //   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 // }
               } catch (error) {
-                console.log(error);
+                
               }
 
               setViewFlag(false);
@@ -8316,7 +8313,7 @@ const newLeaveCurrentMeeting = (
   setViewAdvanceMeetingModal,
   setEndMeetingConfirmationModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows") || 30;
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent") || 1;
@@ -8377,7 +8374,7 @@ const newLeaveCurrentMeeting = (
                       t("Successful")
                     )
                   );
-                  console.log("Checking ");
+                  
                   if (typeof setEndMeetingConfirmationModal === "function") {
                     setEndMeetingConfirmationModal(false);
                   }
@@ -8420,7 +8417,7 @@ const newLeaveCurrentMeeting = (
                       PublishedMeetings:
                         currentView && Number(currentView) === 1 ? true : false,
                     };
-                    console.log("chek search meeting");
+                    
                     await dispatch(
                       searchNewUserMeeting(navigate, searchData, t)
                     );
@@ -8474,7 +8471,7 @@ const newLeaveCurrentMeeting = (
                   } else if (
                     localStorage.getItem("navigateLocation") === "MainDashBoard"
                   ) {
-                    console.log("navigateLocation");
+                    
                     navigate("/Diskus/");
                   } else {
                     let searchData = {
@@ -8487,7 +8484,7 @@ const newLeaveCurrentMeeting = (
                       PublishedMeetings:
                         currentView && Number(currentView) === 1 ? true : false,
                     };
-                    console.log("chek search meeting");
+                    
                     await dispatch(
                       searchNewUserMeeting(navigate, searchData, t)
                     );
@@ -8525,7 +8522,7 @@ const newLeaveCurrentMeeting = (
                 //   dispatch(LeaveMeetingVideo(Data, navigate, t));
                 // }
               } catch (error) {
-                console.log(error);
+                
               }
 
               setViewFlag(false);
@@ -8590,28 +8587,8 @@ const LeaveCurrentMeetingOtherMenus = (
   location,
   setViewAdvanceMeetingModal
 ) => {
-  console.log(
-    {
-      scheduleMeetingsPageFlag,
-      viewProposeDateMeetingsPageFlag,
-      viewAdvanceMeetingsPublishPageFlag,
-      viewAdvanceMeetingsUnpublishPageFlag,
-      viewProposeOrganizerMeetingsPageFlag,
-      proposeNewMeetingsPageFlag,
-      viewMeetingsFlag,
-      scheduleMeetingPageFlagReducer,
-      viewProposeDateMeetingPageFlagReducer,
-      viewAdvanceMeetingPublishPageFlagReducer,
-      viewAdvanceMeetingUnpublishPageFlagReducer,
-      viewProposeOrganizerMeetingPageFlagReducer,
-      proposeNewMeetingPageFlagReducer,
-      viewMeetingFlagReducer,
-      location,
-      setViewAdvanceMeetingModal,
-    },
-    "Coming inside this block scopr"
-  );
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+  
   let currentMeetingVideoID = Number(localStorage.getItem("meetingVideoID"));
   let NavigationLocation = localStorage.getItem("navigateLocation");
   return async (dispatch) => {
@@ -8713,7 +8690,7 @@ const LeaveCurrentMeetingOtherMenus = (
                   t,
                 });
               } catch (error) {
-                console.log(error, "Navigation error");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -8806,7 +8783,7 @@ const validateStringEmailApi = (
     let Data = {
       EncryptedString: emailString,
     };
-    let token = JSON.parse(localStorage.getItem("token"));
+    
 
     dispatch(validateStringEmail_init());
 
@@ -8914,7 +8891,7 @@ const validateStringParticipantProposedApi = (emailString, navigate, t) => {
       let Data = {
         EncryptedString: emailString,
       };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateStringParticipantProposed_init());
 
@@ -9028,7 +9005,7 @@ const getDashboardMeetingCountMQTT = (response) => {
   };
 };
 const getDashbardMeetingDataApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(getDashbardMeetingData_init());
     let form = new FormData();
@@ -9102,7 +9079,7 @@ const getAllMeetingUsersRSVP_fail = (message) => {
   };
 };
 const getAllMeetingUsersRSVPApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(getAllMeetingUsersRSVP_init());
     let form = new FormData();
@@ -9176,7 +9153,7 @@ const LeaveMeetingVideo = (
   setJoiningOneToOneAfterLeavingPresenterView,
   setLeaveMeetingVideoForOneToOneOrGroup
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", leaveMeetingVideo.RequestMethod);
@@ -9237,17 +9214,17 @@ const LeaveMeetingVideo = (
               sessionStorage.setItem("alreadyInMeetingVideo", false);
 
               await dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
+              
               await dispatch(setVideoControlHost(false));
 
               try {
                 // for closed waiting an start presenting
-                console.log("maximizeParticipantVideoFlag");
+                
                 let currentMeeting = localStorage.getItem("currentMeetingID");
                 if (flag === 1) {
-                  console.log("Check Leave");
-                  console.log("maximizeParticipantVideoFlag");
-                  console.log("maximizeParticipantVideoFlag");
+                  
+                  
+                  
 
                   await dispatch(videoIconOrButtonState(false));
                   await dispatch(participantVideoButtonState(false));
@@ -9261,7 +9238,7 @@ const LeaveMeetingVideo = (
                     )
                   );
                 } else if (flag === 2) {
-                  console.log("Check Leave");
+                  
                   let currentMeetingVideoURL =
                     localStorage.getItem("videoCallURL");
                   await dispatch(videoIconOrButtonState(false));
@@ -9272,11 +9249,11 @@ const LeaveMeetingVideo = (
                   };
                   dispatch(joinPresenterViewMainApi(navigate, t, data));
                 } else if (flag === 3) {
-                  console.log("busyCall");
+                  
                   await setLeaveMeetingVideoForOneToOneOrGroup(false);
                   setJoiningOneToOneAfterLeavingPresenterView(true);
                 } else if (flag === 4) {
-                  console.log("busyCall Nothing");
+                  
                   await dispatch(normalizeVideoPanelFlag(false));
                   await dispatch(maximizeVideoPanelFlag(false));
                   await dispatch(minimizeVideoPanelFlag(false));
@@ -9325,15 +9302,15 @@ const LeaveMeetingVideo = (
               localStorage.setItem("isMicEnabled", false);
               localStorage.setItem("activeCall", false);
               await dispatch(setAudioControlHost(false));
-              console.log("videoHideUnHideForHost");
+              
               await dispatch(setVideoControlHost(false));
               let getMeetingHostData = Data.IsHost;
-              console.log("Check Leave");
-              console.log(getMeetingHostData, "asdadadadadaddda");
+              
+              
               if (flag === 1) {
-                console.log("Check Leave");
-                console.log("maximizeParticipantVideoFlag");
-                console.log("maximizeParticipantVideoFlag");
+                
+                
+                
                 let currentMeeting = localStorage.getItem("currentMeetingID");
 
                 await dispatch(videoIconOrButtonState(false));
@@ -9348,7 +9325,7 @@ const LeaveMeetingVideo = (
                   )
                 );
               } else if (flag === 2) {
-                console.log("Check Leave");
+                
                 let currentMeetingVideoURL =
                   localStorage.getItem("videoCallURL");
                 await dispatch(videoIconOrButtonState(false));
@@ -9359,16 +9336,16 @@ const LeaveMeetingVideo = (
                 };
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (flag === 3) {
-                console.log("busyCall");
+                
                 await setLeaveMeetingVideoForOneToOneOrGroup(false);
                 setJoiningOneToOneAfterLeavingPresenterView(true);
               } else if (flag === 4) {
-                console.log("busyCall Nothing");
+                
                 await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));
               } else {
-                console.log("Check Leave");
+                
                 localStorage.setItem("isMeetingVideoHostCheck", false);
               }
               // this will check on leave that it's host  if it's  host then isMeetingVideoHostCheck should be false
@@ -9386,7 +9363,7 @@ const LeaveMeetingVideo = (
         }
       })
       .catch((response) => {
-        console.log("leaveMeetingVideoFail", response);
+        
         dispatch(leaveMeetingVideoFail(t("Something-went-wrong")));
       });
   };
@@ -9469,7 +9446,7 @@ const validateStringUserMeetingProposedDatesPollsApi = (
       let Data = {
         EncryptedString: emailString,
       };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateStringUserMeetingProposedDatesPolls_Init());
 
@@ -9614,8 +9591,8 @@ const GetMeetingStatusDataAPI = (
   setVideoTalk,
   setViewFlag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  console.log(FlagOnRouteClickAdvanceMeet, "FlagOnRouteClickAdvanceMeet");
+  
+  
   return async (dispatch) => {
     await dispatch(GetMeetingStatusDataInit());
     let form = new FormData();
@@ -9703,7 +9680,7 @@ const GetMeetingStatusDataAPI = (
                     isVideoCall: response.data.responseResult.isVideoCall,
                     talkGroupID: response.data.responseResult.talkGroupID,
                   });
-                console.log(Check, "errorerrorerror");
+                
                 //Joining Meeting Scenario
                 if (Check === 1) {
                   let joinMeetingData = {
@@ -9768,7 +9745,7 @@ const GetMeetingStatusDataAPI = (
                   );
                 }
               } catch (error) {
-                console.log(error, "errorerrorerror");
+                
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -9834,7 +9811,7 @@ const validateEncryptedStringViewMeetingLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateEncryptedStringViewMeetingLink_Init());
 
@@ -9988,7 +9965,7 @@ const uploadDocument_fail_quickMeeting = (message) => {
 
 // Upload Documents API for Quick Meeting
 const uploadDocumentsQuickMeetingApi = (navigate, t, data, newfile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -10082,7 +10059,7 @@ const saveFilesQuickMeeting_Fail = (message) => ({
 const saveFilesQuickMeetingApi = (navigate, t, data, folderID, newFolder) => {
   return async (dispatch) => {
     try {
-      let token = JSON.parse(localStorage.getItem("token"));
+      
       let creatorID = JSON.parse(localStorage.getItem("userID"));
       let requestData = {
         FolderID:
@@ -10219,7 +10196,7 @@ const moveFilesAndFoldersApi = (
   checkFlag,
   setShow
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     await dispatch(moveFilesAndFolder_init());
     let form = new FormData();
@@ -10263,7 +10240,7 @@ const moveFilesAndFoldersApi = (
                   setShow
                 )
               );
-              console.log(checkFlag, "checkFlagcheckFlag");
+              
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -10435,7 +10412,7 @@ const requestMeetingRecordingTranscript_clear = () => {
 };
 
 const requestMeetingRecordingTranscriptApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(requestMeetingRecordingTranscript_init());
     let form = new FormData();
@@ -10539,7 +10516,7 @@ const NewJoinCurrentMeeting = (
   setAdvanceMeetingModalID,
   setViewAdvanceMeetingModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return async (dispatch) => {
     await dispatch(joinMeetingInit());
@@ -10627,16 +10604,16 @@ const NewJoinCurrentMeeting = (
               let presenterViewStatus =
                 response.data.responseResult.isPresenterViewStarted;
               if (presenterViewStatus && !activeStatusOneToOne) {
-                console.log("busyCall 21");
+                
 
                 let data = {
                   VideoCallURL: String(Data.VideoCallURL),
                   WasInVideo: false,
                 };
-                console.log("onClickStopPresenter", data);
+                
                 dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
-                console.log("busyCall 21");
+                
                 localStorage.setItem("JoinpresenterForonetoone", true);
                 dispatch(nonMeetingVideoGlobalModal(true));
                 dispatch(presenterViewGlobalState(0, true, false, false));

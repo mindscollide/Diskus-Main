@@ -44,8 +44,8 @@ const ReviewMinutes = () => {
   );
   let currentUserID = Number(localStorage.getItem("userID"));
   let currentUserName = localStorage.getItem("name");
-  console.log(minuteStatus, "minuteStatusminuteStatus");
-  console.log(MinutesPublishedNotificationStatus, "minuteStatusminuteStatus");
+  
+  
 
   const currentMeetingMinutesToReviewData = useSelector(
     (state) => state.MinutesReducer.currentMeetingMinutesToReviewData
@@ -79,10 +79,7 @@ const ReviewMinutes = () => {
     (state) => state.MinutesReducer.WorkFlowActorStatusData?.data ?? null
   );
 
-  console.log(
-    WebNotificationClickActorStatusIDMinutes,
-    "currentMeetingMinutesToReviewData"
-  );
+  
   //Getting current Language
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -101,10 +98,7 @@ const ReviewMinutes = () => {
   const [isAgenda, setIsAgenda] = useState(false);
   const [minuteViewFlag, setMinuteViewFlag] = useState(null);
   const [disableSubmit, setDisableSubmit] = useState(false);
-  console.log(
-    { minutesAgenda, minutesGeneral },
-    "minutesGeneralminutesGeneral"
-  );
+  
   const divRef = useRef(null);
 
   const countActorBundleStatusID2 = (data) => {
@@ -181,10 +175,7 @@ const ReviewMinutes = () => {
       let getDeadlineformated = forRecentActivity(
         currentMeetingMinutesToReviewData.deadline
       );
-      console.log(
-        currentMeetingMinutesToReviewData,
-        "currentMeetingMinutesToReviewDatacurrentMeetingMinutesToReviewData"
-      );
+      
       let currentDate = new Date();
       let getDeadlineIsPassed = currentDate > getDeadlineformated;
       setMinuteStatus(currentMeetingMinutesToReviewData.statusID);
@@ -192,13 +183,10 @@ const ReviewMinutes = () => {
         setDisableSubmit(getDeadlineIsPassed);
       } else {
         let result = checkActorBundleStatus(minutesAgenda, minutesGeneral);
-        console.log(result, "resultresult");
+        
         setDisableSubmit(result);
       }
-      console.log(
-        getDeadlineIsPassed,
-        "currentMeetingMinutesToReviewDatacurrentMeetingMinutesToReviewData"
-      );
+      
     }
   }, [currentMeetingMinutesToReviewData, minutesAgenda, minutesGeneral]);
   // useEffect(() => {
@@ -333,17 +321,12 @@ const ReviewMinutes = () => {
   };
 
   const updateAcceptMinutes = (minutesData, rejectData) => {
-    console.log(minutesData, "minutesDataminutesData updateAcceptMinutes");
+    
     return minutesData.map((agenda) => {
       // Update main minuteData
       const updatedMinuteData = agenda.minuteData.map((minute) => {
         if (minute.minuteID === rejectData.minuteID) {
-          console.log(
-            minute.minuteID,
-            rejectData.minuteID,
-            minute,
-            "minutesDataminutesData updateAcceptMinutes"
-          );
+          
 
           return {
             ...minute,
@@ -364,12 +347,7 @@ const ReviewMinutes = () => {
       const updatedSubMinutes = agenda.subMinutes?.map((subAgenda) => {
         const updatedSubMinuteData = subAgenda.minuteData.map((subMinute) => {
           if (subMinute.minuteID === rejectData.minuteID) {
-            console.log(
-              subMinute.minuteID,
-              rejectData.minuteID,
-              subMinute,
-              "minutesDataminutesData updateAcceptMinutes"
-            );
+            
 
             return {
               ...subMinute,
@@ -403,12 +381,7 @@ const ReviewMinutes = () => {
     // Update MinutesGeneral
     const updatedMinutesGeneral = minutesGeneral.map((minute) => {
       if (minute.minuteID === data.minuteID) {
-        console.log(
-          minute.minuteID,
-          data.minuteID,
-          minute,
-          "acceptMinuteacceptMinute minuteminute"
-        );
+        
         return {
           ...minute,
           reason: "",
@@ -421,14 +394,11 @@ const ReviewMinutes = () => {
               : [],
         };
       }
-      console.log(minute, "acceptMinuteacceptMinute minuteminute");
+      
 
       return minute;
     });
-    console.log(
-      { updatedMinutesGeneral },
-      "acceptMinuteacceptMinute minuteminute"
-    );
+    
 
     setMinutesAgenda(updatedMinutesAgenda);
     setMinutesGeneral(updatedMinutesGeneral);
@@ -471,7 +441,7 @@ const ReviewMinutes = () => {
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
+    
     let Data = {
       taskId: 2,
       commingFrom: 4,
@@ -487,7 +457,7 @@ const ReviewMinutes = () => {
       );
     }
   };
-  console.log("minutesToReview", minutesToReview);
+  
   useEffect(() => {
     const div = divRef.current;
 
@@ -566,7 +536,7 @@ const ReviewMinutes = () => {
   useEffect(() => {
     try {
       const reducerData = GetMinutesForReviewerByMeetingIdData;
-      console.log(reducerData, "reducerDatareducerData");
+      
       if (reducerData !== null) {
         const { agendaHierarchyList, agendaMinutes, generalMinutes } =
           reducerData;
@@ -578,15 +548,7 @@ const ReviewMinutes = () => {
             };
           }
         );
-        console.log(
-          {
-            newGeneralMeetingData,
-            agendaHierarchyList,
-            agendaMinutes,
-            generalMinutes,
-          },
-          "reducerDatareducerData"
-        );
+        
 
         setMinutesGeneral(newGeneralMeetingData);
         setMinutesToReview(countActorBundleStatusID2(reducerData));
@@ -652,7 +614,7 @@ const ReviewMinutes = () => {
           });
           setMinutesAgenda(transformedData);
         } catch (error) {
-          console.log(error);
+          
         }
       } else {
       }
@@ -748,10 +710,7 @@ const ReviewMinutes = () => {
           minutesGeneral,
           updatedMinuteData
         );
-        console.log(
-          { updatedMinutesData },
-          "updatedMinutesAgendaupdatedMinutesAgenda"
-        );
+        
         setMinutesGeneral(updatedMinutesData);
         setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
       } else if (minuteViewFlag === 2 || minuteViewFlag === 1) {
@@ -771,10 +730,7 @@ const ReviewMinutes = () => {
           minutesAgenda,
           updatedMinuteData
         );
-        console.log(
-          { updatedMinutesAgenda },
-          "updatedMinutesAgendaupdatedMinutesAgenda"
-        );
+        
         setMinutesAgenda(updatedMinutesAgenda);
         setMinutesToReview(minutesToReview - 1 !== 0 ? minutesToReview - 1 : 0);
       }
@@ -866,7 +822,7 @@ const ReviewMinutes = () => {
                       </Row>
                       <>
                         {data?.minuteData?.map((parentMinutedata, index) => {
-                          console.log(parentMinutedata, "parentMinutedata");
+                          
                           return (
                             <>
                               <Row>
@@ -1396,10 +1352,7 @@ const ReviewMinutes = () => {
                                     parentMinutedata.agendaMinutesVersionHistory
                                       .length -
                                       1;
-                                  console.log(
-                                    historyData,
-                                    "parentMinutedataparentMinutedata"
-                                  );
+                                  
                                   return (
                                     <>
                                       <Row>
@@ -2956,7 +2909,7 @@ const ReviewMinutes = () => {
               : null}
 
             {minutesGeneral?.map((data, index) => {
-              console.log(data, "datadatadatadata");
+              
               return (
                 <>
                   <Row className='mx-50'>

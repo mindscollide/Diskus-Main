@@ -44,7 +44,7 @@ const VerificationIphone = () => {
   useEffect(() => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
-  console.log("currentLocale", currentLocale);
+  
 
   // translate Languages end
   const onChangeHandlerVerificationIphone1 = (e) => {
@@ -95,9 +95,9 @@ const VerificationIphone = () => {
   useEffect(() => {
     try {
       let parsedDevices = JSON.parse(devicesi);
-      console.log(parsedDevices, "Parsed Devices");
+      
       setDevices(parsedDevices);
-      console.log(devices, "Devices State after set");
+      
     } catch (e) {
       console.error("Failed to parse devices from localStorage", e);
     }
@@ -116,7 +116,7 @@ const VerificationIphone = () => {
 
   //handle Go back Functionality
   const handleGoback = () => {
-    console.log("goback");
+    
     if (localStorage.getItem("isMultiDevice")) {
       localStorage.setItem("LoginFlowPageRoute", 13);
       dispatch(LoginFlowRoutes(13));
@@ -184,7 +184,7 @@ const VerificationIphone = () => {
                   <Row className='Scroll_bar_For_devices mt-3'>
                     {devices && devices.length > 0
                       ? devices.map((data, index) => {
-                          console.log(data, "lengthlengthlength");
+                          
                           return (
                             <Col sm={12} lg={12} md={12} className='mx-2'>
                               <Row key={index} className='my-2'>

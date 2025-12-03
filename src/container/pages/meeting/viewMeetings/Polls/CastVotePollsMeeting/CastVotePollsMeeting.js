@@ -47,7 +47,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         PollOptionIDs: viewProgressPollsDetails.answer,
         IsCratedFromMainPoll: false,
       };
-      console.log(data, "submitvotesubmitvotesubmitvote");
+      
       // dispatch(castVoteApi(navigate, data, t, 3, setvotePolls, currentMeeting));
       dispatch(
         UpdatedCastVoteAPI(

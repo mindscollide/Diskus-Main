@@ -89,7 +89,7 @@ const WebNotfication = ({
   const location = useLocation();
   const currentURL = window.location.href;
   const todayDate = moment().format("YYYYMMDD"); // Format today's date to match the incoming date format
-  console.log(polls, "PayLoadDataPayLoadData");
+  
   const { setResultresolution } = useResolutionContext();
   //Groups Context
   const { setViewGroupPage, setShowModal } = useGroupsContext();
@@ -112,7 +112,7 @@ const WebNotfication = ({
   const CurrentMeetingStatus = useSelector(
     (state) => state.NewMeetingreducer.currentMeetingStatus
   );
-  console.log(CurrentMeetingStatus, "CurrentMeetingStatus");
+  
   //Spinner Styles in Lazy Loading
   const antIcon = (
     <LoadingOutlined
@@ -206,7 +206,7 @@ const WebNotfication = ({
   const HandleClickNotfication = async (NotificationData) => {
     //Work For Leave Video Intimination
     let PayLoadData = JSON.parse(NotificationData.payloadData);
-    console.log({ PayLoadData, NotificationData }, "PayLoadDataPayLoadData");
+    
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     if (isMeeting) {
       //For Scenario if Already in meeting And Click on POlls Notification Directly Open the Voting Screen
@@ -453,7 +453,7 @@ const WebNotfication = ({
             );
           } else {
             navigate("/Diskus/Meeting");
-            console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+            
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
@@ -619,7 +619,7 @@ const WebNotfication = ({
             );
           } else {
             navigate("/Diskus/Meeting");
-            console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+            
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
@@ -678,7 +678,7 @@ const WebNotfication = ({
             );
           } else {
             navigate("/Diskus/Meeting");
-            console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+            
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",
@@ -738,7 +738,7 @@ const WebNotfication = ({
             );
           } else {
             navigate("/Diskus/Meeting");
-            console.log(PayLoadData.IsQuickMeeting, "AdvanceOperations");
+            
             localStorage.setItem("AdvanceMeetingOperations", true);
             localStorage.setItem(
               "NotificationAdvanceMeetingID",

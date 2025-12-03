@@ -25,10 +25,7 @@ const EditCommentModal = ({
     (state) => state.MinutesReducer
   );
 
-  console.log(
-    currentMeetingMinutesToReviewData,
-    "currentMeetingMinutesToReviewData"
-  );
+  
   const minutesDetails = useSelector(
     (state) =>
       state.MinutesReducer.currentMeetingMinutesToReviewData.minutesDetails

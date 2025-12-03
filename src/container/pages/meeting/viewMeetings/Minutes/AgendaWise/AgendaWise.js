@@ -429,7 +429,7 @@ const AgendaWise = ({
   // For getting the MinuteID
   useEffect(() => {
     if (agendaWiseMinuteID !== 0) {
-      console.log(agendaWiseMinuteID, "agendaWiseMinuteIDagendaWiseMinuteID");
+      
       documentUploadingFunc(agendaWiseMinuteID);
     }
   }, [agendaWiseMinuteID]);
@@ -467,7 +467,7 @@ const AgendaWise = ({
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
+    
     let Data = {
       taskId: 4,
       commingFrom: 4,
@@ -514,7 +514,7 @@ const AgendaWise = ({
   };
 
   const handleResetBtnFunc = () => {
-    console.log(addNoteFields, "addNoteFieldsaddNoteFieldsaddNoteFields");
+    
     setAddNoteFields({
       ...addNoteFields,
       Description: {
@@ -532,19 +532,19 @@ const AgendaWise = ({
     setFileForSend([]);
     setPreviousFileIDs([]);
   };
-  console.log(agendaOptions, "descriptiondescription");
+  
 
   //handle Edit functionality
   const handleEditFunc = (data, title) => {
-    console.log(agendaOptions, "descriptiondescription");
-    console.log(data, title, "descriptiondescription");
+    
+    
     setupdateData(data);
     if (data.description !== "") {
-      console.log(data.description, "descriptiondescription");
+      
       let findOptionValue = agendaOptions.filter(
         (agendaOption, index) => agendaOption.label === title
       );
-      console.log(findOptionValue, "descriptiondescription");
+      
       setAddNoteFields({
         Description: {
           value: data.description,
@@ -565,10 +565,10 @@ const AgendaWise = ({
       });
       setisEdit(true);
     } else {
-      console.log("data.minutesDetails is undefined or null");
+      
     }
     setisEdit(true);
-    console.log(data, "handleEditFunchandleEditFunc");
+    
     let Data = {
       FK_MeetingAgendaMinutesID: data.minuteID,
     };
@@ -632,7 +632,7 @@ const AgendaWise = ({
     let newfile = [...previousFileIDs];
     let fileObj = [];
     if (Object.keys(fileForSend).length > 0) {
-      console.log(updateData.minuteID, "updateDataupdateData");
+      
 
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
@@ -673,7 +673,7 @@ const AgendaWise = ({
         )
       );
     } else if (newfile.length > 0) {
-      console.log(updateData, "updateDataupdateData");
+      
 
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
@@ -694,7 +694,7 @@ const AgendaWise = ({
     } else {
       // If newfile is empty, call the API with an empty docsData
 
-      console.log(updateData.minuteID, "updateDataupdateData");
+      
       let docsData = {
         FK_MeetingAgendaMinutesID: Number(updateData.minuteID),
         FK_MDID: advanceMeetingModalID,
@@ -721,7 +721,7 @@ const AgendaWise = ({
   //     ResponseMessage !== t("List-updated-successfully") &&
   //     ResponseMessage !== t("No-data-available")
   //   ) {
-  //     console.log(ResponseMessage, "ResponseMessageResponseMessage");
+  //     
   //     showMessage(ResponseMessage, "success", setOpen);
   //     dispatch(CleareMessegeNewMeeting());
   //   } else {
@@ -784,7 +784,7 @@ const AgendaWise = ({
         ? prevIndices.filter((i) => i !== index)
         : [...prevIndices, index]
     );
-    console.log("openIndices", openIndices);
+    
   };
 
   const openMinuteDrawer = (minuteID) => {
@@ -831,7 +831,7 @@ const AgendaWise = ({
       if (reducerData && Object.keys(reducerData).length > 0) {
         let transformedData = [];
 
-        console.log("Initial transformedData:", transformedData);
+        
 
         reducerData.agendaHierarchyList.forEach((parentAgenda) => {
           let parentAgendaMinutes = reducerData.agendaWiseMinutes.filter(
@@ -897,10 +897,7 @@ const AgendaWise = ({
           }
         });
 
-        console.log(
-          "Transformed Data before attachment update:",
-          transformedData
-        );
+        
 
         transformedData.forEach((agenda) => {
           agenda.minuteData.forEach((minute) => {
@@ -924,10 +921,7 @@ const AgendaWise = ({
           });
         });
 
-        console.log(
-          "Transformed Data after attachment update:",
-          transformedData
-        );
+        
 
         if (
           GetMinuteReviewStatsForOrganizerByMeetingIdData &&
@@ -961,16 +955,13 @@ const AgendaWise = ({
 
             return agenda;
           });
-          console.log(
-            newTransformedData,
-            "newTransformedDatanewTransformedData"
-          );
+          
           setMinutesData(newTransformedData);
         } else {
           setMinutesData(transformedData);
         }
 
-        console.log("Final transformedData:", transformedData);
+        
       } else {
         setMinutesData([]);
       }
@@ -1029,7 +1020,7 @@ const AgendaWise = ({
     );
   };
 
-  console.log("Minutes of Agenda", minutesData);
+  
 
   return (
     <section className={styles["agenda-wise-minutes"]}>
@@ -1180,16 +1171,13 @@ const AgendaWise = ({
         </>
       ) : null}
       {minutesData.map((data, index) => {
-        console.log(data, "minutesDataminutesDataminutesData");
+        
         const isOpen = openIndices.includes(index);
         let attachmentResult = hasAttachments(data);
         let isRejectedMemberHas = data.minuteData.filter(
           (data, index) => data?.MinuteStats?.rejectedByUsers.length > 0
         );
-        console.log(
-          isRejectedMemberHas,
-          "isRejectedMemberHasisRejectedMemberHas"
-        );
+        
         return (
           <Row className='mt-2'>
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
@@ -1249,10 +1237,7 @@ const AgendaWise = ({
                       {data.isParentData ? (
                         <>
                           {data.minuteData.map((parentMinutedata, index) => {
-                            console.log(
-                              { parentMinutedata },
-                              "parentMinutedataparentMinutedata"
-                            );
+                            
                             return (
                               <>
                                 {minuteReviewData !== null &&

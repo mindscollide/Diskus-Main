@@ -122,7 +122,7 @@ const initiateVideoCallFail = (message) => {
 };
 
 const InitiateVideoCall = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(initiateVideoCallInitial());
     let form = new FormData();
@@ -187,7 +187,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                   "Video_VideoServiceManager_InitiateVideoCall_03".toLowerCase()
                 )
             ) {
-              console.log("NonMeetingVideoCall");
+              
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.removeItem("CallType");
               localStorage.removeItem("callTypeID");
@@ -199,7 +199,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
             }
           } else {
-            console.log("NonMeetingVideoCall");
+            
             sessionStorage.setItem("NonMeetingVideoCall", false);
             localStorage.removeItem("CallType");
             localStorage.removeItem("callTypeID");
@@ -278,7 +278,7 @@ const VideoCallResponse = (Data, navigate, t) => {
                   "Video_VideoServiceManager_VideoCallResponse_01".toLowerCase()
                 )
             ) {
-              console.log(Data, "responsedataresponseResult");
+              
               let activeCall = JSON.parse(localStorage.getItem("activeCall"));
               if (activeCall === false) {
                 sessionStorage.setItem("NonMeetingVideoCall", false);
@@ -302,7 +302,7 @@ const VideoCallResponse = (Data, navigate, t) => {
                   )
                 );
               } else if (Data.CallStatusID === 3) {
-                console.log(Data, "CheckCheck");
+                
                 localStorage.removeItem("incommingCallType");
                 localStorage.removeItem("incommingCallTypeID");
                 localStorage.removeItem("incommingNewCallerID");
@@ -369,7 +369,7 @@ const getUserRecentCallsFail = (message) => {
 };
 
 const GetUserRecentCalls = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(getUserRecentCallsInitial());
     let form = new FormData();
@@ -432,7 +432,7 @@ const ScrollRecentCalls = (response) => {
 };
 
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", getUserRecentCalls.RequestMethod);
@@ -598,7 +598,7 @@ const getUserMissedCallCountFail = (message) => {
 };
 
 const GetUserMissedCallCount = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(getUserMissedCallCountInitial());
     let form = new FormData();
@@ -679,7 +679,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          console.log("Check LeaveCall new");
+          
           dispatch(LeaveCall(Data, navigate, t, flag, setIsTimerRunning));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -690,7 +690,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "Video_VideoServiceManager_LeaveCall_01".toLowerCase()
                 )
             ) {
-              console.log("leavecallMeetingVideo");
+              
               localStorage.setItem("callTypeID", 0);
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("initiateVideoCall", false);
@@ -750,13 +750,13 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "Video_VideoServiceManager_LeaveCall_02".toLowerCase()
                 )
             ) {
-              console.log("leavecallMeetingVideo", flag);
+              
               dispatch(leavePresenterJoinOneToOneOrOtherCall(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("callTypeID", 0);
 
               if (flag === 1) {
-                console.log("leavecallMeetingVideo");
+                
                 await dispatch(normalizeVideoPanelFlag(false));
                 await dispatch(maximizeVideoPanelFlag(false));
                 await dispatch(minimizeVideoPanelFlag(false));

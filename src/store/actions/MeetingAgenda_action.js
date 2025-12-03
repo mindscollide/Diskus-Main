@@ -88,7 +88,7 @@ const getAgendaVotingDetails_fail = (message) => {
   };
 };
 const GetAgendaVotingDetails = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAgendaVotingDetails_init());
     let form = new FormData();
@@ -163,7 +163,7 @@ const getAllVotingResultDisplay_fail = (message) => {
   };
 };
 const GetAllVotingResultDisplay = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllVotingResultDisplay_init());
     let form = new FormData();
@@ -244,7 +244,7 @@ const saveAgendaVoting_fail = (message) => {
   };
 };
 const SaveAgendaVoting = (Data, navigate, t, currentMeeting) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let getAgendaData = {
     MeetingID: currentMeeting,
   };
@@ -352,7 +352,7 @@ const getAgendaAndVotingInfo_fail = (message) => {
   };
 };
 const GetAgendaAndVotingInfo = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAgendaAndVotingInfo_init());
     let form = new FormData();
@@ -432,7 +432,7 @@ const casteVoteForAgenda_fail = (message) => {
   };
 };
 const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(casteVoteForAgenda_init());
     let form = new FormData();
@@ -460,12 +460,12 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                 )
               );
               try {
-                console.log(typeof setRows, "typeoftypeof");
+                
 
                 if (isMainAgenda) {
                   setRows((rowData) => {
                     return rowData.map((newData) => {
-                      console.log(newData, "setDatasetDatasetData");
+                      
                       if (String(newData.id) === String(Data.AgendaID)) {
                         return {
                           ...newData,
@@ -478,7 +478,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 } else {
                   setRows((rowData) => {
-                    console.log(rowData, "setDatasetDatasetData");
+                    
                     return rowData.map((dataItem) => {
                       if (dataItem.subAgenda && dataItem.subAgenda.length > 0) {
                         return {
@@ -503,7 +503,7 @@ const CasteVoteForAgenda = (Data, navigate, t, isMainAgenda, setRows) => {
                   });
                 }
               } catch (error) {
-                console.log(error);
+                
               }
 
               dispatch(showCastVoteAgendaModal(false));
@@ -560,7 +560,7 @@ const viewAgendaVotingResults_fail = (message) => {
   };
 };
 const ViewAgendaVotingResults = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(viewAgendaVotingResults_init());
     let form = new FormData();
@@ -645,7 +645,7 @@ const GetAdvanceMeetingAgendabyMeetingID = (
   flag,
   currentMeeting
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingID_init());
     let form = new FormData();
@@ -779,7 +779,7 @@ const CreateUpdateMeetingDataRoomMap = (
   checkFlag,
   setShow
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(createUpdateMeetingDataRoomMap_init());
@@ -817,7 +817,7 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
                 FileIds: attachmentIds.map((ids) => ({ PK_FileID: ids })),
@@ -853,7 +853,7 @@ const CreateUpdateMeetingDataRoomMap = (
                       : 50,
                     PublishedMeetings: true,
                   };
-                  console.log("chek search meeting");
+                  
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else if (checkFlag === 5) {
                   //  Create Committee Meeting 5
@@ -902,10 +902,7 @@ const CreateUpdateMeetingDataRoomMap = (
                 }
               }
 
-              console.log(
-                moveFilesandFolders,
-                "moveFilesandFoldersmoveFilesandFolders"
-              );
+              
             }
 
             localStorage.setItem("MeetingID", data.MeetingID);
@@ -929,7 +926,7 @@ const CreateUpdateMeetingDataRoomMap = (
               )
             );
             if (checkFlag !== null && checkFlag !== undefined) {
-              console.log(attachmentIds, "attachmentIdsattachmentIds");
+              
 
               let moveFilesandFolders = {
                 FolderID: response.data.responseResult.folderID,
@@ -1049,7 +1046,7 @@ const uploadDocument_fail = (message) => {
 //   newFolder,
 //   newfile
 // ) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//   
 //   let creatorID = localStorage.getItem("userID");
 //   let organizationID = localStorage.getItem("organizationID");
 //   return async (dispatch) => {
@@ -1112,7 +1109,7 @@ const uploadDocument_fail = (message) => {
 //               //   fileSizeOnDisk: Number(response.data.responseResult.fileSize),
 //               // };
 //               // await newfile.push(dummyData);
-//               // console.log("newfilenewfile", newfile);
+//               // 
 //               // dispatch(
 //               //   uploadDocument_success(response.data.responseResult, "")
 //               // );
@@ -1168,7 +1165,7 @@ const UploadDocumentsAgendaApi = (
     dispatch(uploadDocument_init()); // Dispatch action to indicate upload initialization
 
     try {
-      let token = JSON.parse(localStorage.getItem("token"));
+      
       let creatorID = localStorage.getItem("userID");
       let organizationID = localStorage.getItem("organizationID");
 
@@ -1282,7 +1279,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API
 const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let createrID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -1312,9 +1309,9 @@ const SaveFilesAgendaApi = (navigate, t, data, folderID, newFolder) => {
                 )
             ) {
               let fileIds = response.data.responseResult.fileID;
-              console.log(fileIds, "newFileID");
+              
               fileIds.forEach((newFileID, index) => {
-                console.log(newFileID, "newFileID");
+                
                 return newFolder.push({
                   pK_FileID: newFileID.pK_FileID,
                   displayAttachmentName: newFileID.displayFileName,
@@ -1383,7 +1380,7 @@ const saveMeetingDocuments_fail = (message) => {
 
 // Upload Documents API
 const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(saveMeetingDocuments_init());
     let form = new FormData();
@@ -1429,7 +1426,7 @@ const SaveMeetingDocuments = (data, navigate, t, checkFlag, setShow) => {
                       : 50,
                     PublishedMeetings: true,
                   };
-                  console.log("chek search meeting");
+                  
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else if (checkFlag === 5) {
                   //  Create Committee Meeting 5
@@ -1535,7 +1532,7 @@ const AddUpdateAdvanceMeetingAgenda = (
   setMeetingMaterial,
   setAgenda
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let getMeetingData = {
     MeetingID: currentMeeting,
   };
@@ -1648,10 +1645,7 @@ const AddUpdateAdvanceMeetingAgenda = (
                 }
               });
 
-              console.log(
-                "saveDocumentsData newUpdateFileList ",
-                newUpdateFileList
-              );
+              
               await dispatch(
                 SaveMeetingDocuments(newUpdateFileList, navigate, t)
               );
@@ -1678,7 +1672,7 @@ const AddUpdateAdvanceMeetingAgenda = (
                 dispatch(attendanceGlobalFlag(false));
                 dispatch(uploadGlobalFlag(false));
               } else if (flag === 2) {
-                console.log("end meeting chaek");
+                
                 dispatch(
                   UpdateOrganizersMeeting(
                     false,
@@ -1776,7 +1770,7 @@ const AgendaVotingStatusUpdate = (
   advanceMeetingModalID,
   flag
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(agendaVotingStatusUpdate_init());
     let form = new FormData();
@@ -1932,7 +1926,7 @@ const getAllMeetingForAgendaImport_fail = (message) => {
   };
 };
 const GetAllMeetingForAgendaImport = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllMeetingForAgendaImport_init());
     let form = new FormData();
@@ -2020,7 +2014,7 @@ const getAgendaWithMeetingIDForImport_fail = (message) => {
   };
 };
 const GetAgendaWithMeetingIDForImport = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAgendaWithMeetingIDForImport_init());
     let form = new FormData();
@@ -2155,7 +2149,7 @@ const getMeetingParticipantsAgenda_fail = (message) => {
 };
 
 const GetMeetingParticipantsAgenda = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMeetingParticipantsAgenda_init());
     let form = new FormData();
@@ -2246,7 +2240,7 @@ const sendAgendaPDFAsEmail_fail = (message) => {
 };
 
 const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(sendAgendaPDFAsEmail_init());
     let form = new FormData();
@@ -2307,7 +2301,7 @@ const SendAgendaPDFAsEmail = (Data, navigate, t, setShareEmailView) => {
 };
 
 const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let form = new FormData();
   form.append("RequestMethod", exportAgendaAsPDF.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -2324,7 +2318,7 @@ const ExportAgendaPDF = (Data, navigate, t, meetingTitle) => {
           dispatch(ExportAgendaPDF(Data, navigate, t, meetingTitle));
           dispatch(setLoaderFalse());
         } else if (response.status === 200) {
-          console.log("ExportAgendaPDFExportAgendaPDF", response);
+          
           const url = window.URL.createObjectURL(
             new Blob([response.data], { type: "application/pdf" })
           );
@@ -2362,7 +2356,7 @@ const printMeetingAgenda_fail = (message) => {
 };
 
 const PrintMeetingAgenda = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(printMeetingAgenda_init());
     let form = new FormData();
@@ -2459,7 +2453,7 @@ const getAdvanceMeetingAgendabyMeetingIDForView_fail = (message) => {
 
 //Get Agenda Details For View
 const GetAdvanceMeetingAgendabyMeetingIDForView = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAdvanceMeetingAgendabyMeetingIDForView_init());
     let form = new FormData();

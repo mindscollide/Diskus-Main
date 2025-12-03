@@ -33,7 +33,7 @@ const getAttendanceMeetingFail = (message) => {
 
 //Get Attendance Meeting Main Api
 const getAllAttendanceMeetingApi = (navigate, t, meetingData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAttendanceMeetingInit());
     let form = new FormData();
@@ -118,7 +118,7 @@ const saveAttendanceFail = (message) => {
 
 //Get Attendance Meeting Main Api
 const saveMeetingAttendanceApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(saveAttendanceInit());
     let form = new FormData();

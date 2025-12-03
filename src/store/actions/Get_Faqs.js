@@ -31,7 +31,7 @@ const faqsFail = (message) => {
 };
 
 const GetUserFAQs = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(faqsInit());
     let form = new FormData();

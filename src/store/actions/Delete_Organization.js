@@ -31,7 +31,7 @@ const deleteOrganizationAction = (
   setDeleteModal,
   setDeleteConfirmModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(deleteOrganizationInit());
     let form = new FormData();

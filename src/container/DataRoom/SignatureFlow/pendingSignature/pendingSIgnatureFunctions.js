@@ -223,7 +223,7 @@ export const readOnlyFreetextElements = (xmlString, userDataRead) => {
   freetextElements.forEach((freetextElement) => {
     const subject = freetextElement.getAttribute("subject");
     const userIdIndex = subject.lastIndexOf("-");
-    console.log(userIdIndex, subject, userDataRead, "userIdIndex");
+    
     if (userIdIndex !== -1) {
       const userId = subject.substring(userIdIndex + 1);
       if (userDataRead.includes(Number(userId))) {

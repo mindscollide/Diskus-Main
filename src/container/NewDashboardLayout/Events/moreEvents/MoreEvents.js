@@ -34,7 +34,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
 
   const meetingDashboardCalendarEvent = (data, val) => {
     // Create a shallow copy of the data object to prevent mutation
-    console.log("startMeetingRequest", data);
+    
     const dashboardData = {
       isPrimaryOrganizer: data.isPrimaryOrganizer,
       isMinutePublished: data.meetingDetails.isMinutePublished,
@@ -61,7 +61,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
       talkGroupID: data.talkGroupID,
       IsViewOpenOnly: val === 1 ? true : false,
     };
-    console.log("startMeetingRequest", dashboardData);
+    
     setEditorRole({
       status: String(data.meetingDetails.statusID),
       role:
@@ -108,7 +108,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
           setUpcomingMeetings(upcomingMeetingsData);
         }
       } catch (error) {
-        console.log("Error parsing moreEventsData:", error);
+        
       }
     }
   }, [moreEventsData]);
@@ -126,10 +126,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
             remainsData?.configKey?.toLowerCase() ===
             "Join_Meeting_Before_Minutes".toLowerCase()
         );
-        console.log(
-          findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
-        );
+        
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
         }
@@ -137,7 +134,7 @@ const MoreEvents = ({ moreEventModal, setMoreEventModal }) => {
     }
   }, [userProfileData]);
 
-  console.log(moreEventsData, "moreEventsData");
+  
   return (
     <CustomModal
       show={moreEventModal}

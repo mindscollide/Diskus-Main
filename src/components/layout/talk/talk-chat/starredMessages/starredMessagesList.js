@@ -180,7 +180,7 @@ const StarredMessagesList = () => {
     }
   }, [talkStateData.talkSocketDataStarUnstar.socketUnstarMessage]);
 
-  console.log("Talk state Data", talkStateData, allStarredMessagesData);
+  
 
   return (
     <>

@@ -68,10 +68,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     value: 0,
   });
 
-  console.log(
-    committeeMembersRolesVal,
-    "committeeMembersRolesValcommitteeMembersRolesVal"
-  );
+  
   const [committeeMembersRolesOptions, setCommitteeMembersRolesOptions] =
     useState([]);
 
@@ -117,7 +114,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       dispatch(getCommitteeTypes(navigate, Data, t));
       dispatch(getCommitteeMembersRole(navigate, Data, t));
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [chcekFlag]);
 
@@ -141,7 +138,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -159,7 +156,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
@@ -390,8 +387,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     );
   };
 
-  console.log(attendees, "attendeesattendees");
-  console.log(groupMembers, "attendeesattendees");
+  
+  
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
@@ -431,7 +428,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   }, [assigneesuser]);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log(GroupMembers, "GroupMembersGroupMembers");
+    
     if (Array.isArray(GroupMembers) && GroupMembers.length > 0) {
       const validIds = [1, 2, 3, 4, 5];
       let hasValidMember = GroupMembers.some((data) =>
@@ -516,7 +513,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         documentsUploadCall(folderIdCreated);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducercreateUpdateCommitteeDataroom]);
 

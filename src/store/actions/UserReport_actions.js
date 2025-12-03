@@ -11,7 +11,7 @@ const userLoginHistory_Init = (loader) => {
   };
 };
 const userLoginHistory_Success = (response, message) => {
-  console.log(response, message, "GET_USER_LOGIN_HISTORY_SUCCESS");
+  
   return {
     type: actions.GET_USER_LOGIN_HISTORY_SUCCESS,
     response: response,
@@ -26,7 +26,7 @@ const userLoginHistory_Fail = (message) => {
 };
 
 const userLoginHistory_Api = (navigate, t, Data, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(userLoginHistory_Init(loader));
     let form = new FormData();

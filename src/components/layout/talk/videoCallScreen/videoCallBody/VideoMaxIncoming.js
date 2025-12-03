@@ -100,7 +100,7 @@ const VideoMaxIncoming = () => {
       : initiateCallRoomID
       ? initiateCallRoomID
       : activeRoomID;
-  console.log(isVisible, "Check new Visible");
+  
 
   const [incomingCallerData, setIncomingCallerData] = useState([]);
 
@@ -112,7 +112,7 @@ const VideoMaxIncoming = () => {
       VideoMainReducer.InitiateVideoCallDataMQTT !== null &&
       VideoMainReducer.InitiateVideoCallDataMQTT.length !== 0
     ) {
-      console.log("busyCall");
+      
       setIncomingCallerData(VideoMainReducer.InitiateVideoCallDataMQTT);
     } else {
       setIncomingCallerData([]);
@@ -132,7 +132,7 @@ const VideoMaxIncoming = () => {
 
     // Play the audio when the component mounts
     audioElement.play();
-    console.log("busyCall");
+    
 
     const timer = setTimeout(() => {
       // Dispatch action to update global state
@@ -145,7 +145,7 @@ const VideoMaxIncoming = () => {
         CallStatusID: 3,
         CallTypeID: Number(incommingCallTypeID),
       };
-      console.log("busyCall");
+      
       dispatch(VideoCallResponse(Data, navigate, t));
 
       localStorage.removeItem("NewRoomID");
@@ -156,7 +156,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false);
       audioElement.pause();
       audioElement.currentTime = 0;
-      console.log("busyCall");
+      
     }, timeValue);
 
     // Clear the timer if isTimerRunning becomes false
@@ -166,7 +166,7 @@ const VideoMaxIncoming = () => {
     }
 
     return () => {
-      console.log("busyCall");
+      
       audioElement.pause();
       audioElement.currentTime = 0;
       clearTimeout(timer);
@@ -197,7 +197,7 @@ const VideoMaxIncoming = () => {
         CallStatusID: 1,
         CallTypeID: Number(incommingCallTypeID),
       };
-      console.log("busyCall");
+      
       dispatch(VideoCallResponse(Data, navigate, t));
       localStorage.removeItem("NewRoomID");
       localStorage.removeItem("incommingCallTypeID");
@@ -212,7 +212,7 @@ const VideoMaxIncoming = () => {
 
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
+      
       let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
       setStartRecordingState(true);
       setPauseRecordingState(false);
@@ -225,7 +225,7 @@ const VideoMaxIncoming = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
+            
           }
 
           // Slight delay to allow iframe to process the message
@@ -261,21 +261,21 @@ const VideoMaxIncoming = () => {
     if (isZoomEnabled) {
       dispatch(disableZoomBeforeJoinSession(true));
     }
-    console.log("busyCall");
+    
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
-    console.log("busyCall", activeCallState);
+    
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     if (isMeeting) {
-      console.log("busyCall");
+      
       if (isMeetingVideo) {
-        console.log("busyCall");
+        
         if (isZoomEnabled) {
-          console.log("busyCall");
+          
           // await dispatch(setParticipantLeaveCallForJoinNonMeetingCall(true));
           // setIsTimerRunning(false);
           if (pauseRecordingState || resumeRecordingState) {
-            console.log("busyCall");
+            
             await onHandleClickForStopRecording();
             await new Promise((resolve) => setTimeout(resolve, 100));
           }
@@ -283,11 +283,11 @@ const VideoMaxIncoming = () => {
             presenterViewFlag &&
             (presenterViewHostFlag || presenterViewJoinFlag)
           ) {
-            console.log("busyCall");
+            
             dispatch(nonMeetingVideoGlobalModal(true));
             dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
           } else {
-            console.log("busyCall");
+            
             let meetinHostInfo = JSON.parse(
               localStorage.getItem("meetinHostInfo")
             );
@@ -325,7 +325,7 @@ const VideoMaxIncoming = () => {
               JSON.stringify(emptyArray)
             );
             await dispatch(setAudioControlHost(false));
-            console.log("videoHideUnHideForHost");
+            
             await dispatch(setVideoControlHost(false));
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
@@ -355,16 +355,16 @@ const VideoMaxIncoming = () => {
             localStorage.removeItem("CallType");
           }
         } else {
-          console.log("busyCall");
+          
           if (
             presenterViewFlag &&
             (presenterViewHostFlag || presenterViewJoinFlag)
           ) {
-            console.log("busyCall");
+            
             dispatch(nonMeetingVideoGlobalModal(true));
             dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
           } else {
-            console.log("busyCall");
+            
             let meetinHostInfo = JSON.parse(
               localStorage.getItem("meetinHostInfo")
             );
@@ -402,7 +402,7 @@ const VideoMaxIncoming = () => {
               JSON.stringify(emptyArray)
             );
             await dispatch(setAudioControlHost(false));
-            console.log("videoHideUnHideForHost");
+            
             await dispatch(setVideoControlHost(false));
             dispatch(normalizeVideoPanelFlag(false));
             dispatch(maximizeVideoPanelFlag(false));
@@ -433,16 +433,16 @@ const VideoMaxIncoming = () => {
           }
         }
       } else {
-        console.log("busyCall", activeCallState);
+        
         if (
           presenterViewFlag &&
           (presenterViewHostFlag || presenterViewJoinFlag)
         ) {
-          console.log("busyCall");
+          
           dispatch(nonMeetingVideoGlobalModal(true));
           dispatch(leavePresenterJoinOneToOneOrOtherCall(true));
         } else if (activeCallState) {
-          console.log("busyCall");
+          
           let Data = {
             OrganizationID: currentOrganization,
             RoomID: RoomID,
@@ -451,7 +451,7 @@ const VideoMaxIncoming = () => {
           };
           await dispatch(LeaveCall(Data, navigate, t, 1, setIsTimerRunning));
         } else {
-          console.log("busyCall");
+          
           const meetingHost = {
             isHost: false,
             isHostId: 0,
@@ -476,7 +476,7 @@ const VideoMaxIncoming = () => {
             CallStatusID: 1,
             CallTypeID: Number(incommingCallTypeID),
           };
-          console.log("busyCall");
+          
           await dispatch(VideoCallResponse(Data, navigate, t));
           localStorage.removeItem("NewRoomID");
           localStorage.removeItem("incommingCallTypeID");
@@ -489,7 +489,7 @@ const VideoMaxIncoming = () => {
         }
       }
     } else if (activeCallState) {
-      console.log("busyCall");
+      
       let Data = {
         OrganizationID: currentOrganization,
         RoomID: RoomID,
@@ -498,7 +498,7 @@ const VideoMaxIncoming = () => {
       };
       await dispatch(LeaveCall(Data, navigate, t, 1, setIsTimerRunning));
     } else {
-      console.log("busyCall");
+      
       let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
       let incommingCallType = localStorage.getItem("incommingCallType");
       let incommingNewCallerID = localStorage.getItem("incommingNewCallerID");
@@ -521,7 +521,7 @@ const VideoMaxIncoming = () => {
         CallStatusID: 1,
         CallTypeID: Number(incommingCallTypeID),
       };
-      console.log("busyCall");
+      
       await dispatch(VideoCallResponse(Data, navigate, t));
       localStorage.removeItem("NewRoomID");
       localStorage.removeItem("incommingCallTypeID");
@@ -539,8 +539,8 @@ const VideoMaxIncoming = () => {
     if (isZoomEnabled) {
       dispatch(disableZoomBeforeJoinSession(false));
     }
-    console.log("busyCall");
-    console.log("busyCall", incomingRoomID);
+    
+    
     let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
     let NewRoomID = localStorage.getItem("NewRoomID");
 
@@ -550,10 +550,10 @@ const VideoMaxIncoming = () => {
       CallStatusID: 2,
       CallTypeID: Number(incommingCallTypeID),
     };
-    console.log("busyCall");
+    
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
-    console.log("busyCall");
+    
     // localStorage.setItem("activeCall", false);
     localStorage.removeItem("NewRoomID");
     localStorage.removeItem("incommingCallTypeID");
@@ -567,7 +567,7 @@ const VideoMaxIncoming = () => {
     if (isZoomEnabled) {
       dispatch(disableZoomBeforeJoinSession(false));
     }
-    console.log("busyCall");
+    
     let incommingCallTypeID = localStorage.getItem("incommingCallTypeID");
     let NewRoomID = localStorage.getItem("NewRoomID");
 
@@ -577,7 +577,7 @@ const VideoMaxIncoming = () => {
       CallStatusID: 5,
       CallTypeID: Number(incommingCallTypeID),
     };
-    console.log("busyCall");
+    
     await dispatch(VideoCallResponse(Data, navigate, t));
     dispatch(incomingVideoCallFlag(false));
     setIsTimerRunning(false);

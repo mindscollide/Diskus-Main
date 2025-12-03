@@ -61,7 +61,7 @@ const WebNotificationCard = ({
 }) => {
   const { t } = useTranslation();
   //Test work
-  console.log(NotificationMessege, "PayLoadMessage");
+  
   //Current Language
   let Lang = localStorage.getItem("i18nextLng");
   //Local States
@@ -289,7 +289,7 @@ const WebNotificationCard = ({
         );
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [NotificationMessege, NotificaitonID, maxCharacters]);
 

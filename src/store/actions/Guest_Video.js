@@ -69,7 +69,7 @@ const getMeetingGuestVideoFail = (message) => {
 };
 
 const getMeetingGuestVideoMainApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMeetingGuestVideoInit());
     let form = new FormData();
@@ -187,7 +187,7 @@ const validateEncryptGuestVideoMainApi = (navigate, t, data) => {
                 response.data.responseResult.meetingId
               );
               dispatch(getValidateString(response.data.responseResult));
-              console.log("reponsepreodjfdfds", response.data.responseResult);
+              
               // sessionStorage.setItem("viewState", 1);
               await dispatch(
                 validateEncryptGuestVideoSuccess(
@@ -407,9 +407,9 @@ const admitRejectAttendeeMainApi = (
   let filterGuids = Data.AttendeeResponseList.map(
     (guidMap, index) => guidMap.UID
   );
-  console.log(filterGuids, "filterGuids");
+  
 
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(admitRejectInit());
     let form = new FormData();
@@ -470,7 +470,7 @@ const admitRejectAttendeeMainApi = (
               ) {
                 let roomIds = localStorage.getItem("activeRoomID");
                 let getNames = Data.AttendeeResponseList.map((userData) => {
-                  console.log(userData, "userDatauserData");
+                  
                   return {
                     Name: userData.Name,
                     UID: userData.UID,
@@ -482,7 +482,7 @@ const admitRejectAttendeeMainApi = (
                     // isGuest: userData.IsGuest,
                   };
                 });
-                console.log(getNames, "getNamesgetNames");
+                
                 dispatch(setAdmittedParticipant(getNames));
               }
               dispatch(guestJoinPopup(false));
@@ -584,7 +584,7 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
                   "Meeting_MeetingServiceManager_RaiseUnRaiseHand_01".toLowerCase()
                 )
             ) {
-              console.log("handStatus", data.IsHandRaised);
+              
               localStorage.setItem("handStatus", data.IsHandRaised);
               await dispatch(setRaisedUnRaisedParticiant(data.IsHandRaised));
               await dispatch(
@@ -638,7 +638,7 @@ const transferMeetingHostInit = () => {
 };
 
 const transferMeetingHostSuccess = (response) => {
-  console.log("videoHideUnHideForHost", response);
+  
   return {
     type: actions.TRANSFER_MEETING_HOST_SUCCESS,
     response: response,
@@ -653,7 +653,7 @@ const transferMeetingHostFail = (message) => {
 };
 
 const transferMeetingHostMainApi = (navigate, t, data, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(transferMeetingHostInit());
     let form = new FormData();
@@ -679,7 +679,7 @@ const transferMeetingHostMainApi = (navigate, t, data, flag) => {
                 isHostId: 0,
                 isDashboardVideo: true,
               };
-              console.log("makeHostOnClick", meetingHost);
+              
               let newRoomId = localStorage.getItem("newRoomId");
               let isGuid = localStorage.getItem("isGuid");
               localStorage.setItem(
@@ -768,8 +768,8 @@ const removeParticipantMeetingFail = (message) => {
 };
 
 const removeParticipantMeetingMainApi = (navigate, t, data) => {
-  console.log(data, "datadatadatadatakashan");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+  
   return (dispatch) => {
     dispatch(removeParticipantMeetingInit());
     let form = new FormData();
@@ -846,7 +846,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
 };
 
 const setAdmittedParticipant = (response) => {
-  console.log(response, "datdtatdatdtatddatdtatdatdtatd");
+  
   return {
     type: actions.SET_PARTICIPANT_NAME,
     response: response,
@@ -875,8 +875,8 @@ const guestLeaveMeetingVideoFail = (message) => {
 };
 
 const guestLeaveMeetingVideoApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  console.log(data, "datadatadatadata");
+  
+  
   return (dispatch) => {
     dispatch(guestLeaveMeetingVideoInit());
     let form = new FormData();
@@ -960,7 +960,7 @@ const guestLeaveMeetingVideoApi = (navigate, t, data) => {
 };
 
 const removeParticipantFromVideo = (response) => {
-  console.log(response, "responseresponseresponse");
+  
   return {
     type: actions.REMOVE_PARTICIPANTS_FROM_VIDEO,
     response: response,
@@ -1078,7 +1078,7 @@ const hideUnhideSelfFail = (message) => {
 };
 
 const hideUnhideSelfMainApi = (navigate, t, data, check) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(hideUnhideSelfInit());
     let form = new FormData();
@@ -1100,7 +1100,7 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
                 )
             ) {
               localStorage.setItem("isWebCamEnabled", data.HideVideo);
-              console.log("videoHideUnHideForHost", data.HideVideo);
+              
               // await dispatch(setVideoControlHost(data.HideVideo));
 
               await dispatch(
@@ -1160,7 +1160,7 @@ const muteUnMuteByHost = (response) => {
 };
 
 const hideUnHideVideoByHost = (response) => {
-  console.log(response, "responseresponse");
+  
   return {
     type: actions.HIDE_UNHIDE_VIDEO_BY_HOST,
     response: response,
@@ -1316,7 +1316,7 @@ const raisedUnRaisedParticipantsGuest = (response) => {
 };
 
 const hideUnHideVideoParticipantsorGuest = (response) => {
-  console.log(response, "firstfirstfirst");
+  
   return {
     type: actions.HIDE_UNHIDE_VIDEO_PARTICIPANTS_GUEST,
     response: response,
@@ -1324,14 +1324,14 @@ const hideUnHideVideoParticipantsorGuest = (response) => {
 };
 
 const muteUnMuteParticipantsorGuest = (response) => {
-  console.log(response, "firstfirstfirst");
+  
   return {
     type: actions.MUTE_UNMUTE_PARTICIPANTS_GUEST,
     response: response,
   };
 };
 const muteUnMuteParticipantsorGuestbyHost = (response) => {
-  console.log(response, "firstfirstfirst");
+  
   return {
     type: actions.MUTE_UNMUTE_PARTICIPANTS_GUEST_BY_HOST,
     response: response,
@@ -1339,7 +1339,7 @@ const muteUnMuteParticipantsorGuestbyHost = (response) => {
 };
 
 const participantHideUnhideVideo = (response) => {
-  console.log("MQTT onMessageArrived");
+  
   return {
     type: actions.PARTICIPANT_HIDEUNHIDE_VIDEO,
     payload: response,

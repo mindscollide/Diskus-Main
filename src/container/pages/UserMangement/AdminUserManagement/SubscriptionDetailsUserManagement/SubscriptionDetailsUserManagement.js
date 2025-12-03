@@ -46,7 +46,7 @@ const SubscriptionDetailsUserManagement = () => {
     try {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, []);
 
@@ -59,7 +59,7 @@ const SubscriptionDetailsUserManagement = () => {
         setSubscriptionDetails(data.organizationSubscriptions);
       }
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, [UserMangementReducerorganizationSelectedPakagesByOrganizationIDData]);
 

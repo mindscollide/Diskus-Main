@@ -107,7 +107,7 @@ const setLastSelectedLanguageFail = (message) => {
 };
 
 const changeNewLanguage = (data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(setLastSelectedLanguageInitial());
     let form = new FormData();
@@ -203,9 +203,9 @@ const getSelectedLanguageFail = (message) => {
 };
 
 const getSelectedLanguage = (data, navigate, t, flag, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organzataionID = localStorage.getItem("OrganizationID");
-  console.log(organzataionID, "organzataionIDorganzataionID");
+  
   return (dispatch) => {
     dispatch(getSelectedLanguageInitial());
     let form = new FormData();
@@ -215,7 +215,7 @@ const getSelectedLanguage = (data, navigate, t, flag, loader) => {
       .post(getAdminURLs, form)
 
       .then(async (response) => {
-        console.log(response, "responseresponse");
+        
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getSelectedLanguage(data, navigate, t, flag, loader));

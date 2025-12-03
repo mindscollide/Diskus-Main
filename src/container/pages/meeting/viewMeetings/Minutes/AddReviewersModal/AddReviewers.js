@@ -73,7 +73,7 @@ const AddReviewers = ({
     new Date(new Date().setDate(new Date().getDate() + 1))
   );
 
-  console.log(minuteDate, "minuteDateminuteDate");
+  
 
   //All Agenda wise minutes
   const [minuteDataAgenda, setMinuteDataAgenda] = useState([]);
@@ -94,7 +94,7 @@ const AddReviewers = ({
   };
 
   async function backFunctionMinutes() {
-    console.log("minuteDataAgenda");
+    
     setSelectedMinuteIDs([]);
     setSelectReviewersArray([]);
     setSelectReviewers(false);
@@ -125,7 +125,7 @@ const AddReviewers = ({
 
   const minuteDateHandler = (date, format = "YYYYMMDD") => {
     let minuteDateValueFormat = new Date(date);
-    console.log(minuteDateValueFormat, "utcFormattedutcFormattedutcFormatted");
+    
     minuteDateValueFormat.setHours(23);
     minuteDateValueFormat.setMinutes(59);
     minuteDateValueFormat.setSeconds(58);
@@ -213,15 +213,12 @@ const AddReviewers = ({
       const generalMinutes = NewMeetingreducer.generalMinutes;
 
       if (generalMinutes && Object.keys(generalMinutes).length > 0) {
-        console.log(generalMinutes, "modifyDatemodifyDatemodifyDate");
+        
 
         const minutesData = generalMinutes.meetingMinutes;
         const documentsData = generalminutesDocumentForMeeting.data;
         const combinedData = transformDataGeneral(minutesData, documentsData);
-        console.log(
-          MinutesReducer.GetMinuteReviewFlowByMeetingIdData,
-          "modifyDatemodifyDatemodifyDate"
-        );
+        
 
         if (
           MinutesReducer.GetMinuteReviewFlowByMeetingIdData !== null &&
@@ -229,10 +226,7 @@ const AddReviewers = ({
           Object.keys(MinutesReducer.GetMinuteReviewFlowByMeetingIdData)
             .length > 0
         ) {
-          console.log(
-            MinutesReducer.GetMinuteReviewFlowByMeetingIdData,
-            "modifyDatemodifyDatemodifyDate"
-          );
+          
 
           let date = resolutionResultTable(
             MinutesReducer?.GetMinuteReviewFlowByMeetingIdData?.workFlow
@@ -248,7 +242,7 @@ const AddReviewers = ({
             MinutesReducer.GetMinuteReviewFlowByMeetingIdData.workFlow;
 
           convertFinalData.forEach((agenda) => {
-            console.log("resultresultresult", agenda);
+            
             let result = findEntityIndexByMinuteID(check, agenda.minuteID);
             // // If matchingData found, update attachments in minuteData
             if (result.found) {
@@ -449,7 +443,7 @@ const AddReviewers = ({
           // Log the transformed data to the console
           setMinuteDataAgenda(convertFinalData);
         } else {
-          console.log("extractPKUIDsFromActors", MinutesReducer);
+          
 
           // Store agendaWiseMinutesReducer in a local variable
           let reducerData = NewMeetingreducer.agendaWiseMinutesReducer;
@@ -583,9 +577,9 @@ const AddReviewers = ({
     NewMeetingreducer.GetMinuteReviewFlowByMeetingIdData,
   ]);
 
-  console.log("Data being passed minuteDataAgenda", minuteDataAgenda);
-  console.log("Data being passed minuteDataGeneral", minuteDataGeneral);
-  console.log("Data being passed selectedMinuteIDs", selectedMinuteIDs);
+  
+  
+  
 
   return (
     <Modal

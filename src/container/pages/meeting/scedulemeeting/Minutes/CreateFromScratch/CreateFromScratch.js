@@ -38,7 +38,7 @@ const CreateFromScratch = () => {
     },
   ]);
   const [quillText, setQuillText] = useState("");
-  console.log(quillText, "quillTextquillTextquillText");
+  
   const handleRemoveFiles = (index) => {
     let optionscross = [...showScratchFiles];
     optionscross.splice(index, 1);
@@ -165,7 +165,7 @@ const CreateFromScratch = () => {
             <Row className="mt-5">
               {showScratchFiles.length > 0
                 ? showScratchFiles.map((data, index) => {
-                    console.log(data, "datadatadatadatadata");
+                    
                     return (
                       <>
                         {editableIndex === index && editable ? (

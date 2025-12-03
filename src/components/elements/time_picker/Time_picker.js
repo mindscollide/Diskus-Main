@@ -15,7 +15,7 @@ const TimePickers = ({ value, disable, placeholder, size, change, name }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   let TimeFormat = "HH:mm";
   function onChange(date, timeString) {
-    console.log("time check", date, timeString);
+    
     change({ target: { name: name, value: timeString } });
   }
 

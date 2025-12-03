@@ -51,7 +51,7 @@ const Votepoll = () => {
       let pollDetails = pollData.pollDetails;
       let pollOptions = pollData.pollOptions;
       let selectedAnswers = pollData.selectedAnswers;
-      console.log(pollData, "pollDatapollDatapollDatapollData");
+      
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }

@@ -49,7 +49,7 @@ const ModalMarketingTeamCommittee = ({
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let getAllGroupsData = GroupsReducer.getAllGroups;
-    console.log("getAllGroupsDatagetAllGroupsData", getAllGroupsData);
+    
     if (
       GroupsReducer.getAllGroups != undefined &&
       GroupsReducer.getAllGroups != null &&
@@ -87,7 +87,7 @@ const ModalMarketingTeamCommittee = ({
 
   // on Search filter for add members
   const onSearch = (name, id) => {
-    console.log("name id", name, id);
+    
     setGroupName(name);
     setGroupID(id);
   };
@@ -152,7 +152,7 @@ const ModalMarketingTeamCommittee = ({
   useEffect(() => {
     if (committeeData !== null && committeeData !== undefined) {
       if (committeeData[0].listOfGroups.length > 0) {
-        console.log("Test");
+        
         let newDataforSend = [];
         let newDataforView = [];
         committeeData[0].listOfGroups.map((listgroupsData, index) => {
@@ -161,14 +161,14 @@ const ModalMarketingTeamCommittee = ({
             CommitteeId: listgroupsData.committeeID,
             CommitteeMappingID: listgroupsData.committeeMappingID,
           });
-          console.log("Test");
+          
           newDataforView.push({
             GroupID: listgroupsData.groupID,
             GroupName: listgroupsData.groupTitle,
             CommitteeMappingID: listgroupsData.committeeMappingID,
           });
         });
-        console.log("Test");
+        
         setGroupData(newDataforView);
         setData(newDataforSend);
       }

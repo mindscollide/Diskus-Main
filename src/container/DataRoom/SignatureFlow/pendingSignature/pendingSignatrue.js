@@ -798,7 +798,7 @@ const SignatureViewer = () => {
                 xml.widget = widgetElement.outerHTML;
                 widgetFound = true;
               } else {
-                console.log("Element not found:", ffieldName, widgetName);
+                
               }
             }
           });

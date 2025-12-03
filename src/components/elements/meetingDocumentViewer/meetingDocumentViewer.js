@@ -243,10 +243,7 @@ const MeetingDocumentViewer = () => {
 
           const mimeType = getMimeTypeFromFileName(fileName);
 
-          console.log(
-            { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType"
-          );
+          
 
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
 
@@ -353,7 +350,7 @@ const MeetingDocumentViewer = () => {
           break;
       }
 
-      console.log("Annotations saved successfully!");
+      
     } catch (error) {
       console.error("Failed to save annotations:", error);
     }

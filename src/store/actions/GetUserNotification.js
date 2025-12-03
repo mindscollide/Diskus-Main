@@ -30,7 +30,7 @@ const getusernotificationfail = (message) => {
 };
 
 const getNotifications = (navigate, userID, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let userIDData = {
     UserID: parseInt(userID),
   };

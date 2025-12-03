@@ -157,7 +157,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
       AgendaID: selectedID,
       UserAttachmentPermissions: newarray,
     };
-    console.log(Data, "AgendaIDAgendaID");
+    
     dispatch(SaveUserAttachmentsPermissionApiFunc(navigate, t, Data));
   };
 
@@ -191,7 +191,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
             NewMeetingreducer.agendaRights.agendaUserRights;
 
           getUserrightsdetails.forEach((agendaRightsData, agendaRightsIndex) => {
-            console.log(agendaRightsData, "agendaRightsDataagendaRightsData");
+            
             agendaUserRightsarray.push({
               userName: agendaRightsData.userName,
               canView: agendaRightsData.canView,
@@ -293,7 +293,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                       <Row className="mt-2">
                         {sidebarOptions.length > 0
                           ? sidebarOptions.map((data, index) => {
-                              console.log(data, "sidebarOptionssidebarOptions");
+                              
                               const isLastItem =
                                 index === sidebarOptions.length - 1;
 
@@ -347,10 +347,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                                       <Row className="mt-2">
                                         {data?.subAgenda?.map(
                                           (SubAgendaData, SubAgendaIndex) => {
-                                            console.log(
-                                              SubAgendaData,
-                                              "SubAgendaDataSubAgendaData"
-                                            );
+                                            
                                             return (
                                               <>
                                                 <Col
@@ -602,7 +599,7 @@ const AdvancePersmissionModal = ({ setSelectedID, selectedID }) => {
                               })
                               .map((data, index) => {
                                 const isLastItem = index === members.length - 1;
-                                console.log(data, "mapmapmapmapmapmap");
+                                
 
                                 return (
                                   <>

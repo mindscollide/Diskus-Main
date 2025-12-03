@@ -29,7 +29,7 @@ const UserSettingsWrapper = () => {
       </section>
     ); // or your custom spinner
   }
-  console.log("googleClientID", googleClientID);
+  
 
   return (
     <UserSettings googleClientIDs={googleClientID ? googleClientID : null} />

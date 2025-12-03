@@ -203,7 +203,7 @@ const TodoList = () => {
               t
             )
           );
-          console.log(getResponse, "getResponse");
+          
 
           if (
             getResponse.isExecuted === true &&
@@ -226,7 +226,7 @@ const TodoList = () => {
               t
             )
           );
-          console.log(getResponse, "getResponse");
+          
           if (
             getResponse.isExecuted === true &&
             getResponse.responseCode === 1
@@ -242,7 +242,7 @@ const TodoList = () => {
         localStorage.removeItem("todoListRow");
       };
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -270,11 +270,11 @@ const TodoList = () => {
         setRowToDo([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [SearchTodolist]);
 
-  console.log(SearchTodolist, "SearchTodolistSearchTodolist");
+  
 
   useEffect(() => {
     try {
@@ -297,14 +297,11 @@ const TodoList = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [SocketTodoActivityData]);
 
-  console.log(
-    SocketTodoActivityData,
-    "SocketTodoActivityDataSocketTodoActivityData"
-  );
+  
 
   useEffect(() => {
     try {
@@ -367,7 +364,7 @@ const TodoList = () => {
       setStatusValues(newArrStatus);
       setStatusOptions(optionsArr);
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResponseStatusReducer]);
 
@@ -774,7 +771,7 @@ const TodoList = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ToDoDetails]);
 
@@ -789,7 +786,7 @@ const TodoList = () => {
     });
   };
 
-  console.log(searchData.Date, "searchDatasearchDatasearchData");
+  
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -850,7 +847,7 @@ const TodoList = () => {
         AssignedToName: searchData.AssignedToName,
         UserID: parseInt(createrID),
       };
-      console.log(newData, "newDatanewDatanewData");
+      
       dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     }
   };
@@ -891,7 +888,7 @@ const TodoList = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [UpdateTodoStatusMessage, removeTodo]);
 

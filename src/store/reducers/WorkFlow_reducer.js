@@ -72,10 +72,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.CREATESIGNATUREFLOW_SUCCESS: {
-      console.log(
-        { action },
-        "CREATESIGNATUREFLOW_SUCCESSCREATESIGNATUREFLOW_SUCCESS"
-      );
+      
       return {
         ...state,
         Loading: false,
@@ -150,7 +147,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.ADD_UPDATE_FIELD_VALUE_FAIL: {
-      console.log(action, "ADD_UPDATE_FIELD_VALUE_FAIL")
+      
       return {
         ...state,
         Loading: false,
@@ -554,10 +551,7 @@ const SignatureWorkflowReducer = (state = initialState, action) => {
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS: {
-      console.log(
-        { action },
-        "VALIDATE_ENCRYPTED_STRING_SIGNATURE_DATA_SUCCESS"
-      );
+      
       return {
         ...state,
         Loading: false,

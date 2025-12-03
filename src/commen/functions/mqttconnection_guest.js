@@ -17,7 +17,7 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
     const clientId = `${subscribeID}-${id}`;
 
     if (process.env.REACT_APP_ENV === "dev") {
-      newClient = new Paho.Client("192.168.18.241", 8228, clientId);
+      newClient = new Paho.Client("192.168.18.243", 8228, clientId);
     } else {
       const brokerUrl = `wss://${process.env.REACT_APP_MQTT}:${process.env.REACT_APP_MQTT_PORT}/mqtt`;
       newClient = new Paho.Client(brokerUrl, clientId);
@@ -30,11 +30,10 @@ export const mqttConnectionGuestUser = (subscribeID, dispatch) => {
 
     const options = {
       onSuccess: () => {
-        console.log("Guest Connected to MQTT broker");
         try {
           newClient.subscribe(subscribeID.toString(), {
             onSuccess: () =>
-              console.log(`Guest MQTT Subscribed to ${subscribeID}`),
+              console.log(`Guest Subscribed to MQTT topic: ${subscribeID}`),
             onFailure: (error) =>
               console.error(
                 `Guest MQTT Subscription failed: ${error.errorMessage}`

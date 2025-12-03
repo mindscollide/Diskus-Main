@@ -89,7 +89,7 @@ const RevisionHistory = ({
       },
     },
   ]);
-  console.log(reviewHistory, "reviewHistoryreviewHistoryreviewHistory");
+  
 
   const [editMinute, setEditMinute] = useState(false);
   const [confirmationEdit, setConfirmationEdit] = useState(false);
@@ -109,9 +109,9 @@ const RevisionHistory = ({
 
   const [minuteDate, setMinuteDate] = useState("");
 
-  console.log(revisionHistoryData, "revisionHistoryDatarevisionHistoryData");
+  
   const editMinuteFunction = (Editdata) => {
-    console.log("editMinuteFunctioneditMinuteFunction", Editdata);
+    
     let Data = {
       MeetingID: Number(advanceMeetingModalID),
       MinuteID: Editdata.minuteID,
@@ -150,7 +150,7 @@ const RevisionHistory = ({
       setEditMinuteData(GetDataForResendMinuteReviewData.minuteBundle);
     }
   }, [GetDataForResendMinuteReviewData]);
-  console.log(editMinute, "editMinuteeditMinuteeditMinuteeditMinute");
+  
   return (
     <Modal
       onHide={
@@ -426,7 +426,7 @@ const RevisionHistory = ({
                                       ?.minuteAttachmentFiles.length > 0
                                       ? revisionHistoryData?.mainMinute?.minuteAttachmentFiles.map(
                                           (data, index) => {
-                                            console.log(data, "datadatadata");
+                                            
                                             return (
                                               <>
                                                 <Col lg={3} md={3} sm={3}>

@@ -171,7 +171,7 @@ const SendReviewers = ({
         setNewSelectedMinutes([]);
       }
     } catch (error) {
-      console.log("Error:", error);
+      
     }
   };
 
@@ -346,21 +346,21 @@ const SendReviewers = ({
           minuteToEdit
         );
         setMinuteDataAgenda(updatedMinuteData);
-        console.log("Updated State after modification:", updatedMinuteData);
+        
       } else {
         const newMinutes = updateReviewersListInMinutes(
           minuteDataGeneral,
           minuteToEdit
         );
         setMinuteDataGeneral(newMinutes);
-        console.log("Updated State after modification:", newMinutes);
+        
       }
     } else {
     }
   }, [MinutesReducer.UpdateMinuteFlag]);
 
-  console.log("Minute Data General Send Reviewers", minuteDataGeneral);
-  console.log("Minute Data Agenda Send Reviewers", minuteDataAgenda);
+  
+  
 
   return (
     <>

@@ -44,14 +44,14 @@ const PakageDetailsUMUpgrade = () => {
   let isTrial = localStorage.getItem("isTrial");
   const [packageDetail, setPackageDetail] = useState([]);
   const [organizationPackagePrice, setOrganizationPackagePrice] = useState([]);
-  console.log("check error k");
+  
 
   //get All user pakages Api call
   useEffect(() => {
     try {
       dispatch(getAllUserTypePackagesApi(navigate, t, false));
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -59,7 +59,7 @@ const PakageDetailsUMUpgrade = () => {
     if (location.state && location.state.organizationSelectedPackages) {
       const selectedPackages = location.state.organizationSelectedPackages[0];
       if (selectedPackages) {
-        console.log(selectedPackages, "selectedPackagesselectedPackages");
+        
         const prices = selectedPackages.map((pkg) => {
           return {
             Id: pkg.pK_OrganizationsSelectedPackageID,
@@ -103,7 +103,7 @@ const PakageDetailsUMUpgrade = () => {
         setTableData(UserMangementReducergetAllUserTypePackagesData.packages);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [UserMangementReducergetAllUserTypePackagesData]);
 
@@ -159,7 +159,7 @@ const PakageDetailsUMUpgrade = () => {
       align: "center",
       render: (text, response) => {
         {
-          console.log("check error k", response);
+          
         }
 
         return (
@@ -183,7 +183,7 @@ const PakageDetailsUMUpgrade = () => {
       width: 100,
       align: "center",
       render: (text, response) => {
-        console.log("check error k", response);
+        
         // Check if 'price' is available and greater than zero before rendering it
         if (response?.isTotalRow) {
           return;
@@ -215,7 +215,7 @@ const PakageDetailsUMUpgrade = () => {
         if (row?.shouldDisplayTextField) {
           return;
         } else {
-          console.log("check error k", row);
+          
           if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>
@@ -237,7 +237,7 @@ const PakageDetailsUMUpgrade = () => {
             const matchedPackage = packageTableData.find(
               (pkg) => pkg.name === row.name
             );
-            console.log(matchedPackage, "matchedPackagematchedPackage");
+            
             const priceValue = matchedPackage
               ? matchedPackage.licenseCount
               : "";
@@ -350,7 +350,7 @@ const PakageDetailsUMUpgrade = () => {
             </>
           );
         } else {
-          console.log("check error k", row);
+          
           if (row?.isTotalRow) {
             return (
               <span className={styles["ChargesPerLicesense"]}>{text}</span>
@@ -465,7 +465,7 @@ const PakageDetailsUMUpgrade = () => {
       return total + quarterlyCharge;
     }, 0);
 
-    console.log(totalQuarterlyCharges, "totalMonthlyCharges");
+    
     const totalYearlyCharges = packageTableData.reduce((total, row) => {
       const matchedPackage = organizationPackagePrice.find(
         (pkg) => pkg.name === row?.name

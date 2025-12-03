@@ -75,7 +75,7 @@ const VideoNewParticipantList = () => {
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
 
-  console.log(getAllParticipantMain, "AllPartcicipantChecker");
+  
   const waitingParticipants = useSelector(
     (state) => state.videoFeatureReducer.waitingParticipantsList
   );
@@ -124,7 +124,7 @@ const VideoNewParticipantList = () => {
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
 
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
+  
 
   const [searchValue, setSearchValue] = useState("");
 
@@ -139,17 +139,17 @@ const VideoNewParticipantList = () => {
     const filtered = dublicateData.filter((participant) =>
       participant.name.toLowerCase().includes(value.toLowerCase())
     );
-    console.log("getAllParticipantMain");
+    
 
     setFilteredParticipants(filtered);
   };
 
   useEffect(() => {
     if (Object.keys(getAllParticipantMain).length) {
-      console.log("getAllParticipantMain");
+      
       setFilteredParticipants(getAllParticipantMain);
     } else {
-      console.log("getAllParticipantMain");
+      
       setFilteredParticipants([]);
     }
   }, [getAllParticipantMain]);
@@ -166,21 +166,21 @@ const VideoNewParticipantList = () => {
       );
       // Update the state with the filtered list
       setFilteredParticipants(updatedParticipants);
-      console.log("getAllParticipantMain");
-      console.log("filteredParticipants", leavePresenterParticipant);
+      
+      
       dispatch(presenterLeaveParticipant([]));
     }
   }, [leavePresenterParticipant]);
 
   useEffect(() => {
-    console.log("getAllParticipantMain");
-    console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+    
+    
     if (
       Object.keys(newJoinPresenterParticipant).length > 0 &&
       presenterViewFlag &&
       presenterViewHostFlag
     ) {
-      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
+      
       // Step 1: Remove any existing participant with the same userID or guid
       let dublicateData = [...filteredParticipants];
       const updatedParticipants = dublicateData.filter(
@@ -193,11 +193,11 @@ const VideoNewParticipantList = () => {
       updatedParticipants.push(newJoinPresenterParticipant);
 
       // Step 3: Update the state
-      console.log("getAllParticipantMain");
+      
       dispatch(updatedParticipantListForPresenter(updatedParticipants));
       dispatch(presenterNewParticipantJoin([]));
 
-      console.log(updatedParticipants);
+      
     }
   }, [newJoinPresenterParticipant]);
 
@@ -219,10 +219,7 @@ const VideoNewParticipantList = () => {
         );
       } else {
         // Check if any non-host participant is muted
-        console.log(
-          "isEveryoneUnmuted",
-          !participant.isHost && participant.mute === true
-        );
+        
         return !participant.isHost && participant.mute === true;
       }
     });
@@ -244,10 +241,10 @@ const VideoNewParticipantList = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
-    console.log("hell");
+    
 
     if (waitingParticipants?.length) {
-      console.log(waitingParticipants, "usersDatausersData");
+      
 
       // Deduplicate based on `guid`
       const uniqueByGuid = Object.values(
@@ -264,13 +261,13 @@ const VideoNewParticipantList = () => {
   }, [waitingParticipants]);
 
   const makeHostOnClick = async (usersData) => {
-    console.log("HostTransferEvent");
+    
     let newRoomId = localStorage.getItem("newRoomId");
 
     if (raisedUnRaisedParticipant) {
-      console.log("maximizeParticipantVideoFlag");
+      
       if (!isZoomEnabled || !disableBeforeJoinZoom) {
-        console.log("maximizeParticipantVideoFlag");
+        
         let data = {
           RoomID: String(RoomID),
           UID: String(UID),
@@ -284,12 +281,12 @@ const VideoNewParticipantList = () => {
     // 2. Send HostTransferEvent to iframe
     if (isZoomEnabled) {
       const iframe = iframeRef.current;
-      console.log("HostTransferEvent", usersData);
+      
       if (iframe && iframe.contentWindow) {
         const msg = `HostTransferEvent_#_${usersData.guid}`;
         setTimeout(() => {
           iframe.contentWindow.postMessage(msg, "*");
-          console.log("HostTransferEvent", msg);
+          
         }, 1000);
       }
     } else {
@@ -318,8 +315,8 @@ const VideoNewParticipantList = () => {
           ? newRoomID
           : participantRoomId;
       // Mute/Unmute a specific participant
-      console.log("filteredParticipants");
-      console.log("getAllParticipantMain");
+      
+      
       setFilteredParticipants((prev) =>
         prev.map((participant) =>
           participant.guid === usersData.guid
@@ -378,7 +375,7 @@ const VideoNewParticipantList = () => {
     let participantRoomId = localStorage.getItem("participantRoomId");
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
     if (presenterViewFlag && presenterViewHostFlag) {
-      console.log("isEveryoneUnmuted");
+      
       let currentUserId = isHost ? isGuid : participantUID;
       allUids = duplicatesData
         .filter((participant) => participant.guid !== currentUserId) // Filter out hosts
@@ -393,7 +390,7 @@ const VideoNewParticipantList = () => {
         }));
     }
 
-    console.log(allUids, "allUids after excluding hosts");
+    
     let RoomID = presenterViewFlag
       ? roomID
         ? roomID
@@ -401,12 +398,12 @@ const VideoNewParticipantList = () => {
       : isMeetingVideoHostCheck
       ? newRoomID
       : participantRoomId;
-    console.log(presenterViewFlag, "allUids after excluding hosts");
-    console.log(roomID, "allUids after excluding hosts");
-    console.log(callAcceptedRoomID, "allUids after excluding hosts");
-    console.log(isMeetingVideoHostCheck, "allUids after excluding hosts");
-    console.log(newRoomID, "allUids after excluding hosts");
-    console.log(participantRoomId, "allUids after excluding hosts");
+    
+    
+    
+    
+    
+    
     const data = {
       RoomID: RoomID,
       IsMuted: !flag,
@@ -439,8 +436,8 @@ const VideoNewParticipantList = () => {
     };
 
     // Update the specific participant's hideCamera state in `newParticipants`
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
+    
+    
     setFilteredParticipants((prev) =>
       prev.map((participant) =>
         participant.guid === usersData.guid
@@ -460,8 +457,8 @@ const VideoNewParticipantList = () => {
       MeetingID: currentMeetingID,
     };
 
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
+    
+    
     setFilteredParticipants((prev) =>
       prev.filter((participant) => participant.guid !== usersData.guid)
     );
@@ -615,7 +612,7 @@ const VideoNewParticipantList = () => {
           {filteredParticipants.length > 0 ? (
             filteredParticipants.map((usersData, index) => {
               const isSelfHost = usersData.isHost && meetinHostInfo.isHost; // ⭐ MAIN CONDITION
-              console.log(usersData, "usersDatausersData");
+              
               return (
                 <>
                   <Row className="hostBorder m-0">

@@ -134,7 +134,7 @@ const Minutes = ({
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize);
+
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -219,11 +219,6 @@ const Minutes = ({
       });
     } else {
       if (source === "user" && String(content).length >= 501) {
-        console.log(
-          removeHTMLTagsAndTruncate(String(content)),
-          removeHTMLTagsAndTruncate(String(content)).length,
-          "Test String"
-        );
         // Update state only if no image is detected in the content
         setAddNoteFields({
           ...addNoteFields,
@@ -259,7 +254,6 @@ const Minutes = ({
       }
 
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
-      let flag = false;
       let sizezero = true;
       let size = true;
 
@@ -325,7 +319,6 @@ const Minutes = ({
 
       setisEdit(true);
     } else {
-      console.log("data.minutesDetails is undefined or null");
     }
     let Retrive = {
       FK_MeetingGeneralMinutesID: data.minuteID,
@@ -408,8 +401,6 @@ const Minutes = ({
     }
   };
 
-  console.log(fileAttachments, "fileForSendfileForSendfileForSend");
-  console.log(fileForSend, "fileForSendfileForSendfileForSend");
   const documentUploadingFunc = async (minuteID) => {
     let newFolder = [];
     let newfile = [];
@@ -644,7 +635,7 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     } else if (general) {
@@ -670,7 +661,7 @@ const Minutes = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       }
     }
@@ -728,7 +719,7 @@ const Minutes = ({
 
     // dispatch(showPreviousConfirmationModal(true));
   };
-  console.log(ResponseMessage, "ResponseMessageResponseMessage");
+
   useEffect(() => {
     try {
       if (
@@ -872,10 +863,6 @@ const Minutes = ({
                       <Row>
                         {fileAttachments.length > 0
                           ? fileAttachments.map((data, index) => {
-                              console.log(
-                                fileAttachments,
-                                "fileAttachmentsfileAttachments"
-                              );
                               return (
                                 <>
                                   <Col lg={4} md={4} sm={4}>
@@ -936,7 +923,6 @@ const Minutes = ({
             <Col lg={12} md={12} sm={12} className={styles["ScrollerMinutes"]}>
               {messages.length > 0
                 ? messages.map((data, index) => {
-                    console.log("className", data);
                     return (
                       <>
                         <section className={styles["Sizing_Saved_Minutes"]}>
@@ -1081,10 +1067,6 @@ const Minutes = ({
                                   <Row>
                                     {data.minutesAttachmets.map(
                                       (filesname, index) => {
-                                        console.log(
-                                          filesname,
-                                          "filesnamefilesname"
-                                        );
                                         return (
                                           <>
                                             <Col lg={3} md={3} sm={3}>

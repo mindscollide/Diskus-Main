@@ -24,13 +24,9 @@ const PackageUpgradeDetail = () => {
   let tenureId = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
   let packageColorPath1 = "";
   let packageColorPath2 = "";
-  console.log(
-    packageColorPath1,
-    packageColorPath2,
-    "packageColorPath2packageColorPath2packageColorPath2"
-  );
+  
   const { state } = location;
-  console.log(state, "statestatestate");
+  
   //for Translation
   const upgradePackage = (id) => {
     dispatch(getSubscriptionUpgradeAmountInfoApi(navigate, id, tenureId, t));

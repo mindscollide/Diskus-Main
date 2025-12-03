@@ -97,7 +97,7 @@ export const handleCheck = (
 };
 
 export const findUserProfileImg = (userId, users) => {
-  console.log("userId, users", userId, users);
+  
   try {
     if (!Array.isArray(users)) {
       users = [users];
@@ -105,13 +105,13 @@ export const findUserProfileImg = (userId, users) => {
     const user = users.find((user) => user.userID === userId);
     return user ? user.userProfileImg : "";
   } catch (error) {
-    console.log("userId, users", error);
+    
   }
 };
 
 export const checkReviewersListGeneral = (dataArray) => {
   try {
-    console.log("DataArrayDataArray", dataArray);
+    
     if (!Array.isArray(dataArray)) {
       dataArray = [dataArray];
     }
@@ -127,7 +127,7 @@ export const checkReviewersListGeneral = (dataArray) => {
 };
 
 export const checkReviewersListAgenda = (dataArray) => {
-  console.log("DataArrayDataArray", dataArray);
+  
   try {
     if (!Array.isArray(dataArray)) {
       dataArray = [dataArray];
@@ -223,7 +223,7 @@ export const matchDataByMinuteID = (item, stateMinuteIDs) => {
 };
 
 export const checkForEdit = (oldArray, newArray) => {
-  console.log("minuteReviewDataCheckForEdit ", oldArray, newArray);
+  
   if (oldArray.length !== newArray.length) {
     return true;
   }
@@ -350,7 +350,7 @@ export function allReviewersListsNonEmptyGeneral(data) {
 }
 
 export const checkReviewersListSubAgenda = (dataArray) => {
-  console.log("DataArrayDataArray", dataArray);
+  
   try {
     if (!Array.isArray(dataArray)) {
       dataArray = [dataArray];

@@ -109,9 +109,9 @@ const ViewPollProgress = () => {
   }, [PollsReducerAllpolls]);
 
   const changeDateStartHandler2 = (date) => {
-    console.log(date, "viewProgressPollsDetails");
+    
     let newDate = moment(date, "YYYYMMDDHHmmss").format("DD MMMM YYYY");
-    console.log(newDate, "viewProgressPollsDetails");
+    
     return newDate;
   };
 

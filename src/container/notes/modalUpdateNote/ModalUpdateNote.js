@@ -198,7 +198,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const addNotesFieldHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("values", name, value);
+    
     if (name === "Title" && value !== "") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
@@ -267,10 +267,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         NotesReducer.GetNotesByNotesId !== null &&
         NotesReducer.GetNotesByNotesId !== undefined
       ) {
-        console.log(
-          NotesReducer.GetNotesByNotesId,
-          "NotesReducerNotesReducerNotesReducer"
-        );
+        
         const {
           title,
           date,
@@ -288,26 +285,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           time,
           username,
         } = NotesReducer.GetNotesByNotesId;
-        console.log(
-          {
-            title,
-            date,
-            description,
-            fK_NotesStatus,
-            fK_OrganizationID,
-            isAttachment,
-            isStarred,
-            modifiedDate,
-            modifiedTime,
-            notesAttachments,
-            notesStatus,
-            organizationName,
-            pK_NotesID,
-            time,
-            username,
-          },
-          "titletitle"
-        );
+        
         setDescription(description);
         setAddNoteFields({
           ...addNoteFields,
@@ -367,7 +345,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         }
       }
     } catch (error) {
-      console.log(error, "GetNotesByNotesIdGetNotesByNotesId");
+      
     }
   }, [NotesReducer.GetNotesByNotesId]);
 
@@ -384,7 +362,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         });
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [isdescription]);
 
@@ -469,7 +447,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         showMessage(t("Please-fill-all-the-fields"), "error", setOpen);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   };
 
@@ -478,7 +456,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     let newFolder = [...previousIDs];
     let newfile = [];
     if (fileForSend.length > 0) {
-      console.log(fileForSend, "fileForSendfileForSend");
+      
       const uploadPromises = fileForSend.map(async (newData) => {
         await dispatch(
           uploadDocumentsNotesApi(
@@ -517,7 +495,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       )
     );
   };
-  console.log(NotesReducerFolderID, "NotesReducerFolderID");
+  
   useEffect(() => {
     if (NotesReducerFolderID) {
       let folderIDCreated = NotesReducerFolderID;

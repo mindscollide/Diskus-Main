@@ -177,7 +177,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
     }
   }, [MeetingAgendaReducer.ResponseMessage]);
 
-  console.log("MeetingAgendaReducer", MeetingAgendaReducer);
+  
 
   return (
     <section>

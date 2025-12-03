@@ -55,7 +55,7 @@ const ManageUsers = () => {
     (state) => state.UserMangementReducer.allOrganizationUsersData
   );
 
-  console.log(UserMangementReducerallOrganizationUsersData, "statestate");
+  
 
   const UserMangementReducerResponseMessage = useSelector(
     (state) => state.UserMangementReducer.ResponseMessage
@@ -173,7 +173,7 @@ const ManageUsers = () => {
         Users.organizationUsers &&
         Users.organizationUsers.length > 0
       ) {
-        console.log(Users, "UsersUsersUsersUsersUsersUsers");
+        
         setManageUserGrid(
           UserMangementReducerallOrganizationUsersData.organizationUsers
         );
@@ -181,7 +181,7 @@ const ManageUsers = () => {
         setManageUserGrid([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [UserMangementReducerallOrganizationUsersData]);
 
@@ -433,7 +433,7 @@ const ManageUsers = () => {
     const filteredData =
       UserMangementReducerallOrganizationUsersData.organizationUsers.filter(
         (user) => {
-          console.log(user, "useruseruseruseruser");
+          
           const nameInput = searchDetails.Name || "";
           const emailInput = searchDetails.Email || "";
           const statusInput =

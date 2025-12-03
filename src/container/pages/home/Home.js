@@ -346,7 +346,7 @@ const Home = () => {
       ) {
         let meetingID = meetingIdReducer.MeetingStatusSocket.meetingID;
         updateCalendarData(true, meetingID);
-        console.log("upComingEvents");
+        
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.filter(
             (meetingData) =>
@@ -389,7 +389,7 @@ const Home = () => {
             return eventData;
           })
         );
-        console.log("upComingEvents", events);
+        
         setUpComingEvents((upcomingeventData) =>
           upcomingeventData.map((meetingData) => {
             if (
@@ -615,7 +615,7 @@ const Home = () => {
         }
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [meetingIdReducer.allMeetingsSocketData]);
   //  Set Upcoming Events
@@ -642,7 +642,7 @@ const Home = () => {
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
-        console.log("upComingEvents", upComingEvents);
+        
         setUpComingEvents([]);
       }
     } catch (error) {
@@ -909,11 +909,11 @@ const Home = () => {
           // dispatch(getMeetingStatusfromSocket(null));
           dispatch(mqttCurrentMeetingEnded(null));
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [meetingIdReducer.MeetingStatusEnded]);
 

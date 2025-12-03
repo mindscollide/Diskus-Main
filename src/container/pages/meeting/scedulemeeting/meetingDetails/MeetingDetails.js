@@ -118,7 +118,7 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-  console.log(rows, "rowsrowsrowsrows");
+  
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -128,12 +128,8 @@ const MeetingDetails = ({
   const [error, seterror] = useState(false);
   const [publishedFlag, setPublishedFlag] = useState(false);
 
-  console.log(publishedFlag, "publishedFlagpublishedFlag");
-  console.log(
-    editorRole,
-    currentMeeting,
-    "editorRoleeditorRoleeditorRoleeditorRole"
-  );
+  
+  
 
   const [open, setOpen] = useState({
     open: false,
@@ -261,8 +257,8 @@ const MeetingDetails = ({
     });
   };
 
-  console.log("MeetingDetailsMeetingDetails", meetingDetails);
-  console.log("MeetingDetailsMeetingDetails rows", rows);
+  
+  
 
   const handleMeetingStartTime = (index, date) => {
     let newDate = new Date(date);
@@ -346,7 +342,7 @@ const MeetingDetails = ({
       updatedRows[index].dateForView = newDate;
       setRows(updatedRows);
     } catch (error) {
-      console.log(error, "errorerrorerror");
+      
     }
   };
 
@@ -402,10 +398,7 @@ const MeetingDetails = ({
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime"
-      );
+      
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -445,7 +438,7 @@ const MeetingDetails = ({
           MeetingStatusID: 1,
         },
       };
-      console.log({ data }, "meetingEndTime");
+      
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -485,10 +478,7 @@ const MeetingDetails = ({
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime"
-      );
+      
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -541,7 +531,7 @@ const MeetingDetails = ({
           MeetingStatusID: currentMeetingStatus,
         },
       };
-      console.log(data, "newArrnewArrnewArrnewArr");
+      
       dispatch(
         SaveMeetingDetialsNewApiFunction(
           navigate,
@@ -586,10 +576,7 @@ const MeetingDetails = ({
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime"
-      );
+      
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -661,7 +648,7 @@ const MeetingDetails = ({
           setDataroomMapFolderId
         )
       );
-      console.log("newArrnewArrnewArrnewArr", data);
+      
     } else {
       seterror(true);
     }
@@ -809,10 +796,7 @@ const MeetingDetails = ({
   // const handleCancelMeetingButton = () => {
   //   dispatch(showCancelModalmeetingDeitals(true));
   // };
-  console.log(
-    getALlMeetingTypes?.meetingTypes,
-    "getALlMeetingTypes?.meetingTypes"
-  );
+  
 
   //Reminder Frequency Drop Down Data
   useEffect(() => {
@@ -885,7 +869,7 @@ const MeetingDetails = ({
         let typeData = {};
 
         meetingTypes.forEach((data) => {
-          console.log(data, "getALlMeetingTypesgetALlMeetingTypes");
+          
           if (data.description?.toLowerCase().includes("board")) {
             Newdata.push({
               value: data.pK_MTID,
@@ -937,7 +921,7 @@ const MeetingDetails = ({
       ) {
         let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
-        console.log(MeetingData, "MeetingDataMeetingData");
+        
         let isPublishedState = getAllMeetingDetails.isPublished;
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
@@ -1043,7 +1027,7 @@ const MeetingDetails = ({
     dispatch(getAllMeetingForAgendaImport_success([], ""));
   }, []);
 
-  console.log("MeetingDetailsMeetingDetails", meetingDetails);
+  
 
   return (
     <section>

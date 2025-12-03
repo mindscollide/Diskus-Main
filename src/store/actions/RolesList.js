@@ -33,7 +33,7 @@ const getAllOrganizationRolesFail = (response, message) => {
 };
 
 const GetAllOrganizationRoles = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllOrganizationRolesinit());
     let form = new FormData();
@@ -107,7 +107,7 @@ const getAllUserRolesFail = (response, message) => {
 };
 
 const GetAllUserRoles = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllUserRolesInit());
     let form = new FormData();
@@ -181,7 +181,7 @@ const getOrganizationByIDFail = (response, message) => {
 };
 
 const GetOrganizationByID = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getOrganizationByIDInit());
     let form = new FormData();
@@ -256,7 +256,7 @@ const getAllUserStatusFail = (response, message) => {
 };
 
 const GetAllUserStatus = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllUserStatusInit());
     let form = new FormData();

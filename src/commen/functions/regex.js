@@ -96,9 +96,6 @@ export const convertToArabicNumerals = (input) => {
 export const convertNumbersInString = (inputString, locale) => {
   const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
   const englishDigits = "0123456789";
-  {
-    console.log("cancelSubscriptionDetails", inputString);
-  }
 
   // Ensure the input is a string
   const safeString = String(inputString);
@@ -110,19 +107,10 @@ export const convertNumbersInString = (inputString, locale) => {
     } else if (toLocale === "en") {
       return englishDigits[digit];
     }
-    {
-      console.log("cancelSubscriptionDetails", digit);
-    }
 
     return digit; // Return as is if locale not supported
   };
 
-  {
-    console.log(
-      "cancelSubscriptionDetails",
-      safeString.replace(/\d/g, (match) => convertDigit(match, locale))
-    );
-  }
   // Convert the entire string
   return safeString.replace(/\d/g, (match) => convertDigit(match, locale));
 };

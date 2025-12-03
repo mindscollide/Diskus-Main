@@ -37,7 +37,7 @@ const allMeetingMQTT = (response) => {
 };
 const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
   let userID = localStorage.getItem("userID");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationId = localStorage.getItem("organizationID");
   let data = {
     OrganizationID: parseInt(organizationId),
@@ -140,7 +140,7 @@ const updateOrganizationMeetingFail = (message) => {
 
 const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
   let userID = localStorage.getItem("userID");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationId = localStorage.getItem("organizationID");
   let currentPageSize = JSON.parse(localStorage.getItem("MeetingPageSize"));
   let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"));
@@ -250,7 +250,7 @@ const deleteOrganizationMeetingFail = (message) => {
 
 const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
   let userID = localStorage.getItem("userID");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationId = localStorage.getItem("organizationID");
   let data = {
     OrganizationID: parseInt(organizationId),
@@ -339,7 +339,7 @@ const getMeetingStatusFail = (message) => {
 };
 
 const GetMeetingStatus = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(getMeetingStatusInit());

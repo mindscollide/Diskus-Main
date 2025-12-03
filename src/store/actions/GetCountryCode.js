@@ -23,7 +23,7 @@ const countryCodeFail = (message) => {
 };
 
 const getCountryCodeFunc = () => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     // dispatch(countryCodeInit())

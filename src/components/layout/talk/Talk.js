@@ -233,7 +233,7 @@ const Talk = () => {
     ) {
       dispatch(showCancelModalmeetingDeitals(true));
       localStorage.setItem("navigateLocation", "Minutes");
-      console.log("This Check");
+      
     } else {
       navigate("/Diskus/Minutes");
       // let newData = { sRow: 0, Length: 10 };
@@ -251,7 +251,7 @@ const Talk = () => {
       dispatch(viewProposeOrganizerMeetingPageFlag(false));
       dispatch(proposeNewMeetingPageFlag(false));
       dispatch(viewMeetingFlag(false));
-      console.log("This Check");
+      
       let Data = {
         FK_MDID: Number(currentMeeting),
         DateTime: getCurrentDateTimeUTC(),
@@ -259,10 +259,10 @@ const Talk = () => {
       if (CurrentMeetingStatus === 10) {
         dispatch(LeaveCurrentMeeting(navigate, t, Data));
         dispatch(currentMeetingStatus(0));
-        console.log("This Check");
+        
       }
     }
-    console.log("This Check");
+    
   };
 
   const showsubTalkIcons = () => {
@@ -378,7 +378,7 @@ const Talk = () => {
 
   useEffect(() => {
     if (PendingApprovalCountData !== null) {
-      console.log(PendingApprovalCountData, "PendingApprovalCountData");
+      
       setPendingApprovalTabCount({
         pendingSignature: PendingApprovalCountData.pendingSignatures ?? 0,
         pendingMinutes: PendingApprovalCountData.pendingMinuteReviews ?? 0,
@@ -416,7 +416,7 @@ const Talk = () => {
     } catch {}
   }, []);
 
-  console.log("totalValueTotalValue", totalValue);
+  
 
   useEffect(() => {
     if (VideoChatPanelReducer === false) {
@@ -459,11 +459,7 @@ const Talk = () => {
   //   }
   // }, [ActiveChatBoxGS])
 
-  console.log(
-    pendingApprovalsTabCount.pendingMinutes,
-    pendingApprovalsTabCount.pendingSignature,
-    "IOS"
-  );
+  
   return (
     <>
       <div ref={videoPanelRef} className={"talk_nav" + " " + currentLang}>

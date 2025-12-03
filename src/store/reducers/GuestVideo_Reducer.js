@@ -1,4 +1,3 @@
-import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
 import { removeParticipantByGuid } from "../../commen/functions/regex";
 
@@ -210,7 +209,6 @@ const GuestVideoReducer = (state = initialState, action) => {
       };
     }
     case actions.TRANSFER_MEETING_HOST_SUCCESS: {
-      console.log("videoHideUnHideForHost", action.response);
       return {
         ...state,
         hostTransferFlag: action.response,
@@ -287,11 +285,11 @@ const GuestVideoReducer = (state = initialState, action) => {
 
     case actions.REMOVE_PARTICIPANTS_FROM_VIDEO: {
       // Filter out participants whose UID is included in the payload array
-      console.log(action, "responseresponseresponse");
+
       const participantsFilterization = state.participantNameDataAccept.filter(
         (participant) => participant.UID !== action.response
       );
-      console.log(participantsFilterization, "participantsFilterization");
+
       return {
         ...state,
         participantNameDataAccept: participantsFilterization,
@@ -299,11 +297,6 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.MUTE_UNMUTE_PARTICIPANT_OR_GUEST: {
-      console.log(
-        action,
-
-        "MUTE_UNMUTE_PARTICIPANT_OR_GUESTMUTE_UNMUTE_PARTICIPANT_OR_GUEST"
-      );
       return {
         ...state,
         muteUmMuteByHost: action.response,
@@ -311,7 +304,6 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.HIDE_UNHIDE_VIDEO_BY_HOST: {
-      console.log(action, "responseresponse");
       return {
         ...state,
         hideunHideByHost: action.response,
@@ -351,22 +343,18 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.GET_VIDEO_PARTICIPANTS_FOR_GUEST_SUCCESS: {
-      console.log(action, "actionsactionsactions");
       let data = [];
       if (action.flag === 2) {
         data = [...state.getAllParticipantGuest];
         data.push(action.response);
       } else if (action.flag === 3) {
         let dublicate = [...state.getAllParticipantGuest];
-        console.log(
-          "hideUnHideParticpantorGuest123",
-          removeParticipantByGuid(data, action.response)
-        );
+
         data = removeParticipantByGuid(dublicate, action.response);
       } else {
         data = action.response;
       }
-      console.log("hideUnHideParticpantorGuest123", data);
+
       return {
         ...state,
         Loading: false,
@@ -385,8 +373,6 @@ const GuestVideoReducer = (state = initialState, action) => {
     }
 
     case actions.PARTICIPANT_HIDEUNHIDE_VIDEO: {
-      console.log("MQTT onMessageArrived", action.payload);
-
       // Safely handle null `getAllParticipantGuest`
       const updatedParticipants =
         state.getAllParticipantGuest?.participantList?.map((participant) =>
@@ -394,8 +380,6 @@ const GuestVideoReducer = (state = initialState, action) => {
             ? { ...participant, isVideoHidden: action.payload.isVideoHidden }
             : participant
         ) || [];
-
-      console.log("Updated Participants:", updatedParticipants);
 
       return {
         ...state,

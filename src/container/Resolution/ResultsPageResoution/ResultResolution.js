@@ -45,7 +45,7 @@ const ResultResolution = ({
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
   const [decisionId, setDecisionId] = useState(0);
-  console.log(decisionId, "decisionIddecisionId");
+  
   const options = {
     width: "100%",
     height: 300,

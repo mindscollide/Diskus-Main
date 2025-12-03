@@ -55,10 +55,7 @@ const AdminHome = () => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
-    console.log(
-      "Connected to MQTT broker onMessageArrived",
-      JSON.parse(msg.payloadString)
-    );
+
     if (data.action.toLowerCase() === "Notification".toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
@@ -126,11 +123,7 @@ const AdminHome = () => {
         let getToken =
           localStorage.getItem("token") !== null &&
           localStorage.getItem("token");
-        console.log(
-          getToken,
-          data.payload.authToken.token,
-          "USER_LOGIN_ACTIVITYUSER_LOGIN_ACTIVITY"
-        );
+
         if (getToken !== data?.payload?.authToken?.token) {
           dispatch(userLogOutApiFunc(navigate, t));
         }
@@ -138,7 +131,6 @@ const AdminHome = () => {
     }
   };
   const onConnectionLost = () => {
-    console.log("Connected to MQTT broker onConnectionLost");
     setTimeout(mqttConnection, 3000);
   };
 
@@ -183,7 +175,7 @@ const AdminHome = () => {
         ) : null}
         <NavbarAdmin />
         <NotificationBar
-          iconName={<img draggable="false" src={IconMetroAttachment} alt="" />}
+          iconName={<img draggable='false' src={IconMetroAttachment} alt='' />}
           notificationMessage={notification.message}
           notificationState={notification.notificationShow}
           setNotification={setNotification}

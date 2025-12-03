@@ -321,7 +321,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setCommitteeMembersRolesOptions(committeeMembersRoleOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeMembersRoles]);
 
@@ -339,12 +339,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         setNewCommitteeTypeOptions(committeeTypeOptions);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [CommitteeReducergetCommitteeTypes]);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log(GroupMembers, "GroupMembersGroupMembers");
+    
     if (Array.isArray(GroupMembers) && GroupMembers.length > 0) {
       const validIds = [1, 2, 3, 4, 5];
       let hasValidMember = GroupMembers.some((data) =>
@@ -489,9 +489,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         });
       }
     } catch {
-      console.log(
-        "error in getting data in update committee getCommitteeByCommitteeID"
-      );
+      
     }
   }, [CommitteeReducergetCommitteeByCommitteeID, meetingAttendeesList]);
 
@@ -923,12 +921,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1059,12 +1052,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1194,12 +1182,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1329,12 +1312,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             sm={12}
                                             className="mt-0  d-flex justify-content-center"
                                           >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
+                                            {}
                                             <img
                                               src={CrossIcon}
                                               className="cursor-pointer"
@@ -1567,10 +1545,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             >
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map((data, index) => {
-                                    console.log(
-                                      "meetingAttendeesListmeetingAttendeesList",
-                                      data
-                                    );
+                                    
                                     return (
                                       <>
                                         <Col

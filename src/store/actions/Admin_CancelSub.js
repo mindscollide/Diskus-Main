@@ -35,7 +35,7 @@ const CancelSubscriptionPackage = (
   cancelReson,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
     OrganizationID: organizationID,
@@ -149,7 +149,7 @@ const revokefail = (message) => {
 };
 
 const revokeprocess = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
     OrganizationID: organizationID,

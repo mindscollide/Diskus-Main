@@ -668,10 +668,7 @@ const UserLevelConfigUM = () => {
         );
       }
     }
-    console.log(
-      "AllowMicrosoftCalenderSyncCall",
-      AllowMicrosoftCalenderSyncCall
-    );
+    
     // global is tru and update local state is false then call revoke token api
     // else if(){
     // const tokenRevoke=await dispatch(

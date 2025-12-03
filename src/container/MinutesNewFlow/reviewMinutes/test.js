@@ -81,7 +81,7 @@ const ReviewMinutes = () => {
   };
 
   const submitReviews = () => {
-    console.log("submitReviewssubmitReviews", minutesAgenda);
+    
 
     // Extract minuteData from all agendas and their subMinutes
     const extractMinuteData = (agendas) => {
@@ -108,7 +108,7 @@ const ReviewMinutes = () => {
 
     const allMinuteData = extractMinuteData(minutesAgenda);
 
-    console.log("submitReviewssubmitReviews", allMinuteData);
+    
 
     // Transform the first state data to the required format
     const actorMinuteReviewsFromState1 = allMinuteData.map((minute) => ({
@@ -136,17 +136,17 @@ const ReviewMinutes = () => {
     };
 
     // dispatch(AcceptRejectMinuteReview(Data, navigate, t));
-    console.log("submitReviewssubmitReviews", Data);
+    
   };
 
   useEffect(() => {
     const div = divRef.current;
 
     if (div.scrollHeight > div.clientHeight) {
-      console.log("Div has scroll");
+      
       setReviewWrapperScroll(true);
     } else {
-      console.log("Div doesn't have scroll");
+      
       setReviewWrapperScroll(false);
     }
   }, []); // This effect runs once after the component mounts
@@ -179,7 +179,7 @@ const ReviewMinutes = () => {
         setWorkflowID(reducerData.workFlowID);
         // Initialize an empty array to hold the transformed data
         let transformedData = [];
-        console.log("transformedDatatransformedData", transformedData);
+        
         // Iterate through each parent agenda in the agenda hierarchy list
         minutesAgendaHierarchy.forEach((parentAgenda) => {
           // Find the parent agenda details in the agendaWiseMinutes array
@@ -263,10 +263,10 @@ const ReviewMinutes = () => {
             transformedData.push(parentAgendaObj);
           }
         });
-        console.log("transformedDatatransformedData", transformedData);
+        
 
         // Update attachments in transformedData based on data state
-        console.log("transformedDatatransformedData", transformedData);
+        
 
         transformedData.forEach((agenda) => {
           agenda.minuteData.forEach((minute) => {
@@ -297,20 +297,20 @@ const ReviewMinutes = () => {
             });
           });
         });
-        console.log("transformedDatatransformedData", transformedData);
+        
 
         // Log the transformed data to the console
         setMinutesAgenda(transformedData);
-        console.log("transformedDatatransformedData", transformedData);
+        
       } else {
         setMinutesAgenda([]);
         setMinutesAgendaHierarchy([]);
         setMinutesGeneral([]);
         setMinutesToReview([]);
-        console.log("transformedDatatransformedData");
+        
       }
     } catch (error) {
-      console.log("transformedDatatransformedData", error);
+      
     }
   }, [MinutesReducer.GetMinutesForReviewerByMeetingIdData]);
 
@@ -318,14 +318,9 @@ const ReviewMinutes = () => {
   //   if(MinutesReducer.RejectMinuteData !== null && MinutesReducer.RejectMinuteData !== undefined)
   // }, [MinutesReducer.RejectMinuteData])
 
-  console.log(
-    "DataDataDataData",
-    minutesAgenda,
-    minutesGeneral,
-    minuteDataToReject
-  );
+  
 
-  console.log("MinutesReducerMinutesReducerMinutesReducer", MinutesReducer);
+  
 
   return (
     <section className={styles["pendingApprovalContainer"]}>
@@ -1407,7 +1402,7 @@ const ReviewMinutes = () => {
             })}
 
             {minutesGeneral.map((data, index) => {
-              console.log("minutesGeneral", data);
+              
               return (
                 <>
                   <Row className="mx-50">

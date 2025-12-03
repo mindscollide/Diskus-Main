@@ -59,7 +59,7 @@ const ForgotPasswordVerificationUM = () => {
     let data = {
       Email: email,
     };
-    console.log("UserEmail", data);
+    
     setErrorMessage("");
     localStorage.removeItem("seconds");
     localStorage.removeItem("minutes");
@@ -120,7 +120,7 @@ const ForgotPasswordVerificationUM = () => {
   //onChange For OTP
   const changeHandler = (e) => {
     let otpval = e.toUpperCase();
-    console.log("changeHandler", otpval);
+    
     setVerifyOTP(otpval);
   };
 

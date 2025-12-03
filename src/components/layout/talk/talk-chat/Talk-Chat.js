@@ -4423,10 +4423,7 @@ const TalkChat = () => {
                               allBroadcastMessages.length === 0 &&
                               allGroupMessages.length === 0 ? (
                                 allOtoMessages.map((messageData, index) => {
-                                  console.log(
-                                    messageData,
-                                    "messageDatamessageDatamessageData"
-                                  );
+                                  
                                   var ext = messageData.attachmentLocation
                                     .split(".")
                                     .pop();

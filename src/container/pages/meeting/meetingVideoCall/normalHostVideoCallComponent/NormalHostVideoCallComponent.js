@@ -80,8 +80,8 @@ const NormalHostVideoCallComponent = () => {
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable, check) => {
-    console.log(enable, "updatedUrlupdatedUrlupdatedUrl");
-    console.log(check, "updatedUrlupdatedUrlupdatedUrl");
+    
+    
     dispatch(setAudioControlHost(!enable));
     if (enable) {
       localStorage.setItem("isMicEnabled", true);

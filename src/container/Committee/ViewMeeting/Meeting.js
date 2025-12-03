@@ -47,7 +47,7 @@ import { GetAllUserChats, GetAllUsers, GetAllUsersGroupsRoomsList, GetGroupMessa
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();
-  console.log(committeeStatus, "committeeStatuscommitteeStatus");
+  
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const getMeetingByCommitteeID = useSelector(
     (state) => state.NewMeetingreducer.getMeetingByCommitteeID
@@ -87,7 +87,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     meetingID: null,
     showButton: false,
   });
-  console.log({ startMeetingData, rows }, "startMeetingDatastartMeetingData");
+  
   let now = new Date();
   let year = now.getUTCFullYear();
   let month = (now.getUTCMonth() + 1).toString().padStart(2, "0");
@@ -102,7 +102,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
     isQuickMeeting,
     status
   ) => {
-    // console.log(record, "recordrecord")
+    // 
     if (Number(status) === 10) {
       let joinMeetingData = {
         VideoCallURL: videoCallURL,
@@ -310,7 +310,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
 
 
   const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
+    
     if (data.talkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -567,7 +567,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
             attendee.meetingAttendeeRole.role === "Organizer"
         );
-        console.log(record, "recordrecordrecordrecord");
+        
         return (
           <>
             <Row>
@@ -735,7 +735,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
                       onClick={() => {
-                        console.log("end meeting chaek");
+                        
                         dispatch(
                           UpdateOrganizersMeeting(
                             true,
@@ -868,7 +868,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
             attendee.meetingAttendeeRole.pK_MARID === 4
         );
         const isQuickMeeting = record.isQuickMeeting;
-        console.log(record.status,isQuickMeeting,isOrganiser,committeeStatus, "committeeStatuscommitteeStatus");
+        
         if (
           record.status === "8" ||
           record.status === "4" ||
@@ -936,7 +936,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         dispatch(createCommitteeMeeting(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [CommitteeMeetingMQTT]);
 
@@ -964,7 +964,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
           });
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [MeetingStatusEnded]);
@@ -987,7 +987,7 @@ const CommitteeMeetingTab = ({ committeeStatus }) => {
         };
         updateMeeting();
       } catch (error) {
-        console.log(error, "error");
+        
       }
     }
   }, [allMeetingsSocketData]);

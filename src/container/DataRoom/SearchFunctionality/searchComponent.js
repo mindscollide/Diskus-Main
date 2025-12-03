@@ -89,10 +89,7 @@ const SearchComponent = ({
   setFileDataforAnalyticsCount,
   showShareFolderModal,
 }) => {
-  console.log(
-    { searchDataFields, searchResultsFields },
-    "searchDataFieldssearchDataFields"
-  );
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -106,7 +103,7 @@ const SearchComponent = ({
   const [calendarValue, setCalendarValue] = useState(gregorian);
   // all assignees
   const [assignessList, setAssignessList] = useState([]);
-  console.log(assignessList, "assignessListassignessList");
+  
   const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -125,7 +122,7 @@ const SearchComponent = ({
   let lang = localStorage.getItem("i18nextLng");
   let organizationID = localStorage.getItem("organizationID");
 
-  console.log({ searchAllData, totalRecords, sRowsData }, "searchDataFields");
+  
   useEffect(() => {
     if (assignees?.user && assignees?.user?.length === 0) {
       dispatch(allAssignessList(navigate, t, false));
@@ -357,7 +354,7 @@ const SearchComponent = ({
   };
 
   const handleLinkClick = (e, record) => {
-    console.log(record, "preventDefault");
+    
     e.preventDefault();
     if (checkFeatureIDAvailability(20)) {
       const pdfData = {
@@ -369,18 +366,13 @@ const SearchComponent = ({
       };
       const pdfDataJson = JSON.stringify(pdfData);
       let ext = record.name.split(".").pop();
-      console.log(ext, "preventDefault");
+      
       openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
     }
   };
 
   const fileOptionsSelect = (data, record, pdfDataJson) => {
-    console.log(
-      data,
-      record,
-      pdfDataJson,
-      "fileOptionsSelectfileOptionsSelectfileOptionsSelect"
-    );
+    
     if (data.value === 1) {
       if (checkFeatureIDAvailability(20)) {
         // Open on Apryse

@@ -76,7 +76,7 @@ const PrivateChats = () => {
   const chatClick = (record) => {
     dispatch(chatBoxActiveFlag(true));
     localStorage.setItem("userNameChat", record.fullName);
-    console.log("chatClick Record", record);
+    
     let chatOTOData = {
       UserID: currentUserId,
       ChannelID: currentOrganizationId,

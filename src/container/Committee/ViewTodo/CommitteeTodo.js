@@ -116,7 +116,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         dispatch(getTaskCommitteeIDApi(navigate, t, newData));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -168,7 +168,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
             // Compare the deadlineDateTime values as numbers for sorting
             return parseInt(deadlineB, 10) - parseInt(deadlineA, 10);
           });
-          console.log(dataToSort, "dataToSortdataToSort");
+          
           setRowToDo(sortedTasks);
           setOriginalData(sortedTasks);
         } else {
@@ -180,7 +180,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         setOriginalData([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [PollsReducergetTodoCommitteeTask]);
 
@@ -194,7 +194,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         dispatch(createTaskCommitteeMQTT(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [toDoListReducercreateTaskCommittee]);
 
@@ -229,7 +229,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
 
       setStatusOptions(optionsArr);
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [todoStatus]);
 
@@ -247,7 +247,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
   };
 
   const deleteTodolist = async (record) => {
-    console.log(record, "recordrecord");
+    
     let NewData = {
       ToDoID: Number(record.pK_TID),
       UpdateFileList: [],
@@ -662,7 +662,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         dispatch(clearResponce());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [PollsReducerResponseMessage, assigneesResponseMessage]);
 
@@ -682,7 +682,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [getTodosStatusUpdateTodoStatusMessage, removeTodo]);
 
@@ -716,7 +716,7 @@ const CreateTodoCommittee = ({ committeeStatus }) => {
         dispatch(cleareMessage());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [
     getTodosStatusResponseMessage,

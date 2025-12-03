@@ -8,17 +8,14 @@ const initialState = {
 const UserReportReducer = (state = initialState, action) => {
   switch (action.type) {
     case actions.GET_USER_LOGIN_HISTORY_INIT: {
-      console.log(
-        action,
-        "GET_USER_LOGIN_HISTORY_INITGET_USER_LOGIN_HISTORY_INIT"
-      );
+      
       return {
         ...state,
         Loading: action.loader,
       };
     }
     case actions.GET_USER_LOGIN_HISTORY_SUCCESS: {
-      console.log(action, "GET_USER_LOGIN_HISTORY_SUCCESS");
+      
       return {
         ...state,
         Loading: false,

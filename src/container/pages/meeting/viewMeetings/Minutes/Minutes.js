@@ -235,11 +235,6 @@ const Minutes = () => {
       } else {
         let isEmptyContent = content === "<p><br></p>";
         if (String(content).length >= 501) {
-          console.log(
-            removeHTMLTagsAndTruncate(String(content)),
-            removeHTMLTagsAndTruncate(String(content)).length,
-            "Test String"
-          );
           setAddNoteFields({
             ...addNoteFields,
             Description: {
@@ -258,14 +253,10 @@ const Minutes = () => {
             },
           });
         }
-
-        console.log(String(content).length, content, "String Length ....");
       }
     }
   };
 
-  console.log("addNoteFieldsaddNoteFields", addNoteFields);
-  console.log(isMinutePublishable, "isMinutePublishable");
   const props = {
     name: "file",
     multiple: true,
@@ -281,7 +272,7 @@ const Minutes = () => {
       let fileSizeArr = fileSize; // Assuming fileSize is already defined somewhere
       let sizezero = true;
       let size = true;
-      console.log("testtesttest", fileAttachments, fileList);
+
       if (fileList.length > 10) {
         showMessage(t("Not-allowed-more-than-10-files"), "error", setOpen);
         return;
@@ -439,8 +430,6 @@ const Minutes = () => {
     }
   };
 
-  console.log("addNoteFieldsaddNoteFields", addNoteFields);
-
   const documentUploadingFunc = async (minuteID) => {
     let newFolder = [];
     let newfile = [];
@@ -517,7 +506,6 @@ const Minutes = () => {
   };
 
   const pdfData = (record, ext) => {
-    console.log("PDFDATAPDFDATA", record);
     let Data = {
       taskId: 1,
       commingFrom: 4,
@@ -526,9 +514,11 @@ const Minutes = () => {
     };
     let pdfDataJson = JSON.stringify(Data);
     if (fileFormatforSignatureFlow.includes(ext)) {
-      if(Number(editorRole.status) === 10 ) {
+      if (Number(editorRole.status) === 10) {
         window.open(
-          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+            pdfDataJson
+          )}`,
           "_blank",
           "noopener noreferrer"
         );
@@ -539,7 +529,6 @@ const Minutes = () => {
           "noopener noreferrer"
         );
       }
-  
     }
     // if (fileFormatforSignatureFlow.includes(ext)) {
     //   window.open(
@@ -745,7 +734,7 @@ const Minutes = () => {
   const [minuteReviewData, setMinuteReviewData] = useState(null);
 
   const [minutesData, setMinutesData] = useState([]);
-  console.log(minutesData, "minutesDataminutesData");
+
   const [minutesDataAgenda, setMinutesDataAgenda] = useState(null);
 
   const [publishMinutesDataAgenda, setPublishMinutesDataAgenda] = useState([]);
@@ -1103,16 +1092,6 @@ const Minutes = () => {
         documentDataAgenda,
         dataToTransformAgenda
       );
-      console.log(
-        {
-          resultedData,
-          documentDataAgenda,
-          dataToTransformAgenda,
-          dataToTransform,
-          resultedDataAgenda,
-        },
-        "resultedDataresultedData"
-      );
 
       setPublishMinutesDataGeneral(resultedData);
       setPublishMinutesDataAgenda(resultedDataAgenda);
@@ -1122,8 +1101,6 @@ const Minutes = () => {
     generalminutesDocumentForMeeting,
     NewMeetingreducer?.getallDocumentsForAgendaWiseMinutes,
   ]);
-  console.log({ publishMinutesDataGeneral }, "resultedDataresultedData");
-  console.log({ publishMinutesDataAgenda }, "resultedDataresultedData");
 
   return isMinutePublished !== null && JSON.parse(isMinutePublished) ? (
     <>
@@ -1152,7 +1129,7 @@ const Minutes = () => {
                             : styles["agenda-wrapper-open"]
                         }>
                         <p className={styles["agenda-title"]}>
-                          {index + 1 + "." + " " + data.agendaTitle}
+                          {`${index + 1}. ${data.agendaTitle}`}
                         </p>
                         <span className='d-flex justify-content-center align-items-center'>
                           {data?.agendaMinutes?.minutesAttachmets?.length > 0 ||
@@ -1571,7 +1548,7 @@ const Minutes = () => {
                             : styles["agenda-wrapper-open"]
                         }>
                         <p className={styles["agenda-title"]}>
-                          {index + 1 + "." + " " + t("General-minute")}
+                          {`${index + 1}. ${t("General-minute")}`}
                         </p>
                         <span className='d-flex justify-content-center align-items-center'>
                           {data.minutesAttachmets.length > 0 ? (
@@ -1947,7 +1924,6 @@ const Minutes = () => {
                   ? true
                   : false;
 
-              console.log({ isRejectedMemberHas, data }, "isRejectedMemberHas");
               return (
                 <Row className='mt-2'>
                   <Col

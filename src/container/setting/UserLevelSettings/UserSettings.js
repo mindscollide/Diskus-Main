@@ -118,7 +118,7 @@ const UserSettings = ({ googleClientIDs }) => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log("Google Code ", response.code);
+    
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -434,7 +434,7 @@ const UserSettings = ({ googleClientIDs }) => {
         /client_id=[^&]+/,
         `client_id=${microsoftClientID}`
       );
-      console.log("Client ID", url);
+      
       const windowFeatures = "width=600,height=400,top=100,left=100";
       const popup = window.open(url, "Microsoft Login", windowFeatures);
 
@@ -452,12 +452,12 @@ const UserSettings = ({ googleClientIDs }) => {
 
   const onChangeAllowMicrosoftCalenderSync = async (e) => {
     const value = e.target.checked;
-    console.log("onChangeAllowMicrosoftCalenderSync", value);
+    
     if (value) {
       await redirectToUrl();
     }
     let code = localStorage.getItem("Ms");
-    console.log("MS Code", code);
+    
     if (code) {
       await setUserOptionsSettings({
         ...userOptionsSettings,
@@ -787,10 +787,7 @@ const UserSettings = ({ googleClientIDs }) => {
           )
         );
         // revoke token api hit
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
       } else {
         AllowMicrosoftCalenderSyncCall = true;
         await dispatch(
@@ -804,15 +801,9 @@ const UserSettings = ({ googleClientIDs }) => {
         );
       }
     } else if (userOptionsSettings.AllowMicrosoftCalenderSync) {
-      console.log(
-        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
-      );
+      
       if (authMicrosoftAccessCode !== "") {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
         AllowMicrosoftCalenderSyncCall = await dispatch(
           getMicrosoftValidToken(
             navigate,
@@ -825,15 +816,9 @@ const UserSettings = ({ googleClientIDs }) => {
       }
     }
     if (signUpCodeToken !== "") {
-      console.log(
-        "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-        AllowMicrosoftCalenderSyncCall
-      );
+      
       if (userOptionsSettings.AllowGoogleCalenderSync) {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
         await dispatch(
           getGoogleValidToken(
             navigate,
@@ -844,10 +829,7 @@ const UserSettings = ({ googleClientIDs }) => {
           )
         );
       } else {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
         await dispatch(
           updateUserSettingFunc(
             navigate,
@@ -861,15 +843,9 @@ const UserSettings = ({ googleClientIDs }) => {
       setSignUpCodeToken("");
     } else {
       if (settingReducerData.userAllowGoogleCalendarSynch) {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
         if (userOptionsSettings.AllowGoogleCalenderSync) {
-          console.log(
-            "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-            AllowMicrosoftCalenderSyncCall
-          );
+          
           await dispatch(
             updateUserSettingFunc(
               navigate,
@@ -880,10 +856,7 @@ const UserSettings = ({ googleClientIDs }) => {
             )
           );
         } else {
-          console.log(
-            "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-            AllowMicrosoftCalenderSyncCall
-          );
+          
           await dispatch(
             revokeToken(
               navigate,
@@ -894,10 +867,7 @@ const UserSettings = ({ googleClientIDs }) => {
           );
         }
       } else {
-        console.log(
-          "updateOrganizationLevelSettingsupdateOrganizationLevelSettings",
-          AllowMicrosoftCalenderSyncCall
-        );
+        
         await dispatch(
           updateUserSettingFunc(
             navigate,

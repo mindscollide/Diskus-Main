@@ -30,7 +30,7 @@ const searchPaymentHistoryApi = (
   setPaymentHistoryModal,
   no
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationID: OrganizationID,

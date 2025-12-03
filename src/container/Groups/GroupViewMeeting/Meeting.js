@@ -337,7 +337,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   let currentOrganizationId = localStorage.getItem("organizationID");
 
   const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
+    
     if (data.talkGroupID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
@@ -749,7 +749,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
                       text={t("Start-meeting")}
                       className={styles["Start-Meeting"]}
                       onClick={() => {
-                        console.log("end meeting chaek");
+                        
                         dispatch(
                           UpdateOrganizersMeeting(
                             true,
@@ -852,7 +852,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
       key: "Edit",
       width: "33px",
       render: (text, record) => {
-        console.log(record, "GroupMeetingTable");
+        
         const isOrganiser = record.meetingAttendees.some(
           (attendee) =>
             Number(attendee.user.pK_UID) === Number(currentUserId) &&
@@ -966,7 +966,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         };
         updateMeeting();
       } catch (error) {
-        console.log(error, "error");
+        
       }
     }
   }, [allMeetingsSocketData]);
@@ -997,7 +997,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
         dispatch(createGroupMeeting(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [GroupMeetingMQTT]);
 
@@ -1024,10 +1024,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
   //  Update Meeting Status Cancelled and Start Meeting
   useEffect(() => {
     if (MeetingStatusSocket !== null) {
-      console.log(
-        MeetingStatusSocket,
-        "MeetingStatusSocketMeetingStatusSocket"
-      );
+      
       if (
         MeetingStatusSocket.message
           .toLowerCase()
@@ -1074,7 +1071,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
 
   useEffect(() => {
     if (MeetingStatusEnded !== null) {
-      console.log(MeetingStatusEnded, "MeetingStatusEndedMeetingStatusEnded");
+      
       try {
         if (
           MeetingStatusEnded.message.toLowerCase() ===
@@ -1097,7 +1094,7 @@ const CommitteeMeetingTab = ({ groupStatus }) => {
           });
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [MeetingStatusEnded]);

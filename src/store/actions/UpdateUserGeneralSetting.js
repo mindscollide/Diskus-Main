@@ -38,7 +38,7 @@ const updateUserSettingFunc = (
   flag,
   AllowMicrosoftCalenderSyncCall
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data2 = {
@@ -244,7 +244,7 @@ const getGoogleValidToken = (
   t,
   AllowMicrosoftCalenderSyncCall
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -473,7 +473,7 @@ const revokeToken = (
   t,
   AllowMicrosoftCalenderSyncCall
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -636,7 +636,7 @@ const MicrosoftValidTokenFailed = (message) => {
 //   AllowMicrosoftCalenderSyncCall,
 //   t
 // ) => {
-//   let token = JSON.parse(localStorage.getItem("token"));
+//   
 //   let currentUserID = localStorage.getItem("userID");
 //   let OrganizationID = localStorage.getItem("organizationID");
 //   let Data = {
@@ -772,7 +772,7 @@ const getMicrosoftValidToken = (
   AllowMicrosoftCalenderSyncCall,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
@@ -923,7 +923,7 @@ const revokeMicrosoftTokenApi = (
   flag,
   AllowMicrosoftCalenderSyncCall
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(revokeMicrosoftToken_Init());
     let form = new FormData();

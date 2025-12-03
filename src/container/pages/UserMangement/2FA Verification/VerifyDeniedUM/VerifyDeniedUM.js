@@ -17,7 +17,7 @@ const VerifyDeniedUM = () => {
   const dispatch = useDispatch();
 
   const handleBacktoSignIn = () => {
-    console.log("clicked");
+    
     localStorage.setItem("LoginFlowPageRoute", 1);
     dispatch(LoginFlowRoutes(1));
   };

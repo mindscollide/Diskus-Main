@@ -27,7 +27,7 @@ const AgenItemremovedModal = ({
     setSubajendaRemoval(0);
     dispatch(showAgenItemsRemovedModal(false));
   };
-  console.log(handleYesButton, "handleYesButtonhandleYesButton");
+  
   return (
     <section>
       <Modal

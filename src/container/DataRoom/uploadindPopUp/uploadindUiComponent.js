@@ -71,7 +71,7 @@ const UploadindUiComponent = ({
     // Check if any object in the combined array has UploadCancel set to true
     return combinedArray.some((obj) => obj.UploadCancel === true);
   }
-  console.log("tasksAttachments", tasksAttachments);
+  
   return (
     <>
       <Row>

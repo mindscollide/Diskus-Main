@@ -95,7 +95,7 @@ const PakageDetailsAdmin = () => {
       UserMangementReducerorganizationSelectedPakagesByOrganizationIDData;
     if (detailPackages !== null && detailPackages !== undefined) {
       detailPackages.organizationSubscriptions?.map((subscription) => {
-        console.log(subscription, "subscriptionsubscription");
+        
         setPackageDetails((prevState) => ({
           ...prevState,
           PackageSubscriptionDate: subscription.subscriptionStartDate,
@@ -176,7 +176,7 @@ const PakageDetailsAdmin = () => {
         UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
           (subscription) => subscription.organizationSelectedPackages
         );
-      console.log(organizationSelectedVariable, "organizationSelectedVariable");
+      
       if (organizationSelectedVariable) {
         navigate("/Admin/PackageDetailUMupgrade", {
           state: {

@@ -89,7 +89,7 @@ const Polls = () => {
     (state) => state.PollsReducer.setPollIdForCastVote
   );
 
-  console.log(setPollIdForCastVote, "setPollIdForCastVotesetPollIdForCastVote");
+  
   const ResponseMessageMeeting = useSelector(
     (state) => state.NewMeetingreducer.ResponseMessage
   );
@@ -115,7 +115,7 @@ const Polls = () => {
   const AccessDeniedGlobalState = useSelector(
     (state) => state.PollsReducer.AccessDeniedPolls
   );
-  console.log(AccessDeniedGlobalState, "AccessDeniedGlobalState");
+  
   const { setEditorRole } = useContext(MeetingContext);
 
   const [createpoll, setCreatepoll] = useState(false);
@@ -148,7 +148,7 @@ const Polls = () => {
   };
 
   const handleDeletePoll = (record) => {
-    console.log(record, "handleDeletePoll");
+    
     dispatch(deleteSavedPollsMeeting(true));
     setPollID(record.pollID);
   };
@@ -301,7 +301,7 @@ const Polls = () => {
           UserID: parseInt(userID),
         };
 
-        console.log(data, "datagetPollByPollIdforMeetingdatadata");
+        
         dispatch(
           getPollByPollIdforMeeting(
             navigate,
@@ -318,7 +318,7 @@ const Polls = () => {
       let NotificationClickMeetingID = localStorage.getItem(
         "NotificationAdvanceMeetingID"
       );
-      console.log("Coming here");
+      
       let Data = {
         MeetingID: Number(NotificationClickMeetingID),
         OrganizationID: Number(OrganizationID),
@@ -329,7 +329,7 @@ const Polls = () => {
       };
       dispatch(GetAllPollsByMeetingIdApiFunc(Data, navigate, t));
     } else {
-      console.log("Coming here");
+      
       // After Consulting mamdani getting the current meet ID from LocalStorage
       let Data = {
         MeetingID: Number(advanceMeetingModalID),
@@ -371,7 +371,7 @@ const Polls = () => {
           setTotalRecords(getPollsMeetingID.totalRecords);
           let newPollsArray = [];
           pollsData.forEach((data, index) => {
-            console.log(data, "datadatadatadata");
+            
             newPollsArray.push(data);
           });
           setPollsRows(newPollsArray);
@@ -395,7 +395,7 @@ const Polls = () => {
         dispatch(createPollMeetingMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollMeeting]);
 
@@ -423,7 +423,7 @@ const Polls = () => {
         setPollsRows(updatedRows);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [pollingSocket]);
 
@@ -440,7 +440,7 @@ const Polls = () => {
         dispatch(deletePollsMQTT(null));
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [newPollDelete]);
 
@@ -483,7 +483,7 @@ const Polls = () => {
   };
 
   const ViewVoteButtonOnClick = (record) => {
-    console.log(record, "ViewVoteButtonOnClick");
+    
     let data = {
       PollID: record.pollID,
     };
@@ -514,7 +514,7 @@ const Polls = () => {
         );
       }
     } catch (error) {
-      console.log(error);
+      
     }
     return () => {
       dispatch(setCastVoteID(null));
@@ -581,7 +581,7 @@ const Polls = () => {
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
-        console.log(record, "recordrecord");
+        
         if (record.pollStatus?.pollStatusId === 2) {
           return <span className='text-success'>{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
@@ -629,17 +629,13 @@ const Polls = () => {
       align: "center",
       width: "15%",
       render: (text, record) => {
-        console.log("votevotevotevote", record);
-        console.log("votevotevotevote", record.isVoter);
-        console.log(record.dueDate, "recordrecordrecord");
+        
+        
+        
 
         const currentDate = new Date();
         const convertIntoGmt = resolutionResultTable(record.dueDate);
-        console.log(
-          currentDate,
-          convertIntoGmt,
-          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
-        );
+        
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (currentDate < convertIntoGmt) {
@@ -795,7 +791,7 @@ const Polls = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setEditorRole({ status: null, role: null });

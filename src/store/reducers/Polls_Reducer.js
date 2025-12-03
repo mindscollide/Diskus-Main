@@ -217,7 +217,7 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
-      console.log(action.response, "PollsReducerviewVotes");
+      
       return {
         ...state,
         Loading: false,
@@ -602,7 +602,7 @@ const PollsReducer = (state = initialState, action) => {
       };
     }
     case actions.DELETE_POLLS_MQTT: {
-      console.log(action, "responseresponseresponse");
+      
 
       return {
         ...state,

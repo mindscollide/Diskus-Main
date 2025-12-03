@@ -35,7 +35,7 @@ const packageDetailFail = (message) => {
 };
 
 const getSubscribeOrganizationPackage = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = { OrganizationID: organizationID };
   return (dispatch) => {
@@ -205,7 +205,7 @@ const getSubscriptionUpgradeAmountInfoApi = (
   tenureID,
   t
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     PackageID: packageID,
@@ -312,7 +312,7 @@ const getSubscriptionUpgradePaymentComplete_fail = (message) => {
   };
 };
 const getSubscriptionUpgradePaymentCompleteApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"));
   let TenureOfSuscriptionID = JSON.parse(
@@ -477,7 +477,7 @@ const subscriptionPayment_fail = (message) => {
 };
 
 const subscriptionPaymentApi = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationInvoiceID: data?.InvoiceID,

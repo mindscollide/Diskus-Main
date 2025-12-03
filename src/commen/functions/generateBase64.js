@@ -24,7 +24,7 @@ export const convertDocumentintoBase64 = async (documentViewer) => {
   generateBase64FromBlob(blob)
     .then((base64String) => {
       fileString = base64String;
-      console.log("xfdfStringxfdf PDF Base64 String:", base64String);
+      
       // Here you can use the base64String as needed
     })
     .catch((error) => {
@@ -41,9 +41,9 @@ export const getfieldValue = (stringValue, value) => {
   if (match && match[1]) {
     const nameValue = match[1];
     return nameValue;
-    //     console.log(nameValue); // Output: SignatureFormField 2
+    //      // Output: SignatureFormField 2
   } else {
     return null;
-    //     console.log("Name field not found in the string.");
+    //     
   }
 };

@@ -31,7 +31,7 @@ const updateusernotificationfail = (message, response) => {
 };
 
 const getUserNotificationSetting = (navigate, userSettingData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let currentUserID = localStorage.getItem("userID");
   let Data = {
     UserNotificationSettings: {
@@ -106,7 +106,7 @@ const DiskusWebNotificationActionMethodFail = (message) => {
 };
 
 const DiskusWebNotificationActionMethodAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(DiskusWebNotificationActionMethodInit());
     let form = new FormData();
@@ -207,7 +207,7 @@ const DiskusWebNotificationMarkAsReadAPI = (
   setUnReadCountNotification,
   setwebNotificationData
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(DiskusWebNotificationMarkAsReadInit());
     let form = new FormData();

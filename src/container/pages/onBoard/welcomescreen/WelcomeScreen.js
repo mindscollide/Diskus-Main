@@ -7,7 +7,7 @@ import styles from "./WelcomeScreen.module.css";
 import { useTranslation } from "react-i18next";
 
 const Welcome = (props) => {
-  console.log(props);
+  
   const { t } = useTranslation();
 
   return (

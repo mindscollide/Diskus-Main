@@ -171,7 +171,7 @@ const Header2 = ({ isVideo }) => {
   }, [showWebNotification]);
 
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
-  console.log(roleRoute, "roleRouteroleRoute");
+  
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
     "TrialExpireSelectPac"
   );
@@ -191,11 +191,11 @@ const Header2 = ({ isVideo }) => {
 
   useEffect(() => {
     if (Blur !== null) {
-      console.log("Blur", Blur);
+      
 
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
+      
 
       setActivateBlur(false);
     }
@@ -217,10 +217,7 @@ const Header2 = ({ isVideo }) => {
   }, []);
 
   //Web Notfication Real Time Data
-  console.log(
-    GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
-  );
+  
   //Real Time data For Notification
   useEffect(() => {
     if (
@@ -307,7 +304,7 @@ const Header2 = ({ isVideo }) => {
         dispatch(ClearNotesResponseMessage());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [NotesReponseMessege]);
 
@@ -488,7 +485,7 @@ const Header2 = ({ isVideo }) => {
 
   // as huzeifa bhai said when we click on upgrade button then it'll navigate to the billing calculator page
   const handleShowUpgradedNowModal = () => {
-    console.log("Clicked");
+    
     navigate("/Admin/PakageDetailsUserManagement");
   };
 
@@ -521,7 +518,7 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleClickLogo = (e) => {
-    console.log("Checking route");
+    
     e.preventDefault();
 
     if (!location.pathname.includes("/Admin")) {
@@ -532,11 +529,11 @@ const Header2 = ({ isVideo }) => {
       } else {
         try {
           const activeCall = localStorage.getItem("activeCall");
-          console.log("Checking route", activeCall);
+          
 
           // Check if activeCall exists and is a valid JSON
           if (activeCall !== null) {
-            console.log("Checking route");
+            
 
             const parsedActiveCall = JSON.parse(activeCall);
 
@@ -547,13 +544,13 @@ const Header2 = ({ isVideo }) => {
               homePageDashboardClick();
             }
           } else {
-            console.log("Checking route");
+            
 
             // Handle case when activeCall is null or not available
             console.warn("activeCall is not available in localStorage");
           }
         } catch (error) {
-          console.log("Checking route");
+          
 
           // Handle any errors that occur during parsing or function calls
           console.error(
@@ -563,7 +560,7 @@ const Header2 = ({ isVideo }) => {
         }
       }
 
-      console.log("Checking route", viewAdvanceMeetingModal, editorRole);
+      
     } else {
       navigate("/Diskus");
     }
@@ -922,15 +919,15 @@ const Header2 = ({ isVideo }) => {
               //   // Prevent default behavior
               //   e.preventDefault();
               //   if (!location.pathname.includes("/Admin")) {
-              //     console.log("Checking route");
+              //     
 
               //     try {
               //       const activeCall = localStorage.getItem("activeCall");
-              //       console.log("Checking route", activeCall);
+              //       
 
               //       // Check if activeCall exists and is a valid JSON
               //       if (activeCall !== null) {
-              //         console.log("Checking route");
+              //         
 
               //         const parsedActiveCall = JSON.parse(activeCall);
 
@@ -941,7 +938,7 @@ const Header2 = ({ isVideo }) => {
               //           homePageDashboardClick();
               //         }
               //       } else {
-              //         console.log("Checking route");
+              //         
 
               //         // Handle case when activeCall is null or not available
               //         console.warn(
@@ -949,7 +946,7 @@ const Header2 = ({ isVideo }) => {
               //         );
               //       }
               //     } catch (error) {
-              //       console.log("Checking route");
+              //       
 
               //       // Handle any errors that occur during parsing or function calls
               //       console.error(
@@ -958,7 +955,7 @@ const Header2 = ({ isVideo }) => {
               //       );
               //     }
               //   } else {
-              //     console.log("Checking route");
+              //     
               //     navigate("/Diskus");
               //   }
               // }}

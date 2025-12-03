@@ -652,10 +652,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         IsCaller: isCaller ? true : false,
         CallTypeID: currentCallType,
       };
-      await console.log("Check LeaveCall new");
       if (isZoomEnabled) {
         if (globallyScreenShare) {
-          console.log("Check LeaveCall new");
           await dispatch(screenShareTriggeredGlobally(false));
         }
       }
@@ -664,36 +662,30 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     }
 
     if (flag) {
-      console.log("busyCall");
       await dispatch(leaveMeetingVideoOnlogout(false));
       dispatch(leaveMeetingOnlogout(true));
     }
     if (flag2) {
-      console.log("busyCall");
       dispatch(endMeetingStatusForQuickMeetingVideo(false));
       dispatch(endMeetingStatusForQuickMeetingModal(true));
     }
     if (flag3) {
-      console.log("busyCall");
       await dispatch(leaveMeetingVideoOnEndStatusMqtt(false));
       dispatch(leaveMeetingOnEndStatusMqtt(true));
     }
   };
 
   const cancelLeaveCallOption = () => {
-    console.log("busyCall");
     dispatch(leaveCallModal(false));
   };
 
   const minimizeLeaveCall = () => {
-    console.log("busyCall");
     let Data = {
       OrganizationID: currentOrganization,
       RoomID: RoomID,
       IsCaller: JSON.parse(localStorage.getItem("isCaller")),
       CallTypeID: currentCallType,
     };
-    console.log("Check LeaveCall new");
     dispatch(LeaveCall(Data, navigate, t));
     const emptyArray = [];
     setParticipantStatus([]);
@@ -712,7 +704,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   };
 
   const toggleMic = (status) => {
-    console.log("VidOn");
     setToggleMicMinimizeNonMeeting(true);
     setLocalMicStatus(status);
   };
@@ -748,7 +739,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
   const muteUnMuteForHost = (flag) => {
     // const flag = audioControl;
-    console.log("videoHideUnHideForHost", flag);
     dispatch(setAudioControlHost(flag));
 
     // Prepare data for the API request
@@ -766,7 +756,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   const videoHideUnHideForHost = (flag) => {
     // Set the HideVideo flag based on videoControl
     dispatch(setVideoControlHost(flag));
-    console.log("videoHideUnHideForHost", flag);
 
     let data = {
       RoomID: String(RoomID),
@@ -822,10 +811,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         RoomID: callAcceptedRoomID,
       };
       sessionStorage.setItem("StopPresenterViewAwait", true);
-      console.log(data, "presenterViewJoinFlag");
       dispatch(stopPresenterViewMainApi(navigate, t, data, 0));
-      console.log("busyCall");
-      console.log(presenterViewHostFlag, "presenterViewHostFlag");
     } else {
       if (alreadyInMeetingVideo) {
         dispatch(presenterViewGlobalState(0, true, false, false));
@@ -890,9 +876,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
           : isMeetingVideoHostCheck
           ? newRoomID
           : participantRoomId;
-      // Mute/Unmute a specific participant
-      console.log("filteredParticipants");
-      console.log("getAllParticipantMain");
       setFilteredParticipants((prev) =>
         prev.map((participant) =>
           participant.guid === usersData.guid
@@ -957,9 +940,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       MeetingID: Number(currentMeetingID),
     };
 
-    // Update the specific participant's hideCamera state in `newParticipants`
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
     setFilteredParticipants((prev) =>
       prev.map((participant) =>
         participant.guid === usersData.guid
@@ -979,8 +959,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
       MeetingID: Number(currentMeetingID),
     };
 
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
     setFilteredParticipants((prev) =>
       prev.filter((participant) => participant.guid !== usersData.guid)
     );
@@ -989,7 +967,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
   };
 
   const onHandleClickForStartRecording = () => {
-    console.log("onHandleClickForStartRecording");
     setStartRecordingState(false);
     setPauseRecordingState(true);
     setResumeRecordingState(false);
@@ -1005,14 +982,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
-          console.log("onHandleClickForStartRecording");
         }
       }
     }
   };
 
   const onHandleClickForPauseRecording = () => {
-    console.log("RecordingPauseMsgFromIframe");
     setStartRecordingState(false);
     setPauseRecordingState(false);
     setResumeRecordingState(true);
@@ -1028,14 +1003,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
           iframe.contentWindow.postMessage("RecordingPauseMsgFromIframe", "*");
-          console.log("RecordingPauseMsgFromIframe");
         }
       }
     }
   };
 
   const onHandleClickForResumeRecording = () => {
-    console.log("RecordingResumeMsgFromIframe");
     setStartRecordingState(false);
     setPauseRecordingState(true);
     setResumeRecordingState(false);

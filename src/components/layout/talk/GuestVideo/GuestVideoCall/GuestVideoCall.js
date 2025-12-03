@@ -69,14 +69,14 @@ const GuestVideoCall = () => {
   const [actionValue, setActionValue] = useState("");
   //video Url state
   const [videoUrl, setVideoUrl] = useState("");
-  console.log(actionValue, "videoUrlvideoUrl");
+  
   // extract meeting ID state
   const [extractMeetingId, setExtractMeetingId] = useState(0);
   // extract Meeting Title
   const [extractMeetingTitle, setExtractMeetingTitle] = useState("");
   const [guestName, setGuestName] = useState("");
   const [roomId, setRoomId] = useState("");
-  console.log(roomId, "guestName");
+  
 
   function modifyUrl(url, isMute, isHideCamera, guestName) {
     let modifiedUrl = url.replace("$ParticipantFullName$", guestName);
@@ -91,8 +91,8 @@ const GuestVideoCall = () => {
     return modifiedUrl;
   }
   useEffect(() => {
-    console.log(voiceControle, "updatedUrlupdatedUrlupdatedUrl");
-    console.log(videoCameraGuest, "updatedUrlupdatedUrlupdatedUrl");
+    
+    
     if (videoUrl && guestName) {
       const modifiedUrl = modifyUrl(
         videoUrl,
@@ -101,7 +101,7 @@ const GuestVideoCall = () => {
         guestName
       );
 
-      console.log(modifiedUrl, "updatedUrlupdatedUrlupdatedUrl");
+      
       setVideoUrl(modifiedUrl); // Update the video URL with the actual name
     }
   }, [videoUrl, guestName, voiceControle, videoCameraGuest]);
@@ -116,9 +116,9 @@ const GuestVideoCall = () => {
 
   const onMessageArrived = async (msg) => {
     try {
-      console.log(msg, "msgmsgmsgmsg");
+      
       let data = JSON.parse(msg.payloadString);
-      console.log(data, "datadatadata");
+      
 
       if (data.action === "Meeting") {
         if (
@@ -151,7 +151,7 @@ const GuestVideoCall = () => {
           if (data.payload.isForAll) {
             // Dispatch to globally mute/unmute participants
             // dispatch(setVoiceControleGuest(true));
-            console.log("data formute", data);
+            
             dispatch(
               setVoiceControleGuestForAllbyHost(true, data.payload.isMute)
             );
@@ -163,7 +163,7 @@ const GuestVideoCall = () => {
             dispatch(muteUnMuteParticipantsorGuest(data.payload));
           }
 
-          console.log(data.payload, "guestDataGuestData");
+          
         } else if (
           data.payload.message.toLowerCase() ===
           "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
@@ -175,7 +175,7 @@ const GuestVideoCall = () => {
           "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
         ) {
           dispatch(hideUnHideVideoByHost(data.payload));
-          console.log(data.payload, "guestDataGuestDataVideo");
+          
         }
         // below MQTT is imagined will replace this soon
         else if (
@@ -183,32 +183,32 @@ const GuestVideoCall = () => {
           "HOST_END_VIDEO_CALL_MEETING".toLowerCase()
         ) {
           dispatch(guestVideoNavigationScreen(4));
-          console.log(data.payload, "guestDataGuestData");
+          
         } else if (
           data.payload.message.toLowerCase() ===
           "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
         ) {
           dispatch(raisedUnRaisedParticipantsGuest(data.payload));
-          console.log(data.payload, "guestDataGuestData");
+          
         } else if (
           data.payload.message.toLowerCase() ===
           "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
         ) {
           dispatch(hideUnHideVideoParticipantsorGuest(data.payload));
-          console.log(data.payload, "guestDataGuestData");
+          
         } else if (
           data.payload.message.toLowerCase() ===
           "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
         ) {
           // dispatch(participanMuteUnMuteMeeting(data.payload, false));
           dispatch(muteUnMuteParticipantsorGuest(data.payload));
-          console.log(data.payload, "guestDataGuestData");
+          
         } else if (
           data.payload.message.toLowerCase() ===
           "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
         ) {
-          console.log(data, "JOINEDJOINEDJOINED");
-          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          
+          
           dispatch(
             getVideoCallParticipantGuestSuccess(
               data.payload.newParticipants[0],
@@ -220,8 +220,8 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "PARTICIPANT_REMOVED_FROM_MEETING".toLowerCase()
         ) {
-          console.log(data, "JOINEDJOINEDJOINED");
-          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          
+          
           dispatch(
             getVideoCallParticipantGuestSuccess(data.payload.removedUID, "", 3)
           );
@@ -244,8 +244,8 @@ const GuestVideoCall = () => {
           data.payload.message.toLowerCase() ===
           "VIDEO_PARTICIPANT_LEFT".toLowerCase()
         ) {
-          console.log(data.payload, "JOINEDJOINEDJOINED");
-          console.log(getAllParticipantGuest, "JOINEDJOINEDJOINED");
+          
+          
           dispatch(
             getVideoCallParticipantGuestSuccess(data.payload.uid, "", 3)
           );
@@ -256,14 +256,11 @@ const GuestVideoCall = () => {
 
   useEffect(() => {
     if (guestClient !== null) {
-      console.log(
-        guestClient,
-        "guestVideoClientguestVideoClientguestVideoClient"
-      );
+      
       guestClient.onConnectionLost = onConnectionLost;
       guestClient.onMessageArrived = onMessageArrived;
     } else {
-      console.log(guestUserId, "guestUserIdguestUserId");
+      
     }
   }, [guestClient, guestUserId]);
 
@@ -325,7 +322,7 @@ const GuestVideoCall = () => {
       const getMeetingId = sessionStorage.getItem("MeetingId");
       const getGuestName = sessionStorage.getItem("guestName");
       const getRoomId = sessionStorage.getItem("roomID");
-      console.log(getRoomId, "getRoomIdgetRoomId");
+      
 
       const data = {
         RoomID: String(getRoomId),

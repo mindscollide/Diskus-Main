@@ -33,7 +33,7 @@ const getFileandFolderDetail_Fail = (message) => {
 };
 
 const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(getFileandFolderDetail_Init());
@@ -114,7 +114,7 @@ const updateFileandFolderDetails_Fail = (message) => {
   };
 };
 const updateFileandFolderDetailsApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(updateFileandFolderDetails_Init());
@@ -202,7 +202,7 @@ const getDataAnalyticsApi = (
   setActivityState,
   setDetailsState
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(getDataAnalytics_Init());
@@ -296,7 +296,7 @@ const getDataAnalyticsCountApi = (
   record,
   setFileDataforAnalyticsCount
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(getDataAnalyticsCount_Init());
@@ -393,7 +393,7 @@ const validateEncryptedStringViewFileLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateEncryptedStringViewFileLink_Init());
 
@@ -541,7 +541,7 @@ const validateEncryptedStringViewFolderLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateEncryptedStringViewFolderLink_Init());
 

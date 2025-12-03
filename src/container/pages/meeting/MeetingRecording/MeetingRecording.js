@@ -36,7 +36,7 @@ const MeetingRecording = ({ title }) => {
   const meetingMinutesDownloaded = useSelector(
     (state) => state.NewMeetingreducer.meetingMinutesDownload
   );
-  console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -137,12 +137,9 @@ const MeetingRecording = ({ title }) => {
         });
         setData(copyData);
         dispatch(meetingTranscriptDownloaded(null));
-        console.log(
-          { meetingTranscriptDownload, copyData },
-          "meetingTranscriptDownloaded"
-        );
+        
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [meetingTranscriptDownload]);
@@ -163,20 +160,17 @@ const MeetingRecording = ({ title }) => {
         });
         setData(copyData);
         dispatch(meetingMinutesDownloaded(null));
-        console.log(
-          { meetingMinutesDownloaded, copyData },
-          "meetingTranscriptDownloaded"
-        );
+        
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [meetingMinutesDownloaded]);
 
   const handleClickTranscribe = (record) => {
-    console.log("record", record);
+    
     let Data = { MeetingID: record.meetingID, MeetingTitle: title };
-    console.log("Data", Data);
+    
     dispatch(requestMeetingRecordingTranscriptApi(Data, navigate, t));
   };
 
@@ -291,7 +285,7 @@ const MeetingRecording = ({ title }) => {
       },
     },
   ];
-  console.log(data, "transcriptStatus");
+  
   const DownloadRecording = async (record) => {
     let data = {
       FileID: Number(record.fileID),

@@ -105,7 +105,7 @@ const TwoFactorVerifyUM = () => {
   //handle Go Back Button
 
   const handleGoBackButton = () => {
-    console.log("goback");
+    
 
     localStorage.setItem("LoginFlowPageRoute", 2);
     dispatch(LoginFlowRoutes(2));

@@ -249,7 +249,7 @@ const clearPendingApprovalCount = () => {
 
 // GetPendingApprovalsCount
 const GetPendingApprovalsCount = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getPendingApprovalsCount_Init());
     let form = new FormData();
@@ -344,7 +344,7 @@ const getMinuteReviewStatsForOrganizerByMeetingId_Fail = (
 
 //GetMinuteReviewStatsForOrganizerByMeetingId
 const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMinuteReviewStatsForOrganizerByMeetingId_Init());
     let form = new FormData();
@@ -470,7 +470,7 @@ const getAllOrganizationUsersForReview_Fail = (message, response) => {
 
 //GetAllOrganizationUsersForReview
 const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getAllOrganizationUsersForReview_Init());
     let form = new FormData();
@@ -573,7 +573,7 @@ const getMinutesForReviewerByMeetingId_Fail = (message, response) => {
 
 //GetMinutesForReviewerByMeetingId
 const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMinutesForReviewerByMeetingId_Init());
     let form = new FormData();
@@ -708,7 +708,7 @@ const getMinuteReviewPendingApprovalsStatsByReviewerId_Fail = (
 
 //GetMinuteReviewPendingApprovalsStatsByReviewerId
 const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMinuteReviewPendingApprovalsStatsByReviewerId_Init());
     let form = new FormData();
@@ -826,7 +826,7 @@ const getMinuteReviewPendingApprovalsByReviewerId_Fail = (
 
 //Get Minute REviewPendingApprovalByReviewerID
 const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMinuteReviewPendingApprovalsByReviewerId_Init());
     let form = new FormData();
@@ -947,7 +947,7 @@ const saveMinutesReviewFlow_Fail = (message, response) => {
 
 //SaveMinutesReviewFlow
 const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(saveMinutesReviewFlow_Init());
@@ -1128,7 +1128,7 @@ const GetMinutesVersionHistoryWithCommentsApi = (
   t,
   setShowVersionHistory
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(GetMinuteVersionHistorywithComments_init());
     let form = new FormData();
@@ -1258,7 +1258,7 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
   t,
   setShowRevisionHistory
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(GetMinuteReviewDetailsByOrganizerByMinuteId_init());
     let form = new FormData();
@@ -1391,19 +1391,16 @@ const getMinuteReviewFlowByMeetingId_Init = () => {
 };
 
 const getMinuteReviewFlowByMeetingId_Success = (response, message) => {
-  console.log("GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId");
+  
   try {
-    console.log("GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId");
+    
     return {
       type: actions.GET_MINUTEREVIEWFLOWBYMEETINGID_SUCCESS,
       response: response,
       message: message,
     };
   } catch (error) {
-    console.log(
-      "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-      error
-    );
+    
   }
 };
 
@@ -1417,7 +1414,7 @@ const getMinuteReviewFlowByMeetingId_Fail = (message, response) => {
 
 //GetMinuteReviewFlowByMeetingId
 const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getMinuteReviewFlowByMeetingId_Init());
     let form = new FormData();
@@ -1439,10 +1436,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_01".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 try {
                   dispatch(
                     getMinuteReviewFlowByMeetingId_Success(
@@ -1451,10 +1445,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     )
                   );
                 } catch (error) {
-                  console.log(
-                    "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                    error
-                  );
+                  
                 }
               } else if (
                 response.data.responseResult.responseMessage
@@ -1463,10 +1454,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_02".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
@@ -1480,10 +1468,7 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_03".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 let data = [];
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(
@@ -1498,52 +1483,37 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
                     "WorkFlow_WorkFlowServiceManager_GetMinuteReviewFlowByMeetingId_04".toLowerCase()
                   )
               ) {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
                 );
               } else {
-                console.log(
-                  "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                  response
-                );
+                
                 dispatch(
                   getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
                 );
               }
             } else {
-              console.log(
-                "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-                response
-              );
+              
               dispatch(
                 getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
               );
             }
           } else {
-            console.log(
-              "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-              response
-            );
+            
             dispatch(
               getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
             );
           }
         })
         .catch((response) => {
-          console.log(
-            "GetMinuteReviewFlowByMeetingIdGetMinuteReviewFlowByMeetingId",
-            response
-          );
+          
           dispatch(
             getMinuteReviewFlowByMeetingId_Fail(t("Something-went-wrong"))
           );
         });
     } catch (error) {
-      console.log("GetMinuteReviewFlowByMeetingId", error);
+      
     }
   };
 };
@@ -1575,7 +1545,7 @@ const MeetingPublishedMinutesApi = (
   setApprovalModal,
   setPublishAnywayModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(MeetingPublishedMinutes_init());
     let form = new FormData();
@@ -1648,7 +1618,7 @@ const MeetingPublishedMinutesApi = (
       })
       .catch((response) => {
         dispatch(MeetingPublishedMinutes_fail(t("Something-went-wrong")));
-        console.log("MeetingPublishedMinutesApi", response);
+        
       });
   };
 };
@@ -1674,7 +1644,7 @@ const GetPublishedMeetingMinutes_fail = (message) => {
 };
 
 const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(GetPublishedMeetingMinutes_init());
     let form = new FormData();
@@ -1772,7 +1742,7 @@ const acceptRejectMinuteReview_Fail = (message, response) => {
 
 //AcceptRejectMinuteReview
 const AcceptRejectMinuteReview = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(acceptRejectMinuteReview_Init());
     let form = new FormData();
@@ -1882,7 +1852,7 @@ const publishMeetingMinutes_Fail = (message, response) => {
 
 //publishMeetingMinutes
 const PublishMeetingMinutes = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(publishMeetingMinutes_Init());
     let form = new FormData();
@@ -1977,8 +1947,8 @@ const GetDataForResendMinuteReview = (
   setEditMinute,
   Editdata
 ) => {
-  console.log(setEditMinute, "setEditMinutesetEditMinutesetEditMinute");
-  let token = JSON.parse(localStorage.getItem("token"));
+  
+  
   return (dispatch) => {
     dispatch(getDataForResendMinuteReview_Init());
     let form = new FormData();
@@ -2106,7 +2076,7 @@ const ResendUpdatedMinuteForReview = (
   setShowRevisionHistory,
   isAgenda
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(resendUpdatedMinuteForReview_Init());
     let form = new FormData();
@@ -2265,7 +2235,7 @@ const getPendingApprovalStatsThisWeek_Fail = (message, response) => {
 
 //ResendUpdatedMinuteForReview
 const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getPendingApprovalStatsThisWeek_Init());
     let form = new FormData();
@@ -2370,7 +2340,7 @@ const GetStatsForPublishingMinutesByWorkFlowId = (
   setApprovalModal,
   setPublishAnywayModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(getStatsForPublishingMinutesByWorkFlowId_Init());
     let form = new FormData();
@@ -2486,7 +2456,7 @@ const MinutesWorkFlowActorStatusFail = (message) => {
 };
 
 const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return (dispatch) => {
     dispatch(MinutesWorkFlowActorStatusInit());
     let form = new FormData();

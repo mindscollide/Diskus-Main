@@ -76,7 +76,7 @@ const Card = ({
         }
       });
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, []);
   let sortedArraay =

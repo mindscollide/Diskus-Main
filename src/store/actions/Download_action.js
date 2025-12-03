@@ -34,7 +34,7 @@ const SetLoaderFalseDownload = () => {
 
 // DownloadFile
 const DownloadFile = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let form = new FormData();
   form.append("RequestMethod", downloadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
@@ -98,7 +98,6 @@ const DownloadFile = (navigate, data, t) => {
 
 // ✅ Download Attendance Report (PDF)
 const downloadAttendanceReportApi = (navigate, t, downloadData) => {
-  const token = JSON.parse(localStorage.getItem("token"));
   const form = new FormData();
 
   form.append("RequestMethod", downloadAttendanceReport.RequestMethod);
@@ -160,7 +159,8 @@ const downlooadUserloginHistory_fail = (message) => {
   };
 };
 const downlooadUserloginHistoryApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token"));
+  
   let form = new FormData();
   form.append("RequestMethod", LoginHistoryReportExporttoExcel.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -224,7 +224,8 @@ const downloadAuditTrialReport_fail = (message) => {
   };
 };
 const downloadAuditTrialReportApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token"));
+  
   let form = new FormData();
   form.append("RequestMethod", AuditTrialReportExporttoExcel.RequestMethod);
   form.append("RequestData", JSON.stringify(Data));
@@ -247,7 +248,7 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
             let resData = JSON.parse(
               new TextDecoder().decode(new Uint8Array(response))
             );
-            console.log(resData, "resData");
+            
           } catch {}
         }
         if (response.data.responseCode === 417) {

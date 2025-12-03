@@ -41,7 +41,7 @@ const NavigationButtons = () => {
             dispatch(showModalStepsOnboard(false));
             dispatch(showModalOnboard(false));
             dispatch(showIsDetailOnboard(false));
-            console.log("currentStep else", currentStep);
+            
           }
         } else {
           dispatch(showIsDetailOnboard(false));
@@ -63,7 +63,7 @@ const NavigationButtons = () => {
         dispatch(showModalStepsOnboard(false));
         dispatch(showModalOnboard(false));
         dispatch(showIsDetailOnboard(false));
-        console.log("currentStep else", currentStep);
+        
       }
     }
   };
@@ -83,7 +83,7 @@ const NavigationButtons = () => {
     }
   };
   useEffect(() => {
-    console.log("currentstep", currentStep);
+    
   }, [currentStep]);
   return (
     <>

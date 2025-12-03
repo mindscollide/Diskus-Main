@@ -99,7 +99,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
   const [attachments, setAttachments] = useState([]);
@@ -169,10 +169,7 @@ const EditResolution = ({ setCancelresolution }) => {
     date: "",
     time: "",
   });
-  console.log(
-    { circulationDateTime, votingDateTime, decisionDateTime },
-    "circulationDateTimecirculationDateTimecirculationDateTime"
-  );
+  
   const [ReminderFrequncyValue, setReminderFrequencyValue] = useState({
     label: "",
     value: 0,
@@ -220,10 +217,7 @@ const EditResolution = ({ setCancelresolution }) => {
     ResolutionStatus: "",
   });
 
-  console.log(
-    editResolutionData.FK_ResolutionStatusID,
-    "FK_ResolutionStatusID"
-  );
+  
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t, true));
@@ -495,7 +489,7 @@ const EditResolution = ({ setCancelresolution }) => {
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setVoters(voters_Data);
@@ -565,7 +559,7 @@ const EditResolution = ({ setCancelresolution }) => {
                   "error",
                   setOpen
                 );
-                console.log("user Already Non Voter List");
+                
               }
             } else {
               showMessage(t("This-voter-already-exist"), "error", setOpen);
@@ -660,7 +654,7 @@ const EditResolution = ({ setCancelresolution }) => {
           }
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
     setNonVoters(nonVotersData);
@@ -833,7 +827,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataDataData");
+      
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(2);
@@ -868,7 +862,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataDataData");
+      
 
       dispatch(createResolution(navigate, Data, voters, t));
     }
@@ -908,7 +902,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataData");
+      
       dispatch(createResolution(navigate, Data, voters, t));
     } else {
       setsendStatus(1);
@@ -943,7 +937,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
-      console.log(Data, "DataDataDataDataData");
+      
 
       dispatch(createResolution(navigate, Data, voters, t));
     }
@@ -1018,7 +1012,7 @@ const EditResolution = ({ setCancelresolution }) => {
         documentsUploadCall(folderIDCreated);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducerupdateResolutionDataroom]);
 
@@ -1206,7 +1200,7 @@ const EditResolution = ({ setCancelresolution }) => {
     try {
       let newOrganizersData = ResolutionReducergetAllCommitteesAndGroups;
       if (newOrganizersData !== null && newOrganizersData !== undefined) {
-        console.log(newOrganizersData, "newOrganizersDatanewOrganizersData");
+        
         let temp = [];
         let usersData = [];
         if (Object.keys(newOrganizersData).length > 0) {
@@ -1317,7 +1311,7 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducergetAllCommitteesAndGroups]);
   // Get Voting Methods
@@ -1334,7 +1328,7 @@ const EditResolution = ({ setCancelresolution }) => {
         setVotingMethods(newArr);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducerGetAllVotingMethods]);
 
@@ -1539,7 +1533,7 @@ const EditResolution = ({ setCancelresolution }) => {
     } else {
     }
   };
-  console.log({ decisionDateTime }, "votingDateTime");
+  
 
   //Custom Input For Time selectors
   function CustomInput({ onFocus, value, onChange }) {

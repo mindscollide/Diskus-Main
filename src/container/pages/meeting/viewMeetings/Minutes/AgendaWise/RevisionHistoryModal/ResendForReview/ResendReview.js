@@ -34,10 +34,7 @@ const ResendMinuteReviewModal = ({
   isAgenda,
   setShowRevisionHistory,
 }) => {
-  console.log(
-    editMinuteData,
-    "minuteDateminuteDateminuteDateminuteDateminuteDate"
-  );
+  
   const { t } = useTranslation(); // Translation hook
 
   const dispatch = useDispatch(); // Redux dispatch hook
@@ -61,7 +58,7 @@ const ResendMinuteReviewModal = ({
       calendRef.current.closeCalendar();
     }
   };
-  console.log(minuteDate, "minuteDateminuteDateminuteDate");
+  
   const resendForReview = () => {
     // let updateMinuteData;
 
@@ -113,11 +110,7 @@ const ResendMinuteReviewModal = ({
       );
     }
 
-    console.log(
-      "resendForReviewresendForReview",
-      updateMinuteData,
-      resendReviewData
-    );
+    
 
     setResendMinuteForReview(false);
   };
@@ -134,7 +127,7 @@ const ResendMinuteReviewModal = ({
     }
   }, [currentLanguage]);
 
-  console.log(editMinuteData.bundleDeadline, "bundleDeadlinebundleDeadline");
+  
 
   useEffect(() => {
     let date = utcConvertintoGMT(editMinuteData.bundleDeadline + "000000");

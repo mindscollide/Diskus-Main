@@ -59,10 +59,7 @@ const Actions = () => {
     dataroomMapFolderId,
   } = useMeetingContext();
 
-  console.log(
-    advanceMeetingModalID,
-    "advanceMeetingModalIDadvanceMeetingModalIDadvanceMeetingModalID"
-  );
+  
   const cancelActions = useSelector(
     (state) => state.NewMeetingreducer.cancelActions
   );
@@ -105,7 +102,7 @@ const Actions = () => {
   const [taskAssignedBySort, setTaskAssignedBySort] = useState(null);
   const [taskAssignedToSort, setTaskAssignedToSort] = useState(null);
   const [taskDeadlineSort, setDeadlineSort] = useState(null);
-  console.log(statusOptions, "statusOptionsstatusOptions");
+  
   const [actionState, setActionState] = useState({
     Title: "",
     Date: "",
@@ -129,7 +126,7 @@ const Actions = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       if (JSON.parse(localStorage.getItem("viewadvanceMeetingTask")) === true) {
-        console.log("NotificationDataNotificationData");
+        
         let Data = {
           ToDoListID: Number(localStorage.getItem("NotificationClickTaskID")),
         };
@@ -522,7 +519,7 @@ const Actions = () => {
         utcConvertintoGMT(b.deadlineDateTime),
 
       render: (text, record) => {
-        console.log(record, "deadlineDateTime");
+        
         return (
           <span className='text-nowrap text-center'>
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -659,7 +656,7 @@ const Actions = () => {
         todoListMeetingTask !== undefined &&
         todoListMeetingTask.toDoLists.length > 0
       ) {
-        console.log(todoListMeetingTask.toDoLists, "actionMeetingReducer");
+        
         setTotalRecords(todoListMeetingTask.totalRecords);
         setActionsRows(todoListMeetingTask.toDoLists);
         setOriginalData(todoListMeetingTask.toDoLists);
@@ -688,7 +685,7 @@ const Actions = () => {
         dispatch(createTaskMeetingMQTT(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [createTaskMeeting]);
 
@@ -719,7 +716,7 @@ const Actions = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);

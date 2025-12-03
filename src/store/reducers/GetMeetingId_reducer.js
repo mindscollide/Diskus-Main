@@ -70,7 +70,7 @@ const meetingIdReducer = (state = initialState, action) => {
     }
 
     case actions.MEETING_STATUS_ENDED: {
-      console.log(action, "MEETING_STATUS_ENDED");
+      
 
       return {
         ...state,

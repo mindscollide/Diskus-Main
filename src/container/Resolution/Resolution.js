@@ -73,7 +73,7 @@ const Resolution = () => {
   const navigate = useNavigate();
   const [isResolutionClosed, setIsResolutionClosed] = useState(false);
 
-  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed")
+  
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
   const ResolutionReducersearchVoterResolution = useSelector(
@@ -130,7 +130,7 @@ const Resolution = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [enterpressed, setEnterpressed] = useState(false);
   const [rows, setRows] = useState([]);
-  console.log(rows, "rowsrowsrowsrows");
+  
   const [isSearchVoter, setSearchVoter] = useState([]);
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
@@ -171,15 +171,15 @@ const Resolution = () => {
                 localStorage.removeItem("resVot");
               })
               .catch((error) => {
-                console.log(error);
+                
               });
           } catch (error) {
-            console.log(error);
+            
           }
         } catch (error) {}
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [resolutionVoter]);
 
@@ -198,10 +198,10 @@ const Resolution = () => {
             localStorage.removeItem("resNonVot");
           })
           .catch((error) => {
-            console.log(error);
+            
           });
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [resolutionNonVoter]);
@@ -258,7 +258,7 @@ const Resolution = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [currentLanguage]);
 
@@ -426,7 +426,7 @@ const Resolution = () => {
   };
 
   const viewResolutionCancelled = (id) => {
-    console.log(id, "viewResolutionCancelled");
+    
     localStorage.setItem("resolutionDeleted", true);
     dispatch(getResolutionbyResolutionID(navigate, id, t, 3));
   };
@@ -720,9 +720,9 @@ const Resolution = () => {
       align: "start",
       width: "365px",
       render: (table, data) => {
-        console.log(data, "datadatadata");
+        
         if (data.resolutionStatus === "Cancelled") {
-          console.log(data.resolutionStatus, "viewResolutionCancelled");
+          
           return (
             <span
               className={styles["resolution_title"]}
@@ -856,7 +856,7 @@ const Resolution = () => {
       key: "resolutionStatus",
       width: "78px",
       render: (text, data) => {
-        console.log(data, "datadata");
+        
         return (
           <>
             <span className={styles["resolution_date"]}>
@@ -959,7 +959,7 @@ const Resolution = () => {
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data.votingDeadline, "renderrender");
+        
         let getVotignDeadline = forRecentActivity(data.votingDeadline);
         // Get the current date in "YYYYMMDDHHmmss" format
         const now = new Date();
@@ -1223,7 +1223,7 @@ const Resolution = () => {
         setSearchVoter([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducersearchVoterResolution]);
 
@@ -1237,7 +1237,7 @@ const Resolution = () => {
         setRows([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducerGetResolutions]);
 
@@ -1255,12 +1255,7 @@ const Resolution = () => {
             const findVoterisValid =
               getData?.voters.find((obj) => obj.fK_UID === Number(userID)) ||
               getData?.nonVoters.find((obj) => obj.fK_UID === Number(userID));
-            console.log(
-              findIndexModerator,
-              findVoterisValid,
-              getData,
-              "findIndexModeratorfindIndexModerator"
-            );
+            
             if (findVoterisValid) {
               const voterResolution = {
                 attachments: getData.attachments,
@@ -1294,7 +1289,7 @@ const Resolution = () => {
         dispatch(resolutionMQTTCreate(null));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducermqttResolutionCreated]);
 
@@ -1312,7 +1307,7 @@ const Resolution = () => {
         } catch {}
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [ResolutionReducermqttResolutionCancelled]);
 

@@ -28,7 +28,7 @@ import CreateQuickMeeting from "../../../QuickMeeting/CreateQuickMeeting/CreateQ
 
 const OnboardDashboard = () => {
   const dCheck = useLoaderData();
-  console.log("dCheck", dCheck);
+  
   //For Localization
   const { t } = useTranslation();
   const state = useSelector((state) => state);
@@ -42,7 +42,7 @@ const OnboardDashboard = () => {
 
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
-  console.log("date", getCurrentDate);
+  
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
@@ -60,7 +60,7 @@ const OnboardDashboard = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    console.log("Data", Data);
+    
     let newList = [];
     if (Object.keys(Data).length > 0) {
       Data.forEach((cData) => {
@@ -246,7 +246,7 @@ const OnboardDashboard = () => {
     }
   }, [lang]);
 
-  console.log("lang", lang);
+  
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);

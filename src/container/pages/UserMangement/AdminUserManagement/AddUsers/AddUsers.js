@@ -95,7 +95,7 @@ const AddUsers = () => {
     if (!isFreeTrial) {
       dispatch(GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t));
     } else {
-      console.log("FreeTrial");
+      
     }
 
     return () => {
@@ -135,14 +135,14 @@ const AddUsers = () => {
           UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails;
 
         userStats.forEach((data) => {
-          console.log(data, "UserCountUserCount");
+          
           UserCount += data.headCount - data.packageAllotedUsers;
         });
 
         setTotalUserCount(UserCount);
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [UserMangementReducergetOrganizationUserStatsGraph]);
 
@@ -161,10 +161,7 @@ const AddUsers = () => {
       UserMangementReducerorganizationSelectedPakagesByOrganizationIDData.organizationSubscriptions?.map(
         (data) => {
           data.organizationSelectedPackages?.map((packageData) => {
-            console.log(
-              packageData.pK_OrganizationsSelectedPackageID,
-              "indexindexindex"
-            );
+            
             setPakageID(packageData.pK_OrganizationsSelectedPackageID);
           });
         }

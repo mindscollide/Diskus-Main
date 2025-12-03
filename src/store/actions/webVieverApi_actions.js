@@ -358,7 +358,7 @@ const AddAnnotationsOnNotesAttachementFail = (message) => {
 };
 
 const addAnnotationsOnNotesAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(AddAnnotationsOnNotesAttachementinit());
     let form = new FormData();
@@ -475,7 +475,7 @@ const GetAnnotationsOfResolutionAttachementFail = (message) => {
 };
 
 const getAnnotationsOfResolutionAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(GetAnnotationsOfResolutionAttachementinit());
     let form = new FormData();
@@ -585,7 +585,7 @@ const AddAnnotationsOnResolutionAttachementFail = (message) => {
 };
 
 const addAnnotationsOnResolutionAttachement = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(AddAnnotationsOnResolutionAttachementinit());
     let form = new FormData();
@@ -720,7 +720,7 @@ const getAnnotationsOfDataroomAttachement = (
   data,
   html = false
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(GetAnnotationsOfDataroomAttachementinit());
     let form = new FormData();

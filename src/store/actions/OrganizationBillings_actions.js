@@ -28,7 +28,7 @@ const getBillingInformation_fail = (message) => {
 };
 
 const getBillingInformationapi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     OrganizationID: JSON.parse(OrganizationID),
@@ -111,7 +111,7 @@ const getPayoutstading_fail = (message) => {
 };
 
 const getPayoutStandingInformation = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     OrganizationID: JSON.parse(OrganizationID),
@@ -191,7 +191,7 @@ const invoiceandpaymenthistory_fail = (message) => {
 };
 
 const invoiceandpaymenthistory = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     OrganizationID: JSON.parse(OrganizationID),

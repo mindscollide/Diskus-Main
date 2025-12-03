@@ -243,12 +243,12 @@ export const MeetingProvider = ({ children }) => {
   }, [UserProfileData]);
 
   const joinMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    console.log(propValue, "propValuepropValuepropValue");
+    
     // dispatch(NewJoinCurrentMeeting())
   };
 
   const startMeetingFunction = (isQuickMeeting, routeValue, propValue) => {
-    console.log(propValue, "propValuepropValuepropValue");
+    
     // dispatch(UpdateMeetingStatus())
   };
 

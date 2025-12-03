@@ -276,7 +276,7 @@ const GetAuditListingFail = (message) => {
 };
 
 const GetAuditListingAPI = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(GetAuditListingInit());
@@ -344,7 +344,7 @@ const GetAuditActionsFail = (message) => {
 };
 
 const GetAuditActionsAPI = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(GetAuditActionsInit());

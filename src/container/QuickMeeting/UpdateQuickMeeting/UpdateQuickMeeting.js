@@ -71,7 +71,7 @@ const UpdateQuickMeeting = ({
   ModalTitle,
   checkFlag,
 }) => {
-  console.log(checkFlag, "checkFlagcheckFlag");
+  
   //For Localization
   const { t } = useTranslation();
   const getStartTime = getStartTimeWithCeilFunction();
@@ -215,7 +215,7 @@ const UpdateQuickMeeting = ({
     MeetingAttendees: [],
     ExternalMeetingAttendees: [],
   });
-  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
+  
   const [minutesOfMeeting, setMinutesOfMeeting] = useState([]);
   const [createMeetingTime, setCreateMeetingTime] = useState("");
   //For Custom language datepicker
@@ -226,10 +226,7 @@ const UpdateQuickMeeting = ({
   const [fileForSend, setFileForSend] = useState([]);
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
-  console.log(
-    { allPresenters, attendeesParticipant },
-    "allPresentersallPresenters"
-  );
+  
   const [fileSize, setFileSize] = useState(0);
   //Reminder Stats
   const [reminderOptions, setReminderOptions] = useState([]);
@@ -445,7 +442,7 @@ const UpdateQuickMeeting = ({
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     };
-    console.log(newData, "newDatanewDatanewData");
+    
     await dispatch(UpdateMeeting(navigate, t, checkFlag, newData));
     await setObjMeetingAgenda({
       PK_MAID: 0,
@@ -510,7 +507,7 @@ const UpdateQuickMeeting = ({
 
   // Reminder handler
   const ReminderNameHandler = (event) => {
-    console.log(event, "ReminderNameHandlerReminderNameHandler");
+    
     setReminderOptValue(event);
     setCreateMeeting({
       ...createMeeting,
@@ -1086,7 +1083,7 @@ const UpdateQuickMeeting = ({
   useEffect(() => {
     try {
       let valueOfReminder = assigneesRemindersData;
-      console.log(valueOfReminder, "valueOfRemindervalueOfReminder");
+      
       let reminderOptions = [];
 
       valueOfReminder.forEach((reminderData, index) => {
@@ -1109,7 +1106,7 @@ const UpdateQuickMeeting = ({
       });
       setReminderOptions(reminderOptions);
     } catch (error) {
-      console.log(error);
+      
     }
   }, [assigneesRemindersData]);
 
@@ -1294,11 +1291,11 @@ const UpdateQuickMeeting = ({
           }
           setAllPresenters(PresenterData);
         } catch (error) {
-          console.log(error);
+          
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [assigneesuser, checkFlag]);
 
@@ -1322,7 +1319,7 @@ const UpdateQuickMeeting = ({
           let findisCreatorFind = CommitteeMembers.find(
             (userInfo, index) => Number(userInfo.pK_UID) === Number(createrID)
           );
-          console.log(findisCreatorFind, "findisCreatorFindfindisCreatorFind");
+          
           if (findisCreatorFind === undefined) {
             setDefaultPresenter({
               label: (
@@ -1749,7 +1746,7 @@ const UpdateQuickMeeting = ({
         setAttendeesParticipant(membersData);
       }
     } catch (error) {
-      console.log("Error in useEffect:", error);
+      
     }
   }, [
     assigneesuser,
@@ -1844,7 +1841,7 @@ const UpdateQuickMeeting = ({
   // for view data
   useEffect(() => {
     try {
-      console.log(assigneesViewMeetingDetails, "assigneesViewMeetingDetails");
+      
       if (assigneesViewMeetingDetails !== null) {
         let viewData = assigneesViewMeetingDetails;
         let reminder = [];
@@ -1910,7 +1907,7 @@ const UpdateQuickMeeting = ({
             }
           }
         } catch (error) {
-          console.log(error, "error in view data");
+          
         }
         try {
           viewData.meetingAgendas.forEach((atchmenData, index) => {
@@ -1943,7 +1940,7 @@ const UpdateQuickMeeting = ({
             });
           });
         } catch (error) {
-          console.log(error, "error in view data");
+          
         }
         try {
           viewData.minutesOfMeeting.forEach((minutesOfMeetingData) => {
@@ -1970,7 +1967,7 @@ const UpdateQuickMeeting = ({
           );
         } catch (error) {
           //  Block of code to handle errors
-          console.log(error, "error in view data");
+          
         }
 
         setMeetingDate(
@@ -2011,7 +2008,7 @@ const UpdateQuickMeeting = ({
         setMinutesOfMeeting(minutesOfMeetings);
       }
     } catch (error) {
-      console.log(error, "error in view data");
+      
     }
   }, [assigneesViewMeetingDetails]);
 
@@ -2214,7 +2211,7 @@ const UpdateQuickMeeting = ({
         MeetingAttendees: createMeeting.MeetingAttendees,
         ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
       };
-      console.log(newData, "newDatanewDatanewData");
+      
       await dispatch(
         UpdateMeeting(navigate, t, checkFlag, newData, setEditFlag)
       );
@@ -2643,7 +2640,7 @@ const UpdateQuickMeeting = ({
     });
   };
   const filterFunc = (options, searchText) => {
-    console.log(options, searchText, "optionsoptions");
+    
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {
@@ -2662,7 +2659,7 @@ const UpdateQuickMeeting = ({
   };
 
   const downloadClick = (record) => {
-    console.log(record, "recordrecord");
+    
     let dataRoomData = {
       FileID: Number(record.OriginalAttachmentName),
     };
@@ -2686,12 +2683,12 @@ const UpdateQuickMeeting = ({
       fileName: record.DisplayAttachmentName,
       attachmentID: Number(record.OriginalAttachmentName),
     };
-    console.log(pdfData, ext, "pdfDatapdfData");
+    
     const pdfDataJson = JSON.stringify(pdfData);
     openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
   };
 
-  console.log({ attachments, createMeeting }, "createMeetingcreateMeeting");
+  
   return (
     <>
       <Container>

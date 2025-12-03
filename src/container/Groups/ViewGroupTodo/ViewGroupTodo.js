@@ -123,7 +123,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(getTasksByGroupIDApi(navigate, t, newData));
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, []);
 
@@ -187,7 +187,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         setOriginalData([]);
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [PollsReducertodoGetGroupTask]);
 
@@ -201,7 +201,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(createTaskGroupMQTT(null));
       }
     } catch (error) {
-      console.log(error, "errorerrorerrorerrorerror");
+      
     }
   }, [toDoListReducercreateTaskGroup]);
 
@@ -236,7 +236,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
 
       setStatusOptions(optionsArr);
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [todoStatus]);
 
@@ -651,7 +651,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [toDoListReducerToDoDetails]);
 
@@ -687,7 +687,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(clearResponseMessage());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [toDoListReducerResponseMessage, assigneesResponseMessage]);
 
@@ -707,7 +707,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [assigneesUpdateTodoStatusMessage, removeTodo]);
 
@@ -748,7 +748,7 @@ const CreateTodoCommittee = ({ groupStatus }) => {
         dispatch(cleareMessage());
       }
     } catch (error) {
-      console.log(error, "error");
+      
     }
   }, [
     getTodosStatusResponseMessage,

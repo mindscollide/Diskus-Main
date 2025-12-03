@@ -1021,7 +1021,7 @@ const deleteCommitteeTask_fail = (message) => {
   };
 };
 const deleteCommitteeTaskApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(deleteCommitteeTask_init());
@@ -1109,7 +1109,7 @@ const uploadDocumentsTaskApi = (
   // newFolder,
   newfile
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   return async (dispatch) => {
@@ -1206,7 +1206,7 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null && folderID !== undefined ? folderID : 0,
@@ -1298,7 +1298,7 @@ const createUpdateTaskDataRoom_fail = (message) => {
 };
 
 const createUpdateTaskDataRoomApi = (navigate, Data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     dispatch(createUpdateTaskDataRoom_init());
     let form = new FormData();
@@ -1427,7 +1427,7 @@ const saveTaskDocumentsAndAssigneesApi = (
   value,
   setShow
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return (dispatch) => {
     dispatch(saveTaskDocumentsAndAssignees_init());
@@ -1538,7 +1538,7 @@ const saveTaskDocumentsApi = (
   setShow,
   todoStatus
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
   return async (dispatch) => {
     try {
       dispatch(saveTaskDocuments_init());
@@ -1726,7 +1726,7 @@ const getDashbardTaskData_fail = (message = "") => {
   };
 };
 const getDashbardTaskDataApi = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+  
 
   return async (dispatch) => {
     try {
@@ -1966,7 +1966,7 @@ const validateEncryptedStringViewTaskDetailLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
+      
 
       dispatch(validateEncryptedStringViewTaskDetailLink_Init());
 

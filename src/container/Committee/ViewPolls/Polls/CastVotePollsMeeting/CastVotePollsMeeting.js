@@ -41,7 +41,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
     answer: [],
   });
 
-  console.log(viewProgressPollsDetails.answer, "answeransweransweranswer");
+  
 
   const handleSubmitVote = () => {
     if (viewProgressPollsDetails.answer.length > 0) {
@@ -51,7 +51,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
         PollOptionIDs: viewProgressPollsDetails.answer,
         IsCratedFromMainPoll: false,
       };
-      console.log(data, "submitvotesubmitvotesubmitvote");
+      
       dispatch(UpdatedCastVoteAPI(navigate, data, t, 1, setvotePolls));
     } else {
       // open sncak bar for atleast select one option
@@ -177,7 +177,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                 <Row>
                   {pollsOption.length > 0
                     ? pollsOption.map((data, index) => {
-                        console.log(data, "datadatadatadata");
+                        
                         return (
                           <>
                             <Col

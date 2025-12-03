@@ -41,7 +41,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const joinGuestData = useSelector(
     (state) => state.GuestVideoReducer.joinGuestData
   );
-  console.log(joinGuestData, "joinGuestData");
+  
 
   const guestMuteUnMuteData = useSelector(
     (state) => state.GuestVideoReducer.muteUmMuteByHost
@@ -50,7 +50,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const guesthideunHideByHostData = useSelector(
     (state) => state.GuestVideoReducer.hideunHideByHost
   );
-  console.log(guesthideunHideByHostData, "guesthideunHideByHostData");
+  
 
   const raiseUnRaisedGuestorParticipant = useSelector(
     (state) => state.GuestVideoReducer.raiseUnRaisedParticipantorGuest
@@ -67,13 +67,13 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.muteUnMuteParticpantorGuestByHost
   );
 
-  console.log(muteUnMuteParticpantorGuest, "ChechkerDataNewest");
+  
 
   const getAllParticipantGuest = useSelector(
     (state) => state.GuestVideoReducer.getAllParticipantGuest
   );
 
-  console.log(getAllParticipantGuest, "hideUnHideParticpantorGuest123");
+  
 
   const videoCameraGuest = useSelector(
     (state) => state.GuestVideoReducer.videoCameraGuest
@@ -86,7 +86,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     (state) => state.GuestVideoReducer.voiceControleForAllByHostFlag
   );
 
-  console.log(voiceControle, "voiceControlevoiceControle");
+  
 
   let guestName = sessionStorage.getItem("guestName");
   let guestUID = sessionStorage.getItem("GuestUserID");
@@ -104,10 +104,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const [participantStatusMap, setParticipantStatusMap] = useState({});
 
   const [allParticipantGuest, setAllParticipantGuest] = useState([]);
-  console.log(micOn, "micOn");
-  console.log(isVideoOn, "isVideoOn");
+  
+  
 
-  console.log(isRaiseHand, "isRaiseHandisRaiseHand");
+  
 
   const webcamStatus = sessionStorage.getItem("isWebCamEnabled");
 
@@ -115,7 +115,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
     sessionStorage.getItem("isZoomEnabled") !== null &&
     sessionStorage.getItem("isZoomEnabled");
 
-  console.log(isZoomEnabled, "isZoomEnabledisZoomEnabled");
+  
 
   useEffect(() => {
     let getRoomId = sessionStorage.getItem("roomId");
@@ -146,7 +146,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       setAllParticipantGuest([]);
     }
   }, [getAllParticipantGuest]);
-  console.log(guestMuteUnMuteData, "guestMuteUnMuteData");
+  
 
   useEffect(() => {
     if (
@@ -158,11 +158,11 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       if (iframe.contentWindow) {
         // Update the microphone state based on host's action
         if (guestMuteUnMuteData.isMuted) {
-          console.log("enableVideo", guestMuteUnMuteData);
+          
           iframe.contentWindow.postMessage("MicOff", "*");
           setMicOn(true); // Mic is off (muted)
         } else {
-          console.log("enableVideo", guestMuteUnMuteData);
+          
           iframe.contentWindow.postMessage("MicOn", "*");
           setMicOn(false); // Mic is on (unmuted)
         }
@@ -176,15 +176,15 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       const iframe = frameRef.current;
       if (iframe.contentWindow !== null) {
         if (guestMuteUnMuteData.isMuted === true) {
-          console.log("enableVideo", guestMuteUnMuteData);
+          
           iframe.contentWindow.postMessage("MicOff", "*");
-          console.log("isVideoOnisVideoOn");
+          
 
           setMicOn(true);
         } else {
-          console.log("enableVideo", guestMuteUnMuteData);
+          
           iframe.contentWindow.postMessage("MicOn", "*");
-          console.log("isVideoOnisVideoOn");
+          
 
           setMicOn(false);
         }
@@ -202,12 +202,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         if (iframe.contentWindow !== null) {
           if (guesthideunHideByHostData.isVideoHidden === true) {
             iframe.contentWindow.postMessage("VidOn", "*");
-            console.log("isVideoOnisVideoOn");
+            
 
             setIsVideoOn(true);
           } else {
             iframe.contentWindow.postMessage("VidOff", "*");
-            console.log("isVideoOnisVideoOn");
+            
 
             setIsVideoOn(false);
           }
@@ -216,12 +216,12 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
         if (iframe.contentWindow !== null) {
           if (guesthideunHideByHostData.isVideoHidden === true) {
             iframe.contentWindow.postMessage("VidOff", "*");
-            console.log("isVideoOnisVideoOn");
+            
 
             setIsVideoOn(true);
           } else {
             iframe.contentWindow.postMessage("VidOn", "*");
-            console.log("isVideoOnisVideoOn");
+            
 
             setIsVideoOn(false);
           }
@@ -232,17 +232,17 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
 
   useEffect(() => {
     if (muteUnMuteParticpantorGuestByHost) {
-      console.log("data formute", voiceControleForAllByHostFlag);
+      
       if (muteUnMuteParticpantorGuest?.uid === guestUID) {
         const iframe = frameRef.current;
         if (muteUnMuteParticpantorGuest.isMuted) {
-          console.log("enableVideo", muteUnMuteParticpantorGuest);
+          
           iframe.contentWindow.postMessage("MicOn", "*");
         } else {
           iframe.contentWindow.postMessage("MicOff", "*");
         }
         setMicOn(muteUnMuteParticpantorGuest.isMuted);
-        console.log("enableVideo", muteUnMuteParticpantorGuest);
+        
         sessionStorage.setItem("MicOff", muteUnMuteParticpantorGuest.isMuted);
       }
       dispatch(muteUnMuteParticipantsorGuestbyHost(false));
@@ -252,14 +252,14 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   // For All Mute
   useEffect(() => {
     if (voiceControleForAllByHostFlag) {
-      console.log("data formute", voiceControleForAllByHostFlag);
+      
       // if (muteUnMuteParticpantorGuest?.uid === guestUID) {
       const iframe = frameRef.current;
       if (voiceControleForAllByHostFlag) {
-        console.log("enableVideo", voiceControleForAllByHostFlag);
+        
         iframe.contentWindow.postMessage("MicOn", "*");
       } else {
-        console.log("enableVideo", voiceControleForAllByHostFlag);
+        
         iframe.contentWindow.postMessage("MicOff", "*");
       }
       setMicOn(voiceControleForAllByHostFlag);
@@ -272,10 +272,10 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const openMicStatus = (flag) => {
     const iframe = frameRef.current;
     if (flag) {
-      console.log("enableVideo", flag);
+      
       iframe.contentWindow.postMessage("MicOn", "*");
     } else {
-      console.log("enableVideo", flag);
+      
       iframe.contentWindow.postMessage("MicOff", "*");
     }
     setMicOn(flag);
@@ -298,14 +298,14 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
       if (flag) {
         iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOff" message to turn video off
       } else {
-        console.log("busyCall");
+        
         iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOn" message to turn video on
       }
     } else {
       if (flag) {
         iframe.contentWindow.postMessage("VidOff", "*"); // Send "VidOff" message to turn video off
       } else {
-        console.log("busyCall");
+        
         iframe.contentWindow.postMessage("VidOn", "*"); // Send "VidOn" message to turn video on
       }
     }
@@ -524,15 +524,9 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                 <div className="New-List-Participants">
                   {allParticipantGuest.length > 0 &&
                     allParticipantGuest.map((participant, index) => {
-                      console.log(participant, "ChechkerDataNewestsss");
-                      console.log(
-                        hideUnHideParticpantorGuest?.uid,
-                        "ChechkerDataNewest"
-                      );
-                      console.log(
-                        muteUnMuteParticpantorGuest?.uid,
-                        "ChechkerDataNewest"
-                      );
+                      
+                      
+                      
 
                       // for raising hand show on specific participant
                       const participantStatus =
@@ -542,7 +536,7 @@ const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
                         participantStatus.isHandRaised;
                       const isVideoOff = participantStatus.isVideoHidden;
                       const muteParticipants = participantStatus.isMuted;
-                      console.log(muteParticipants, "ChechkerDataNewest");
+                      
                       return (
                         <>
                           <Row key={participant.guid}>

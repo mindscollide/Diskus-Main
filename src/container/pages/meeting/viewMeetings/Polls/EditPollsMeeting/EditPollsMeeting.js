@@ -183,7 +183,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
   const handleSelectValue = (value) => {
     setSelectedsearch(value);
   };
-  console.log({ members, getMeetingusers }, "getMeetingusersgetMeetingusers");
+  
   const handleAddUsers = () => {
     let pollsData = getMeetingusers;
     let tem = [...members];
@@ -274,7 +274,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
             }
           });
         } catch {
-          console.log("error in add");
+          
         }
         const uniqueData = new Set(tem.map(JSON.stringify));
         // Convert the Set back to an array of objects
@@ -757,7 +757,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
               <Row>
                 {members.length > 0
                   ? members.map((data, index) => {
-                      console.log("datadatadatamembers", data);
+                      
                       return (
                         <>
                           <Col lg={6} md={6} sm={6} className='mt-3'>

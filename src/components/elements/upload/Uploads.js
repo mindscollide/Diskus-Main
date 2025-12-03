@@ -4,7 +4,7 @@ import React from "react";
 const Uploads = () => {
   const props = {
     onChange: (info) => {
-      console.log("setUploadList", info.fileList);
+      
     },
   };
   return (

@@ -77,7 +77,7 @@ const ParentAgenda = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  console.log(allSavedPresenters, "allSavedPresenters");
+  
 
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -106,7 +106,7 @@ const ParentAgenda = ({
   //Timepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  console.log(setExpand, "expandexpandexpnad");
+  
 
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
@@ -401,20 +401,20 @@ const ParentAgenda = ({
   //     GetAdvanceMeetingAgendabyMeetingIDData.length === 0 &&
   //     Object.keys(GetAdvanceMeetingAgendabyMeetingIDData).length === 0
   //   ) {
-  //     console.log("updated Rows ROWS ROWS");
+  //     
   //     updatedAgendaItems[index].presenterID = allSavedPresenters[0]?.value;
   //     updatedAgendaItems[index].presenterName = allSavedPresenters[0]?.label;
   //   }
   //   setRows(updatedAgendaItems);
   // }, [presenters, allPresenters]);
 
-  // console.log("editor role", editorRole);
+  // 
 
-  // console.log("Agenda Data", rows);
-  // console.log("allSavedPresentersallSavedPresenters", allSavedPresenters);
+  // 
+  // 
 
   const filterFunc = (options, searchText) => {
-    // console.log(options, "filterFuncfilterFunc");
+    // 
     if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
       return true;
     } else {

@@ -75,7 +75,7 @@ const PrivateGroups = () => {
 
   const chatClick = (record) => {
     dispatch(chatBoxActiveFlag(true));
-    console.log("chatClick Record", record);
+    
     let chatGroupData = {
       UserID: parseInt(currentUserId),
       ChannelID: currentOrganizationId,
@@ -87,7 +87,7 @@ const PrivateGroups = () => {
     dispatch(activeChat(record));
   };
 
-  console.log("PrivateGroupsData", privateGroupsData);
+  
 
   useEffect(() => {
     if (
@@ -130,13 +130,13 @@ const PrivateGroups = () => {
       talkStateData.MqttGroupLeftData !== null &&
       talkStateData.MqttGroupLeftData.length !== 0
     ) {
-      console.log(talkStateData.MqttGroupLeftData, "MqttGroupLeftData");
+      
       let leaveGroupData = talkStateData.MqttGroupLeftData.data[0];
       const indexToRemove = privateGroupsData.findIndex(
         (item) => item.id === leaveGroupData.groupID
       );
-      console.log(leaveGroupData, "MqttGroupLeftData");
-      console.log(privateGroupsData, "MqttGroupLeftData");
+      
+      
       // Check if the object was found
       if (indexToRemove !== -1) {
         // Remove the object from allChatData
@@ -187,7 +187,7 @@ const PrivateGroups = () => {
     } catch {}
   };
 
-  console.log("TalkStateData PrivateGroupsData", { talkStateData });
+  
 
   return (
     <>

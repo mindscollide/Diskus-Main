@@ -75,7 +75,7 @@ const ViewSignatureDocument = () => {
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
 
-  console.log(signerDataRef, "signerDataRefsignerDataRef");
+  
 
   // ===== this use for current state update get =====//
 
@@ -355,7 +355,7 @@ const ViewSignatureDocument = () => {
         }));
       }
     } catch (error) {
-      console.log("error", error);
+      
     }
   }, [getSignatureFileAnnotationResponse]);
   // === End === //
@@ -480,11 +480,7 @@ const ViewSignatureDocument = () => {
     // Event Listener for annotation changes
     const handleAnnotationChange = (annotations) => {
       annotations.forEach((annot) => {
-        console.log(
-          annot,
-          annot instanceof Annotations.FreeHandAnnotation,
-          "annotannotannot"
-        );
+        
         if (annot.ToolName === "AnnotationCreateRubberStamp") {
           annot.NoMove = true; // Prevent dragging
           annot.NoResize = true; // Prevent resizing

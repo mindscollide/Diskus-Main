@@ -191,13 +191,7 @@ const SubAgendaMappingDragging = ({
     setAgendaIndex(index);
     setSubAgendaIndex(subindex);
     setShowMoreFilesView(true);
-    console.log(
-      "Show More Files",
-      fileDataAgenda,
-      agendaName,
-      agendaIndex,
-      subAgendaIndex
-    );
+    
   };
 
   // useEffect(() => {

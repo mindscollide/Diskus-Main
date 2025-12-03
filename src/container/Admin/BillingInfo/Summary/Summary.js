@@ -66,19 +66,13 @@ const Summary = () => {
     NextPaymentDueDate: "",
     AmountAfterDiscount: 0,
   });
-  console.log(
-    "lastPaymentlastPayment",
-    _justShowDateformatBilling(summary.NextPaymentDueDate)
-  );
+
   const [lastPayment, setLastPayment] = useState({
     Invoice: 0,
     PaymentReceivedDate: "",
     PaidAmount: 0,
   });
-  console.log(
-    "lastPaymentlastPayment",
-    _justShowDateformatBilling(lastPayment.PaymentReceivedDate)
-  );
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -109,9 +103,7 @@ const Summary = () => {
         IsLateSurcharge: false,
       };
       dispatch(searchPaymentHistoryApi(navigate, Data, t, false, false));
-    } catch (error) {
-      console.log(error, "error");
-    }
+    } catch (error) {}
   }, []);
 
   //Extracting the data of payment and Invoice Details
@@ -120,9 +112,7 @@ const Summary = () => {
       if (searchPaymentHistory !== null && searchPaymentHistory !== undefined) {
         setOpenInvoiceRecords(searchPaymentHistory.paymentInfo.paymentHistory);
       }
-    } catch (error) {
-      console.log(error, "errorerror");
-    }
+    } catch (error) {}
   }, [searchPaymentHistory]);
 
   useEffect(() => {
@@ -212,7 +202,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {_justShowDateformat(text)}
           </span>
         );
@@ -226,7 +216,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -240,7 +230,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -254,7 +244,7 @@ const Summary = () => {
       align: "center",
       render: (text, Record) => {
         return (
-          <span className="text-truncate d-block">
+          <span className='text-truncate d-block'>
             {convertToArabicNumerals(text)}
           </span>
         );
@@ -271,22 +261,20 @@ const Summary = () => {
 
   useEffect(() => {
     try {
-      console.log("lastpaymentDetail", getBillInformation);
-
       if (getBillInformation !== null) {
         let Summary = getBillInformation.accountDetails;
         let lastpaymentDetail = getBillInformation.lastPayment;
 
         setSummary({
-          BalanceDue: Summary.balanceDue != 0 ? Summary.balanceDue : 0,
+          BalanceDue: Summary.balanceDue !== 0 ? Summary.balanceDue : 0,
           NextInvoiceEstimate:
-            Summary.nextAmountEstimate != 0 ? Summary.nextAmountEstimate : 0,
+            Summary.nextAmountEstimate !== 0 ? Summary.nextAmountEstimate : 0,
           NextPaymentDueDate: Summary.nextPaymentDate,
           AmountAfterDiscount: Summary.amountAfterDiscount,
         });
 
         let newInvoice = [];
-        getBillInformation.invoice.map((data) => {
+        getBillInformation.invoice.forEach((data) => {
           newInvoice.push({
             invoice: data.invoiceCustomerNumber,
             duedate: _justShowDateformatBilling(data.invoiceDueDate),
@@ -301,20 +289,17 @@ const Summary = () => {
         setLastPayment({
           Invoice: lastpaymentDetail.invoiceCustomerNumber,
           PaidAmount:
-            lastpaymentDetail.paidAmount != 0
+            lastpaymentDetail.paidAmount !== 0
               ? lastpaymentDetail.paidAmount
               : 0,
           PaymentReceivedDate:
-            lastpaymentDetail.paymentRecieveDate != ""
+            lastpaymentDetail.paymentRecieveDate !== ""
               ? lastpaymentDetail.paymentRecieveDate
               : "",
         });
       }
-    } catch {
-      console.log("error");
-    }
+    } catch {}
   }, [getBillInformation]);
-  console.log("SummarySummarySummary", rows);
 
   useEffect(() => {
     dispatch(getBillingInformationapi(navigate, t));
@@ -322,7 +307,7 @@ const Summary = () => {
   return (
     <>
       <Fragment>
-        <Container className="mt-3">
+        <Container className='mt-3'>
           <PaymentActivity
             PaymentActivityBoxTitle={t("Summary")}
             PaymentActivityTitle={t("Section-of-account-summary")}
@@ -330,14 +315,14 @@ const Summary = () => {
             ColTwoKey={t("Next-invoice-estimate")}
             ColThreeKey={t("Next-payment-due-date")}
             ColOneValue={
-              summary.BalanceDue != 0 ? (
+              summary.BalanceDue !== 0 ? (
                 <>$ {convertToArabicNumerals(summary.BalanceDue)}</>
               ) : (
                 <>{summary.BalanceDue}</>
               )
             }
             ColTwoValue={
-              summary.NextInvoiceEstimate != 0 ? (
+              summary.NextInvoiceEstimate !== 0 ? (
                 <>$ {summary.NextInvoiceEstimate}</>
               ) : (
                 <>{summary.NextInvoiceEstimate}</>
@@ -376,22 +361,19 @@ const Summary = () => {
               sm={12}
               md={12}
               lg={12}
-              className="border-radius-4 border py-3 px-5 mt-3 my-2 bg-white"
-            >
+              className='border-radius-4 border py-3 px-5 mt-3 my-2 bg-white'>
               <Col
                 sm={12}
                 md={12}
                 lg={12}
-                className={styles["PaymentActivitySubtitle"]}
-              >
+                className={styles["PaymentActivitySubtitle"]}>
                 {t("Open-invoice")}
               </Col>
               <Col
                 sm={12}
                 md={12}
                 lg={12}
-                className="Summary-Table-Invoice my-1"
-              >
+                className='Summary-Table-Invoice my-1'>
                 <Table rows={openInvoiceRecords} column={columns} />
               </Col>
             </Col>
@@ -405,17 +387,17 @@ const Summary = () => {
           ButtonTitle={"Block"}
           centered
           size={"md"}
-          modalHeaderClassName="d-none"
+          modalHeaderClassName='d-none'
           ModalBody={
             <>
               <>
-                <Row className="mt-2">
+                <Row className='mt-2'>
                   <Col lg={12} md={12} xs={12} sm={12}>
                     <Row>
-                      <Col className="d-flex justify-content-center">
+                      <Col className='d-flex justify-content-center'>
                         <img
-                          draggable="false"
-                          alt=""
+                          draggable='false'
+                          alt=''
                           src={VerificationFailedIcon}
                           className={styles["allowModalIcon"]}
                           width={60}
@@ -439,13 +421,12 @@ const Summary = () => {
           ModalFooter={
             <>
               <Col sm={12} md={12} lg={12}>
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={styles["Ok-Successfull-btn"]}
                       text={t("Ok")}

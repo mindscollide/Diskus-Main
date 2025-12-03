@@ -96,11 +96,11 @@ const Participants = () => {
 
         // IsParticipantsAddFlow;
       }
-      console.log(getAllData, "getAllDatagetAllDatagetAllData");
+      
     }
   }, [NewMeetingreducer.getAllSavedparticipants]);
 
-  console.log(rowsData, "getAllDatagetAllDatagetAllData");
+  
   const handleNextBtn = () => {
     setAgenda(true);
     setParticipants(false);
@@ -117,7 +117,7 @@ const Participants = () => {
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
     };
-    console.log("chek search meeting");
+    
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     setParticipants(false);
     localStorage.removeItem("folderDataRoomMeeting");

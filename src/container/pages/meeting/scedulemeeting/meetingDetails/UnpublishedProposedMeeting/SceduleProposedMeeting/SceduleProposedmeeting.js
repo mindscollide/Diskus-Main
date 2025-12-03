@@ -52,13 +52,11 @@ const SceduleProposedmeeting = ({
   //   (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   // );
 
-  // console.log(getUserProposedOrganizerData, "getUserProposedOrganizerData");
+  //
 
   const userWiseMeetingProposed = useSelector(
     (state) => state.NewMeetingreducer.userWiseMeetingProposed
   );
-
-  console.log("Check213123", userWiseMeetingProposed);
 
   const [formattedDates, setFormattedDates] = useState([]);
   const [updateTableRows, setUpdateTableRows] = useState([]);
@@ -99,7 +97,7 @@ const SceduleProposedmeeting = ({
     }
 
     return () => {
-      dispatch(clearProposedWiseData())
+      dispatch(clearProposedWiseData());
       localStorage.removeItem("ProposedMeetingOrganizer");
       localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
       localStorage.removeItem("MeetingStatusID");
@@ -134,10 +132,6 @@ const SceduleProposedmeeting = ({
           }, new Map())
           .values() // Extract unique values from the Map
       );
-
-      console.log(ProposeDates, "Filtered Unique ProposeDates");
-
-      console.log(ProposeDates, "Filtered ProposeDates");
 
       setProposedDates(ProposeDates);
 
@@ -191,7 +185,7 @@ const SceduleProposedmeeting = ({
 
   //           return formatetDateTime;
   //         } catch (error) {
-  //           console.log(error);
+  //
   //         }
   //       });
 
@@ -224,16 +218,13 @@ const SceduleProposedmeeting = ({
       setProposedDatesData(newDataProposedState);
       const formattedDates = newDataProposedState
         .filter((dates, index) => dates.proposedDate !== "10000101")
-        .map((date) => {
-          console.log(date, "datedatedate");
+        .forEach((date) => {
           try {
             let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
             const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
             return formatetDateTime;
-          } catch (error) {
-            console.log(error);
-          }
+          } catch (error) {}
         });
 
       if (formattedDates.length > 0) {
@@ -259,8 +250,6 @@ const SceduleProposedmeeting = ({
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
-      console.log(organizerRows, columnIndex, "organizerRowsorganizerRows");
-
       const count = organizerRows.reduce((total, row) => {
         if (
           row &&
@@ -300,10 +289,7 @@ const SceduleProposedmeeting = ({
           : Number(viewProposeDatePollMeetingID),
         ProposedDateID: findIsSelected.proposedDateID,
       };
-      console.log(
-        NotificationClickOrganizerProposedMeetingID,
-        "MeetingIDMeetingIDMeetingID"
-      );
+
       dispatch(
         scheduleMeetingMainApi(
           navigate,
@@ -352,20 +338,12 @@ const SceduleProposedmeeting = ({
 
     ...formattedDates.map((formattedDate, index) => {
       let record = proposedDatesData[index + 1];
-      console.log(record, "recordrecord");
-      console.log(formattedDate, "formattedDate");
 
       let isFind;
       if (record !== null && record !== undefined) {
         let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
         const formatetDateTime = resolutionResultTable(datetimeVal);
-        console.log(
-          formatetDateTime,
-          String(formatetDateTime) === String(formattedDate),
-          String(formatetDateTime),
-          String(formattedDate),
-          "formatetDateTime"
-        );
+
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = record;
         }
@@ -373,9 +351,7 @@ const SceduleProposedmeeting = ({
       let checkisPassed =
         new Date() >
         resolutionResultTable(record.proposedDate + record.startTime);
-      console.log(isFind, "isFindisFind");
 
-      console.log(checkisPassed, "formatetDateTimeformatetDateTime");
       return {
         title: (
           <span
@@ -396,12 +372,11 @@ const SceduleProposedmeeting = ({
         key: `selectedProposedDates-${index}`,
         align: "center",
         render: (text, record) => {
-          console.log(record, "recordrecordrecord");
           if (record.userName === "Total") {
             const totalDate = record?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0
             );
-            console.log(totalDate, "totalDate");
+
             if (totalDate) {
               return (
                 <span
@@ -418,11 +393,7 @@ const SceduleProposedmeeting = ({
                 getCurrentYYYYMMDD(date.proposedDate + date.startTime) ===
                 moment(formattedDate).format("YYYYMMDD")
             );
-            console.log(
-              proposedDate,
-              record?.selectedProposedDates,
-              "proposedDateasaddad selectedProposedDates"
-            );
+
             if (proposedDate?.isSelected) {
               return (
                 <span>
@@ -451,7 +422,6 @@ const SceduleProposedmeeting = ({
               date.proposedDate === "10000101" && date.isSelected === true
           )
         );
-        console.log(isActiveDateSelected, "isActiveDateSelected");
 
         return (
           <span
@@ -472,7 +442,6 @@ const SceduleProposedmeeting = ({
           (date) => date.proposedDate === "10000101" && date.isSelected
         );
         const formattedCounter = String(counter).padStart(2, "0");
-        console.log(counter, "countercountercounter");
 
         if (record?.userName === "Total") {
           return (

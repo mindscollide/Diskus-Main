@@ -62,7 +62,7 @@ const CancelConfirmationModal = () => {
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
       navigate("/Diskus/");
-      console.log("navigateLocation");
+      
       localStorage.removeItem("navigateLocation");
     } else {
       let searchData = {
@@ -75,7 +75,7 @@ const CancelConfirmationModal = () => {
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
       };
-      console.log("chek search meeting");
+      
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
       setEditorRole({ status: null, role: null, isPrimaryOrganizer: false });

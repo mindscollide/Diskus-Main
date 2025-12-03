@@ -312,7 +312,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
         setmemberSelect(sortAssginersArr);
       }
     } catch (error) {
-      console.log(error, "errorerror");
+      
     }
   }, [getGroupByGroupIdResponse]);
 

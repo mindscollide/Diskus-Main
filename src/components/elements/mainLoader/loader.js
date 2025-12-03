@@ -76,7 +76,7 @@ const SpinComponent = () => {
   const DashboardRoute =
     window.location.pathname === "/Diskus" ||
     window.location.pathname === "/Diskus/";
-  console.log({ NewMeetingreducer }, "NewMeetingreducerNewMeetingreducer");
+  
   const isLoading = [
     NewMeetingreducer?.Loading,
     auth?.Loading,

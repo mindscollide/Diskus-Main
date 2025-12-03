@@ -63,7 +63,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [members, setMembers] = useState([]);
   const [options, setOptions] = useState([]);
-  console.log(checkForPollStatus, "checkForPollStatuscheckForPollStatus");
+  
   const [open, setOpen] = useState({
     open: false,
     message: "",

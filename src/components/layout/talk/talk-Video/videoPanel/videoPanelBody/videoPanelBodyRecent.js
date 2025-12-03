@@ -120,10 +120,7 @@ const VideoPanelBodyRecent = () => {
   const videRecording = useSelector(
     (state) => state.DataRoomReducer.videRecording
   );
-  console.log(
-    VideoMainReducer.RecentCallsData,
-    "VideoMainReducerRecentCallsData"
-  );
+  
 
   const searchChat = (e) => {
     setSearchChatValue(e);
@@ -157,8 +154,8 @@ const VideoPanelBodyRecent = () => {
       console.error("Error in searchChat:", error);
     }
   };
-  console.log({ recentVideoCalls }, "recentVideoCallsrecentVideoCalls");
-  console.log("Video Call User Data", VideoMainReducer);
+  
+  
   useEffect(() => {
     let Data = {
       OrganizationID: currentOrganization,
@@ -243,7 +240,7 @@ const VideoPanelBodyRecent = () => {
       dispatch(disableZoomBeforeJoinSession(true));
     }
     setRecentCallRecipientData(data);
-    console.log(data, "datadatadatadata");
+    
     if (
       activeCall === false ||
       activeCall === undefined ||
@@ -267,7 +264,7 @@ const VideoPanelBodyRecent = () => {
         sessionStorage.setItem("NonMeetingVideoCall", true);
         localStorage.setItem("meetinHostInfo", JSON.stringify(meetingHost));
         localStorage.setItem("CallType", Data.CallTypeID);
-        console.log("leavecallMeetingVideo");
+        
         localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("isCaller", true);
@@ -306,7 +303,7 @@ const VideoPanelBodyRecent = () => {
         };
 
         localStorage.setItem("CallType", Data.CallTypeID);
-        console.log("leavecallMeetingVideo");
+        
         localStorage.setItem("callTypeID", Data.CallTypeID);
         dispatch(InitiateVideoCall(Data, navigate, t));
         localStorage.setItem("callerID", currentUserID);
@@ -326,7 +323,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallHostOto = () => {
-    console.log("leavecallMeetingVideo");
+    
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
       OrganizationID: currentOrganization,
@@ -342,7 +339,7 @@ const VideoPanelBodyRecent = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -364,7 +361,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leavecallMeetingVideo = async () => {
-    console.log("leavecallMeetingVideo");
+    
     const emptyArray = [];
     const meetingHost = {
       isHost: false,
@@ -380,7 +377,7 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
     await dispatch(setAudioControlHost(false));
-    console.log("videoHideUnHideForHost");
+    
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
@@ -434,7 +431,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallParticipantOto = () => {
-    console.log("leavecallMeetingVideo");
+    
     let roomID = localStorage.getItem("acceptedRoomID");
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     let Data = {
@@ -451,7 +448,7 @@ const VideoPanelBodyRecent = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     };
-    console.log("Check LeaveCall new");
+    
     dispatch(LeaveCall(Data, navigate, t));
     dispatch(InitiateVideoCall(Data2, navigate, t));
     localStorage.setItem("isCaller", true);
@@ -472,7 +469,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallOnMeetingVideoForGroup = async () => {
-    console.log("leavecallMeetingVideo");
+    
     const emptyArray = [];
     const meetingHost = {
       isHost: false,
@@ -488,7 +485,7 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isWebCamEnabled", false);
     localStorage.setItem("isMicEnabled", false);
     await dispatch(setAudioControlHost(false));
-    console.log("videoHideUnHideForHost");
+    
     await dispatch(setVideoControlHost(false));
     await dispatch(maximizeVideoPanelFlag(false));
     await dispatch(maxParticipantVideoRemoved(false));
@@ -520,7 +517,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallHostGroup = async () => {
-    console.log("leaveCallHostGroup");
+    
     const recipientIds =
       recentCallRecipientData.callerID !== currentUserID
         ? [recentCallRecipientData.callerID]
@@ -549,7 +546,7 @@ const VideoPanelBodyRecent = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      console.log("Check LeaveCall new");
+      
       dispatch(LeaveCall(Data2, navigate, t));
     }
     dispatch(InitiateVideoCall(Data, navigate, t));
@@ -570,7 +567,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const leaveCallParticipantGroup = async () => {
-    console.log("leaveCallHostGroup");
+    
     const recipientIds =
       recentCallRecipientData.callerID !== currentUserID
         ? [recentCallRecipientData.callerID]
@@ -600,7 +597,7 @@ const VideoPanelBodyRecent = () => {
         IsCaller: false,
         CallTypeID: callTypeID,
       };
-      console.log("Check LeaveCall new");
+      
       dispatch(LeaveCall(Data2, navigate, t));
     }
     dispatch(InitiateVideoCall(Data, navigate, t));
@@ -620,7 +617,7 @@ const VideoPanelBodyRecent = () => {
   };
 
   const downloadVideoCall = (data) => {
-    console.log("Data Data Data", data);
+    
     let utcDateTime = resolutionResultTable(data.callDate + data.callTime);
     let utcDate = moment(utcDateTime).format("DDMMYYYY");
     let utcTime = moment(utcDateTime).format("HHmmss");
@@ -688,8 +685,8 @@ const VideoPanelBodyRecent = () => {
                 recentCallData.callDate + recentCallData.callTime;
 
               let whenIsInComingFalse = recentCallData.isIncoming === false;
-              console.log("recentCallDatarecentCallData", recentCallData);
-              console.log("isIncomingrecipients", whenIsInComingFalse);
+              
+              
 
               return (
                 <>

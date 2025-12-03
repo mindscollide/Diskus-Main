@@ -33,10 +33,12 @@ export const mqttConnection = (subscribeID, dispatch) => {
 
     const options = {
       onSuccess: () => {
-        console.log("Connected to MQTT broker");
+        
         try {
           newClient.subscribe(subscribeID.toString(), {
-            onSuccess: () => console.log(`MQTT Subscribed to ${subscribeID}`),
+            onSuccess: () => {
+              console.log(`Subscribed to MQTT topic: ${subscribeID}`);
+            },
             onFailure: (error) =>
               console.error(`MQTT Subscription failed: ${error.errorMessage}`),
           });

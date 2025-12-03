@@ -50,7 +50,7 @@ const ReviewSignature = () => {
   } = useSelector((state) => state.SignatureWorkFlowReducer);
   const workflowResponseMessage = useSelector((state) => state.webViewer);
   const globalState = useSelector((state) => state);
-  console.log(globalState, "globalStateglobalState");
+  
   const workflowsignaturedocument = useSelector(
     (state) => state.SignatureWorkFlowReducer.workflowsignaturedocument
   );
@@ -64,10 +64,7 @@ const ReviewSignature = () => {
     (state) =>
       state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
   );
-  console.log(
-    signatureDocumentStatusChangeForSignees,
-    "signatureDocumentStatusChangeForSigneessignatureDocumentStatusChangeForSignees"
-  );
+  
   // signatureDocumentStatusChangeForSignees
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
@@ -78,7 +75,7 @@ const ReviewSignature = () => {
     signed: 0,
     signedPercentage: 0,
   });
-  console.log(approvalStats, "approvalStatsapprovalStats");
+  
   const [reviewSignature, setReviewSignature] = useState([]);
   const [originalData, setOriginalData] = useState([]);
   const [signatoriesList, setSignatoriesList] = useState(false);
@@ -174,7 +171,7 @@ const ReviewSignature = () => {
     );
   };
 
-  console.log(originalData, "originalDataoriginalDataoriginalData");
+  
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
@@ -224,7 +221,7 @@ const ReviewSignature = () => {
   );
 
   const handleClickSignatoriesList = (record) => {
-    console.log(record, "handleClickSignatoriesListhandleClickSignatoriesList");
+    
     // setSignatureListVal(value);
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
@@ -435,16 +432,11 @@ const ReviewSignature = () => {
   ];
 
   // const handleScroll = async () => {
-  //   console.log(
-  //     totalDataLnegth <= totalRecords,
-  //     totalDataLnegth,
-  //     totalRecords,
-  //     "handleScrollhandleScroll"
-  //   );
+  //   
   //   if (totalDataLnegth <= totalRecords) {
   //     setIsScrolling(true);
   //     let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-  //     console.log(Data, "handleScrollhandleScrollhandleScroll");
+  //     
   //     await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
   //   }
   // };
@@ -454,7 +446,7 @@ const ReviewSignature = () => {
       if (totalDataLnegth <= totalRecords) {
         setIsScrolling(true);
         let Data = { sRow: Number(totalDataLnegth), Length: 10 };
-        console.log(Data, "handleScroll: fetching pending approvals");
+        
         await dispatch(getAllPendingApprovalsSignaturesApi(navigate, t, Data));
         return; // stop further execution if this condition is met
       } else {
@@ -464,13 +456,10 @@ const ReviewSignature = () => {
     }
   });
 
-  console.log(totalDataLnegth <= totalRecords, "totalRecordstotalRecords");
-  console.log(
-    reviewSignature.length !== totalRecords,
-    "totalRecordstotalRecords"
-  );
-  console.log(totalDataLnegth, "totalRecordstotalRecords");
-  console.log(totalRecords, "totalRecordstotalRecords");
+  
+  
+  
+  
 
   useEffect(() => {
     if (
@@ -493,7 +482,7 @@ const ReviewSignature = () => {
           setDefaultReviewAndSignatureStatus(defaultStatus);
         }
       } catch (error) {
-        console.log(error);
+        
       }
     }
   }, [getAllPendingApprovalStatuses]);
@@ -540,7 +529,7 @@ const ReviewSignature = () => {
           (reviewSignatureData, index) =>
             reviewSignatureData.workFlowID === data.workFlowID
         );
-        console.log(findIfExist, "findIfExistfindIfExist");
+        
         if (findIfExist === undefined) {
           setReviewSignature([data, ...reviewSignature]);
           setOriginalData([data, originalData]);
@@ -602,7 +591,7 @@ const ReviewSignature = () => {
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
-  console.log(reviewSignature, "reviewSignaturereviewSignature");
+  
   return (
     <>
       <Row>

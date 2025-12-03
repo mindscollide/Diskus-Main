@@ -75,8 +75,8 @@ const EditReviewers = ({
     setSelectAll(selectedReviewersToEdit.length === allReviewers.length);
   }, [selectedReviewersToEdit, allReviewers]);
 
-  console.log("Minute Data General Edit Reviewer", minuteDataGeneral);
-  console.log("Minute Data Agenda Edit Reviewer", minuteDataAgenda);
+  
+  
 
   return (
     <>

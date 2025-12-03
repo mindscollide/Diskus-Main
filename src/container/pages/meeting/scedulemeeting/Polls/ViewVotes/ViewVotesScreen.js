@@ -23,7 +23,7 @@ const ViewVotesScreen = ({ setviewVotes }) => {
       let pollOptions = vieVotePollDetails.pollOptions;
       let pollAttendies = vieVotePollDetails.pollParticipants;
       let Options = [];
-      console.log("handleClosed", vieVotePollDetails);
+      
 
       if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
         if (Object.keys(vieVotePollDetails).length > 0) {

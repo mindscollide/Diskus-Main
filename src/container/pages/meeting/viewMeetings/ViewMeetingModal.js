@@ -123,7 +123,7 @@ const ViewMeetingModal = ({
   const presenterViewJoinFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
-  console.log(typeof advanceMeetingOperations);
+  
   const {
     editorRole,
     setEditorRole,
@@ -168,7 +168,7 @@ const ViewMeetingModal = ({
     localStorage.getItem("isMeetingVideoHostCheck")
   );
 
-  console.log(iframeRef, "iframeRefiframeRef");
+  
 
   const dispatch = useDispatch();
 
@@ -203,22 +203,7 @@ const ViewMeetingModal = ({
     (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
-  console.log(
-    {
-      agendaContributors,
-      meetingDetails,
-      organizers,
-      participants,
-      agenda,
-      minutes,
-      attendance,
-      polls,
-      actionsPage,
-      meetingDetails,
-      meetingMaterial,
-    },
-    "routeIDrouteID"
-  );
+  
 
   useEffect(() => {
     if (
@@ -381,7 +366,7 @@ const ViewMeetingModal = ({
   //When Host Stop Recording
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
+      
 
       setStartRecordingState(true);
       setPauseRecordingState(false);
@@ -394,7 +379,7 @@ const ViewMeetingModal = ({
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
+            
           }
 
           // Slight delay to allow iframe to process the message
@@ -436,13 +421,13 @@ const ViewMeetingModal = ({
         localStorage.getItem("currentMeetingID")
       );
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
-      console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
+      
 
       if (meetHostFlag) {
         const parsedHostFlag = JSON.parse(meetHostFlag); // Parse the string into an object
-        console.log(parsedHostFlag, "parsedHostFlag");
+        
         if (parsedHostFlag.isHost) {
-          console.log("busyCall");
+          
 
           //When Recording is On and Host Leave Meeting Video
           await onHandleClickForStopRecording();
@@ -454,7 +439,7 @@ const ViewMeetingModal = ({
           );
           if (isZoomEnabled) {
             if (isSharedSceenEnable && !globallyScreenShare) {
-              console.log("busyCall");
+              
               let isMeetingVideoHostCheck = JSON.parse(
                 localStorage.getItem("isMeetingVideoHostCheck")
               );
@@ -477,7 +462,7 @@ const ViewMeetingModal = ({
 
           let newRoomID = localStorage.getItem("newRoomId");
           let newUserGUID = localStorage.getItem("isGuid");
-          console.log("busyCall");
+          
 
           let Data = {
             RoomID: String(newRoomID),
@@ -513,7 +498,7 @@ const ViewMeetingModal = ({
           );
           if (isZoomEnabled) {
             if (isSharedSceenEnable && !globallyScreenShare) {
-              console.log("busyCall");
+              
               let participantUID = localStorage.getItem("participantUID");
               let participantRoomIds =
                 localStorage.getItem("participantRoomId");
@@ -532,7 +517,7 @@ const ViewMeetingModal = ({
 
           let participantUID = localStorage.getItem("participantUID");
           let participantRoomIds = localStorage.getItem("participantRoomId");
-          console.log("busyCall");
+          
           let Data = {
             RoomID: String(participantRoomIds),
             UserGUID: String(participantUID),
@@ -563,9 +548,9 @@ const ViewMeetingModal = ({
           );
         }
       }
-      //       console.log("Check LeaveCall new");dispatch(LeaveCall
+      //       dispatch(LeaveCall
       // (Data, navigate, t));
-      console.log("cehek location");
+      
       localStorage.setItem("isCaller", false);
       localStorage.setItem("isMeetingVideo", false);
       const emptyArray = [];
@@ -583,7 +568,7 @@ const ViewMeetingModal = ({
       localStorage.setItem("MicOff", true);
       localStorage.setItem("VidOff", true);
     } else {
-      console.log("cehek location");
+      
       localStorage.removeItem("navigateLocation");
 
           localStorage.setItem("isMeeting", false);
@@ -622,7 +607,7 @@ const ViewMeetingModal = ({
         localStorage.getItem("isMeetingVideoHostCheck")
       );
       if (isMeeting) {
-        console.log("cacacacacacacacacc");
+        
         let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
         let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
         if (isWaiting || isMeetingVideo) {
@@ -668,7 +653,7 @@ const ViewMeetingModal = ({
         }
         dispatch(presenterViewGlobalState(0, false, false, false));
         dispatch(setAudioControlHost(false));
-        console.log("videoHideUnHideForHost");
+        
         dispatch(setVideoControlHost(false));
         dispatch(cleareAllState());
         setEditorRole({ status: null, role: null });
@@ -697,7 +682,7 @@ const ViewMeetingModal = ({
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
-      console.log("cacacacacacacacacc");
+      
     };
   }, [dispatch]);
 
@@ -905,7 +890,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+        
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -936,7 +921,7 @@ const ViewMeetingModal = ({
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
         };
-        console.log("chek search meeting");
+        
         dispatch(searchNewUserMeeting(navigate, searchData, t));
       } catch (error) {
         console.error(error, "error");
@@ -951,20 +936,20 @@ const ViewMeetingModal = ({
       meetingIdReducer.MeetingStatusEnded.length !== 0
     ) {
       let endMeetingData = meetingIdReducer.MeetingStatusEnded.meeting;
-      console.log("Checking");
+      
 
       if (
         advanceMeetingModalID === endMeetingData?.pK_MDID &&
         endMeetingData.status === "9" &&
         editorRole.status !== "9"
       ) {
-        console.log("Checking");
+        
         setEditorRole({ status: null, role: null });
         setViewAdvanceMeetingModal(false);
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         dispatch(viewAdvanceMeetingUnpublishPageFlag(false));
         if (isMeetingVideo === true) {
-          console.log("Checking");
+          
 
           localStorage.setItem("isCaller", false);
           localStorage.setItem("isMeetingVideo", false);
@@ -992,7 +977,7 @@ const ViewMeetingModal = ({
   }, [meetingIdReducer.MeetingStatusEnded]);
 
   const leaveMeeting = async (flag, flag2) => {
-    console.log(flag, flag2, "mqtt mqmqmqmqmqmq");
+    
 
     let currentMeeting = localStorage.getItem("currentMeetingID");
     let newName = localStorage.getItem("newName");
@@ -1006,7 +991,7 @@ const ViewMeetingModal = ({
       localStorage.getItem("isMeetingVideoHostCheck")
     );
     if (isMeeting) {
-      console.log("cacacacacacacacacc");
+      
       let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
       let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       // if (isWaiting || isMeetingVideo) {
@@ -1103,12 +1088,12 @@ const ViewMeetingModal = ({
     //   )
     // );
     if (flag === true) {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       await dispatch(leaveMeetingOnlogout(false));
       dispatch(userLogOutApiFunc(navigate, t));
     }
     if (flag2 === true) {
-      console.log("mqtt mqmqmqmqmqmq");
+      
       await dispatch(leaveMeetingOnEndStatusMqtt(false));
     }
   };
@@ -1116,7 +1101,7 @@ const ViewMeetingModal = ({
   useEffect(() => {
     try {
       if (leaveMeetingOnLogoutResponse) {
-        console.log("mqtt mqmqmqmqmqmq");
+        
         leaveMeeting(true, false);
       }
     } catch {}
@@ -1125,7 +1110,7 @@ const ViewMeetingModal = ({
   useEffect(() => {
     try {
       if (leaveMeetingOnEndStatusMqttFlag) {
-        console.log("mqtt mqmqmqmqmqmq");
+        
         leaveMeeting(false, true);
       }
     } catch {}
@@ -1143,15 +1128,12 @@ const ViewMeetingModal = ({
             AgendaVotingModalStartedData.meetingID &&
           !editorRole.isPrimaryOrganizer
         ) {
-          console.log(
-            AgendaVotingModalStartedData,
-            "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-          );
+          
           dispatch(AgendaPollVotingStartedAction(true));
         }
       }
     } catch (error) {
-      console.log(error);
+      
     }
   }, [AgendaVotingModalStartedData]);
 
@@ -1159,7 +1141,7 @@ const ViewMeetingModal = ({
     try {
       if (globalFunctionWebnotificationFlag) {
         if (webNotifactionDataRoutecheckFlag) {
-          console.log("webNotifactionDataRoutecheckFlag");
+          
           let currentURL = window.location.href;
           let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
           WebNotificationExportRoutFunc(
@@ -1184,7 +1166,7 @@ const ViewMeetingModal = ({
           dispatch(webnotificationGlobalFlag(false));
         }
       }
-      console.log("webNotifactionDataRoutecheckFlag");
+      
     } catch (error) {}
 
     return () => {};

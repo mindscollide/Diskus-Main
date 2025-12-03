@@ -51,7 +51,7 @@ const VideoCallLargeHeader = () => {
     dispatch(normalizeVideoPanelFlag(false));
     dispatch(maximizeVideoPanelFlag(false));
     dispatch(minimizeVideoPanelFlag(false));
-    console.log("busyCall");
+    
     localStorage.setItem("activeCall", false);
   };
 

@@ -75,7 +75,7 @@ const NonMeetingVideoModal = () => {
 
   const onHandleClickForStopRecording = () => {
     return new Promise((resolve) => {
-      console.log("RecordingStopMsgFromIframe");
+      
 
       setStartRecordingState(true);
       setPauseRecordingState(false);
@@ -88,7 +88,7 @@ const NonMeetingVideoModal = () => {
         const sendMessage = () => {
           if (iframe && iframe.contentWindow) {
             iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-            console.log("RecordingStopMsgFromIframe");
+            
           }
 
           // Slight delay to allow iframe to process the message
@@ -138,7 +138,7 @@ const NonMeetingVideoModal = () => {
 
   // handle click on Yes Meeting Modal
   const onClickOnYesMeetingModal = async () => {
-    console.log("busyCall");
+    
     let JoinpresenterForonetoone = JSON.parse(
       localStorage.getItem("JoinpresenterForonetoone")
     );
@@ -147,26 +147,26 @@ const NonMeetingVideoModal = () => {
       dispatch(nonMeetingVideoGlobalModal(false));
       localStorage.removeItem("JoinpresenterForonetoone");
       setPresenterForOneToOneOrGroup(true);
-      console.log("setLeaveOneToOne");
+      
       setLeaveOneToOne(true);
     } else if (joinPresenterForOneToOneOrGroup) {
-      console.log("busyCall");
+      
       await dispatch(nonMeetingVideoGlobalModal(false));
-      console.log("setLeaveOneToOne");
+      
       setLeaveOneToOne(true);
     } else if (startPresenterViewOrLeaveOneToOne) {
-      console.log("busyCall");
+      
       await dispatch(nonMeetingVideoGlobalModal(false));
-      console.log("setLeaveOneToOne");
+      
       setLeaveOneToOne(true);
     } else if (
       presenterViewFlag &&
       (presenterViewHostFlag || presenterViewJoinFlag)
     ) {
-      console.log("busyCall");
+      
       if (isZoomEnabled) {
         if (pauseRecordingState || resumeRecordingState) {
-          console.log("busyCall");
+          
           await onHandleClickForStopRecording();
           await new Promise((resolve) => setTimeout(resolve, 100));
         }
@@ -178,12 +178,12 @@ const NonMeetingVideoModal = () => {
       activeCallState &&
       (currentCallType === 1 || currentCallType === 2)
     ) {
-      console.log("busyCall");
+      
       await dispatch(nonMeetingVideoGlobalModal(false));
-      console.log("setLeaveOneToOne");
+      
       setLeaveOneToOne(true);
     } else {
-      console.log("busyCall");
+      
       dispatch(normalizeVideoPanelFlag(false));
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
@@ -196,7 +196,7 @@ const NonMeetingVideoModal = () => {
 
       if (isZoomEnabled) {
         if (pauseRecordingState || resumeRecordingState) {
-          console.log("busyCall");
+          
           await onHandleClickForStopRecording();
           await new Promise((resolve) => setTimeout(resolve, 100));
         }
@@ -208,7 +208,7 @@ const NonMeetingVideoModal = () => {
         IsCaller: true,
         CallTypeID: currentCallType,
       };
-      await console.log("Check LeaveCall new");
+      await 
       dispatch(LeaveCall(Data, navigate, t));
       await dispatch(nonMeetingVideoGlobalModal(false));
 

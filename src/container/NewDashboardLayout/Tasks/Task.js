@@ -34,7 +34,7 @@ const Task = () => {
   let locale = localStorage.getItem("i18nextLng") || "en";
   const [rowsToDo, setRowToDo] = useState([]);
   const [totalDataRecords, setTotalDataRecords] = useState(0);
-  console.log(totalDataRecords, "totalDataRecordstotalDataRecords");
+  
   const [getTodoID, setTodoID] = useState(0);
   const [todoViewModal, setTodoViewModal] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);

@@ -22,10 +22,7 @@ const VotingPollAgendaIntiminationModal = ({
     (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
 
-  console.log(
-    AgendaVotingModalStartedData,
-    "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
-  );
+  
   //Handle Discard Button
   const handleCastYourAgendaVoteBtn = () => {
     localStorage.setItem("CastedAgendaVoteFromIntimination", true);
