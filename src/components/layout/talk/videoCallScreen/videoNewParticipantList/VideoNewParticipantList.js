@@ -282,14 +282,17 @@ const VideoNewParticipantList = () => {
 
     // --------------------------------------------------------------------
     // 2. Send HostTransferEvent to iframe
-    const iframe = iframeRef.current;
-    console.log("HostTransferEvent", usersData);
-    if (iframe && iframe.contentWindow) {
-      const msg = `HostTransferEvent_#_${usersData.guid}`;
-      setTimeout(() => {
-        iframe.contentWindow.postMessage(msg, "*");
-        console.log("HostTransferEvent", msg);
-      }, 1000);
+    if (isZoomEnabled) {
+      const iframe = iframeRef.current;
+      console.log("HostTransferEvent", usersData);
+      if (iframe && iframe.contentWindow) {
+        const msg = `HostTransferEvent_#_${usersData.guid}`;
+        setTimeout(() => {
+          iframe.contentWindow.postMessage(msg, "*");
+          console.log("HostTransferEvent", msg);
+        }, 1000);
+      }
+    } else {
     }
     let data = {
       RoomID: String(newRoomId),
