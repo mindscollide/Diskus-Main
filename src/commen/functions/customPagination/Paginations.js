@@ -13,8 +13,8 @@ const CustomPagination = ({
 }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { t } = useTranslation();
-  const arabicNumbers = "۰۱۲۳۴۵۶۷۸۹۱";
   function convertNumberToLetter(num) {
+    const arabicNumbers = "۰۱۲۳۴۵۶۷۸۹۱";
     let result = "";
     const str = num.toString();
     for (let c of str) {
