@@ -717,6 +717,7 @@ const EditPollsMeeting = ({ setEditPolls, currentMeeting }) => {
                     isMulti
                     value={selectedsearch}
                     onChange={handleSelectValue}
+                    isDisabled={checkForPollStatus}
                     isSearchable={false}
                   />
                   <Button

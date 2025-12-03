@@ -6,7 +6,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getBillingInformation_init = () => {
   return {
@@ -41,14 +41,7 @@ const getBillingInformationapi = (navigate, t) => {
       "RequestMethod",
       getBillingInformationRequestMethod.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -128,14 +121,7 @@ const getPayoutStandingInformation = (navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", payOutStandingRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -218,14 +204,7 @@ const invoiceandpaymenthistory = (navigate, t) => {
       "RequestMethod",
       invoiceandPaymentHistoryRequestMethod.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -1,5 +1,4 @@
 // import { type } from "@testing-library/user-event/dist/types/utility";
-import axios from "axios";
 import {
   cancelSubscription,
   revokeProcess,
@@ -7,6 +6,7 @@ import {
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const cancelSubInit = () => {
   return {
@@ -47,14 +47,7 @@ const CancelSubscriptionPackage = (
     let form = new FormData();
     form.append("RequestMethod", cancelSubscription.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post( getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -166,14 +159,8 @@ const revokeprocess = (navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", revokeProcess.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post( getAdminURLs, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

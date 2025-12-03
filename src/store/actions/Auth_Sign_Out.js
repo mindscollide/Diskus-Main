@@ -2,10 +2,10 @@ import * as actions from "../action_types";
 import { BroadcastChannel } from "broadcast-channel";
 import { UserLogout } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import { showUpgradeNowModal } from "./UserMangementModalActions";
 import { LoginFlowRoutes } from "./UserManagementActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const logoutChannel = new BroadcastChannel("logout");
 
@@ -32,20 +32,14 @@ const userlogOutFailed = (message) => {
 };
 
 const userLogOutApiFunc = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     try {
       dispatch(userlogOutInit());
       let form = new FormData();
       form.append("RequestMethod", UserLogout.RequestMethod);
-      axios({
-        method: "post",
-        url: authenticationApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance
+        .post(authenticationApi, form)
+
         .then(async (response) => {
           if (response.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -72,7 +66,6 @@ const userLogOutApiFunc = (navigate, t) => {
                 await signOut(t("Successful"), dispatch);
                 dispatch(userlogOutFailed(t("Invalid Token")));
                 dispatch(showUpgradeNowModal(true));
-
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()

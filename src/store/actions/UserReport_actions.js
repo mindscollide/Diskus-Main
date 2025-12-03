@@ -1,8 +1,8 @@
 import { UserLoginHistoryRM } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
-import axios from "axios";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const userLoginHistory_Init = (loader) => {
   return {
@@ -32,14 +32,7 @@ const userLoginHistory_Api = (navigate, t, Data, loader) => {
     let form = new FormData();
     form.append("RequestMethod", UserLoginHistoryRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+  axiosInstance.post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

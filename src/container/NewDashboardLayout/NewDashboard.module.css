@@ -63,9 +63,9 @@
 }
 .Events_content {
   overflow-y: auto;
-  max-height: 38vh;
+  max-height: 40vh;
   overflow-x: hidden;
-  margin-bottom: 10px;
+  padding-right: 10px;
 }
 
 /* previous  */

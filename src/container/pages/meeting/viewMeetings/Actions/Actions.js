@@ -306,15 +306,14 @@ const Actions = () => {
       {filters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
+          onClick={() => handleMenuClick(filter.value)}>
           <Checkbox checked={selectedValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex gap-3 align-items-center justify-content-center">
+      <div className='d-flex gap-3 align-items-center justify-content-center'>
         <Button
           text={t("Reset")}
           className={"FilterResetBtn"}
@@ -333,19 +332,20 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center">
+          <span className='d-flex gap-2 align-items-center'>
             {t("Task")}
             {taskTitleSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
       ),
       dataIndex: "title",
       key: "title",
-      width: "25%",
+      ellipsis: true,
+      width: "30%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -361,10 +361,9 @@ const Actions = () => {
       }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
+          className='todolist-title-col m-0'
           title={text}
-          onClick={(e) => viewActionModal(record)}
-        >
+          onClick={(e) => viewActionModal(record)}>
           {text}
         </p>
       ),
@@ -372,20 +371,22 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-by")}
             {taskAssignedBySort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "25%",
       align: "center",
+      width: "15%",
+      ellipsis: true,
+
       sortDirections: ["descend", "ascend"],
       onHeaderCell: () => ({
         onClick: () => {
@@ -406,13 +407,13 @@ const Actions = () => {
       },
       render: (record, index) => {
         return (
-          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap">
+          <p className='m-0 MontserratRegular color-5a5a5a FontArabicRegular text-nowrap'>
             {" "}
             <img
-              draggable="false"
-              className="data-img"
+              draggable='false'
+              className='data-img'
               src={`data:image/jpeg;base64,${record?.displayProfilePictureName}`}
-              alt=""
+              alt=''
             />
             {record?.name}
           </p>
@@ -422,20 +423,22 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 justify-content-center align-items-center">
+          <span className='d-flex gap-2 justify-content-center align-items-center'>
             {t("Assigned-to")}{" "}
             {taskAssignedToSort === "descend" ? (
-              <img src={DescendIcon} alt="" />
+              <img src={DescendIcon} alt='' />
             ) : (
-              <img src={AscendIcon} alt="" />
+              <img src={AscendIcon} alt='' />
             )}
           </span>
         </>
       ),
-      width: "25%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       align: "center",
+      width: "15%",
+      ellipsis: true,
+
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -455,15 +458,15 @@ const Actions = () => {
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
-              <p className="m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap ">
+              <p className='m-0 MontserratRegular  color-505050 FontArabicRegular text-nowrap '>
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
 
                     {text[0].name}
@@ -471,10 +474,10 @@ const Actions = () => {
                 ) : (
                   <>
                     <img
-                      draggable="false"
-                      className="data-img"
+                      draggable='false'
+                      className='data-img'
                       src={`data:image/jpeg;base64,${text[0]?.displayProfilePictureName}`}
-                      alt=""
+                      alt=''
                     />
                     {text[0].name}
                   </>
@@ -488,20 +491,20 @@ const Actions = () => {
     {
       title: (
         <>
-          <span className="d-flex gap-2 align-items-center justify-content-center">
+          <span className='d-flex gap-2 align-items-center justify-content-center'>
             {t("Deadline")}
             {taskDeadlineSort === "descend" ? (
-              <img src={ArrowDownIcon} alt="" />
+              <img src={ArrowDownIcon} alt='' />
             ) : (
-              <img src={ArrowUpIcon} alt="" />
+              <img src={ArrowUpIcon} alt='' />
             )}
           </span>
         </>
       ),
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
+      width: "15%",
       ellipsis: true,
-      width: "10%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -521,7 +524,7 @@ const Actions = () => {
       render: (text, record) => {
         console.log(record, "deadlineDateTime");
         return (
-          <span className="text-nowrap text-center">
+          <span className='text-nowrap text-center'>
             {_justShowDateformatBilling(record.deadlineDateTime)}
           </span>
         );
@@ -531,12 +534,14 @@ const Actions = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      align: "center",
       width: "15%",
+      ellipsis: true,
+
+      align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
-          className="filter-chevron-icon-todolist"
+          className='filter-chevron-icon-todolist'
           onClick={handleClickChevron}
         />
       ),
@@ -544,8 +549,7 @@ const Actions = () => {
         <Dropdown
           overlay={menu}
           visible={visible}
-          onVisibleChange={(open) => setVisible(open)}
-        >
+          onVisibleChange={(open) => setVisible(open)}>
           <div />
         </Dropdown>
       ),
@@ -556,7 +560,7 @@ const Actions = () => {
               <Select
                 value={text.status}
                 bordered={false}
-                popupClassName="Status-Todo"
+                popupClassName='Status-Todo'
                 className={
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
@@ -570,8 +574,7 @@ const Actions = () => {
                     ? "Completed  custom-class "
                     : null
                 }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}>
                 {statusOptions.map((optValue) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
@@ -597,8 +600,7 @@ const Actions = () => {
                   : text.pK_TSID === 5
                   ? "Completed   custom-class color-5a5a5a  text-center my-1"
                   : null
-              }
-            >
+              }>
               {text.status}
             </p>
           );
@@ -612,15 +614,15 @@ const Actions = () => {
       dataIndex: "",
       key: "taskCreator",
       width: "5%",
+
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (
             <i
-              className="meeting-editbutton cursor-pointer"
+              className='meeting-editbutton cursor-pointer'
               title={t("Delete")}
-              onClick={(e) => deleteActionHandler(record)}
-            >
-              <img draggable="false" src={del} alt="" />
+              onClick={(e) => deleteActionHandler(record)}>
+              <img draggable='false' src={del} alt='' />
             </i>
           );
         } else {
@@ -745,12 +747,6 @@ const Actions = () => {
 
   const scroll = {
     y: "64vh",
-    scrollbar: {
-      // You can adjust the width and distance as needed
-      verticalWidth: 20, // Width of the vertical scrollbar
-      handleSize: 10, // Distance between data and scrollbar
-      // Other scrollbar options
-    },
   };
 
   return (
@@ -765,12 +761,12 @@ const Actions = () => {
         />
       ) : (
         <>
-          <Row className="mt-3">
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+          <Row className='mt-3'>
+            <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
               <Button
                 text={t("Create-task")}
                 className={"Create_Task_Button"}
-                icon={<img draggable={false} src={addmore} alt="" />}
+                icon={<img draggable={false} src={addmore} alt='' />}
                 onClick={handleCreateTaskButton}
               />
             </Col>
@@ -779,104 +775,93 @@ const Actions = () => {
           <Row>
             <Col lg={12} md={12} sm={12}>
               <>
-                <section className={"HeightDefined"}>
-                  <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <TableToDo
-                        sortDirections={["descend", "ascend"]}
-                        column={ActionsColoumn}
-                        scroll={scroll}
-                        pagination={false}
-                        className={"ToDo"}
-                        rows={actionsRows}
-                        locale={{
-                          emptyText: (
-                            <>
-                              <Row className="mt-0">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <img
-                                    alt=""
-                                    draggable={false}
-                                    src={EmptyStates}
-                                  />
-                                </Col>
-                              </Row>
-                              <Row className="mt-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={"Empty-State_Heading"}>
-                                    {t("Create-tasks-instantly")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={"EmptyState_SubHeading"}>
-                                    {t(
-                                      "Assign-tasks-in-real-time-while-the-meeting-is-underway"
-                                    )}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </>
-                          ), //
-                        }}
-                      />
+                <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <TableToDo
+                      sortDirections={["descend", "ascend"]}
+                      column={ActionsColoumn}
+                      scroll={scroll}
+                      pagination={false}
+                      className={"ToDo"}
+                      rows={actionsRows}
+                      locale={{
+                        emptyText: (
+                          <section className='d-flex justify-content-center align-items-center h-100 flex-column pt-5'>
+                            <Row className='mt-0'>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className='d-flex justify-content-center'>
+                                <img
+                                  alt=''
+                                  draggable={false}
+                                  src={EmptyStates}
+                                  width={200}
+                                />
+                              </Col>
+                            </Row>
+                            <Row className='mt-2'>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className='d-flex justify-content-center'>
+                                <span className={"Empty-State_Heading"}>
+                                  {t("Create-tasks-instantly")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className='d-flex justify-content-center'>
+                                <span className={"EmptyState_SubHeading"}>
+                                  {t(
+                                    "Assign-tasks-in-real-time-while-the-meeting-is-underway"
+                                  )}
+                                </span>
+                              </Col>
+                            </Row>
+                          </section>
+                        ), //
+                      }}
+                    />
+                  </Col>
+                </Row>
+
+                {Object.keys(actionsRows).length > 0 && (
+                  <Row className=''>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className='d-flex justify-content-center'>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            "pagination-groups-table d-flex justify-content-center"
+                          }>
+                          <span className='PaginationStyle-TodoList'>
+                            <CustomPagination
+                              onChange={handleForPagination}
+                              current={currentPage}
+                              showSizer={true}
+                              total={totalRecords}
+                              pageSizeOptionsValues={["10", "25", "50", "100"]}
+                              pageSize={currentPageSize}
+                            />
+                          </span>
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
-
-                  {Object.keys(actionsRows).length > 0 && (
-                    <Row className="">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={
-                              "pagination-groups-table d-flex justify-content-center"
-                            }
-                          >
-                            <span className="PaginationStyle-TodoList">
-                              <CustomPagination
-                                onChange={handleForPagination}
-                                current={currentPage}
-                                showSizer={true}
-                                total={totalRecords}
-                                pageSizeOptionsValues={[
-                                  "10",
-                                  "25",
-                                  "50",
-                                  "100",
-                                ]}
-                                pageSize={currentPageSize}
-                              />
-                            </span>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  )}
-                </section>
+                )}
               </>
               {/* <Row className="mt-3">
                 <Col

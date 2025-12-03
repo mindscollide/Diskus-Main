@@ -62,29 +62,35 @@ const Recording = () => {
           responseMessage.toLowerCase() ===
           "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_02".toLowerCase()
         ) {
-          MeetingData.push(
-            {
+          if (meetingRecording?.fileID) {
+            MeetingData.push({
               fileID: meetingRecording.fileID,
               fileName: meetingRecording.fileName,
               fileSize: meetingRecording.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            },
-            {
+            });
+          }
+
+          if (meetingMinutes?.fileID) {
+            MeetingData.push({
               fileID: meetingMinutes.fileID,
               fileName: meetingMinutes.fileName,
               fileSize: meetingMinutes.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            },
-            {
+            });
+          }
+
+          if (meetingTranscript?.fileID) {
+            MeetingData.push({
               fileID: meetingTranscript.fileID,
               fileName: meetingTranscript.fileName,
               fileSize: meetingTranscript.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            }
-          );
+            });
+          }
         }
 
         setData(MeetingData);

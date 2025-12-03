@@ -20,9 +20,12 @@ import {
   mqttCurrentMeetingEnded,
 } from "../../../store/actions/GetMeetingUserId";
 import { MeetingContext } from "../../../context/MeetingContext";
+import MoreEvents from "./moreEvents/MoreEvents";
 
 const Events = () => {
   const { setEditorRole } = useContext(MeetingContext);
+
+  const [showMoreEventModal, setShowMoreEventModal] = useState(false);
   const UpcomingEventsDataReducerData = useSelector(
     (state) => state.meetingIdReducer.UpcomingEventsData
   );
@@ -49,6 +52,7 @@ const Events = () => {
   let createrID = localStorage.getItem("userID");
   const [upComingEvents, setUpComingEvents] = useState([]);
   const [remainingMinutesAgo, setRemainingMinutesAgo] = useState(0);
+  const [isShowMore, setIsShowMore] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUTCDateTime = multiDatePickerDateChangIntoUTC(new Date());
@@ -56,16 +60,22 @@ const Events = () => {
   useEffect(() => {
     let Data2 = {
       UserID: parseInt(createrID),
+      IsShowMore: false,
     };
     dispatch(GetUpcomingEvents(navigate, Data2, t));
   }, []);
   //  Set Upcoming Events
   useEffect(() => {
     try {
-      if (UpcomingEventsDataReducerData?.length > 0) {
+      if (UpcomingEventsDataReducerData?.upcomingEvents.length > 0) {
+        setIsShowMore(UpcomingEventsDataReducerData?.isMoreAvailable);
+        console.log(
+          UpcomingEventsDataReducerData,
+          "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
+        );
         // Create a new array with updated objects without mutating the original state
-        const updatedUpcomingEvents = UpcomingEventsDataReducerData.map(
-          (event) => {
+        const updatedUpcomingEvents =
+          UpcomingEventsDataReducerData.upcomingEvents.map((event) => {
             // Assuming statusID is within each event object
             return {
               ...event, // Spread the properties of the original event object
@@ -74,8 +84,7 @@ const Events = () => {
                 statusID: event.meetingDetails.statusID /* updated value */, // Update the statusID here
               },
             };
-          }
-        );
+          });
 
         setUpComingEvents(updatedUpcomingEvents); // Set the updated state
       } else {
@@ -83,6 +92,11 @@ const Events = () => {
         setUpComingEvents([]);
       }
     } catch (error) {
+      console.log(
+        error,
+        "UpcomingEventsDataReducerDataUpcomingEventsDataReducerData"
+      );
+
       // Log any errors for debugging
     }
   }, [UpcomingEventsDataReducerData]);
@@ -260,22 +274,22 @@ const Events = () => {
   };
   const upcomingEventsHandler = (upComingEvents) => {
     console.log("upComingEvents", upComingEvents);
-  
+
     // Separate today's meetings and upcoming meetings
     const todaysMeetings = [];
     const upcomingMeetings = [];
-  
+
     try {
       upComingEvents.forEach((upcomingEventsData) => {
         if (!upcomingEventsData?.meetingEvent) {
           console.warn("DataIsMissing", upcomingEventsData);
           return;
         }
-  
+
         const { isSame } = isSameAsToday(
           `${upcomingEventsData.meetingEvent.meetingDate}${upcomingEventsData.meetingEvent.startTime}`
         );
-  
+
         if (isSame) {
           todaysMeetings.push(upcomingEventsData);
         } else {
@@ -285,7 +299,7 @@ const Events = () => {
     } catch (error) {
       console.log(error);
     }
-  
+
     // Render all meetings (today's first, then upcoming)
     return (
       <>
@@ -294,7 +308,7 @@ const Events = () => {
           const meetingDateTime =
             upcomingEventsData?.meetingEvent?.meetingDate +
             upcomingEventsData?.meetingEvent?.startTime;
-  
+
           const currentDateObj = new Date(
             currentUTCDateTime.substring(0, 4), // Year
             parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
@@ -303,7 +317,7 @@ const Events = () => {
             currentUTCDateTime.substring(10, 12), // Minutes
             currentUTCDateTime.substring(12, 14) // Seconds
           );
-  
+
           const meetingDateObj = new Date(
             meetingDateTime.substring(0, 4), // Year
             parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
@@ -312,15 +326,14 @@ const Events = () => {
             meetingDateTime.substring(10, 12), // Minutes
             meetingDateTime.substring(12, 14) // Seconds
           );
-  
+
           const timeDifference = meetingDateObj - currentDateObj;
           const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-  
+
           return (
             <div
               key={`today-${index}`}
-              className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}
-            >
+              className={`${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`}>
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -328,8 +341,7 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : `${styles["event-details-block"]}`
-                }
-              >
+                }>
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
@@ -357,8 +369,8 @@ const Events = () => {
                       );
                     }}
                   />
-                ) : upcomingEventsData.meetingDetails.isQuickMeeting === false &&
-                  minutesDifference < remainingMinutesAgo ? (
+                ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                    false && minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting-Upcoming"]}
@@ -437,18 +449,18 @@ const Events = () => {
             </div>
           );
         })}
-  
+
         {/* Separator if there are today's meetings */}
         {todaysMeetings.length > 0 && upcomingMeetings.length > 0 && (
           <span className={styles["bordertop"]} />
         )}
-  
+
         {/* Upcoming Meetings (non-today) */}
         {upcomingMeetings.map((upcomingEventsData, index) => {
           const meetingDateTime =
             upcomingEventsData?.meetingEvent?.meetingDate +
             upcomingEventsData?.meetingEvent?.startTime;
-  
+
           const currentDateObj = new Date(
             currentUTCDateTime.substring(0, 4), // Year
             parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
@@ -457,7 +469,7 @@ const Events = () => {
             currentUTCDateTime.substring(10, 12), // Minutes
             currentUTCDateTime.substring(12, 14) // Seconds
           );
-  
+
           const meetingDateObj = new Date(
             meetingDateTime.substring(0, 4), // Year
             parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
@@ -466,10 +478,10 @@ const Events = () => {
             meetingDateTime.substring(10, 12), // Minutes
             meetingDateTime.substring(12, 14) // Seconds
           );
-  
+
           const timeDifference = meetingDateObj - currentDateObj;
           const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-  
+
           return (
             <div
               key={`upcoming-${index}`}
@@ -479,8 +491,7 @@ const Events = () => {
                 upcomingEventsData.meetingDetails.statusID === 10
                   ? `${styles["upcoming_events"]} ${styles["event-details"]} ${styles["todayEvent"]} border-0 d-flex align-items-center`
                   : ` ${styles["event-details"]}  d-flex align-items-center`
-              }
-            >
+              }>
               <div
                 className={
                   (upcomingEventsData.meetingDetails.statusID === 1 &&
@@ -488,8 +499,7 @@ const Events = () => {
                   upcomingEventsData.meetingDetails.statusID === 10
                     ? `${styles["event-details-block"]}`
                     : `${styles["event-details-block"]}`
-                }
-              >
+                }>
                 <p className={styles["events-description"]}>
                   {upcomingEventsData.meetingDetails.title}
                 </p>
@@ -517,8 +527,8 @@ const Events = () => {
                       );
                     }}
                   />
-                ) : upcomingEventsData.meetingDetails.isQuickMeeting === false &&
-                  minutesDifference < remainingMinutesAgo ? (
+                ) : upcomingEventsData.meetingDetails.isQuickMeeting ===
+                    false && minutesDifference < remainingMinutesAgo ? (
                   <Button
                     text={t("Start-meeting")}
                     className={styles["Start-Meeting-Upcoming"]}
@@ -609,6 +619,11 @@ const Events = () => {
             </div>
           );
         })}
+        {isShowMore && (
+          <p className={styles["ShowMoreText"]} onClick={handleClickShowMore}>
+            {t("Show-more")}
+          </p>
+        )}
       </>
     );
   };
@@ -974,6 +989,7 @@ const Events = () => {
       console.log(error);
     }
   }, [MeetingStatusEnded]);
+
   useEffect(() => {
     try {
       if (removeUpcomingEvents !== null) {
@@ -988,8 +1004,24 @@ const Events = () => {
       }
     } catch (error) {}
   }, [removeUpcomingEvents]);
+
+  const handleClickShowMore = () => {
+    let Data2 = {
+      UserID: parseInt(createrID),
+      IsShowMore: true,
+    };
+    dispatch(
+      GetUpcomingEvents(navigate, Data2, t, true, setShowMoreEventModal)
+    );
+  };
   return (
     <>
+      {showMoreEventModal && (
+        <MoreEvents
+          moreEventModal={showMoreEventModal}
+          setMoreEventModal={setShowMoreEventModal}
+        />
+      )}
       {Spinner === true ? (
         <Spin />
       ) : (

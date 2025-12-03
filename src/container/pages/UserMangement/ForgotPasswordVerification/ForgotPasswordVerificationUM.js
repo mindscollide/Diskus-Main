@@ -34,7 +34,7 @@ const ForgotPasswordVerificationUM = () => {
   });
 
   // Constants for timer
-  const timerDurationMinutes = 5;
+  const timerDurationMinutes = 1;
   const initialSeconds = 0;
   const initialMinutes = timerDurationMinutes;
 

@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { videoApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 import {
@@ -21,6 +20,7 @@ import {
   normalizeVideoPanelFlag,
   videoOutgoingCallFlag,
 } from "./VideoFeature_actions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getAllVideoCallUsersInitial = () => {
   return {
@@ -44,21 +44,14 @@ const getAllVideoCallUsersFail = (message) => {
 };
 
 const GetAllVideoCallUsers = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getAllVideoCallUsersInitial());
     let form = new FormData();
     form.append("RequestMethod", getAllVideoCallUsers.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
+    await axiosInstance
+      .post(videoApi, form)
 
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -130,20 +123,14 @@ const initiateVideoCallFail = (message) => {
 
 const InitiateVideoCall = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(initiateVideoCallInitial());
     let form = new FormData();
     form.append("RequestMethod", initiateVideoCall.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
+    await axiosInstance
+      .post(videoApi, form)
 
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -271,20 +258,13 @@ const videoCallResponseFail = (message) => {
 };
 
 const VideoCallResponse = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(videoCallResponseInitial());
     let form = new FormData();
     form.append("RequestMethod", videoCallResponse.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -390,20 +370,14 @@ const getUserRecentCallsFail = (message) => {
 
 const GetUserRecentCalls = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getUserRecentCallsInitial());
     let form = new FormData();
     form.append("RequestMethod", getUserRecentCalls.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -459,19 +433,14 @@ const ScrollRecentCalls = (response) => {
 
 const GetUserRecentCallsScroll = (Data, navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", getUserRecentCalls.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -540,20 +509,14 @@ const callRequestReceivedFail = (message) => {
 };
 
 const CallRequestReceived = (Data, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(callRequestReceivedInitial());
     let form = new FormData();
     form.append("RequestMethod", callRequestReceived.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -636,18 +599,13 @@ const getUserMissedCallCountFail = (message) => {
 
 const GetUserMissedCallCount = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getUserMissedCallCountInitial());
     let form = new FormData();
     form.append("RequestMethod", getUserMissedCallCount.RequestMethod);
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -711,19 +669,13 @@ const leaveCallAction = (message) => {
 };
 
 const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", leaveCall.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: videoApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(videoApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

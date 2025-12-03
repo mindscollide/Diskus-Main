@@ -1,11 +1,11 @@
 import * as actions from "../action_types";
 import { meetingApi } from "../../commen/apis/Api_ends_points";
-import axios from "axios";
 import {
   getAllAttendanceMeeting,
   saveMeetingAttendance,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 //Get Attendance Meeting Init
 const getAttendanceMeetingInit = () => {
@@ -39,14 +39,9 @@ const getAllAttendanceMeetingApi = (navigate, t, meetingData) => {
     let form = new FormData();
     form.append("RequestMethod", getAllAttendanceMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(meetingData));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -129,14 +124,8 @@ const saveMeetingAttendanceApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestMethod", saveMeetingAttendance.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));

@@ -226,7 +226,7 @@ const SignInUserManagement = () => {
         );
       }
     })();
-  }, [code, getpayemntString, currentUrl, dispatch, navigate, t, emailRef]);
+  }, [code, getpayemntString, currentUrl, emailRef]);
   
 
   useEffect(() => {

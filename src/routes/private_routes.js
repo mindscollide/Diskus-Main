@@ -3,9 +3,10 @@ import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { getActionValue } from "../commen/functions/utils";
 const PrivateRoutes = () => {
   const currentUrl = window.location.href;
-  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
 
   const navigate = useNavigate();
+  console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
+
 
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
@@ -378,6 +379,8 @@ const PrivateRoutes = () => {
     { currentUser, token },
     "PrivateRoutesPrivateRoutesPrivateRoutes"
   );
+
+
   return currentUser && token ? (
     <Outlet />
   ) : (

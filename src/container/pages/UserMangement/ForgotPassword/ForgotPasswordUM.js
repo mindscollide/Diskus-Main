@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ForgotPasswordUM.module.css";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "./../../../../assets/images/newElements/Diskus_newLogo.svg";
@@ -8,7 +8,10 @@ import LanguageSelector from "./../../../../components/elements/languageSelector
 import { Button, Notification } from "./../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { changePasswordRequest } from "../../../../store/actions/Auth_Forgot_Password";
+import {
+  changePasswordRequest,
+  cleareChangePasswordMessage,
+} from "../../../../store/actions/Auth_Forgot_Password";
 import { validateEmail } from "../../../../commen/functions/validations";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -17,8 +20,12 @@ import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
-
+  const ResponseMessageAuthResetPassword = useSelector(
+    (state) => state.auth.ResponseMessage
+  );
   const { t } = useTranslation();
+
+ 
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -58,12 +65,26 @@ const ForgotPasswordUM = () => {
     e.preventDefault();
     let name = e.target.name;
     let value = e.target.value;
-    if (value != "" && name === "forgotEmail") {
+    if (value !== "" && name === "forgotEmail") {
       setEmail(value);
     } else {
       setEmail("");
     }
   };
+
+  useEffect(() => {
+    if (
+      ResponseMessageAuthResetPassword !== "" &&
+      ResponseMessageAuthResetPassword !== null &&
+      ResponseMessageAuthResetPassword !== undefined
+    ) {
+      showMessage(ResponseMessageAuthResetPassword, "error", setOpen);
+
+      setTimeout(() => {
+        dispatch(cleareChangePasswordMessage());
+      }, 4000);
+    }
+  }, [ResponseMessageAuthResetPassword]);
 
   return (
     <>

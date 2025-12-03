@@ -7,7 +7,8 @@ import {
   upcomingEvents,
   searchUserMeetings,
 } from "../../commen/apis/Api_config";
-import axios from "axios";
+
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const SetLoaderFalse = () => {
   return {
@@ -87,20 +88,13 @@ const setMQTTRequestUpcomingEvents = (response) => {
   };
 };
 const getMeetingUserId = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingIdInit());
     let form = new FormData();
     form.append("RequestMethod", getMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -171,7 +165,6 @@ const getWeeklyMeetingsCountFail = (message) => {
 
 //Get Week meetings
 const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserId: parseInt(id),
   };
@@ -180,14 +173,8 @@ const GetWeeklyMeetingsCount = (navigate, id, t, loader) => {
     let form = new FormData();
     form.append("RequestMethod", getWeekMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -262,26 +249,44 @@ const getUpcomingEventsFail = (response) => {
   };
 };
 
+//Upcoming Events
+const getShowMoreUpcomingEvent_init = (response) => {
+  return {
+    type: actions.SHOWMORE_UPCOMINGEVENTS_INIT,
+  };
+};
+
+const getShowMoreUpcomingEvent_Success = (response, message) => {
+  return {
+    type: actions.SHOWMORE_UPCOMINGEVENTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getShowMoreUpcomingEvent_fail = (message) => {
+  return {
+    type: actions.SHOWMORE_UPCOMINGEVENTS_FAIL,
+    message: message,
+  };
+};
+
 //Get Week meetings
-const GetUpcomingEvents = (navigate, data, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+const GetUpcomingEvents = (navigate, data, t, loader, setShowMoreEventModal) => {
   return (dispatch) => {
-    dispatch(SetSpinnerTrue(loader));
+    if (data.IsShowMore) {
+      dispatch(getShowMoreUpcomingEvent_init());
+    } else {
+      dispatch(SetSpinnerTrue(loader));
+    }
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetUpcomingEvents(navigate, data, t));
+          dispatch(GetUpcomingEvents(navigate, data, t, loader, setShowMoreEventModal));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -291,6 +296,17 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
                   "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_01".toLowerCase()
                 )
             ) {
+              if (data.IsShowMore) {
+                await dispatch(
+                  getShowMoreUpcomingEvent_Success(
+                    response.data.responseResult,
+                    ""
+                  )
+                );
+                dispatch(SetSpinnerFalse());
+                setShowMoreEventModal(true)
+                return;
+              }
               await dispatch(
                 getUpcomingEventsSuccess(response.data.responseResult, "")
               );
@@ -302,6 +318,13 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
                   "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_02".toLowerCase()
                 )
             ) {
+              if (data.IsShowMore) {
+                await dispatch(
+                  getShowMoreUpcomingEvent_fail(t("No-records-found"))
+                );
+                await dispatch(SetSpinnerFalse());
+                return;
+              }
               await dispatch(getUpcomingEventsFail(t("No-records-found")));
               await dispatch(SetSpinnerFalse());
             } else if (
@@ -311,14 +334,35 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
                   "Meeting_MeetingServiceManager_GetUpcomingMeetingEventsByUserId_03".toLowerCase()
                 )
             ) {
+              if (data.IsShowMore) {
+                await dispatch(
+                  getShowMoreUpcomingEvent_fail(t("Something-went-wrong"))
+                );
+                await dispatch(SetSpinnerFalse());
+                return;
+              }
               await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
               await dispatch(SetSpinnerFalse());
             }
           } else {
+            if (data.IsShowMore) {
+              await dispatch(
+                getShowMoreUpcomingEvent_fail(t("Something-went-wrong"))
+              );
+              await dispatch(SetSpinnerFalse());
+              return;
+            }
             await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
             await dispatch(SetSpinnerFalse());
           }
         } else {
+          if (data.IsShowMore) {
+            await dispatch(
+              getShowMoreUpcomingEvent_fail(t("Something-went-wrong"))
+            );
+            await dispatch(SetSpinnerFalse());
+            return;
+          }
           await dispatch(getUpcomingEventsFail(t("Something-went-wrong")));
           await dispatch(SetSpinnerFalse());
         }
@@ -332,20 +376,13 @@ const GetUpcomingEvents = (navigate, data, t, loader) => {
 };
 //Get Week meetings
 const GetUpcomingEventsForMQTT = (navigate, data, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     // dispatch(SetSpinnerTrue(loader));
     let form = new FormData();
     form.append("RequestMethod", upcomingEvents.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -421,7 +458,6 @@ const SearchMeeting_Fail = (message) => {
 };
 
 const searchUserMeeting = (navigate, searchData, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -431,24 +467,15 @@ const searchUserMeeting = (navigate, searchData, t) => {
     HostName: searchData?.HostName !== "" ? searchData?.HostName : "",
     UserID: userID,
     PageNumber: meetingPageCurrent !== null ? meetingPageCurrent : 1,
-    Length:
-      meetingpageRow !== null
-        ? meetingpageRow
-        : 30,
+    Length: meetingpageRow !== null ? meetingpageRow : 30,
   };
   return (dispatch) => {
     dispatch(SearchMeeting_Init());
     let form = new FormData();
     form.append("RequestMethod", searchUserMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         console.log("chek search meeting");
         if (response.data.responseCode === 417) {

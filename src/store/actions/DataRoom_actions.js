@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import {
   FileisExistRequestMethod,
   deleteFolderRequestMethod,
@@ -44,6 +44,8 @@ import {
 } from "../../commen/functions/utils";
 import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
+import axiosInstance from "../../commen/functions/axiosInstance";
+import axios from "axios";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -101,14 +103,8 @@ const saveFilesApi = (
       let form = new FormData();
       form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(Data));
-      axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance
+        .post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             dispatch(RefreshToken(navigate, t));
@@ -290,28 +286,24 @@ const uploadDocumentsApi = (
         newJsonCreateFile,
         "newJsonCreateFile"
       );
-      axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-        onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
+      axiosInstance
+        .post(dataRoomApi, form, {
+          onUploadProgress: (progressEvent) => {
+            const percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
 
-          setTasksAttachments((prevTasks) => ({
-            ...prevTasks,
-            [taskId]: {
-              ...prevTasks[taskId],
-              Progress: percentCompleted,
-            },
-          }));
-        },
-        cancelToken: newJsonCreateFile.axiosCancelToken.token,
-      })
+            setTasksAttachments((prevTasks) => ({
+              ...prevTasks,
+              [taskId]: {
+                ...prevTasks[taskId],
+                Progress: percentCompleted,
+              },
+            }));
+          },
+          cancelToken: newJsonCreateFile.axiosCancelToken.token,
+        })
+
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -451,8 +443,6 @@ const uploadDocumentsApi = (
   }
 };
 
-
-
 // Get Folder Documents Init
 const getFolerDocuments_init = () => {
   return {
@@ -513,14 +503,8 @@ const getFolderDocumentsApi = (
     let form = new FormData();
     form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -736,14 +720,8 @@ const createFolderApi = (
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -872,9 +850,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, sort, order) => {
       );
       form.append("RequestData", JSON.stringify(Data));
 
-      const response = await axios.post(dataRoomApi, form, {
-        headers: { _token: token },
-      });
+      const response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -942,14 +918,8 @@ const getDocumentsAndFolderApiScrollbehaviour = (
       getDocumentsAndFolderRequestMethod.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1036,14 +1006,8 @@ const getFolderDocumentsApiScrollBehaviour = (
     let form = new FormData();
     form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1141,14 +1105,8 @@ const shareFilesApi = (navigate, FileData, t, setShareFile) => {
     let form = new FormData();
     form.append("RequestMethod", shareFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(FileData));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1237,14 +1195,8 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
     let form = new FormData();
     form.append("RequestMethod", shareFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(FolderData));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1351,14 +1303,8 @@ const deleteFileDataroom = (navigate, id, t, setIsFileDelete) => {
     let form = new FormData();
     form.append("RequestMethod", deleteFileRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1485,14 +1431,8 @@ const FileisExist = (
     let form = new FormData();
     form.append("RequestMethod", FileisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1609,14 +1549,8 @@ const FolderisExist = (
     let form = new FormData();
     form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1729,14 +1663,8 @@ const deleteFolder = (navigate, id, t, setIsFolderDelete) => {
     let form = new FormData();
     form.append("RequestMethod", deleteFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1837,14 +1765,8 @@ const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
     let form = new FormData();
     form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1932,14 +1854,8 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
     let form = new FormData();
     form.append("RequestMethod", renameFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+ 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2024,14 +1940,8 @@ const FileisExist2 = (navigate, fileData, t, setShowRenameFile) => {
     let form = new FormData();
     form.append("RequestMethod", FileisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2113,14 +2023,8 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
     let form = new FormData();
     form.append("RequestMethod", renameFileRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2252,14 +2156,8 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
     let form = new FormData();
     form.append("RequestMethod", searchDocumentsFoldersAPI.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2282,7 +2180,6 @@ const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_02".toLowerCase()
             ) {
               dispatch(searchDocumentsAndFoldersApi_fail(t("No-record-found")));
-              
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_SearchDocumentsAndFolders_03".toLowerCase()
@@ -2339,14 +2236,8 @@ const getRecentDocumentsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", getRecentDocumentsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2424,14 +2315,8 @@ const getSharedFileUsersApi = (navigate, data, t, setShareFileModal) => {
     let form = new FormData();
     form.append("RequestMethod", getUserAgainstShareFileRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2505,14 +2390,9 @@ const getSharedFolderUsersApi = (navigate, data, t, setSharefoldermodal) => {
     let form = new FormData();
     form.append("RequestMethod", getUserAgainstShareFolderRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2653,14 +2533,8 @@ const createFolderLinkApi = (navigate, t, data, setLinkedcopied) => {
     let form = new FormData();
     form.append("RequestMethod", createFolderLinkRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2735,14 +2609,8 @@ const createFileLinkApi = (navigate, t, data, setLinkedcopied) => {
     let form = new FormData();
     form.append("RequestMethod", createFileLinkRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2814,14 +2682,8 @@ const checkFileLinkApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", checkFileLinkRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2941,14 +2803,8 @@ const requestAccessApi = (navigate, t, data, setRequestAccept) => {
     let form = new FormData();
     form.append("RequestMethod", requestAccessRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3013,14 +2869,8 @@ const updateGeneralAccessApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", updateGeneralAccessRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3092,14 +2942,8 @@ const updateFolderGeneralAccessApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", updateFolderGeneralAccessRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3209,19 +3053,16 @@ const DataRoomDownloadFileApiFunc = (navigate, data, t, Name) => {
   return (dispatch) => {
     dispatch(DownloadMessage(1));
     dispatch(DownloadFileForDataRoomStart());
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
+
+    axiosInstance
+    .post(DataRoomAllFilesDownloads, form, {
       headers: {
-        _token: token,
         "Content-Disposition": "attachment; filename=template." + ext,
-        // "Content-Type":
-        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "Content-Type": contentType,
       },
-      responseType: "blob",
+      responseType: "arraybuffer",
     })
+  
       .then(async (response) => {
         console.log(response, "responseresponseresponse");
         if (response.status === 417) {
@@ -3324,18 +3165,15 @@ const DataRoomDownloadFolderApiFunc = (navigate, data, t, Name) => {
   return (dispatch) => {
     dispatch(DownloadMessage(1));
     dispatch(DownloadFolderForDataRoomStart());
+    axiosInstance
+      .post(DataRoomAllFilesDownloads, form, {
+        headers: {
+          "Content-Disposition": `attachment; filename=${Name}.zip`,
+          "Content-Type": "application/zip", // Set the content type to zip
+        },
+        responseType: "arraybuffer",
+      })
 
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": `attachment; filename=${Name}.zip`,
-        "Content-Type": "application/zip", // Set the content type to zip
-      },
-      responseType: "arraybuffer",
-    })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3409,14 +3247,7 @@ const validateUserAvailibilityEncryptedStringDataRoomApi = (
     );
 
     try {
-      const response = await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -3729,14 +3560,8 @@ const deleteSharedFileDataroom = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", leaveFileSharingRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3847,15 +3672,8 @@ const deleteSharedFolderDataroom = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", leaveFolderSharingRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-        "Access-Control-Allow-Origi": "*",
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3997,14 +3815,8 @@ const DataRoomFileSharingPermissionAPI = (
       GetDataRoomFileSharedPersmission.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

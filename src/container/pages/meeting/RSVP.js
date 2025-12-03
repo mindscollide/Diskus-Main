@@ -18,12 +18,9 @@ import {
   convertDateTimeRangeToGMT,
   newTimeFormaterAsPerUTCTalkDateTime,
 } from "../../../commen/functions/date_formater";
-import SpinComponent from "../../../components/elements/mainLoader/loader";
 const RSVP = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const loader = useSelector((state) => state.NewMeetingreducer.Loading);
-  console.log(loader, "VALIDATE_EMPTY_STRING_INIT");
   const dispatch = useDispatch();
   const location = useLocation();
   const [rsvpData, setrsvpData] = useState({
@@ -43,44 +40,38 @@ const RSVP = () => {
   );
 
   useEffect(() => {
-    if (
-      location.search !== null &&
-      location.search !== undefined &&
-      location.search !== ""
-    ) {
-      let actionKey = location.search.split("=")[1];
-      if (actionKey !== null) {
-        const callRSVP = async () => {
-          let Data = { EncryptedString: actionKey };
-          await dispatch(
-            validateEncryptedStringUserAvailibilityForMeetingApi(
-              navigate,
-              Data,
-              t
-            )
-          );
-          localStorage.removeItem("RSVP");
-        };
-        callRSVP();
-      }
-    } else if (localStorage.getItem("RSVP") !== null) {
-      let actionKey = localStorage.getItem("RSVP");
-      if (actionKey !== null) {
-        const callRSVP = async () => {
-          let Data = { EncryptedString: actionKey };
-          await dispatch(
-            validateEncryptedStringUserAvailibilityForMeetingApi(
-              navigate,
-              Data,
-              t
-            )
-          );
-          localStorage.removeItem("RSVP");
-        };
-        callRSVP();
-      }
+    let getValue = location.search.substring(8);
+    const params = new URLSearchParams(location.search);
+    console.log(params, getValue, "paramsparamsparamsparams");
+    // Decode special characters
+    const urlKey = params.get("action")
+      ? decodeURIComponent(params.get("action"))
+      : null;
+    console.log(urlKey, "paramsparamsparamsparams");
+
+    if (getValue) {
+      localStorage.setItem("RSVP", getValue);
     }
-  }, []);
+
+    const finalKey = getValue || localStorage.getItem("RSVP");
+
+    if (!finalKey) return;
+
+    const callRSVP = async () => {
+      await dispatch(
+        validateEncryptedStringUserAvailibilityForMeetingApi(
+          navigate,
+          { EncryptedString: finalKey },
+          t
+        )
+      );
+      localStorage.removeItem("RSVP");
+    };
+
+    callRSVP();
+  }, [location.search]);
+
+  // <-- IMPORTANT: runs whenever URL changes
 
   useEffect(() => {
     try {
@@ -112,13 +103,12 @@ const RSVP = () => {
         {rsvpData.meetingTitle !== "" && (
           <>
             <Col lg={6} md={6} sm={6}>
-              <Row className="mt-5">
+              <Row className='mt-5'>
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex flex-column flex-wrap align-items-center"
-                >
+                  className='d-flex flex-column flex-wrap align-items-center'>
                   {rsvpData && (
                     <>
                       {rsvpData.userResponseStatus === 2 ? (
@@ -126,9 +116,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={ThumbsUp}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["ThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -142,9 +132,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={RedChair}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["RedThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -161,9 +151,9 @@ const RSVP = () => {
                         <>
                           <img
                             src={Clock}
-                            height="130.64px"
-                            width="113.47px"
-                            alt=""
+                            height='130.64px'
+                            width='113.47px'
+                            alt=''
                           />
                           <span className={styles["OrangeThankyouHeading"]}>
                             {t("Thank-you")}!
@@ -199,9 +189,9 @@ const RSVP = () => {
                   />
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-date-and-time")}
@@ -221,7 +211,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Date-of-submitting-response")}
@@ -242,7 +232,7 @@ const RSVP = () => {
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={6}>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("Meeting-location")}
@@ -259,7 +249,7 @@ const RSVP = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col lg={12} md={12} sm={12}>
                       <span className={styles["MeetingTitle"]}>
                         {t("You-have-confirmed-your-attendance")}

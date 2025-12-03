@@ -255,8 +255,11 @@ body[dir="rtl"] .Voters_voteResolution {
 .Total_voters_voteResolution {
   font-size: 16px !important;
   font-weight: 600;
-
   color: #5a5a5a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
 }
 
 body[dir="rtl"] .Total_voters_voteResolution {

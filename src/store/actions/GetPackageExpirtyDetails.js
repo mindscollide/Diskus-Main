@@ -1,8 +1,9 @@
-import axios from "axios";
+
 import { IsPackageExpiryDetail } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getExpiryDetailsInit = () => {
   return {
@@ -35,12 +36,7 @@ const getPackageExpiryDetail = (navigate, id, t) => {
     form.append("RequestData", JSON.stringify(data));
 
     try {
-      const response = await axios({
-        method: "post",
-        url: getAdminURLs,
-        data: form,
-        headers: { _token: token },
-      });
+      const response = await axiosInstance.post(getAdminURLs, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

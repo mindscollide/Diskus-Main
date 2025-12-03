@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { RefreshToken } from "./Auth_action";
 import {
   listOfDefaultRejectionComments,
@@ -29,6 +29,7 @@ import {
   GetAllGeneralMinutesApiFunc,
 } from "./NewMeetingActions";
 import { isFunction } from "../../commen/functions/utils";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Pendin Approval Page Route
 const pendingApprovalPage = (response) => {
@@ -142,19 +143,12 @@ const getListOfDefaultRejectionComments_Fail = (message, response) => {
 
 //ListOfDefaultRejectionComments
 const ListOfDefaultRejectionComments = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getListOfDefaultRejectionComments_Init());
     let form = new FormData();
     form.append("RequestMethod", listOfDefaultRejectionComments.RequestMethod);
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -260,14 +254,8 @@ const GetPendingApprovalsCount = (navigate, t) => {
     dispatch(getPendingApprovalsCount_Init());
     let form = new FormData();
     form.append("RequestMethod", pendingApprovalsCount.RequestMethod);
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -365,14 +353,8 @@ const GetMinuteReviewStatsForOrganizerByMeetingId = (Data, navigate, t) => {
       getMinuteReviewStatsForOrganizerByMeetingId.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -496,14 +478,8 @@ const GetAllOrganizationUsersForReview = (navigate, t, setAllReviewers) => {
       "RequestMethod",
       getAllOrganizationUsersForReview.RequestMethod
     );
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -606,14 +582,8 @@ const GetMinutesForReviewerByMeetingId = (Data, navigate, t) => {
       getMinutesForReviewerByMeetingId.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -746,14 +716,8 @@ const GetMinuteReviewPendingApprovalsStatsByReviewerId = (navigate, t) => {
       "RequestMethod",
       getMinuteReviewPendingApprovalsStatsByReviewerId.RequestMethod
     );
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -871,14 +835,8 @@ const GetMinuteReviewPendingApprovalsByReviewerId = (Data, navigate, t) => {
       getMinuteReviewPendingApprovalsByReviewerId.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -996,14 +954,8 @@ const SaveMinutesReviewFlow = (Data, navigate, t, setAddReviewers) => {
     let form = new FormData();
     form.append("RequestMethod", saveMinutesReviewFlow.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1185,14 +1137,8 @@ const GetMinutesVersionHistoryWithCommentsApi = (
       getMinuteVersionHistoryWithComments.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1321,14 +1267,8 @@ const GetMinuteReviewDetailsByOrganizerByMinuteId_Api = (
       getMinuteReviewDetailsForOrganizerByMinuteId.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1484,14 +1424,8 @@ const GetMinuteReviewFlowByMeetingId = (Data, navigate, t) => {
     form.append("RequestMethod", getMinuteReviewFlowByMeetingId.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     try {
-      axios({
-        method: "post",
-        url: workflowApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance.post(workflowApi, form)
+
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -1647,14 +1581,8 @@ const MeetingPublishedMinutesApi = (
     let form = new FormData();
     form.append("RequestMethod", PublishMeetingMinutesRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1752,14 +1680,8 @@ const GetPublishedMeetingMinutesApi = (Data, navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", GetAllPublishedMeetingMinutesRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1856,14 +1778,8 @@ const AcceptRejectMinuteReview = (Data, navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", acceptRejectMinuteReview.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1973,14 +1889,8 @@ const PublishMeetingMinutes = (Data, navigate, t) => {
     form.append("RequestMethod", publishMeetingMinutes.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2075,14 +1985,8 @@ const GetDataForResendMinuteReview = (
     form.append("RequestMethod", getDataForResendMinuteReview.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2208,14 +2112,8 @@ const ResendUpdatedMinuteForReview = (
     let form = new FormData();
     form.append("RequestMethod", resendUpdatedMinuteForReview.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2376,14 +2274,8 @@ const getPendingApprovalStatsThisWeekApi = (Data, navigate, t) => {
       getMinuteAndSignatureApprovalThisWeekRM.RequestMethod
     );
     // form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2487,14 +2379,8 @@ const GetStatsForPublishingMinutesByWorkFlowId = (
       getStatsForPublishingMinutesByWorkFlowId.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2609,14 +2495,8 @@ const MinutesWorkFlowActorStatusNotificationAPI = (Data, navigate, t) => {
       MinutesWorkFlowActorStatusNotification.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(workflowApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

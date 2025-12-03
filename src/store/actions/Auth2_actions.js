@@ -3,8 +3,6 @@ import {
   getAdminURLs,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-
-import axios from "axios";
 import {
   createOrganizationRequestMethod,
   userEmailValidation,
@@ -39,6 +37,7 @@ import {
 } from "../../commen/functions/responce_message";
 import { changeNewLanguage } from "./Language_actions";
 import { endMeetingStatusApi } from "./NewMeetingActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -66,11 +65,9 @@ const createOrganization = (data, navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", createOrganizationRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -262,21 +259,14 @@ const validationEmailFail = (message) => {
 };
 
 const validationEmailAction = (email, navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let data = { UserEmail: email, Device: "Browser", DeviceID: "1" };
   return (dispatch) => {
     dispatch(validationEmailInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", userEmailValidation.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -474,7 +464,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
     const formData = getFormData(data, userPasswordVerify);
 
     try {
-      const response = await axios.post(authenticationApi, formData);
+      const response = await axiosInstance.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
         clearLocalStorageAtloginresponce(dispatch, 1, navigate);
         dispatch(enterPasswordFail("Something-went-wrong"));
@@ -1101,9 +1091,11 @@ const enterPasswordvalidation = (value, navigate, t) => {
           dispatch(LoginFlowRoutes(1));
 
           dispatch(
-            enterPasswordFail(t(
-              "Password-verified-and-subscription-is-closed-and-this-is-an-user"
-            ))
+            enterPasswordFail(
+              t(
+                "Password-verified-and-subscription-is-closed-and-this-is-an-user"
+              )
+            )
           );
           break;
         case USERPASSWORDVERIFICATION.VERIFICATION_32:
@@ -1575,11 +1567,8 @@ const verificationEmailOTP = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", userEmailVerification.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1723,7 +1712,7 @@ const createPasswordAction = (value, navigate, t) => {
     const formData = getFormData(data, userPasswordCreation);
 
     try {
-      const response = await axios.post(authenticationApi, formData);
+      const response = await axiosInstance.post(authenticationApi, formData);
       if (response.data.responseCode !== 200) {
         dispatch(createPasswordFail("Something-went-wrong"));
         return;
@@ -2784,11 +2773,8 @@ const getSelectedPacakgeDetail = (navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getSelectedPacakge_Detail.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2883,14 +2869,8 @@ const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", changepassword.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2997,11 +2977,8 @@ const organizationPackageReselection = (
     let form = new FormData();
     form.append("RequestMethod", OrganizationPackageReselection.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -3168,11 +3145,8 @@ const updatePasswordAction = (value, navigate, t) => {
       "RequestMethod",
       passswordUpdationOnForgetPassword.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3255,14 +3229,8 @@ const getInvocieHTMLApi = (navigate, t, Data, setInvoiceModal) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", GetInvoiceHTMLByOrganizatonID.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3344,17 +3312,15 @@ const DownlaodInvoiceLApi = (navigate, t, Data) => {
     form.append("RequestMethod", DownloadInvoiceRM.RequestMethod);
     let contentType = "application/pdf";
     let ext = "pdf";
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template." + ext,
-        "Content-Type": contentType,
-      },
-      responseType: "blob",
-    })
+    axiosInstance
+      .post(getAdminURLs, form, {
+        headers: {
+          "Content-Disposition": "attachment; filename=template." + ext,
+          "Content-Type": contentType,
+        },
+        responseType: "blob",
+      })
+
       .then(async (response) => {
         console.log("DownloadInvoice", response);
 
@@ -3407,11 +3373,8 @@ const validateStringOTPEmail_Api = (Data, navigate, t) => {
       "RequestMethod",
       ValidateEncryptedStringForOTPEmailLinkRM.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -3525,14 +3488,8 @@ const validatePasswordActionApi = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", ValidateUserPasswordRM.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: JSON.parse(localStorage.getItem("token")),
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));

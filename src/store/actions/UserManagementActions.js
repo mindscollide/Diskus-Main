@@ -33,7 +33,6 @@ import {
   meetingApi,
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import {
   openPaymentProcessModal,
@@ -55,6 +54,8 @@ import {
   boardDeckModal,
   showShareViaDataRoomPathConfirmation,
 } from "./NewMeetingActions";
+import axiosInstance from "../../commen/functions/axiosInstance";
+import { newDateTimeFormatterForOTPResend } from "../../commen/functions/date_formater";
 
 const clearMessegesUserManagement = (response) => {
   return {
@@ -108,11 +109,8 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
       "RequestMethod",
       SaveOrganizationAndPakageSelection.RequestMethod
     );
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then((response) => {
         try {
           if (response.data.responseCode === 200) {
@@ -297,6 +295,18 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                     t("Something-went-wrong")
                   )
                 );
+              } else if (
+                response.data.responseResult.responseMessage.toLowerCase(
+                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_12".toLowerCase()
+                )
+              ) {
+                dispatch(
+                  createOrganizationAndPakageSelectionFailed(
+                    t(
+                      "Organization-registeration-limit-exceeded-please-try-again-after-sometime"
+                    )
+                  )
+                );
               } else {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
@@ -319,6 +329,11 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
             );
           }
         } catch (error) {
+          dispatch(
+            createOrganizationAndPakageSelectionFailed(
+              t("Something-went-wrong")
+            )
+          );
           console.log(error, "errorerrorerrorerrorerror");
         }
       })
@@ -359,14 +374,8 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", ExtendOrganizationTrial.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -471,14 +480,8 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AddOrganizationsUser.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -571,14 +574,8 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", EditOrganizationsUser.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -716,14 +713,8 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -804,14 +795,8 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", AllOrganizationsUsers.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -921,14 +906,8 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
       "RequestMethod",
       GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1029,21 +1008,13 @@ const getOrganizationSelectedPakagesFailed = (message) => {
 };
 
 const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getOrganizationSelectedPakagesInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", getOrganizationSelectedPakages.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1139,14 +1110,8 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
       "RequestMethod",
       OrganizationPackageDetailsAndUserStats.RequestMethod
     );
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1232,19 +1197,12 @@ const getAllUserTypePackagesFail = (message) => {
 };
 
 const getAllUserTypePackagesApi = (navigate, t, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllUserTypePackagesInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllUserTypePackages.RequestMethod);
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1342,16 +1300,13 @@ const ResendForgotPasswordCodeApi = (
     let form = new FormData();
     form.append("RequestMethod", ResendForgotPasswordCode.RequestMethod);
     form.append("RequestData", JSON.stringify(verificationData));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then((response) => {
         if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_01"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_03"
           ) {
             let newMessage = t("Successful");
             dispatch(
@@ -1364,7 +1319,7 @@ const ResendForgotPasswordCodeApi = (
             setMinutes(4);
           } else if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_02"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_04"
           ) {
             let newMessage = t("Unsuccessful");
             dispatch(ResendForgotPasswordCodefail(newMessage));
@@ -1372,8 +1327,26 @@ const ResendForgotPasswordCodeApi = (
             setMinutes(0);
           } else if (
             response.data.responseResult.responseMessage ===
-            "ERM_AuthService_SignUpManager_ResendForgotPasswordCode_03"
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_05"
           ) {
+            let newMessage = t("Something-went-wrong");
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            setSeconds(0);
+            setMinutes(0);
+          } else if (
+            response.data.responseResult.responseMessage.toLowerCase() ===
+            "ERM_AuthService_AuthManager_ResendForgotPasswordCode_07".toLowerCase()
+          ) {
+            let nextAttemptDate = response.data.responseResult.nextAttemptDate;
+            let nextAttemptTime = response.data.responseResult.nextAttemptTime;
+            let dateTimeValue = newDateTimeFormatterForOTPResend(
+              `${nextAttemptDate}${nextAttemptTime}`
+            );
+            let newMessage = `${t("Please-try-again-after")} ${dateTimeValue};`;
+            dispatch(ResendForgotPasswordCodefail(newMessage));
+            setSeconds(0);
+            setMinutes(0);
+          } else {
             let newMessage = t("Something-went-wrong");
             dispatch(ResendForgotPasswordCodefail(newMessage));
             setSeconds(0);
@@ -1424,14 +1397,8 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", DeleteOrganizationsUser.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1518,20 +1485,13 @@ const paymentInitiateFailApi = (message) => {
 };
 
 const paymentInitiateMainApi = (navigate, t, newData) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentInitiateInitApi());
     let form = new FormData();
     form.append("RequestMethod", PaymentInitiateStepperThree.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1643,14 +1603,8 @@ const getCancelSubscriptionReasonApi = (navigate, t) => {
     dispatch(cancelSubscriptionReasonInit());
     let form = new FormData();
     form.append("RequestMethod", CancelSubReasons.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1734,14 +1688,8 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
       CancelOrganizationsSubscriptions.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1890,14 +1838,8 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", requestOrganizationTrialExtend.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2022,20 +1964,13 @@ const paymentStatusFailed = (response, message) => {
 };
 
 const paymentStatusApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(paymentStatusInit());
     let form = new FormData();
     form.append("RequestMethod", paymentStatus.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2188,14 +2123,8 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
     let form = new FormData();
     form.append("RequestMethod", changeSelectedSubscription.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2301,14 +2230,8 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
       CancelTrailandUpdageOrganiztionRM.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2416,14 +2339,8 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
       downgradeOrganizationSubscription.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2522,14 +2439,8 @@ const getOrganizationWalletApi = (navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", getOrganizationWallet.RequestMethod);
 
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2609,14 +2520,8 @@ const BoardDeckSendEmailApi = (
     let form = new FormData();
     form.append("RequestMethod", BoardDeckSendEmail.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2717,16 +2622,11 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
   let meetingName = localStorage.getItem("meetingTitle");
   return async (dispatch) => {
     await dispatch(BoardDeckDownloadPDF_init());
+    axiosInstance
+      .post(DataRoomAllFilesDownloads, form, {
+        responseType: "arraybuffer",
+      })
 
-    axios({
-      method: "post",
-      url: DataRoomAllFilesDownloads,
-      data: form,
-      headers: {
-        _token: token,
-      },
-      responseType: "arraybuffer",
-    })
       .then(async (response) => {
         if (response.status === 200) {
           console.log(response.status, "responsestatus");
@@ -2800,14 +2700,8 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", validateVideoRecordingURL.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2882,7 +2776,6 @@ const BoardDeckValidateIsMinutesPublished_failed = (message) => {
 };
 
 const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(BoardDeckValidateIsMinutesPublished_init());
     let form = new FormData();
@@ -2891,14 +2784,8 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
       GetMeetingBoardDeckCredentialsStatus.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: meetingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

@@ -22,14 +22,12 @@ import { useMeetingContext } from "../../../../../../context/MeetingContext";
 const PrintExportAgendaModal = ({
   setPrintAgendaView,
   advanceMeetingModalID,
-
-  rows,
-  setRows,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { editorRole } = useMeetingContext();
+  const { editorRole,   viewMeetingAgendaViewerRowData,
+    setViewMeetingAgendaViewerRowData, } = useMeetingContext();
 
   const printFlag = useSelector(
     (state) => state.MeetingAgendaReducer.PrintAgendaFlag
@@ -51,7 +49,6 @@ const PrintExportAgendaModal = ({
 
   let meetingTitle = localStorage.getItem("meetingTitle");
 
-  // const [rows, setRows] = useState([]);
   const [emptyStateRows, setEmptyStateRows] = useState(false);
 
   const [showMoreFilesView, setShowMoreFilesView] = useState(false);
@@ -62,40 +59,39 @@ const PrintExportAgendaModal = ({
   const [subAgendaIndex, setSubAgendaIndex] = useState(-1);
 
   useEffect(() => {
-    if (rows.length !== 0) {
+    if (viewMeetingAgendaViewerRowData.length !== 0) {
       // Check if any of the canView values is true
-      const anyCanViewTrue = rows.some((row) => row.canView);
+      const anyCanViewTrue = viewMeetingAgendaViewerRowData.some((row) => row.canView);
 
       // Update the emptyStateRows state based on the condition
       setEmptyStateRows(!anyCanViewTrue);
     } else {
       setEmptyStateRows(false);
     }
-  }, [rows]);
+  }, [viewMeetingAgendaViewerRowData]);
 
   const [initialRows, setInitialRows] = useState([]);
 
   useEffect(() => {
-    const initialData = [...rows];
-    setRows(initialData);
+    const initialData = [...viewMeetingAgendaViewerRowData];
+    setViewMeetingAgendaViewerRowData(initialData);
     setInitialRows(initialData);
   }, []);
 
-  // Modify rows state based on agendaValueFlag
   useEffect(() => {
-    const modifiedRows = rows.map((row) => {
+    const modifiedRows = viewMeetingAgendaViewerRowData.map((row) => {
       if (agendaValueFlag === 1) {
         return { ...row, subAgenda: [] };
       } else {
         return row;
       }
     });
-    setRows(modifiedRows);
+    setViewMeetingAgendaViewerRowData(modifiedRows);
   }, [agendaValueFlag]); // Added rows dependency
 
   // Function to reset rows state to initial state
   const resetRows = () => {
-    setRows([...initialRows]); // Revert to initialRows
+    setViewMeetingAgendaViewerRowData([...initialRows]); // Revert to initialRows
   };
 
   const closePrintExportModal = () => {
@@ -194,7 +190,7 @@ const PrintExportAgendaModal = ({
               editorRole.role === "Participant") ? null : (
               <>
                 <DragDropContext
-                  onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                  onDragEnd={(result) => onDragEnd(result, viewMeetingAgendaViewerRowData, setViewMeetingAgendaViewerRowData)}>
                   <Row className={styles["horizontalSpacing"]}>
                     <Col
                       lg={12}
@@ -206,15 +202,14 @@ const PrintExportAgendaModal = ({
                           <div
                             ref={provided.innerRef}
                             {...provided.droppableProps}>
-                            {rows.length > 0 ? (
-                              rows.map((data, index) => {
+                            {viewMeetingAgendaViewerRowData.length > 0 ? (
+                              viewMeetingAgendaViewerRowData.map((data, index) => {
                                 return (
                                   <>
                                     <ParentAgenda
                                       data={data}
                                       index={index}
-                                      rows={rows}
-                                      setRows={setRows}
+                            
                                       setFileDataAgenda={setFileDataAgenda}
                                       fileDataAgenda={fileDataAgenda}
                                       setAgendaName={setAgendaName}

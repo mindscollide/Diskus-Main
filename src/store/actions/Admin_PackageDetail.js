@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   GetOrganizationSeletedPackageByOrganizationID,
   paymentCompleteMethod,
@@ -12,6 +11,7 @@ import {
 } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const packageDetailInit = () => {
   return {
@@ -46,14 +46,9 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
       GetOrganizationSeletedPackageByOrganizationID.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getAdminURLs, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -64,12 +59,7 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_01"
             ) {
-              dispatch(
-                packageDetailSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
+              dispatch(packageDetailSuccess(response.data.responseResult, ""));
             } else if (
               response.data.responseResult.responseMessage ===
               "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_02"
@@ -114,7 +104,6 @@ const getSubscriptionDetailPaymentDetails_fail = (message) => {
 };
 
 const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationID: organizationID,
@@ -128,14 +117,9 @@ const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
       subscriptiondetailsRequestMethod.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -162,9 +146,7 @@ const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
                   "ERM_AuthService_SignUpManager_SubscriptionDetail_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getSubscriptionDetailPaymentDetails_fail("")
-              );
+              dispatch(getSubscriptionDetailPaymentDetails_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -238,14 +220,9 @@ const getSubscriptionUpgradeAmountInfoApi = (
       subscriptionPackageUpgradeAmount.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -285,9 +262,7 @@ const getSubscriptionUpgradeAmountInfoApi = (
                   "ERM_AuthService_SignUpManager_GetPackageUpgradeTotalAmount_02".toLowerCase()
                 )
             ) {
-              dispatch(
-                getSubscriptionUpgradeAmountInfo_fail("")
-              );
+              dispatch(getSubscriptionUpgradeAmountInfo_fail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -360,14 +335,9 @@ const getSubscriptionUpgradePaymentCompleteApi = (navigate, t) => {
       subscriptionPackageUpgradePayment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -522,14 +492,9 @@ const subscriptionPaymentApi = (navigate, data, t) => {
     let form = new FormData();
     form.append("RequestMethod", paymentCompleteMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

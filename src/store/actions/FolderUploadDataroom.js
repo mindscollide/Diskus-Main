@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import {
   FolderisExistRequestMethod,
   createFolderRequestMethod,
@@ -16,6 +16,7 @@ import {
   getFolderDocumentsApi,
 } from "./DataRoom_actions";
 import { replaceSlashWithBackslash } from "../../commen/functions/regex";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Folder Exist fail
 const FolderisExist_fail = (message) => {
@@ -49,14 +50,8 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -144,30 +139,26 @@ const uploadDocumentsApi = (
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(file));
     form.append("File", file);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-      onUploadProgress: (progressEvent) => {
-        setTasksAttachments((prev) => [...prev, file]);
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        let currentTime = Date.now();
-        let elapsedTime = currentTime - startTime;
-        let bytesUploaded = progressEvent.loaded;
-        let bytesTotal = progressEvent.total;
-        let bytesRemaining = bytesTotal - bytesUploaded;
-        let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
-        let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
+    axiosInstance
+      .post(dataRoomApi, form, {
+        onUploadProgress: (progressEvent) => {
+          setTasksAttachments((prev) => [...prev, file]);
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          let currentTime = Date.now();
+          let elapsedTime = currentTime - startTime;
+          let bytesUploaded = progressEvent.loaded;
+          let bytesTotal = progressEvent.total;
+          let bytesRemaining = bytesTotal - bytesUploaded;
+          let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
+          let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
 
-        setProgress(percentCompleted);
-        setRemainingTime(remainingTime + secondsRemaining);
-      },
-    })
+          setProgress(percentCompleted);
+          setRemainingTime(remainingTime + secondsRemaining);
+        },
+      })
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -283,14 +274,8 @@ const saveFilesApi = (
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -382,14 +367,8 @@ const CheckFolderisExist = (navigate, folderName, t) => {
     let form = new FormData();
     form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -483,14 +462,8 @@ const createFolder = (
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -570,16 +543,9 @@ const uploadFile = (
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
       form.append("RequestData", JSON.stringify(file));
       form.append("File", file);
-      console.log(file, "filefile")
-      await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-        // cancelToken: axiosCancelToken.token,
-      })
+      console.log(file, "filefile");
+      await axiosInstance
+        .post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -688,14 +654,8 @@ const saveFilesandFoldersApi = (
       let form = new FormData();
       form.append("RequestMethod", saveFilesandFolderRM.RequestMethod);
       form.append("RequestData", JSON.stringify(Data));
-      await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      await axiosInstance
+        .post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             dispatch(RefreshToken(navigate, t));

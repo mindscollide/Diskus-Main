@@ -11,6 +11,7 @@ const initialState = {
   TotalNumberOfUpcommingMeetingsInWeek: 0,
   MeetingTableData: false,
   UpcomingEventsData: [],
+  showMoreUpcomingData: null,
   allMeetingsSocketData: null,
   MeetingStatusSocket: null,
   searchRecordFound: false,
@@ -18,6 +19,7 @@ const initialState = {
   MeetingStatusEnded: null,
   GroupMeetingMQTT: null,
   CommitteeMeetingMQTT: null,
+  moreEventsLoader: false
 };
 
 //Get meetingreducer
@@ -150,9 +152,28 @@ const meetingIdReducer = (state = initialState, action) => {
         ...state,
         Spinner: false,
         MeetingTableData: false,
-        // ResponseMessage: action.response.responseMessage,
-        UpcomingEventsData: GetUpcomingEventsArray,
+        UpcomingEventsData: action.response,
         ShowNotification: true,
+      };
+
+    case actions.SHOWMORE_UPCOMINGEVENTS_INIT:
+      return {
+        ...state,
+        moreEventsLoader: true,
+      };
+    case actions.SHOWMORE_UPCOMINGEVENTS_SUCCESS:
+      return {
+        ...state,
+        moreEventsLoader: false,
+        showMoreUpcomingData: action.response,
+        ResponseMessage: action.message,
+      };
+    case actions.SHOWMORE_UPCOMINGEVENTS_FAIL:
+      return {
+        ...state,
+        moreEventsLoader: false,
+        showMoreUpcomingData: null,
+        ResponseMessage: action.message,
       };
 
     case actions.GET_UPCOMINGEVENTS_FAIL:

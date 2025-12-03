@@ -362,6 +362,7 @@ const Sidebar = () => {
   }) => {
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
+    localStorage.setItem("navigateLocation", navigateLocationKey);
     console.log("Check Route scenario's", targetPath);
     console.log("Check Route scenario's", location.pathname);
 
@@ -533,7 +534,8 @@ const Sidebar = () => {
   console.log("activeCall", CurrentMeetingStatus);
   return (
     <>
-      {location.pathname.includes("/Admin") ? (
+      {location.pathname.includes("/Admin") ||
+      location.pathname.includes("meetingDocumentViewer") ? (
         ""
       ) : activateBlur ? (
         <Row className='sidebar-row'>

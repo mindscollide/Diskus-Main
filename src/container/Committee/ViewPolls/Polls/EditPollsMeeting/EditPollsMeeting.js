@@ -552,6 +552,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     value={selectedsearch}
                     onChange={handleSelectValue}
                     filterOption={customFilter}
+                    isDisabled={checkForPollStatus}
                   />
                   <Button
                     text={t("ADD")}

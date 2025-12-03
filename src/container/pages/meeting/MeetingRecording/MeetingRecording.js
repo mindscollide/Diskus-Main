@@ -5,8 +5,6 @@ import { useMeetingContext } from "../../../../context/MeetingContext";
 import { Button, Table } from "../../../../components/elements";
 import styles from "./MeetingRecording.module.css";
 import BackArrow from "../../../../assets/images/DownloadRecordingBackArrow.png";
-import axios from "axios";
-import { Progress } from "antd";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -72,29 +70,35 @@ const MeetingRecording = ({ title }) => {
           responseMessage.toLowerCase() ===
           "Meeting_MeetingServiceManager_GetMeetingRecordingFiles_02".toLowerCase()
         ) {
-          MeetingData.push(
-            {
+          if (meetingRecording?.fileID) {
+            MeetingData.push({
               fileID: meetingRecording.fileID,
               fileName: meetingRecording.fileName,
               fileSize: meetingRecording.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            },
-            {
+            });
+          }
+
+          if (meetingMinutes?.fileID) {
+            MeetingData.push({
               fileID: meetingMinutes.fileID,
               fileName: meetingMinutes.fileName,
               fileSize: meetingMinutes.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            },
-            {
+            });
+          }
+
+          if (meetingTranscript?.fileID) {
+            MeetingData.push({
               fileID: meetingTranscript.fileID,
               fileName: meetingTranscript.fileName,
               fileSize: meetingTranscript.fileSize,
               transcriptStatus: transcriptionStatusID,
               meetingID: MeetingID,
-            }
-          );
+            });
+          }
         }
 
         setData(MeetingData);
@@ -188,8 +192,8 @@ const MeetingRecording = ({ title }) => {
           <span className={styles["RecordingTable___title"]}>
             <img
               src={getIconSource(getFileExtension(text))}
-              alt=""
-              className="me-2"
+              alt=''
+              className='me-2'
               width={"17px"}
               height={"17px"}
             />
@@ -231,8 +235,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end gap-3"
-              >
+                className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Transcribe")}
@@ -256,8 +259,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-end gap-3"
-              >
+                className='d-flex justify-content-end gap-3'>
                 <Button
                   className={styles["DownloadBtn"]}
                   text={t("Download")}
@@ -273,8 +275,7 @@ const MeetingRecording = ({ title }) => {
                 sm={12}
                 md={12}
                 lg={12}
-                className="d-flex justify-content-center align-items-center gap-3"
-              >
+                className='d-flex justify-content-center align-items-center gap-3'>
                 <span className={styles["TranscibingLabel"]}>
                   {`${t("Transcribing")}...`}
                 </span>
@@ -312,8 +313,8 @@ const MeetingRecording = ({ title }) => {
                 <img
                   src={BackArrow}
                   onClick={() => setStepDownloadModal(1)}
-                  className="cursor-pointer"
-                  alt=""
+                  className='cursor-pointer'
+                  alt=''
                 />{" "}
                 {t("Meeting-recording")}
               </span>
@@ -326,7 +327,7 @@ const MeetingRecording = ({ title }) => {
                 pagination={false}
               />
             </Col>
-            <div className="d-flex justify-content-center align-items-center"></div>
+            <div className='d-flex justify-content-center align-items-center'></div>
           </Row>
         </>
       }
@@ -337,8 +338,7 @@ const MeetingRecording = ({ title }) => {
               sm={12}
               md={12}
               lg={12}
-              className={"d-flex justify-content-end p-0 m-0"}
-            >
+              className={"d-flex justify-content-end p-0 m-0"}>
               <Button
                 className={styles["Download___cancelBtn"]}
                 text={t("Cancel")}

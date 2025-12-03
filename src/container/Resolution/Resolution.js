@@ -71,6 +71,9 @@ const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isResolutionClosed, setIsResolutionClosed] = useState(false);
+
+  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed")
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
   const ResolutionReducersearchVoterResolution = useSelector(
@@ -428,8 +431,17 @@ const Resolution = () => {
     dispatch(getResolutionbyResolutionID(navigate, id, t, 3));
   };
 
-  const getResultHandle = (id) => {
-    dispatch(getResolutionResult(navigate, id, t, setResultresolution));
+  const getResultHandle = (id, isClosed) => {
+    dispatch(
+      getResolutionResult(
+        navigate,
+        id,
+        t,
+        setResultresolution,
+        setIsResolutionClosed,
+        isClosed
+      )
+    );
   };
 
   const getVoteDetailHandler = (id, data) => {
@@ -611,14 +623,33 @@ const Resolution = () => {
       align: "center",
       key: "Result",
       width: "78px",
-      render: (table, data) => {
-        // if (data.resolutionStatus === "Closed") {
+      render: (table, record) => {
+        let newDate = new Date();
+        let votingDeadline = resolutionResultTable(record.votingDeadline);
+        let isClosed =
+          record.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
+            ? true
+            : false;
+        if (votingDeadline < newDate) {
+          return (
+            <img
+              draggable='false'
+              className={styles["Result_Icon_cursor_pointer"]}
+              src={ResultResolutionIcon}
+              alt=''
+              onClick={() => getResultHandle(record.resolutionID, isClosed)}
+            />
+          );
+        } else {
+          return "";
+        }
+        // if (record.resolutionStatus?.toLowerCase() === "Closed".toLowerCase()) {
         //   return (
         //     <Tooltip placement="bottomLeft" title={t("Result")}>
         //       <img
         //         draggable="false"
         //         src={ResultResolutionIcon}
-        //         onClick={() => getResultHandle(data.resolutionID)}
+        //         onClick={() => getResultHandle(record.resolutionID)}
         //         className={styles["Result_icon"]}
         //         alt=""
         //       />
@@ -799,6 +830,10 @@ const Resolution = () => {
       render: (text, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
+        let isClosed =
+        data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
+          ? true
+          : false;
         if (votingDeadline < newDate) {
           return (
             <img
@@ -806,7 +841,7 @@ const Resolution = () => {
               className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
               alt=''
-              onClick={() => getResultHandle(data.resolutionID)}
+              onClick={() => getResultHandle(data.resolutionID, isClosed)}
             />
           );
         } else {
@@ -940,7 +975,6 @@ const Resolution = () => {
                 />
               );
             }
-    
           } else {
             return <p className='text-center'></p>;
           }
@@ -966,7 +1000,9 @@ const Resolution = () => {
             <span className={styles["decision_non_Approved"]}>{text}</span>
           );
         } else {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         }
       },
     },
@@ -1373,6 +1409,8 @@ const Resolution = () => {
             <ResultResolution
               setResultresolution={setResultresolution}
               resultresolution={resultresolution}
+              isResolutionClosed={isResolutionClosed}
+              setIsResolutionClosed={setIsResolutionClosed}
             />
           </>
         ) : voteresolution && ResolutionReducervoteResolutionFlag === true ? (

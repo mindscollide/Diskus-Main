@@ -1,8 +1,8 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { authenticationRefreshToken } from "../../commen/apis/Api_config";
 import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import { signOut } from "./Auth_Sign_Out";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Refresh Token
 const refreshtokenFail = (message) => {
@@ -31,12 +31,9 @@ const RefreshToken = (navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", authenticationRefreshToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-      headers: { "Access-Control-Allow-Origin": "*" },
-    })
+    axiosInstance
+      .post(authenticationApi, form)
+
       .then(async (response) => {
         //
         if (response.data.responseCode === 200) {

@@ -1,5 +1,4 @@
 import * as actions from "../action_types";
-import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 import {
   DataRoomAllFilesDownloads,
@@ -12,6 +11,7 @@ import {
   LoginHistoryReportExporttoExcel,
   AuditTrialReportExporttoExcel,
 } from "../../commen/apis/Api_config";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const DownloadLoaderStart = () => {
   return {
@@ -64,19 +64,17 @@ const DownloadFile = (navigate, data, t) => {
   }
   return (dispatch) => {
     dispatch(DownloadLoaderStart());
-    axios({
-      method: "post",
-      url: settingDownloadApi,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template." + ext,
-        // "Content-Type":
-        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Type": contentType,
-      },
-      responseType: "blob",
-    })
+    axiosInstance
+      .post(settingDownloadApi, form, {
+        headers: {
+          "Content-Disposition": "attachment; filename=template." + ext,
+          // "Content-Type":
+          //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "Content-Type": contentType,
+        },
+        responseType: "blob",
+      })
+
       .then(async (response) => {
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -110,15 +108,13 @@ const downloadAttendanceReportApi = (navigate, t, downloadData) => {
     await dispatch(DownloadLoaderStart());
 
     try {
-      const response = await axios({
-        method: "post",
-        url: DataRoomAllFilesDownloads,
-        data: form,
-        headers: {
-          _token: token, // ✅ Only token header required
-        },
-        responseType: "blob", // ✅ Important for PDF
-      });
+      const response = await axiosInstance.post(
+        DataRoomAllFilesDownloads,
+        form,
+        {
+          responseType: "blob",
+        }
+      );
 
       if (response.status === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -170,18 +166,17 @@ const downlooadUserloginHistoryApi = (navigate, t, Data) => {
   form.append("RequestData", JSON.stringify(Data));
   return async (dispatch) => {
     await dispatch(downlooadUserloginHistory_init());
-    axios({
-      method: "post",
-      url: reportDownload,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template.xlsx",
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      },
-      responseType: "arraybuffer",
-    })
+    axiosInstance
+      .post(reportDownload, form, {
+        headers: {
+          _token: token,
+          "Content-Disposition": "attachment; filename=template.xlsx",
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        },
+        responseType: "arraybuffer",
+      })
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -235,18 +230,16 @@ const downloadAuditTrialReportApi = (navigate, t, Data) => {
   form.append("RequestData", JSON.stringify(Data));
   return async (dispatch) => {
     await dispatch(downloadAuditTrialReport_init());
-    axios({
-      method: "post",
-      url: reportDownload,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template.xlsx",
-        "Content-Type":
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      },
-      responseType: "arraybuffer",
-    })
+    axiosInstance
+      .post(reportDownload, form, {
+        headers: {
+          _token: token,
+          "Content-Disposition": "attachment; filename=template.xlsx",
+          "Content-Type":
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        },
+        responseType: "arraybuffer",
+      })
       .then(async (response) => {
         // Handle ArrayBuffer case (optional)
         if (response instanceof ArrayBuffer) {

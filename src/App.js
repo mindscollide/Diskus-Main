@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import "./fr.css";
 import "./ar.css";
@@ -25,28 +25,67 @@ import OpenPaymentForm from "./container/pages/UserMangement/ModalsUserManagemen
 import { Notification } from "./components/elements";
 import { router } from "./routes/routes";
 import { RouterProvider } from "react-router-dom";
-import axios from "axios";
 import UpdateVersionNotifyModal from "./components/elements/updatedVersionNotifyModal/updateVersionNotifyModal";
 import { useSelector } from "react-redux";
 import { mobileAppPopModal } from "./store/actions/UserMangementModalActions";
 import { useDispatch } from "react-redux";
 import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
-import { useMeetingContext } from "./context/MeetingContext";
-import { v4 as uuidv4 } from "uuid";
+
+import axios from "axios";
 const POLLING_INTERVAL = 60000; // 1 minute
 
-const TABS_KEY = "open_tabs"; // to track all open tabs
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
-  const {
-    isMeetingVideo,
-    meetingId,
-    viewAdvanceMeetingModal,
-    iframeRef,
-    editorRole,
-  } = useMeetingContext();
+
+  useEffect(() => {
+    const syncSessionAndRedirect = () => {
+      const localToken = localStorage.getItem("token");
+      const localUser = localStorage.getItem("userID");
+      const sessionToken = sessionStorage.getItem("token");
+      const sessionUser = sessionStorage.getItem("userID");
+      const isAlreadyInDashboard =
+        window.location.pathname
+          .toLowerCase()
+          .includes("Diskus".toLowerCase()) ||
+        window.location.pathname.toLowerCase().includes("Admin".toLowerCase());
+
+      // Step 1: Sync sessionStorage if different from localStorage
+      if (localToken && localUser) {
+        if (
+          (sessionToken !== localToken || sessionUser !== localUser) &&
+          isAlreadyInDashboard
+        ) {
+          sessionStorage.setItem("token", localToken);
+          sessionStorage.setItem("userID", localUser);
+          window.location.reload(); // reload to reflect new user session
+          return;
+        }
+      }
+
+      // Step 2: Redirect to dashboard if token exists but not on dashboard
+      if (!isAlreadyInDashboard && localToken && localUser) {
+        window.location.replace("/Diskus/");
+      }
+    };
+
+    // Run on initial load
+    syncSessionAndRedirect();
+
+    // Listen for tab visibility changes
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        syncSessionAndRedirect();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
 
   const { SessionExpireResponseMessage } = useSelector((state) => state.auth);
 
@@ -118,6 +157,7 @@ const App = () => {
         const response = await axios.get("/version.json", {
           cache: "no-store",
         });
+
         return response.data.version;
       } catch (error) {
         console.error("Error fetching version:", error);

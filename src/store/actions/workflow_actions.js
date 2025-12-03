@@ -23,9 +23,9 @@ import {
   ValidateEncryptedStringSignatureDataRM,
 } from "../../commen/apis/Api_config";
 import { workflowApi, dataRoomApi } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
-import axios from "axios";
 
 // crate workflow Init
 const createWorkflow_init = () => {
@@ -61,14 +61,7 @@ const createWorkflowApi = (Data, navigate, t, pdfDataJson) => {
     form.append("RequestMethod", createWorkFlowRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -234,14 +227,7 @@ const saveWorkflowApi = (
     form.append("RequestMethod", saveWorkFlowRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -396,14 +382,7 @@ const getWorkFlowByWorkFlowIdwApi = (Data, navigate, t, route) => {
     form.append("RequestMethod", getWorkFlowByFileIdRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -515,14 +494,7 @@ const addUpdateFieldValueApi = (
     form.append("RequestMethod", addUpdateFieldValueRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -659,14 +631,7 @@ const saveSignatureDocumentApi = (
     form.append("RequestMethod", saveSignatureDocumentRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(dataRoomApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -791,14 +756,7 @@ const getAnnoationSignatrueFlow = (navigate, t, data) => {
       getAnnotationOfDataroomAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance.post(dataRoomApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -890,14 +848,7 @@ const addAnnoationSignatrueFlow = (
       addAnnotationOnDataroomAttachment.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance.post(dataRoomApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1052,14 +1003,7 @@ const getAllFieldsByWorkflowIdApi = (
     form.append("RequestMethod", getAllFieldsByWorkFlowIdRM.RequestMethod);
     form.append("RequestData", JSON.stringify(newData));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1180,14 +1124,7 @@ const sendDocumentIdApi = (Data, navigate, t) => {
     form.append("RequestMethod", sendDocumentRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1269,14 +1206,7 @@ const getAllSignaturesDocumentsforCreatorApi = (navigate, t, Data) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1372,14 +1302,7 @@ const getAllPendingApprovalsStatsApi = (navigate, t) => {
     let form = new FormData();
     form.append("RequestMethod", GetAllPendingForApprovalStatsRM.RequestMethod);
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1469,14 +1392,7 @@ const getAllPendingApprovalsSignaturesApi = (navigate, t, Data) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1571,14 +1487,7 @@ const getAllPendingApprovalStatusApi = (navigate, t, Data, flag) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1693,14 +1602,7 @@ const declineReasonApi = (
     form.append("RequestMethod", DeclineReason.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1788,14 +1690,7 @@ const deleteSignatureFlowDocumentApi = (navigate, t, Data) => {
     form.append("RequestMethod", DeleteSignatureDocumentRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1919,14 +1814,7 @@ const getAllSignatoriesStatusWise_Api = (
     form.append("RequestMethod", GetAllSignatoriesStatusRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2020,14 +1908,7 @@ const UpdateActorBundleStatusApi = (navigate, t, Data) => {
     form.append("RequestMethod", updateActorBundleStatusRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2122,14 +2003,7 @@ const getDashbardPendingApprovalDataApi = (navigate, t) => {
       "RequestMethod",
       getDashboardPendingApprovalStatsRM.RequestMethod
     );
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2225,14 +2099,7 @@ const getSignatureFileAnnotationApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestMethod", GetSignatureFileAnnotationRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance.post(dataRoomApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2329,14 +2196,7 @@ const addUpdateSignatureFileAnnotationApi = (
       AddUpdateSignatureFileAnnotationRM.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance.post(dataRoomApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2472,14 +2332,7 @@ const validateEncryptedMinutesReviewerApi = (Data, navigate, t) => {
       ValidateEncryptedStringMinuteReviewDataRM.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2611,14 +2464,7 @@ const validateEncryptedStringSignatureDataApi = (Data, navigate, t, value) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: workflowApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(workflowApi,form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

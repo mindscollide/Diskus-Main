@@ -1042,7 +1042,7 @@ const AgendaWise = ({
                                                     {showMoreIndex ===
                                                     detailIndex
                                                       ? t("Hide-details")
-                                                      : t("Show-more")}
+                                                      : t("Show-details")}
                                                   </span>
                                                 </Col>
                                               </Row>

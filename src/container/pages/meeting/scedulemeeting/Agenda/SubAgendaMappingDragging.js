@@ -513,7 +513,6 @@ const SubAgendaMappingDragging = ({
                                                   : styles["SubAgendaArrow"]
                                               }
                                               onClick={() => {
-                                                parentIslockedCheck ||
                                                   handleSubMenuExpand(
                                                     index,
                                                     subIndex
@@ -869,7 +868,6 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                    parentIslockedCheck ||
                                                       handleSubMenuExpand(
                                                         index,
                                                         subIndex
@@ -877,7 +875,6 @@ const SubAgendaMappingDragging = ({
                                                   }}
                                                 />
                                               ) : (
-                                                // t("Show-more")
                                                 <Button
                                                   text={t(
                                                     "Description-and-attachement"
@@ -896,7 +893,6 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                    parentIslockedCheck ||
                                                       handleSubMenuExpand(
                                                         index,
                                                         subIndex

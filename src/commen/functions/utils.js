@@ -210,9 +210,11 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
 
     localStorage.setItem("roleID", response.roleId);
     if (response.authToken) {
+      sessionStorage.setItem("userID", JSON.stringify(response.authToken.userID));
       localStorage.setItem("name", response.authToken.name);
       localStorage.setItem("userEmail", response.authToken.userName);
       localStorage.setItem("token", JSON.stringify(response.authToken.token));
+      sessionStorage.setItem("token", JSON.stringify(response.authToken.token));
       localStorage.setItem(
         "refreshToken",
         JSON.stringify(response.authToken.refreshToken)
@@ -543,6 +545,7 @@ export const extractActionFromUrl = (url) => {
 };
 
 const NewfileFormatforSignatureFlow = [
+  
   // PDF Formats
   "pdf",
   "fdf",
@@ -571,6 +574,7 @@ const NewfileFormatforSignatureFlow = [
   "odp",
   "wpf",
   "txt",
+  
   // Image Formats
   "bmp",
   "wmf",

@@ -1,4 +1,4 @@
-import axios from "axios";
+
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
@@ -11,6 +11,7 @@ import {
   updateAndOpenByAndDescriptionRM,
 } from "../../commen/apis/Api_config";
 import { showFileDetailsModal } from "./DataRoom_actions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const getFileandFolderDetail_Init = () => {
   return {
@@ -39,14 +40,8 @@ const getFilesandFolderDetailsApi = (navigate, t, Data, setDetailView) => {
     let form = new FormData();
     form.append("RequestMethod", getFileFolderDetailsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -126,14 +121,8 @@ const updateFileandFolderDetailsApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestMethod", updateAndOpenByAndDescriptionRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -220,14 +209,8 @@ const getDataAnalyticsApi = (
     let form = new FormData();
     form.append("RequestMethod", getDataAnalyticsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -320,14 +303,8 @@ const getDataAnalyticsCountApi = (
     let form = new FormData();
     form.append("RequestMethod", getDataAnalyticsCountRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -427,9 +404,7 @@ const validateEncryptedStringViewFileLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(dataRoomApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -577,9 +552,7 @@ const validateEncryptedStringViewFolderLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(dataRoomApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(dataRoomApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

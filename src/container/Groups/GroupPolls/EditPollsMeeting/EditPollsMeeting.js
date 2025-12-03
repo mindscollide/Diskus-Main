@@ -558,6 +558,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     components={animatedComponents}
                     isMulti
                     value={selectedsearch}
+                    isDisabled={checkForPollStatus}
                     onChange={handleSelectValue}
                     filterOption={customFilter}
                   />

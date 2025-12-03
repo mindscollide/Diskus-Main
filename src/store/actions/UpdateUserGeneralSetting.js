@@ -8,8 +8,8 @@ import {
   revokeMicrosoftToken,
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "../actions/Auth_action";
-import axios from "axios";
 import { getUserSetting } from "../actions/GetUserSetting";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const updateUserSettinginit = () => {
   return {
@@ -154,14 +154,8 @@ const updateUserSettingFunc = (
     let form = new FormData();
     form.append("RequestMethod", updateOrganizationUserSetting.RequestMethod);
     form.append("RequestData", JSON.stringify(Data2));
-    axios({
-      method: "post",
-      url: settingApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+    .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -264,14 +258,8 @@ const getGoogleValidToken = (
     let form = new FormData();
     form.append("RequestMethod", googleValidToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getCalender,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await       axiosInstance.post(getCalender,form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -497,14 +485,8 @@ const revokeToken = (
     let form = new FormData();
     form.append("RequestMethod", revoketoken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: getCalender,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await       axiosInstance.post(getCalender,form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -805,11 +787,7 @@ const getMicrosoftValidToken = (
     form.append("RequestMethod", validateMicrosoftToken.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     try {
-      const response = await axios.post(getCalender, form, {
-        headers: {
-          _token: token,
-        },
-      });
+      const response = await axiosInstance.post(getCalender, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -950,14 +928,8 @@ const revokeMicrosoftTokenApi = (
     dispatch(revokeMicrosoftToken_Init());
     let form = new FormData();
     form.append("RequestMethod", revokeMicrosoftToken.RequestMethod);
-    await axios({
-      method: "post",
-      url: getCalender,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await       axiosInstance.post(getCalender,form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

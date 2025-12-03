@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { RefreshToken } from "../actions/Auth_action";
 import { dataRoomApi, toDoListApi } from "../../commen/apis/Api_ends_points";
 import {
@@ -32,6 +32,7 @@ import {
 } from "./Polls_actions";
 import { updateTodoStatusFunc } from "./GetTodos";
 import { emptyCommentState } from "./Post_AssigneeComments";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const ClearMappingFolderID = () => {
   return {
@@ -126,20 +127,13 @@ const getTodoListFail = (message) => {
 
 //get todolist api
 const GetTodoListByUser = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoListInit());
     let form = new FormData();
     form.append("RequestMethod", getToDoListByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -214,20 +208,13 @@ const setTodoStatusDataFormSocket = (response) => {
 //Creating A ToDoList
 
 const CreateToDoList = (navigate, object, t, setCreateTaskID, value) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
     form.append("RequestMethod", createToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -350,7 +337,6 @@ const GetAllAssigneesFail = (message) => {
 //  pending for deletion for qm
 
 const GetAllAssigneesToDoList = (navigate, object, t, check) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
     // UserID: id,
@@ -361,14 +347,8 @@ const GetAllAssigneesToDoList = (navigate, object, t, check) => {
     let form = new FormData();
     form.append("RequestMethod", getAllAssigneesToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -444,20 +424,13 @@ const ViewToDoFail = (message) => {
 //View To-Do
 
 const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(toDoListLoaderStart());
     let form = new FormData();
     form.append("RequestMethod", getToDoListByToDoListID.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -528,7 +501,6 @@ const ViewToDoList = (navigate, object, t, setViewFlagToDo) => {
 
 //Update To-Do List
 const UpdateToDoList = (navigate, object, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 };
   return (dispatch) => {
@@ -536,14 +508,8 @@ const UpdateToDoList = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", updateToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -599,20 +565,13 @@ const UpdateToDoList = (navigate, object, t) => {
 // search todolist
 //get todolist api
 const searchTodoListByUser = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoListInit());
     let form = new FormData();
     form.append("RequestMethod", searchTodoList.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -683,20 +642,13 @@ const getWeeklyToDoCountFail = (message) => {
 
 //Get Week meetings
 const GetWeeklyToDoCount = (navigate, data, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(SetSpinnersTrue());
     let form = new FormData();
     form.append("RequestMethod", getWeekToDo.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -769,7 +721,6 @@ const searchTodoList_fail = (message) => {
 };
 
 const SearchTodoListApi = (navigate, searchData, page, size, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     Date:
@@ -790,14 +741,8 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
     let form = new FormData();
     form.append("RequestMethod", searchTodoListRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -883,7 +828,6 @@ const deleteTodoCommentSpinner = (payload) => {
   };
 };
 const deleteCommentApi = (navigate, t, commmentID, taskID) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     PK_TCID: Number(commmentID),
@@ -897,14 +841,8 @@ const deleteCommentApi = (navigate, t, commmentID, taskID) => {
     let form = new FormData();
     form.append("RequestMethod", DeleteCommentRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1002,21 +940,13 @@ const deleteGroupTask_fail = (message) => {
   };
 };
 const deleteGroupTaskApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(deleteGroupTask_init());
     let form = new FormData();
     form.append("RequestMethod", deleteGroupTaskRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1098,14 +1028,8 @@ const deleteCommitteeTaskApi = (navigate, t, Data) => {
     let form = new FormData();
     form.append("RequestMethod", deleteCommitteeTaskRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1193,14 +1117,7 @@ const uploadDocumentsTaskApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await  axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1303,14 +1220,7 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await  axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -1394,14 +1304,7 @@ const createUpdateTaskDataRoomApi = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", createupdateTaskDataroom.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await  axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -1531,14 +1434,8 @@ const saveTaskDocumentsAndAssigneesApi = (
     let form = new FormData();
     form.append("RequestMethod", saveTaskandAssgineesRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: toDoListApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(toDoListApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1648,14 +1545,7 @@ const saveTaskDocumentsApi = (
       let form = new FormData();
       form.append("RequestMethod", saveTaskDocuments.RequestMethod);
       form.append("RequestData", JSON.stringify(Data));
-      await axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      await axiosInstance.post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -1843,14 +1733,8 @@ const getDashbardTaskDataApi = (navigate, t) => {
       await dispatch(getDashbardTaskData_init());
       let form = new FormData();
       form.append("RequestMethod", getDashboardTaskStatsRM.RequestMethod);
-      axios({
-        method: "post",
-        url: toDoListApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      })
+      axiosInstance
+        .post(toDoListApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -1926,7 +1810,6 @@ const validateEncryptedStringViewTaskListLinkApi = (
   return async (dispatch) => {
     try {
       let data = { EncryptedString: encryptedString };
-      let token = JSON.parse(localStorage.getItem("token"));
 
       dispatch(validateEncryptedStringViewTaskListLink_Init());
 
@@ -1937,9 +1820,7 @@ const validateEncryptedStringViewTaskListLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(toDoListApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(toDoListApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
@@ -2096,9 +1977,7 @@ const validateEncryptedStringViewTaskDetailLinkApi = (
       );
       form.append("RequestData", JSON.stringify(data));
 
-      let response = await axios.post(toDoListApi, form, {
-        headers: { _token: token },
-      });
+      let response = await axiosInstance.post(toDoListApi, form);
 
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));

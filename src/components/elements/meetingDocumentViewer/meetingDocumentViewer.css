@@ -1,0 +1,59 @@
+.documnetviewer {
+  width: 91vw;
+  margin: 0 auto 0 0;
+  height: 91vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.webviewer {
+  height: 100vh;
+}
+
+.UnsavedChanges_Annotation {
+  color: #5a5a5a !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  text-align: center;
+}
+
+.No_UnsavedChanges_Annotationd {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+}
+
+.No_UnsavedChanges_Annotation:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+}
+
+.Yes_UnsavedChanges_Annotation {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6127d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}
+
+.Yes_UnsavedChanges_Annotation:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6127d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+}

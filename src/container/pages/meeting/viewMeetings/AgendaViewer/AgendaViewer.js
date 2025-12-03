@@ -569,9 +569,9 @@ const AgendaViewer = () => {
     // }
   };
 
-  const groupChatInitiation = async (data) => {
-    console.log(data, "datadatadata");
-    if (data.talkGroupID !== 0) {
+  const groupChatInitiation = async (talkChatID) => {
+    console.log(talkChatID, "datadatadata");
+    if (talkChatID !== 0) {
       await dispatch(createShoutAllScreen(false));
       await dispatch(addNewChatScreen(false));
       await dispatch(footerActionStatus(false));
@@ -580,13 +580,13 @@ const AgendaViewer = () => {
       await dispatch(activeChatBoxGS(true));
       await dispatch(headerShowHideStatus(true));
       await dispatch(footerShowHideStatus(true));
-      setTalkGroupID(data.talkGroupID);
+      setTalkGroupID(talkChatID);
       let currentUserId = localStorage.getItem("userID");
       let currentOrganizationId = localStorage.getItem("organizationID");
       let chatGroupData = {
         UserID: parseInt(currentUserId),
         ChannelID: currentOrganizationId,
-        GroupID: data.talkGroupID,
+        GroupID: talkChatID,
         NumberOfMessages: 50,
         OffsetMessage: 0,
       };
@@ -629,6 +629,8 @@ const AgendaViewer = () => {
       const foundRecord = allChatMessages.allMessages.find(
         (item) => item.id === talkGroupID
       );
+      console.log(AllUserChats,talkGroupID, "AllUserChatsAllUserChats");
+
       if (foundRecord) {
         dispatch(chatBoxActiveFlag(true));
         localStorage.setItem("activeOtoChatID", talkGroupID);

@@ -44,10 +44,10 @@ import {
   downloadAttachmentTalk,
 } from "../../commen/apis/Api_config";
 import { changeMQTTJSONOne } from "../../commen/functions/MQTTJson";
-import axios from "axios";
 import { talkApi, talkApiReport } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 import { chatBoxActiveFlag, retryFlagState } from "./Talk_Feature_actions";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 // Refresh Token Talk Success
 const refreshtokenTalkSuccess = (response, message) => {
@@ -81,11 +81,9 @@ const RefreshTokenTalk = (props) => {
     let form = new FormData();
     form.append("RequestMethod", refreshTokenTalk.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-    })
+    axiosInstance
+      .post(talkApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 200) {
           await dispatch(
@@ -268,15 +266,8 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
     let form = new FormData();
     form.append("RequestMethod", getAllUserChats.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -390,14 +381,8 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
     form.append("RequestMethod", getUserOTOMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -494,14 +479,8 @@ const GetOTOUserUndeliveredMessages = (t) => {
     form.append("RequestMethod", getUndeliveredUserOTOMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -589,14 +568,8 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
     form.append("RequestMethod", getGroupMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -692,14 +665,8 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
     form.append("RequestMethod", getBroadCastMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -792,14 +759,8 @@ const GetArchivedDataByUserID = (t) => {
     form.append("RequestMethod", getArchivedDataByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -882,14 +843,8 @@ const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
     form.append("RequestMethod", getFlagMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -974,14 +929,8 @@ const GetFollowMessages = (t) => {
     form.append("RequestMethod", getFollowMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1064,14 +1013,8 @@ const GetRecentTags = (t) => {
     form.append("RequestMethod", getAllRecentTags.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1156,14 +1099,8 @@ const GetTagsMessages = (t) => {
     form.append("RequestMethod", getTagsMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1247,14 +1184,8 @@ const GetMessageSentReceiveTime = (t) => {
     form.append("RequestMethod", getMessageSentReceivedTime.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1337,14 +1268,8 @@ const GetRecentFlagCount = (t) => {
     form.append("RequestMethod", getRecentFlagCount.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1430,14 +1355,8 @@ const GetRecentFollowDataCount = (t) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1520,14 +1439,8 @@ const GetAllRecentTagsCount = (t) => {
     form.append("RequestMethod", getAllRecentTagsCount.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1613,14 +1526,8 @@ const GetRecentDataArchiveCount = (t) => {
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1702,14 +1609,8 @@ const GetBlockedUsersCount = (t) => {
     let form = new FormData();
     form.append("RequestMethod", getBlockedUsersCount.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -1790,14 +1691,8 @@ const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
     let form = new FormData();
     form.append("RequestMethod", getBlockedUsers.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -1881,14 +1776,8 @@ const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
     let form = new FormData();
     form.append("RequestMethod", getAllUsers.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -1977,14 +1866,8 @@ const GetAllUsersGroupsRoomsList = (
     let form = new FormData();
     form.append("RequestMethod", getAllUsersGroupsRoomsList.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(navigate, t));
@@ -2073,14 +1956,8 @@ const GetActiveUsersByGroupID = (t) => {
     let form = new FormData();
     form.append("RequestMethod", getActiveUsersByGroupID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -2162,14 +2039,8 @@ const GetActiveUsersByRoomID = (t) => {
     let form = new FormData();
     form.append("RequestMethod", getActiveUsersByRoomID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           // await dispatch(RefreshTokenTalk(t))
@@ -2245,14 +2116,8 @@ const GetActiveUsersByBroadcastID = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", getActiveUsersByBroadcastID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate));
@@ -2337,14 +2202,9 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
     form.append("RequestMethod", insertOTOMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     form.append("Files", fileUploadData);
-    await axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    await axiosInstance
+      .post(talkApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2533,14 +2393,8 @@ const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
     form.append("RequestMethod", insertPrivateGroupMessage.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     form.append("Files", fileUploadData);
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2675,14 +2529,8 @@ const BlockUnblockUser = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", blockUnblockUser.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2778,14 +2626,8 @@ const DeleteSingleMessage = (navigate, object, t) => {
     form.append("RequestMethod", deleteSingleMessage.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2849,14 +2691,8 @@ const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
     form.append("RequestMethod", insertBroadcastMessage.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     form.append("Files", fileUploadData);
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2950,14 +2786,8 @@ const CreateShoutAll = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", createShoutAll.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3044,14 +2874,8 @@ const CreatePrivateGroup = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", createTalkPrivateGroup.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3149,14 +2973,8 @@ const GetAllPrivateGroupMembers = (navigate, object, t) => {
     form.append("RequestMethod", getPrivateGroupMembers.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -3222,14 +3040,8 @@ const UpdatePrivateGroup = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", updatePrivateGroup.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3324,14 +3136,8 @@ const MarkStarredUnstarredMessage = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", markStarredMessage.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3419,14 +3225,8 @@ const LeaveGroup = (navigate, object, t) => {
     let form = new FormData();
     form.append("RequestMethod", leaveGroup.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3526,14 +3326,8 @@ const DeleteShout = (navigate, object, t) => {
     form.append("RequestMethod", deleteShoutAll.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
 
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshTokenTalk(navigate, t));
@@ -3615,14 +3409,8 @@ const UpdateShoutAll = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", updateShoutAll.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3715,14 +3503,8 @@ const InsertBulkMessages = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", insertBulkMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3798,15 +3580,9 @@ const DownloadChat = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", downloadChat.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApiReport,
-      data: form,
-      headers: {
-        _token: token,
-      },
-      // responseType: "blob",
-    })
+    axiosInstance
+      .post(talkApiReport, form)
+
       .then(async (response) => {
         console.log("Talk Chat Response", response);
         const blob = new Blob([response.data], { type: "application/txt" });
@@ -3830,15 +3606,8 @@ const PrintChat = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", downloadChat.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApiReport,
-      data: form,
-      headers: {
-        _token: token,
-      },
-      // responseType: "blob",
-    })
+    axiosInstance
+      .post(talkApiReport, form)
       .then(async (response) => {
         console.log("Talk Chat Response", response);
         const printWindow = window.open("", "_blank");
@@ -3881,14 +3650,8 @@ const EmailChat = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", downloadChat.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApiReport,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApiReport, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -3974,14 +3737,8 @@ const UpdateMessageAcknowledgement = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", updateMessageAcknowledgement.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -4090,14 +3847,8 @@ const GetAllStarredMessages = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", getAllStarredMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -4196,14 +3947,8 @@ const DeleteMultipleMessages = (object, t, navigate) => {
     let form = new FormData();
     form.append("RequestMethod", deleteMultipleGroupMessages.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
-    axios({
-      method: "post",
-      url: talkApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(talkApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -4302,19 +4047,15 @@ const DownloadTalkFile = (navigate, Data, ext, originalFileName, t) => {
   }
   return (dispatch) => {
     // dispatch(DownloadLoaderStart());
-    axios({
-      method: "post",
-      url: talkApiReport,
-      data: form,
-      headers: {
-        _token: token,
-        "Content-Disposition": "attachment; filename=template." + ext,
-        // "Content-Type":
-        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Type": contentType,
-      },
-      responseType: "blob",
-    })
+    axiosInstance
+      .post(talkApiReport, form, {
+        headers: {
+          "Content-Disposition": "attachment; filename=template." + ext,
+          "Content-Type": contentType,
+        },
+        responseType: "blob",
+      })
+
       .then(async (response) => {
         if (response.status === 417) {
           await dispatch(RefreshToken(navigate, t));

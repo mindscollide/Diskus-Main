@@ -116,7 +116,7 @@ const SubAgendaView = ({ MainAgendaData, MainAgendaIndex }) => {
                                                 >
                                                   {expandSubAgenda
                                                     ? t("Hide-details")
-                                                    : t("Show-more")}
+                                                    : t("Show-details")}
                                                 </span>
                                               </Col>
                                             </Row>

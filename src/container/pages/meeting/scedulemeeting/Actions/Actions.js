@@ -216,7 +216,7 @@ const Actions = ({
           });
         }
       }
-    } catch {}
+    } catch { }
   }, [toDoListReducer.socketTodoStatusData]);
 
   useEffect(() => {
@@ -327,7 +327,8 @@ const Actions = ({
       ),
       dataIndex: "title",
       key: "title",
-      width: "25%",
+      ellipsis: true,
+      width: "35%",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
@@ -343,7 +344,7 @@ const Actions = ({
       }),
       render: (text, record) => (
         <p
-          className="todolist-title-col"
+          className="todolist-title-col m-0"
           title={text}
           onClick={(e) => viewActionModal(record)}
         >
@@ -366,10 +367,10 @@ const Actions = ({
       ),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "25%",
       align: "center",
+      width: "15%",
+
       sortDirections: ["descend", "ascend"],
-      // align: "left",
       onHeaderCell: () => ({
         onClick: () => {
           setTaskAssignedBySort((order) => {
@@ -415,10 +416,11 @@ const Actions = ({
           </span>
         </>
       ),
-      width: "25%",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       align: "center",
+      width: "15%",
+
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.taskAssignedTo[0].name
@@ -484,7 +486,7 @@ const Actions = ({
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       ellipsis: true,
-      width: "10%",
+      width: "15%",
 
       align: "center",
       sortDirections: ["descend", "ascend"],
@@ -502,6 +504,7 @@ const Actions = ({
         utcConvertintoGMT(b.deadlineDateTime),
 
       render: (text, record) => {
+        console.log(record, "deadlineDateTime");
         return (
           <span className="text-nowrap text-center">
             {_justShowDateformatBilling(record.deadlineDateTime)}
@@ -513,8 +516,9 @@ const Actions = ({
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      align: "center",
       width: "15%",
+
+      align: "center",
       filterResetToDefaultFilteredValue: true,
       filterIcon: (filtered) => (
         <ChevronDown
@@ -543,18 +547,18 @@ const Actions = ({
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending  custom-class "
-                    : text.pK_TSID === 3
-                    ? "Upcoming  custom-class "
-                    : text.pK_TSID === 4
-                    ? "Cancelled  custom-class "
-                    : text.pK_TSID === 5
-                    ? "Completed  custom-class "
-                    : null
+                      ? "Pending  custom-class "
+                      : text.pK_TSID === 3
+                        ? "Upcoming  custom-class "
+                        : text.pK_TSID === 4
+                          ? "Cancelled  custom-class "
+                          : text.pK_TSID === 5
+                            ? "Completed  custom-class "
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
-                {statusOptions.map((optValue, index) => {
+                {statusOptions.map((optValue) => {
                   return (
                     <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
@@ -571,14 +575,14 @@ const Actions = ({
                 text.pK_TSID === 1
                   ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
-                  : null
+                    ? "Pending  custom-class color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                      ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                        ? "Cancelled   custom-class color-5a5a5a text-center my-1"
+                        : text.pK_TSID === 5
+                          ? "Completed   custom-class color-5a5a5a  text-center my-1"
+                          : null
               }
             >
               {text.status}
@@ -594,6 +598,7 @@ const Actions = ({
       dataIndex: "",
       key: "taskCreator",
       width: "5%",
+
       render: (record, index) => {
         if (parseInt(record?.taskCreator?.pK_UID) === parseInt(userID)) {
           return (
@@ -647,7 +652,7 @@ const Actions = ({
         setOriginalData([]);
         setTotalRecords(0);
       }
-    } catch {}
+    } catch { }
   }, [actionMeetingReducer.todoListMeetingTask]);
 
   useEffect(() => {
@@ -713,7 +718,7 @@ const Actions = ({
   };
 
   return (
-    <section>
+    <section className="position-relative">
       {createaTask ? (
         <CreateTask
           setCreateaTask={setCreateaTask}
@@ -804,7 +809,7 @@ const Actions = ({
                   </Row>
 
                   {actionsRows.length > 0 && (
-                    <Row className="">
+                    <Row className="tasks_pagination">
                       <Col
                         lg={12}
                         md={12}
@@ -868,11 +873,11 @@ const Actions = ({
                   Number(editorRole.status) === 12) &&
                   editorRole.role === "Organizer" &&
                   isEditMeeting === true) ||
-                ((Number(editorRole.status) === 9 ||
-                  Number(editorRole.status) === 10) &&
-                  (editorRole.role === "Participant" ||
-                    editorRole.role === "Agenda Contributor") &&
-                  isEditMeeting === true) ? (
+                  ((Number(editorRole.status) === 9 ||
+                    Number(editorRole.status) === 10) &&
+                    (editorRole.role === "Participant" ||
+                      editorRole.role === "Agenda Contributor") &&
+                    isEditMeeting === true) ? (
                   <></>
                 ) : null}
               </Col>

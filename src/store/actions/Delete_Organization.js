@@ -1,8 +1,9 @@
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
-import axios from "axios";
+
 import { deleteOrganizationAPI } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
+import axiosInstance from "../../commen/functions/axiosInstance";
 
 const deleteOrganizationInit = () => {
   return {
@@ -36,14 +37,8 @@ const deleteOrganizationAction = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", deleteOrganizationAPI.RequestMethod);
-    axios({
-      method: "post",
-      url: getAdminURLs,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance.post(getAdminURLs,form)
+  
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

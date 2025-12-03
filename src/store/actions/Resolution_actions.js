@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   updateResolutionDataRoomMapRM,
   saveResolutionDocumentsRM,
@@ -24,6 +23,7 @@ import {
   getResolutionApi,
   pollApi,
 } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 import { AccessDeniedPolls } from "./Polls_actions";
@@ -54,7 +54,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API for Resolution
 const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -67,14 +66,9 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -94,7 +88,6 @@ const saveFilesResolutionApi = (navigate, t, data, folderID, newFolder) => {
               console.log(fileIds, "newFileID");
               fileIds.map((newFileID, index) => {
                 console.log(newFileID, "newFileID");
-
                 return newFolder.push({
                   DisplayFileName: newFileID.displayFileName,
                   DiskusFileName: newFileID.diskusFileNameString,
@@ -161,22 +154,17 @@ const uploadDocument_fail = (message) => {
 
 // Upload Documents API for Resolution
 const uploadDocumentsResolutionApi = (navigate, t, data, folderID, newfile) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let creatorID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
+
   return async (dispatch) => {
     dispatch(uploadDocument_init());
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -257,21 +245,14 @@ const updateResolutionDataRoom_fail = (message) => {
 };
 
 const updateResolutionDataRoomApi = (navigate, t, Data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(updateResolutionDataRoom_init());
     let form = new FormData();
     form.append("RequestMethod", updateResolutionDataRoomMapRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -310,7 +291,6 @@ const updateResolutionDataRoomApi = (navigate, t, Data) => {
                 )
             ) {
               localStorage.setItem("resolutionID", Data.ResolutionID);
-
               dispatch(
                 updateResolutionDataRoom_success(
                   response.data.responseResult.folderID,
@@ -400,22 +380,17 @@ const saveResolutionDocuments_fail = (message) => {
 };
 
 const saveResolutionDocumentsApi = (navigate, t, data) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let currentView = localStorage.getItem("ButtonTab");
   let resolutionView = localStorage.getItem("resolutionView");
+
   return (dispatch) => {
     dispatch(saveResolutionDocuments_init());
     let form = new FormData();
     form.append("RequestMethod", saveResolutionDocumentsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -446,7 +421,6 @@ const saveResolutionDocumentsApi = (navigate, t, data) => {
               } else {
                 dispatch(getVoterResolution(navigate, Number(currentView), t));
               }
-              // updateResolutionDataRoom_fail
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -550,19 +524,13 @@ const getAllVoting_Fail = (message) => {
 
 // Get All Voting Methods Api
 const getAllVotingMethods = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllVoting_Init());
     let form = new FormData();
     form.append("RequestMethod", getAllVotingRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -632,19 +600,13 @@ const getAllResolutionStatus_Fail = (message) => {
 
 // Get All Resolution Status Api
 const getAllResolutionStatus = (navigate, t, loader) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllResolutionStatus_Init());
     let form = new FormData();
     form.append("RequestMethod", getAllVotingStatusRequestMethod.RequestMethod);
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -715,7 +677,6 @@ const getResolutions = (
   circulationDate,
   votingDateLine
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
   let moderatorRows = JSON.parse(localStorage.getItem("moderatorRows"));
@@ -735,19 +696,15 @@ const getResolutions = (
         ? votingDateLine
         : "",
   };
+
   return (dispatch) => {
     dispatch(getResolutions_Init());
     let form = new FormData();
     form.append("RequestMethod", getResolutionsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -789,6 +746,7 @@ const getResolutions = (
       });
   };
 };
+
 const createResolution_Init = () => {
   return {
     type: actions.SCHEDULE_RESOLUTION_INIT,
@@ -804,20 +762,14 @@ const createResolution_Fail = (message) => {
 
 // Create Resolution Api
 const createResolution = (navigate, Data, voters, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createResolution_Init());
     let form = new FormData();
     form.append("RequestMethod", scheduleResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -864,7 +816,6 @@ const createResolution = (navigate, Data, voters, t) => {
                 IsUpdateFlow: true,
                 VotersList: newArr,
               };
-
               await dispatch(updateResolutionDataRoomApi(navigate, t, NewData));
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -954,7 +905,6 @@ const updateResolution = (
 
   console.log(tasksAttachments, "tasksAttachments");
 
-  let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(updateResolution_Init());
     let form = new FormData();
@@ -963,14 +913,9 @@ const updateResolution = (
       addUpdateResolutionRequestMethod.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data2));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1044,13 +989,6 @@ const updateResolution = (
                 UpdateFileList: newArr,
               };
               dispatch(saveResolutionDocumentsApi(navigate, t, Data));
-              // dispatch(createResolutionModal(false));
-              // dispatch(updateResolutionModal(false));
-              // if (Number(resolutionView) === 1) {
-              //   dispatch(getResolutions(navigate, Number(currentView), t));
-              // } else {
-              //   dispatch(getVoterResolution(navigate, Number(currentView), t));
-              // }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()
@@ -1069,19 +1007,23 @@ const updateResolution = (
               dispatch(saveFiles_fail(""));
 
               localStorage.removeItem("resolutionID");
+            } else {
+              // Handle unexpected response messages
+              dispatch(updateResolution_Fail(t("Something-went-wrong")));
+              dispatch(updateResolutionDataRoom_fail(""));
+              dispatch(saveFiles_fail(""));
+              localStorage.removeItem("resolutionID");
             }
           } else {
             dispatch(updateResolution_Fail(t("Something-went-wrong")));
             dispatch(updateResolutionDataRoom_fail(""));
             dispatch(saveFiles_fail(""));
-
             localStorage.removeItem("resolutionID");
           }
         } else {
           dispatch(updateResolution_Fail(t("Something-went-wrong")));
           dispatch(updateResolutionDataRoom_fail(""));
           dispatch(saveFiles_fail(""));
-
           localStorage.removeItem("resolutionID");
         }
       })
@@ -1092,6 +1034,7 @@ const updateResolution = (
       });
   };
 };
+
 const getResolutionById_Init = () => {
   return {
     type: actions.GET_RESOLUTION_BY_RESOLUTION_ID_INIT,
@@ -1110,9 +1053,9 @@ const getResolutionById_Fail = (message) => {
     message: message,
   };
 };
+
 // Get Resolution by Resolution ID Api
 const getResolutionbyResolutionID = (navigate, id, t, no) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     ResolutionID: JSON.parse(id),
   };
@@ -1122,14 +1065,9 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
     let form = new FormData();
     form.append("RequestMethod", getResolutionByIDRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1192,6 +1130,7 @@ const getResolutionbyResolutionID = (navigate, id, t, no) => {
       });
   };
 };
+
 const getResolutionResult_Init = () => {
   return {
     type: actions.GET_RESOLUTION_RESULTS_DETAILS_INIT,
@@ -1210,9 +1149,14 @@ const getResolutionResult_Fail = (message) => {
     message: message,
   };
 };
-// Get Resolution Result Api
-const getResolutionResult = (navigate, id, t, setResultresolution) => {
-  let token = JSON.parse(localStorage.getItem("token"));
+const getResolutionResult = (
+  navigate,
+  id,
+  t,
+  setResultresolution,
+  setIsResolutionClosed,
+  isClosed
+) => {
   let userID = JSON.parse(localStorage.getItem("userID"));
   let Data = {
     ResolutionID: JSON.parse(id),
@@ -1223,18 +1167,22 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
     let form = new FormData();
     form.append("RequestMethod", getResolutionResultsDetails.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getResolutionResult(navigate, id, t, setResultresolution));
+          dispatch(
+            getResolutionResult(
+              navigate,
+              id,
+              t,
+              setResultresolution,
+              setIsResolutionClosed,
+              isClosed
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1244,6 +1192,7 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               dispatch(
                 getResolutionResult_Success(response.data.responseResult, "")
               );
+              setIsResolutionClosed(isClosed);
               setResultresolution(true);
               dispatch(resultResolutionFlag(true));
               localStorage.setItem("ResolutionID", id);
@@ -1270,11 +1219,13 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
       });
   };
 };
+
 const getVotesDetail_Init = () => {
   return {
     type: actions.GET_VOTESDETAILSBYID_INIT,
   };
 };
+
 const getVotesDetail_Success = (response, message) => {
   return {
     type: actions.GET_VOTESDETAILSBYID_SUCCESS,
@@ -1282,15 +1233,16 @@ const getVotesDetail_Success = (response, message) => {
     message: message,
   };
 };
+
 const getVotesDetail_Fail = (message) => {
   return {
     type: actions.GET_VOTESDETAILSBYID_FAIL,
     message: message,
   };
 };
+
 // Get Voting Details
 const getVotesDetails = (navigate, id, t, setVoteresolution) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let Data = {
     ResolutionID: JSON.parse(id),
@@ -1301,14 +1253,9 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
     let form = new FormData();
     form.append("RequestMethod", getVoteDetailsByID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1349,11 +1296,13 @@ const getVotesDetails = (navigate, id, t, setVoteresolution) => {
       });
   };
 };
+
 const cancelResolution_Init = () => {
   return {
     type: actions.CANCEL_RESOLUTION_INIT,
   };
 };
+
 const cancelResolution_Success = (response, message) => {
   return {
     type: actions.CANCEL_RESOLUTION_SUCCESS,
@@ -1361,12 +1310,14 @@ const cancelResolution_Success = (response, message) => {
     message: message,
   };
 };
+
 const cancelResolution_Fail = (message) => {
   return {
     type: actions.CANCEL_RESOLUTION_FAIL,
     message: message,
   };
 };
+
 // Cancel Resolution Api
 const cancelResolutionApi = (
   navigate,
@@ -1375,7 +1326,6 @@ const cancelResolutionApi = (
   setCancelresolution,
   setCancelModal
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
@@ -1388,14 +1338,9 @@ const cancelResolutionApi = (
     let form = new FormData();
     form.append("RequestMethod", cancelResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1448,11 +1393,13 @@ const cancelResolutionApi = (
       });
   };
 };
+
 const closeResolution_Init = () => {
   return {
     type: actions.CLOSE_RESOLUTION_INIT,
   };
 };
+
 const closeResolution_Success = (response, message) => {
   return {
     type: actions.CLOSE_RESOLUTION_SUCCESS,
@@ -1460,6 +1407,7 @@ const closeResolution_Success = (response, message) => {
     message: message,
   };
 };
+
 const closeResolution_Fail = (message) => {
   return {
     type: actions.CLOSE_RESOLUTION_FAIL,
@@ -1467,7 +1415,7 @@ const closeResolution_Fail = (message) => {
   };
 };
 
-// Close Reolution Api
+// Close Resolution Api
 const closeResolutionApi = (
   navigate,
   ResolutionID,
@@ -1476,7 +1424,6 @@ const closeResolutionApi = (
   t,
   setResultresolution
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
   let Data = {
@@ -1489,14 +1436,9 @@ const closeResolutionApi = (
     let form = new FormData();
     form.append("RequestMethod", closeResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1551,11 +1493,13 @@ const closeResolutionApi = (
       });
   };
 };
+
 const updateVote_Init = () => {
   return {
     type: actions.CLOSE_RESOLUTION_INIT,
   };
 };
+
 const updateVote_Success = (response, message) => {
   return {
     type: actions.CLOSE_RESOLUTION_SUCCESS,
@@ -1563,30 +1507,27 @@ const updateVote_Success = (response, message) => {
     message: message,
   };
 };
+
 const updateVote_Fail = (message) => {
   return {
     type: actions.CLOSE_RESOLUTION_FAIL,
     message: message,
   };
 };
+
 // Update Vote Api
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
+
   return (dispatch) => {
     dispatch(updateVote_Init());
     let form = new FormData();
     form.append("RequestMethod", updateVoteRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1633,11 +1574,13 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
       });
   };
 };
+
 const getVoterResolution_init = () => {
   return {
     type: actions.SEARCH_VOTERRESOLUTION_INIT,
   };
 };
+
 const getVoterResolution_success = (response, message) => {
   return {
     type: actions.SEARCH_VOTERRESOLUTION_SUCCESS,
@@ -1645,12 +1588,14 @@ const getVoterResolution_success = (response, message) => {
     message: message,
   };
 };
+
 const getVoterResolution_fail = (message) => {
   return {
     type: actions.SEARCH_VOTERRESOLUTION_FAIL,
     message: message,
   };
 };
+
 // Get Voter Resolution Api
 const getVoterResolution = (
   navigate,
@@ -1660,7 +1605,6 @@ const getVoterResolution = (
   circulationDate,
   votingDateLine
 ) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let voterPage = JSON.parse(localStorage.getItem("voterPage"));
   let voterRows = JSON.parse(localStorage.getItem("voterRows"));
@@ -1685,14 +1629,9 @@ const getVoterResolution = (
     let form = new FormData();
     form.append("RequestMethod", getVoterResolutionRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1736,11 +1675,13 @@ const resoltionEmailRouteID = (id) => {
     response: id,
   };
 };
+
 const validateStringResolution_init = () => {
   return {
     type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_INIT,
   };
 };
+
 const validateStringResolution_success = (response, message) => {
   return {
     type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_SUCCESS,
@@ -1748,12 +1689,14 @@ const validateStringResolution_success = (response, message) => {
     message: message,
   };
 };
+
 const validateStringResolution_fail = (message) => {
   return {
     type: actions.VALIDATEENCRYPTEDSTRINGRESOLUTION_FAIL,
     message: message,
   };
 };
+
 const validateStringResolutionApi = (
   emailString,
   navigate,
@@ -1765,7 +1708,6 @@ const validateStringResolutionApi = (
     let Data = {
       EncryptedString: emailString,
     };
-    let token = JSON.parse(localStorage.getItem("token"));
 
     dispatch(validateStringResolution_init());
 
@@ -1776,14 +1718,8 @@ const validateStringResolutionApi = (
     );
     form.append("RequestData", JSON.stringify(Data));
 
-    axios({
-      method: "post",
-      url: getResolutionApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+    axiosInstance
+      .post(getResolutionApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1852,18 +1788,21 @@ const validateStringResolutionApi = (
       });
   });
 };
+
 const currentResolutionView = (response) => {
   return {
     type: actions.CURRENTRESOLUTIONSTATE,
     response: response,
   };
 };
+
 const currentClosedView = (response) => {
   return {
     type: actions.RESOLUTIONCLOSEDORNOTCLOSED,
     response: response,
   };
 };
+
 const clearResponseMessage = () => {
   return {
     type: actions.CLEAR_RESPONSEMESSAGE_RESOLUTION,
@@ -1944,6 +1883,7 @@ const getAllcommittesandGroups_init = () => {
     type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_INIT,
   };
 };
+
 const getAllcommittesandGroups_success = (response, message) => {
   return {
     type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_SUCCESS,
@@ -1951,18 +1891,20 @@ const getAllcommittesandGroups_success = (response, message) => {
     message: message,
   };
 };
+
 const getAllcommittesandGroups_fail = (message) => {
   return {
     type: actions.GETGROUPSANDCOMMITTEESFORRESOLUTION_FAIL,
     message: message,
   };
 };
+
 const getAllGroupsandCommitteesforResolution = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
   let Data = {
     OrganizationID: OrganizationID,
   };
+
   return (dispatch) => {
     dispatch(getAllcommittesandGroups_init());
     let form = new FormData();
@@ -1971,14 +1913,9 @@ const getAllGroupsandCommitteesforResolution = (navigate, t) => {
       "RequestMethod",
       getAllCommittesandGroupsforPolls.RequestMethod
     );
-    axios({
-      method: "post",
-      url: pollApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
+
+    axiosInstance
+      .post(pollApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
