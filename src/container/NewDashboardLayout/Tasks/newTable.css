@@ -18,18 +18,6 @@
   cursor: pointer;
   overflow: hidden !important;
 }
-.AssignedToMe:hover {
-  background-color: #d3f4f6 !important;
-  border: 1px solid #000 !important;
-}
-.AssignedByMe {
-  background-color: #fff !important;
-  margin-bottom: 10px !important;
-  border-radius: 4px !important;
-  height: 39px !important;
-  cursor: pointer;
-  overflow: hidden !important;
-}
 
 .newDashboardTable table tr {
   outline: none !important;
@@ -52,6 +40,9 @@
   td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
   color: #949494;
   outline: none !important;
+  font-weight: 600;
+  font-size: 12px !important;
+
 }
 
 .newDashboardTable td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
