@@ -1730,6 +1730,7 @@ const Dashboard = () => {
               data.payload.message.toLowerCase() ===
               "AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
             ) {
+              //Yeh mehdi ny bola thaa
               try {
                 const isGuid = localStorage.getItem("isGuid");
                 console.log("HostTransferEvent");
@@ -1737,8 +1738,45 @@ const Dashboard = () => {
                 const newHostGuid = data.payload.newHost?.guid;
                 console.log("HostTransferEvent");
 
+                const isHost = JSON.parse(
+                  localStorage.getItem("isMeetingVideoHostCheck")
+                );
+
                 // Check if the current user's guid matches the mqtt newHost guid
                 if (isGuid !== newHostGuid) {
+                  if (isHost) {
+                    const meetingHost = {
+                      isHost: false,
+                      isHostId: 0,
+                      isDashboardVideo: true,
+                    };
+                    console.log("makeHostOnClick", meetingHost);
+                    let newRoomId = localStorage.getItem("newRoomId");
+                    let isGuid = localStorage.getItem("isGuid");
+                    localStorage.setItem(
+                      "meetinHostInfo",
+                      JSON.stringify(meetingHost)
+                    );
+                    let refinedVideoUrl =
+                      localStorage.getItem("refinedVideoUrl");
+                    localStorage.setItem("hostUrl", refinedVideoUrl);
+                    localStorage.setItem("participantRoomId", newRoomId);
+                    localStorage.setItem("participantUID", isGuid);
+                    localStorage.setItem("isMeetingVideoHostCheck", false);
+                    localStorage.setItem("isHost", false);
+                    // localStorage.removeItem("isGuid");
+                    dispatch(participantWaitingListBox(false));
+                    dispatch(toggleParticipantsVisibility(false));
+
+                    let Data = {
+                      RoomID: String(newRoomId),
+                    };
+                    await dispatch(
+                      getVideoCallParticipantsMainApi(Data, navigate, t)
+                    );
+
+                    await dispatch(transferMeetingHostSuccess(true));
+                  }
                   // Send HostTransferEvent to iframe
                   const iframe = iframeRef.current;
                   if (iframe && iframe.contentWindow) {
