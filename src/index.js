@@ -18,6 +18,7 @@ import { NotesProvider } from "./context/NotesContext";
 import { ResolutionProvider } from "./context/ResolutionContext";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
+import { TalkProvider } from "./context/TalkContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -55,21 +56,23 @@ root.render(
   <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
     <Provider store={store}>
       <AuthProvider>
-        <MeetingProvider>
-          <GroupsProvider>
-            <CommitteeProvider>
-              <DataroomProvider>
-                <PollsProvider>
-                  <NotesProvider>
-                    <ResolutionProvider>
-                      <App />
-                    </ResolutionProvider>
-                  </NotesProvider>
-                </PollsProvider>
-              </DataroomProvider>
-            </CommitteeProvider>
-          </GroupsProvider>
-        </MeetingProvider>
+        <TalkProvider>
+          <MeetingProvider>
+            <GroupsProvider>
+              <CommitteeProvider>
+                <DataroomProvider>
+                  <PollsProvider>
+                    <NotesProvider>
+                      <ResolutionProvider>
+                        <App />
+                      </ResolutionProvider>
+                    </NotesProvider>
+                  </PollsProvider>
+                </DataroomProvider>
+              </CommitteeProvider>
+            </GroupsProvider>
+          </MeetingProvider>
+        </TalkProvider>
       </AuthProvider>
     </Provider>
   </GoogleOAuthProvider>

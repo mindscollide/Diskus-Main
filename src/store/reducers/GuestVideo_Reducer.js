@@ -36,6 +36,7 @@ const initialState = {
   voiceControleForAllByHost: false,
   voiceControleForAllByHostFlag: false,
   hostTransferFlag: false,
+  errorSeverity: null, // Added errorSeverity to initialState
 };
 
 const GuestVideoReducer = (state = initialState, action) => {
@@ -53,6 +54,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         guestVideoData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -62,6 +64,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         guestVideoData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -78,6 +81,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         validateData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -87,6 +91,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         validateData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -103,6 +108,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         joinGuestData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -112,6 +118,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         joinGuestData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -135,6 +142,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         admitRejectData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -144,6 +152,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         admitRejectData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -151,6 +160,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null, // Also clear errorSeverity
       };
     }
 
@@ -191,6 +201,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         raiseUnRaiseData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -200,6 +211,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         raiseUnRaiseData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -223,6 +235,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         removeParticipantMeetingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -232,6 +245,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         removeParticipantMeetingData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -248,6 +262,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         guestLeaveVideoMeetingData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -257,6 +272,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         guestLeaveVideoMeetingData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -273,6 +289,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         muteUnMuteSelfData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -282,6 +299,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         muteUnMuteSelfData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -331,6 +349,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         hideUnhideSelfVideo: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -340,6 +359,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         hideUnhideSelfVideo: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -372,6 +392,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         getAllParticipantGuest: data,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -381,6 +402,7 @@ const GuestVideoReducer = (state = initialState, action) => {
         Loading: false,
         getAllParticipantGuest: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -468,6 +490,7 @@ const GuestVideoReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null, // Also clear errorSeverity
       };
     default:
       return { ...state };

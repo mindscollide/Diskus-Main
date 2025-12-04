@@ -5,6 +5,7 @@ import { showMessage } from "../../../elements/snack_bar/utill";
 import { Notification } from "../../../elements";
 import { useDispatch } from "react-redux";
 import { clearGuestVideoReducerResponseMessage } from "../../../../store/actions/Guest_Video";
+import { clearMessegesVideoFeature } from "../../../../store/actions/VideoFeature_actions";
 
 const VideoCallScreen = () => {
   const dispatch = useDispatch();
@@ -12,18 +13,29 @@ const VideoCallScreen = () => {
   const ResponseMessageGuestReducer = useSelector(
     (state) => state.GuestVideoReducer.ResponseMessage
   );
+  const errorSeverityGuestReducer = useSelector(
+    (state) => state.GuestVideoReducer.errorSeverity
+  );
+
+  console.log(errorSeverityGuestReducer, "errorSeverityGuestReducer")
   useEffect(() => {
     if (
       ResponseMessageGuestReducer !== null &&
       ResponseMessageGuestReducer !== undefined &&
-      ResponseMessageGuestReducer !== ""
+      ResponseMessageGuestReducer !== "" &&
+      errorSeverityGuestReducer !== null
     ) {
-      showMessage(ResponseMessageGuestReducer, "error", setOpen);
+      showMessage(
+        ResponseMessageGuestReducer,
+        errorSeverityGuestReducer,
+        setOpen
+      );
       setTimeout(() => {
+        dispatch(clearMessegesVideoFeature());
         dispatch(clearGuestVideoReducerResponseMessage());
       }, 4000);
     }
-  }, [ResponseMessageGuestReducer]);
+  }, [ResponseMessageGuestReducer, errorSeverityGuestReducer]);
 
   return (
     <>
