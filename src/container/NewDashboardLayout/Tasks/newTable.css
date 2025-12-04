@@ -42,7 +42,6 @@
   outline: none !important;
   font-weight: 600;
   font-size: 12px !important;
-
 }
 
 .newDashboardTable td.ant-table-cell.titleDashboard.ant-table-cell-ellipsis {
@@ -149,6 +148,18 @@
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
 }
+body[dir="rtl"]
+  .newDashboardTable
+  .ant-table-tbody
+  > tr.AssignedByMe.ant-table-row
+  > td.titleDashboard {
+  border: 2px solid #e1e1e1 !important;
+  border-left: none !important;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
 
 .newDashboardTable
   .ant-table-tbody
@@ -159,6 +170,7 @@
   border-right: none !important;
   outline: none !important;
 }
+
 .newDashboardTable
   .ant-table-tbody
   > tr.AssignedByMe.ant-table-row
@@ -169,5 +181,19 @@
   border-bottom-left-radius: 0px !important;
   border-top-right-radius: 4px !important;
   border-bottom-right-radius: 4px !important;
+  outline: none !important;
+}
+
+body[dir="rtl"]
+  .newDashboardTable
+  .ant-table-tbody
+  > tr.AssignedByMe.ant-table-row
+  > td.statusDashboard {
+  border: 2px solid #e1e1e1 !important;
+  border-right: none !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
   outline: none !important;
 }

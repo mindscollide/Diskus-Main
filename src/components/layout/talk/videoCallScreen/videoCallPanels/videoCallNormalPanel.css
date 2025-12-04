@@ -29,9 +29,28 @@
   align-items: center;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
   animation: slideUp 0.5s ease-in-out;
-  z-index: 9999 !important;
+  z-index: 9999;
 }
+.more-zindexwithChatOpen {
+  z-index: 99 !important;
 
+}
+.videoCallScreen  {
+  position: fixed;
+  left: 65px;
+  width: 90%;
+  height: 57vh;
+  background-color: #fff !important;
+  bottom: 0;
+  padding: 10px 15px 15px 15px;
+  border: 1px solid #4adede;
+  border-radius: 4px !important;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+  animation: slideUp 0.5s ease-in-out;
+  z-index: 99 ;
+}
 body[dir="rtl"] .videoCallScreen {
   position: fixed;
   left: auto;

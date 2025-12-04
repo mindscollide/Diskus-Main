@@ -1,13 +1,13 @@
 .max-video-panel {
   position: fixed;
   height: 89vh;
-  top: 70px;
+  top: 78px;
   background-color: #fff !important;
   border: 1px solid #4adede !important;
   border-radius: 4px !important;
   z-index: 99 !important;
   padding: 0px 30px;
   box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.4);
-  width: 90%;
-  left: 65px;
+  width: 89%;
+  left: 66px;
 }
