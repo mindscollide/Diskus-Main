@@ -534,8 +534,7 @@ const Sidebar = () => {
   console.log("activeCall", CurrentMeetingStatus);
   return (
     <>
-      {location.pathname.includes("/Admin") ||
-      location.pathname.includes("meetingDocumentViewer") ? (
+      {location.pathname.includes("/Admin")  ? (
         ""
       ) : activateBlur ? (
         <Row className='sidebar-row'>

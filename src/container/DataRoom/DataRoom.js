@@ -240,7 +240,14 @@ const DataRoom = () => {
   const DataRoomFileAndFoldersDetailsResponseMessage = useSelector(
     (state) => state.DataRoomFileAndFoldersDetailsReducer.ResponseMessage
   );
-  console.log(DataRoomFileAndFoldersDetailsResponseMessage, "Message");
+  const errorSeverityState2 = useSelector(
+    (state) => state.DataRoomFileAndFoldersDetailsReducer.errorSeverity
+  );
+  const errorSeverityState = useSelector(
+    (state) => state.DataRoomReducer.errorSeverity
+  );
+
+  console.log(errorSeverityState2, errorSeverityState, "errorSeverityState2");
   const [fileDataforAnalyticsCount, setFileDataforAnalyticsCount] =
     useState(null);
   // this is for notification
@@ -2955,7 +2962,6 @@ const DataRoom = () => {
   }, [detaUplodingForFOlder, tasksAttachments]);
 
   // api call onscroll
-  const handleScroll = async (e) => {};
 
   useScrollerAuditBottom(async () => {
     if (getAllData.length !== totalRecords) {
@@ -3010,39 +3016,50 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found") &&
       DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Document-uploaded-successfully") &&
-      DataRoomReducer.ResponseMessage !== t("Files-saved-successfully")
+      DataRoomReducer.ResponseMessage !== t("Files-saved-successfully") &&
+      errorSeverityState !== null
     ) {
-      showMessage(DataRoomReducer.ResponseMessage, "success", setOpen);
+      showMessage(DataRoomReducer.ResponseMessage, errorSeverityState, setOpen);
       dispatch(clearDataResponseMessage());
     }
     if (
       DataRoomReducer.FolderisExistMessage !== "" &&
       DataRoomReducer.FolderisExistMessage !== t("Folder-already-exist")
     ) {
-      showMessage(DataRoomReducer.FolderisExistMessage, "success", setOpen);
+      showMessage(
+        DataRoomReducer.FolderisExistMessage,
+        errorSeverityState,
+        setOpen
+      );
       dispatch(clearDataResponseMessage());
     }
     if (
       DataRoomReducer.FileisExistMessage !== "" &&
       DataRoomReducer.FileisExistMessage !== t("File-already-exist")
     ) {
-      showMessage(DataRoomReducer.FileisExistMessage, "success", setOpen);
-      dispatch(clearDataResponseMessage());
-    }
-    if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
       showMessage(
-        DataRoomFileAndFoldersDetailsResponseMessage,
-        "success",
+        DataRoomReducer.FileisExistMessage,
+        errorSeverityState,
         setOpen
       );
-      dispatch(clearDataResponseMessageDataRoom2());
+      dispatch(clearDataResponseMessage());
     }
   }, [
     DataRoomReducer.FileisExistMessage,
     DataRoomReducer.FolderisExistMessage,
     DataRoomReducer.ResponseMessage,
-    DataRoomFileAndFoldersDetailsResponseMessage,
+    errorSeverityState,
   ]);
+  useEffect(() => {
+    if (DataRoomFileAndFoldersDetailsResponseMessage !== "") {
+      showMessage(
+        DataRoomFileAndFoldersDetailsResponseMessage,
+        errorSeverityState2,
+        setOpen
+      );
+      dispatch(clearDataResponseMessageDataRoom2());
+    }
+  }, [DataRoomFileAndFoldersDetailsResponseMessage, errorSeverityState2]);
 
   useEffect(() => {
     if (
@@ -3315,7 +3332,6 @@ const DataRoom = () => {
                       setFileDataforAnalyticsCount={
                         setFileDataforAnalyticsCount
                       }
-                      // setFileDataforAnalyticsCount
                     />
                   ) : (
                     <>
@@ -3474,44 +3490,17 @@ const DataRoom = () => {
                               getAllData !== null &&
                               gridbtnactive ? (
                                 <>
-                                  <InfiniteScroll
-                                    dataLength={getAllData.length}
-                                    next={handleScroll}
-                                    style={{
-                                      overflowX: "hidden",
-                                    }}
-                                    hasMore={
-                                      getAllData.length === totalRecords
-                                        ? false
-                                        : true
+                                  <GridViewDataRoom
+                                    data={getAllData}
+                                    sRowsData={sRowsData}
+                                    totalRecords={totalRecords}
+                                    filter_Value={filterValue}
+                                    setSearchTabOpen={setSearchTabOpen}
+                                    setDetailView={setDetailView}
+                                    setFileDataforAnalyticsCount={
+                                      setFileDataforAnalyticsCount
                                     }
-                                    height={"58vh"}
-                                    endMessage=''
-                                    loader={
-                                      getAllData.length <= totalRecords && (
-                                        <Row>
-                                          <Col
-                                            sm={12}
-                                            md={12}
-                                            lg={12}
-                                            className='d-flex justify-content-center my-3'>
-                                            <Spin indicator={antIcon} />
-                                          </Col>
-                                        </Row>
-                                      )
-                                    }>
-                                    <GridViewDataRoom
-                                      data={getAllData}
-                                      sRowsData={sRowsData}
-                                      totalRecords={totalRecords}
-                                      filter_Value={filterValue}
-                                      setSearchTabOpen={setSearchTabOpen}
-                                      setDetailView={setDetailView}
-                                      setFileDataforAnalyticsCount={
-                                        setFileDataforAnalyticsCount
-                                      }
-                                    />
-                                  </InfiniteScroll>
+                                  />
                                 </>
                               ) : getAllData.length > 0 &&
                                 getAllData !== undefined &&
@@ -3594,7 +3583,7 @@ const DataRoom = () => {
                                 <>
                                   {gridbtnactive ? (
                                     <>
-                                      <InfiniteScroll
+                                      {/* <InfiniteScroll
                                         dataLength={getAllData.length}
                                         next={handleScroll}
                                         style={{
@@ -3607,33 +3596,34 @@ const DataRoom = () => {
                                         }
                                         height={"58vh"}
                                         endMessage=''
-                                        loader={
-                                          getAllData.length <= totalRecords && (
-                                            <Row>
-                                              <Col
-                                                sm={12}
-                                                md={12}
-                                                lg={12}
-                                                className='d-flex justify-content-center my-3'>
-                                                <Spin indicator={antIcon} />
-                                              </Col>
-                                            </Row>
-                                          )
-                                        }>
-                                        <GridViewDataRoom
-                                          data={getAllData}
-                                          optionsforFolder={optionsforFolder(t)}
-                                          optionsforFile={optionsforFile(t)}
-                                          sRowsData={sRowsData}
-                                          totalRecords={totalRecords}
-                                          filter_Value={filterValue}
-                                          setSearchTabOpen={setSearchTabOpen}
-                                          setDetailView={setDetailView}
-                                          setFileDataforAnalyticsCount={
-                                            setFileDataforAnalyticsCount
-                                          }
-                                        />
-                                      </InfiniteScroll>
+                                        // loader={
+                                        //   getAllData.length <= totalRecords && (
+                                        //     <Row>
+                                        //       <Col
+                                        //         sm={12}
+                                        //         md={12}
+                                        //         lg={12}
+                                        //         className='d-flex justify-content-center my-3'>
+                                        //         <Spin indicator={antIcon} />
+                                        //       </Col>
+                                        //     </Row>
+                                        //   )
+                                        // }
+                                      > */}
+                                      <GridViewDataRoom
+                                        data={getAllData}
+                                        optionsforFolder={optionsforFolder(t)}
+                                        optionsforFile={optionsforFile(t)}
+                                        sRowsData={sRowsData}
+                                        totalRecords={totalRecords}
+                                        filter_Value={filterValue}
+                                        setSearchTabOpen={setSearchTabOpen}
+                                        setDetailView={setDetailView}
+                                        setFileDataforAnalyticsCount={
+                                          setFileDataforAnalyticsCount
+                                        }
+                                      />
+                                      {/* </InfiniteScroll> */}
                                     </>
                                   ) : listviewactive === true ? (
                                     <TableToDo
@@ -3716,7 +3706,7 @@ const DataRoom = () => {
                               getAllData !== null &&
                               gridbtnactive ? (
                                 <>
-                                  <InfiniteScroll
+                                  {/* <InfiniteScroll
                                     dataLength={getAllData.length}
                                     next={handleScroll}
                                     style={{
@@ -3741,19 +3731,19 @@ const DataRoom = () => {
                                           </Col>
                                         </Row>
                                       )
-                                    }>
-                                    <GridViewDataRoom
-                                      data={getAllData}
-                                      sRowsData={sRowsData}
-                                      totalRecords={totalRecords}
-                                      filter_Value={filterValue}
-                                      setSearchTabOpen={setSearchTabOpen}
-                                      setDetailView={setDetailView}
-                                      setFileDataforAnalyticsCount={
-                                        setFileDataforAnalyticsCount
-                                      }
-                                    />
-                                  </InfiniteScroll>
+                                    }> */}
+                                  <GridViewDataRoom
+                                    data={getAllData}
+                                    sRowsData={sRowsData}
+                                    totalRecords={totalRecords}
+                                    filter_Value={filterValue}
+                                    setSearchTabOpen={setSearchTabOpen}
+                                    setDetailView={setDetailView}
+                                    setFileDataforAnalyticsCount={
+                                      setFileDataforAnalyticsCount
+                                    }
+                                  />
+                                  {/* </InfiniteScroll> */}
                                 </>
                               ) : getAllData.length > 0 &&
                                 getAllData !== undefined &&

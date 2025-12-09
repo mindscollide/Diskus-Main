@@ -7,7 +7,6 @@ const PrivateRoutes = () => {
   const navigate = useNavigate();
   console.log(currentUrl, "currentUrlcurrentUrlcurrentUrl");
 
-
   // Effect hook to perform actions based on the current URL
   useEffect(() => {
     const callRoutingFunction = async () => {
@@ -36,7 +35,8 @@ const PrivateRoutes = () => {
             .toLowerCase()
             .includes("Diskus/dataroom?action=".toLowerCase())
         ) {
-          localStorage.setItem("DataRoomEmail", currentUrl);
+          const parts = currentUrl.split("action=/")[1];
+          localStorage.setItem("DataRoomEmail", parts);
         }
 
         // Action: Meeting Minute Collaboration
@@ -379,7 +379,6 @@ const PrivateRoutes = () => {
     { currentUser, token },
     "PrivateRoutesPrivateRoutesPrivateRoutes"
   );
-
 
   return currentUser && token ? (
     <Outlet />
