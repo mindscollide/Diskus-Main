@@ -50,7 +50,8 @@ const TextField = ({
 
   return (
     <>
-      <FormGroup className={styles[formParentClass]}>
+      <FormGroup
+        className={`${styles[formParentClass]} ${"position-relative"}`}>
         <Form.Label className={labelclass}>{label}</Form.Label>
         <Form.Control
           onBlur={onBlur}
@@ -72,7 +73,7 @@ const TextField = ({
           multiline={multiline}
           value={value === null ? "" : value}
           label={label && <small>{label}</small>}
-          variant="outlined"
+          variant='outlined'
           size={size}
           error={error}
           type={type}

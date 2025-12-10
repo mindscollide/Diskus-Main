@@ -572,9 +572,7 @@ const Header2 = ({ isVideo }) => {
       navigate("/Diskus");
     }
   };
-  if (location.pathname.includes("meetingDocumentViewer")) {
-    return null;
-  }
+
 
   return (
     <>

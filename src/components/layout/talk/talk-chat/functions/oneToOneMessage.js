@@ -76,7 +76,7 @@ export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
     allGroupMessagesReducer !== null &&
     allGroupMessagesReducer.length !== 0
   ) {
-    allGroupMessagesReducer.map((messagesData) => {
+    allGroupMessagesReducer.forEach((messagesData) => {
       if (
         messagesData.frMessages !== "Direct Message" &&
         messagesData.frMessages.length > 0 &&

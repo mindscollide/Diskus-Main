@@ -969,19 +969,14 @@ body[dir="rtl"] .dataroom_searchinput2 {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  max-width: 300px !important;
   user-select: none !important;
   cursor: pointer !important;
-  display: f !important;
 }
 .fileRow {
-  display: flex;
-  align-items: center;
-  width: 100% !important;
+  display: block;
+  overflow: hidden;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
-  max-width: 300px !important;
-  gap: 5px;
 }
 
 .Dataroom__mydocument_location {

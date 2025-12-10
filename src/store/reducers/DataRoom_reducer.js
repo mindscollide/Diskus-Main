@@ -55,6 +55,7 @@ const initialState = {
   fileSharePermissionData: null,
   meetingVideoRecording: null,
   videRecording: null,
+  errorSeverity: null, // Added errorSeverity to initialState
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -98,6 +99,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: true,
         SaveFilesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SAVEFILES_DATAROOM_FAIL: {
@@ -106,6 +108,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         SaveFilesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.UPLOAD_DOCUMENTS_DATAROOM_INIT: {
@@ -120,6 +123,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         UploadDocumentsResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.UPLOAD_DOCUMENTS_DATAROOM_FAIL: {
@@ -128,6 +132,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         UploadDocumentsResponse: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.SAVE_FOLDER_DATAROOM_INIT: {
@@ -142,6 +147,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         SaveFolderResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SAVE_FOLDER_DATAROOM_FAIL: {
@@ -150,6 +156,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         SaveFolderResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GET_FOLDER_DOCUMENTS_DATAROOM_INIT: {
@@ -164,6 +171,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getFolderDocumentResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GET_FOLDER_DOCUMENTS_DATAROOM_FAIL: {
@@ -172,6 +180,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getFolderDocumentResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.CREATE_FOLDER_DATAROOM_INIT: {
@@ -186,6 +195,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         createFolderResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.CREATE_FOLDER_DATAROOM_FAIL: {
@@ -194,6 +204,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         createFolderResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_INIT: {
@@ -208,6 +219,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getAllDocumentandShareFolderResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_FAIL: {
@@ -216,6 +228,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getAllDocumentandShareFolderResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.SHAREFILES_DATAROOM_INIT: {
@@ -230,6 +243,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         shareFilesResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SHAREFILES_DATAROOM_FAIL: {
@@ -238,6 +252,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         shareFilesResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.SHAREFOLDERS_DATAROOM_INIT: {
@@ -252,6 +267,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         shareFoldersResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SHAREFOLDERS_DATAROOM_FAIL: {
@@ -260,6 +276,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         shareFoldersResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DELETEFILE_DATAROOM_INIT: {
@@ -274,6 +291,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         DeleteFileResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.DELETEFILE_DATAROOM_FAIL: {
@@ -282,6 +300,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         DeleteFileResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.FILEISEXIST_INIT: {
@@ -296,6 +315,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         FileisExistResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.FILEISEXIST_FAIL: {
@@ -304,6 +324,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         FileisExistResponse: null,
         FileisExistMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.FOLDERISEXIST_FAIL: {
@@ -312,6 +333,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         FolderisExistResponse: null,
         FolderisExistMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DELETEFOLDER_DATAROOM_INIT: {
@@ -326,6 +348,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         DeleteFolderResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.DELETEFOLDER_DATAROOM_FAIL: {
@@ -334,6 +357,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         DeleteFolderResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.RENAMEFOLDER_INIT: {
@@ -348,6 +372,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RenameFolderResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.RENAMEFOLDER_FAIL: {
@@ -356,6 +381,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RenameFolderResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.RENAMEFILE_INIT: {
@@ -370,6 +396,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RenameFileResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.RENAMEFILE_FAIL: {
@@ -378,6 +405,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RenameFileResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DATAROOM_CLEAR_MESSAGE: {
@@ -386,6 +414,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ResponseMessage: "",
         FileisExistMessage: "",
         FolderisExistMessage: "",
+        errorSeverity: null, // Also clear errorSeverity
       };
     }
     case actions.FOLDERISEXIST_INIT: {
@@ -400,6 +429,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         FolderisExistCheck: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.CREATE_FOLDER_SUCCESS: {
@@ -423,6 +453,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         SaveFilesAndFoldersResponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SAVEFILESANDFOLDERS_FAIL: {
@@ -431,6 +462,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         SaveFilesAndFoldersResponse: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DATAROOM_TABLE_SCROLL_BAR: {
@@ -474,6 +506,7 @@ const DataRoomReducer = (state = initialState, action) => {
         SearchFilesAndFoldersResponse: action.response,
         SearchFileListCount: action.fileCount,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_FAIL: {
@@ -483,6 +516,7 @@ const DataRoomReducer = (state = initialState, action) => {
         SearchFilesAndFoldersResponse: [],
         SearchFileListCount: 0,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.ISFILEISEXIST: {
@@ -503,6 +537,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RecentDocuments: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GET_RECENT_DOCUMENTS_FAIL: {
@@ -511,6 +546,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         RecentDocuments: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETUSERSAGAINSTSHAREDFILE_INIT: {
@@ -525,6 +561,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getSharedFileUsers: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETUSERSAGAINSTSHAREDFILE_FAIL: {
@@ -533,6 +570,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getSharedFileUsers: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETUSERSAGAINSTSHAREDFOLDER_INIT: {
@@ -547,6 +585,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getSharedFolderUsers: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETUSERSAGAINSTSHAREDFOLDER_FAIL: {
@@ -555,6 +594,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getSharedFolderUsers: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     // getCreateFolderLink: null,
@@ -571,6 +611,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getCreateFileLink: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.CREATEFILELINK_FAIL: {
@@ -579,6 +620,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getCreateFileLink: "",
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.CREATEFOLDERLINK_INIT: {
@@ -593,6 +635,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getCreateFolderLink: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.CREATEFOLDERLINK_FAIL: {
@@ -601,6 +644,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         getCreateFolderLink: "",
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -616,6 +660,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         checklinkresponse: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.CHECKLINKFILE_FAIL: {
@@ -624,6 +669,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         checklinkresponse: null,
         ReResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -638,6 +684,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.REQUESTACCESS_FAIL: {
@@ -646,6 +693,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         updateAccess: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -661,6 +709,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         updateGeneralAccess: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.UPDATEGENERALACCESS_FAIL: {
@@ -669,6 +718,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         updateGeneralAccess: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -684,6 +734,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         updateFolderGeneralAccess: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.UPDATEFOLDERGENERALACCESS_FAIL: {
@@ -692,6 +743,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         updateFolderGeneralAccess: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -718,6 +770,7 @@ const DataRoomReducer = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseResult.recordeMessage,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -744,6 +797,7 @@ const DataRoomReducer = (state = initialState, action) => {
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
             : action.response.responseResult.recordeMessage,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -769,6 +823,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         userAvailabilityDataRoom: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -778,6 +833,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         userAvailabilityDataRoom: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DOWNLOAD_MESSAGE: {
@@ -798,6 +854,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         deleteSharedFile: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.DELETE_SHARED_FILE_FAIL: {
@@ -806,6 +863,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         deleteSharedFile: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DELETE_SHARED_FOLDER_INIT: {
@@ -820,6 +878,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         deleteSharedFolder: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.DELETE_SHARED_FOLDER_FAIL: {
@@ -828,6 +887,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         deleteSharedFolder: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.DATAROOM_FILE_SHARED_MQTT: {
@@ -867,6 +927,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         fileSharePermissionData: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.DATAROOM_FILE_SHARED_PERMISSION_FAILED: {
@@ -875,6 +936,7 @@ const DataRoomReducer = (state = initialState, action) => {
         Loading: false,
         fileSharePermissionData: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     default:

@@ -75,7 +75,16 @@ const MenuPopover = ({
       visible={visible} // Controlled visibility
       onVisibleChange={handleVisibleChange} // Track visibility changes
     >
-      <img src={imageImage} style={{ cursor: "pointer" }} alt='menu' />
+      <span
+        style={{
+          width: "10px",
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <img src={imageImage} style={{ cursor: "pointer" }} alt='menu' />
+      </span>
     </Popover>
   );
 };

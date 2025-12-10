@@ -63,7 +63,6 @@
   min-height: 55vh !important;
   height: auto !important;
   overflow-x: hidden;
-  padding: 0 15px;
 }
 
 .folderContainer::-webkit-scrollbar {
