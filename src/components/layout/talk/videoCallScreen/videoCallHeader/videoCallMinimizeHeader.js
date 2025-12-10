@@ -1141,7 +1141,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       className='record-minimize-background'
                       // onClick={onResumeRecording}
                     >
-                      <Tooltip
+                      {/* <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
                         title={t("Stop-recording")}
                         overlayClassName={
@@ -1155,7 +1155,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           className='Bunch-Start-Record-Button-2-MinimizePanel'
                           alt='Record'
                         />
-                      </Tooltip>
+                      </Tooltip> */}
                       <p className='Recording-text-MinimizePanel'>
                         {t("Recording...")}
                       </p>

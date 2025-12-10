@@ -367,6 +367,11 @@ p.Notification-text {
   margin-bottom: 0 !important;
 }
 
+.right-col-icons img {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
 /* Aun work on minimize Participant List */
 .minimize-participants-list {
   background: #fff;
@@ -412,7 +417,7 @@ p.participant-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  margin: 0 !important;
+  line-height: 1.2;
 }
 
 p.participant-state {
@@ -577,7 +582,6 @@ span.participants-counter-For-Host-waiting-counter {
 }
 
 body[dir="rtl"] span.participants-counter-For-Host {
-
   position: absolute;
   /* top: 0; */
   left: 22px;
@@ -843,7 +847,7 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   color: #6172d6;
   margin-top: 13px;
   font-size: 14px;
-  margin-right: 22px;
+  margin-right: 14px;
   font-weight: 600;
 }
 
@@ -894,7 +898,7 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   background-color: #e1e1e1 !important;
   border-radius: 8px !important;
   display: flex;
-  justify-content: start;
+  justify-content: center;
   align-items: center;
   flex-direction: row;
 }
@@ -959,6 +963,7 @@ body[dir="rtl"] span.HandRaise-Counter-for-Presenter {
   right: 71px;
   height: 40px;
   width: 190px;
+  padding: 0px 20px;
   background-color: #e1e1e1 !important;
   border-radius: 8px !important;
   display: flex;

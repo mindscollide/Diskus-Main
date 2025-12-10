@@ -151,6 +151,8 @@ const VideoCallNormalHeader = ({
 
   console.log(waitingParticipantsList, "waitingParticipantsList");
 
+  console.log(inCallParticipantsList, "inCallParticipantsList");
+
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
@@ -417,13 +419,17 @@ const VideoCallNormalHeader = ({
   // For InCall Participant List
   useEffect(() => {
     if (
-      inCallParticipantList !== undefined &&
-      inCallParticipantList !== null &&
-      inCallParticipantList.length !== 0
+      Array.isArray(inCallParticipantList) &&
+      inCallParticipantList.length > 0
     ) {
-      setInCallParticipantsList(inCallParticipantList);
+      // Filter out the current user
+      const filteredList = inCallParticipantList.filter(
+        (participant) => participant.userID !== currentUserID
+      );
+
+      setInCallParticipantsList(filteredList); // set filtered list
     } else {
-      setInCallParticipantsList([]);
+      setInCallParticipantsList([]); // no participants
     }
   }, [inCallParticipantList]);
 
@@ -795,6 +801,7 @@ const VideoCallNormalHeader = ({
   };
 
   const closeParticipantHandler = (flag, value) => {
+    console.log(flag, "CheckFlagFlag");
     if (flag === 1) {
       let check = priticipantListModalFlagForHost ? false : true;
       dispatch(participantWaitingListBox(check));
@@ -1601,7 +1608,7 @@ const VideoCallNormalHeader = ({
                     {/* if Recording is Pause and Stop */}
                     {pauseRecordingState && (
                       <div className={"Record-Start-Background-MeetingVideo"}>
-                        <Tooltip
+                        {/* <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
                           title={t("Stop-recording")}
                           overlayClassName={
@@ -1616,7 +1623,7 @@ const VideoCallNormalHeader = ({
                             className="Bunch-Start-Record-Button-2"
                             alt="Record"
                           />
-                        </Tooltip>
+                        </Tooltip> */}
                         <p className="Recording-text">{t("Recording...")}</p>
 
                         <Tooltip

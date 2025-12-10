@@ -94,7 +94,8 @@ const getMeetingGuestVideoMainApi = (navigate, t, data) => {
               await dispatch(
                 getMeetingGuestVideoSuccess(
                   response.data.responseResult.guestVideoURL,
-                  t("Meeting-link-copied")
+                  // t("Meeting-link-copied")
+                  t("")
                 )
               );
               copyToClipboard(response.data.responseResult.guestVideoURL);
@@ -590,7 +591,8 @@ const raiseUnRaisedHandMainApi = (navigate, t, data) => {
               await dispatch(
                 raiseUnRaisedSuccess(
                   response.data.responseResult,
-                  t("Successful")
+                  // t("Successful")
+                  t("")
                 )
               );
             } else if (
@@ -1015,7 +1017,8 @@ const muteUnMuteSelfMainApi = (navigate, t, data, check) => {
               await dispatch(
                 muteUnmuteSelfSuccess(
                   response.data.responseResult,
-                  t("Successful")
+                  // t("Successful")
+                  t("")
                 )
               );
             } else if (
@@ -1106,7 +1109,8 @@ const hideUnhideSelfMainApi = (navigate, t, data, check) => {
               await dispatch(
                 hideUnhideSelfSuccess(
                   response.data.responseResult,
-                  t("Successful")
+                  // t("Successful")
+                  t("")
                 )
               );
             } else if (

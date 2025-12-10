@@ -620,212 +620,216 @@ const VideoNewParticipantList = () => {
                 <>
                   <Row className="hostBorder m-0">
                     <Col
-                      className="p-0 d-flex align-items-center"
+                      className="p-0 d-flex align-items-center mt-1"
                       lg={8}
                       md={8}
                       sm={12}
                     >
-                      <p className="participant-name">{usersData?.name}</p>
-                      {presenterViewFlag ? (
-                        presenterViewHostFlag &&
-                        PresenterHostuserID === usersData.userID ? (
-                          <>
-                            <p className={styles["Host-name"]}>
-                              <span className={styles["Host-title-name"]}>
-                                {t("(Presenter)")}
-                              </span>
-                            </p>
-                          </>
-                        ) : (
-                          presenterViewJoinFlag === false &&
-                          usersData.isHost && (
-                            <>
-                              <p className={styles["Host-name"]}>
-                                <span className={styles["Host-title-name"]}>
-                                  {t("(Host)")}
-                                </span>
-                              </p>
-                            </>
-                          )
-                        )
-                      ) : (
-                        usersData.isHost && (
-                          <>
-                            <p className={styles["Host-name"]}>
-                              <span className={styles["Host-title-name"]}>
-                                {t("(Host)")}
-                              </span>
-                            </p>
-                          </>
-                        )
-                      )}{" "}
-                      {((presenterViewHostFlag && presenterViewFlag) ||
-                        meetinHostInfo.isHost) &&
-                      usersData.raiseHand ? (
-                        <img
-                          draggable="false"
-                          src={GoldenHandRaised}
-                          alt=""
-                          width={"22px"}
-                          height={"22px"}
-                          className="handraised-participant"
-                        />
-                      ) : (
-                        <img
-                          draggable="false"
-                          src={
-                            isMeetingVideoHostCheck
-                              ? presenterViewFlag
-                                ? !usersData.isHost
+                      {!isSelfHost && (
+                        <>
+                          <p className="participant-name">{usersData?.name}</p>
+                          {presenterViewFlag ? (
+                            presenterViewHostFlag &&
+                            PresenterHostuserID === usersData.userID ? (
+                              <>
+                                <p className={styles["Host-name"]}>
+                                  <span className={styles["Host-title-name"]}>
+                                    {t("(Presenter)")}
+                                  </span>
+                                </p>
+                              </>
+                            ) : (
+                              presenterViewJoinFlag === false &&
+                              usersData.isHost && (
+                                <>
+                                  <p className={styles["Host-name"]}>
+                                    <span className={styles["Host-title-name"]}>
+                                      {t("(Host)")}
+                                    </span>
+                                  </p>
+                                </>
+                              )
+                            )
+                          ) : null}
+                        </>
+                      )}
+
+                      {!isSelfHost && (
+                        <>
+                          {((presenterViewHostFlag && presenterViewFlag) ||
+                            meetinHostInfo.isHost) &&
+                          usersData.raiseHand ? (
+                            <img
+                              draggable="false"
+                              src={GoldenHandRaised}
+                              alt=""
+                              width={"22px"}
+                              height={"22px"}
+                              className="handraised-participant"
+                            />
+                          ) : (
+                            <img
+                              draggable="false"
+                              src={
+                                isMeetingVideoHostCheck
+                                  ? presenterViewFlag
+                                    ? !usersData.isHost
+                                      ? MenuRaiseHand
+                                      : null
+                                    : usersData
+                                    ? MenuRaiseHand
+                                    : null
+                                  : presenterViewFlag
+                                  ? presenterViewHostFlag &&
+                                    PresenterHostuserID === usersData?.userID
+                                    ? null
+                                    : MenuRaiseHand
+                                  : usersData
                                   ? MenuRaiseHand
                                   : null
-                                : usersData
-                                ? MenuRaiseHand
-                                : null
-                              : presenterViewFlag
-                              ? presenterViewHostFlag &&
-                                PresenterHostuserID === usersData?.userID
-                                ? null
-                                : MenuRaiseHand
-                              : usersData
-                              ? MenuRaiseHand
-                              : null
-                          }
-                          alt=""
-                          className="handraised-participant"
-                        />
-                      )}
-                      {!presenterViewHostFlag &&
-                      !presenterViewJoinFlag &&
-                      usersData.isHost ? (
-                        JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
-                          <img
-                            draggable="false"
-                            src={VideoDisable}
-                            width="18px"
-                            height="18px"
-                            alt="Video Disabled"
-                            className="handraised-participant"
-                          />
-                        ) : (
-                          <img
-                            draggable="false"
-                            src={VideoOn}
-                            width="18px"
-                            height="18px"
-                            alt="Video On"
-                            className="handraised-participant"
-                          />
-                        )
-                      ) : presenterViewHostFlag &&
-                        PresenterHostuserID === usersData.userID ? (
-                        JSON.parse(localStorage.getItem("isWebCamEnabled")) ? (
-                          <img
-                            draggable="false"
-                            src={VideoDisable}
-                            width="18px"
-                            height="18px"
-                            alt="Video Disabled"
-                            className="handraised-participant"
-                          />
-                        ) : (
-                          <img
-                            draggable="false"
-                            src={VideoOn}
-                            width="18px"
-                            height="18px"
-                            alt="Video On"
-                            className="handraised-participant"
-                          />
-                        )
-                      ) : usersData.hideCamera ? (
-                        <img
-                          draggable="false"
-                          src={VideoDisable}
-                          width="18px"
-                          height="18px"
-                          alt="Video Disabled"
-                          className="handraised-participant"
-                        />
-                      ) : (
-                        <img
-                          draggable="false"
-                          src={VideoOn}
-                          width="18px"
-                          height="18px"
-                          alt="Video On"
-                          className="handraised-participant"
-                        />
+                              }
+                              alt=""
+                              className="handraised-participant"
+                            />
+                          )}
+                          {!presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
+                          usersData.isHost ? (
+                            JSON.parse(
+                              localStorage.getItem("isWebCamEnabled")
+                            ) ? (
+                              <img
+                                draggable="false"
+                                src={VideoDisable}
+                                width="18px"
+                                height="18px"
+                                alt="Video Disabled"
+                                className="handraised-participant"
+                              />
+                            ) : (
+                              <img
+                                draggable="false"
+                                src={VideoOn}
+                                width="18px"
+                                height="18px"
+                                alt="Video On"
+                                className="handraised-participant"
+                              />
+                            )
+                          ) : presenterViewHostFlag &&
+                            PresenterHostuserID === usersData.userID ? (
+                            JSON.parse(
+                              localStorage.getItem("isWebCamEnabled")
+                            ) ? (
+                              <img
+                                draggable="false"
+                                src={VideoDisable}
+                                width="18px"
+                                height="18px"
+                                alt="Video Disabled"
+                                className="handraised-participant"
+                              />
+                            ) : (
+                              <img
+                                draggable="false"
+                                src={VideoOn}
+                                width="18px"
+                                height="18px"
+                                alt="Video On"
+                                className="handraised-participant"
+                              />
+                            )
+                          ) : usersData.hideCamera ? (
+                            <img
+                              draggable="false"
+                              src={VideoDisable}
+                              width="18px"
+                              height="18px"
+                              alt="Video Disabled"
+                              className="handraised-participant"
+                            />
+                          ) : (
+                            <img
+                              draggable="false"
+                              src={VideoOn}
+                              width="18px"
+                              height="18px"
+                              alt="Video On"
+                              className="handraised-participant"
+                            />
+                          )}
+                        </>
                       )}
                     </Col>
 
                     <Col
                       className="
-                        d-flex
-                        justify-content-end
-                        align-items-baseline
-                        gap-2
-                        p-0"
+                       d-flex justify-content-end align-items-baseline gap-2 p-0 right-col-icons"
                       lg={4}
                       md={4}
                       sm={12}
                     >
-                      {!presenterViewHostFlag &&
-                      !presenterViewJoinFlag &&
-                      usersData.isHost ? (
-                        JSON.parse(localStorage.getItem("isMicEnabled")) ? (
-                          <img
-                            draggable="false"
-                            src={MicDisabled}
-                            width="19px"
-                            height="19px"
-                            alt="Microphone Disabled"
-                          />
-                        ) : (
-                          <img
-                            draggable="false"
-                            src={MicOnEnabled}
-                            width="15px"
-                            height="19px"
-                            alt="Microphone Enabled"
-                          />
-                        )
-                      ) : presenterViewHostFlag &&
-                        PresenterHostuserID === usersData.userID ? (
-                        JSON.parse(localStorage.getItem("isMicEnabled")) ? (
-                          <img
-                            draggable="false"
-                            src={MicDisabled}
-                            width="19px"
-                            height="19px"
-                            alt="Microphone Disabled"
-                          />
-                        ) : (
-                          <img
-                            draggable="false"
-                            src={MicOnEnabled}
-                            width="15px"
-                            height="19px"
-                            alt="Microphone Enabled"
-                          />
-                        )
-                      ) : usersData.mute ? (
-                        <img
-                          draggable="false"
-                          src={MicDisabled}
-                          width="19px"
-                          height="19px"
-                          alt="Microphone Disabled"
-                        />
-                      ) : (
-                        <img
-                          draggable="false"
-                          src={MicOnEnabled}
-                          width="15px"
-                          height="19px"
-                          alt="Microphone Enabled"
-                        />
+                      {!isSelfHost && (
+                        <>
+                          {!presenterViewHostFlag &&
+                          !presenterViewJoinFlag &&
+                          usersData.isHost ? (
+                            JSON.parse(localStorage.getItem("isMicEnabled")) ? (
+                              <img
+                                draggable="false"
+                                src={MicDisabled}
+                                width="19px"
+                                height="19px"
+                                alt="Microphone Disabled"
+                              />
+                            ) : (
+                              <img
+                                draggable="false"
+                                src={MicOnEnabled}
+                                width="15px"
+                                height="19px"
+                                alt="Microphone Enabled"
+                              />
+                            )
+                          ) : presenterViewHostFlag &&
+                            PresenterHostuserID === usersData.userID ? (
+                            JSON.parse(localStorage.getItem("isMicEnabled")) ? (
+                              <img
+                                draggable="false"
+                                src={MicDisabled}
+                                width="19px"
+                                height="19px"
+                                alt="Microphone Disabled"
+                              />
+                            ) : (
+                              <img
+                                draggable="false"
+                                src={MicOnEnabled}
+                                width="15px"
+                                height="19px"
+                                alt="Microphone Enabled"
+                              />
+                            )
+                          ) : usersData.mute ? (
+                            <img
+                              draggable="false"
+                              src={MicDisabled}
+                              width="19px"
+                              height="19px"
+                              alt="Microphone Disabled"
+                            />
+                          ) : (
+                            <img
+                              draggable="false"
+                              src={MicOnEnabled}
+                              width="15px"
+                              height="19px"
+                              alt="Microphone Enabled"
+                            />
+                          )}
+                        </>
                       )}
+
                       {presenterViewFlag ? (
                         PresenterHostuserID !== usersData.userID ? (
                           <Dropdown>

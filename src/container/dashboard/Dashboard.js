@@ -254,6 +254,7 @@ const Dashboard = () => {
     setIsVisible,
     setUnReadCountNotification,
     setPendingApprovalTabCount,
+    setInCallParticipantsList,
   } = useMeetingContext();
 
   let iframe = iframeRef.current;
@@ -3166,6 +3167,17 @@ const Dashboard = () => {
               await onHandleClickForStartRecording();
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
+          }
+
+          // NEW FILTER LOGIC FOR ZOOM + GROUP CALL (callType=2)
+          if (isZoomEnabled && CallType === 2) {
+            setInCallParticipantsList((prevList) => {
+              console.log("Filtering participant:", data.payload.recepientID);
+
+              return prevList.filter(
+                (participant) => participant.userID !== data.payload.recepientID
+              );
+            });
           }
 
           if (CallType === 2) {
