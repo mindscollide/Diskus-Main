@@ -93,12 +93,12 @@ const TalkHeader = () => {
 
   // Onchange Select Filter
   const chatFilterHandler = (e, value) => {
-    if (value.label != undefined) {
+    if (value.label !== undefined) {
       // try {
 
-      if (value.label != chatFilter.label) {
+      if (value.label !== chatFilter.label) {
         if (Object.keys(chatFilterOptions).length > 0) {
-          chatFilterOptions.filter((data, index) => {
+          chatFilterOptions.forEach((data, index) => {
             if (data.label === value.label) {
               setChatFilter({
                 label: data.label,
@@ -169,10 +169,14 @@ const TalkHeader = () => {
             dispatch(footerShowHideStatus(false));
             dispatch(blockedUsersFlag(true));
           } else {
+            console.log("No Match Found", value);
           }
         } else {
+          console.log("No Match Found", value, chatFilter);
         }
-      } catch {}
+      } catch (err) {
+        console.log("No Match Found", err);
+      }
     }
   };
 
@@ -191,33 +195,33 @@ const TalkHeader = () => {
   return (
     <>
       {/* <Row className={deleteChat === false ? '' : 'applyBlur'}> */}
-      <Container className="p-0">
+      <Container className='p-0'>
         <Row>
           <Col lg={3} md={3} sm={12}>
             <Select
               options={chatFilterOptions}
               onChange={chatFilterHandler}
-              className="chatFilter"
-              popupClassName="talk-chat-filter"
+              className='chatFilter'
+              popupClassName='talk-chat-filter'
               value={chatFilterName}
             />
           </Col>
           <Col lg={6} md={6} sm={12}></Col>
-          <Col lg={1} md={1} sm={12} className="p-0"></Col>
-          <Col lg={1} md={1} sm={12} className="p-0">
-            <div className="chat-icons">
+          <Col lg={1} md={1} sm={12} className='p-0'></Col>
+          <Col lg={1} md={1} sm={12} className='p-0'>
+            <div className='chat-icons'>
               <span style={{ cursor: "pointer" }} onClick={securityDialogue}>
                 <img
-                  draggable="false"
+                  draggable='false'
                   src={SecurityIcon}
-                  className="img-cover"
+                  className='img-cover'
                 />
               </span>
             </div>
           </Col>
-          <Col lg={1} md={1} sm={12} className="p-0">
-            <div className="chat-icons" onClick={activateGlobalSearch}>
-              <img draggable="false" src={SearchIcon} className="img-cover" />
+          <Col lg={1} md={1} sm={12} className='p-0'>
+            <div className='chat-icons' onClick={activateGlobalSearch}>
+              <img draggable='false' src={SearchIcon} className='img-cover' />
             </div>
           </Col>
           {/* <Col lg={1} md={1} sm={12} className="p-0">

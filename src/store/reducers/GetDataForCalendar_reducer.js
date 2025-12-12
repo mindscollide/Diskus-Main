@@ -13,6 +13,7 @@ const initialState = {
   microsoftEventCreate: null,
   microsoftEventUpdate: null,
   microsoftEventDelete: null,
+  errorSeverity: null, // Added errorSeverity to initialState
 };
 
 const calendarReducer = (state = initialState, action) => {
@@ -29,6 +30,7 @@ const calendarReducer = (state = initialState, action) => {
         Loading: false,
         eventsDetails: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETEVENTSDETAILS_FAIL: {
@@ -37,6 +39,7 @@ const calendarReducer = (state = initialState, action) => {
         Loading: false,
         eventsDetails: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETEVENTSTYPES_INIT: {
@@ -51,6 +54,7 @@ const calendarReducer = (state = initialState, action) => {
         Loading: false,
         getEventTypeIds: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETEVENTSTYPES_FAIL: {
@@ -59,6 +63,7 @@ const calendarReducer = (state = initialState, action) => {
         Loading: false,
         getEventTypeIds: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GET_DATA_FOR_CALENDAR_INIT: {
@@ -76,6 +81,7 @@ const calendarReducer = (state = initialState, action) => {
         CalenderData: action.response.calenderLists,
         ResponseMessage: action.message,
         Spinner: action.flag,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GET_DATA_FOR_CALENDAR_FAIL: {
@@ -85,6 +91,7 @@ const calendarReducer = (state = initialState, action) => {
         Spinner: false,
         CalenderData: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
     case actions.CLEAR_CALENDAR_STATE: {
@@ -93,10 +100,11 @@ const calendarReducer = (state = initialState, action) => {
         CalenderData: [],
       };
     }
-    case actions.HIDE:
+    case actions.CALENDAR_RESPONSE_MESSAGE:
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null, // Also clear errorSeverity
       };
     case actions.CALENDAR_LOADER: {
       console.log(action.payload, "payloadpayloadpayload");
