@@ -52,8 +52,9 @@ const getCalendarDataResponse = (navigate, t, data, flag) => {
       let form = new FormData();
       form.append("RequestMethod", calendarDataRequest.RequestMethod);
       form.append("RequestData", JSON.stringify(data));
-      axiosInstance.post(getCalender,form)
-   
+      axiosInstance
+        .post(getCalender, form)
+
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
@@ -143,7 +144,8 @@ const getCalendarDataResponseMQTT = (navigate, t, data, flag) => {
       let form = new FormData();
       form.append("RequestMethod", calendarDataRequest.RequestMethod);
       form.append("RequestData", JSON.stringify(data));
-      axiosInstance.post(getCalender,form)
+      axiosInstance
+        .post(getCalender, form)
 
         .then(async (response) => {
           if (response.data.responseCode === 417) {
@@ -261,7 +263,8 @@ const getEventsTypes = (navigate, t) => {
     await dispatch(getEventsType_init());
     let form = new FormData();
     form.append("RequestMethod", getEventsTypeRM.RequestMethod);
-    axiosInstance.post(getCalender,form)
+    axiosInstance
+      .post(getCalender, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -333,14 +336,13 @@ const getEventsDetails_fail = (message) => {
   };
 };
 const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
   return (dispatch) => {
     dispatch(getEventsDetails_init());
     let form = new FormData();
     form.append("RequestMethod", GetDiskusEventDetailsRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(getCalender,form)
+    axiosInstance
+      .post(getCalender, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -356,10 +358,7 @@ const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
                 )
             ) {
               dispatch(
-                getEventsDetails_success(
-                  response.data.responseResult,
-                  ""
-                )
+                getEventsDetails_success(response.data.responseResult, "")
               );
               if (Data.CalendarEventTypeId === 2) {
                 setCalendarViewModal(true);
@@ -435,10 +434,17 @@ const deleteGoogleEventMQTT = (response) => {
 const removeCalenderDataFunc = (response) => {
   return {
     type: actions.REMOVE_CALENDARMEETINGDATA,
-    payload: response
-  }
-}
+    payload: response,
+  };
+};
+
+ const removeCalendarResponseMessage = () => {
+  return {
+    type: actions.CALENDAR_RESPONSE_MESSAGE,
+  };
+};
 export {
+  removeCalendarResponseMessage,
   removeCalenderDataFunc,
   getCalendarDataResponse,
   HideNotificationCalendarData,

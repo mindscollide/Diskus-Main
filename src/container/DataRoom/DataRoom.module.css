@@ -966,6 +966,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   font-weight: 600;
   color: #5a5a5a !important;
   font-size: 12px !important;
+  display: block !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
@@ -973,10 +974,14 @@ body[dir="rtl"] .dataroom_searchinput2 {
   cursor: pointer !important;
 }
 .fileRow {
-  display: block;
+  /* display: block; */
   overflow: hidden;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
 }
 
 .Dataroom__mydocument_location {
