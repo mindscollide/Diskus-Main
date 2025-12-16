@@ -30,6 +30,7 @@ import {
   getFormData,
   handleLoginResponse,
   handleNavigation,
+  isFunction,
 } from "../../commen/functions/utils";
 import {
   USERPASSWORDVERIFICATION,
@@ -450,7 +451,12 @@ const enterPasswordFail = (message, response) => {
   };
 };
 
-const enterPasswordvalidation = (value, navigate, t) => {
+const enterPasswordvalidation = (
+  value,
+  navigate,
+  t,
+  setPasswordFieldDisabled
+) => {
   const userID = localStorage.getItem("userID");
   const data = {
     UserID: JSON.parse(userID),
@@ -465,6 +471,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
 
     try {
       const response = await axiosInstance.post(authenticationApi, formData);
+      isFunction(setPasswordFieldDisabled) && setPasswordFieldDisabled(false);
       if (response.data.responseCode !== 200) {
         clearLocalStorageAtloginresponce(dispatch, 1, navigate);
         dispatch(enterPasswordFail("Something-went-wrong"));

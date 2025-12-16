@@ -17,7 +17,7 @@ const AttachmentViewer = ({
   handleEyeIcon,
   name,
   handleClickRemove,
-  id = 1,
+  id = 0,
   data,
   fk_UID = 1049,
   canDelete = true,

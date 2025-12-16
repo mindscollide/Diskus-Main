@@ -31,6 +31,7 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [fileAttachments, setFileAttachments] = useState([]);
+
   const getCommitteeByCommitteeID = useSelector(
     (state) => state.CommitteeReducer.getCommitteeByCommitteeID
   );
@@ -42,6 +43,12 @@ const ViewCommitteeDetails = ({ setViewGroupPage, committeeStatus }) => {
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   let currentUserID = localStorage.getItem("userID");
+
+  console.log(
+    { fileAttachments, fileForSend, filesSending },
+    "fileAttachmentsfileAttachments"
+  );
+
   const [open, setOpen] = useState({
     open: false,
     message: "",

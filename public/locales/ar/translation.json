@@ -1330,7 +1330,8 @@
   "ORGANIZATION_SUBSCRIPTION_CANCELLED": "تم إلغاء اشتراك منظمة [organizationName]  بواسطة مسؤول المؤسسة. حاول تسجيل الدخول بعد مرور بعض الوقت",
   "ORGANIZATION_DELETED": "تم إلغاء تسجيل منظمة [organizationName]  من النظام بواسطة مسؤول المؤسسة. حاول تسجيل الدخول بعد مرور بعض الوقت",
   "USER_PROFILE_EDITED": "تم تحديث ملف تعريف المستخدم. حاول تسجيل الدخول بعد مرور بعض الوقت",
-  "NEW_TODO_CREATION_RECENT_ACTIVITY": "انشاء todo الجديد",
+  "NEW_TODO_CREATION_RECENT_ACTIVITY": "م إنشاء المهمة – [Task Title]",
+
   "NEW_MEETTING_CREATION_RECENT_ACTIVITY": "انشاء الاجتماع الجديد",
   "NEW_POLL_PUBLISHED_RECENT_ACTIVITY": "تم نشر الاستطلاع الجديد لمراجعتك",
   "POLL_EXPIRED_RECENT_ACTIVITY": "لقد مر تاريخ استحقاق الاستطلاع",
