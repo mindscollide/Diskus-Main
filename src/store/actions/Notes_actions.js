@@ -45,7 +45,7 @@ const GetNotes = (navigate, Data, t) => {
     form.append("RequestMethod", searchNoteRequetMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(getNotesApi, form)
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -113,12 +113,13 @@ const saveNotes_Fail = (message) => {
 const SaveNotesAPI = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
+    dispatch(notesFromDashboardAction(1))
     dispatch(saveNotes_Init());
     let form = new FormData();
     form.append("RequestMethod", SavesNotesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(getNotesApi, form)
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -132,6 +133,7 @@ const SaveNotesAPI = (navigate, Data, t) => {
                   "Notes_NotesServiceManager_SaveNotes_01".toLowerCase()
                 )
             ) {
+
               dispatch(
                 saveNotes_Success(
                   response.data.responseResult.getNotes,
@@ -223,7 +225,7 @@ const UpdateNotesAPI = (
     form.append("RequestMethod", UpdateNotesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
-    .post(getNotesApi, form)
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -332,7 +334,7 @@ const GetNotesByIdAPI = (
     form.append("RequestMethod", GetNotesByNotesIDRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(getNotesApi, form)
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -468,7 +470,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes, id) => {
     form.append("RequestMethod", deleteNotes.RequestMethod);
     form.append("RequestData", JSON.stringify(deleteNotData));
     axiosInstance
-    .post(getNotesApi, form)
+      .post(getNotesApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -563,7 +565,7 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", CreateUpdateNotesDataRoomMap.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -582,10 +584,6 @@ const CreateUpdateNotesDataRoomMapAPI = (navigate, Data, t) => {
                   response.data.responseResult.folderID,
                   t("Folder-mapped-with-dataroom")
                 )
-              );
-              console.log(
-                response.data.responseResult.folderID,
-                "fileForSendfileForSend"
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -716,7 +714,7 @@ const SaveNotesDocumentAPI = (
     let form = new FormData();
     form.append("RequestMethod", SaveNotesDocument.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -747,8 +745,10 @@ const SaveNotesDocumentAPI = (
                 )
               );
               dispatch(CreateUpadateNotesDataRoomMapFail(""));
+              dispatch(notesFromDashboardAction(0))
               if (flag === 1) {
                 setAddNotes(false);
+
                 localStorage.removeItem("notesID");
                 let Data = {
                   UserID: parseInt(UserID),
@@ -800,18 +800,33 @@ const SaveNotesDocumentAPI = (
                 )
             ) {
               dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+              dispatch(notesFromDashboardAction(0))
+              dispatch(CreateUpadateNotesDataRoomMapFail(""));
+
             } else {
               dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+              dispatch(notesFromDashboardAction(0))
+              dispatch(CreateUpadateNotesDataRoomMapFail(""));
+
             }
           } else {
             dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+            dispatch(CreateUpadateNotesDataRoomMapFail(""));
+            dispatch(notesFromDashboardAction(0))
+
           }
         } else {
           dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+          dispatch(CreateUpadateNotesDataRoomMapFail(""));
+          dispatch(notesFromDashboardAction(0))
+
         }
       })
       .catch((response) => {
         dispatch(SaveNotesDocumentFail(t("Something-went-wrong")));
+        dispatch(notesFromDashboardAction(0))
+        dispatch(CreateUpadateNotesDataRoomMapFail(""));
+
       });
   };
 };
@@ -845,7 +860,7 @@ const RetrieveNotesDocumentAPI = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", RetrieveNotesDocument.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1036,7 +1051,7 @@ const uploadDocumentsNotesApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await     axiosInstance.post(dataRoomApi, form)
+    await axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1134,7 +1149,7 @@ const DeleteNotesDocumentsAPI = (navigate, Data, t, setUpdateNotes, id) => {
     let form = new FormData();
     form.append("RequestMethod", DeleteNotesDocuments.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance.post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

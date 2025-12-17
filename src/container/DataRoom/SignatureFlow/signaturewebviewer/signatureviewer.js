@@ -217,18 +217,18 @@ const SignatureViewer = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                    try {
-                      return JSON.parse(str);
-                    } catch (error) {
-                      console.error(
-                        "Error parsing JSON:",
-                        error,
-                        "Input:",
-                        str
-                      );
-                      return null; // or handle the error as needed
-                    }
-                  })
+                  try {
+                    return JSON.parse(str);
+                  } catch (error) {
+                    console.error(
+                      "Error parsing JSON:",
+                      error,
+                      "Input:",
+                      str
+                    );
+                    return null; // or handle the error as needed
+                  }
+                })
                 : [];
               return {
                 actorID: item.actorID,
@@ -361,7 +361,7 @@ const SignatureViewer = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
@@ -495,7 +495,7 @@ const SignatureViewer = () => {
         setUserAnnotations(selectedUserList);
       } else {
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [saveWorkFlowResponse]);
   // === End === //
   console.log(saveWorkFlowResponse, "saveWorkFlowResponsesaveWorkFlowResponse");
@@ -585,7 +585,7 @@ const SignatureViewer = () => {
           showLocalFilePicker: true,
           fullAPI: true,
           licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+            process.env.REACT_APP_APRYSEKEY,// sign up to get a free trial key at https://dev.apryse.com
         },
         viewer.current
       ).then(async (instance) => {
@@ -1059,7 +1059,7 @@ const SignatureViewer = () => {
               await annotationManager.importAnnotations(
                 pdfResponceDataRef.current
               );
-            } catch (error) {}
+            } catch (error) { }
           }
         });
         //======================================== for documentLoaded =====================================//
@@ -1219,7 +1219,7 @@ const SignatureViewer = () => {
 
       // Redraw the viewer to reflect the changes
       annotationManager.redrawAnnotation();
-    } catch (error) {}
+    } catch (error) { }
   };
   // ==== End ====//
 
@@ -1345,7 +1345,7 @@ const SignatureViewer = () => {
         });
         setUserList(usersDataArr);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [assignees.user]);
 
   // this is for searching in dropdown
@@ -1740,9 +1740,9 @@ const SignatureViewer = () => {
                                             md={10}
                                             lg={10}
                                             className='my-1'
-                                            // ref={provided.innerRef}
-                                            // {...provided.draggableProps}
-                                            // {...provided.dragHandleProps}
+                                          // ref={provided.innerRef}
+                                          // {...provided.draggableProps}
+                                          // {...provided.dragHandleProps}
                                           >
                                             <Row>
                                               <Col sm={6} md={6} lg={6}>

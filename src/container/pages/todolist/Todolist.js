@@ -175,7 +175,7 @@ const TodoList = () => {
       let taskViewValue = localStorage.getItem("taskListView_Id");
       let taskListValue = localStorage.getItem("taskListView");
 
-      if (!ResponseStatusReducer?.length > 0) {
+      if (!ResponseStatusReducer || ResponseStatusReducer.length === 0) {
         dispatch(getTodoStatus(navigate, t));
       }
       if (todoListPageSize !== null && todoListCurrentPage !== null) {
@@ -203,7 +203,7 @@ const TodoList = () => {
               t
             )
           );
-          console.log(getResponse, "getResponse");
+
 
           if (
             getResponse.isExecuted === true &&
@@ -226,12 +226,7 @@ const TodoList = () => {
               t
             )
           );
-          console.log(getResponse, "getResponse");
-          if (
-            getResponse.isExecuted === true &&
-            getResponse.responseCode === 1
-          ) {
-          }
+
 
           localStorage.removeItem("taskListView"); // Cleanup the localStorage key
         };
@@ -242,7 +237,7 @@ const TodoList = () => {
         localStorage.removeItem("todoListRow");
       };
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, []);
 
@@ -270,11 +265,11 @@ const TodoList = () => {
         setRowToDo([]);
       }
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, [SearchTodolist]);
 
-  console.log(SearchTodolist, "SearchTodolistSearchTodolist");
+
 
   useEffect(() => {
     try {
@@ -297,14 +292,11 @@ const TodoList = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, [SocketTodoActivityData]);
 
-  console.log(
-    SocketTodoActivityData,
-    "SocketTodoActivityDataSocketTodoActivityData"
-  );
+
 
   useEffect(() => {
     try {
@@ -334,7 +326,7 @@ const TodoList = () => {
           });
         }
       }
-    } catch {}
+    } catch { }
   }, [socketTodoStatusData]);
 
   useEffect(() => {
@@ -367,7 +359,7 @@ const TodoList = () => {
       setStatusValues(newArrStatus);
       setStatusOptions(optionsArr);
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, [ResponseStatusReducer]);
 
@@ -477,7 +469,6 @@ const TodoList = () => {
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
-      taskDeadlineSort,
       onHeaderCell: () => ({
         onClick: () => {
           setTaskTitleSort((order) => {
@@ -694,14 +685,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  custom-class "
                     : text.pK_TSID === 2
-                    ? "Pending  custom-class "
-                    : text.pK_TSID === 3
-                    ? "Upcoming  custom-class "
-                    : text.pK_TSID === 4
-                    ? "Cancelled  custom-class "
-                    : text.pK_TSID === 5
-                    ? "Completed  custom-class "
-                    : null
+                      ? "Pending  custom-class "
+                      : text.pK_TSID === 3
+                        ? "Upcoming  custom-class "
+                        : text.pK_TSID === 4
+                          ? "Cancelled  custom-class "
+                          : text.pK_TSID === 5
+                            ? "Completed  custom-class "
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -722,14 +713,14 @@ const TodoList = () => {
                 text.pK_TSID === 1
                   ? "InProgress custom-class  color-5a5a5a text-center  my-1"
                   : text.pK_TSID === 2
-                  ? "Pending  custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 3
-                  ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
-                  : text.pK_TSID === 4
-                  ? "Cancelled   custom-class color-5a5a5a text-center my-1"
-                  : text.pK_TSID === 5
-                  ? "Completed   custom-class color-5a5a5a  text-center my-1"
-                  : null
+                    ? "Pending  custom-class color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                      ? "Upcoming  custom-class color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                        ? "Cancelled   custom-class color-5a5a5a text-center my-1"
+                        : text.pK_TSID === 5
+                          ? "Completed   custom-class color-5a5a5a  text-center my-1"
+                          : null
               }
             >
               {t(text.status)}
@@ -757,7 +748,7 @@ const TodoList = () => {
             </i>
           );
         } else {
-          <></>;
+          return null;
         }
       },
     },
@@ -770,11 +761,10 @@ const TodoList = () => {
         if (modalsflag === true) {
           setUpdateFlagToDo(true);
           setModalsflag(false);
-        } else {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, [ToDoDetails]);
 
@@ -789,7 +779,7 @@ const TodoList = () => {
     });
   };
 
-  console.log(searchData.Date, "searchDatasearchDatasearchData");
+
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -850,7 +840,7 @@ const TodoList = () => {
         AssignedToName: searchData.AssignedToName,
         UserID: parseInt(createrID),
       };
-      console.log(newData, "newDatanewDatanewData");
+
       dispatch(SearchTodoListApi(navigate, newData, 1, 15, t));
     }
   };
@@ -891,7 +881,7 @@ const TodoList = () => {
         }
       }
     } catch (error) {
-      console.log(error, "error");
+
     }
   }, [UpdateTodoStatusMessage, removeTodo]);
 
@@ -1094,7 +1084,7 @@ const TodoList = () => {
                         onChange={paginationChangeHandlerTodo}
                         current={
                           todoListCurrentPage !== null &&
-                          todoListCurrentPage !== undefined
+                            todoListCurrentPage !== undefined
                             ? todoListCurrentPage
                             : 1
                         }
@@ -1103,7 +1093,7 @@ const TodoList = () => {
                         pageSizeOptionsValues={["15", "30", "50", "100"]}
                         pageSize={
                           todoListPageSize !== null &&
-                          todoListPageSize !== undefined
+                            todoListPageSize !== undefined
                             ? todoListPageSize
                             : 15
                         }

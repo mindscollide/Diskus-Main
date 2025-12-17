@@ -524,9 +524,8 @@ const SearchComponent = ({
                 <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
-                    className={`${
-                      stylesss["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
+                    className={`${stylesss["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id)}>
                     {text} <img draggable='false' src={sharedIcon} alt='' />
                   </span>
@@ -562,9 +561,8 @@ const SearchComponent = ({
                 <img draggable='false' src={folderColor} alt='' />
                 <abbr title={text}>
                   <span
-                    className={`${
-                      stylesss["dataroom_table_heading"]
-                    } ${"cursor-pointer"}`}
+                    className={`${stylesss["dataroom_table_heading"]
+                      } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id)}>
                     {text}{" "}
                   </span>
@@ -718,21 +716,21 @@ const SearchComponent = ({
                   <>
                     {record.isFolder
                       ? // Folder Logic
-                        record.permissionID === 2
+                      record.permissionID === 2
                         ? getMenuPopover(optionsforFolderEditor)
                         : record.permissionID === 1
-                        ? getMenuPopover(optionsforFolderViewer)
-                        : record.permissionID === 3
-                        ? getMenuPopover(optionsforFolderEditableNonShareable)
-                        : null
+                          ? getMenuPopover(optionsforFolderViewer)
+                          : record.permissionID === 3
+                            ? getMenuPopover(optionsforFolderEditableNonShareable)
+                            : null
                       : // File Logic
                       record.permissionID === 2
-                      ? getMenuPopover(optionsforFileEditor)
-                      : record.permissionID === 1
-                      ? getMenuPopover(optionsforFileViewer)
-                      : record.permissionID === 3
-                      ? getMenuPopover(optionsforFileEditableNonShareable)
-                      : null}
+                        ? getMenuPopover(optionsforFileEditor)
+                        : record.permissionID === 1
+                          ? getMenuPopover(optionsforFileViewer)
+                          : record.permissionID === 3
+                            ? getMenuPopover(optionsforFileEditableNonShareable)
+                            : null}
                   </>
                 ) : (
                   <>
@@ -740,8 +738,8 @@ const SearchComponent = ({
                     {record.isFolder
                       ? getMenuPopover(optionsforFolder)
                       : fileFormatforSignatureFlow.includes(fileExtension)
-                      ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
-                      : getMenuPopover(optionsforFile)}
+                        ? getMenuPopover(optionsforPDFandSignatureFlow) // Example: Adjust as needed
+                        : getMenuPopover(optionsforFile)}
                   </>
                 )}
               </span>
@@ -800,7 +798,7 @@ const SearchComponent = ({
         setTotalRecords(0);
         setSRowsData(0);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [
     DataRoomReducer.SearchFilesAndFoldersResponse,
     DataRoomReducer.SearchFileListCount,
@@ -835,7 +833,7 @@ const SearchComponent = ({
         );
         setAssignessList(filteredApiResponse);
       }
-    } catch {}
+    } catch { }
   }, [assignees.user]);
 
   // api call onscroll
@@ -875,10 +873,12 @@ const SearchComponent = ({
       };
       await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
     }
+    await dispatch(dataBehaviour(false));
+
   };
 
   // this is onchange envent of search modal Documnet
-  const handleChangeDocumentsOptions = (event) => {
+  const handleChangeDocumentsOptions = async (event) => {
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       Type: event, // Update the Type field
@@ -1391,10 +1391,12 @@ const SearchComponent = ({
       dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     } else {
     }
+    await dispatch(dataBehaviour(false));
+
   };
 
   // this is for Location
-  const handleChangeLocationValue = (event) => {
+  const handleChangeLocationValue = async (event) => {
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       Location: event, // Update the Type field
@@ -1435,10 +1437,12 @@ const SearchComponent = ({
       isDescending: searchDataFields.isDescending,
     };
     dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    await dispatch(dataBehaviour(false));
+
   };
 
   // this is for  people
-  const handleChangeStatus = (event) => {
+  const handleChangeStatus = async (event) => {
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       People: event, // Update the Type field
@@ -1602,10 +1606,12 @@ const SearchComponent = ({
       };
       dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     }
+    await dispatch(dataBehaviour(false));
+
   };
 
   // Search Box Last modified Date handle Change Function
-  const handleChangeLastModifedDate = (event) => {
+  const handleChangeLastModifedDate = async (event) => {
     setSearchResultFields((prevState) => ({
       ...prevState, // Copy the existing state
       Date: event, // Update the Type field
@@ -1844,11 +1850,14 @@ const SearchComponent = ({
       default:
         break;
     }
+    await dispatch(dataBehaviour(false));
+
     return { startDate, endDate };
+
   };
 
   // this is for cleare state
-  const handleClearAllSearchOptions = () => {
+  const handleClearAllSearchOptions = async () => {
     setSearchTabOpen(false);
     // setSearchbarsearchoptions(false);
     setDateValue(t("Date-modified"));
@@ -1919,6 +1928,8 @@ const SearchComponent = ({
 
     setSelectedStartDate(null);
     setSelectedEndDate(null);
+    await dispatch(dataBehaviour(false));
+
   };
 
   // this is select for start date
@@ -1978,6 +1989,7 @@ const SearchComponent = ({
     };
     await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
     setCustomRangeVisible(false);
+    await dispatch(dataBehaviour(false));
   };
 
   // const cross button on documents dropdowns
@@ -2400,9 +2412,9 @@ const SearchComponent = ({
         </Col>
       </Row>
       {searchAllData &&
-      searchAllData !== undefined &&
-      searchAllData !== null &&
-      gridbtnactive ? (
+        searchAllData !== undefined &&
+        searchAllData !== null &&
+        gridbtnactive ? (
         <>
           <InfiniteScroll
             dataLength={searchAllData.length}
