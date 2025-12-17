@@ -2516,5 +2516,19 @@
   "You-are-currently-in-a-meeting-this-feature-cannot-be-accessed-right-now": "You are currently in a meeting. This feature cannot be accessed right now.",
   "File-is-saved-successfully": "File is saved successfully",
   "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
-  "Please-try-again-after": "Please try again after"
+  "Please-try-again-after": "Please try again after",
+  "Complaince-setting": "Complaince Setting",
+  "Manage-authority": "Manage Authority",
+  "General-setting": "General Setting",
+  "Add-authority": "Add Authority",
+  "Short-code": "Short Code",
+  "Do-you-want-to-delete-this-authority": "Do You Want To Delete This Authority?",
+  "The-authority-will-be-permanently-deleted": "The Authority Will Be Permanently Deleted.",
+  "Website": "Website",
+  "Contact-person-name": "Contact Person Name",
+  "Authority-name": "Authority Name",
+  "View-authority": "View Authority",
+  "Edit-authority": "Edit Authority",
+  "No-authority-available": "No Authority Available",
+  "You-dont-have-any-authority-at-the-moment": "You don't have any Authority at the moment"
 }

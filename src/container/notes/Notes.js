@@ -42,7 +42,6 @@ import CustomAccordion from "../../components/elements/accordian/CustomAccordion
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
-import SpinComponent from "../../components/elements/mainLoader/loader";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 const Notes = () => {
@@ -729,18 +728,12 @@ const Notes = () => {
     dispatch(GetNotes(navigate, Data, t));
   };
 
-  
   const handleClickDownloadDoc = (data) => {
     let data2 = {
       FileID: Number(data.pK_FileID),
     };
     dispatch(
-      DataRoomDownloadFileApiFunc(
-        navigate,
-        data2,
-        t,
-        data.displayFileName
-      )
+      DataRoomDownloadFileApiFunc(navigate, data2, t, data.displayFileName)
     );
   };
   const handleClickOpenDoc = (data) => {
@@ -1036,7 +1029,9 @@ const Notes = () => {
                                         data={file}
                                         id={file.pK_FileID}
                                         name={file.displayFileName}
-                                        handleEyeIcon={() => handleClickOpenDoc(file)}
+                                        handleEyeIcon={() =>
+                                          handleClickOpenDoc(file)
+                                        }
                                         handleClickDownload={() =>
                                           handleClickDownloadDoc(file)
                                         }

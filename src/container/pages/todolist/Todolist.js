@@ -50,11 +50,9 @@ import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.p
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
-import moment from "moment";
 import DatePicker from "react-multi-date-picker";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import { sortTasksByDeadline } from "../../../commen/functions/utils";
-import SpinComponent from "../../../components/elements/mainLoader/loader";
 
 const TodoList = () => {
   //For Localization

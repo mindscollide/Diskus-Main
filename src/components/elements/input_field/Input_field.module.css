@@ -6,7 +6,8 @@
 }
 
 .form-control2::placeholder {
-  color: #e1e1e1 !important;
+  color: #a2a2a2 !important;
+  font-weight: 500 !important;
 }
 
 .updateNotes_titleInput {
@@ -131,8 +132,8 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 }
 
 .modalAddNoteTitleInput::placeholder {
-  color: #bbbbbb !important;
-  font-weight: 600;
+  color: #a2a2a2 !important;
+  font-weight: 500;
   font-size: 12px !important;
 }
 
@@ -286,11 +287,13 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 }
 
 .text-area-create-group::placeholder {
-  color: #e1e1e1 !important;
+  color: #a2a2a2 !important;
+  font-weight: 500;
 }
 
 .createCommittee_searchMember::placeholder {
-  color: #e1e1e1 !important;
+  color: #a2a2a2 !important;
+  font-weight: 500;
 }
 
 .AgendaTextField {
@@ -333,6 +336,7 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 }
 .signatureflow_input::placeholder {
   color: #a2a2a2 !important;
+  font-weight: 500;
 }
 
 .usermanagementTextField {
@@ -365,7 +369,7 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 .textField-RejectComment::placeholder {
   color: #a2a2a2 !important;
   font-size: 12px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
 .DeclineReasonInput {
   font-size: 12px !important;
@@ -374,7 +378,7 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
 }
 .DeclineReasonInput::placeholder {
   color: #a2a2a2 !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
   font-family: "Montserrat" !important;
 }
@@ -391,4 +395,49 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
   height: 35px !important;
   width: 100%;
   font-size: 13px !important;
+}
+
+/* When dont need to show the input field like just text */
+.viewField,
+.viewField:is(:focus, :focus-visible, :active, :hover) {
+  border: none !important;
+  padding: 0 !important;
+  outline: none !important;
+  user-select: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  cursor: default !important;
+  font-size: 16px !important;
+}
+
+.viewField_Name,
+.viewField_name:is(:focus, :focus-visible, :active, :hover) {
+  border: none !important;
+  padding: 0 !important;
+  outline: none !important;
+  user-select: none !important;
+  box-shadow: none !important;
+  pointer-events: none !important;
+  cursor: default !important;
+  font-size: 20px !important;
+}
+.AddEditAuthorityInputField {
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  height: 39px !important;
+}
+.AddEditAuthorityInputField2 {
+  max-width: 95% !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  height: 39px !important;
+}
+.AddEditAuthorityInputField_textArea {
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-size: 12px !important;
+  min-height: 50px !important;
+  resize: none;
 }

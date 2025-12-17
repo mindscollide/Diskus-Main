@@ -61,7 +61,6 @@ import AscendIcon from "../MinutesNewFlow/Images/SorterIconAscend.png";
 import ArrowDownIcon from "../MinutesNewFlow/Images/Arrow-down.png";
 import ArrowUpIcon from "../MinutesNewFlow/Images/Arrow-up.png";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
-import SpinComponent from "../../components/elements/mainLoader/loader";
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -20,6 +20,7 @@ const CustomModal = ({
   modalTitleClassName,
   fullscreen,
   htmlCode,
+  contentClassName,
   centered,
 }) => {
   return (
@@ -35,6 +36,7 @@ const CustomModal = ({
           className={className}
           dialogClassName={dialogClassName}
           fullscreen={fullscreen}
+          contentClassName={contentClassName}
         >
           <Modal.Header
             className={`${modalHeaderClassName} ${"border-0"}`}

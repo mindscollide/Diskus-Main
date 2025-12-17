@@ -20,7 +20,6 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import SpinComponent from "../../../../../../components/elements/mainLoader/loader";
 const ModalOrganizor = ({ currentMeeting }) => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();

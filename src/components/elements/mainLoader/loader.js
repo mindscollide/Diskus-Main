@@ -68,6 +68,10 @@ const SpinComponent = () => {
   const UserMangementReducer = useSelector(
     (state) => state.UserMangementReducer
   );
+
+  const ManageAuthorityReducer = useSelector(
+    (state) => state.ManageAuthorityReducer
+  );
   const adminReducer = useSelector((state) => state.adminReducer);
   const UserReportReducer = useSelector((state) => state.UserReportReducer);
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
@@ -121,6 +125,7 @@ const SpinComponent = () => {
     adminReducer?.Loading,
     UserReportReducer?.Loading,
     UserMangementReducer?.Loading,
+    ManageAuthorityReducer?.Loading,
   ].some((loading) => loading);
 
   useEffect(() => {
@@ -151,8 +156,8 @@ const SpinComponent = () => {
 
   if (showLoader) {
     return (
-      <section className='spinLoaderMain'>
-        <Spin size='large' tip='Loading' />
+      <section className="spinLoaderMain">
+        <Spin size="large" tip="Loading" />
       </section>
     );
   } else {
