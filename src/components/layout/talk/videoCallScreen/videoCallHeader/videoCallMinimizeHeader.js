@@ -1089,8 +1089,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
 
   return (
     <>
-      <div className='videoCallGroupScreen-minmizeVideoCall'>
-        <Row className='m-0 height100 align-items-center'>
+      <div className="videoCallGroupScreen-minmizeVideoCall">
+        <Row className="m-0 height100 align-items-center">
           <Col
             lg={5}
             md={5}
@@ -1101,12 +1101,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
             onClick={() => {
               dispatch(normalizeVideoPanelFlag(true));
               dispatch(minimizeVideoPanelFlag(false));
-            }}>
-            <p className='title-heading'>{getMeetingTitle()}</p>
+            }}
+          >
+            <p className="title-heading">{getMeetingTitle()}</p>
           </Col>
 
           <Col lg={7} md={7} sm={12}>
-            <div className='d-flex gap-10 justify-content-end'>
+            <div className="d-flex gap-10 justify-content-end">
               {isMeeting &&
               isMeetingVideo &&
               isMeetingVideoHostCheck &&
@@ -1114,10 +1115,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               !presenterViewHostFlag ? (
                 <>
                   {/* if Recording is start */}
-                  {startRecordingState && (
+                  {/* {startRecordingState && (
                     <div
-                      className='start-Recording-div'
-                      onClick={onHandleClickForStartRecording}>
+                      className="start-Recording-div"
+                      onClick={onHandleClickForStartRecording}
+                    >
                       <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
                         title={t("Start-recording")}
@@ -1125,38 +1127,40 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
                             : ""
-                        }>
+                        }
+                      >
                         <img
                           src={StartRecordLarge}
-                          className='Start-Record-Button-Minimize'
-                          alt='Record'
+                          className="Start-Record-Button-Minimize"
+                          alt="Record"
                         />
                       </Tooltip>
                     </div>
-                  )}
+                  )} */}
 
                   {/* if Recording is Pause and Stop */}
-                  {pauseRecordingState && (
+                  {/* {pauseRecordingState && (
                     <div
-                      className='record-minimize-background'
+                      className="record-minimize-background"
                       // onClick={onResumeRecording}
                     >
-                      {/* <Tooltip
+                      <Tooltip
                         placement={presenterViewFlag ? "bottom" : "topRight"}
                         title={t("Stop-recording")}
                         overlayClassName={
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
                             : ""
-                        }>
+                        }
+                      >
                         <img
                           src={StartRecordSmall}
                           onClick={onHandleClickForStopRecording}
-                          className='Bunch-Start-Record-Button-2-MinimizePanel'
-                          alt='Record'
+                          className="Bunch-Start-Record-Button-2-MinimizePanel"
+                          alt="Record"
                         />
-                      </Tooltip> */}
-                      <p className='Recording-text-MinimizePanel'>
+                      </Tooltip>
+                      <p className="Recording-text-MinimizePanel">
                         {t("Recording...")}
                       </p>
 
@@ -1167,21 +1171,22 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
                             : ""
-                        }>
+                        }
+                      >
                         <img
                           src={RecordStart}
                           onClick={onHandleClickForPauseRecording}
-                          className='Bunch-Start-Record-Button-MinimizePanel'
-                          alt='Record'
+                          className="Bunch-Start-Record-Button-MinimizePanel"
+                          alt="Record"
                         />
                       </Tooltip>
                     </div>
-                  )}
+                  )} */}
 
                   {/* if Recording is Pause and Resume */}
-                  {resumeRecordingState && (
-                    <div className='Record-Start-BackgroundRed-Minimize'>
-                      <p className='RecordingPaused-text-Minimize'>
+                  {/* {resumeRecordingState && (
+                    <div className="Record-Start-BackgroundRed-Minimize">
+                      <p className="RecordingPaused-text-Minimize">
                         {t("Recording-paused")}
                       </p>
                       <Tooltip
@@ -1191,23 +1196,24 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           presenterViewFlag
                             ? "zindexing-for-presenter-tooltip"
                             : ""
-                        }>
+                        }
+                      >
                         <img
                           src={RecordPlay}
-                          className='Bunch-Start-RecordingPaused-Button-MinimizePanel'
-                          alt='Record'
+                          className="Bunch-Start-RecordingPaused-Button-MinimizePanel"
+                          alt="Record"
                           onClick={onHandleClickForResumeRecording}
                         />
                       </Tooltip>
                     </div>
-                  )}
+                  )} */}
                 </>
               ) : null}
 
               {presenterViewFlag && presenterViewHostFlag && (
-                <div onClick={minimizeStopPresenter} className='cursor-pointer'>
-                  <Tooltip placement='topRight' title={t("Stop-presentation")}>
-                    <img src={StopMinPresenter} alt='Video' />
+                <div onClick={minimizeStopPresenter} className="cursor-pointer">
+                  <Tooltip placement="topRight" title={t("Stop-presentation")}>
+                    <img src={StopMinPresenter} alt="Video" />
                   </Tooltip>
                 </div>
               )}
@@ -1218,9 +1224,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     : !localMicStatus
                     ? "minimize for-host-active-state-minimize"
                     : "minimize inactive-state"
-                }>
+                }
+              >
                 <Tooltip
-                  placement='topRight'
+                  placement="topRight"
                   title={
                     (meetingHostData?.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)) &&
@@ -1235,7 +1242,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       : localMicStatus
                       ? t("Disable-mic")
                       : t("Enable-mic")
-                  }>
+                  }
+                >
                   <img
                     src={
                       meetingHostData?.isDashboardVideo
@@ -1259,7 +1267,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         toggleMic(!localMicStatus);
                       }
                     }}
-                    alt='Mic'
+                    alt="Mic"
                   />
                 </Tooltip>
               </div>
@@ -1270,9 +1278,10 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     : !localVidStatus
                     ? "minimize for-host-active-state-minimize"
                     : "minimize inactive-state"
-                }>
+                }
+              >
                 <Tooltip
-                  placement='topRight'
+                  placement="topRight"
                   title={
                     (meetingHostData?.isHost ||
                       (presenterViewFlag && presenterViewHostFlag)) &&
@@ -1287,7 +1296,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       : localVidStatus
                       ? t("Disable-video")
                       : t("Enable-video")
-                  }>
+                  }
+                >
                   <img
                     src={
                       (meetingHostData?.isHost ||
@@ -1319,7 +1329,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                         toggleVideo(!localVidStatus);
                       }
                     }}
-                    alt='Video'
+                    alt="Video"
                   />
                 </Tooltip>
               </div>
@@ -1336,15 +1346,17 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       : globallyScreenShare
                       ? "globally-screenshare-presenterImage"
                       : "screenShare-Toggle inactive-state"
-                  }>
+                  }
+                >
                   <Tooltip
-                    placement='topRight'
+                    placement="topRight"
                     title={
                       isScreenActive ||
                       (presenterViewFlag && presenterViewHostFlag)
                         ? t("Stop-sharing")
                         : t("Screen-share")
-                    }>
+                    }
+                  >
                     <img
                       onClick={
                         !presenterViewHostFlag && !globallyScreenShare
@@ -1352,20 +1364,23 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                           : null
                       }
                       src={ShareScreenWhite}
-                      alt='Screen Share'
+                      alt="Screen Share"
                     />
                   </Tooltip>
                 </div>
               )}
+
+
+
               {presenterViewFlag &&
                 presenterViewJoinFlag &&
                 presenterViewHostFlag &&
                 !JSON.parse(localStorage.getItem("activeCall")) && (
-                  <Tooltip placement='topRight' title={t("Participants")}>
+                  <Tooltip placement="topRight" title={t("Participants")}>
                     <div className={"grayScaleImage-forminimize"}>
                       <img
                         src={ParticipantIcon}
-                        alt='Participants'
+                        alt="Participants"
                         onClick={openPresenterParticipantsList}
                       />
                     </div>
@@ -1374,18 +1389,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       {presenterParticipantList && presenterViewHostFlag && (
                         <>
                           <div
-                            className={"presenter-participants-minimize-list"}>
-                            <div className='background-color-for-list'>
+                            className={"presenter-participants-minimize-list"}
+                          >
+                            <div className="background-color-for-list">
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
-                                  <p className='Waiting-New-Participant-Hosts-Title'>
+                                  <p className="Waiting-New-Participant-Hosts-Title">
                                     {t("Participants")}
                                   </p>
                                 </Col>
                               </Row>
 
-                              <Row className='mt-4'>
-                                <Col lg={12} md={12} sm={12} className='gap-2'>
+                              <Row className="mt-4">
+                                <Col lg={12} md={12} sm={12} className="gap-2">
                                   {filteredParticipants.length > 0 ? (
                                     filteredParticipants.map(
                                       (usersData, index) => {
@@ -1395,13 +1411,14 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                         );
                                         return (
                                           <>
-                                            <Row className='hostBorder m-0'>
+                                            <Row className="hostBorder m-0">
                                               <Col
-                                                className='p-0 d-flex align-items-center'
+                                                className="p-0 d-flex align-items-center"
                                                 lg={8}
                                                 md={8}
-                                                sm={12}>
-                                                <p className='participant-name'>
+                                                sm={12}
+                                              >
+                                                <p className="participant-name">
                                                   {usersData?.name}
                                                 </p>
                                                 {presenterViewFlag ? (
@@ -1413,7 +1430,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         <span
                                                           className={
                                                             "Host-title-name"
-                                                          }>
+                                                          }
+                                                        >
                                                           {t("(Presenter)")}
                                                         </span>
                                                       </p>
@@ -1427,7 +1445,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                           <span
                                                             className={
                                                               "Host-title-name"
-                                                            }>
+                                                            }
+                                                          >
                                                             {t("(Host)")}
                                                           </span>
                                                         </p>
@@ -1441,7 +1460,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         <span
                                                           className={
                                                             "Host-title-name"
-                                                          }>
+                                                          }
+                                                        >
                                                           {t("(Host)")}
                                                         </span>
                                                       </p>
@@ -1453,19 +1473,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                   meetingHostData.isHost) &&
                                                 usersData.raiseHand ? (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={GoldenHandRaised}
-                                                    alt=''
+                                                    alt=""
                                                     width={"22px"}
                                                     height={"22px"}
-                                                    className='handraised-participant'
+                                                    className="handraised-participant"
                                                   />
                                                 ) : (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={MenuRaiseHand}
-                                                    alt=''
-                                                    className='handraised-participant'
+                                                    alt=""
+                                                    className="handraised-participant"
                                                   />
                                                 )}
                                                 {!presenterViewHostFlag &&
@@ -1477,54 +1497,55 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                     )
                                                   ) ? (
                                                     <img
-                                                      draggable='false'
+                                                      draggable="false"
                                                       src={VideoDisable}
-                                                      width='18px'
-                                                      height='18px'
-                                                      alt='Video Disabled'
-                                                      className='handraised-participant'
+                                                      width="18px"
+                                                      height="18px"
+                                                      alt="Video Disabled"
+                                                      className="handraised-participant"
                                                     />
                                                   ) : (
                                                     <img
-                                                      draggable='false'
+                                                      draggable="false"
                                                       src={VideoOn2}
-                                                      width='18px'
-                                                      height='16px'
-                                                      alt='Video On'
-                                                      className='handraised-participant'
+                                                      width="18px"
+                                                      height="16px"
+                                                      alt="Video On"
+                                                      className="handraised-participant"
                                                     />
                                                   )
                                                 ) : usersData.hideCamera ? (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={VideoDisable}
-                                                    width='18px'
-                                                    height='18px'
-                                                    alt='Video Disabled'
-                                                    className='handraised-participant'
+                                                    width="18px"
+                                                    height="18px"
+                                                    alt="Video Disabled"
+                                                    className="handraised-participant"
                                                   />
                                                 ) : (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={VideoOn2}
-                                                    width='18px'
-                                                    height='16px'
-                                                    alt='Video On'
-                                                    className='handraised-participant'
+                                                    width="18px"
+                                                    height="16px"
+                                                    alt="Video On"
+                                                    className="handraised-participant"
                                                   />
                                                 )}
                                               </Col>
 
                                               <Col
-                                                className='
+                                                className="
                         d-flex
                         justify-content-end
                         align-items-baseline
                         gap-2
-                        p-0'
+                        p-0"
                                                 lg={4}
                                                 md={4}
-                                                sm={12}>
+                                                sm={12}
+                                              >
                                                 {!presenterViewHostFlag &&
                                                 !presenterViewJoinFlag &&
                                                 usersData.isHost ? (
@@ -1534,47 +1555,47 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                     )
                                                   ) ? (
                                                     <img
-                                                      draggable='false'
+                                                      draggable="false"
                                                       src={MicDisabled}
-                                                      width='19px'
-                                                      height='19px'
-                                                      alt='Microphone Disabled'
+                                                      width="19px"
+                                                      height="19px"
+                                                      alt="Microphone Disabled"
                                                     />
                                                   ) : (
                                                     <img
-                                                      draggable='false'
+                                                      draggable="false"
                                                       src={MicOnEnabled}
-                                                      width='15px'
-                                                      height='19px'
-                                                      alt='Microphone Enabled'
+                                                      width="15px"
+                                                      height="19px"
+                                                      alt="Microphone Enabled"
                                                     />
                                                   )
                                                 ) : usersData.mute ? (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={MicDisabled}
-                                                    width='19px'
-                                                    height='19px'
-                                                    alt='Microphone Disabled'
+                                                    width="19px"
+                                                    height="19px"
+                                                    alt="Microphone Disabled"
                                                   />
                                                 ) : (
                                                   <img
-                                                    draggable='false'
+                                                    draggable="false"
                                                     src={MicOnEnabled}
-                                                    width='15px'
-                                                    height='19px'
-                                                    alt='Microphone Enabled'
+                                                    width="15px"
+                                                    height="19px"
+                                                    alt="Microphone Enabled"
                                                   />
                                                 )}
                                                 {presenterViewFlag ? (
                                                   currentUserID !==
                                                   usersData.userID ? (
                                                     <Dropdown>
-                                                      <Dropdown.Toggle className='participant-toggle'>
+                                                      <Dropdown.Toggle className="participant-toggle">
                                                         <img
-                                                          draggable='false'
+                                                          draggable="false"
                                                           src={Menu}
-                                                          alt=''
+                                                          alt=""
                                                         />
                                                       </Dropdown.Toggle>
                                                       <Dropdown.Menu>
@@ -1584,12 +1605,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               {usersData.isGuest ===
                                                               false ? (
                                                                 <Dropdown.Item
-                                                                  className='participant-dropdown-item'
+                                                                  className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     makeHostOnClick(
                                                                       usersData
                                                                     )
-                                                                  }>
+                                                                  }
+                                                                >
                                                                   {t(
                                                                     "Make-host"
                                                                   )}
@@ -1604,12 +1626,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               {usersData.isHost ===
                                                               false ? (
                                                                 <Dropdown.Item
-                                                                  className='participant-dropdown-item'
+                                                                  className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     removeParticipantMeetingOnClick(
                                                                       usersData
                                                                     )
-                                                                  }>
+                                                                  }
+                                                                >
                                                                   {t("Remove")}
                                                                 </Dropdown.Item>
                                                               ) : null}
@@ -1619,26 +1642,28 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         false ? (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
                                                                   true
                                                                 )
-                                                              }>
+                                                              }
+                                                            >
                                                               {t("Mute")}
                                                             </Dropdown.Item>
                                                           </>
                                                         ) : (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
                                                                   false
                                                                 )
-                                                              }>
+                                                              }
+                                                            >
                                                               {t("UnMute")}
                                                             </Dropdown.Item>
                                                           </>
@@ -1647,26 +1672,28 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         false ? (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
                                                                   true
                                                                 );
-                                                              }}>
+                                                              }}
+                                                            >
                                                               {t("Hide-video")}
                                                             </Dropdown.Item>
                                                           </>
                                                         ) : (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
                                                                   false
                                                                 );
-                                                              }}>
+                                                              }}
+                                                            >
                                                               {t(
                                                                 "UnHide-video"
                                                               )}
@@ -1679,11 +1706,11 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                 ) : (
                                                   !usersData.isHost && (
                                                     <Dropdown>
-                                                      <Dropdown.Toggle className='participant-toggle'>
+                                                      <Dropdown.Toggle className="participant-toggle">
                                                         <img
-                                                          draggable='false'
+                                                          draggable="false"
                                                           src={Menu}
-                                                          alt=''
+                                                          alt=""
                                                         />
                                                       </Dropdown.Toggle>
                                                       <Dropdown.Menu>
@@ -1693,12 +1720,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               {usersData.isGuest ===
                                                               false ? (
                                                                 <Dropdown.Item
-                                                                  className='participant-dropdown-item'
+                                                                  className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     makeHostOnClick(
                                                                       usersData
                                                                     )
-                                                                  }>
+                                                                  }
+                                                                >
                                                                   {t(
                                                                     "Make-host"
                                                                   )}
@@ -1713,12 +1741,13 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                               {usersData.isHost ===
                                                               false ? (
                                                                 <Dropdown.Item
-                                                                  className='participant-dropdown-item'
+                                                                  className="participant-dropdown-item"
                                                                   onClick={() =>
                                                                     removeParticipantMeetingOnClick(
                                                                       usersData
                                                                     )
-                                                                  }>
+                                                                  }
+                                                                >
                                                                   {t("Remove")}
                                                                 </Dropdown.Item>
                                                               ) : null}
@@ -1728,26 +1757,28 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         false ? (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
                                                                   true
                                                                 )
-                                                              }>
+                                                              }
+                                                            >
                                                               {t("Mute")}
                                                             </Dropdown.Item>
                                                           </>
                                                         ) : (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() =>
                                                                 muteUnmuteByHost(
                                                                   usersData,
                                                                   false
                                                                 )
-                                                              }>
+                                                              }
+                                                            >
                                                               {t("UnMute")}
                                                             </Dropdown.Item>
                                                           </>
@@ -1756,26 +1787,28 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                                         false ? (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
                                                                   true
                                                                 );
-                                                              }}>
+                                                              }}
+                                                            >
                                                               {t("Hide-video")}
                                                             </Dropdown.Item>
                                                           </>
                                                         ) : (
                                                           <>
                                                             <Dropdown.Item
-                                                              className='participant-dropdown-item'
+                                                              className="participant-dropdown-item"
                                                               onClick={() => {
                                                                 hideUnHideVideoParticipantByHost(
                                                                   usersData,
                                                                   false
                                                                 );
-                                                              }}>
+                                                              }}
+                                                            >
                                                               {t(
                                                                 "UnHide-video"
                                                               )}
@@ -1795,7 +1828,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                                   ) : (
                                     <>
                                       <Row>
-                                        <Col className='d-flex justify-content-center align-item-center'>
+                                        <Col className="d-flex justify-content-center align-item-center">
                                           <p>{t("No-participant")}</p>
                                         </Col>
                                       </Row>
@@ -1816,45 +1849,46 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                 !presenterViewJoinFlag) ||
                 (presenterViewFlag && presenterViewHostFlag)) &&
                 meetingHostData?.isDashboardVideo && (
-                  <Tooltip placement='topRight' title={t("Copy-link")}>
+                  <Tooltip placement="topRight" title={t("Copy-link")}>
                     <div
                       className={
                         LeaveCallModalFlag
                           ? "grayScaleImage"
                           : "screenShare-Toggle inactive-state"
-                      }>
+                      }
+                    >
                       <img
                         src={CopyLinkWhite}
                         onClick={copyToClipboardd}
-                        alt='Copy Link'
+                        alt="Copy Link"
                       />
                     </div>
                   </Tooltip>
                 )}
               {/* {(!presenterViewFlag || */}
               {/* {activeCall && currentCallType === 1 && ( */}
-              <div className='position-relative'>
+              <div className="position-relative">
                 {LeaveCallModalFlag === true &&
                 callerID === currentUserID &&
                 !presenterViewHostFlag &&
                 !presenterViewJoinFlag ? (
                   <>
-                    <div className='minimize active-state-end'>
-                      <Tooltip placement='bottomLeft' title={t("Cancel")}>
+                    <div className="minimize active-state-end">
+                      <Tooltip placement="bottomLeft" title={t("Cancel")}>
                         <img
                           onClick={cancelLeaveCallOption}
                           src={CallEndRedIcon}
-                          alt='End Call'
-                          className='cursor-pointer'
+                          alt="End Call"
+                          className="cursor-pointer"
                         />
                       </Tooltip>
                     </div>
                     {LeaveCallModalFlag === true && !isMeeting && (
-                      <div className='minimize-leave-meeting-options leave-meeting-options-position'>
-                        <div className='leave-meeting-options__inner'>
+                      <div className="minimize-leave-meeting-options leave-meeting-options-position">
+                        <div className="leave-meeting-options__inner">
                           {(currentCallType === 1 || currentCallType === 2) && (
                             <Button
-                              className='leave-meeting-options__btn leave-meeting-red-button'
+                              className="leave-meeting-options__btn leave-meeting-red-button"
                               text={
                                 isMeetingVideo
                                   ? t("Leave-meeting-video-call")
@@ -1876,7 +1910,7 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                             currentCallType === 2 &&
                             activeCall && (
                               <Button
-                                className='leave-meeting-options__btn leave-meeting-gray-button'
+                                className="leave-meeting-options__btn leave-meeting-gray-button"
                                 text={
                                   currentCallType === 2 &&
                                   t("End-call-for-everyone")
@@ -1885,8 +1919,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                               />
                             )}
                           <Button
-                            className='leave-meeting-options__btn leave-meeting-gray-button'
-                            text='Cancel'
+                            className="leave-meeting-options__btn leave-meeting-gray-button"
+                            text="Cancel"
                             onClick={closeVideoPanel}
                           />
                         </div>
@@ -1899,18 +1933,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   !presenterViewHostFlag &&
                   !presenterViewJoinFlag ? (
                   <Tooltip
-                    placement='bottomLeft'
+                    placement="bottomLeft"
                     title={
                       isMeetingVideo
                         ? t("Leave-meeting-video-call")
                         : t("End-call")
-                    }>
-                    <div className='minimize inactive-state'>
+                    }
+                  >
+                    <div className="minimize inactive-state">
                       <img
                         src={CallEndRedIcon}
                         onClick={openVideoPanel}
-                        alt='End Call'
-                        className='cursor-pointer'
+                        alt="End Call"
+                        className="cursor-pointer"
                       />
                     </div>
                   </Tooltip>
@@ -1920,18 +1955,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   !presenterViewHostFlag &&
                   !presenterViewJoinFlag && (
                     <Tooltip
-                      placement='bottomLeft'
+                      placement="bottomLeft"
                       title={
                         isMeetingVideo
                           ? t("Leave-meeting-video-call")
                           : t("End-call")
-                      }>
+                      }
+                    >
                       {console.log(
                         "LeaveCallModalFlag 4",
                         callerID,
                         currentUserID
                       )}
-                      <div className='minimize inactive-state'>
+                      <div className="minimize inactive-state">
                         <img
                           src={CallEndRedIcon}
                           onClick={() =>
@@ -1942,8 +1978,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                               false
                             )
                           }
-                          alt='End Call'
-                          className='cursor-pointer'
+                          alt="End Call"
+                          className="cursor-pointer"
                         />
                       </div>
                     </Tooltip>
@@ -1955,18 +1991,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               {((!presenterViewHostFlag && !presenterViewJoinFlag) ||
                 (activeCall && currentCallType === 1)) && (
                 <div>
-                  <Tooltip placement='bottomLeft' title={t("Normalize-screen")}>
+                  <Tooltip placement="bottomLeft" title={t("Normalize-screen")}>
                     <div
                       className={
                         LeaveCallModalFlag === true
                           ? "minimize grayScaleImage"
                           : "minimize inactive-state"
-                      }>
+                      }
+                    >
                       <img
                         src={MinToNormalIcon}
                         onClick={normalizePanel}
-                        className='min-to-normal-icon cursor-pointer'
-                        alt='Normalize Panel'
+                        className="min-to-normal-icon cursor-pointer"
+                        alt="Normalize Panel"
                       />
                     </div>
                   </Tooltip>
@@ -1974,18 +2011,19 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
               )}
 
               <div>
-                <Tooltip placement='bottomLeft' title={t("Maximize-screen")}>
+                <Tooltip placement="bottomLeft" title={t("Maximize-screen")}>
                   <div
                     className={
                       LeaveCallModalFlag === true
                         ? "minimize grayScaleImage"
                         : "minimize inactive-state"
-                    }>
+                    }
+                  >
                     <img
                       src={ExpandIcon}
                       onClick={maximizePanel}
-                      className='min-to-max-icon cursor-pointer'
-                      alt='Maximize'
+                      className="min-to-max-icon cursor-pointer"
+                      alt="Maximize"
                     />
                   </div>
                 </Tooltip>
@@ -1999,12 +2037,12 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
         <>
           <div ref={leaveModalPopupRef}>
             {LeaveCallModalFlag === true && (
-              <div className='minimize-leave-meeting-options leave-meeting-options-position'>
-                <div className='leave-meeting-options__inner'>
+              <div className="minimize-leave-meeting-options leave-meeting-options-position">
+                <div className="leave-meeting-options__inner">
                   {meetingHostData?.isDashboardVideo ? (
                     <>
                       <Button
-                        className='leave-meeting-options__btn leave-meeting-red-button'
+                        className="leave-meeting-options__btn leave-meeting-red-button"
                         text={
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
@@ -2020,8 +2058,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                       />
 
                       <Button
-                        className='leave-meeting-options__btn leave-meeting-gray-button'
-                        text='Cancel'
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
                         onClick={closeVideoPanel}
                       />
                     </>
@@ -2029,15 +2067,15 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                     <>
                       {currentCallType === 1 && (
                         <Button
-                          className='leave-meeting-options__btn leave-meeting-red-button'
+                          className="leave-meeting-options__btn leave-meeting-red-button"
                           text={t("Leave-call")}
                           onClick={minimizeLeaveCall}
                         />
                       )}
 
                       <Button
-                        className='leave-meeting-options__btn leave-meeting-gray-button'
-                        text='Cancel'
+                        className="leave-meeting-options__btn leave-meeting-gray-button"
+                        text="Cancel"
                         onClick={closeVideoPanel}
                       />
                     </>

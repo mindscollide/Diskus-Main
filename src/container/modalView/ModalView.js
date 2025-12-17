@@ -1102,6 +1102,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(
         LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
       );
+      await dispatch(normalizeVideoPanelFlag(false));
+      await dispatch(minimizeVideoPanelFlag(false));
     }
     if (flag) {
       console.log("mqtt mqmqmqmqmqmq");
