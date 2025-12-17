@@ -1775,7 +1775,7 @@ const stopPresenterViewMainApi = (
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
-                sessionStorage.removeItem("alreadyInMeetingVideo");
+                // sessionStorage.removeItem("alreadyInMeetingVideo");
               }
               await dispatch(
                 stopPresenterSuccess(
