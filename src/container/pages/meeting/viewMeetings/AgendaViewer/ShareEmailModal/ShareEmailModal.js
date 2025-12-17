@@ -21,14 +21,14 @@ import {
 } from "../../../../../../store/actions/MeetingAgenda_action";
 import CrossEmail from "./../AV-Images/Cross-Email.png";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 
 const ShareEmailModal = ({ setShareEmailView }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
-
-  let currentMeeting = Number(localStorage.getItem("currentMeetingID"));
+  const { advanceMeetingModalID } = useMeetingContext();
 
   let meetingTitle = localStorage.getItem("meetingTitle");
 
@@ -55,7 +55,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: advanceMeetingModalID,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);
@@ -75,7 +75,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
       let temp = [];
       if (Object.keys(newOrganizersData).length > 0) {
         if (Object.keys(newOrganizersData.organizationUsers).length > 0) {
-          newOrganizersData.organizationUsers.map((a) => {
+          newOrganizersData.organizationUsers.forEach((a) => {
             let newData = {
               value: a.emailAddress,
               name: a.userName,
@@ -86,15 +86,14 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 align-items-center"
-                    >
+                      className='d-flex gap-2 align-items-center'>
                       <img
                         src={`data:image/jpeg;base64,${a?.profilePicture?.displayProfilePictureName}`}
-                        alt=""
+                        alt=''
                         className={styles["UserProfilepic"]}
-                        width="18px"
-                        height="18px"
-                        draggable="false"
+                        width='18px'
+                        height='18px'
+                        draggable='false'
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -157,7 +156,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
 
     if (mergedUserEmails.length !== 0) {
       let Data = {
-        PK_MDID: currentMeeting,
+        PK_MDID: advanceMeetingModalID,
         ListOfEmailAddresses: mergedUserEmails,
         MeetingTitle: meetingTitle,
         IsSubAgendaNeeded: true,
@@ -188,18 +187,18 @@ const ShareEmailModal = ({ setShareEmailView }) => {
         onHide={() => {
           setShareEmailView(false);
         }}
-        size="md"
-        className="ShareEmailAgendaModal"
+        size='md'
+        className='ShareEmailAgendaModal'
         ModalTitle={
           <>
             <Row>
-              <Col lg={12} md={12} sm={12} className="position-relative">
+              <Col lg={12} md={12} sm={12} className='position-relative'>
                 <p className={styles["FileModalTitle"]}>{t("Share-email")}</p>
                 <img
                   onClick={() => setShareEmailView(false)}
                   className={styles["image-close"]}
                   src={CrossIcon}
-                  alt=""
+                  alt=''
                 />
               </Col>
             </Row>
@@ -207,8 +206,8 @@ const ShareEmailModal = ({ setShareEmailView }) => {
         }
         ModalBody={
           <>
-            <Row className="m-0">
-              <Col className="p-0">
+            <Row className='m-0'>
+              <Col className='p-0'>
                 <p className={`${styles["organizationUsers"]} m-0`}>
                   {t("Select-organization-users")}
                 </p>
@@ -236,8 +235,8 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                 />
               </Col>
             </Row>
-            <Row className="m-0">
-              <Col className="p-0">
+            <Row className='m-0'>
+              <Col className='p-0'>
                 <p className={`${styles["NonOrganizationUsers"]} m-0`}>
                   {t("Select-non-organization-users")}
                 </p>
@@ -250,29 +249,27 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                     tags.length <= 4
                       ? styles["tags-input-container"]
                       : styles["tags-input-containerr"]
-                  }
-                >
+                  }>
                   {tags.map((tag, index) => (
                     <div className={styles["tag-item"]} key={index}>
                       <span className={styles["text"]}>{tag}</span>
                       <span
                         className={styles["close"]}
-                        onClick={() => removeTag(index)}
-                      >
-                        <img src={CrossEmail} alt="" />
+                        onClick={() => removeTag(index)}>
+                        <img src={CrossEmail} alt='' />
                       </span>
                     </div>
                   ))}
                   <input
                     onKeyDown={handleKeyDown}
-                    type="text"
+                    type='text'
                     className={styles["tags-input"]}
                   />
                 </div>
               </Col>
             </Row>
-            <Row className="m-0">
-              <Col className="p-0">
+            <Row className='m-0'>
+              <Col className='p-0'>
                 <p className={`${styles["NonOrganizationUsers"]} m-0`}>
                   {t("Message-optional")}
                 </p>
@@ -283,18 +280,17 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className={styles["text-area-organizer"]}
-              >
+                className={styles["text-area-organizer"]}>
                 <TextField
-                  applyClass="text-area-create-Notify-organizors"
-                  type="text"
+                  applyClass='text-area-create-Notify-organizors'
+                  type='text'
                   as={"textarea"}
-                  rows="4"
+                  rows='4'
                   placeholder={t("Message")}
                   change={HandleChange}
                   value={notificationMessage}
                   required={true}
-                  name="Message"
+                  name='Message'
                   maxLength={500}
                 />
               </Col>
@@ -308,8 +304,7 @@ const ShareEmailModal = ({ setShareEmailView }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2 p-0"
-              >
+                className='d-flex justify-content-end gap-2 p-0'>
                 <Button
                   text={t("Send")}
                   onClick={sendEmail}

@@ -63,6 +63,7 @@ const PasswordVerification = () => {
 
   //States for Password Verification Screen
   const [password, setPassword] = useState("");
+  const [passwordFieldDisbaled, setPasswordFieldDisabled] = useState(false);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -147,7 +148,9 @@ const PasswordVerification = () => {
       showMessage(t("Enter-password"), "error", setOpen);
     } else {
       setErrorBar(false);
-      dispatch(enterPasswordvalidation(password, navigate, t));
+      setPasswordFieldDisabled(true);
+
+      dispatch(enterPasswordvalidation(password, navigate, t, setPasswordFieldDisabled));
     }
   };
 
@@ -294,6 +297,7 @@ const PasswordVerification = () => {
                         type={showNewPasswordIcon ? "text" : "password"}
                         name='MyUniquePasswordField'
                         ref={passwordRef}
+                        disabled={passwordFieldDisbaled}
                         value={password || ""}
                         onChange={passwordChangeHandler}
                         placeholder={t("Password")}

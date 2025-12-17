@@ -2277,7 +2277,11 @@ const Dashboard = () => {
               creationDateTime: data.payload.creationDateTime,
               notificationTypes: {
                 pK_NTID: data.payload.notificationStatusID,
-                description: t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
+                description: changeMQTTJSONOne(
+                  t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
+                  "[Task Title]",
+                  data.payload.taskTitle
+                ),
                 icon: "",
               },
               key: 0,

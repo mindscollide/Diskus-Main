@@ -73,7 +73,7 @@ const Resolution = () => {
   const navigate = useNavigate();
   const [isResolutionClosed, setIsResolutionClosed] = useState(false);
 
-  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed")
+  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
   const ResolutionReducersearchVoterResolution = useSelector(
@@ -831,9 +831,9 @@ const Resolution = () => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         let isClosed =
-        data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
-          ? true
-          : false;
+          data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
+            ? true
+            : false;
         if (votingDeadline < newDate) {
           return (
             <img
@@ -1420,15 +1420,6 @@ const Resolution = () => {
               voteresolution={voteresolution}
             />
           </>
-        ) : viewattachmentpage &&
-          ResolutionReducerviewAttachmentFlag === true ? (
-          <>
-            <ViewAttachments
-              setViewattachmentpage={setViewattachmentpage}
-              viewattachmentpage={viewattachmentpage}
-              resolutionAttachments={resolutionAttachments}
-            />
-          </>
         ) : ResolutionReducerupdateResolutionModal ? (
           <>
             <EditResolution setCancelresolution={setCancelResolutionModal} />
@@ -1873,6 +1864,15 @@ const Resolution = () => {
           </>
         )}
       </section>
+      {viewattachmentpage && ResolutionReducerviewAttachmentFlag === true ? (
+        <>
+          <ViewAttachments
+            setViewattachmentpage={setViewattachmentpage}
+            viewattachmentpage={viewattachmentpage}
+            resolutionAttachments={resolutionAttachments}
+          />
+        </>
+      ) : null}
       {resolutionmodalupdated ? (
         <ModalResolutionUpdated
           resolutionupdated={resolutionmodalupdated}
