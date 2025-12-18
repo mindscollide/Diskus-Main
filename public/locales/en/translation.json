@@ -2531,5 +2531,11 @@
   "View-authority": "View Authority",
   "Edit-authority": "Edit Authority",
   "No-authority-available": "No Authority Available",
-  "You-dont-have-any-authority-at-the-moment": "You don't have any Authority at the moment"
+  "You-dont-have-any-authority-at-the-moment": "You don't have any Authority at the moment",
+  "Fiscal-year": "Fiscal Year",
+  "Due-date-alert": "Due Date Alert",
+  "Working-days": "Working Days",
+  "Fiscal-year-settings": "Fiscal Year Settings",
+  "Fiscal-year-start-date": "Fiscal Year Start Date",
+  "Fiscal-year-start-month": "Fiscal Year Start Month"
 }
