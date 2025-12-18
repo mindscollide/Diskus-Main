@@ -1,0 +1,8 @@
+.General_Setting-Main-Heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+}
+body[dir="rtl"] .General_Setting-Main-Heading {
+  font-weight: 600 !important;
+}

@@ -597,6 +597,13 @@ const ManageAuthority = () => {
                             text={t("Search")}
                             className={styles["SearchButtonSearchBox"]}
                             onClick={handleSearchAuthorityButton}
+                            disableBtn={
+                              searchPayload.shortCode === "" &&
+                              searchPayload.authorityName === "" &&
+                              searchPayload.country === "" &&
+                              searchPayload.sector === "" &&
+                              searchPayload.authorityTitle === ""
+                            }
                           />
                         </Col>
                       </Row>
