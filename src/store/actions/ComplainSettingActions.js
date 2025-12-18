@@ -32,11 +32,13 @@ const GetAllAuthorityFail = (message) => {
   };
 };
 
-const GetAllAuthorityAPI = (navigate, t) => {
+const GetAllAuthorityAPI = (navigate, data, t) => {
   return (dispatch) => {
     dispatch(GetAllAuthorityInit());
     let form = new FormData();
     form.append("RequestMethod", GetAllAuthority.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {

@@ -37,6 +37,9 @@ import AddEditViewAuthorityModal from "./addEditAuthority";
 // Context
 // ========================
 import { useAuthorityContext } from "../../../../context/AuthorityContext";
+import { GetAllAuthorityAPI } from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ManageAuthority = () => {
   // Translation hook for multi-language support
@@ -61,10 +64,50 @@ const ManageAuthority = () => {
 
   // Redux dispatcher
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [data, setData] = useState([
+    {
+      key: "1",
+      shortCode: "PSX",
+      name: "Pakistan Stock Exchange",
+      country: "Pakistan",
+      sector: "Security Regulation",
+      status: "Active",
+    },
+    {
+      key: "2",
+      shortCode: "SBP",
+      name: "State Bank of Pakistan",
+      country: "Pakistan",
+      sector: "Banking & Monetary Policy",
+      status: "Active",
+    },
+    {
+      key: "3",
+      shortCode: "FBR",
+      name: "Federal Board of Revenue",
+      country: "Pakistan",
+      sector: "Taxation",
+      status: "Inactive",
+    },
+    {
+      key: "4",
+      shortCode: "NEPRA",
+      name: "National Electric Power Regulatory Authority",
+      country: "Pakistan",
+      sector: "Energy Regulation",
+      status: "Active",
+    },
+  ]);
 
   // Ref used to detect clicks outside the search box
   const searchBoxRef = useRef(null);
 
+  const GetAllAuthority = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities
+  );
+  console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
   // ========================
   // Modal Actions
   // ========================
@@ -92,6 +135,21 @@ const ManageAuthority = () => {
   };
 
   // ========================
+  // Initial UseEffect
+  // ========================
+  useEffect(() => {
+    const data = {
+      shortCode: "",
+      authorityName: "",
+      countryId: 0,
+      sector: "",
+      sRow: 0,
+      length: 10,
+    };
+
+    dispatch(GetAllAuthorityAPI(navigate, data, t));
+  }, []);
+  // ========================
   // Click Outside Search Box
   // ========================
 
@@ -117,7 +175,6 @@ const ManageAuthority = () => {
   // ========================
   // Table Columns Definition
   // ========================
-
   const columnsAuthority = useMemo(
     () => [
       {
@@ -290,45 +347,6 @@ const ManageAuthority = () => {
     ],
     [t] // Re-render columns when language changes
   );
-
-  // ========================
-  // Temporary Table Data
-  // ========================
-
-  const data = [
-    {
-      key: "1",
-      shortCode: "PSX",
-      name: "Pakistan Stock Exchange",
-      country: "Pakistan",
-      sector: "Security Regulation",
-      status: "Active",
-    },
-    {
-      key: "2",
-      shortCode: "SBP",
-      name: "State Bank of Pakistan",
-      country: "Pakistan",
-      sector: "Banking & Monetary Policy",
-      status: "Active",
-    },
-    {
-      key: "3",
-      shortCode: "FBR",
-      name: "Federal Board of Revenue",
-      country: "Pakistan",
-      sector: "Taxation",
-      status: "Inactive",
-    },
-    {
-      key: "4",
-      shortCode: "NEPRA",
-      name: "National Electric Power Regulatory Authority",
-      country: "Pakistan",
-      sector: "Energy Regulation",
-      status: "Active",
-    },
-  ];
 
   // Tracks whether Enter key search was triggered
   const [enterpressed, setEnterpressed] = useState(true);
