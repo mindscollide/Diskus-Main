@@ -2519,6 +2519,7 @@
   "Please-try-again-after": "Please try again after",
 
   "Complaince-setting": "Complaince Setting",
+  "Authority": "Authority",
   "Manage-authority": "Manage Authority",
   "General-setting": "General Setting",
   "Add-authority": "Add Authority",
@@ -2537,5 +2538,6 @@
   "Working-days": "Working Days",
   "Fiscal-year-settings": "Fiscal Year Settings",
   "Fiscal-year-start-date": "Fiscal Year Start Date",
-  "Fiscal-year-start-month": "Fiscal Year Start Month"
+  "Fiscal-year-start-month": "Fiscal Year Start Month",
+  "Fiscal-year-end": "Fiscal Year End"
 }
