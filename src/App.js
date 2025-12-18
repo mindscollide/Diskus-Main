@@ -65,9 +65,9 @@ const App = () => {
       }
 
       // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (!isAlreadyInDashboard && localToken && localUser) {
-        window.location.replace("/Diskus/");
-      }
+      // if (!isAlreadyInDashboard && localToken && localUser) {
+      //   window.location.replace("/Diskus/");
+      // }
     };
 
     // Run on initial load
@@ -76,7 +76,7 @@ const App = () => {
     // Listen for tab visibility changes
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        syncSessionAndRedirect();
+        // syncSessionAndRedirect();
       }
     };
 

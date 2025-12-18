@@ -494,6 +494,22 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
+  const activeCallsessionStorage = sessionStorage.getItem(
+    "activeCallSessionforOtoandGroup"
+  );
+  const activeCallLocalStorage =
+    localStorage.getItem("activeCall") !== null &&
+    JSON.parse(localStorage.getItem("activeCall"));
+  // useEffect(() => {
+  //   const activeCall = sessionStorage.getItem(
+  //     "activeCallSessionforOtoandGroup"
+  //   );
+
+  //   if (activeCall === "true") {
+  //     // Redirect to AlreadyInGroupAndOtoCall page
+  //     navigate("Diskus/AlreadyInGroupAndOtoCall");
+  //   }
+  // }, [navigate]);
 
   // For End QUick Meeting
 
@@ -3318,6 +3334,7 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
           console.log(existingData.length, "existingDatalength");
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
 
           //For Stop Recording while user reject the call
           if (isZoomEnabled) {
@@ -3543,6 +3560,8 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
@@ -3741,6 +3760,7 @@ const Dashboard = () => {
           let roomID = 0;
           let flagCheck1 = false;
           localStorage.setItem("MicOff", true);
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
 
           if (isZoomEnabled) {
             if (String(initiateCallRoomID) !== String(data.payload.roomID)) {
@@ -4841,7 +4861,15 @@ const Dashboard = () => {
     window.close();
   }, []);
 
-  return (
+  const isOtoCallisActive =
+    activeCallLocalStorage && !activeCallsessionStorage ? true : false;
+  useEffect(() => {
+    if (isOtoCallisActive) {
+      navigate("/AlreadyInGroupAndOtoCall");
+    }
+  }, [isOtoCallisActive]);
+
+  return  (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
@@ -4883,7 +4911,7 @@ const Dashboard = () => {
                         <AlreadyInMeeting handleClickClose={handleClickClose} />
                       )
                     : null} */}
-                  {isMeetingLocal
+                  {/* {isMeetingLocal
                     ? !isMeetingSession &&
                       !(
                         Number(editorRole.status) === 10 ||
@@ -4891,7 +4919,7 @@ const Dashboard = () => {
                       ) && (
                         <AlreadyInMeeting handleClickClose={handleClickClose} />
                       )
-                    : null}
+                    : null} */}
                   <Outlet />
                 </>
               </div>

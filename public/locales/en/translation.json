@@ -2516,5 +2516,6 @@
   "You-are-currently-in-a-meeting-this-feature-cannot-be-accessed-right-now": "You are currently in a meeting. This feature cannot be accessed right now.",
   "File-is-saved-successfully": "File is saved successfully",
   "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
-  "Please-try-again-after": "Please try again after"
+  "Please-try-again-after": "Please try again after",
+  "You-are-currently-in-a-Video-Call-this-feature-cannot-be-accessed-right-now": "You are currently in a Video Call. This feature cannot be accessed right now"
 }
