@@ -2530,5 +2530,11 @@
   "View-authority": "View Authority",
   "Edit-authority": "Edit Authority",
   "No-authority-available": "No Authority Available",
-  "You-dont-have-any-authority-at-the-moment": "You don't have any Authority at the moment"
+  "You-dont-have-any-authority-at-the-moment": "You don't have any Authority at the moment",
+  "Data-deleted-successfully": "Data deleted successfully",
+  "Authority-updated-successfully": "Authority updated successfully",
+  "Authority-shortCode-already-exists-for-this-organization": "Authority ShortCode already exists for this Organization",
+  "Authority-name-already-exists-for-this-organization": "Authority Name already exists for this Organization",
+  "Authority-record-not-found-against-the-provided-authorityId": "Authority record not found Against the provided authorityId",
+  "Authority-created-successfully": "Authority created successfully"
 }
