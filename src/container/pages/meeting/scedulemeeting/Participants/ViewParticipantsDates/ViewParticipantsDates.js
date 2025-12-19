@@ -37,7 +37,9 @@ const ViewParticipantsDates = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  console.log(responseByDate, "responseByDateresponseByDateresponseByDate");
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket
+  );
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
 
@@ -63,6 +65,7 @@ const ViewParticipantsDates = ({
     MeetingType: "",
     MeetingLocation: "",
     MeetingDiscription: "",
+    MeetingID: 0
   });
   const [selectAll, setSelectAll] = useState(false);
   let currentMeetingID = Number(
@@ -137,6 +140,8 @@ const ViewParticipantsDates = ({
       );
     }
   };
+
+  console.log(meetingDeatils, "meetingDeatilsmeetingDeatils")
 
   useEffect(() => {
     callApis();
@@ -261,6 +266,7 @@ const ViewParticipantsDates = ({
       if (getAllMeetingDetails !== null && getAllMeetingDetails !== undefined) {
         setMeetingDeatils({
           MeetingTitle: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
+          MeetingID: getAllMeetingDetails.advanceMeetingDetails.meetingID,
           MeetingType:
             getAllMeetingDetails.advanceMeetingDetails.meetingType.type,
           MeetingLocation: getAllMeetingDetails.advanceMeetingDetails.location,
@@ -268,7 +274,7 @@ const ViewParticipantsDates = ({
             getAllMeetingDetails.advanceMeetingDetails.description,
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [getAllMeetingDetails]);
 
   // onChange function for CheckBoxes
@@ -398,6 +404,35 @@ const ViewParticipantsDates = ({
     dispatch(viewProposeDateMeetingPageFlag(false));
   };
 
+  useEffect(() => {
+    if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
+      try {
+        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
+        let meetingID = MeetingStatusSocket?.meetingID;
+        if (MeetingStatusSocket.message === "MEETING_STATUS_EDITED_CANCELLED" && meetingID === meetingDeatils.MeetingID) {
+          localStorage.setItem("MeetingCurrentView", 2);
+          setViewProposeDatePoll(false);
+          dispatch(viewProposeDateMeetingPageFlag(false));
+          let searchData = {
+            Date: "",
+            Title: "",
+            HostName: "",
+            UserID: Number(userID),
+            PageNumber: 1,
+            Length: 50,
+            PublishedMeetings: false,
+          };
+          console.log("chek search meeting");
+          dispatch(searchNewUserMeeting(navigate, searchData, t));
+
+        }
+        console.log(MeetingStatusSocket, meetingStatusID, meetingID, meetingDeatils.MeetingID, "MeetingStatusSocketMeetingStatusSocket")
+      } catch (error) {
+
+      }
+    }
+  }, [MeetingStatusSocket])
+
   return (
     <section>
       <Row className="mt-2">
@@ -427,8 +462,8 @@ const ViewParticipantsDates = ({
                 <span className={styles["Staff_meeting_Heading"]}>
                   {meetingDeatils.MeetingType}
                   {meetingDeatils.MeetingLocation !== "" &&
-                  meetingDeatils.MeetingLocation !== null &&
-                  meetingDeatils.MeetingLocation !== undefined ? (
+                    meetingDeatils.MeetingLocation !== null &&
+                    meetingDeatils.MeetingLocation !== undefined ? (
                     <span>({meetingDeatils.MeetingLocation})</span>
                   ) : null}
                 </span>
@@ -460,52 +495,52 @@ const ViewParticipantsDates = ({
                   >
                     {prposedData.length > 0
                       ? prposedData.map((data, index) => {
-                          console.log(data, "prposedData");
+                        console.log(data, "prposedData");
 
-                          const isChecked =
-                            data.isSelected &&
-                            Number(data.userID) === Number(currentUserId);
-                          let currentDate = new Date();
-                          return (
-                            <Row className="m-0 p-0 mt-2" key={index}>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className={styles["Box_To_Show_Time"]}
-                              >
-                                <Row className={styles["Inner_Send_class"]}>
-                                  <Col lg={10} md={10} sm={12}>
-                                    <span className={styles["Time_Class"]}>
-                                      {moment(data.startTime).format("hh:mm A")}{" "}
-                                      - {moment(data.endTime).format("hh:mm A")}
-                                      ,{" "}
-                                      {changeDateStartHandler2(
-                                        data.proposedDate
-                                      )}
-                                    </span>
-                                  </Col>
-                                  <Col lg={2} md={2} sm={2}>
-                                    <Checkbox
-                                      prefixCls={"ProposedMeeting_Checkbox"}
-                                      classNameCheckBoxP="d-none"
-                                      className={"cursor-pointer"}
-                                      disabled={
-                                        currentDate > data.startTime
-                                          ? true
-                                          : false
-                                      }
-                                      checked={isChecked}
-                                      onChange={() =>
-                                        handleCheckboxChange(data)
-                                      }
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          );
-                        })
+                        const isChecked =
+                          data.isSelected &&
+                          Number(data.userID) === Number(currentUserId);
+                        let currentDate = new Date();
+                        return (
+                          <Row className="m-0 p-0 mt-2" key={index}>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Box_To_Show_Time"]}
+                            >
+                              <Row className={styles["Inner_Send_class"]}>
+                                <Col lg={10} md={10} sm={12}>
+                                  <span className={styles["Time_Class"]}>
+                                    {moment(data.startTime).format("hh:mm A")}{" "}
+                                    - {moment(data.endTime).format("hh:mm A")}
+                                    ,{" "}
+                                    {changeDateStartHandler2(
+                                      data.proposedDate
+                                    )}
+                                  </span>
+                                </Col>
+                                <Col lg={2} md={2} sm={2}>
+                                  <Checkbox
+                                    prefixCls={"ProposedMeeting_Checkbox"}
+                                    classNameCheckBoxP="d-none"
+                                    className={"cursor-pointer"}
+                                    disabled={
+                                      currentDate > data.startTime
+                                        ? true
+                                        : false
+                                    }
+                                    checked={isChecked}
+                                    onChange={() =>
+                                      handleCheckboxChange(data)
+                                    }
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        );
+                      })
                       : null}
                   </Col>
                 </Row>
@@ -525,13 +560,13 @@ const ViewParticipantsDates = ({
                         localStorage.getItem("ProposedMeetingOperations")
                       ) === true
                         ? changeDateStartHandler2(
-                            localStorage.getItem(
-                              "NotificationClickSendResponseByDate"
-                            )
+                          localStorage.getItem(
+                            "NotificationClickSendResponseByDate"
                           )
+                        )
                         : responseByDate !== undefined
-                        ? changeDateStartHandler2(responseByDate)
-                        : null}
+                          ? changeDateStartHandler2(responseByDate)
+                          : null}
                     </span>
                   </Col>
                 </Row>

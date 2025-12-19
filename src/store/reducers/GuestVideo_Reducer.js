@@ -1,4 +1,3 @@
-import { Sa } from "react-flags-select";
 import * as actions from "../action_types";
 import { removeParticipantByGuid } from "../../commen/functions/regex";
 
@@ -423,12 +422,12 @@ const GuestVideoReducer = (state = initialState, action) => {
         ...state,
         getAllParticipantGuest: state.getAllParticipantGuest
           ? {
-              ...state.getAllParticipantGuest,
-              participantList: updatedParticipants,
-            }
+            ...state.getAllParticipantGuest,
+            participantList: updatedParticipants,
+          }
           : {
-              participantList: updatedParticipants,
-            },
+            participantList: updatedParticipants,
+          },
       };
     }
 
