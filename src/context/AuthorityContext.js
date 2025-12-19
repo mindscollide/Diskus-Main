@@ -4,26 +4,37 @@ import React, { createContext, useContext, useState } from "react";
 const AuthorityContext = createContext();
 // Create a Provider component
 export const AuthorityProvider = ({ children }) => {
-  const [shortCodeSort, setShortCodeSort] = useState(null);
-  const [authorityNameSort, setAuthoritySort] = useState(null);
+  const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
+    useState(false);
+  const [shortCodeSort, setShortCodeSort] = useState("ascend");
+  const [authorityNameSort, setAuthorityNameSort] = useState(null);
   const [countrySort, setCountrySort] = useState(null);
   const [sectorSort, setSectorSort] = useState(null);
-  const [authorityViewState, setAuthorityViewState] = useState(1);
+  const [authorityViewState, setAuthorityViewState] = useState(0);
   const [statusOptions, setStatusOptions] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [statusFilter, setStatusFilter] = useState(null);
+
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [searchPayload, setSearchPayload] = useState({
     shortCode: "",
     authorityName: "",
     country: "",
     sector: "",
     authorityTitle: "",
+    sRow: 0,
+    length: 100,
   });
+
+  const [authorityId, setAuthorityId] = useState("");
 
   const [searchbox, setsearchbox] = useState(false);
 
   return (
     <AuthorityContext.Provider
       value={{
+        setAddEditViewAuthoriyModal,
+        addEditViewAuthoriyModal,
         authorityViewState,
         setAuthorityViewState,
         searchPayload,
@@ -33,7 +44,7 @@ export const AuthorityProvider = ({ children }) => {
         shortCodeSort,
         setShortCodeSort,
         authorityNameSort,
-        setAuthoritySort,
+        setAuthorityNameSort,
         countrySort,
         setCountrySort,
         sectorSort,
@@ -42,6 +53,12 @@ export const AuthorityProvider = ({ children }) => {
         setStatusOptions,
         visible,
         setVisible,
+        authorityId,
+        setAuthorityId,
+        closeConfirmationModal,
+        setCloseConfirmationModal,
+        statusFilter,
+        setStatusFilter,
       }}
     >
       {children}

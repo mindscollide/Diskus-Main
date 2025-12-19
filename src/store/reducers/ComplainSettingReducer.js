@@ -1,7 +1,9 @@
 import * as actions from "../action_types";
+
 const initialState = {
   Loading: false,
   ResponseMessage: "",
+  severity: null, // success | error | ""
   GetAllAuthorities: null,
   GetAuthorityByID: null,
   DeleteAuthority: null,
@@ -11,127 +13,147 @@ const initialState = {
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
   switch (action.type) {
-    case actions.GET_ALL_AUTHORITY_INIT: {
+    // ================= GET ALL AUTHORITY =================
+    case actions.GET_ALL_AUTHORITY_INIT:
       return {
         ...state,
         Loading: true,
+        severity: "",
       };
-    }
-    case actions.GET_ALL_AUTHORITY_SUCCESS: {
+
+    case actions.GET_ALL_AUTHORITY_SUCCESS:
       return {
         ...state,
         Loading: false,
         GetAllAuthorities: action.response,
         ResponseMessage: action.message,
+        severity: "success",
       };
-    }
-    case actions.GET_ALL_AUTHORITY_FAIL: {
+
+    case actions.GET_ALL_AUTHORITY_FAIL:
       return {
         ...state,
         Loading: false,
         GetAllAuthorities: null,
         ResponseMessage: action.message,
+        severity: "error",
       };
-    }
 
-    // GET Authority by ID
-    case actions.GET_AUTHORITY_BY_ID_INIT: {
+    // ================= INITIAL RESET =================
+    case actions.INITIAL_STATE_ADD_AUTHORITY:
+      return {
+        ...state,
+        GetAuthorityByID: null,
+        severity: "",
+      };
+
+    // ================= GET AUTHORITY BY ID =================
+    case actions.GET_AUTHORITY_BY_ID_INIT:
       return {
         ...state,
         Loading: true,
+        severity: "",
       };
-    }
-    case actions.GET_AUTHORITY_BY_ID_SUCCESS: {
+
+    case actions.GET_AUTHORITY_BY_ID_SUCCESS:
       return {
         ...state,
         Loading: false,
         GetAuthorityByID: action.response,
         ResponseMessage: action.message,
+        severity: "success",
       };
-    }
-    case actions.GET_AUTHORITY_BY_ID_FAIL: {
+
+    case actions.GET_AUTHORITY_BY_ID_FAIL:
       return {
         ...state,
         Loading: false,
         GetAuthorityByID: null,
         ResponseMessage: action.message,
+        severity: "error",
       };
-    }
 
-    // DeleteAuthority
-    case actions.DELETE_AUTHORITY_INIT: {
+    // ================= DELETE AUTHORITY =================
+    case actions.DELETE_AUTHORITY_INIT:
       return {
         ...state,
         Loading: true,
+        severity: "",
       };
-    }
-    case actions.DELETE_AUTHORITY_SUCCESS: {
+
+    case actions.DELETE_AUTHORITY_SUCCESS:
       return {
         ...state,
         Loading: false,
         DeleteAuthority: action.response,
         ResponseMessage: action.message,
+        severity: "success",
       };
-    }
-    case actions.DELETE_AUTHORITY_FAIL: {
+
+    case actions.DELETE_AUTHORITY_FAIL:
       return {
         ...state,
         Loading: false,
         DeleteAuthority: null,
         ResponseMessage: action.message,
+        severity: "error",
       };
-    }
 
-    // UpdateAuthority
-    case actions.UPDATE_AUTHORITY_INIT: {
+    // ================= UPDATE AUTHORITY =================
+    case actions.UPDATE_AUTHORITY_INIT:
       return {
         ...state,
         Loading: true,
+        severity: "",
       };
-    }
-    case actions.UPDATE_AUTHORITY_SUCCESS: {
+
+    case actions.UPDATE_AUTHORITY_SUCCESS:
       return {
         ...state,
         Loading: false,
         UpdateAuthority: action.response,
         ResponseMessage: action.message,
+        severity: "success",
       };
-    }
-    case actions.UPDATE_AUTHORITY_FAIL: {
+
+    case actions.UPDATE_AUTHORITY_FAIL:
       return {
         ...state,
         Loading: false,
         UpdateAuthority: null,
         ResponseMessage: action.message,
+        severity: "error",
       };
-    }
 
-    // AddAuthority
-    case actions.ADD_AUTHORITY_INIT: {
+    // ================= ADD AUTHORITY =================
+    case actions.ADD_AUTHORITY_INIT:
       return {
         ...state,
         Loading: true,
+        severity: "",
       };
-    }
-    case actions.ADD_AUTHORITY_SUCCESS: {
+
+    case actions.ADD_AUTHORITY_SUCCESS:
       return {
         ...state,
         Loading: false,
         AddAuthority: action.response,
         ResponseMessage: action.message,
+        severity: "success",
       };
-    }
-    case actions.ADD_AUTHORITY_FAIL: {
+
+    case actions.ADD_AUTHORITY_FAIL:
       return {
         ...state,
         Loading: false,
         AddAuthority: null,
         ResponseMessage: action.message,
+        severity: "error",
       };
-    }
-    default: {
-      return { ...state };
-    }
+
+    // ================= DEFAULT =================
+    default:
+      return state;
   }
 };
 

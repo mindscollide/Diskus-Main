@@ -164,3 +164,22 @@ body[dir="rtl"] .AddButtonStyles {
 .dropdown-countrylist ul {
   max-height: 154px !important;
 }
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  display: none;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
+}
+.contactNumberView {
+  font-size: 16px !important;
+}

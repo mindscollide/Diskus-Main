@@ -75,7 +75,9 @@ const SpinComponent = () => {
   const adminReducer = useSelector((state) => state.adminReducer);
   const UserReportReducer = useSelector((state) => state.UserReportReducer);
   const MinutesReducer = useSelector((state) => state.MinutesReducer);
-
+  const ComplianceReducer = useSelector(
+    (state) => state.ComplainceSettingReducerReducer
+  );
   const [showLoader, setShowLoader] = useState(false);
   const DashboardRoute =
     window.location.pathname === "/Diskus" ||
@@ -126,6 +128,7 @@ const SpinComponent = () => {
     UserReportReducer?.Loading,
     UserMangementReducer?.Loading,
     ManageAuthorityReducer?.Loading,
+    ComplianceReducer?.Loading,
   ].some((loading) => loading);
 
   useEffect(() => {

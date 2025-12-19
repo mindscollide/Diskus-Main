@@ -10,6 +10,8 @@ import {
   GetAuthorityByID,
   UpdateAuthority,
 } from "../../commen/apis/Api_config";
+import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
+import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -44,7 +46,7 @@ const GetAllAuthorityAPI = (navigate, data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllAuthorityAPI(navigate, t));
+          dispatch(GetAllAuthorityAPI(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -55,10 +57,7 @@ const GetAllAuthorityAPI = (navigate, data, t) => {
                 )
             ) {
               await dispatch(
-                GetAllAuthoritySuccess(
-                  response.data.responseResult.taskStatuses,
-                  ""
-                )
+                GetAllAuthoritySuccess(response.data.responseResult, "")
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -112,17 +111,26 @@ const GetAuthorityByIDFail = (message) => {
   };
 };
 
-const GetAuthorityByIDAPI = (navigate, t) => {
+const GetAuthorityByIDAPI = (
+  navigate,
+  data,
+  t,
+  setAddEditViewAuthoriyModal,
+  setAuthorityViewState,
+  setAuthorityId,
+  viewNo
+) => {
   return (dispatch) => {
     dispatch(GetAuthorityByIDInit());
     let form = new FormData();
     form.append("RequestMethod", GetAuthorityByID.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAuthorityByIDAPI(navigate, t));
+          dispatch(GetAuthorityByIDAPI(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -133,11 +141,11 @@ const GetAuthorityByIDAPI = (navigate, t) => {
                 )
             ) {
               await dispatch(
-                GetAuthorityByIDSuccess(
-                  response.data.responseResult.taskStatuses,
-                  ""
-                )
+                GetAuthorityByIDSuccess(response.data.responseResult, "")
               );
+              setAddEditViewAuthoriyModal(true);
+              setAuthorityViewState(viewNo);
+              setAuthorityId(data.authorityId);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -190,17 +198,19 @@ const DeleteAuthorityFail = (message) => {
   };
 };
 
-const DeleteAuthorityAPI = (navigate, t) => {
+const DeleteAuthorityAPI = (navigate, data, t, initialData) => {
   return (dispatch) => {
     dispatch(DeleteAuthorityInit());
     let form = new FormData();
     form.append("RequestMethod", DeleteAuthority.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(DeleteAuthorityAPI(navigate, t));
+          dispatch(DeleteAuthorityAPI(navigate, data, t, initialData));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -212,10 +222,12 @@ const DeleteAuthorityAPI = (navigate, t) => {
             ) {
               await dispatch(
                 DeleteAuthoritySuccess(
-                  response.data.responseResult.taskStatuses,
+                  response.data.responseResult,
                   t("Data-deleted-successfully")
                 )
               );
+              dispatch(showDeleteAuthorityModal(false));
+              dispatch(GetAllAuthorityAPI(navigate, initialData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -268,17 +280,32 @@ const UpdateAuthorityFail = (message) => {
   };
 };
 
-const UpdateAuthorityAPI = (navigate, t) => {
+const UpdateAuthorityAPI = (
+  navigate,
+  Data,
+  t,
+  setAddEditViewAuthoriyModal,
+  initialData
+) => {
   return (dispatch) => {
     dispatch(UpdateAuthorityInit());
     let form = new FormData();
     form.append("RequestMethod", UpdateAuthority.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(UpdateAuthorityAPI(navigate, t));
+          dispatch(
+            UpdateAuthorityAPI(
+              navigate,
+              Data,
+              t,
+              setAddEditViewAuthoriyModal,
+              initialData
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -290,10 +317,12 @@ const UpdateAuthorityAPI = (navigate, t) => {
             ) {
               await dispatch(
                 UpdateAuthoritySuccess(
-                  response.data.responseResult.taskStatuses,
+                  response.data.responseResult,
                   t("Authority-updated-successfully")
                 )
               );
+              setAddEditViewAuthoriyModal(false);
+              dispatch(GetAllAuthorityAPI(navigate, initialData, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -374,17 +403,32 @@ const AddAuthorityFail = (message) => {
   };
 };
 
-const AddAuthorityAPI = (navigate, t) => {
+const AddAuthorityAPI = (
+  navigate,
+  data,
+  t,
+  setAddEditViewAuthoriyModal,
+  searchPayload
+) => {
   return (dispatch) => {
     dispatch(AddAuthorityInit());
     let form = new FormData();
     form.append("RequestMethod", AddAuthority.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(AddAuthorityAPI(navigate, t));
+          dispatch(
+            AddAuthorityAPI(
+              navigate,
+              data,
+              t,
+              setAddEditViewAuthoriyModal,
+              searchPayload
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -396,10 +440,12 @@ const AddAuthorityAPI = (navigate, t) => {
             ) {
               await dispatch(
                 AddAuthoritySuccess(
-                  response.data.responseResult.taskStatuses,
+                  response.data.responseResult,
                   t("Authority-created-successfully")
                 )
               );
+              setAddEditViewAuthoriyModal(false);
+              dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -450,8 +496,15 @@ const cleareMessage = () => {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
   };
 };
+
+const initialAddEditAuthority = () => {
+  return {
+    type: actions.INITIAL_STATE_ADD_AUTHORITY,
+  };
+};
 export {
   cleareMessage,
+  initialAddEditAuthority,
   GetAllAuthorityAPI,
   GetAuthorityByIDAPI,
   DeleteAuthorityAPI,
