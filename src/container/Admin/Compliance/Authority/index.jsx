@@ -111,21 +111,6 @@ const ManageAuthority = () => {
   );
   console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
 
-  // LazyLoading Function
-  //Custome hook for Scrolling (1)
-  // const { hasReachedBottom, setHasReachedBottom } = useTableScrollBottom(() => {
-  //   console.log("🚀 Table reached bottom");
-  //   // Load more data here if needed
-  //   if (recordsLength !== data.length) {
-  //     // setSearchPayload({
-  //     //   ...searchPayload,
-  //     //   sRow: sRow,
-  //     //   length: 10,
-  //     // });
-  //     dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
-  //   }
-  // });
-
   const { setHasReachedBottom } = useTableScrollBottom(() => {
     if (recordsLength !== data.length) {
       isLoadMoreRef.current = true;
@@ -224,51 +209,6 @@ const ManageAuthority = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (GetAllAuthority !== null && GetAllAuthority !== undefined) {
-  //     console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
-
-  //     try {
-  //       const { authorityList, totalCount } = GetAllAuthority;
-
-  //       console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
-
-  //       // setData(authorityList);
-  //       if (hasReachedBottom) {
-  //         console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
-
-  //         setHasReachedBottom(false);
-  //         setRecordLength(totalCount);
-  //         setData([...data, ...authorityList]);
-  //         setSearchPayload({
-  //           ...searchPayload,
-  //           sRow: searchPayload.sRow + authorityList.length,
-  //         });
-  //       } else {
-  //         console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
-
-  //         setHasReachedBottom(false);
-  //         setRecordLength(totalCount);
-  //         setData(authorityList);
-  //         setSearchPayload({
-  //           ...searchPayload,
-  //           sRow: authorityList.length,
-  //         });
-  //       }
-  //     } catch (error) {}
-  //   } else if (GetAllAuthority === null) {
-  //     if (!hasReachedBottom) {
-  //       setHasReachedBottom(false);
-  //       setData([]);
-  //       setRecordLength(0);
-  //       setSearchPayload({
-  //         ...searchPayload,
-  //         sRow: 0,
-  //       });
-  //     }
-  //   }
-  // }, [GetAllAuthority]);
-
   useEffect(() => {
     if (!GetAllAuthority) {
       if (!isLoadMoreRef.current) {
@@ -302,6 +242,7 @@ const ManageAuthority = () => {
     resetTable();
     dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
   }, []);
+
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -581,6 +522,7 @@ const ManageAuthority = () => {
       length: 10,
     };
     dispatch(GetAllAuthorityAPI(navigate, Data, t));
+    setsearchbox(!searchbox);
   };
 
   // Trigger search button action
@@ -788,16 +730,6 @@ const ManageAuthority = () => {
                             onChange={handleChangeCountry}
                             placeholder="Country"
                           />
-                          {/* <TextField
-                            labelclass={"d-none"}
-                            placeholder={t("Country")}
-                            maxLength={50}
-                            name={"country"}
-                            applyClass={"usermanagementTextField"}
-                            type="text"
-                            value={searchPayload.country}
-                            change={handleSearchAuthority}
-                          /> */}
                         </Col>
                         <Col lg={6} md={6} sm={12} xs={12}>
                           <TextField
