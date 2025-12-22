@@ -128,6 +128,18 @@ const OrganizationLevelConfigUM = () => {
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
     EmailWhenActiveMeetingAgendaUpdated: false,
+    isMondayWorkingDay: true,
+    isTuesdayWorkingDay: true,
+    isWednesdayWorkingDay: true,
+    isThursdayWorkingDay: true,
+    isFridayWorkingDay: true,
+    isSaturdayWorkingDay: true,
+    isSundayWorkingDay: true,
+    fiscalEndMonth: 2,
+    complianceAlertOne: 1,
+    complianceAlertThree: 1,
+    complianceAlertTwo: 1,
+    autoCloseResolutionDays: 0,
   });
 
   useEffect(() => {
@@ -305,8 +317,31 @@ const OrganizationLevelConfigUM = () => {
           EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
           EmailWhenActiveMeetingAgendaUpdated:
             organizationSettings.emailWhenActiveMeetingAgendaUpdated,
+          isMondayWorkingDay: organizationSettings.isMondayWorkingDay,
+          isTuesdayWorkingDay: organizationSettings.isTuesdayWorkingDay,
+          isWednesdayWorkingDay: organizationSettings.isWednesdayWorkingDay,
+          isThursdayWorkingDay: organizationSettings.isThursdayWorkingDay,
+          isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
+          isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
+          isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
+          fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          complianceAlertOne: organizationSettings.complianceAlertOne,
+          complianceAlertThree: organizationSettings.complianceAlertThree,
+          complianceAlertTwo: organizationSettings.complianceAlertTwo,
+          autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          FiscalEndMonth: 2,
+          ComplianceAlertOne: organizationSettings.complianceAlertOne,
+          ComplianceAlertTwo: organizationSettings.complianceAlertTwo,
+          ComplianceAlertThree: organizationSettings.complianceAlertThree,
+          IsMondayWorkingDay: organizationSettings.isMondayWorkingDay,
+          IsTuesdayWorkingDay: organizationSettings.isTuesdayWorkingDay,
+          IsWednesdayWorkingDay: organizationSettings.isWednesdayWorkingDay,
+          IsThursdayWorkingDay: organizationSettings.isThursdayWorkingDay,
+          IsFridayWorkingDay: organizationSettings.isFridayWorkingDay,
+          IsSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
+          IsSundayWorkingDay: organizationSettings.isSundayWorkingDay,
         });
-    
+
         setAutoCloseResolution({
           value: organizationSettings.autoCloseResolutionDays,
           label: organizationSettings.autoCloseResolutionDays,
@@ -324,7 +359,7 @@ const OrganizationLevelConfigUM = () => {
           value: organizationSettings.timeZones?.pK_TZID,
         };
         setTimeZoneValue(timeZoneCode);
-      } 
+      }
     }
   }, [settingReducerGetOrganizationLevelSettingResponseData]);
 
@@ -959,6 +994,17 @@ const OrganizationLevelConfigUM = () => {
       EmailWhenActiveMeetingAgendaUpdated:
         userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
       AutoCloseResolutionDays: autoCloseResolution?.value || 1,
+      FiscalEndMonth: userOrganizationSetting.fiscalEndMonth,
+      ComplianceAlertOne: userOrganizationSetting.complianceAlertOne,
+      ComplianceAlertTwo: userOrganizationSetting.complianceAlertTwo,
+      ComplianceAlertThree: userOrganizationSetting.complianceAlertThree,
+      IsMondayWorkingDay: userOrganizationSetting.isMondayWorkingDay,
+      IsTuesdayWorkingDay: userOrganizationSetting.isTuesdayWorkingDay,
+      IsWednesdayWorkingDay: userOrganizationSetting.isWednesdayWorkingDay,
+      IsThursdayWorkingDay: userOrganizationSetting.isThursdayWorkingDay,
+      IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
+      IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
+      IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
     };
     console.log(Data, "AutoCloseResolutionDaysAutoCloseResolutionDays");
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
@@ -966,12 +1012,13 @@ const OrganizationLevelConfigUM = () => {
 
   return (
     <section className={styles["UserConfigsContainer"]}>
-      <Row className='mt-3'>
+      <Row className="mt-3">
         <Col
           lg={12}
           md={12}
           sm={12}
-          className='d-flex gap-3 align-items-center'>
+          className="d-flex gap-3 align-items-center"
+        >
           <span className={styles["UserLevelConfig_Heading"]}>
             {t("Organization-level-configurations")}
           </span>
@@ -979,23 +1026,24 @@ const OrganizationLevelConfigUM = () => {
       </Row>
       <Row>
         <Col lg={12} md={12} sm={12} className={styles["Padding_around_class"]}>
-          <Row className='mt-3'>
+          <Row className="mt-3">
             <Col lg={3} md={3} sm={3}>
               {checkFeatureIDAvailability(36) ? (
                 <>
-                  <div onClick={openSecurityTab} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={openSecurityTab} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={SecurityIcon}
-                          alt=''
-                          width='25.51px'
-                          height='30.69px'
+                          alt=""
+                          width="25.51px"
+                          height="30.69px"
                         />
                       </Col>
                       <Col lg={10} md={10} sm={12}>
@@ -1004,7 +1052,8 @@ const OrganizationLevelConfigUM = () => {
                             securitystate
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Security-settings")}
                         </span>
                       </Col>
@@ -1016,19 +1065,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(37) ? (
                 <>
-                  <div onClick={opentodo} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={opentodo} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={TodoIcon}
-                          alt=''
-                          width='30px'
-                          height='30px'
+                          alt=""
+                          width="30px"
+                          height="30px"
                         />
                       </Col>
                       <Col lg={10} md={10} sm={12}>
@@ -1037,7 +1087,8 @@ const OrganizationLevelConfigUM = () => {
                             todo
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Task")}
                         </span>
                       </Col>
@@ -1049,19 +1100,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(38) ? (
                 <>
-                  <div onClick={openMeetingTab} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={openMeetingTab} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={MeetingIcon}
-                          alt=''
-                          width='35.79px'
-                          height='27.3px'
+                          alt=""
+                          width="35.79px"
+                          height="27.3px"
                         />
                       </Col>
                       <Col lg={10} md={10} ms={12}>
@@ -1070,7 +1122,8 @@ const OrganizationLevelConfigUM = () => {
                             meetingsState
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Meetings")}
                         </span>
                       </Col>
@@ -1082,19 +1135,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(39) ? (
                 <>
-                  <div className='cursor-pointer' onClick={openCalenderTab}>
-                    <Row className='mt-3'>
+                  <div className="cursor-pointer" onClick={openCalenderTab}>
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={Calender}
-                          alt=''
-                          width='28.47px'
-                          height='28.47px'
+                          alt=""
+                          width="28.47px"
+                          height="28.47px"
                         />
                       </Col>
                       <Col lg={10} md={10} ms={12}>
@@ -1103,7 +1157,8 @@ const OrganizationLevelConfigUM = () => {
                             calender
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Calendar")}
                         </span>
                       </Col>
@@ -1115,19 +1170,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(40) ? (
                 <>
-                  <div onClick={openCommitteTab} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={openCommitteTab} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={Committee}
-                          alt=''
-                          width='35.8px'
-                          height='34.63px'
+                          alt=""
+                          width="35.8px"
+                          height="34.63px"
                         />
                       </Col>
                       <Col lg={10} md={10} ms={12}>
@@ -1136,7 +1192,8 @@ const OrganizationLevelConfigUM = () => {
                             committee
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Committees")}
                         </span>
                       </Col>
@@ -1148,19 +1205,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(41) ? (
                 <>
-                  <div onClick={openGroupTab} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={openGroupTab} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={GroupIcon}
-                          alt=''
-                          width='29px'
-                          height='26.04px'
+                          alt=""
+                          width="29px"
+                          height="26.04px"
                         />
                       </Col>
                       <Col lg={10} md={10} ms={12}>
@@ -1169,7 +1227,8 @@ const OrganizationLevelConfigUM = () => {
                             group
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Groups")}
                         </span>
                       </Col>
@@ -1181,19 +1240,20 @@ const OrganizationLevelConfigUM = () => {
 
               {checkFeatureIDAvailability(42) ? (
                 <>
-                  <div onClick={openResolutionTab} className='cursor-pointer'>
-                    <Row className='mt-3'>
+                  <div onClick={openResolutionTab} className="cursor-pointer">
+                    <Row className="mt-3">
                       <Col
                         lg={2}
                         md={2}
                         sm={12}
-                        className='d-flex align-items-center'>
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={ResolutionIcon}
-                          alt=''
-                          width='30px'
-                          height='31.18px'
+                          alt=""
+                          width="30px"
+                          height="31.18px"
                         />
                       </Col>
                       <Col lg={10} md={10} ms={12}>
@@ -1202,7 +1262,8 @@ const OrganizationLevelConfigUM = () => {
                             resolution
                               ? styles["Options_headings_active"]
                               : styles["Options_headings"]
-                          }>
+                          }
+                        >
                           {t("Resolutions")}
                         </span>
                       </Col>
@@ -1213,19 +1274,20 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
 
               {checkFeatureIDAvailability(43) ? (
-                <div onClick={openPollsTab} className='cursor-pointer'>
-                  <Row className='mt-3'>
+                <div onClick={openPollsTab} className="cursor-pointer">
+                  <Row className="mt-3">
                     <Col
                       lg={2}
                       md={2}
                       sm={12}
-                      className='d-flex align-items-center'>
+                      className="d-flex align-items-center"
+                    >
                       <img
-                        draggable='false'
-                        alt=''
+                        draggable="false"
+                        alt=""
                         src={pollsIcon}
-                        width='33.52px'
-                        height='34.59px'
+                        width="33.52px"
+                        height="34.59px"
                       />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
@@ -1234,7 +1296,8 @@ const OrganizationLevelConfigUM = () => {
                           polls
                             ? styles["Options_headings_active"]
                             : styles["Options_headings"]
-                        }>
+                        }
+                      >
                         {t("Polls")}
                       </span>
                     </Col>
@@ -1242,22 +1305,23 @@ const OrganizationLevelConfigUM = () => {
                 </div>
               ) : null}
             </Col>
-            <Col lg={1} md={1} sm={1} className='d-flex justify-content-center'>
+            <Col lg={1} md={1} sm={1} className="d-flex justify-content-center">
               <img
-                draggable='false'
-                alt=''
+                draggable="false"
+                alt=""
                 src={line}
                 className={styles["user-setting-row"]}
               />
             </Col>
-            <Col lg={4} md={4} sm={4} className='m-0 p-0 justify-content-start'>
+            <Col lg={4} md={4} sm={4} className="m-0 p-0 justify-content-start">
               {securitystate ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeIsTwoFaceEnabled}
-                        checked={userOrganizationSetting.Is2FAEnabled}>
+                        checked={userOrganizationSetting.Is2FAEnabled}
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("2FA-is-enabled")}
                         </span>
@@ -1268,130 +1332,138 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {todo ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenNewTODOAssigned}
                         checked={
                           userOrganizationSetting.EmailWhenNewTODOAssigned
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-new-todo-assigned")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationWhenNewTODOAssigned}
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewTODOAssigned
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-new-todo-assigned")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenNewTODOEdited}
-                        checked={
-                          userOrganizationSetting.EmailWhenNewTODOEdited
-                        }>
+                        checked={userOrganizationSetting.EmailWhenNewTODOEdited}
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-new-todo-edited")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationWhenNewTODOEdited}
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewTODOEdited
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-new-todo-edited")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenNewTODODeleted}
                         checked={
                           userOrganizationSetting.EmailWhenNewTODODeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-new-todo-deleted")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationWhenNewTODODeleted}
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewTODODeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-new-todo-deleted")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenNewCommentAdded}
                         checked={
                           userOrganizationSetting.EmailWhenNewCommentAdded
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-new-comment-added")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationWhenNewCommentAdded}
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewCommentAdded
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-new-comment-added")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenCommentDeleted}
                         checked={
                           userOrganizationSetting.EmailWhenCommentDeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-comment-deleted")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationWhenCommentDeleted}
                         checked={
                           userOrganizationSetting.PushNotificationWhenCommentDeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-comment-deleted")}
                         </span>
@@ -1402,68 +1474,73 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {meetingsState ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailOnNewMeeting}
-                        checked={userOrganizationSetting.EmailOnNewMeeting}>
+                        checked={userOrganizationSetting.EmailOnNewMeeting}
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-on-new-meeting")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationonNewMeeting}
                         checked={
                           userOrganizationSetting.PushNotificationonNewMeeting
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-on-new-meeting")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailOnEditMeeting}
-                        checked={userOrganizationSetting.EmailEditMeeting}>
+                        checked={userOrganizationSetting.EmailEditMeeting}
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-on-edit-meeting")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangePushNotificationOnEditMeeting}
                         checked={
                           userOrganizationSetting.PushNotificationEditMeeting
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-on-edit-meeting")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailOnCancelledOrDeletedMeeting}
                         checked={
                           userOrganizationSetting.EmailCancelOrDeleteMeeting
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-on-cancelled-or-deleted-meeting")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1471,7 +1548,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Push-notification-on-cancelled-or-deleted-meeting"
@@ -1480,26 +1558,28 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeShowNotificationonJoiningParticiapnts}
                         checked={
                           userOrganizationSetting.ShowNotificationOnParticipantJoining
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Show-notification-on-joining-participant")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={handleChangeAgendaUpdateEmail}
                         checked={
                           userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Allow-changes-in-the-agenda-items-after-the-meeting-has-been-started"
@@ -1512,24 +1592,26 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {calender ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeAllowCalenderSync}
-                        checked={userOrganizationSetting.AllowCalenderSync}>
+                        checked={userOrganizationSetting.AllowCalenderSync}
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Allow-google-calendar-synch-for-users")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeAllowMicrosoftCalenderSync}
                         checked={
                           userOrganizationSetting.AllowMicrosoftCalenderSync
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Allow-microsoft-calendar-synch-for-users")}
                         </span>
@@ -1545,21 +1627,23 @@ const OrganizationLevelConfigUM = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Committee_material"]}>
-                      <Row className='mt-4'>
+                      className={styles["Committee_material"]}
+                    >
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeEmailWhenAddedToCommittee}
                             checked={
                               userOrganizationSetting.EmailWhenAddedToCommittee
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-added-to-committee")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1567,27 +1651,29 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenAddedToCommittee
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-added-to-committee")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeEmailWhenRemovedFromCommittee}
                             checked={
                               userOrganizationSetting.EmailWhenRemovedFromCommittee
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-removed-from-committee")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1595,7 +1681,8 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenRemovedFromCommittee
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
                                 "Push-notification-when-removed-from-committee"
@@ -1604,7 +1691,7 @@ const OrganizationLevelConfigUM = () => {
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1612,7 +1699,8 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
                                 "Email-when-committee-is-dissolved-or-archived"
@@ -1621,7 +1709,7 @@ const OrganizationLevelConfigUM = () => {
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1629,7 +1717,8 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
                                 "Push-notification-when-committee-is-dissolved-or-archived"
@@ -1638,20 +1727,21 @@ const OrganizationLevelConfigUM = () => {
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeEmailWhenCommitteeIsInActive}
                             checked={
                               userOrganizationSetting.EmailWhenCommitteeIsSetInActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-committee-is-set-inactive")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={() => {
@@ -1663,7 +1753,8 @@ const OrganizationLevelConfigUM = () => {
                             }}
                             checked={
                               userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
                                 "Push-notification-when-committee-is-set-inActive"
@@ -1672,7 +1763,7 @@ const OrganizationLevelConfigUM = () => {
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={() => {
@@ -1684,14 +1775,15 @@ const OrganizationLevelConfigUM = () => {
                             }}
                             checked={
                               userOrganizationSetting.EmailWhenCommitteeisActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-committee-is-active")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1699,7 +1791,8 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenCommitteeisActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-committee-is-active")}
                             </span>
@@ -1717,47 +1810,51 @@ const OrganizationLevelConfigUM = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Committee_material"]}>
-                      <Row className='mt-4'>
+                      className={styles["Committee_material"]}
+                    >
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeEmailWhenAddedToGroup}
                             checked={
                               userOrganizationSetting.EmailWhenAddedToGroup
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-added-to-group")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangePushNotificationWhenAddedToGroup}
                             checked={
                               userOrganizationSetting.PushNotificationWhenAddedToGroup
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-added-to-group")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeEmailWhenRemovedFromGroup}
                             checked={
                               userOrganizationSetting.EmailWhenRemovedFromGroup
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-removed-from-group")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1765,14 +1862,15 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenRemovedFromGroup
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-removed-from-group")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1780,14 +1878,15 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-group-is-dissolved-or-archived")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1795,7 +1894,8 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t(
                                 "Push-notification-when-group-is-dissolved-or-archived"
@@ -1804,20 +1904,21 @@ const OrganizationLevelConfigUM = () => {
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeWhenGroupIsSetInactive}
                             checked={
                               userOrganizationSetting.EmailWhenGroupIsSetInActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-group-is-set-inactive")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={
@@ -1825,14 +1926,15 @@ const OrganizationLevelConfigUM = () => {
                             }
                             checked={
                               userOrganizationSetting.PushNotificationWhenGroupisSetInActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-group-is-inActive")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={() => {
@@ -1844,14 +1946,15 @@ const OrganizationLevelConfigUM = () => {
                             }}
                             checked={
                               userOrganizationSetting.EmailWhenGroupisActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Email-when-group-is-active")}
                             </span>
                           </Checkbox>
                         </Col>
                       </Row>
-                      <Row className='mt-4'>
+                      <Row className="mt-4">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={() => {
@@ -1863,7 +1966,8 @@ const OrganizationLevelConfigUM = () => {
                             }}
                             checked={
                               userOrganizationSetting.PushNotificationWhenGroupisActive
-                            }>
+                            }
+                          >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Push-notification-when-group-is-active")}
                             </span>
@@ -1876,20 +1980,21 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {resolution ? (
                 <>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeWhenResolutionIsCirculated}
                         checked={
                           userOrganizationSetting.EmailWhenResolutionIsCirculated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-resolution-is-circulated")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1897,7 +2002,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Push-notification-when-new-resolution-is-circulated"
@@ -1906,7 +2012,7 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1914,7 +2020,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Email-when-new-resolution-is-cancelled-after-circulation"
@@ -1923,7 +2030,7 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1931,7 +2038,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Push-notification-when-new-resolution-is-cancelled-after-circulated"
@@ -1940,20 +2048,21 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeEmailWhenResolutionisClosed}
                         checked={
                           userOrganizationSetting.EmailWhenResolutionIsClosed
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-resolution-is-closed")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1961,7 +2070,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenResolutionISClosed
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-resolution-is-closed")}
                         </span>
@@ -1972,20 +2082,21 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {polls ? (
                 <>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeWhenNewPollIsPublished}
                         checked={
                           userOrganizationSetting.EmailWhenNewPollIsPublished
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-new-poll-is-published")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -1993,27 +2104,29 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenNewPollIsPublished
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-new-poll-is-published")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeWhenPollsDueDateIsPassed}
                         checked={
                           userOrganizationSetting.EmailWhenPollDueDateIsPassed
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-poll-duedate-is-passed")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -2021,27 +2134,29 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Push-notification-when-poll-duedate-is-passed")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeWhenPublishedPollIsDeleted}
                         checked={
                           userOrganizationSetting.EmailWhenPublishedPollIsDeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-published-poll-is-deleted")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -2049,7 +2164,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Push-notification-when-published-poll-is-deleted"
@@ -2058,20 +2174,21 @@ const OrganizationLevelConfigUM = () => {
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={onChangeWhenPublishedPollIsUpdated}
                         checked={
                           userOrganizationSetting.EmailWhenPublishedPollIsUpdated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t("Email-when-published-poll-is-updated")}
                         </span>
                       </Checkbox>
                     </Col>
                   </Row>
-                  <Row className='mt-4'>
+                  <Row className="mt-4">
                     <Col lg={12} md={12} sm={12}>
                       <Checkbox
                         onChange={
@@ -2079,7 +2196,8 @@ const OrganizationLevelConfigUM = () => {
                         }
                         checked={
                           userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated
-                        }>
+                        }
+                      >
                         <span className={styles["Class_CheckBox"]}>
                           {t(
                             "Push-notification-when-published-poll-is--updated"
@@ -2091,23 +2209,24 @@ const OrganizationLevelConfigUM = () => {
                 </>
               ) : null}
             </Col>
-            <Col lg={1} md={1} sm={1} className='d-flex justify-content-center'>
+            <Col lg={1} md={1} sm={1} className="d-flex justify-content-center">
               <img
-                draggable='false'
-                alt=''
+                draggable="false"
+                alt=""
                 src={line}
                 className={styles["user-setting-row"]}
               />
             </Col>
-            <Col lg={3} md={3} sm={3} className='m-0 p-0'>
+            <Col lg={3} md={3} sm={3} className="m-0 p-0">
               {calender ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-4 w-100 justify-content-center align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-center align-items-center"
+                    >
                       <span className={styles["Class_CheckBox2"]}>
                         {t("Calendar-months-span")}
                       </span>
@@ -2133,12 +2252,13 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {securitystate ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={6}
                       md={6}
                       sm={6}
-                      className='d-flex gap-4 w-100 justify-content-between align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-between align-items-center"
+                    >
                       <span className={styles["Class_CheckBox2"]}>
                         {t("Inactivity-days-to-dormant-account")}
                       </span>
@@ -2166,12 +2286,13 @@ const OrganizationLevelConfigUM = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={4}
                       md={4}
                       sm={12}
-                      className='d-flex gap-4 w-100 justify-content-start align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-start align-items-center"
+                    >
                       <span className={styles["Class_CheckBox2"]}>
                         {t("Organization-time-zone")}
                       </span>
@@ -2180,7 +2301,8 @@ const OrganizationLevelConfigUM = () => {
                       lg={8}
                       md={8}
                       sm={8}
-                      className='d-flex gap-4 w-100 justify-content-start align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-start align-items-center"
+                    >
                       <Select
                         placeholder={t("Please-select")}
                         value={{
@@ -2204,12 +2326,13 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {resolution ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-4 w-100 justify-content-center align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-center align-items-center"
+                    >
                       <span className={styles["Class_CheckBox2"]}>
                         {t("Auto-close-resolution-days")}
                       </span>
@@ -2226,12 +2349,13 @@ const OrganizationLevelConfigUM = () => {
               ) : null}
               {meetingsState ? (
                 <>
-                  <Row className='mt-3'>
+                  <Row className="mt-3">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className='d-flex gap-4 w-100 justify-content-center align-items-center'>
+                      className="d-flex gap-4 w-100 justify-content-center align-items-center"
+                    >
                       <span className={styles["Class_CheckBox3"]}>
                         {t("Maximum-meeting-duration-min")}
                       </span>
@@ -2241,7 +2365,7 @@ const OrganizationLevelConfigUM = () => {
                         value={userOrganizationSetting.MaximumMeetingDuration}
                         name={"maximumduration"}
                         labelclass={"d-none"}
-                        width='80px'
+                        width="80px"
                       />
                     </Col>
                   </Row>
@@ -2252,7 +2376,7 @@ const OrganizationLevelConfigUM = () => {
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className='d-flex justify-content-end'>
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
           <Button
             text={t("Update")}
             className={styles["New_settings_Update_Button"]}

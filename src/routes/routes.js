@@ -80,6 +80,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
 import UserSettingsWrapper from "./UserSettingsWrapper.js";
 import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/meetingDocumentViewer.js";
+import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
+import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
+import { AuthorityProvider } from "../context/AuthorityContext.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -260,7 +263,7 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
-            <Route
+          <Route
             path="meetingDocumentViewer"
             element={
               <RouteWrapperUser name="documentViewer">
@@ -487,6 +490,35 @@ export const router = createBrowserRouter(
             </RouteWrapperAdmin>
           }
         >
+          <Route
+            path="manageAuthority"
+            element={
+              <RouteWrapperAdmin name="Admin">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <AuthorityProvider>
+                    <ManageAuthority />
+                  </AuthorityProvider>
+                </ErrorBoundary>
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="generalSetting"
+            element={
+              <RouteWrapperAdmin name="Admin">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <GeneralSetting />
+                </ErrorBoundary>
+              </RouteWrapperAdmin>
+            }
+          />
+
           <Route
             path=""
             element={

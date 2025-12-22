@@ -10,10 +10,12 @@ const CustomSwitch = ({
   className,
   onClick,
   disabled,
+  title,
 }) => {
   return (
     <>
       <Switch
+        title={title}
         name={name}
         defaultChecked={value}
         checked={checkedValue}

@@ -20,7 +20,6 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import CrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
-import SpinComponent from "../../../../../../components/elements/mainLoader/loader";
 
 const AddParticipantModal = ({ setrspvRows, rspvRows, currentMeeting }) => {
   const animatedComponents = makeAnimated();

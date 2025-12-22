@@ -102,8 +102,8 @@
 }
 
 .modalAddNoteTitleInput::placeholder {
-  color: #bbbbbb !important;
-  font-weight: 600;
+  color: #a2a2a2 !important;
+  font-weight: 500 !important;
   font-size: 12px !important;
 }
 

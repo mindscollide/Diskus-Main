@@ -66,14 +66,13 @@ import InputIcon from "react-multi-date-picker/components/input_icon";
 import CustomPagination from "../../commen/functions/customPagination/Paginations";
 import { useResolutionContext } from "../../context/ResolutionContext";
 import AccessDeniedModal from "../../components/layout/WebNotfication/AccessDeniedModal/AccessDeniedModal";
-import SpinComponent from "../../components/elements/mainLoader/loader";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isResolutionClosed, setIsResolutionClosed] = useState(false);
 
-  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed")
+  console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
   const ResolutionReducersearchVoterResolution = useSelector(
@@ -533,7 +532,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -633,10 +633,10 @@ const Resolution = () => {
         if (votingDeadline < newDate) {
           return (
             <img
-              draggable='false'
+              draggable="false"
               className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
-              alt=''
+              alt=""
               onClick={() => getResultHandle(record.resolutionID, isClosed)}
             />
           );
@@ -682,13 +682,13 @@ const Resolution = () => {
         } else if (data.resolutionStatus === "Circulated") {
           return (
             <span className={styles["Edit_Icon_moderator"]}>
-              <Tooltip placement='bottomLeft' title={t("Cancel")}>
+              <Tooltip placement="bottomLeft" title={t("Cancel")}>
                 <img
-                  draggable='false'
+                  draggable="false"
                   src={CrossResolution}
                   width={22}
                   height={22}
-                  alt=''
+                  alt=""
                   onClick={() => OpenCancelModal(data.resolutionID)}
                 />
               </Tooltip>
@@ -696,13 +696,13 @@ const Resolution = () => {
           );
         } else {
           return (
-            <Tooltip placement='bottomLeft' title={t("Edit")}>
+            <Tooltip placement="bottomLeft" title={t("Edit")}>
               <img
-                draggable='false'
+                draggable="false"
                 src={EditResolutionIcon}
                 onClick={() => handleUpdateResolutionAction(data.resolutionID)}
                 className={styles["Edit_Icon_moderator"]}
-                alt=''
+                alt=""
               />
             </Tooltip>
           );
@@ -726,7 +726,8 @@ const Resolution = () => {
           return (
             <span
               className={styles["resolution_title"]}
-              onClick={() => viewResolutionCancelled(data.resolutionID)}>
+              onClick={() => viewResolutionCancelled(data.resolutionID)}
+            >
               {table}
             </span>
           );
@@ -734,7 +735,8 @@ const Resolution = () => {
           return (
             <span
               className={styles["resolution_title"]}
-              onClick={() => viewResolution(data.resolutionID)}>
+              onClick={() => viewResolution(data.resolutionID)}
+            >
               {table}
             </span>
           );
@@ -815,7 +817,7 @@ const Resolution = () => {
       width: "110px",
       render: (text) => {
         return (
-          <span className='d-flex justify-content-center Saved_money_Tagline '>
+          <span className="d-flex justify-content-center Saved_money_Tagline ">
             {text}
           </span>
         );
@@ -831,16 +833,16 @@ const Resolution = () => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
         let isClosed =
-        data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
-          ? true
-          : false;
+          data.resolutionStatus.toLowerCase() === "Closed".toLowerCase()
+            ? true
+            : false;
         if (votingDeadline < newDate) {
           return (
             <img
-              draggable='false'
+              draggable="false"
               className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
-              alt=''
+              alt=""
               onClick={() => getResultHandle(data.resolutionID, isClosed)}
             />
           );
@@ -881,7 +883,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -928,7 +931,7 @@ const Resolution = () => {
     },
     {
       title: (
-        <span className='d-flex justify-content-center'>{t("Attachment")}</span>
+        <span className="d-flex justify-content-center">{t("Attachment")}</span>
       ),
       dataIndex: "Attachment",
       key: "Attachment",
@@ -938,12 +941,12 @@ const Resolution = () => {
       render: (text, data) => {
         if (data.isAttachmentAvailable) {
           return (
-            <span className='d-flex justify-content-center'>
+            <span className="d-flex justify-content-center">
               <img
-                draggable='false'
-                className='text-center cursor-pointer'
+                draggable="false"
+                className="text-center cursor-pointer"
                 src={AttachmentIcon}
-                alt=''
+                alt=""
                 onClick={() => viewAttachmentHandle(data.attachments)}
               />
             </span>
@@ -976,7 +979,7 @@ const Resolution = () => {
               );
             }
           } else {
-            return <p className='text-center'></p>;
+            return <p className="text-center"></p>;
           }
         }
       },
@@ -984,7 +987,7 @@ const Resolution = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center'>{t("Decision")}</span>
+          <span className="d-flex justify-content-center">{t("Decision")}</span>
         </>
       ),
       dataIndex: "decision",
@@ -1021,7 +1024,8 @@ const Resolution = () => {
         return (
           <span
             className={styles["resolution_title"]}
-            onClick={() => viewResolution(data.resolutionID)}>
+            onClick={() => viewResolution(data.resolutionID)}
+          >
             {table}
           </span>
         );
@@ -1069,7 +1073,7 @@ const Resolution = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center'>
+          <span className="d-flex justify-content-center">
             {t("Attachment")}
           </span>
         </>
@@ -1083,11 +1087,11 @@ const Resolution = () => {
         if (data.isAttachmentAvailable) {
           return (
             <img
-              draggable='false'
-              className='text-center cursor-pointer'
+              draggable="false"
+              className="text-center cursor-pointer"
               src={AttachmentIcon}
               onClick={() => viewAttachmentHandle(data.attachments)}
-              alt=''
+              alt=""
             />
           );
         } else {
@@ -1106,27 +1110,27 @@ const Resolution = () => {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsup} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={thumbsdown} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              return <p className='text-center'></p>;
+              return <p className="text-center"></p>;
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <img draggable='false' src={AbstainvoterIcon} alt='' />
+                <span className="d-flex justify-content-center">
+                  <img draggable="false" src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
           } else {
-            return <p className='text-center'></p>;
+            return <p className="text-center"></p>;
           }
         }
       },
@@ -1134,7 +1138,7 @@ const Resolution = () => {
     {
       title: (
         <>
-          <span className='d-flex justify-content-center'>{t("Decision")}</span>
+          <span className="d-flex justify-content-center">{t("Decision")}</span>
         </>
       ),
       dataIndex: "decision",
@@ -1435,14 +1439,15 @@ const Resolution = () => {
           </>
         ) : (
           <>
-            <Row className='mt-3'>
+            <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
                 <Row>
                   <Col
                     lg={7}
                     md={7}
                     sm={12}
-                    className=' d-flex justify-content-start align-items-center  gap-3 '>
+                    className=" d-flex justify-content-start align-items-center  gap-3 "
+                  >
                     <span className={styles["Resolution-heading-size"]}>
                       {t("Resolution")}
                     </span>
@@ -1455,12 +1460,12 @@ const Resolution = () => {
                       }
                       icon={
                         <img
-                          draggable='false'
+                          draggable="false"
                           src={plusbutton}
-                          height='7.6px'
-                          width='7.6px'
-                          alt=''
-                          className='align-items-center'
+                          height="7.6px"
+                          width="7.6px"
+                          alt=""
+                          className="align-items-center"
                         />
                       }
                       onClick={() => createresolution()}
@@ -1498,13 +1503,14 @@ const Resolution = () => {
                     lg={5}
                     md={5}
                     sm={12}
-                    className=' d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution'>
+                    className=" d-flex justify-content-end  align-items-center  position-relative Search-filed-resolution"
+                  >
                     <span className={styles["search_input"]}>
                       <TextField
-                        width='455px'
-                        name='Title'
+                        width="455px"
+                        name="Title"
                         placeholder={t("Search-on-resolution-title")}
-                        labelclass='textFieldSearch d-none'
+                        labelclass="textFieldSearch d-none"
                         value={allSearchInput}
                         change={(e) => filterResolution(e)}
                         onKeyDown={handleClickSearch}
@@ -1521,25 +1527,27 @@ const Resolution = () => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className='d-flex gap-1 align-items-center'>
+                                className="d-flex gap-1 align-items-center"
+                              >
                                 {allSearchInput && enterpressed ? (
                                   <>
                                     <img
                                       src={BlackCrossIcon}
                                       className={styles["BlackCrossiconClass"]}
-                                      draggable='false'
-                                      alt=''
+                                      draggable="false"
+                                      alt=""
                                       onClick={handleResettingPage}
                                     />
                                   </>
                                 ) : null}
                                 <Tooltip
-                                  placement='bottomLeft'
-                                  title={t("Search-filters")}>
+                                  placement="bottomLeft"
+                                  title={t("Search-filters")}
+                                >
                                   <img
-                                    draggable='false'
+                                    draggable="false"
                                     src={searchicon}
-                                    alt=''
+                                    alt=""
                                     className={styles["searchIcon"]}
                                     onClick={openSearchBox}
                                   />
@@ -1558,31 +1566,34 @@ const Resolution = () => {
                               sm={12}
                               className={
                                 styles["Search_Box_Main_Resolution_page"]
-                              }>
+                              }
+                            >
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-end'>
+                                  className="d-flex justify-content-end"
+                                >
                                   <span>
                                     <img
-                                      draggable='false'
+                                      draggable="false"
                                       src={Cross}
-                                      height='16px'
-                                      alt=''
-                                      width='16px'
+                                      height="16px"
+                                      alt=""
+                                      width="16px"
                                       onClick={closeSeachBar}
                                     />
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className='mt-3 d-flex justify-content-start align-items-start '>
+                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
                                 <Col
                                   lg={6}
                                   md={6}
                                   sm={6}
-                                  className='CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular '>
+                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
+                                >
                                   <span>
                                     {resolutionView === 2
                                       ? t("Decision-date")
@@ -1594,17 +1605,17 @@ const Resolution = () => {
                                     }
                                     format={"DD/MM/YYYY"}
                                     minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
+                                    placeholder="DD/MM/YYYY"
                                     render={
                                       <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
                                       />
                                     }
                                     editable={false}
-                                    className='datePickerTodoCreate2'
+                                    className="datePickerTodoCreate2"
                                     onOpenPickNewDate={false}
-                                    inputMode=''
+                                    inputMode=""
                                     calendar={calendarValue}
                                     locale={localValue}
                                     ref={calendRef}
@@ -1614,7 +1625,8 @@ const Resolution = () => {
                                   lg={6}
                                   md={6}
                                   sm={6}
-                                  className='CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular'>
+                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
+                                >
                                   <span>{t("Voting-deadline")}</span>
                                   <DatePicker
                                     onFocusedDateChange={
@@ -1622,29 +1634,30 @@ const Resolution = () => {
                                     }
                                     format={"DD/MM/YYYY"}
                                     minDate={moment().toDate()}
-                                    placeholder='DD/MM/YYYY'
+                                    placeholder="DD/MM/YYYY"
                                     render={
                                       <InputIcon
-                                        placeholder='DD/MM/YYYY'
-                                        className='datepicker_input'
+                                        placeholder="DD/MM/YYYY"
+                                        className="datepicker_input"
                                       />
                                     }
                                     editable={false}
-                                    className='datePickerTodoCreate2'
+                                    className="datePickerTodoCreate2"
                                     onOpenPickNewDate={false}
-                                    inputMode=''
+                                    inputMode=""
                                     calendar={calendarValue}
                                     locale={localValue}
                                     ref={calendRef}
                                   />
                                 </Col>
                               </Row>
-                              <Row className='mt-3'>
+                              <Row className="mt-3">
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-end gap-3'>
+                                  className="d-flex justify-content-end gap-3"
+                                >
                                   <Button
                                     text={t("Reset")}
                                     className={
@@ -1673,8 +1686,8 @@ const Resolution = () => {
               </Col>
             </Row>
 
-            <Row className='mt-3'>
-              <Col sm={12} md={12} lg={12} className='d-flex gap-2'>
+            <Row className="mt-3">
+              <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
                   className={
                     resolutionView !== null && resolutionView === 1
@@ -1696,7 +1709,7 @@ const Resolution = () => {
               </Col>
             </Row>
             {resolutionView !== null && resolutionView === 1 ? (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <>
                     <TableToDo
@@ -1706,7 +1719,7 @@ const Resolution = () => {
                           ? columnsModeratorClosed
                           : columnsModerator
                       }
-                      className='Resolution_table'
+                      className="Resolution_table"
                       scroll={scroll}
                       pagination={false}
                       // loading={{
@@ -1721,12 +1734,13 @@ const Resolution = () => {
                                 sm={12}
                                 md={12}
                                 lg={12}
-                                className={styles["empty_Resolutions"]}>
+                                className={styles["empty_Resolutions"]}
+                              >
                                 <img
-                                  draggable='false'
+                                  draggable="false"
                                   src={EmptyResolution}
                                   width={200}
-                                  alt=''
+                                  alt=""
                                 />
                                 <h2 className={styles["NoResolutionHeading"]}>
                                   {t("No-resolution-to-display")}
@@ -1739,18 +1753,19 @@ const Resolution = () => {
                                     className={styles["create-Resolution-btn"]}
                                     text={
                                       <span
-                                        className={styles["Btn_create_text"]}>
+                                        className={styles["Btn_create_text"]}
+                                      >
                                         {t("Create-new-resolution")}
                                       </span>
                                     }
                                     icon={
                                       <img
-                                        draggable='false'
+                                        draggable="false"
                                         src={plusbutton}
-                                        height='7.6px'
-                                        width='7.6px'
-                                        alt=''
-                                        className='align-items-center'
+                                        height="7.6px"
+                                        width="7.6px"
+                                        alt=""
+                                        className="align-items-center"
                                       />
                                     }
                                     onClick={() => createresolution()}
@@ -1768,7 +1783,8 @@ const Resolution = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className='d-flex justify-content-center my-3 pagination-groups-table'>
+                        className="d-flex justify-content-center my-3 pagination-groups-table"
+                      >
                         <CustomPagination
                           current={
                             moderatorPage !== null ? Number(moderatorPage) : 1
@@ -1788,7 +1804,7 @@ const Resolution = () => {
                 </Col>
               </Row>
             ) : resolutionView !== null && resolutionView === 2 ? (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
@@ -1797,7 +1813,7 @@ const Resolution = () => {
                         ? columnsVotersClosed
                         : columnsvoters
                     }
-                    className='Resolution_table'
+                    className="Resolution_table"
                     scroll={scroll}
                     pagination={false}
                     rows={isSearchVoter}
@@ -1809,12 +1825,13 @@ const Resolution = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles["empty_Resolutions"]}>
+                              className={styles["empty_Resolutions"]}
+                            >
                               <img
-                                draggable='false'
+                                draggable="false"
                                 src={EmptyResolution}
                                 width={200}
-                                alt=''
+                                alt=""
                               />
                               <h2 className={styles["NoResolutionHeading"]}>
                                 {t("No-resolution-to-display")}
@@ -1832,12 +1849,12 @@ const Resolution = () => {
                                   }
                                   icon={
                                     <img
-                                      draggable='false'
+                                      draggable="false"
                                       src={plusbutton}
-                                      height='7.6px'
-                                      width='7.6px'
-                                      alt=''
-                                      className='align-items-center'
+                                      height="7.6px"
+                                      width="7.6px"
+                                      alt=""
+                                      className="align-items-center"
                                     />
                                   }
                                   onClick={() => createresolution()}
@@ -1855,7 +1872,8 @@ const Resolution = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className='d-flex justify-content-center my-3 pagination-groups-table'>
+                      className="d-flex justify-content-center my-3 pagination-groups-table"
+                    >
                       <CustomPagination
                         current={voterPage !== null ? Number(voterPage) : 1}
                         total={totalVoterResolution}

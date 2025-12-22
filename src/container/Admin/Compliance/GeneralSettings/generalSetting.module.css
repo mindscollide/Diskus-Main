@@ -1,0 +1,56 @@
+.General_Setting-Main-Heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+}
+body[dir="rtl"] .General_Setting-Main-Heading {
+  font-weight: 600 !important;
+}
+.Options_headings_active {
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 100% !important;
+}
+
+.Options_headings {
+  color: #5a5a5a;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 100% !important;
+  letter-spacing: 0%;
+}
+
+.general-setting-row {
+  height: calc(75vh - 65px);
+  width: 2px !important;
+}
+.New_settings_Update_Button {
+  gap: 10px;
+  border-radius: 4px;
+  background: #6172d6;
+  font-weight: 600;
+  border: 1px solid #6172d6;
+  font-size: 12px;
+}
+
+.New_settings_Update_Button:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #6172d6;
+  background: #6172d6;
+}
+.New_settings_Cancel_Button {
+  border-radius: 4px;
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  background: #e1e1e1;
+  border: 1px solid #e1e1e1;
+}
+.New_settings_Cancel_Button:is(:hover, :active, :focus, :focus-visible) {
+  background: #e1e1e1;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+}

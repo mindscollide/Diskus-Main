@@ -18,7 +18,6 @@ import {
 } from "../../../store/actions/UserManagementActions";
 import warningImage from "../../../assets/images/warning.png";
 import { useMeetingContext } from "../../../context/MeetingContext";
-import SpinComponent from "../../../components/elements/mainLoader/loader";
 const BoardDeckModal = ({
   boarddeckOptions,
   setBoarddeckOptions,

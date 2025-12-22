@@ -46,3 +46,103 @@
 .title {
   color: #2097d6;
 }
+
+.ant-table-wrapper.Authority_Table.ant-table-row {
+  background: none !important;
+}
+
+.ant-table-wrapper.Authority_Table .ant-table .ant-table-thead > tr > th {
+  background: none !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+}
+.ant-table-wrapper.Authority_Table .ant-table .ant-table-tbody {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.ant-table-wrapper.Authority_Table .ant-table .ant-table-tbody > tr > td {
+  padding: 8px 5px !important;
+  border: 1px solid #e1e1e1;
+  border-right: none;
+  border-left: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > td:nth-child(1) {
+  border: 1px solid #e1e1e1;
+  border-right: none;
+  padding-left: 15px !important;
+}
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > td:last-child {
+  border: 1px solid #e1e1e1;
+  border-left: none !important;
+  padding-right: 15px !important;
+}
+/* .ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(5) {
+  background: none !important;
+  border-bottom: none !important;
+  text-align: center !important;
+}
+
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(6) {
+  background: none !important;
+  border-bottom: none !important;
+  text-align: center !important;
+} */
+
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}
+
+.ant-table-wrapper.Authority_Table .ant-table {
+  background: none !important;
+}
+
+.Authority_Table .ant-table table {
+  border-spacing: 0 10px !important;
+  border-radius: 50px !important;
+  table-layout: fixed !important;
+  /* margin-top: -19px !important; */
+}
+.Authority_Table::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2 !important;
+}
+
+.Authority_Table::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+/* .ant-table-wrapper.Authority_Table.ant-table .ant-table-thead > tr > th {
+  padding: 2px 16px !important;
+} */
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
+  background: none !important;
+}

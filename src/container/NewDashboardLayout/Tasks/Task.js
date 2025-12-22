@@ -4,6 +4,7 @@ import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import noTask from "../../../assets/images/DashBoardTask.svg";
+
 import { Button } from "../../../components/elements";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
@@ -68,7 +69,7 @@ const Task = () => {
 
       render: (text, record) => {
         return (
-          <span className='cursor-pointer'>{_justShowDateformat(text)}</span>
+          <span className="cursor-pointer">{_justShowDateformat(text)}</span>
         );
       },
     },
@@ -84,37 +85,37 @@ const Task = () => {
       render: (text, record) => {
         if (record.status.pK_TSID === 1) {
           return (
-            <span className=' InProgress status_value text-truncate cursor-pointer'>
+            <span className=" InProgress status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 2) {
           return (
-            <span className=' Pending  status_value text-truncate cursor-pointer'>
+            <span className=" Pending  status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 3) {
           return (
-            <span className=' Upcoming  status_value text-truncate cursor-pointer'>
+            <span className=" Upcoming  status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 4) {
           return (
-            <span className=' Cancelled status_value text-truncate cursor-pointer'>
+            <span className=" Cancelled status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 5) {
           return (
-            <span className=' Completed status_value text-truncate cursor-pointer'>
+            <span className=" Completed status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
         } else if (record.status.pK_TSID === 6) {
           return (
-            <span className=' color-F68732 status_value text-truncate cursor-pointer'>
+            <span className=" color-F68732 status_value text-truncate cursor-pointer">
               {t(text.status)}
             </span>
           );
@@ -170,7 +171,7 @@ const Task = () => {
           setRowToDo(sortedTasks.slice(0, 15));
         }
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [SocketTodoActivityData]);
 
   // Update MQTT Status
@@ -196,16 +197,16 @@ const Task = () => {
                       payloadData.todoStatusID === 1
                         ? "In Progress"
                         : payloadData.todoStatusID === 2
-                          ? "Pending"
-                          : payloadData.todoStatusID === 3
-                            ? "Upcoming"
-                            : payloadData.todoStatusID === 4
-                              ? "Cancelled"
-                              : payloadData.todoStatusID === 5
-                                ? "Completed"
-                                : payloadData.todoStatusID === 6
-                                  ? "Deleted"
-                                  : payloadData.todoStatusID === 7,
+                        ? "Pending"
+                        : payloadData.todoStatusID === 3
+                        ? "Upcoming"
+                        : payloadData.todoStatusID === 4
+                        ? "Cancelled"
+                        : payloadData.todoStatusID === 5
+                        ? "Completed"
+                        : payloadData.todoStatusID === 6
+                        ? "Deleted"
+                        : payloadData.todoStatusID === 7,
                   },
                 };
                 return newObj;
@@ -215,7 +216,7 @@ const Task = () => {
           });
         }
       }
-    } catch { }
+    } catch {}
   }, [socketTodoStatusData]);
 
   useEffect(() => {
@@ -251,12 +252,14 @@ const Task = () => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className='d-flex justify-content-between'>
-                  <span className='task-title'>{t("Tasks")}</span>
+                  className="d-flex justify-content-between"
+                >
+                  <span className="task-title">{t("Tasks")}</span>
                   {totalDataRecords >= 15 && (
                     <span
-                      className='cursor-pointer'
-                      onClick={() => navigate("/Diskus/todolist")}>
+                      className="cursor-pointer"
+                      onClick={() => navigate("/Diskus/todolist")}
+                    >
                       {t("View-more")}
                     </span>
                   )}
@@ -266,11 +269,11 @@ const Task = () => {
             <Table
               columns={columnsToDo}
               dataSource={rowsToDo}
-              className='newDashboardTable'
-              tableLayout='fixed'
+              className="newDashboardTable"
+              tableLayout="fixed"
               pagination={false}
-              size='small'
-              rowKey='id'
+              size="small"
+              rowKey="id"
               bordered={false}
               rowClassName={(record, index) => {
                 if (Number(record?.taskCreator?.pK_UID) === creatorID) {
@@ -291,9 +294,9 @@ const Task = () => {
           </>
         ) : (
           <>
-            <span className='task-title'>{t("Tasks")}</span>
+            <span className="task-title">{t("Tasks")}</span>
             <section className={styles["No_Tasks_View"]}>
-              <img src={noTask} width={"100%"} alt='' draggable='false' />
+              <img src={noTask} width={"100%"} alt="" draggable="false" />
               <span className={styles["MainTitleClass"]}>{t("No-task")}</span>
               <span className={styles["SubtitleTodoMessege"]}>
                 {t("There-is-no-pending-task")}

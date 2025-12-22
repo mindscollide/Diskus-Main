@@ -21,7 +21,6 @@ import committeeicon from "../../../../../../assets/images/committeedropdown.svg
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
-import SpinComponent from "../../../../../../components/elements/mainLoader/loader";
 
 const AgendaContributorsModal = ({
   SelectedRSVP,

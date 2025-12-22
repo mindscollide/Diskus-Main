@@ -12,8 +12,8 @@
 }
 
 ::placeholder {
-  font-weight: 600 !important;
-  color: #bbbbbb !important;
+  font-weight: 500 !important;
+  color: #a2a2a2 !important;
   font-family: "Montserrat" !important;
 }
 html {
@@ -122,8 +122,8 @@ body[dir="rtl"] {
 }
 
 .form-control2::placeholder {
-  font-weight: 600 !important;
-  color: #bbbbbb;
+  font-weight: 500 !important;
+  color: #a2a2a2 !important;
 }
 
 .border {
@@ -862,15 +862,20 @@ input[type="checkbox"][disabled]+span:after,
 }
 
 .modal-backdrop.show {
-  /* background: rgba(255, 255, 255, 0.3) !important; */
-  -webkit-backdrop-filter: blur(1px);
-  backdrop-filter: blur(1px) !important;
-  /* opacity: inherit; */
+  background: rgba(255, 255, 255, 0) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  backdrop-filter: blur(10px) !important;
+  /* From https://css.glass */
+  /* background: rgba(255, 255, 255, 0);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(15.9px);
+  -webkit-backdrop-filter: blur(15.9px); */
 }
 
-/* .modal-backdrop.fade {
+.modal-backdrop.fade {
   opacity: 1 !important;
-} */
+}
 
 /*other style*/
 .agendas-list {
@@ -2177,7 +2182,7 @@ body[dir="rtl"]
 
 .MuiAutocomplete-option {
   color: #a2a2a2 !important;
-  font-weight: 600;
+  font-weight: 5600;
 
   font-size: 14px !important;
   padding: 0;
@@ -3677,9 +3682,9 @@ input[type="text"] {
 
 input::placeholder {
   font-size: 12px !important;
-  font-weight: 500;
+  font-weight: 500 !important;
   box-shadow: none !important;
-  color: #e1e1e1 !important;
+  color: #a2a2a2 !important;
 }
 
 body[dir="rtl"] input::placeholder {
@@ -6338,7 +6343,21 @@ th.ant-table-cell.notification-class-table {
   border: none !important;
   word-wrap: break-word;
 }
+.Select_country_Authoriy__control {
+  width: 100% !important;
+  min-height: 38px !important;
+  max-height: 38px !important;
 
+  height: 38px !important;
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 500;
+  border-color: #e1e1e1 !important;
+}
+.Select_country_Authoriy__placeholder {
+  color: #a2a2a2 !important;
+  font-weight: 500;
+}
 /* dataroom Searches React select */
 .searchResult_Document__control.css-13cymwt-control {
   width: 200px !important;
@@ -8148,4 +8167,9 @@ td.ant-table-column-sort {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.Select_fical_year_month {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  width: 100% !important;
 }

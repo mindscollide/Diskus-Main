@@ -1,0 +1,138 @@
+.Auhtority-Main-Heading {
+  font-size: 30px !important;
+  color: #6172d6 !important;
+  font-weight: 700 !important;
+}
+body[dir="rtl"] .Auhtority-Main-Heading {
+  font-weight: 600 !important;
+}
+
+.AddAuthorityButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+.AddAuthorityButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .AddAuthorityButton {
+  font-weight: 600 !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+.Search_Bar_icon_class {
+  cursor: pointer;
+}
+.SearchIconClass {
+  display: inline-block;
+  position: absolute !important;
+  right: 13px !important;
+  width: auto;
+  top: 7px;
+}
+
+body[dir="rtl"] .SearchIconClass {
+  position: absolute !important;
+  right: auto !important;
+  left: 13px;
+  cursor: pointer !important;
+}
+
+.SearchBoxAuthority {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: absolute !important;
+  background: #fff !important;
+  right: 0 !important;
+  min-height: 242px !important;
+  z-index: 1 !important;
+  top: 43px;
+  padding: 10px 16px 13px 16px;
+}
+
+.ResetButtonSearchBox {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.ResetButtonSearchBox:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .ResetButtonSearchBox {
+  font-weight: 600 !important;
+}
+.SearchButtonSearchBox {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+.SearchButtonSearchBox:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+}
+
+body[dir="rtl"] .SearchButtonSearchBox {
+  font-weight: 600 !important;
+}
+.viewAuthorityBtn {
+  font-weight: 700 !important;
+  border-radius: 4px !important;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #ffffff !important;
+  background: #6172d6 !important;
+  max-width: 100% !important;
+  white-space: nowrap;
+}
+.EmptyAuthorityState_heading {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #5a5a5a;
+}
+.EmptyAuthorityState_subHeading {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #5a5a5a;
+}
