@@ -4,6 +4,7 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import Select from "react-select";
 import { useDispatch } from "react-redux";
 
 // ========================
@@ -15,7 +16,7 @@ import {
   Notification,
   TextField,
 } from "../../../../components/elements";
-import { ChevronDown, JournalMedical, Plus } from "react-bootstrap-icons";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import deleteIcon from "../../../../assets/images/Icon material-delete.png";
@@ -46,6 +47,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
+import { useTableScrollBottom } from "../CommonFunctions/reusableFunctions";
 
 const ManageAuthority = () => {
   // Translation hook for multi-language support
@@ -75,7 +78,11 @@ const ManageAuthority = () => {
     setAuthorityId,
     statusFilter,
     setStatusFilter,
+    countryNames,
+    selectCountry,
+    setSelectCountry,
   } = useAuthorityContext();
+  const isLoadMoreRef = useRef(false);
 
   console.log(
     addEditViewAuthoriyModal,
@@ -87,6 +94,8 @@ const ManageAuthority = () => {
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
+  //row length on scroll
+  const [recordsLength, setRecordLength] = useState(0);
 
   // Ref used to detect clicks outside the search box
   const searchBoxRef = useRef(null);
@@ -101,16 +110,44 @@ const ManageAuthority = () => {
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage
   );
   console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
+
+  // LazyLoading Function
+  //Custome hook for Scrolling (1)
+  // const { hasReachedBottom, setHasReachedBottom } = useTableScrollBottom(() => {
+  //   console.log("🚀 Table reached bottom");
+  //   // Load more data here if needed
+  //   if (recordsLength !== data.length) {
+  //     // setSearchPayload({
+  //     //   ...searchPayload,
+  //     //   sRow: sRow,
+  //     //   length: 10,
+  //     // });
+  //     dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
+  //   }
+  // });
+
+  const { setHasReachedBottom } = useTableScrollBottom(() => {
+    if (recordsLength !== data.length) {
+      isLoadMoreRef.current = true;
+
+      dispatch(
+        GetAllAuthorityAPI(
+          navigate,
+          {
+            ...searchPayload,
+            sRow: data.length,
+          },
+          t
+        )
+      );
+    }
+  });
   // ========================
   // Modal Actions
   // ========================
 
   // Open Delete Authority confirmation modal
   const hanldeDeleteAuthorityModal = (authorityID) => {
-    // let Data = {
-    //   authorityId: 1,
-    // };
-
     dispatch(showDeleteAuthorityModal(true));
     setAuthorityId(authorityID);
   };
@@ -161,16 +198,8 @@ const ManageAuthority = () => {
   // Initial UseEffect
   // ========================
   useEffect(() => {
-    const data = {
-      shortCode: "",
-      authorityName: "",
-      countryId: 0,
-      sector: "",
-      sRow: 0,
-      length: 100,
-    };
-
-    dispatch(GetAllAuthorityAPI(navigate, data, t));
+    dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
+    dispatch(getCountryNamesAction(navigate, t));
   }, []);
 
   // ========================
@@ -195,15 +224,84 @@ const ManageAuthority = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   if (GetAllAuthority !== null && GetAllAuthority !== undefined) {
+  //     console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
+
+  //     try {
+  //       const { authorityList, totalCount } = GetAllAuthority;
+
+  //       console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
+
+  //       // setData(authorityList);
+  //       if (hasReachedBottom) {
+  //         console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
+
+  //         setHasReachedBottom(false);
+  //         setRecordLength(totalCount);
+  //         setData([...data, ...authorityList]);
+  //         setSearchPayload({
+  //           ...searchPayload,
+  //           sRow: searchPayload.sRow + authorityList.length,
+  //         });
+  //       } else {
+  //         console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
+
+  //         setHasReachedBottom(false);
+  //         setRecordLength(totalCount);
+  //         setData(authorityList);
+  //         setSearchPayload({
+  //           ...searchPayload,
+  //           sRow: authorityList.length,
+  //         });
+  //       }
+  //     } catch (error) {}
+  //   } else if (GetAllAuthority === null) {
+  //     if (!hasReachedBottom) {
+  //       setHasReachedBottom(false);
+  //       setData([]);
+  //       setRecordLength(0);
+  //       setSearchPayload({
+  //         ...searchPayload,
+  //         sRow: 0,
+  //       });
+  //     }
+  //   }
+  // }, [GetAllAuthority]);
+
   useEffect(() => {
-    if (GetAllAuthority !== null && GetAllAuthority !== undefined) {
-      try {
-        const { authorityList, totalCount } = GetAllAuthority;
-        setData(authorityList);
-      } catch (error) {}
+    if (!GetAllAuthority) {
+      if (!isLoadMoreRef.current) {
+        setData([]);
+      }
+      return;
+    }
+
+    const { authorityList, totalCount } = GetAllAuthority;
+
+    setRecordLength(totalCount);
+
+    if (isLoadMoreRef.current) {
+      // ✅ APPEND safely
+      setData((prev) => [...prev, ...authorityList]);
+      isLoadMoreRef.current = false;
+    } else {
+      // ✅ REPLACE safely
+      setData(authorityList);
     }
   }, [GetAllAuthority]);
 
+  const resetTable = () => {
+    isLoadMoreRef.current = false;
+    setHasReachedBottom(false);
+    setRecordLength(0);
+    setData([]);
+  };
+
+  useEffect(() => {
+    resetTable();
+    dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
+  }, []);
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -415,23 +513,19 @@ const ManageAuthority = () => {
     setsearchbox(false);
   };
 
-  // Handle Enter key search
+  // // Handle Enter key search
   const handleKeyDownSearchAuthority = (e) => {
-    if (e.key === "Enter") {
-      if (searchPayload.authorityTitle !== "") {
-        setEnterpressed(true);
+    if (e.key === "Enter" && searchPayload.authorityTitle.trim() !== "") {
+      setEnterpressed(true);
 
-        // Search payload sent to backend
-        const Data = {
-          authorityName: searchPayload.authorityTitle,
-          shortCode: "",
-          country: "",
-          sector: "",
-          sRow: 0,
-          Length: 10,
-        };
-        console.log(Data, "Search Data");
-      }
+      const updatedPayload = {
+        ...searchPayload,
+        authorityName: searchPayload.authorityTitle,
+        authorityTitle: searchPayload.authorityTitle,
+      };
+
+      setSearchPayload(updatedPayload);
+      dispatch(GetAllAuthorityAPI(navigate, updatedPayload, t));
     }
   };
 
@@ -462,24 +556,45 @@ const ManageAuthority = () => {
 
   // Reset all search fields
   const handleResetAuthorityButton = () => {
+    setHasReachedBottom(false);
+    setRecordLength(0);
+    setData([]);
     setSearchPayload({
       shortCode: "",
       authorityName: "",
-      authorityTitle: "",
-      country: "",
+      countryId: 0,
       sector: "",
+      authorityTitle: "",
+      sRow: 0,
+      length: 10,
     });
+    setSelectCountry({
+      value: 0,
+      label: "",
+    });
+    const Data = {
+      authorityName: "",
+      shortCode: "",
+      countryId: 0,
+      sector: "",
+      sRow: 0,
+      length: 10,
+    };
+    dispatch(GetAllAuthorityAPI(navigate, Data, t));
   };
 
   // Trigger search button action
   const handleSearchAuthorityButton = () => {
-    const Data = {
-      shortCode: searchPayload.shortCode,
-      authorityName: searchPayload.authorityName,
-      country: searchPayload.country,
-      sector: searchPayload.sector,
-    };
-    console.log(Data, "Search Data");
+    setHasReachedBottom(false);
+    setData([]);
+    setRecordLength(0);
+
+    setSearchPayload({
+      ...searchPayload,
+      sRow: 0,
+      length: 10,
+    });
+    dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
   };
 
   // Open advanced search box
@@ -521,6 +636,14 @@ const ManageAuthority = () => {
     if (filters?.status) {
       setStatusFilter(filters.status); // ["Active"] | ["Inactive"] | null
     }
+  };
+
+  const handleChangeCountry = (event) => {
+    setSelectCountry(event);
+    setSearchPayload({
+      ...searchPayload,
+      countryId: event.value,
+    });
   };
 
   // Memoized rows for table
@@ -654,9 +777,18 @@ const ManageAuthority = () => {
                           />
                         </Col>
                       </Row>
+
                       <Row className="mt-4">
                         <Col lg={6} md={6} sm={12} xs={12}>
-                          <TextField
+                          <Select
+                            value={
+                              selectCountry?.value !== 0 ? selectCountry : null
+                            }
+                            options={countryNames}
+                            onChange={handleChangeCountry}
+                            placeholder="Country"
+                          />
+                          {/* <TextField
                             labelclass={"d-none"}
                             placeholder={t("Country")}
                             maxLength={50}
@@ -665,7 +797,7 @@ const ManageAuthority = () => {
                             type="text"
                             value={searchPayload.country}
                             change={handleSearchAuthority}
-                          />
+                          /> */}
                         </Col>
                         <Col lg={6} md={6} sm={12} xs={12}>
                           <TextField

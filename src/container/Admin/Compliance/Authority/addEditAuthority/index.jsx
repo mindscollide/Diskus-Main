@@ -10,13 +10,10 @@ import {
   TextField,
 } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-// import { deleteOrganizationUserAPI } from "../../../../../store/actions/UserManagementActions";
 import { useNavigate } from "react-router-dom";
-import { showAddEditViewAuthorityModal } from "../../../../../store/actions/ManageAuthoriyAction";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
 import Select from "react-select";
 import { useAuthorityContext } from "../../../../../context/AuthorityContext";
-import { getCountryNamesAction } from "../../../../../store/actions/GetCountryNames";
 import { countryNameforPhoneNumber } from "../../../AllUsers/AddUser/CountryJson";
 import ReactFlagsSelect from "react-flags-select";
 import {
@@ -24,24 +21,24 @@ import {
   initialAddEditAuthority,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
-import CloseConfirmationModal from "../../CommonFunctions/CloseConfirmationModal";
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const {
-    authorityId,
     authorityViewState,
     setAuthorityViewState,
     setAddEditViewAuthoriyModal,
     addEditViewAuthoriyModal,
     searchPayload,
-    closeConfirmationModal,
+    setSearchPayload,
     setCloseConfirmationModal,
+    setSelectCountry,
+    setCountryNames,
+    selectCountry,
+    countryNames,
   } = useAuthorityContext();
 
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
-  const [countryNames, setCountryNames] = useState([]);
-  const [selectCountry, setSelectCountry] = useState(null);
   const [selected, setSelected] = useState("US");
 
   const GetAuthorityByAuthorityId = useSelector(
@@ -85,11 +82,7 @@ const AddEditViewAuthorityModal = () => {
 
   // Initial useEffect
   useEffect(() => {
-    dispatch(getCountryNamesAction(navigate, t));
-
     return () => {
-      setSelectCountry(null);
-      setCountryNames([]);
       dispatch(initialAddEditAuthority());
     };
   }, []);
@@ -253,7 +246,8 @@ const AddEditViewAuthorityModal = () => {
           Data,
           t,
           setAddEditViewAuthoriyModal,
-          searchPayload
+          searchPayload,
+          setSearchPayload
         )
       );
     }
@@ -289,7 +283,8 @@ const AddEditViewAuthorityModal = () => {
           Data,
           t,
           setAddEditViewAuthoriyModal,
-          searchPayload
+          searchPayload,
+          setSearchPayload
         )
       );
     }

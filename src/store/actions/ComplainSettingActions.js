@@ -11,7 +11,6 @@ import {
   UpdateAuthority,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
-import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -285,7 +284,8 @@ const UpdateAuthorityAPI = (
   Data,
   t,
   setAddEditViewAuthoriyModal,
-  initialData
+  initialData,
+  setSearchPayload
 ) => {
   return (dispatch) => {
     dispatch(UpdateAuthorityInit());
@@ -303,7 +303,8 @@ const UpdateAuthorityAPI = (
               Data,
               t,
               setAddEditViewAuthoriyModal,
-              initialData
+              initialData,
+              setSearchPayload
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -322,7 +323,22 @@ const UpdateAuthorityAPI = (
                 )
               );
               setAddEditViewAuthoriyModal(false);
-              dispatch(GetAllAuthorityAPI(navigate, initialData, t));
+              setSearchPayload((prev) => ({
+                ...prev,
+                sRow: 0,
+                length: 10,
+              }));
+              let Data = {
+                shortCode: initialData.shortCode,
+                authorityName: initialData.authorityName,
+                countryId: initialData.countryId,
+                sector: initialData.sector,
+                authorityTitle: initialData.authorityTitle,
+                sRow: 0,
+                length: 10,
+              };
+
+              dispatch(GetAllAuthorityAPI(navigate, Data, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -408,7 +424,8 @@ const AddAuthorityAPI = (
   data,
   t,
   setAddEditViewAuthoriyModal,
-  searchPayload
+  searchPayload,
+  setSearchPayload
 ) => {
   return (dispatch) => {
     dispatch(AddAuthorityInit());
@@ -426,7 +443,8 @@ const AddAuthorityAPI = (
               data,
               t,
               setAddEditViewAuthoriyModal,
-              searchPayload
+              searchPayload,
+              setSearchPayload
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -445,7 +463,21 @@ const AddAuthorityAPI = (
                 )
               );
               setAddEditViewAuthoriyModal(false);
-              dispatch(GetAllAuthorityAPI(navigate, searchPayload, t));
+              let Data = {
+                shortCode: searchPayload.shortCode,
+                authorityName: searchPayload.authorityName,
+                countryId: searchPayload.countryId,
+                sector: searchPayload.sector,
+                authorityTitle: searchPayload.authorityTitle,
+                sRow: 0,
+                length: 10,
+              };
+              dispatch(GetAllAuthorityAPI(navigate, Data, t));
+              setSearchPayload((prev) => ({
+                ...prev,
+                sRow: 0,
+                length: 10,
+              }));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
