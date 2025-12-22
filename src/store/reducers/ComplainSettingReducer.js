@@ -11,6 +11,9 @@ const initialState = {
   AddAuthority: null,
   IsShortCodeExists: null,
   IsAuthorityNameExists: null,
+
+  // MQTT
+  // SocketAuthorityInactive: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -203,6 +206,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // case actions.AUTHORITY_INACTIVE:
+    //   return {
+    //     ...state,
+    //     SocketAuthorityInactive: action.response,
+    //     ResponseMessage: action.message,
+    //   };
+
     // ================= DEFAULT =================
     default:
       return state;

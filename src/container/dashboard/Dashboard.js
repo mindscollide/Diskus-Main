@@ -223,6 +223,7 @@ import {
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
+// import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -4612,6 +4613,43 @@ const Dashboard = () => {
           setUnReadCountNotification(0);
         }
       }
+
+      // // Authority
+      // if (data.action.toLowerCase() === "Authority".toLowerCase()) {
+      //   if (
+      //     data.payload.message.toLowerCase() ===
+      //     "AUTHORITY_INACTIVE".toLowerCase()
+      //   ) {
+      //     dispatch(setInactiveStatusData(data.payload));
+      //     //   if (data.viewable) {
+      //     //     setNotification({
+      //     //       notificationShow: true,
+      //     //       message: changeMQTTJSONOne(
+      //     //         t("NEW_TODO_CREATION"),
+      //     //         "[Task Title]",
+      //     //         data.payload.todoTitle.substring(0, 100)
+      //     //       ),
+      //     //     });
+      //     //     setNotificationID(id);
+      //     //   }
+      //     // } else if (
+      //     //   data.payload.message.toLowerCase() ===
+      //     //   "TDOD_STATUS_EDITED".toLowerCase()
+      //     // ) {
+      //     //   dispatch(setTodoStatusDataFormSocket(data.payload));
+      //     //   if (data.viewable) {
+      //     //     setNotification({
+      //     //       notificationShow: true,
+      //     //       message: changeMQTTJSONOne(
+      //     //         t("TDOD_STATUS_EDITED"),
+      //     //         "[Task Title]",
+      //     //         data.payload.todoTitle.substring(0, 100)
+      //     //       ),
+      //     //     });
+      //     //   }
+      //     //   setNotificationID(id);
+      //   }
+      // }
     } catch (error) {
       console.log(error);
     }

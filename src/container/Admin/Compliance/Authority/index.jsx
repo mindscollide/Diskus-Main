@@ -111,6 +111,15 @@ const ManageAuthority = () => {
   );
   console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
 
+  // const authorityInactiveMessage = useSelector(
+  //   (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive
+  // );
+
+  // console.log(
+  //   authorityInactiveMessage,
+  //   "authorityInactiveMessageauthorityInactiveMessage"
+  // );
+
   const { setHasReachedBottom } = useTableScrollBottom(() => {
     if (recordsLength !== data.length) {
       isLoadMoreRef.current = true;
@@ -522,7 +531,7 @@ const ManageAuthority = () => {
       length: 10,
     };
     dispatch(GetAllAuthorityAPI(navigate, Data, t));
-    setsearchbox(!searchbox);
+    setsearchbox(false);
   };
 
   // Trigger search button action

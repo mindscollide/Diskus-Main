@@ -783,6 +783,14 @@ const initialAddEditAuthority = () => {
   };
 };
 
+// // get TodoList Data from Socket
+// const setInactiveStatusData = (response) => {
+//   return {
+//     type: actions.AUTHORITY_INACTIVE,
+//     response: response,
+//   };
+// };
+
 export {
   cleareMessage,
   initialAddEditAuthority,
@@ -793,4 +801,5 @@ export {
   AddAuthorityAPI,
   IsAuthorityNameExistsAPI,
   IsShortCodeExistsAPI,
+  // setInactiveStatusData,
 };
