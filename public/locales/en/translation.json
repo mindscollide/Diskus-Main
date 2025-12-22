@@ -2539,5 +2539,11 @@
   "Fiscal-year-settings": "Fiscal Year Settings",
   "Fiscal-year-start-date": "Fiscal Year Start Date",
   "Fiscal-year-start-month": "Fiscal Year Start Month",
-  "Fiscal-year-end": "Fiscal Year End"
+  "Fiscal-year-end": "Fiscal Year End",
+  "Data-deleted-successfully": "Data deleted successfully",
+  "Authority-updated-successfully": "Authority updated successfully",
+  "Authority-shortCode-already-exists-for-this-organization": "Authority ShortCode already exists for this Organization",
+  "Authority-name-already-exists-for-this-organization": "Authority Name already exists for this Organization",
+  "Authority-record-not-found-against-the-provided-authorityId": "Authority record not found Against the provided authorityId",
+  "Authority-created-successfully": "Authority created successfully"
 }

@@ -16,6 +16,7 @@ const TextArea = ({
   placeholder,
   onChange,
   applyClass,
+  name,
 }) => {
   return (
     <Form className={formClassPosition}>
@@ -25,6 +26,7 @@ const TextArea = ({
         as="textarea"
         rows={rows}
         cols={cols}
+        name={name}
         className={
           applyClass !== null && applyClass !== undefined
             ? styles[applyClass]

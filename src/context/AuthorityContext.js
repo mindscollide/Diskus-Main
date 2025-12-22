@@ -1,29 +1,74 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 // Create the Context
 const AuthorityContext = createContext();
 // Create a Provider component
 export const AuthorityProvider = ({ children }) => {
-  const [shortCodeSort, setShortCodeSort] = useState(null);
-  const [authorityNameSort, setAuthoritySort] = useState(null);
+  const countryNamesReducerCountryNamesData = useSelector(
+    (state) => state.countryNamesReducer.CountryNamesData
+  );
+
+  const [countryNames, setCountryNames] = useState([]);
+
+  const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
+    useState(false);
+  const [shortCodeSort, setShortCodeSort] = useState("ascend");
+  const [authorityNameSort, setAuthorityNameSort] = useState(null);
   const [countrySort, setCountrySort] = useState(null);
   const [sectorSort, setSectorSort] = useState(null);
-  const [authorityViewState, setAuthorityViewState] = useState(1);
+  const [authorityViewState, setAuthorityViewState] = useState(0);
   const [statusOptions, setStatusOptions] = useState([]);
   const [visible, setVisible] = useState(false);
+  const [statusFilter, setStatusFilter] = useState(null);
+  const [searchCountryId, setSearchCountryId] = useState({
+    label: "",
+    value: 0,
+  });
+
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [searchPayload, setSearchPayload] = useState({
     shortCode: "",
     authorityName: "",
-    country: "",
+
+    countryId: 0,
     sector: "",
     authorityTitle: "",
+    sRow: 0,
+    length: 10,
   });
 
+  const [authorityId, setAuthorityId] = useState("");
+
   const [searchbox, setsearchbox] = useState(false);
+  const [selectCountry, setSelectCountry] = useState(null);
+
+  useEffect(() => {
+    if (
+      countryNamesReducerCountryNamesData !== null &&
+      countryNamesReducerCountryNamesData !== undefined
+    ) {
+      let newCountryMapData = countryNamesReducerCountryNamesData.map(
+        (data, index) => {
+          return {
+            ...data,
+            value: data.pK_WorldCountryID,
+            label: data.countryName,
+          };
+        }
+      );
+      setCountryNames(newCountryMapData);
+    }
+    return () => {
+      setSelectCountry(null);
+    };
+  }, [countryNamesReducerCountryNamesData]);
 
   return (
     <AuthorityContext.Provider
       value={{
+        setAddEditViewAuthoriyModal,
+        addEditViewAuthoriyModal,
         authorityViewState,
         setAuthorityViewState,
         searchPayload,
@@ -33,7 +78,7 @@ export const AuthorityProvider = ({ children }) => {
         shortCodeSort,
         setShortCodeSort,
         authorityNameSort,
-        setAuthoritySort,
+        setAuthorityNameSort,
         countrySort,
         setCountrySort,
         sectorSort,
@@ -42,6 +87,18 @@ export const AuthorityProvider = ({ children }) => {
         setStatusOptions,
         visible,
         setVisible,
+        authorityId,
+        setAuthorityId,
+        closeConfirmationModal,
+        setCloseConfirmationModal,
+        statusFilter,
+        setStatusFilter,
+        searchCountryId,
+        setSearchCountryId,
+        countryNames,
+        setCountryNames,
+        selectCountry,
+        setSelectCountry,
       }}
     >
       {children}
