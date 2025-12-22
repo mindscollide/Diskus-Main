@@ -9,6 +9,8 @@ import {
   GetAllAuthority,
   GetAuthorityByID,
   UpdateAuthority,
+  IsAuthorityNameExists,
+  IsShortCodeExists,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -523,6 +525,252 @@ const AddAuthorityAPI = (
       });
   };
 };
+
+// iSsHORTcoDEeXIST
+
+const IsShortCodeExistsInit = () => {
+  return {
+    type: actions.IS_SHORT_CODE_EXIST_INIT,
+  };
+};
+
+const IsShortCodeExistsSuccess = (response, message) => {
+  return {
+    type: actions.IS_SHORT_CODE_EXIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const IsShortCodeExistsFail = (message) => {
+  return {
+    type: actions.IS_SHORT_CODE_EXIST_FAIL,
+    message: message,
+  };
+};
+
+const IsShortCodeExistsAPI = (
+  navigate,
+  value,
+  t,
+  setErrors,
+  setIsShortCodeExist
+) => {
+  return (dispatch) => {
+    let Data = {
+      shortCode: value,
+    };
+    setIsShortCodeExist(true);
+    dispatch(IsShortCodeExistsInit());
+    let form = new FormData();
+    form.append("RequestMethod", IsShortCodeExists.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            IsShortCodeExistsAPI(
+              navigate,
+              value,
+              t,
+              setErrors,
+              setIsShortCodeExist
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsShortCodeExists_01".toLowerCase()
+                )
+            ) {
+              // The Name Already Exist
+              await dispatch(IsShortCodeExistsFail(""));
+              setIsShortCodeExist(null);
+              setErrors((prev) => ({
+                ...prev,
+                shortCode: "Short Code Already Exist",
+              }));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsShortCodeExists_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              setIsShortCodeExist(false);
+              await dispatch(
+                IsShortCodeExistsSuccess(response.data.responseResult, "")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsShortCodeExists_03".toLowerCase()
+                )
+            ) {
+              setIsShortCodeExist(null);
+              await dispatch(
+                IsShortCodeExistsFail(t("Provided_shortCode-is-null-or-empty"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsShortCodeExists_04".toLowerCase()
+                )
+            ) {
+              setIsShortCodeExist(null);
+              await dispatch(IsShortCodeExistsFail(t("Something-went-wrong")));
+            }
+          } else {
+            setIsShortCodeExist(null);
+            await dispatch(IsShortCodeExistsFail(t("Something-went-wrong")));
+          }
+        } else {
+          setIsShortCodeExist(null);
+          await dispatch(IsShortCodeExistsFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(IsShortCodeExistsFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+// IsAuthorityNameExists
+const IsAuthorityNameExistsInit = () => {
+  return {
+    type: actions.IS_AUTHORITY_NAME_EXIST_INIT,
+  };
+};
+
+const IsAuthorityNameExistsSuccess = (response, message) => {
+  return {
+    type: actions.IS_AUTHORITY_NAME_EXIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const IsAuthorityNameExistsFail = (message) => {
+  return {
+    type: actions.IS_AUTHORITY_NAME_EXIST_FAIL,
+    message: message,
+  };
+};
+
+const IsAuthorityNameExistsAPI = (
+  navigate,
+  value,
+  t,
+  setErrors,
+  setIsAuthorityExist
+) => {
+  let Data = {
+    authorityName: value,
+  };
+  setIsAuthorityExist(true);
+  return (dispatch) => {
+    dispatch(IsAuthorityNameExistsInit());
+    let form = new FormData();
+    form.append("RequestMethod", IsAuthorityNameExists.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            IsAuthorityNameExistsAPI(
+              navigate,
+              value,
+              t,
+              setErrors,
+              setIsAuthorityExist
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsAuthorityNameExists_01".toLowerCase()
+                )
+            ) {
+              // The Name Already Exist
+              await dispatch(IsAuthorityNameExistsFail(""));
+              setIsAuthorityExist(null);
+              setErrors((prev) => ({
+                ...prev,
+                name: "Authority Already Exist",
+              }));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsAuthorityNameExists_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(
+                IsAuthorityNameExistsSuccess(response.data.responseResult, "")
+              );
+              setIsAuthorityExist(false);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsAuthorityNameExists_03".toLowerCase()
+                )
+            ) {
+              setIsAuthorityExist(null);
+
+              await dispatch(
+                IsAuthorityNameExistsFail(
+                  t("Provided_authorityName-is-null-or-empty")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsAuthorityNameExists_04".toLowerCase()
+                )
+            ) {
+              setIsAuthorityExist(null);
+
+              await dispatch(
+                IsAuthorityNameExistsFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            setIsAuthorityExist(null);
+
+            await dispatch(
+              IsAuthorityNameExistsFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          setIsAuthorityExist(null);
+
+          await dispatch(IsAuthorityNameExistsFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        setIsAuthorityExist(null);
+
+        dispatch(AddAuthorityFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const cleareMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
@@ -534,6 +782,7 @@ const initialAddEditAuthority = () => {
     type: actions.INITIAL_STATE_ADD_AUTHORITY,
   };
 };
+
 export {
   cleareMessage,
   initialAddEditAuthority,
@@ -542,4 +791,6 @@ export {
   DeleteAuthorityAPI,
   UpdateAuthorityAPI,
   AddAuthorityAPI,
+  IsAuthorityNameExistsAPI,
+  IsShortCodeExistsAPI,
 };

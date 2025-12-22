@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./addEditAuthority.module.css";
+import { Check2 } from "react-bootstrap-icons";
+
+import CheckIcon from "../../../../../assets/images/newElements/check.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -9,7 +12,7 @@ import {
   TextArea,
   TextField,
 } from "../../../../../components/elements";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
 import Select from "react-select";
@@ -19,6 +22,8 @@ import ReactFlagsSelect from "react-flags-select";
 import {
   AddAuthorityAPI,
   initialAddEditAuthority,
+  IsShortCodeExistsAPI,
+  IsAuthorityNameExistsAPI,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
 const AddEditViewAuthorityModal = () => {
@@ -37,6 +42,9 @@ const AddEditViewAuthorityModal = () => {
     selectCountry,
     countryNames,
   } = useAuthorityContext();
+
+  const [isAuthorityExist, setIsAuthorityExist] = useState(null);
+  const [isShortCodeExist, setIsShortCodeExist] = useState(null);
 
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
@@ -370,15 +378,73 @@ const AddEditViewAuthorityModal = () => {
     }
 
     // AUTHORITY NAME uniqueness (API placeholder)
-    if (name === "authorityName" && value) {
+    if (name === "name" && value) {
       // call API here
-      // checkAuthorityNameUnique(value)
+      try {
+        if (authorityViewState === 2) {
+          if (
+            GetAuthorityByAuthorityId?.authority !== null &&
+            (authorityDetails.name !==
+              GetAuthorityByAuthorityId?.authority.authorityName ||
+              value !== GetAuthorityByAuthorityId?.authority.authorityName)
+          ) {
+            dispatch(
+              IsAuthorityNameExistsAPI(
+                navigate,
+                value,
+                t,
+                setErrors,
+                setIsAuthorityExist
+              )
+            );
+          }
+        } else {
+          dispatch(
+            IsAuthorityNameExistsAPI(
+              navigate,
+              value,
+              t,
+              setErrors,
+              setIsAuthorityExist
+            )
+          );
+        }
+      } catch (error) {}
     }
 
     // SHORT CODE uniqueness (API placeholder)
     if (name === "shortCode" && value) {
-      // call API here
-      // checkShortCodeUnique(value)
+      try {
+        if (authorityViewState === 2) {
+          if (
+            GetAuthorityByAuthorityId?.authority !== null &&
+            (authorityDetails.shortCode !==
+              GetAuthorityByAuthorityId?.authority.shortCode ||
+              value !== GetAuthorityByAuthorityId?.authority.shortCode)
+          ) {
+            // call API here
+            dispatch(
+              IsShortCodeExistsAPI(
+                navigate,
+                value,
+                t,
+                setErrors,
+                setIsShortCodeExist
+              )
+            );
+          }
+        } else {
+          dispatch(
+            IsShortCodeExistsAPI(
+              navigate,
+              value,
+              t,
+              setErrors,
+              setIsShortCodeExist
+            )
+          );
+        }
+      } catch (error) {}
     }
   };
 
@@ -420,32 +486,57 @@ const AddEditViewAuthorityModal = () => {
                 <>
                   <Row>
                     <Col sm={12} md={10} lg={10}>
-                      <TextField
-                        change={handleValueChange}
-                        name="name"
-                        maxLength={100}
-                        placeholder={t("Authority-name")}
-                        applyClass={
-                          authorityViewState === 3
-                            ? "viewField_Name"
-                            : "AddEditAuthorityInputField"
-                        }
-                        value={authorityDetails.name}
-                        label={
-                          <>
-                            {t("Authority-name")}
-                            <span className={styles["sterick"]}>
-                              {authorityViewState !== 3 ? " *" : ""}
-                            </span>
-                          </>
-                        }
-                        labelclass={styles["labelStyle"]}
-                      />
+                      <div className="position-relative">
+                        <TextField
+                          change={handleValueChange}
+                          onBlur={handleBlur}
+                          name="name"
+                          maxLength={100}
+                          placeholder={t("Authority-name")}
+                          applyClass={
+                            authorityViewState === 3
+                              ? "viewField_Name"
+                              : "AddEditAuthorityInputField"
+                          }
+                          value={authorityDetails.name}
+                          // inputicon={<Check2 className={styles["CheckIcon"]} />}
+                          inputicon={
+                            isAuthorityExist === true ? (
+                              <Spinner
+                                size="md"
+                                className={styles["SpinnerClass"]}
+                              />
+                            ) : isAuthorityExist === false ? (
+                              <Check2 className={styles["CheckIcon"]} />
+                            ) : null
+                          }
+                          label={
+                            <>
+                              {t("Authority-name")}
+                              <span className={styles["sterick"]}>
+                                {authorityViewState !== 3 ? " *" : ""}
+                              </span>
+                            </>
+                          }
+                          iconclassname={styles["SearchIconClass"]}
+                          labelclass={styles["labelStyle"]}
+                        />
+                        <p
+                          className={
+                            errors.name
+                              ? styles["errorMessage-inLogin"]
+                              : styles["errorMessage-inLogin_hidden"]
+                          }
+                        >
+                          {errors.name}
+                        </p>
+                      </div>
                     </Col>
                     <Col sm={12} md={2} lg={2}>
                       <TextField
                         maxLength={10}
                         change={handleValueChange}
+                        onBlur={handleBlur}
                         name="shortCode"
                         placeholder={t("Short-code")}
                         applyClass={
@@ -454,6 +545,17 @@ const AddEditViewAuthorityModal = () => {
                             : "AddEditAuthorityInputField"
                         }
                         value={authorityDetails.shortCode}
+                        inputicon={
+                          isShortCodeExist === true ? (
+                            <Spinner
+                              size="md"
+                              className={styles["SpinnerClass"]}
+                            />
+                          ) : isShortCodeExist === false ? (
+                            <Check2 className={styles["CheckIcon"]} />
+                          ) : null
+                        }
+                        iconclassname={styles["SearchIconClass"]}
                         label={
                           <>
                             {t("Short-code")}
@@ -464,6 +566,16 @@ const AddEditViewAuthorityModal = () => {
                         }
                         labelclass={styles["labelStyle"]}
                       />
+
+                      <p
+                        className={
+                          errors.shortCode
+                            ? styles["errorMessage-inLogin"]
+                            : styles["errorMessage-inLogin_hidden"]
+                        }
+                      >
+                        {errors.shortCode}
+                      </p>
                     </Col>
                   </Row>
                   <Row className="mt-2">

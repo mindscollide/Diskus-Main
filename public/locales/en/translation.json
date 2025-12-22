@@ -2545,5 +2545,11 @@
   "Authority-shortCode-already-exists-for-this-organization": "Authority ShortCode already exists for this Organization",
   "Authority-name-already-exists-for-this-organization": "Authority Name already exists for this Organization",
   "Authority-record-not-found-against-the-provided-authorityId": "Authority record not found Against the provided authorityId",
-  "Authority-created-successfully": "Authority created successfully"
+  "Authority-created-successfully": "Authority created successfully",
+  "Compliance-due-date": "Compliance Due Date",
+  "First-reminder-day-before": "First Reminder (Days Before)",
+  "Second-reminder-day-before": "Second Reminder (Days Before)",
+  "Third-reminder-day-before": "Third Reminder (Days Before)",
+  "Select-day-number": "Select Day Number",
+  "Select-working-days": "Select Working Days"
 }

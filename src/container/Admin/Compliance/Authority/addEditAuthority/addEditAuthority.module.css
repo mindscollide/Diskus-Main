@@ -183,3 +183,25 @@ body[dir="rtl"] .AddButtonStyles {
 .contactNumberView {
   font-size: 16px !important;
 }
+.SearchIconClass {
+  display: inline-block;
+  position: absolute !important;
+  right: 13px !important;
+  width: auto;
+  top: 7px;
+}
+
+body[dir="rtl"] .SearchIconClass {
+  position: absolute !important;
+  right: auto !important;
+  left: 13px;
+  cursor: pointer !important;
+}
+
+.SpinnerClass {
+  margin-top: 12px;
+}
+.CheckIcon {
+  font-size: 2rem;
+  margin-top: 12px;
+}

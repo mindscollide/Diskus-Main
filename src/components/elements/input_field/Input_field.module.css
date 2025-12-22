@@ -441,3 +441,6 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
   min-height: 50px !important;
   resize: none;
 }
+.selectDayNumberTextField {
+  width: 181px;
+}

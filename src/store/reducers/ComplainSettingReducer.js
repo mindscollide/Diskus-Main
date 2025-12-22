@@ -9,6 +9,8 @@ const initialState = {
   DeleteAuthority: null,
   UpdateAuthority: null,
   AddAuthority: null,
+  IsShortCodeExists: null,
+  IsAuthorityNameExists: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -18,7 +20,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        severity: "",
+        severity: null,
       };
 
     case actions.GET_ALL_AUTHORITY_SUCCESS:
@@ -44,7 +46,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         GetAuthorityByID: null,
-        severity: "",
+        severity: null,
       };
 
     // ================= GET AUTHORITY BY ID =================
@@ -52,7 +54,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        severity: "",
+        severity: null,
       };
 
     case actions.GET_AUTHORITY_BY_ID_SUCCESS:
@@ -78,7 +80,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        severity: "",
+        severity: null,
       };
 
     case actions.DELETE_AUTHORITY_SUCCESS:
@@ -104,7 +106,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        severity: "",
+        severity: null,
       };
 
     case actions.UPDATE_AUTHORITY_SUCCESS:
@@ -130,7 +132,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: true,
-        severity: "",
+        severity: null,
       };
 
     case actions.ADD_AUTHORITY_SUCCESS:
@@ -151,6 +153,56 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
       };
 
+    // ================= IsShortCodeExists =================
+    case actions.IS_SHORT_CODE_EXIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.IS_SHORT_CODE_EXIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        IsShortCodeExists: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.IS_SHORT_CODE_EXIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        IsShortCodeExists: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+    // ================= IsAuthorityNameExists =================
+    case actions.IS_AUTHORITY_NAME_EXIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.IS_AUTHORITY_NAME_EXIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        IsAuthorityNameExists: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.IS_AUTHORITY_NAME_EXIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        IsAuthorityNameExists: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
     // ================= DEFAULT =================
     default:
       return state;

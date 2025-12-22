@@ -2032,6 +2032,13 @@ const UpdateAuthority = {
 const AddAuthority = {
   RequestMethod: "ServiceManager.AddAuthority",
 };
+const IsShortCodeExists = {
+  RequestMethod: "ServiceManager.IsShortCodeExists",
+};
+
+const IsAuthorityNameExists = {
+  RequestMethod: "ServiceManager.IsAuthorityNameExists",
+};
 
 export {
   ValidateUserPasswordRM,
@@ -2563,4 +2570,6 @@ export {
   DeleteAuthority,
   UpdateAuthority,
   AddAuthority,
+  IsShortCodeExists,
+  IsAuthorityNameExists,
 };
