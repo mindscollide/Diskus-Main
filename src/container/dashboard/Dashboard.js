@@ -222,6 +222,7 @@ import {
   meetingVideoRecording,
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
+
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 
 const Dashboard = () => {
@@ -895,6 +896,34 @@ const Dashboard = () => {
     }
   };
 
+  // async function joinRequestForMeetingVideo(mqttData) {
+  //   try {
+  //     const currentMeetingID = localStorage.getItem("currentMeetingID");
+  //     const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  //     const isMeetingVideoHostCheck = JSON.parse(
+  //       localStorage.getItem("isMeetingVideoHostCheck")
+  //     );
+  //     if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+  //       if (isMeetingVideo) {
+  //         if (presenterViewJoinFlagRef.current) {
+  //           console.log("Check PresenterIssue Once");
+  //         } else {
+  //           console.log("Check PresenterIssue Once");
+  //           if (isMeetingVideoHostCheck) {
+  //             console.log("Check PresenterIssue Once");
+  //             if (mqttData.payload.isGuest) {
+  //               dispatch(admitGuestUserRequest(mqttData.payload));
+  //             } else {
+  //               console.log("Check PresenterIssue Once");
+  //               dispatch(participantWaitingList(mqttData.payload));
+  //             }
+  //             dispatch(guestJoinPopup(true));
+  //           }
+  //         }
+  //       }
+  //   } catch {}
+  // }
+
   async function joinRequestForMeetingVideo(mqttData) {
     try {
       const currentMeetingID = localStorage.getItem("currentMeetingID");
@@ -902,25 +931,41 @@ const Dashboard = () => {
       const isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
       );
-      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+
+      const { meetingID, userID } = mqttData.payload;
+      console.log("Check PresenterIssue Once");
+
+      if (Number(meetingID) === Number(currentMeetingID)) {
+        // ✅ DEDUPE CHECK (meetingID + userID)
+        const alreadyRequested = waitingParticipantsList?.some(
+          (p) =>
+            Number(p.userID) === Number(userID) &&
+            Number(p.meetingID) === Number(meetingID)
+        );
+
+        if (alreadyRequested) {
+          console.log("Duplicate join request ignored:", userID);
+          return;
+        }
+
         if (isMeetingVideo) {
           if (presenterViewJoinFlagRef.current) {
             console.log("Check PresenterIssue Once");
           } else {
-            console.log("Check PresenterIssue Once");
             if (isMeetingVideoHostCheck) {
-              console.log("Check PresenterIssue Once");
               if (mqttData.payload.isGuest) {
                 dispatch(admitGuestUserRequest(mqttData.payload));
               } else {
-                console.log("Check PresenterIssue Once");
                 dispatch(participantWaitingList(mqttData.payload));
               }
               dispatch(guestJoinPopup(true));
             }
           }
         }
-    } catch {}
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const sendStopRecordingMessageForMQTT = () => {
@@ -4869,7 +4914,7 @@ const Dashboard = () => {
     }
   }, [isOtoCallisActive]);
 
-  return  (
+  return (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}

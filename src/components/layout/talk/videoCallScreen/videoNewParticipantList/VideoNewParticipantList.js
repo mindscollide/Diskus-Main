@@ -8,6 +8,7 @@ import UserImage from "../../../../../assets/images/user.png";
 import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
+  participantAcceptandReject,
   participantWaitingListBox,
   presenterLeaveParticipant,
   presenterNewParticipantJoin,
@@ -249,15 +250,20 @@ const VideoNewParticipantList = () => {
     if (waitingParticipants?.length) {
       console.log(waitingParticipants, "usersDatausersData");
 
-      // Deduplicate based on `guid`
-      const uniqueByGuid = Object.values(
+      // ✅ Deduplicate by meetingID + userID (NOT guid)
+      const uniqueByUser = Object.values(
         waitingParticipants.reduce((acc, item) => {
-          acc[item.guid] = item; // This will overwrite duplicates
+          const key = `${item.meetingID}_${item.userID}`;
+
+          if (!acc[key]) {
+            acc[key] = item; // keep first occurrence
+          }
+
           return acc;
         }, {})
       );
 
-      setFilteredWaitingParticipants(uniqueByGuid);
+      setFilteredWaitingParticipants(uniqueByUser);
     } else {
       setFilteredWaitingParticipants([]);
     }
@@ -471,19 +477,19 @@ const VideoNewParticipantList = () => {
 
   const handleClickAllAcceptAndReject = (flag) => {
     if (!presenterViewFlag) {
+      const participantsToProcess = filteredWaitingParticipants;
+
+      if (!participantsToProcess.length) return;
+
       let Data = {
-        MeetingId: filteredWaitingParticipants[0]?.meetingID,
+        MeetingId: participantsToProcess[0]?.meetingID,
         RoomId: String(roomID),
-        IsRequestAccepted: flag === 1 ? true : false,
-        AttendeeResponseList: filteredWaitingParticipants.map(
-          (participantData, index) => {
-            return {
-              IsGuest: participantData.isGuest,
-              UID: participantData.guid,
-              UserID: participantData.userID,
-            };
-          }
-        ),
+        IsRequestAccepted: flag === 1,
+        AttendeeResponseList: participantsToProcess.map((p) => ({
+          IsGuest: p.isGuest,
+          UID: p.guid,
+          UserID: p.userID,
+        })),
       };
 
       dispatch(
@@ -493,6 +499,16 @@ const VideoNewParticipantList = () => {
           t,
           true,
           filteredParticipants
+        )
+      );
+
+      // ✅ Remove all from waiting list
+      dispatch(
+        participantAcceptandReject(
+          participantsToProcess.map((p) => ({
+            meetingID: p.meetingID,
+            userID: p.userID,
+          }))
         )
       );
     }
@@ -513,6 +529,16 @@ const VideoNewParticipantList = () => {
     };
     dispatch(
       admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
+    );
+
+    // ✅ REMOVE FROM WAITING LIST (accept OR deny)
+    dispatch(
+      participantAcceptandReject([
+        {
+          meetingID: participantInfo.meetingID,
+          userID: participantInfo.userID,
+        },
+      ])
     );
   };
 

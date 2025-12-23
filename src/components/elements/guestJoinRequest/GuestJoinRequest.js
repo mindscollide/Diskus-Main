@@ -9,6 +9,7 @@ import CrossIcon from "./../../layout/talk/talk-Video/video-images/CloseIcon.png
 import ProfileIcon from "./../../layout/talk/talk-Video/video-images/Profile_Icon.png";
 import {
   guestJoinPopup,
+  participantAcceptandReject,
   participantWaitingListBox,
 } from "../../../store/actions/VideoFeature_actions";
 import {
@@ -80,49 +81,49 @@ const GuestJoinRequest = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
-    console.log("hell");
-
     const list = videoFeatureReducer.waitingParticipantsList;
 
-    if (list?.length) {
-      console.log(list, "usersDatausersData");
-
-      const uniqueByGuid = Object.values(
+    if (Array.isArray(list) && list.length > 0) {
+      // Deduplicate by meetingID + userID
+      const uniqueByUser = Object.values(
         list.reduce((acc, item) => {
-          acc[item.guid] = item; // keeps the last item with that guid
+          const key = `${item.meetingID}_${item.userID}`;
+          if (!acc[key]) {
+            acc[key] = item; // keep first occurrence
+          }
           return acc;
         }, {})
       );
 
-      setFilteredWaitingParticipants(uniqueByGuid);
+      setFilteredWaitingParticipants(uniqueByUser);
     } else {
       setFilteredWaitingParticipants([]);
     }
   }, [videoFeatureReducer.waitingParticipantsList]);
 
-  const handleAdmit = (flag) => {
-    if (flag === 1) {
-      setLoadingAdmit(true); // Admit button
-    } else if (flag === 2) {
-      setLoadingDeny(true); // Deny button
-    }
+  const handleAdmit = (flag, participantInfo = null) => {
+    // Set loading state
+    if (flag === 1) setLoadingAdmit(true);
+    else if (flag === 2) setLoadingDeny(true);
 
-    let Data = {
-      MeetingId: filteredWaitingParticipants[0]?.meetingID,
+    // Determine which participants to process
+    const participantsToProcess = participantInfo
+      ? [participantInfo] // Single participant
+      : filteredWaitingParticipants; // All participants
+
+    // Prepare API data
+    const Data = {
+      MeetingId: participantsToProcess[0]?.meetingID,
       RoomId: String(roomID),
-      IsRequestAccepted: flag === 1 ? true : false,
-      AttendeeResponseList: filteredWaitingParticipants.map(
-        (participantData, index) => {
-          console.log(participantData, "mahdahahshahs");
-          return {
-            IsGuest: participantData.isGuest,
-            UID: participantData.guid,
-            UserID: participantData.userID,
-          };
-        }
-      ),
+      IsRequestAccepted: flag === 1,
+      AttendeeResponseList: participantsToProcess.map((p) => ({
+        IsGuest: p.isGuest,
+        UID: p.guid,
+        UserID: p.userID,
+      })),
     };
 
+    // Call API
     dispatch(
       admitRejectAttendeeMainApi(
         Data,
@@ -132,6 +133,16 @@ const GuestJoinRequest = () => {
         "",
         setLoadingAdmit,
         setLoadingDeny
+      )
+    );
+
+    // Remove participants from waiting list in Redux
+    dispatch(
+      participantAcceptandReject(
+        participantsToProcess.map((p) => ({
+          meetingID: p.meetingID,
+          userID: p.userID,
+        }))
       )
     );
   };
@@ -166,18 +177,17 @@ const GuestJoinRequest = () => {
     const list = videoFeatureReducer.waitingParticipantsList;
 
     if (Array.isArray(list) && list.length > 0) {
-      try {
-        const uniqueByGuid = Object.values(
-          list.reduce((acc, item) => {
-            acc[item.guid] = item; // Keeps the last occurrence; use `|| item` for first
-            return acc;
-          }, {})
-        );
+      const uniqueByUser = Object.values(
+        list.reduce((acc, item) => {
+          const key = `${item.meetingID}_${item.userID}`;
+          if (!acc[key]) {
+            acc[key] = item;
+          }
+          return acc;
+        }, {})
+      );
 
-        setWaitingOnParticipant(uniqueByGuid);
-      } catch (error) {
-        setWaitingOnParticipant([]);
-      }
+      setWaitingOnParticipant(uniqueByUser);
     } else {
       setWaitingOnParticipant([]);
     }
@@ -224,7 +234,9 @@ const GuestJoinRequest = () => {
                   <Col xs={5}>
                     <Button
                       className={styles["title-deny"]}
-                      onClick={() => handleAdmit(2)}
+                      onClick={() =>
+                        handleAdmit(2, filteredWaitingParticipants[0])
+                      }
                       text={
                         loadingDeny ? (
                           <Spinner
@@ -242,7 +254,9 @@ const GuestJoinRequest = () => {
                   <Col xs={5}>
                     <Button
                       className={styles["title-admit"]}
-                      onClick={() => handleAdmit(1)}
+                      onClick={() =>
+                        handleAdmit(1, filteredWaitingParticipants[0])
+                      }
                       text={
                         loadingAdmit ? (
                           <Spinner animation="border" size="sm" />
