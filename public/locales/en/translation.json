@@ -2551,5 +2551,7 @@
   "Second-reminder-day-before": "Second Reminder (Days Before)",
   "Third-reminder-day-before": "Third Reminder (Days Before)",
   "Select-day-number": "Select Day Number",
-  "Select-working-days": "Select Working Days"
+  "Select-working-days": "Select Working Days",
+  "Compliances-by-me": "Compliances by Me",
+  "Compliances-for-me":"Compliances for Me"
 }
