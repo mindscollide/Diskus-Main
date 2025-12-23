@@ -26,6 +26,8 @@ export const AuthorityProvider = ({ children }) => {
     value: 0,
   });
 
+  const [dataAfterSearch, setDataAfterSearch] = useState(false);
+
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [searchPayload, setSearchPayload] = useState({
     shortCode: "",
@@ -63,10 +65,6 @@ export const AuthorityProvider = ({ children }) => {
       setSelectCountry(null);
     };
   }, [countryNamesReducerCountryNamesData]);
-  // const [sortState, setSortState] = useState({
-  //   columnKey: null,
-  //   order: null, // 'ascend' | 'descend' | null
-  // });
 
   return (
     <AuthorityContext.Provider
@@ -103,8 +101,8 @@ export const AuthorityProvider = ({ children }) => {
         setCountryNames,
         selectCountry,
         setSelectCountry,
-        // sortState,
-        // setSortState,
+        dataAfterSearch,
+        setDataAfterSearch,
       }}
     >
       {children}

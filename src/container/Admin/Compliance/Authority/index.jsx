@@ -48,6 +48,7 @@ import {
   setDeleteStatusData,
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
+  clearAuthorityMessage,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -107,7 +108,7 @@ const ManageAuthority = () => {
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.severity
   );
 
   const authorityInactiveMessage = useSelector(
@@ -374,6 +375,9 @@ const ManageAuthority = () => {
     ) {
       try {
         showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        setTimeout(() => {
+          dispatch(clearAuthorityMessage());
+        }, 4000);
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
@@ -933,16 +937,6 @@ const ManageAuthority = () => {
                 >
                   <img draggable={false} src={noAuthorityImg} alt="" />
                 </Col>
-                {/* <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center align-items-center mt-5"
-                >
-                  <span className={styles["EmptyAuthorityState_heading"]}>
-                    {t("No-authority-available")}
-                  </span>
-                </Col> */}
               </Row>
               <Row className="mt-5">
                 <Col
@@ -952,7 +946,13 @@ const ManageAuthority = () => {
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["EmptyAuthorityState_heading"]}>
-                    {t("No-authority-available")}
+                    {searchPayload.shortCode !== "" ||
+                    searchPayload.authorityName !== "" ||
+                    searchPayload.countryId !== 0 ||
+                    searchPayload.sector !== "" ||
+                    searchPayload.authorityTitle !== ""
+                      ? t("No-matching-records.")
+                      : t("No-authority-available")}
                   </span>
                 </Col>
               </Row>

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import styles from "./addEditAuthority.module.css";
 import { Check2 } from "react-bootstrap-icons";
 
-import CheckIcon from "../../../../../assets/images/newElements/check.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -230,6 +229,8 @@ const AddEditViewAuthorityModal = () => {
     authorityDetails.shortCode.trim() !== "" &&
     errors.website === "" &&
     errors.email === "" &&
+    errors.shortCode === "" &&
+    errors.name === "" &&
     selectCountry !== null;
   console.log(isAllValid, "isAllValidisAllValid");
   const handleAddAuthority = () => {
@@ -793,15 +794,15 @@ const AddEditViewAuthorityModal = () => {
                     <Row className="mt-2">
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["labelStyleActive"]}>
-                          {t("Active")}
+                          {t("Status")}
                         </div>
-                        {authorityDetails.status === true ? (
+                        {authorityDetails.status === "Active" ? (
                           <span className={styles["activeAuthorityStyle"]}>
-                            Active
+                            {t("Active")}
                           </span>
                         ) : (
                           <span className={styles["inactiveAuthorityStyle"]}>
-                            InActive
+                            {t("InActive")}
                           </span>
                         )}
                       </Col>

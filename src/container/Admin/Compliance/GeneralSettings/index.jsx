@@ -549,7 +549,7 @@ const GeneralSetting = () => {
           <Col lg={6} md={6} sm={12} xs={12}>
             <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
               <label className={styles["General_Setting-Main-Heading"]}>
-                {t("General-setting")}
+                {t("General-settings")}
               </label>
             </div>
           </Col>
