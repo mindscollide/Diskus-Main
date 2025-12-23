@@ -24,18 +24,15 @@ const AttachmentViewer = ({
   isQuickMeeting = false,
   isMeetingActive = false,
 }) => {
-  let fileExtension = ["pdf", "doc", "docx", "xls", "xlsx"].includes(
-    getFileExtension(name)
-  );
+
   let getfileExtensionName = getFileExtension(name);
   let currentUser = Number(localStorage.getItem("userID"));
 
   return (
     <div className='document-container d-flex align-items-center justify-content-center mt-2 position-relative '>
       <div
-        className={`${
-          id !== 0 ? "document-card" : "document-card-none"
-        } d-flex align-items-center'`}>
+        className={`${id !== 0 ? "document-card" : "document-card-none"
+          } d-flex align-items-center'`}>
         <div className='d-flex align-items-center flex-grow-1 overflow-hidden mx-2'>
           <div className='icon-container me-2'>
             <img

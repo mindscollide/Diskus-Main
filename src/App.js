@@ -65,9 +65,9 @@ const App = () => {
       }
 
       // Step 2: Redirect to dashboard if token exists but not on dashboard
-      if (!isAlreadyInDashboard && localToken && localUser) {
-        window.location.replace("/Diskus/");
-      }
+      // if (!isAlreadyInDashboard && localToken && localUser) {
+      //   window.location.replace("/Diskus/");
+      // }
     };
 
     // Run on initial load
@@ -198,7 +198,7 @@ const App = () => {
     ) {
       try {
         showMessage(SessionExpireResponseMessage, "error", setOpen);
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [SessionExpireResponseMessage]);
 
