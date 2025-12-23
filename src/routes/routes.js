@@ -81,6 +81,10 @@ import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
 import UserSettingsWrapper from "./UserSettingsWrapper.js";
 import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/meetingDocumentViewer.js";
 import AlreadyInGroupAndOtoCall from "../components/layout/talk/videoCallScreen/alreadyInGroupAndOtoCall/AlreadyInGroupAndOtoCall.jsx";
+import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
+import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
+import { AuthorityProvider } from "../context/AuthorityContext.js";
+import MainCompliance from "../container/ComplianceUser/index.jsx";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -492,6 +496,19 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
+            <Route
+            path="compliance"
+            element={
+              <RouteWrapperUser name="polling">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <MainCompliance />
+                </ErrorBoundary>
+              </RouteWrapperUser>
+            }
+          />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>
@@ -509,6 +526,35 @@ export const router = createBrowserRouter(
             </RouteWrapperAdmin>
           }
         >
+          <Route
+            path="manageAuthority"
+            element={
+              <RouteWrapperAdmin name="Admin">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <AuthorityProvider>
+                    <ManageAuthority />
+                  </AuthorityProvider>
+                </ErrorBoundary>
+              </RouteWrapperAdmin>
+            }
+          />
+          <Route
+            path="generalSetting"
+            element={
+              <RouteWrapperAdmin name="Admin">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <GeneralSetting />
+                </ErrorBoundary>
+              </RouteWrapperAdmin>
+            }
+          />
+
           <Route
             path=""
             element={

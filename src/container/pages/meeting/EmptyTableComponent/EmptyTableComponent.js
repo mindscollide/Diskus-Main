@@ -1,7 +1,6 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./EmptyTableComponent.module.css";
-import SpinComponent from "../../../../components/elements/mainLoader/loader";
 import NoMeetingsIcon from "../../../../assets/images/No-Meetings.png";
 import { useTranslation } from "react-i18next";
 

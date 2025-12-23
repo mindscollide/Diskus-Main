@@ -136,7 +136,9 @@
   overflow-x: hidden !important;
 } */
 
-.ant-table-ping-left .ant-table-cell-fix-left-first:after, .ant-table-ping-left .ant-table-cell-fix-left-last:after, .ant-table-ping-left:not(.ant-table-has-fix-left)>.ant-table-container:before {
+.ant-table-ping-left .ant-table-cell-fix-left-first:after,
+.ant-table-ping-left .ant-table-cell-fix-left-last:after,
+.ant-table-ping-left:not(.ant-table-has-fix-left)
+  > .ant-table-container:before {
   box-shadow: none !important;
-
 }

@@ -1,0 +1,207 @@
+.ConfirmationHeading {
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .ConfirmationHeading {
+  font-weight: 600 !important;
+}
+
+.CancelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.CancelButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .CancelButton {
+  font-weight: 600 !important;
+}
+
+.CancelButtonStyle {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.CancelButtonStyle:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .CancelButtonStyle {
+  font-weight: 600 !important;
+}
+
+.AddButtonStyles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.AddButtonStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .AddButtonStyles {
+  font-weight: 600 !important;
+}
+
+.AuthortyModalTitle {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.labelStyleActive {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  padding-right: 20px;
+}
+.sterick {
+  color: #f16b6b;
+}
+.Select_country_Authoriy_div {
+  margin-top: 2.5px;
+}
+.Select_country_Authoriy_label {
+  margin-top: 8.2px;
+}
+.Select_Phone_Authoriy_label {
+  margin-top: 6px;
+  margin-bottom: 4.5px;
+}
+.Select_Phone_Authoriy_div {
+  margin-top: 0px;
+}
+
+.addEditViewAuthorityModal_Footer {
+  margin: 0 !important;
+  padding: 0 !important;
+  display: block !important;
+}
+
+.addEditViewAuthorityModal_Header {
+  margin: 0 0 15px 0 !important;
+  padding: 0 !important;
+}
+.addEditViewAuthorityModal_Body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 55vh !important;
+}
+.addEditViewAuthorityModal_Content {
+  padding: 20px 30px !important;
+}
+.activeAuthorityStyle {
+  color: #55ce5c;
+}
+.inactiveAuthorityStyle {
+  color: #f16b6b;
+}
+.react-flag-AddAuthority {
+  height: 30px !important;
+  padding: auto !important;
+  margin-top: 2px !important;
+}
+.dropdown-countrylist {
+  max-height: 18vh !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  width: 100% !important;
+}
+.dropdown-countrylist button {
+  font-size: 12px !important;
+  min-height: 37px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+.dropdown-countrylist ul {
+  max-height: 154px !important;
+}
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  display: none;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
+}
+.contactNumberView {
+  font-size: 16px !important;
+}
+.SearchIconClass {
+  display: inline-block;
+  position: absolute !important;
+  right: 13px !important;
+  width: auto;
+  top: 7px;
+}
+
+body[dir="rtl"] .SearchIconClass {
+  position: absolute !important;
+  right: auto !important;
+  left: 13px;
+  cursor: pointer !important;
+}
+
+.SpinnerClass {
+  margin-top: 12px;
+}
+.CheckIcon {
+  font-size: 2rem;
+  margin-top: 12px;
+}

@@ -17,6 +17,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { cleareMessage } from "../../../../store/actions/Auth2_actions";
 
 const ForgotPasswordUM = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const ForgotPasswordUM = () => {
   );
   const { t } = useTranslation();
 
- 
+
 
   //States for Forgot Password Screen
   const [email, setEmail] = useState("");
@@ -81,7 +82,7 @@ const ForgotPasswordUM = () => {
       showMessage(ResponseMessageAuthResetPassword, "error", setOpen);
 
       setTimeout(() => {
-        dispatch(cleareChangePasswordMessage());
+        dispatch(cleareMessage());
       }, 4000);
     }
   }, [ResponseMessageAuthResetPassword]);

@@ -57,7 +57,7 @@ const MenuPopover = ({
             key={index}
             className='popOver_li_options'
             onClick={() => handleItemClick(listdata)} // Call the handler
-            style={{ cursor: "pointer" }}>
+            style={{ cursor: "pointer", }}>
             {listdata.label}
           </li>
         ))}
@@ -77,7 +77,7 @@ const MenuPopover = ({
     >
       <span
         style={{
-          width: "10px",
+          width: "25px",
           cursor: "pointer",
           display: "flex",
           justifyContent: "center",

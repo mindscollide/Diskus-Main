@@ -1,5 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
+import styles from "../input_field/Input_field.module.css";
 
 const TextArea = ({
   rows,
@@ -14,6 +15,8 @@ const TextArea = ({
   formClassPosition,
   placeholder,
   onChange,
+  applyClass,
+  name,
 }) => {
   return (
     <Form className={formClassPosition}>
@@ -23,7 +26,12 @@ const TextArea = ({
         as="textarea"
         rows={rows}
         cols={cols}
-        className={className}
+        name={name}
+        className={
+          applyClass !== null && applyClass !== undefined
+            ? styles[applyClass]
+            : className
+        }
         disabled={disable}
         value={value}
         placeholder={placeholder}

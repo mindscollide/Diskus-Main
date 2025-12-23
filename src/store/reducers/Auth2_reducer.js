@@ -454,6 +454,7 @@ const AuthReducer = (state = initialState, action) => {
         AuthenticateAFAResponseMessage: "",
         passwordUpdateOnForgotPasswordMessege: "",
         SendTwoFacOTPResponseMessage: "",
+        ResponseMessage: "",
       };
     }
 

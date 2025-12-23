@@ -198,23 +198,21 @@ const ParentAgenda = ({
       attachmentID: Number(record.originalAttachmentName),
     };
     let pdfDataJson = JSON.stringify(Data);
-  
-    if (fileFormatforSignatureFlow.includes(ext)) {
-      if(Number(editorRole.status) === 10 ) {
-        window.open(
-          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      } else {
-        window.open(
-          `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
-          "_blank",
-          "noopener noreferrer"
-        );
-      }
-  
+
+    if (Number(editorRole.status) === 10) {
+      window.open(
+        `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
+    } else {
+      window.open(
+        `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        "_blank",
+        "noopener noreferrer"
+      );
     }
+
   };
 
   return (
@@ -222,8 +220,8 @@ const ParentAgenda = ({
       <div
         className={
           data.canView === false &&
-          (editorRole.role === "Agenda Contributor" ||
-            editorRole.role === "Participant")
+            (editorRole.role === "Agenda Contributor" ||
+              editorRole.role === "Participant")
             ? "d-none"
             : ""
         }>
@@ -310,10 +308,10 @@ const ParentAgenda = ({
                           {printFlag === true || exportFlag === true ? null : (
                             <>
                               {Number(data.agendaVotingID) !== 0 &&
-                              Number(editorRole.status) === 10 &&
-                              Number(data.voteOwner.userid) ===
+                                Number(editorRole.status) === 10 &&
+                                Number(data.voteOwner.userid) ===
                                 Number(currentUserID) &&
-                              !data.voteOwner?.currentVotingClosed ? (
+                                !data.voteOwner?.currentVotingClosed ? (
                                 <>
                                   <Button
                                     text={t("Start-voting")}
@@ -329,7 +327,7 @@ const ParentAgenda = ({
                               ) : Number(data.agendaVotingID) !== 0 &&
                                 Number(editorRole.status) === 10 &&
                                 Number(data.voteOwner.userid) ===
-                                  Number(currentUserID) &&
+                                Number(currentUserID) &&
                                 data.voteOwner?.currentVotingClosed ? (
                                 <>
                                   <Button
@@ -356,12 +354,12 @@ const ParentAgenda = ({
                               ) : null}
 
                               {Number(data.agendaVotingID) ===
-                              0 ? null : Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) !==
+                                0 ? null : Number(editorRole.status) === 10 &&
+                                  Number(data.voteOwner.userid) !==
                                   Number(currentUserID) &&
-                                data.voteOwner?.currentVotingClosed &&
-                                editorRole.role !== "Organizer" &&
-                                checkUserAuthentication(data) ? (
+                                  data.voteOwner?.currentVotingClosed &&
+                                  editorRole.role !== "Organizer" &&
+                                  checkUserAuthentication(data) ? (
                                 <Button
                                   text={
                                     data?.hasAlreadyVoted
@@ -383,7 +381,7 @@ const ParentAgenda = ({
                     <>
                       {
                         data.selectedRadio === 1 &&
-                        Object.keys(data.files).length > 0 ? (
+                          Object.keys(data.files).length > 0 ? (
                           <div className={styles["filesParentClass"]}>
                             {data.files
                               .slice(0, 3)

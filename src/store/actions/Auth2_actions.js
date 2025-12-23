@@ -3161,7 +3161,7 @@ const updatePasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_01".toLowerCase()
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword-_01".toLowerCase()
                 )
             ) {
               dispatch(

@@ -198,7 +198,7 @@ const App = () => {
     ) {
       try {
         showMessage(SessionExpireResponseMessage, "error", setOpen);
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [SessionExpireResponseMessage]);
 
