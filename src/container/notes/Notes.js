@@ -42,7 +42,6 @@ import CustomAccordion from "../../components/elements/accordian/CustomAccordion
 import { useNotesContext } from "../../context/NotesContext";
 import { regexOnlyForNumberNCharacters } from "../../commen/functions/regex";
 import { OptionsDocument } from "../DataRoom/SearchFunctionality/option";
-import SpinComponent from "../../components/elements/mainLoader/loader";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 const Notes = () => {

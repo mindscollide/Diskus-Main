@@ -39,6 +39,9 @@ const getSocketConnection = baseURL + process.env.REACT_APP_SOCKET_API;
 //Audit API
 const AuditAPi = baseURL + process.env.REACT_APP_AUDIT_API;
 //const AuditAPi = "https://localhost:44348/Audit";
+
+// Complaince Api
+const complainceApi = baseURL + process.env.REACT_APP_COMPLIANCE_API;
 export {
   authenticationApi,
   toDoListApi,
@@ -63,4 +66,5 @@ export {
   settingDownloadApi,
   talkApiReport,
   AuditAPi,
+  complainceApi,
 };

@@ -2013,6 +2013,33 @@ const AuditTrialReportExporttoExcel = {
   RequestMethod: "ServiceManager.DownloadAuditReportForOA",
 };
 
+// Authority Work
+const GetAllAuthority = {
+  RequestMethod: "ServiceManager.GetAllAuthority",
+};
+
+const GetAuthorityByID = {
+  RequestMethod: "ServiceManager.GetAuthorityByID",
+};
+
+const DeleteAuthority = {
+  RequestMethod: "ServiceManager.DeleteAuthority",
+};
+
+const UpdateAuthority = {
+  RequestMethod: "ServiceManager.UpdateAuthority",
+};
+const AddAuthority = {
+  RequestMethod: "ServiceManager.AddAuthority",
+};
+const IsShortCodeExists = {
+  RequestMethod: "ServiceManager.IsShortCodeExists",
+};
+
+const IsAuthorityNameExists = {
+  RequestMethod: "ServiceManager.IsAuthorityNameExists",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2538,4 +2565,11 @@ export {
   GetUsersAuditListing,
   GetUsersAuditActions,
   AuditTrialReportExporttoExcel,
+  GetAllAuthority,
+  GetAuthorityByID,
+  DeleteAuthority,
+  UpdateAuthority,
+  AddAuthority,
+  IsShortCodeExists,
+  IsAuthorityNameExists,
 };

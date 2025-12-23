@@ -20,7 +20,7 @@ const CustomTable = ({
 }) => {
   return (
     <>
-      <h4 className='labelTitle'>{labelTitle}</h4>
+      {labelTitle && <h4 className="labelTitle">{labelTitle}</h4>}
       <Table
         rowClassName={id}
         columns={column}

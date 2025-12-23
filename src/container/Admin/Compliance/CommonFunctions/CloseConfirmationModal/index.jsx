@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./DeleteAuthorityModal.module.css";
+import styles from "./closeConfrmationModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -9,13 +9,12 @@ import { Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { showDeleteAuthorityModal } from "../../../../../store/actions/ManageAuthoriyAction";
 import { useAuthorityContext } from "../../../../../context/AuthorityContext";
-import { DeleteAuthorityAPI } from "../../../../../store/actions/ComplainSettingActions";
-const DeleteAuthorityModal = () => {
+const CloseConfirmationModal = () => {
   const { t } = useTranslation();
 
-  const { authorityId, searchPayload } = useAuthorityContext();
-
   const dispatch = useDispatch();
+  const { closeConfirmationModal, setCloseConfirmationModal } =
+    useAuthorityContext();
 
   const navigate = useNavigate();
 
@@ -32,32 +31,26 @@ const DeleteAuthorityModal = () => {
     dispatch(showDeleteAuthorityModal(false));
   };
 
-  const handleProceedButton = () => {
-    const data = {
-      authorityId: authorityId,
-    };
-    dispatch(DeleteAuthorityAPI(navigate, data, t, searchPayload));
-  };
+  const handleProceedButton = () => {};
 
   return (
     <Modal
-      show={deleteAuthorityModal}
-      setShow={dispatch(showDeleteAuthorityModal)}
+      show={closeConfirmationModal}
+      setShow={setCloseConfirmationModal}
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
       size={"md"}
-      onHide={() => {
-        dispatch(showDeleteAuthorityModal(false));
-      }}
       ModalBody={
         <>
           <Row>
             <Col lg={12} md={12} sm={12} xs={12} className="text-center">
               <div className={styles["ConfirmationHeading"]}>
-                {t("Do-you-want-to-delete-this-authority")}
+                {t("Confirmation")}
               </div>
               <div className={styles["ConfirmationHeading"]}>
-                {t("The-authority-will-be-permanently-deleted")}
+                {t(
+                  "“All your changes will be lost. Are you sure you want to discard them?"
+                )}
               </div>
             </Col>
           </Row>
@@ -74,12 +67,12 @@ const DeleteAuthorityModal = () => {
               className="d-flex justify-content-center gap-2"
             >
               <Button
-                text={t("Cancel")}
+                text={t("Yes")}
                 className={styles["CancelButton"]}
                 onClick={handleCancelButton}
               />
               <Button
-                text={t("Delete")}
+                text={t("No")}
                 className={styles["ProceedButtonStyles"]}
                 onClick={handleProceedButton}
               />
@@ -91,4 +84,4 @@ const DeleteAuthorityModal = () => {
   );
 };
 
-export default DeleteAuthorityModal;
+export default CloseConfirmationModal;

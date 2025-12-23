@@ -1,0 +1,37 @@
+.complainDueDateMainHeading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.dueDateAlert_color-span {
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+  border-radius: 41px;
+}
+
+.color-green {
+  background: #22c55e;
+}
+.color-orange {
+  background: #fb8c00;
+}
+.color-purple {
+  background: #8b5cf6;
+}
+.dueDateAlert_color-text {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
