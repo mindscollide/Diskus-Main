@@ -83,6 +83,7 @@ import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/
 import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
 import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
 import { AuthorityProvider } from "../context/AuthorityContext.js";
+import MainCompliance from "../container/ComplianceUser/index.jsx";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -469,6 +470,19 @@ export const router = createBrowserRouter(
                   onError={logErrors}
                 >
                   <Polling />
+                </ErrorBoundary>
+              </RouteWrapperUser>
+            }
+          />
+            <Route
+            path="compliance"
+            element={
+              <RouteWrapperUser name="polling">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <MainCompliance />
                 </ErrorBoundary>
               </RouteWrapperUser>
             }

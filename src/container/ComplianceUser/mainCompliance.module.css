@@ -1,0 +1,54 @@
+.MainCompliance_Container {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+
+.Compliance_dashboard_heading {
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 2%;
+  vertical-align: middle;
+  color: #6172d6;
+}
+.SwitchUserView_Text {
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0%;
+  text-align: right;
+  vertical-align: middle;
+  color: #5a5a5a;
+}
+.DashboardBtn {
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 100% !important;
+  letter-spacing: 0% !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.DashboardBtn_active {
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 100% !important;
+  letter-spacing: 0% !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+.Fiscalyear_text {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0% !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  color: #5a5a5a !important;
+}

@@ -61,9 +61,14 @@ body[dir="rtl"] .talk_Icon {
   transition: 0.5s;
   padding: 4px;
 }
+.talk_subIcon:hover svg  {
+  fill: #fff !important;
+  overflow: hidden;
+  border: 2px;
+}
 
 .talk_subIcon:hover svg path {
-  fill: #fff;
+  fill: #fff !important;
   overflow: hidden;
   border: 2px;
 }
