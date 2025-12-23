@@ -20,6 +20,13 @@ import { ConfigProvider } from "antd";
 import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import { getLocalStorageItemNonActiveCheck } from "../../../commen/functions/utils";
 import UpgradeNowModal from "../../pages/UserMangement/ModalsUserManagement/UpgradeNowModal/UpgradeNowModal";
+import {
+  setActiveStatusData,
+  setAuthorityCreatedData,
+  setAuthorityUpdatedData,
+  setDeleteStatusData,
+  setInactiveStatusData,
+} from "../../../store/actions/ComplainSettingActions";
 
 const AdminHome = () => {
   const dispatch = useDispatch();
@@ -134,6 +141,29 @@ const AdminHome = () => {
         if (getToken !== data?.payload?.authToken?.token) {
           dispatch(userLogOutApiFunc(navigate, t));
         }
+      }
+    }
+    if (data.action.toLowerCase() === "Authority".toLowerCase()) {
+      console.log("Authority", data.action);
+      if (data.message.toLowerCase() === "AUTHORITY_INACTIVE".toLowerCase()) {
+        console.log("AUTHORITY_INACTIVE", data);
+        dispatch(setInactiveStatusData(data.payload));
+      }
+      if (data.message.toLowerCase() === "AUTHORITY_ACTIVE".toLowerCase()) {
+        console.log("AUTHORITY_ACTIVE", data);
+        dispatch(setActiveStatusData(data.payload));
+      }
+      if (data.message.toLowerCase() === "AUTHORITY_DELETED".toLowerCase()) {
+        console.log("AUTHORITY_DELETED", data);
+        dispatch(setDeleteStatusData(data.payload));
+      }
+      if (data.message.toLowerCase() === "AUTHORITY_CREATED".toLowerCase()) {
+        console.log("AUTHORITY_CREATED", data);
+        dispatch(setAuthorityCreatedData(data.payload));
+      }
+      if (data.message.toLowerCase() === "AUTHORITY_UPDATED".toLowerCase()) {
+        console.log("AUTHORITY_UPDATED", data);
+        dispatch(setAuthorityUpdatedData(data.payload));
       }
     }
   };

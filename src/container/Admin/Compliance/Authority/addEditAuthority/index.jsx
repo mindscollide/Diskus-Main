@@ -226,8 +226,8 @@ const AddEditViewAuthorityModal = () => {
     }));
   };
   let isAllValid =
-    errors.name === "" &&
-    errors.shortCode === "" &&
+    authorityDetails.name.trim() !== "" &&
+    authorityDetails.shortCode.trim() !== "" &&
     errors.website === "" &&
     errors.email === "" &&
     selectCountry !== null;
@@ -583,6 +583,7 @@ const AddEditViewAuthorityModal = () => {
                       <TextArea
                         labelClassName={styles["labelStyle"]}
                         placeholder={t("Description")}
+                        maxLength={500}
                         onChange={handleValueChange}
                         name="description"
                         applyClass={
@@ -599,6 +600,7 @@ const AddEditViewAuthorityModal = () => {
                     <Col sm={12} md={4} lg={4}>
                       <TextField
                         placeholder={t("Sector")}
+                        maxLength={50}
                         label={t("Sector")}
                         change={handleValueChange}
                         name="sector"
@@ -615,6 +617,7 @@ const AddEditViewAuthorityModal = () => {
                       <TextField
                         placeholder={t("Website")}
                         label={t("Website")}
+                        maxLength={100}
                         change={handleValueChange}
                         onBlur={handleBlur}
                         name="website"
@@ -668,6 +671,7 @@ const AddEditViewAuthorityModal = () => {
                       <TextField
                         placeholder={t("Address")}
                         label={t("Address")}
+                        maxLength={300}
                         change={handleValueChange}
                         name="address"
                         applyClass={
@@ -685,6 +689,7 @@ const AddEditViewAuthorityModal = () => {
                       <TextField
                         placeholder={t("Contact-person-name")}
                         label={t("Contact-person-name")}
+                        maxLength={50}
                         change={handleValueChange}
                         name="contactPersonName"
                         applyClass={
@@ -700,6 +705,7 @@ const AddEditViewAuthorityModal = () => {
                       <TextField
                         placeholder={t("Email")}
                         label={t("Email")}
+                        maxLength={50}
                         change={handleValueChange}
                         onBlur={handleBlur}
                         name="email"
@@ -755,6 +761,7 @@ const AddEditViewAuthorityModal = () => {
                           {authorityViewState !== 3 && (
                             <TextField
                               placeholder={t("Phone")}
+                              maxLength={20}
                               change={handleValueChange}
                               name="phone"
                               applyClass={

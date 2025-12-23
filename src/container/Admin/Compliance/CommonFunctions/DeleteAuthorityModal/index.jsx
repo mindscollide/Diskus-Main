@@ -27,7 +27,6 @@ const DeleteAuthorityModal = () => {
     (state) => state.ManageAuthorityReducer.deleteAuthorityModal
   );
 
-  console.log(deleteAuthorityModal, "deleteAuthorityModaldeleteAuthorityModal");
   const handleCancelButton = () => {
     dispatch(showDeleteAuthorityModal(false));
   };

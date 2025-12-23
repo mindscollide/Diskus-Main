@@ -43,6 +43,11 @@ import { useAuthorityContext } from "../../../../context/AuthorityContext";
 import {
   GetAllAuthorityAPI,
   GetAuthorityByIDAPI,
+  setInactiveStatusData,
+  setActiveStatusData,
+  setDeleteStatusData,
+  setAuthorityCreatedData,
+  setAuthorityUpdatedData,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -84,11 +89,6 @@ const ManageAuthority = () => {
   } = useAuthorityContext();
   const isLoadMoreRef = useRef(false);
 
-  console.log(
-    addEditViewAuthoriyModal,
-    "addEditViewAuthoriyModaladdEditViewAuthoriyModal"
-  );
-
   // Redux dispatcher
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -109,8 +109,26 @@ const ManageAuthority = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ResponseMessage
   );
-  console.log(GetAllAuthority, "GetAllAuthorityGetAllAuthority");
 
+  const authorityInactiveMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive
+  );
+
+  const authorityActiveMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityActive
+  );
+
+  const authorityDeletedMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityDeleted
+  );
+
+  const authorityCreatedMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityCreated
+  );
+
+  const authorityUpdatedMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityUpdated
+  );
   const { setHasReachedBottom } = useTableScrollBottom(() => {
     if (recordsLength !== data.length) {
       isLoadMoreRef.current = true;
@@ -231,6 +249,110 @@ const ManageAuthority = () => {
     }
   }, [GetAllAuthority]);
 
+  // MQTT For Authority Inactive
+  useEffect(() => {
+    if (!authorityInactiveMessage) return;
+
+    setData((prevData) =>
+      prevData.map((authority) =>
+        authority?.authorityId ===
+        authorityInactiveMessage.authority.authorityId
+          ? {
+              ...authority,
+              status: authorityInactiveMessage.authority.status,
+            }
+          : authority
+      )
+    );
+    dispatch(setInactiveStatusData(null));
+  }, [authorityInactiveMessage]);
+
+  // MQTT For Authority Active
+  useEffect(() => {
+    if (!authorityActiveMessage) return;
+
+    setData((prevData) =>
+      prevData.map((authority) =>
+        authority?.authorityId === authorityActiveMessage.authority.authorityId
+          ? {
+              ...authority,
+              status: authorityActiveMessage.authority.status,
+            }
+          : authority
+      )
+    );
+    dispatch(setActiveStatusData(null));
+  }, [authorityActiveMessage]);
+
+  // MQTT For Authority Delete
+  useEffect(() => {
+    if (!authorityDeletedMessage) return;
+
+    const deletedAuthorityId = authorityDeletedMessage?.authority?.authorityId;
+
+    if (!deletedAuthorityId) return;
+
+    setData((prevData) =>
+      prevData.filter(
+        (authority) => authority.authorityId !== deletedAuthorityId
+      )
+    );
+
+    // optional: update total record count if you are tracking it
+    setRecordLength((prev) => Math.max(prev - 1, 0));
+
+    dispatch(setDeleteStatusData(null));
+  }, [authorityDeletedMessage]);
+
+  // AuthorityCreated MQTT
+
+  // MQTT For Authority Create
+  useEffect(() => {
+    if (!authorityCreatedMessage) return;
+
+    const newAuthority = authorityCreatedMessage?.authority;
+    if (!newAuthority?.authorityId) return;
+
+    setData((prevData) => {
+      // ✅ Prevent duplicate insertion
+      const alreadyExists = prevData.some(
+        (a) => a.authorityId === newAuthority.authorityId
+      );
+
+      if (alreadyExists) return prevData;
+
+      // ✅ Add new authority at top (or bottom if you prefer)
+      return [newAuthority, ...prevData];
+    });
+
+    // ✅ Update total record count
+    setRecordLength((prev) => prev + 1);
+
+    // ✅ Clear redux MQTT state
+    dispatch(setAuthorityCreatedData(null));
+  }, [authorityCreatedMessage]);
+
+  // MQTT For Authority Updated
+  useEffect(() => {
+    if (!authorityUpdatedMessage) return;
+
+    setData((prevData) =>
+      prevData.map((authority) =>
+        authority?.authorityId === authorityUpdatedMessage.authority.authorityId
+          ? {
+              ...authority,
+              shortCode: authorityUpdatedMessage.authority.shortCode,
+              authorityName: authorityUpdatedMessage.authority.authorityName,
+              countryName: authorityUpdatedMessage.authority.countryName,
+              sector: authorityUpdatedMessage.authority.sector,
+              status: authorityUpdatedMessage.authority.status,
+            }
+          : authority
+      )
+    );
+    dispatch(setAuthorityUpdatedData(null));
+  }, [authorityUpdatedMessage]);
+
   const resetTable = () => {
     isLoadMoreRef.current = false;
     setHasReachedBottom(false);
@@ -285,9 +407,11 @@ const ManageAuthority = () => {
             ? b.shortCode
                 ?.toLocaleLowerCase()
                 .localeCompare(a.shortCode?.toLocaleLowerCase())
-            : a.shortCode
+            : shortCodeSort === "ascend"
+            ? a.shortCode
                 ?.toLocaleLowerCase()
-                .localeCompare(b.shortCode?.toLocaleLowerCase()),
+                .localeCompare(b.shortCode?.toLocaleLowerCase())
+            : null,
       },
       {
         title: (
@@ -312,9 +436,11 @@ const ManageAuthority = () => {
             ? b.authorityName
                 ?.toLocaleLowerCase()
                 .localeCompare(a.authorityName?.toLocaleLowerCase())
-            : a.authorityName
+            : authorityNameSort === "ascend"
+            ? a.authorityName
                 ?.toLocaleLowerCase()
-                .localeCompare(b.authorityName?.toLocaleLowerCase()),
+                .localeCompare(b.authorityName?.toLocaleLowerCase())
+            : null,
       },
       {
         title: (
@@ -334,9 +460,11 @@ const ManageAuthority = () => {
             ? b.countryName
                 ?.toLocaleLowerCase()
                 .localeCompare(a.countryName?.toLocaleLowerCase())
-            : a.countryName
+            : countrySort === "ascend"
+            ? a.countryName
                 ?.toLocaleLowerCase()
-                .localeCompare(b.countryName?.toLocaleLowerCase()),
+                .localeCompare(b.countryName?.toLocaleLowerCase())
+            : null,
 
         dataIndex: "countryName",
         key: "countryName",
@@ -362,9 +490,11 @@ const ManageAuthority = () => {
             ? b.sector
                 ?.toLocaleLowerCase()
                 .localeCompare(a.sector?.toLocaleLowerCase())
-            : a.sector
+            : sectorSort === "ascend"
+            ? a.sector
                 ?.toLocaleLowerCase()
-                .localeCompare(b.sector?.toLocaleLowerCase()),
+                .localeCompare(b.sector?.toLocaleLowerCase())
+            : null,
 
         dataIndex: "sector",
         key: "sector",
@@ -400,7 +530,6 @@ const ManageAuthority = () => {
 
         // Action buttons column
         render: (text, record) => {
-          console.log(record, "recordrecord");
           return (
             <Row>
               <Col
@@ -522,7 +651,7 @@ const ManageAuthority = () => {
       length: 10,
     };
     dispatch(GetAllAuthorityAPI(navigate, Data, t));
-    setsearchbox(!searchbox);
+    setsearchbox(false);
   };
 
   // Trigger search button action
@@ -783,7 +912,7 @@ const ManageAuthority = () => {
             column={columnsAuthority}
             className="Authority_Table mt-3"
             rows={rowsData}
-            scroll={{ x: "max-content", y: 500 }}
+            scroll={{ x: "scroll", y: 500 }}
             pagination={false}
             onChange={handleChangeAuthorityFilerSorter}
           />
