@@ -783,13 +783,43 @@ const initialAddEditAuthority = () => {
   };
 };
 
-// // get TodoList Data from Socket
-// const setInactiveStatusData = (response) => {
-//   return {
-//     type: actions.AUTHORITY_INACTIVE,
-//     response: response,
-//   };
-// };
+// get AuthorityInactiveStatus Data from Socket
+const setInactiveStatusData = (response) => {
+  return {
+    type: actions.AUTHORITY_INACTIVE,
+    response: response,
+  };
+};
+
+// get AuthorityActiveStatus Data from Socket
+const setActiveStatusData = (response) => {
+  return {
+    type: actions.AUTHORITY_ACTIVE,
+    response: response,
+  };
+};
+// get AuthoirtyDelete Data from Socket
+const setDeleteStatusData = (response) => {
+  return {
+    type: actions.AUTHORITY_DELETED,
+    response: response,
+  };
+};
+// get AuthoirtyDelete Data from Socket
+const setAuthorityCreatedData = (response) => {
+  return {
+    type: actions.AUTHORITY_CREATED,
+    response: response,
+  };
+};
+
+// get AuthoirtyDelete Data from Socket
+const setAuthorityUpdatedData = (response) => {
+  return {
+    type: actions.AUTHORITY_UPDATED,
+    response: response,
+  };
+};
 
 export {
   cleareMessage,
@@ -801,5 +831,9 @@ export {
   AddAuthorityAPI,
   IsAuthorityNameExistsAPI,
   IsShortCodeExistsAPI,
-  // setInactiveStatusData,
+  setInactiveStatusData,
+  setActiveStatusData,
+  setDeleteStatusData,
+  setAuthorityCreatedData,
+  setAuthorityUpdatedData,
 };
