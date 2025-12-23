@@ -45,7 +45,7 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 }
 
 .dashbaord_data {
-  width: calc(100% - 100px);
+  width: calc(100% - 80px);
   height: calc(100vh - 89px);
 }
 .talk_features_home {
