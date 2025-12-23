@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
@@ -6,7 +6,7 @@ import styles from "./fiscalYear.module.css";
 import { TextField } from "../../../../../components/elements";
 import Select from "react-select";
 
-const FiscalYear = () => {
+const FiscalYear = ({ organizationSettingData }) => {
   const { t } = useTranslation();
   const [fiscalYearStartDate, setfiscalYearStartDate] = useState(1);
   const months = [
@@ -24,6 +24,11 @@ const FiscalYear = () => {
     { label: "December", value: "December" },
   ];
   const [selectMonthOfYear, setSelectMonthOfYear] = useState(months[6]);
+
+  useEffect(() => {
+    if (organizationSettingData !== null) {
+    }
+  }, [organizationSettingData]);
 
   const onChangeFYStartDate = (e) => {
     // const { value } = e.target;
