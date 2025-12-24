@@ -244,9 +244,11 @@ const ManageAuthority = () => {
       // ✅ APPEND safely
       setData((prev) => [...prev, ...authorityList]);
       isLoadMoreRef.current = false;
+      setHasReachedBottom(false);
     } else {
       // ✅ REPLACE safely
       setData(authorityList);
+      setHasReachedBottom(false);
     }
   }, [GetAllAuthority]);
 
@@ -744,7 +746,7 @@ const ManageAuthority = () => {
   return (
     <>
       <Container>
-        <Row className="mt-3">
+        <Row className="my-3">
           <Col lg={6} md={6} sm={12} xs={12}>
             <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
               <label className={styles["Auhtority-Main-Heading"]}>

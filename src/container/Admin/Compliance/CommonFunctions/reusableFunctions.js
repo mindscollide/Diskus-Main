@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { debounce } from "lodash"; // ← Debounce imported here
 
-export const useTableScrollBottom = (onBottomReach, threshold = 10) => {
+export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
   const [hasReachedBottom, setHasReachedBottom] = useState(false);
   const containerRef = useRef(null);
 
@@ -15,7 +15,11 @@ export const useTableScrollBottom = (onBottomReach, threshold = 10) => {
         const { scrollTop, scrollHeight, clientHeight } = scrollContainer;
 
         const isBottom = scrollTop + clientHeight >= scrollHeight - threshold;
-
+        console.log(
+          isBottom,
+          hasReachedBottom,
+          "hasReachedBottomhasReachedBottom"
+        );
         if (isBottom && !hasReachedBottom) {
           setHasReachedBottom(true);
           onBottomReach?.();
