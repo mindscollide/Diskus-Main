@@ -5,12 +5,7 @@ import { Check2 } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  Modal,
-  TextArea,
-  TextField,
-} from "../../../../../components/elements";
+import { Button, Modal, TextArea } from "../../../../../components/elements";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
@@ -25,6 +20,8 @@ import {
   IsAuthorityNameExistsAPI,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
+import TextField from "../../../../../components/elements/input_field/Input_field2";
+
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -313,12 +310,14 @@ const AddEditViewAuthorityModal = () => {
 
     switch (name) {
       case "name":
+        setIsAuthorityExist(null);
         if (!value.trim()) {
           error = "Authority Name is required";
         }
         break;
 
       case "shortCode":
+        setIsShortCodeExist(null);
         if (!value.trim()) {
           error = "Short Code is required";
         }
