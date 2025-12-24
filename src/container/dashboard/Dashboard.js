@@ -224,6 +224,7 @@ import {
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
+import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -4675,6 +4676,12 @@ const Dashboard = () => {
         ) {
           setUnReadCountNotification(0);
         }
+      }
+      console.log("AUTHORITY_INACTIVE", data);
+
+      // Authority
+      if (data.action.toLowerCase() === "Authority".toLowerCase()) {
+        console.log("AUTHORITY_INACTIVE", data);
       }
     } catch (error) {
       console.log(error);

@@ -63,6 +63,10 @@ export const AuthorityProvider = ({ children }) => {
       setSelectCountry(null);
     };
   }, [countryNamesReducerCountryNamesData]);
+  // const [sortState, setSortState] = useState({
+  //   columnKey: null,
+  //   order: null, // 'ascend' | 'descend' | null
+  // });
 
   return (
     <AuthorityContext.Provider
@@ -99,6 +103,8 @@ export const AuthorityProvider = ({ children }) => {
         setCountryNames,
         selectCountry,
         setSelectCountry,
+        // sortState,
+        // setSortState,
       }}
     >
       {children}

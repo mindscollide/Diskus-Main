@@ -2,11 +2,9 @@ import React from "react";
 import styles from "./closeConfrmationModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { Button, Modal } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 // import { deleteOrganizationUserAPI } from "../../../../../store/actions/UserManagementActions";
-import { useNavigate } from "react-router-dom";
 import { showDeleteAuthorityModal } from "../../../../../store/actions/ManageAuthoriyAction";
 import { useAuthorityContext } from "../../../../../context/AuthorityContext";
 const CloseConfirmationModal = () => {
@@ -16,17 +14,6 @@ const CloseConfirmationModal = () => {
   const { closeConfirmationModal, setCloseConfirmationModal } =
     useAuthorityContext();
 
-  const navigate = useNavigate();
-
-  //   let userID = localStorage.getItem("userID");
-
-  //   let organizationID = localStorage.getItem("organizationID");
-
-  const deleteAuthorityModal = useSelector(
-    (state) => state.ManageAuthorityReducer.deleteAuthorityModal
-  );
-
-  console.log(deleteAuthorityModal, "deleteAuthorityModaldeleteAuthorityModal");
   const handleCancelButton = () => {
     dispatch(showDeleteAuthorityModal(false));
   };

@@ -11,6 +11,13 @@ const initialState = {
   AddAuthority: null,
   IsShortCodeExists: null,
   IsAuthorityNameExists: null,
+
+  // MQTT
+  SocketAuthorityInactive: null,
+  SocketAuthorityActive: null,
+  SocketAuthorityDeleted: null,
+  SocketAuthorityCreated: null,
+  SocketAuthorityUpdated: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -202,6 +209,41 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         IsAuthorityNameExists: null,
         ResponseMessage: action.message,
         severity: "error",
+      };
+
+    //MQTT Work
+    case actions.AUTHORITY_INACTIVE:
+      return {
+        ...state,
+        SocketAuthorityInactive: action.response,
+        ResponseMessage: action.message,
+      };
+
+    case actions.AUTHORITY_ACTIVE:
+      return {
+        ...state,
+        SocketAuthorityInactive: action.response,
+        ResponseMessage: action.message,
+      };
+    case actions.AUTHORITY_DELETED:
+      return {
+        ...state,
+        SocketAuthorityDeleted: action.response,
+        ResponseMessage: action.message,
+      };
+    case actions.AUTHORITY_CREATED:
+      return {
+        ...state,
+        SocketAuthorityCreated: action.response,
+        ResponseMessage: action.message,
+      };
+
+    // AUTHORITY_UPDATED
+    case actions.AUTHORITY_UPDATED:
+      return {
+        ...state,
+        SocketAuthorityUpdated: action.response,
+        ResponseMessage: action.message,
       };
     // ================= DEFAULT =================
     default:
