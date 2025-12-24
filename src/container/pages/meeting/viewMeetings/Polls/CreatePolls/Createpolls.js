@@ -66,6 +66,8 @@ const Createpolls = ({ setCreatepoll }) => {
     AllowMultipleAnswer: false,
     date: "",
   });
+
+  console.log(pollsData, "pollsDatapollsDatapollsData")
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(EnglishCalendar);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -669,7 +671,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
-                      // onChange={(value) => changeDateStartHandler(value)}
+                      onChange={(value) => changeDateStartHandler(value)}
                       onFocusedDateChange={(value) =>
                         changeDateStartHandler(value)
                       }
