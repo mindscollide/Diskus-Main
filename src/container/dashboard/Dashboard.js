@@ -173,6 +173,7 @@ import {
   resolutionMQTTCancelled,
   resolutionMQTTClosed,
   resolutionMQTTCreate,
+  resolutionMQTTVoteCounter,
 } from "../../store/actions/Resolution_actions";
 import {
   createGoogleEventMQTT,
@@ -224,6 +225,7 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
+import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -2999,7 +3001,7 @@ const Dashboard = () => {
                 ),
               });
             }
-          } catch {}
+          } catch { }
         } else if (
           data.payload.message
             .toLowerCase()
@@ -3117,6 +3119,11 @@ const Dashboard = () => {
             });
           }
           dispatch(resolutionMQTTClosed(data.payload.model));
+        } else if (
+          data.payload.message.toLowerCase() ===
+          "RESOULUTION_VOTE_COUNTER".toLowerCase()
+        ) {
+          dispatch(resolutionMQTTVoteCounter(data.payload.data));
         }
       }
       if (
@@ -3592,16 +3599,16 @@ const Dashboard = () => {
 
           let RoomID =
             presenterViewFlag &&
-            (presenterViewHostFlag || presenterViewJoinFlag)
+              (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
-              ? localStorage.getItem("activeRoomID") != 0 &&
-                localStorage.getItem("activeRoomID") != null
-                ? localStorage.getItem("activeRoomID")
-                : localStorage.getItem("initiateCallRoomID")
-              : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
-              ? newRoomID
-              : localStorage.getItem("participantRoomId");
+                ? localStorage.getItem("activeRoomID") != 0 &&
+                  localStorage.getItem("activeRoomID") != null
+                  ? localStorage.getItem("activeRoomID")
+                  : localStorage.getItem("initiateCallRoomID")
+                : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+                  ? newRoomID
+                  : localStorage.getItem("participantRoomId");
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
@@ -4057,29 +4064,29 @@ const Dashboard = () => {
 
             RoomID =
               presenterViewFlagRef.current &&
-              (presenterViewHostFlagFlagRef.current ||
-                presenterViewJoinFlagRef.current)
+                (presenterViewHostFlagFlagRef.current ||
+                  presenterViewJoinFlagRef.current)
                 ? String(roomID)
                 : isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? String(newRoomID)
-                  : String(participantRoomId)
-                : String(initiateCallRoomID)
-                ? String(initiateCallRoomID)
-                : String(activeRoomID);
+                  ? isMeetingVideoHostCheck
+                    ? String(newRoomID)
+                    : String(participantRoomId)
+                  : String(initiateCallRoomID)
+                    ? String(initiateCallRoomID)
+                    : String(activeRoomID);
           } else {
             RoomID =
               presenterViewFlagRef.current &&
-              (presenterViewHostFlagFlagRef.current ||
-                presenterViewJoinFlagRef.current)
+                (presenterViewHostFlagFlagRef.current ||
+                  presenterViewJoinFlagRef.current)
                 ? Number(roomID)
                 : isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? Number(newRoomID)
-                  : Number(participantRoomId)
-                : Number(initiateCallRoomID)
-                ? Number(initiateCallRoomID)
-                : Number(activeRoomID);
+                  ? isMeetingVideoHostCheck
+                    ? Number(newRoomID)
+                    : Number(participantRoomId)
+                  : Number(initiateCallRoomID)
+                    ? Number(initiateCallRoomID)
+                    : Number(activeRoomID);
           }
 
           console.log("mqtt");
@@ -4261,7 +4268,7 @@ const Dashboard = () => {
             !isMeetingVideo && isZoomEnabled
               ? String(data.payload.roomID) === String(roomID)
               : Number(data.payload.roomID) === Number(roomID) &&
-                userID !== data.senderID
+              userID !== data.senderID
           ) {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
@@ -4499,7 +4506,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileSharedMQTT(data.payload));
-            } catch (error) {}
+            } catch (error) { }
           } else if (
             data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
           ) {
@@ -4516,10 +4523,10 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderSharedMQTT(data.payload));
-            } catch (error) {}
+            } catch (error) { }
           } else if (
             data.payload.message.toLowerCase() ===
-              "FILE_SHARING_REMOVED".toLowerCase() ||
+            "FILE_SHARING_REMOVED".toLowerCase() ||
             "FILE_DELETED".toLowerCase()
           ) {
             try {
@@ -4531,7 +4538,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
+            } catch (error) { }
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_SHARING_REMOVED".toLowerCase()
@@ -4545,7 +4552,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
+            } catch (error) { }
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_DELETED".toLowerCase()
@@ -4559,7 +4566,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.folderID));
-            } catch (error) {}
+            } catch (error) { }
           }
           if (
             data.payload.message.toLowerCase() ===
@@ -4603,15 +4610,15 @@ const Dashboard = () => {
                 message:
                   data.payload.callTypeID === 1
                     ? changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name
-                      )
+                      t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+                      "[Participant Name]",
+                      data.payload?.callReceipents[0]?.name
+                    )
                     : changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_GROUP_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name
-                      ),
+                      t("VIDEO_RECORDING_GROUP_RECEIVED"),
+                      "[Participant Name]",
+                      data.payload?.callReceipents[0]?.name
+                    ),
               });
               setNotificationID(id);
             }
@@ -4734,6 +4741,12 @@ const Dashboard = () => {
         ) {
           setUnReadCountNotification(0);
         }
+      }
+      console.log("AUTHORITY_INACTIVE", data);
+
+      // Authority
+      if (data.action.toLowerCase() === "Authority".toLowerCase()) {
+        console.log("AUTHORITY_INACTIVE", data);
       }
     } catch (error) {
       console.log(error);
@@ -4918,20 +4931,19 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
-          location.pathname.includes("meetingDocumentViewer") ? null : (
+            location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
           )}
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -4942,8 +4954,7 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -4969,7 +4980,7 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -4977,7 +4988,7 @@ const Dashboard = () => {
           </Layout>
           <NotificationBar
             iconName={
-              <img src={IconMetroAttachment} alt="" draggable="false" />
+              <img src={IconMetroAttachment} alt='' draggable='false' />
             }
             notificationMessage={notification.message}
             notificationState={notification.notificationShow}
@@ -4994,14 +5005,14 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
           {NormalizeVideoFlag === true ||
-          MinimizeVideoFlag === true ||
-          MaximizeVideoFlag === true ? (
+            MinimizeVideoFlag === true ||
+            MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -5021,25 +5032,25 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
                   <>
-                    <Row className="mb-1">
+                    <Row className='mb-1'>
                       <Col lg={12} md={12} xs={12} sm={12}>
                         <Row>
-                          <Col className="d-flex justify-content-center">
+                          <Col className='d-flex justify-content-center'>
                             <img
                               src={VerificationFailedIcon}
                               width={60}
                               className={"allowModalIcon"}
-                              alt=""
-                              draggable="false"
+                              alt=''
+                              draggable='false'
                             />
                           </Col>
                         </Row>
                         <Row>
-                          <Col className="text-center mt-4">
+                          <Col className='text-center mt-4'>
                             <label className={"allow-limit-modal-p"}>
                               {t(
                                 "The-organization-subscription-is-not-active-please-contact-your-admin"
@@ -5055,13 +5066,12 @@ const Dashboard = () => {
               ModalFooter={
                 <>
                   <Col sm={12} md={12} lg={12}>
-                    <Row className="mb-3">
+                    <Row className='mb-3'>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-center"
-                      >
+                        className='d-flex justify-content-center'>
                         <Button
                           className={"Ok-Successfull-btn"}
                           text={t("Ok")}
