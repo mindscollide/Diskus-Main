@@ -409,12 +409,12 @@ const ManageAuthority = () => {
         sorter: (a, b) =>
           shortCodeSort === "descend"
             ? b.shortCode
-                ?.toLocaleLowerCase()
-                .localeCompare(a.shortCode?.toLocaleLowerCase())
+                ?.toLowerCase()
+                .localeCompare(a.shortCode?.toLowerCase())
             : shortCodeSort === "ascend"
             ? a.shortCode
-                ?.toLocaleLowerCase()
-                .localeCompare(b.shortCode?.toLocaleLowerCase())
+                ?.toLowerCase()
+                .localeCompare(b.shortCode?.toLowerCase())
             : null,
       },
       {
@@ -438,13 +438,15 @@ const ManageAuthority = () => {
         sorter: (a, b) =>
           authorityNameSort === "descend"
             ? b.authorityName
-                ?.toLocaleLowerCase()
-                .localeCompare(a.authorityName?.toLocaleLowerCase())
+                ?.toLowerCase()
+                .localeCompare(a.authorityName?.toLowerCase())
             : authorityNameSort === "ascend"
             ? a.authorityName
-                ?.toLocaleLowerCase()
-                .localeCompare(b.authorityName?.toLocaleLowerCase())
-            : null,
+                ?.toLowerCase()
+                .localeCompare(b.authorityName?.toLowerCase())
+            : a.authorityName
+                ?.toLowerCase()
+                .localeCompare(b.authorityName?.toLowerCase()),
       },
       {
         title: (
@@ -462,13 +464,15 @@ const ManageAuthority = () => {
         sorter: (a, b) =>
           countrySort === "descend"
             ? b.countryName
-                ?.toLocaleLowerCase()
-                .localeCompare(a.countryName?.toLocaleLowerCase())
+                ?.toLowerCase()
+                .localeCompare(a.countryName?.toLowerCase())
             : countrySort === "ascend"
             ? a.countryName
-                ?.toLocaleLowerCase()
-                .localeCompare(b.countryName?.toLocaleLowerCase())
-            : null,
+                ?.toLowerCase()
+                .localeCompare(b.countryName?.toLowerCase())
+            : a.countryName
+                ?.toLowerCase()
+                .localeCompare(b.countryName?.toLowerCase()),
 
         dataIndex: "countryName",
         key: "countryName",
@@ -491,13 +495,9 @@ const ManageAuthority = () => {
         ),
         sorter: (a, b) =>
           sectorSort === "descend"
-            ? b.sector
-                ?.toLocaleLowerCase()
-                .localeCompare(a.sector?.toLocaleLowerCase())
+            ? b.sector?.toLowerCase().localeCompare(a.sector?.toLowerCase())
             : sectorSort === "ascend"
-            ? a.sector
-                ?.toLocaleLowerCase()
-                .localeCompare(b.sector?.toLocaleLowerCase())
+            ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
             : null,
 
         dataIndex: "sector",
@@ -686,6 +686,13 @@ const ManageAuthority = () => {
     }
   };
 
+  const resetAllSorts = () => {
+    setShortCodeSort(null);
+    setAuthorityNameSort(null);
+    setCountrySort(null);
+    setSectorSort(null);
+  };
+
   const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
     console.log(
       pagination,
@@ -693,6 +700,8 @@ const ManageAuthority = () => {
       sorter,
       "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter"
     );
+    // 🔁 Reset all icons first
+    resetAllSorts();
 
     if (sorter.columnKey === "shortCode") {
       setShortCodeSort(sorter.order);
@@ -702,6 +711,7 @@ const ManageAuthority = () => {
       setAuthorityNameSort(sorter.order);
     }
     if (sorter.columnKey === "countryName") {
+      console.log(sorter, "shortCodeSortshortCodeSort");
       setCountrySort(sorter.order);
     }
     if (sorter.columnKey === "sector") {
@@ -726,6 +736,7 @@ const ManageAuthority = () => {
     return data;
   }, [data]);
 
+  console.log(rowsData, "rowsDatarowsData");
   // ========================
   // JSX Rendering
   // ========================

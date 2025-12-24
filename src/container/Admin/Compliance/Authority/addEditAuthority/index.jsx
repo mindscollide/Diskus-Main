@@ -87,7 +87,9 @@ const AddEditViewAuthorityModal = () => {
   console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
   useEffect(() => {
-    authorityNameRef.current && authorityNameRef.current.focus();
+    if (authorityViewState !== 3) {
+      authorityNameRef.current && authorityNameRef.current.focus();
+    }
     return () => {
       dispatch(initialAddEditAuthority());
     };
@@ -495,7 +497,9 @@ const AddEditViewAuthorityModal = () => {
                           name="name"
                           ref={authorityNameRef}
                           maxLength={100}
-                          placeholder={t("Authority-name")}
+                          placeholder={
+                            authorityViewState !== 3 ? t("Authority-name") : ""
+                          }
                           applyClass={
                             authorityViewState === 3
                               ? "viewField_Name"
@@ -541,7 +545,9 @@ const AddEditViewAuthorityModal = () => {
                         change={handleValueChange}
                         onBlur={handleBlur}
                         name="shortCode"
-                        placeholder={t("Short-code")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Short-code") : ""
+                        }
                         applyClass={
                           authorityViewState === 3
                             ? "viewField_Name"
@@ -585,7 +591,9 @@ const AddEditViewAuthorityModal = () => {
                     <Col sm={12} md={12} lg={12}>
                       <TextArea
                         labelClassName={styles["labelStyle"]}
-                        placeholder={t("Description")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Description") : ""
+                        }
                         maxLength={500}
                         onChange={handleValueChange}
                         name="description"
@@ -602,7 +610,9 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Sector")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Sector") : ""
+                        }
                         maxLength={50}
                         label={t("Sector")}
                         change={handleValueChange}
@@ -618,7 +628,9 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Website")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Website") : ""
+                        }
                         label={t("Website")}
                         maxLength={100}
                         change={handleValueChange}
@@ -662,7 +674,11 @@ const AddEditViewAuthorityModal = () => {
                             labelInValue={t("Country")}
                             onChange={(event) => setSelectCountry(event)}
                             value={selectCountry}
-                            placeholder={t("Please-select-country")}
+                            placeholder={
+                              authorityViewState !== 3
+                                ? t("Please-select-country")
+                                : ""
+                            }
                             classNamePrefix="Select_country_Authoriy"
                           />
                         )}
@@ -672,7 +688,9 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
                       <TextField
-                        placeholder={t("Address")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Address") : ""
+                        }
                         label={t("Address")}
                         maxLength={300}
                         change={handleValueChange}
@@ -690,7 +708,11 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Contact-person-name")}
+                        placeholder={
+                          authorityViewState !== 3
+                            ? t("Contact-person-name")
+                            : ""
+                        }
                         label={t("Contact-person-name")}
                         maxLength={50}
                         change={handleValueChange}
@@ -706,7 +728,7 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Email")}
+                        placeholder={authorityViewState !== 3 ? t("Email") : ""}
                         label={t("Email")}
                         maxLength={50}
                         change={handleValueChange}
