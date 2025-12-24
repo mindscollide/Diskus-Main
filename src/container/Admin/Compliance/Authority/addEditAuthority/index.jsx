@@ -300,7 +300,9 @@ const AddEditViewAuthorityModal = () => {
   };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  // const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  const urlRegex =
+    /^(https?:\/\/)?((([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/.*)?$/i;
 
   const phoneRegex = /^[0-9+\-() ]{0,20}$/;
 
