@@ -34,7 +34,7 @@
 
 .folderFile__text {
   font-weight: 600;
-  width: 90%;
+  width: 100%;
   display: block;
   color: #5a5a5a !important;
   font-size: 12px !important;
@@ -63,7 +63,6 @@
   min-height: 55vh !important;
   height: auto !important;
   overflow-x: hidden;
-  padding: 0 15px;
 }
 
 .folderContainer::-webkit-scrollbar {
@@ -219,6 +218,7 @@
 .sortIconGrid {
   cursor: pointer !important;
 }
+
 .dots_Icons {
   z-index: -1 !important;
 }

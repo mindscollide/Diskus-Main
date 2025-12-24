@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./PasswordCreationUM.module.css";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import { Button } from "../../../../components/elements";
+import { Button, Notification } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png"
@@ -17,10 +17,12 @@ import { useDispatch } from "react-redux";
 import CreateAddtionalUsersModal from "../ModalsUserManagement/CreateAdditionalusersModal/CreateAddtionalUsersModal";
 import Cookies from "js-cookie";
 import {
+  cleareMessage,
   createPasswordAction,
   updatePasswordAction,
 } from "../../../../store/actions/Auth2_actions";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
 const PasswordCreationUM = () => {
   const { t } = useTranslation();
@@ -31,10 +33,14 @@ const PasswordCreationUM = () => {
 
   const passwordRef = useRef();
 
+  const passwordCreateResponseMessage = useSelector(
+    (state) => state.Authreducer
+      .CreatePasswordResponseMessage
+  )
+  console.log(passwordCreateResponseMessage, "passwordCreateResponseMessagepasswordCreateResponseMessage")
   const UserManagementModalscreateAdditionalModalsData = useSelector(
     (state) => state.UserManagementModals.createAdditionalModals
   );
-
   const [errorBar, setErrorBar] = useState(false);
   const [remeberPassword, SetRememberPassword] = useState(false);
   const [password, setPassword] = useState("");
@@ -48,6 +54,7 @@ const PasswordCreationUM = () => {
   const [open, setOpen] = useState({
     open: false,
     message: "",
+    severity: ""
   });
 
   //Showing Password
@@ -159,6 +166,16 @@ const PasswordCreationUM = () => {
     dispatch(LoginFlowRoutes(1));
     navigate("/");
   };
+
+  useEffect(() => {
+    if (passwordCreateResponseMessage !== "" && passwordCreateResponseMessage !== null && passwordCreateResponseMessage !== undefined) {
+      showMessage(passwordCreateResponseMessage, "success", setOpen);
+
+      setTimeout(() => {
+        dispatch(cleareMessage())
+      }, 4000)
+    }
+  }, [passwordCreateResponseMessage])
 
   return (
     <>
@@ -312,9 +329,9 @@ const PasswordCreationUM = () => {
                         onClick={verifyHandlePassword}
                         text={
                           updateCheckPasswordFlag !== undefined &&
-                          updateCheckPasswordFlag !== null &&
-                          (updateCheckPasswordFlag === true ||
-                            updateCheckPasswordFlag === "true")
+                            updateCheckPasswordFlag !== null &&
+                            (updateCheckPasswordFlag === true ||
+                              updateCheckPasswordFlag === "true")
                             ? t("Confirm")
                             : t("Sign-up")
                         }
@@ -322,10 +339,10 @@ const PasswordCreationUM = () => {
                           passwordDetails.Password === ""
                             ? true
                             : passwordDetails.ConfirmPassword === ""
-                            ? true
-                            : !isPasswordStrong
-                            ? true
-                            : false
+                              ? true
+                              : !isPasswordStrong
+                                ? true
+                                : false
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
@@ -379,6 +396,7 @@ const PasswordCreationUM = () => {
       {UserManagementModalscreateAdditionalModalsData && (
         <CreateAddtionalUsersModal />
       )}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

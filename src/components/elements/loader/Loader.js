@@ -35,19 +35,11 @@ const Loader = ({ progress }) => {
     t("Downloading-file"),
   ];
 
-  const [randomIndex, setRandomIndex] = useState(0);
-
-  useEffect(() => {
-    const randomIdx = Math.floor(Math.random() * messages.length);
-    setRandomIndex(messages[randomIdx]);
-  }, []);
-
   return (
-    <Container className={styles["main-container"]} data-tut="welcomescreen">
+    <Container className={styles["main-container"]} data-tut='welcomescreen'>
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
-          
           {!location.toLowerCase().includes("/Diskus/".toLowerCase()) &&
           !location.toLowerCase().includes("/Admin/".toLowerCase()) ? (
             <>

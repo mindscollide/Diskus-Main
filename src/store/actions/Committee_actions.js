@@ -70,7 +70,8 @@ const uploadDocumentsCommitteesApi = (
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
     form.append("File", data);
-    await     axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -162,7 +163,6 @@ const saveFiles_fail = (message) => {
 
 // Save Files API
 const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
-  let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -175,7 +175,8 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await     axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -207,7 +208,10 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
               }
 
               await dispatch(
-                saveFiles_success(response.data.responseResult, "")
+                saveFiles_success(
+                  response.data.responseResult,
+                  t("File-successfully-uploaded")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -277,8 +281,9 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestMethod", getCommitteesByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(getCommitteesApi, form)
- 
+    axiosInstance
+      .post(getCommitteesApi, form)
+
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -390,7 +395,8 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestMethod", getCommitteesByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -505,7 +511,8 @@ const getCommitteesbyCommitteeId = (
     let form = new FormData();
     form.append("RequestMethod", getCommitteeByIdRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         console.log(
@@ -663,7 +670,8 @@ const createcommittee = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", createCommitteeRequestMethod.RequestMethod);
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -777,7 +785,8 @@ const getCommitteeTypes = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getallOrganizationCommitteType.RequestMethod);
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -859,7 +868,8 @@ const getCommitteeMembersRole = (navigate, Data, t) => {
       "RequestMethod",
       getallOrganizationCommitteMemberRole.RequestMethod
     );
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -943,7 +953,8 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
       "RequestMethod",
       updateCommitteeStatusRequestMethod.RequestMethod
     );
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1016,7 +1027,8 @@ const updateCommittee = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updateCommitteeRequestMethod.RequestMethod);
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1149,7 +1161,8 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
       "RequestMethod",
       CommitteeAndGroupMappingRequestMethod.RequestMethod
     );
-       axiosInstance.post(getCommitteesApi, form)
+    axiosInstance
+      .post(getCommitteesApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1223,7 +1236,8 @@ const createUpdateCommitteeApi = (navigate, t, data) => {
       "RequestMethod",
       CreateUpdateCommitteeDatarRoomRM.RequestMethod
     );
-    axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -1346,7 +1360,8 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", saveCommitteeDocumentsRM.RequestMethod);
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1374,8 +1389,8 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
             }
             if (typeof setCreategrouppage === "number") {
               if (setCreategrouppage === 1) {
-                let getData = { CommitteeID: Number(data.CommitteeID) };
-                dispatch(reteriveCommitteeDocumentsApi(navigate, t, getData));
+                localStorage.removeItem("ViewCommitteeID");
+                dispatch(viewCommitteePageFlag(false));
               }
             }
           } else if (
@@ -1428,7 +1443,8 @@ const reteriveCommitteeDocumentsApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", reteriveCommitteeDocumentsRM.RequestMethod);
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

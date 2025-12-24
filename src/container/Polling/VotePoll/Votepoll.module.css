@@ -131,7 +131,7 @@
   min-height: 39px;
   overflow: hidden;
   width: 100%;
-  word-wrap: break-word;
+  word-break: break-word;
   overflow-y: auto;
 }
 .scrollable-title::-webkit-scrollbar {
@@ -147,6 +147,7 @@
 .scrollable-title2 {
   min-height: 39px !important;
 }
+
 .Scroller_View_Poll_Published {
   height: 28vh !important;
   overflow-x: hidden !important;

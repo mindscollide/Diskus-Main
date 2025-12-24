@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 
 const Notification = React.memo(({ open, setOpen }) => {
   const { t } = useTranslation();
-  const { open: isOpen, message, severity = "info" } = open;
+  const { open: isOpen, message, severity = "success" } = open;
   const icons = {
     success: <CheckCircleOutlined style={{ color: "#4CAF50" }} />,
     error: <ExclamationCircleOutlined style={{ color: "#f5222d" }} />,

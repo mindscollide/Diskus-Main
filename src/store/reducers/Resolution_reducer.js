@@ -33,6 +33,7 @@ const initialState = {
   viewAttachmentFlag: false,
   emailEncryptedStringValidate: null,
   getAllCommitteesAndGroups: null,
+  resolutionVoteCounter: null
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -513,6 +514,12 @@ const ResolutionReducer = (state = initialState, action) => {
         getAllCommitteesAndGroups: null,
         ResponseMessage: action.message,
       };
+    }
+    case actions.RESOULUTION_VOTE_COUNTER: {
+      return {
+        ...state,
+        resolutionVoteCounter: action.response,
+      }
     }
     default: {
       return { ...state };

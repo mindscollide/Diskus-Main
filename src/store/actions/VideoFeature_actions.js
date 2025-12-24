@@ -336,7 +336,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -443,7 +443,7 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -522,6 +522,33 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
   };
 };
 
+// FOR PARTICIPANT MAX PANEL
+const maxParticipantVideoCallPanel = (response) => {
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL,
+    response: response,
+  };
+};
+
+// For Denied Max Patrticipant Video Compnent
+const maxParticipantVideoDenied = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_DENIED");
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_DENIED,
+    response: response,
+  };
+};
+
+// For Removed Max Patrticipant Video Compnent
+const maxParticipantVideoRemoved = (response) => {
+  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
+
+  return {
+    type: actions.MAX_PARTICIPANT_VIDEO_REMOVED,
+    response: response,
+  };
+};
+
 const getParticipantsNewJoin = (response) => {
   console.log(response, "responseresponseresponse");
   return {
@@ -567,7 +594,7 @@ const getParticipantMeetingJoinMainApi = (
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -641,8 +668,8 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(maxHostVideoCallPanel(false));
               sessionStorage.setItem("NonMeetingVideoCall", false);
               localStorage.setItem("CallType", 2);
-                    localStorage.setItem("isMeeting", true);
-  sessionStorage.setItem("isMeeting", true);
+              localStorage.setItem("isMeeting", true);
+              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("isMeetingVideo", true);
               sessionStorage.setItem("alreadyInMeetingVideo", true);
               let Data = { RoomID: response.data.responseResult.roomID };
@@ -732,6 +759,41 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(
                 getParticipantMeetingJoinFail(t("Something-went-wrong"))
               );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_06".toLowerCase()
+                )
+            ) {
+              try {
+                await dispatch(maxParticipantVideoCallPanel(true));
+                await dispatch(normalizeVideoPanelFlag(false));
+                await dispatch(maximizeVideoPanelFlag(false));
+                await dispatch(minimizeVideoPanelFlag(false));
+                await dispatch(videoIconOrButtonState(false));
+                await dispatch(screenShareTriggeredGlobally(false));
+                await dispatch(participantVideoButtonState(false));
+                localStorage.removeItem("newRoomId");
+                localStorage.setItem("isMeetingVideo", false);
+                localStorage.removeItem("refinedVideoUrl");
+                localStorage.removeItem("participantRoomId");
+                localStorage.removeItem("isSharedSceenEnable");
+                localStorage.setItem("refinedVideoGiven", false);
+                localStorage.setItem("isWebCamEnabled", false);
+                localStorage.setItem("isMicEnabled", false);
+                localStorage.setItem("activeCall", false);
+                localStorage.setItem("isMeetingVideoHostCheck", false);
+                await dispatch(setAudioControlHost(false));
+                console.log("videoHideUnHideForHost");
+                await dispatch(setVideoControlHost(false));
+                setJoinButton(false);
+                dispatch(participantVideoButtonState(false));
+                dispatch(videoIconOrButtonState(false));
+              } catch {}
+              await dispatch(
+                getParticipantMeetingJoinFail(t("Something-went-wrong"))
+              );
             }
           } else {
             try {
@@ -782,33 +844,6 @@ const normalHostVideoCallPanel = (response) => {
   };
 };
 
-// FOR PARTICIPANT MAX PANEL
-const maxParticipantVideoCallPanel = (response) => {
-  return {
-    type: actions.MAX_PARTICIPANT_VIDEO_CALL_PANEL,
-    response: response,
-  };
-};
-
-// For Denied Max Patrticipant Video Compnent
-const maxParticipantVideoDenied = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_DENIED");
-  return {
-    type: actions.MAX_PARTICIPANT_VIDEO_DENIED,
-    response: response,
-  };
-};
-
-// For Removed Max Patrticipant Video Compnent
-const maxParticipantVideoRemoved = (response) => {
-  console.log(response, "MAX_PARTICIPANT_VIDEO_REMOVED");
-
-  return {
-    type: actions.MAX_PARTICIPANT_VIDEO_REMOVED,
-    response: response,
-  };
-};
-
 // For Removed Max Patrticipant Video Compnent
 const setParticipantRemovedFromVideobyHost = (response) => {
   return {
@@ -855,7 +890,8 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
       getVideoCallParticipantsAndWaitingList.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(videoApi, form)
+    axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1028,7 +1064,8 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
       getVideoCallParticipantsForGuest.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance.post(videoApi, form)
+    axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1303,7 +1340,7 @@ const openPresenterViewMainApi = (
     form.append("RequestData", JSON.stringify(newData));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1477,7 +1514,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1613,7 +1650,7 @@ const stopPresenterViewMainApi = (
     form.append("RequestData", JSON.stringify(newdata));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1738,7 +1775,7 @@ const stopPresenterViewMainApi = (
                 dispatch(maximizeVideoPanelFlag(true));
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
-                sessionStorage.removeItem("alreadyInMeetingVideo");
+                // sessionStorage.removeItem("alreadyInMeetingVideo");
               }
               await dispatch(
                 stopPresenterSuccess(
@@ -1811,8 +1848,7 @@ const stopPresenterViewMainApiTest = (
         form.append("RequestMethod", stopPresenterView.RequestMethod);
         form.append("RequestData", JSON.stringify(newdata));
 
-        const response = await  axiosInstance
-        .post(meetingApi, form)
+        const response = await axiosInstance.post(meetingApi, form);
 
         const res = response.data;
 
@@ -1965,7 +2001,7 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2137,7 +2173,7 @@ const leavePresenterViewMainApi = (
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2373,8 +2409,7 @@ const leavePresenterViewMainApiTest = (
       form.append("RequestData", JSON.stringify(data));
 
       try {
-        const response = await  axiosInstance
-        .post(meetingApi, form)
+        const response = await axiosInstance.post(meetingApi, form);
 
         const resData = response.data;
 
@@ -2615,7 +2650,8 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
     let form = new FormData();
     form.append("RequestMethod", participantOfGroupCall.RequestMethod);
     form.append("RequestData", JSON.stringify(data));
-    axiosInstance.post(videoApi, form)
+    axiosInstance
+      .post(videoApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -2720,7 +2756,6 @@ const isSharedScreenFail = (message) => {
 };
 
 const isSharedScreenTriggeredApi = (navigate, t, data) => {
-
   return (dispatch) => {
     dispatch(isSharedScreenInit());
     let form = new FormData();
@@ -2728,7 +2763,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
     form.append("RequestData", JSON.stringify(data));
 
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));

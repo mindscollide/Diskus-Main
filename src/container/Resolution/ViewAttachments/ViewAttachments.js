@@ -8,7 +8,12 @@ import { DataRoomDownloadFileApiFunc } from "../../../store/actions/DataRoom_act
 import { useDispatch } from "react-redux";
 import AttachmentViewer from "../../../components/elements/fileAttachment/attachment";
 import { fileFormatforSignatureFlow } from "../../../commen/functions/utils";
+import CustomModal from "../../../components/elements/modal/Modal";
 const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
+  console.log(
+    resolutionAttachments,
+    "resolutionAttachmentsresolutionAttachments"
+  );
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,70 +33,65 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
     }
   };
   return (
-    <Container fluid>
-      <Row className="mt-5">
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["ViewAttachment_paper"]}>
+    <CustomModal
+      show={true}
+      setShow={setViewattachmentpage}
+      ModalTitle={t("View-attachments")}
+      modalTitleClassName={styles["View_attachment_heading"]}
+      modalHeaderClassName={styles["viewAttachment_ModalHeader"]}
+      centered={true}
+      onHide={() => setViewattachmentpage(false)}
+      closeButton={true}
+      size={"md"}
+      ModalBody={
+        <>
+          <div className={styles["Scroller_ViewAttachments"]}>
             <Row>
-              <Col lg={12} md={12} sm={12}>
-                <span className={styles["View_attachment_heading"]}>
-                  {t("View-attachments")}
-                </span>
-              </Col>
+              {resolutionAttachments &&
+                resolutionAttachments.map((data, index) => {
+                  let ext = data.displayAttachmentName.split(".").pop();
+                  const pdfData = {
+                    taskId: data.fK_ResolutionID,
+                    attachmentID: Number(data.originalAttachmentName),
+                    fileName: data.displayAttachmentName,
+                    commingFrom: 4,
+                  };
+                  const pdfDataJson = JSON.stringify(pdfData);
+                  return (
+                    <Col sm={6} lg={6} md={6}>
+                      <AttachmentViewer
+                        data={data}
+                        name={data.displayAttachmentName}
+                        id={data.originalAttachmentName}
+                        handleEyeIcon={() => handleLinkClick(pdfDataJson, ext)}
+                        handleClickDownload={() =>
+                          handleClickDownloadFile(
+                            data.originalAttachmentName,
+                            data.displayAttachmentName
+                          )
+                        }
+                      />
+                    </Col>
+                  );
+                })}
             </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Scroller_ViewAttachments"]}
-              >
-                <Row>
-                  {resolutionAttachments &&
-                    resolutionAttachments.map((data, index) => {
-                      let ext = data.displayAttachmentName.split(".").pop();
-                      const pdfData = {
-                        taskId: data.fK_ResolutionID,
-                        attachmentID: Number(data.originalAttachmentName),
-                        fileName: data.displayAttachmentName,
-                        commingFrom: 4,
-                      };
-                      const pdfDataJson = JSON.stringify(pdfData);
-                      return (
-                        <Col sm={2} lg={2} md={2}>
-                          <AttachmentViewer
-                            data={data}
-                            name={data.displayAttachmentName}
-                            id={data.originalAttachmentName}
-                            handleEyeIcon={() =>
-                              handleLinkClick(pdfDataJson, ext)
-                            }
-                            handleClickDownload={() =>
-                              handleClickDownloadFile(
-                                data.originalAttachmentName,
-                                data.displayAttachmentName
-                              )
-                            }
-                          />
-                        </Col>
-                      );
-                    })}
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col className="d-flex justify-content-end">
-                <Button
-                  text={t("Close")}
-                  onClick={() => setViewattachmentpage(false)}
-                  className={styles["viewAttachmentCloseBtn"]}
-                />
-              </Col>
-            </Row>
-          </span>
-        </Col>
-      </Row>
-    </Container>
+          </div>
+        </>
+      }
+      ModalFooter={
+        <>
+          <Row>
+            <Col sm={12} md={12} lg={12}>
+              <Button
+                text={t("Close")}
+                onClick={() => setViewattachmentpage(false)}
+                className={styles["viewAttachmentCloseBtn"]}
+              />{" "}
+            </Col>
+          </Row>
+        </>
+      }
+    />
   );
 };
 

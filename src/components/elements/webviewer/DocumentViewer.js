@@ -223,7 +223,7 @@ const DocumentViewer = () => {
         {
           path: "/webviewer/lib",
           licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // Replace with your key
+            process.env.REACT_APP_APRYSEKEY, // Replace with your key
           fullAPI: true,
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion

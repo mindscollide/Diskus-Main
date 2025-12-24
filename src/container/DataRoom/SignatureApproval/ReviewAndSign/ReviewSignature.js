@@ -64,11 +64,7 @@ const ReviewSignature = () => {
     (state) =>
       state.SignatureWorkFlowReducer.signatureDocumentStatusChangeForSignees
   );
-  console.log(
-    signatureDocumentStatusChangeForSignees,
-    "signatureDocumentStatusChangeForSigneessignatureDocumentStatusChangeForSignees"
-  );
-  // signatureDocumentStatusChangeForSignees
+
   const navigate = useNavigate();
   const [approvalStats, setApprovalStats] = useState({
     declined: 0,
@@ -413,21 +409,21 @@ const ReviewSignature = () => {
               status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
                 : status?.toLowerCase() === "Signed".toLowerCase()
-                ? styles["signedStatus"]
-                : status?.toLowerCase() === "Declined".toLowerCase()
-                ? styles["declineStatus"]
-                : styles["draftStatus"]
+                  ? styles["signedStatus"]
+                  : status?.toLowerCase() === "Declined".toLowerCase()
+                    ? styles["declineStatus"]
+                    : styles["draftStatus"]
             }
           >
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
               : status?.toLowerCase() === "Signed".toLowerCase()
-              ? t("Signed")
-              : status?.toLowerCase() === "Declined".toLowerCase()
-              ? t("Declined")
-              : status?.toLowerCase() === "draftStatus".toLowerCase()
-              ? t("draftStatus")
-              : null}
+                ? t("Signed")
+                : status?.toLowerCase() === "Declined".toLowerCase()
+                  ? t("Declined")
+                  : status?.toLowerCase() === "draftStatus".toLowerCase()
+                    ? t("draftStatus")
+                    : null}
           </p>
         );
       },
@@ -464,13 +460,7 @@ const ReviewSignature = () => {
     }
   });
 
-  console.log(totalDataLnegth <= totalRecords, "totalRecordstotalRecords");
-  console.log(
-    reviewSignature.length !== totalRecords,
-    "totalRecordstotalRecords"
-  );
-  console.log(totalDataLnegth, "totalRecordstotalRecords");
-  console.log(totalRecords, "totalRecordstotalRecords");
+
 
   useEffect(() => {
     if (
@@ -504,7 +494,7 @@ const ReviewSignature = () => {
         let { data } = getAllPendingForApprovalStats;
 
         setApprovalStats(data);
-      } catch {}
+      } catch { }
     }
   }, [getAllPendingForApprovalStats]);
 
@@ -528,7 +518,7 @@ const ReviewSignature = () => {
             setOriginalData(pendingApprovals);
           }
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [listOfPendingForApprovalSignatures]);
 
@@ -548,7 +538,7 @@ const ReviewSignature = () => {
           setTotalDataLength((prev) => prev + 1);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [workflowsignaturedocument]);
 
   useEffect(() => {
@@ -559,10 +549,10 @@ const ReviewSignature = () => {
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                  ...data2,
-                  status: data.status,
-                  actorStatusID: data.actorStatusID,
-                }
+                ...data2,
+                status: data.status,
+                actorStatusID: data.actorStatusID,
+              }
               : data2
           )
         );
@@ -579,10 +569,10 @@ const ReviewSignature = () => {
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                  ...data2,
-                  status: data.status,
-                  workFlowStatusID: data.workFlowStatusID,
-                }
+                ...data2,
+                status: data.status,
+                workFlowStatusID: data.workFlowStatusID,
+              }
               : data2
           )
         );
@@ -602,7 +592,6 @@ const ReviewSignature = () => {
       dispatch(clearWorkFlowResponseMessage());
     }
   }, [ResponseMessage]);
-  console.log(reviewSignature, "reviewSignaturereviewSignature");
   return (
     <>
       <Row>

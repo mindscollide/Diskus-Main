@@ -1,0 +1,15 @@
+.complianceByCard {
+  width: 100%;
+  text-align: center;
+  min-height: 48vh;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.complianceByCard:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

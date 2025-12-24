@@ -53,6 +53,7 @@ import { useNotesContext } from "../../../context/NotesContext.js";
 import CreateQuickMeeting from "../../../container/QuickMeeting/CreateQuickMeeting/CreateQuickMeeting.js";
 import { useMeetingContext } from "../../../context/MeetingContext.js";
 import { convertToArabicNumerals } from "../../../commen/functions/regex.js";
+import { convertToArabicNumber } from "../../../commen/functions/customPagination/utils.js";
 
 const Header2 = ({ isVideo }) => {
   const navigate = useNavigate();
@@ -60,6 +61,9 @@ const Header2 = ({ isVideo }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const WebNotificationBell = useRef();
+  const remainingDays = localStorage.getItem("remainingDays");
+
+  console.log(remainingDays, "remainingDaysremainingDays");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
   );
@@ -568,9 +572,7 @@ const Header2 = ({ isVideo }) => {
       navigate("/Diskus");
     }
   };
-  if (location.pathname.includes("meetingDocumentViewer")) {
-    return null;
-  }
+
 
   return (
     <>
@@ -984,8 +986,7 @@ const Header2 = ({ isVideo }) => {
                       className='UpgradeButtonsClass'>
                       {JSON.parse(localStorage.getItem("isTrial")) && (
                         <>
-                          {JSON.parse(localStorage.getItem("remainingDays")) >
-                            1 && (
+                          {Number(remainingDays) > 1 && (
                             <>
                               {" "}
                               <span className={"trialExpireButton"}>
@@ -994,7 +995,11 @@ const Header2 = ({ isVideo }) => {
                                     "Your-trial-will-expire-in-{{remainingDays}}-days",
                                     {
                                       remainingDays:
-                                        localStorage.getItem("remainingDays"),
+                                      currentLanguage === "ar"
+                                          ? convertToArabicNumber(remainingDays)
+                                          : localStorage.getItem(
+                                              "remainingDays"
+                                            ),
                                     }
                                   )}
                                 </span>

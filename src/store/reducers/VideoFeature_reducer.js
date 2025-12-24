@@ -1,4 +1,3 @@
-import { filterHostData } from "../../commen/functions/regex";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -105,6 +104,7 @@ const initialState = {
   stopScreenShareOnPresenter: false,
   isScreenShare: null,
   globallyScreenShare: false,
+  errorSeverity: null, // Added errorSeverity to initialState
   // startOrStopPresenter: false,
 };
 
@@ -425,6 +425,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         muteUnMuteParticipant: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -434,6 +435,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         muteUnMuteParticipant: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -450,6 +452,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         hideUnHideParticipantorGuest: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -459,6 +462,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         hideUnHideParticipantorGuest: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -605,6 +609,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getAllParticipantMain: action.response.participantList,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -614,6 +619,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getAllParticipantMain: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -639,6 +645,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getJoinMeetingParticipantorHostrequest: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -648,6 +655,8 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getJoinMeetingParticipantorHostrequest: null,
         ResponseMessage: action.message,
+        error: "error",
+        errorSeverity: "error", // Added
       };
     }
 
@@ -732,6 +741,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         getAllParticipantMain: action.response.participantList,
         waitingParticipantsList: action.response.waitingParticipants,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -742,6 +752,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         getVideoParticpantListandWaitingList: [],
         waitingParticipantsList: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1022,6 +1033,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterOpenView: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1031,6 +1043,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterOpenView: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1048,6 +1061,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterViewStart: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1057,6 +1071,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterViewStart: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1074,6 +1089,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterViewStop: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1083,6 +1099,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         presenterViewStop: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1100,6 +1117,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         joinPresenterView: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1109,6 +1127,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         joinPresenterView: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1126,6 +1145,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         leavePresenterView: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1180,6 +1200,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         inCallParticipantList: action.response.inCallParticipants,
         pendingCallParticipantList: action.response.pendingParticipantList,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1190,6 +1211,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         inCallParticipantList: [],
         pendingCallParticipantList: [],
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1207,6 +1229,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         isScreenShare: action.response,
         ResponseMessage: action.message,
+        errorSeverity: "success", // Added
       };
     }
 
@@ -1216,6 +1239,7 @@ const videoFeatureReducer = (state = initialState, action) => {
         Loading: false,
         isScreenShare: null,
         ResponseMessage: action.message,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -1238,6 +1262,7 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null, // Also clear errorSeverity when clearing messages
       };
 
     default:

@@ -30,10 +30,9 @@ body[dir="rtl"] .new_Poll_Button {
 .polling_searchinput {
   display: inline-block;
   position: absolute !important;
-  right: 0 !important;
+  right: 15px !important;
   width: auto;
-  top: 5px;
-  margin-right: 25px;
+  top: 6px;
 }
 
 .SearhBar_Polls {
@@ -109,7 +108,9 @@ body[dir="rtl"] .new_Poll_Button {
 
 body[dir="rtl"] .polling_searchinput {
   position: absolute !important;
-  right: 88% !important;
+  right: auto !important;
+  left: 15px;
+  bottom: 0;
   cursor: pointer !important;
 }
 

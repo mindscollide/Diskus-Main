@@ -15,8 +15,11 @@ import {
   changeNewLanguage,
 } from "../../../store/actions/Language_actions";
 import moment from "moment";
+import { Popover } from "antd";
 
 const LanguageSelector = () => {
+  const [open, setOpen] = useState(false);
+
   const AllLanguagesData = useSelector(
     (state) => state.LanguageReducer.AllLanguagesData
   );
@@ -52,10 +55,7 @@ const LanguageSelector = () => {
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
-      // if (currentUserID !== null) {
-      //   let data = { UserID: Number(currentUserID) };
-      //   dispatch(getSelectedLanguage(data, navigate, t));
-      // }
+
     } catch {}
   }, []);
 
@@ -166,88 +166,113 @@ const LanguageSelector = () => {
       i18n.changeLanguage("en");
     }
   }, [currentLanguage]);
+  const languageContent = (
+    // <div className={styles.languagePopover}>
+    <>
+      {languages.map((lang) => {
+        const isActive = currentLanguage === lang.code;
+
+        return (
+          <div
+            key={lang.systemSupportedLanguageID}
+            className={`${styles.languageRow} ${isActive ? styles.active : ""}`}
+            onClick={() => {
+              handleChangeLocale(lang.systemSupportedLanguageID);
+              setOpen(false);
+            }}>
+            <span>{lang.languageTitle}</span>
+          </div>
+        );
+      })}
+    </>
+    // </div>
+  );
 
   return (
-    <section
-      className="position-relative"
-      ref={languageref}
-      onClick={() => setLanguageDropdown(!languageDropdown)}
-    >
+    <Popover
+      content={languageContent}
+      trigger='click'
+      open={open}
+      showArrow={false}
+      // openClassName=""
+      zIndex={999999}
+      onOpenChange={setOpen}
+      placement='bottomRight'>
+
       <span
         className={
           location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
           location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
           location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
-          location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
-          location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+          location.pathname
+            .toLowerCase()
+            .includes("/paymentForm".toLowerCase()) ||
+          location.pathname
+            .toLowerCase()
+            .includes("/signuporganization".toLowerCase()) ||
           location.pathname.toLowerCase().includes("/Admin".toLowerCase())
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
-        }
-      >
+        }>
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
           : currentLanguage === "ar"
           ? t("Arabic")
           : t("EN")}
-        {languageDropdown ? (
+        {open ? (
           <img
             src={
-              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus/".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus/".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/paymentForm".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/signuporganization".toLowerCase()) ||
               location.pathname.toLowerCase().includes("/Admin".toLowerCase())
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
-            onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         ) : (
           <img
             src={
-              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/Diskus".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/paymentForm".toLowerCase()) ||
-              location.pathname.toLowerCase().includes("/signuporganization".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus/".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus/".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/Diskus".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/paymentForm".toLowerCase()) ||
+              location.pathname
+                .toLowerCase()
+                .includes("/signuporganization".toLowerCase()) ||
               location.pathname.toLowerCase().includes("/Admin".toLowerCase())
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }
-            onClick={() => setLanguageDropdown(!languageDropdown)}
-            alt=""
-            draggable="false"
+            alt=''
+            draggable='false'
           />
         )}
       </span>
-      <div
-        className={
-          !languageDropdown
-            ? styles["language_options"]
-            : styles["language_options_active"]
-        }
-      >
-        {languages.length > 0 &&
-          languages.map((data, index) => {
-            return (
-              <span
-                className="cursor-pointer"
-                onClick={() =>
-                  handleChangeLocale(data.systemSupportedLanguageID)
-                }
-                key={index}
-              >
-                {data.languageTitle}
-              </span>
-            );
-          })}
-      </div>
-    </section>
+    </Popover>
   );
 };
 

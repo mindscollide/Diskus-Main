@@ -10,6 +10,7 @@ import {
   getCalendarDataResponse,
   getEventsDetails,
   getEventsTypes,
+  removeCalendarResponseMessage,
   removeCalenderDataFunc,
 } from "../../store/actions/GetDataForCalendar";
 import {
@@ -77,6 +78,14 @@ const CalendarPage = () => {
   );
   const ResponseMessageAssigneesReducer = useSelector(
     (state) => state.assignees.ResponseMessage
+  );
+
+  const ResponseMessagecalendarReducerReducer = useSelector(
+    (state) => state.calendarReducer.ResponseMessage
+  );
+
+  const calendarReducerErrorSeverity = useSelector(
+    (state) => state.calendarReducer.errorSeverity
   );
   const ResponseMessageTodolistReducer = useSelector(
     (state) => state.toDoListReducer.ResponseMessage
@@ -759,11 +768,26 @@ const CalendarPage = () => {
     } else {
       dispatch(cleareMessage());
     }
+    if (
+      ResponseMessagecalendarReducerReducer !== "" &&
+      ResponseMessagecalendarReducerReducer !== undefined &&
+      ResponseMessagecalendarReducerReducer !== null
+    ) {
+      showMessage(
+        ResponseMessagecalendarReducerReducer,
+        calendarReducerErrorSeverity,
+        setOpen
+      );
+
+      dispatch(removeCalendarResponseMessage());
+    }
   }, [
     UpdateOrganizationMessageResponseMessage,
     DeleteOrganizationMessageResponseMessage,
     AllOrganizationResponseMessage,
     ResponseMessageAdminReducer,
+    ResponseMessagecalendarReducerReducer,
+    calendarReducerErrorSeverity,
   ]);
 
   useEffect(() => {

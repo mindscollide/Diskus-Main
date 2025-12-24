@@ -86,6 +86,8 @@ import { useDispatch } from "react-redux";
 import NewEndLeaveMeeting from "./NewEndLeaveMeeting/NewEndLeaveMeeting";
 import { useRef } from "react";
 import DescendIcon from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import DoubleArrowIcon from "../../../assets/images/sortingIcons/Double Arrow2.svg";
+
 import AscendIcon from "../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
@@ -450,7 +452,7 @@ const NewMeeting = () => {
         dispatch(meetingVideoRecording(null));
 
         console.log(rows, "meetingRecords");
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [meetingVideoRecording]);
   console.log(rows, "meetingRecords");
@@ -490,8 +492,8 @@ const NewMeeting = () => {
                 attendeeId === 2
                   ? "Participant"
                   : attendeeId === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
               isPrimaryOrganizer: false,
             });
             setVideoTalk({
@@ -592,8 +594,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                      ? "Agenda Contributor"
+                      : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -628,8 +630,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                      ? "Agenda Contributor"
+                      : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -759,8 +761,8 @@ const NewMeeting = () => {
               attendeeId === 2
                 ? "Participant"
                 : attendeeId === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             isPrimaryOrganizer: false,
           });
           setVideoTalk({
@@ -791,8 +793,8 @@ const NewMeeting = () => {
               MeetingProp !== null
                 ? false
                 : UserMeetPropoDatPoll !== null
-                ? false
-                : true,
+                  ? false
+                  : true,
           };
           if (
             getALlMeetingTypes.length === 0 &&
@@ -837,8 +839,8 @@ const NewMeeting = () => {
               MeetingProp !== null
                 ? false
                 : UserMeetPropoDatPoll !== null
-                ? false
-                : true,
+                  ? false
+                  : true,
           };
 
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -918,8 +920,8 @@ const NewMeeting = () => {
               attendeeId === 2
                 ? "Participant"
                 : attendeeId === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             isPrimaryOrganizer: false,
           });
           setVideoTalk({
@@ -966,8 +968,8 @@ const NewMeeting = () => {
               attendeeRoleID === 2
                 ? "Participant"
                 : attendeeRoleID === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             isPrimaryOrganizer: isPrimaryOrganizer,
           });
           setVideoTalk({
@@ -1070,8 +1072,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                      ? "Agenda Contributor"
+                      : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -1090,8 +1092,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                      ? "Agenda Contributor"
+                      : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -1141,8 +1143,8 @@ const NewMeeting = () => {
         attendeeId === 2
           ? "Participant"
           : attendeeId === 4
-          ? "Agenda Contributor"
-          : "Organizer",
+            ? "Agenda Contributor"
+            : "Organizer",
       isPrimaryOrganizer: false,
     });
     setVideoTalk({
@@ -1176,8 +1178,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("AgCont");
@@ -1206,8 +1208,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("AdOrg");
@@ -1267,8 +1269,8 @@ const NewMeeting = () => {
                 Number(result.attendeeId) === 2
                   ? "Participant"
                   : Number(result.attendeeId) === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
               status: Number(result.meetingStatusId),
             });
             localStorage.setItem("isMinutePublished", result.isMinutePublished);
@@ -1370,8 +1372,8 @@ const NewMeeting = () => {
                 Number(result.attendeeId) === 2
                   ? "Participant"
                   : Number(result.attendeeId) === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
               status: Number(result.meetingStatusId),
             });
           }
@@ -1401,8 +1403,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                ? "Agenda Contributor"
-                : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("meetingMin");
@@ -1482,7 +1484,7 @@ const NewMeeting = () => {
 
         setMeetingTypeFilter(meetingtypeFilter);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [getALlMeetingTypes?.meetingTypes]);
 
   useEffect(() => {
@@ -2153,9 +2155,13 @@ const NewMeeting = () => {
           {t("Title")}{" "}
           {meetingTitleSort === "descend" ? (
             <img src={DescendIcon} alt='' />
-          ) : (
+          ) : meetingTitleSort === "ascend" ? (
             <img src={AscendIcon} alt='' />
-          )}
+          ) :
+            (
+              <img src={DoubleArrowIcon} alt='' />
+            )
+          }
         </span>
       ),
       dataIndex: "title",
@@ -2164,10 +2170,6 @@ const NewMeeting = () => {
       align: currentLanguage === "en" ? "left" : "right",
       width: "115px",
       render: (text, record) => {
-        console.log(text, record, "ashashkdgahsgashdgh");
-        // if (record.isQuickMeeting) {
-        //   dispatch(viewMeetingFlag(true));
-        // }
         return (
           <span
             className={styles["meetingTitle"]}
@@ -2189,8 +2191,8 @@ const NewMeeting = () => {
                 role: record.isParticipant
                   ? "Participant"
                   : record.isAgendaContributor
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
                 isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
               localStorage.setItem(
@@ -2198,24 +2200,24 @@ const NewMeeting = () => {
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
-              // dispatch(viewMeetingFlag(true));
-              // setIsOrganisers(isOrganiser);
             }}>
             {text}
           </span>
         );
       },
-      onHeaderCell: () => ({
-        onClick: () => {
-          setMeetingTitleSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
+      // onHeaderCell: () => ({
+      //   onClick: () => {
+      //     setMeetingTitleSort((order) => {
+      //       if (order === "descend") return "ascend";
+      //       if (order === "ascend") return null;
+      //       return "descend";
+      //     });
+      //   },
+      // }),
       sorter: (a, b) => {
-        return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+        return meetingTitleSort === "descend"
+          ? b?.title.toLowerCase().localeCompare(a?.title.toLowerCase())
+          : a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
       },
     },
     {
@@ -2353,8 +2355,8 @@ const NewMeeting = () => {
         return record.isQuickMeeting && meetingType === 1
           ? t("Quick-meeting")
           : t(matchedFilter)
-          ? t(matchedFilter.text)
-          : "";
+            ? t(matchedFilter.text)
+            : "";
       },
     },
     {
@@ -2402,7 +2404,7 @@ const NewMeeting = () => {
                 </span>
               ) : null}
               {record.status === "9" &&
-              (record.isOrganizer || record.isPrimaryOrganizer) ? (
+                (record.isOrganizer || record.isPrimaryOrganizer) ? (
                 <Tooltip placement='topLeft' title={t("Attendance")}>
                   <img
                     src={member}
@@ -2694,24 +2696,24 @@ const NewMeeting = () => {
                   text={t("Download")}
                   className={styles["Board-Deck"]}
                   onClick={() => handleClickDownloadBtn(record)}
-                  // onClick={() => {
-                  //   boardDeckOnClick(record);
-                  //   setEditorRole({
-                  //     status: record.status,
-                  //     role: record.isParticipant
-                  //       ? "Participant"
-                  //       : record.isAgendaContributor
-                  //       ? "Agenda Contributor"
-                  //       : "Organizer",
-                  //     isPrimaryOrganizer: record.isPrimaryOrganizer,
-                  //   });
-                  //   setVideoTalk({
-                  //     isChat: record.isChat,
-                  //     isVideoCall: record.isVideoCall,
-                  //     talkGroupID: record.talkGroupID,
-                  //   });
-                  //   localStorage.setItem("videoCallURL", record.videoCallURL);
-                  // }}
+                // onClick={() => {
+                //   boardDeckOnClick(record);
+                //   setEditorRole({
+                //     status: record.status,
+                //     role: record.isParticipant
+                //       ? "Participant"
+                //       : record.isAgendaContributor
+                //       ? "Agenda Contributor"
+                //       : "Organizer",
+                //     isPrimaryOrganizer: record.isPrimaryOrganizer,
+                //   });
+                //   setVideoTalk({
+                //     isChat: record.isChat,
+                //     isVideoCall: record.isVideoCall,
+                //     talkGroupID: record.talkGroupID,
+                //   });
+                //   localStorage.setItem("videoCallURL", record.videoCallURL);
+                // }}
                 />
               </span>
             </>
@@ -3188,7 +3190,7 @@ const NewMeeting = () => {
         setRow([]);
         setDublicatedrows([]);
       }
-    } catch {}
+    } catch { }
   }, [searchMeetings]);
 
   useEffect(() => {
@@ -3264,7 +3266,7 @@ const NewMeeting = () => {
         );
 
         setRow(updatedRows);
-      } catch {}
+      } catch { }
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -3290,7 +3292,7 @@ const NewMeeting = () => {
         setDefaultFilterValues(newData);
         setMeetingTypeFilter(meetingtypeFilter);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [getALlMeetingTypes?.meetingTypes]);
 
   const handelChangePagination = async (current, PageSize) => {
@@ -3419,7 +3421,7 @@ const NewMeeting = () => {
                   Number(newBtn.meetingID) !== Number(meetingID)
               );
             });
-          } catch {}
+          } catch { }
         }
       } catch (error) {
         console.log(error);
@@ -3855,10 +3857,19 @@ const NewMeeting = () => {
         }
       }
       console.log("webNotifactionDataRoutecheckFlag");
-    } catch (error) {}
+    } catch (error) { }
 
-    return () => {};
+    return () => { };
   }, [globalFunctionWebnotificationFlag]);
+
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    console.log({ pagination, filters, sorter }, "handleTableChange");
+    if (sorter.columnKey === "title") {
+      setMeetingTitleSort(sorter.order);
+      console.log("handleTableChange title", sorter.order);
+    }
+  }
 
   return (
     <>
@@ -3965,7 +3976,7 @@ const NewMeeting = () => {
                 <span>
                   <ReactBootstrapDropdown
                     className='SceduleMeetingButton d-inline-block position-relative ms-2'
-                    // onClick={eventClickHandler}
+                  // onClick={eventClickHandler}
                   >
                     <ReactBootstrapDropdown.Toggle
                       title={t("Schedule-a-meeting")}>
@@ -4203,6 +4214,7 @@ const NewMeeting = () => {
                             column={MeetingColoumns}
                             scroll={{ y: "54vh", x: false }}
                             pagination={false}
+                            onChange={handleTableChange}
                             className='newMeetingTable'
                             rows={rows}
                             locale={{
