@@ -737,7 +737,7 @@ const ManageAuthority = () => {
           <Col lg={6} md={6} sm={12} xs={12}>
             <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
               <label className={styles["Auhtority-Main-Heading"]}>
-                {t("Authority")}
+                {t("Authorities")}
               </label>
               <Button
                 text={t("Add-authority")}

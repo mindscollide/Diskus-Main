@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./addEditAuthority.module.css";
 import { Check2 } from "react-bootstrap-icons";
 
@@ -44,6 +44,7 @@ const AddEditViewAuthorityModal = () => {
 
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
+  const authorityNameRef = useRef(null);
 
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
@@ -86,9 +87,10 @@ const AddEditViewAuthorityModal = () => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
   );
-
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
   useEffect(() => {
+    authorityNameRef.current && authorityNameRef.current.focus();
     return () => {
       dispatch(initialAddEditAuthority());
     };
@@ -183,7 +185,6 @@ const AddEditViewAuthorityModal = () => {
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
-    // console.log(country, "CountryIDCountryID");
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -193,14 +194,13 @@ const AddEditViewAuthorityModal = () => {
       phoneCode: a.secondary,
     });
     console.log(a, "CountryIDCountryID");
-    // setSignUpDetails({
-    //   ...signUpDetails,
-    //   FK_CCID: a.id,
-    //   PhoneNumberCountryID: a.id,
-    // });
   };
 
   const handleCancelButton = () => {
+    if (authorityViewState === 3) {
+      setAddEditViewAuthoriyModal(false);
+      setAddViewAuthorityDetails(true);
+    }
     setCloseConfirmationModal(true);
     setAddViewAuthorityDetails(false);
   };
@@ -492,6 +492,7 @@ const AddEditViewAuthorityModal = () => {
                           change={handleValueChange}
                           onBlur={handleBlur}
                           name="name"
+                          ref={authorityNameRef}
                           maxLength={100}
                           placeholder={t("Authority-name")}
                           applyClass={
@@ -855,7 +856,7 @@ const AddEditViewAuthorityModal = () => {
                     )}
 
                     <Button
-                      text={t("Cancel")}
+                      text={authorityViewState !== 3 ? t("Cancel") : t("Close")}
                       className={styles["CancelButtonStyle"]}
                       onClick={handleCancelButton}
                     />

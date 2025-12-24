@@ -680,11 +680,11 @@ const GeneralSetting = () => {
             sm={12}
             className="d-flex gap-3 justify-content-end"
           >
-            <Button
+            {/* <Button
               text={t("Cancel")}
               className={styles["New_settings_Cancel_Button"]}
               onClick={cancelOrganizationLevelSettings}
-            />
+            /> */}
             <Button
               text={t("Save")}
               className={styles["New_settings_Update_Button"]}
