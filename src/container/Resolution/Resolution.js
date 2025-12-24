@@ -34,6 +34,7 @@ import {
   viewAttachmentFlag,
   resolutionMQTTCreate,
   validateStringResolutionApi,
+  resolutionMQTTVoteCounter,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin, Tooltip } from "antd";
@@ -75,6 +76,9 @@ const Resolution = () => {
   console.log(isResolutionClosed, "isResolutionClosedisResolutionClosed");
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
+  const resolutionVoteCounter = useSelector(
+    (state) => state.ResolutionReducer.resolutionVoteCounter
+  );
   const ResolutionReducersearchVoterResolution = useSelector(
     (state) => state.ResolutionReducer.searchVoterResolution
   );
@@ -175,7 +179,7 @@ const Resolution = () => {
           } catch (error) {
             console.log(error);
           }
-        } catch (error) {}
+        } catch (error) { }
       }
     } catch (error) {
       console.log(error, "error");
@@ -225,7 +229,7 @@ const Resolution = () => {
         localStorage.setItem("ButtonTab", 1);
         dispatch(getVoterResolution(navigate, 1, t));
       }
-    } catch {}
+    } catch { }
 
     return () => {
       localStorage.removeItem("moderatorPage");
@@ -519,6 +523,29 @@ const Resolution = () => {
     dispatch(viewAttachmentFlag(true));
     setResolutionAttachments(data);
   };
+
+  useEffect(() => {
+    if (resolutionVoteCounter !== null) {
+      try {
+        setRows((rows) => {
+          return rows.map((row) => {
+            if (row.resolutionID === resolutionVoteCounter.resolutionID) {
+              return {
+                ...row,
+                voteCount: resolutionVoteCounter.voteCount
+              }
+            }
+            return row
+          })
+        })
+        dispatch(resolutionMQTTVoteCounter(null));
+
+      } catch (error) {
+        console.log(error);
+
+      }
+    }
+  }, [resolutionVoteCounter])
 
   // moderator all and current columns
   const columnsModerator = [
@@ -1294,7 +1321,7 @@ const Resolution = () => {
               }
             }
           }
-        } catch {}
+        } catch { }
         dispatch(resolutionMQTTCreate(null));
       }
     } catch (error) {
@@ -1313,7 +1340,7 @@ const Resolution = () => {
                 .pK_ResolutionID
           );
           setSearchVoter(findCancelledResolution);
-        } catch {}
+        } catch { }
       }
     } catch (error) {
       console.log(error, "error");
@@ -1383,7 +1410,7 @@ const Resolution = () => {
             setSearchVoter(copyData);
           }
         }
-      } catch {}
+      } catch { }
     }
   }, [ResolutionReducermqttResolutionClosed]);
 
@@ -1660,7 +1687,7 @@ const Resolution = () => {
                                     text={t("Search")}
                                     className={
                                       styles[
-                                        "SearchButton_SearchBar_Resolution"
+                                      "SearchButton_SearchBar_Resolution"
                                       ]
                                     }
                                     onClick={showSearchOptions}

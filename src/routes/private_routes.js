@@ -36,7 +36,7 @@ const PrivateRoutes = () => {
             .includes("Diskus/dataroom?action=".toLowerCase())
         ) {
           const parts = currentUrl.split("action=/")[1];
-          localStorage.setItem("DataRoomEmail", parts);
+          localStorage.setItem("DataRoomEmail", currentUrl);
         }
 
         // Action: Meeting Minute Collaboration

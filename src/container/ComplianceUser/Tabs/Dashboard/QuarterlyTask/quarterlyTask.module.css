@@ -1,0 +1,7 @@
+.quarterlyTaskCard {
+    width: 100%;
+    text-align: center;
+    min-height: 25vh;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}

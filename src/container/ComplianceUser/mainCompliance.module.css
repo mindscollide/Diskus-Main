@@ -1,6 +1,8 @@
 .MainCompliance_Container {
-  padding-left: 10px;
+  padding-left: 15px;
+  padding-right: 15px;
   padding-top: 10px;
+  padding-bottom: 15px;
 }
 
 .Compliance_dashboard_heading {
@@ -9,7 +11,9 @@
   letter-spacing: 2%;
   vertical-align: middle;
   color: #6172d6;
+  white-space: nowrap;
 }
+
 .SwitchUserView_Text {
   font-weight: 600;
   font-size: 16px;
@@ -18,6 +22,7 @@
   vertical-align: middle;
   color: #5a5a5a;
 }
+
 .DashboardBtn {
   background-color: #fff !important;
   color: #5a5a5a !important;
@@ -43,6 +48,7 @@
   border: none !important;
   border-radius: 4px !important;
 }
+
 .Fiscalyear_text {
   font-weight: 600;
   font-size: 14px;

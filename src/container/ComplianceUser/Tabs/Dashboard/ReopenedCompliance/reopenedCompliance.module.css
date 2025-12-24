@@ -1,0 +1,7 @@
+.reopenedComplianceCard {
+    width: 100%;
+    text-align: center;
+    min-height: 48vh;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
