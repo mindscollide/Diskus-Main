@@ -57,7 +57,7 @@ const MenuPopover = ({
             key={index}
             className='popOver_li_options'
             onClick={() => handleItemClick(listdata)} // Call the handler
-            style={{ cursor: "pointer" }}>
+            style={{ cursor: "pointer", }}>
             {listdata.label}
           </li>
         ))}
@@ -75,7 +75,16 @@ const MenuPopover = ({
       visible={visible} // Controlled visibility
       onVisibleChange={handleVisibleChange} // Track visibility changes
     >
-      <img src={imageImage} style={{ cursor: "pointer" }} alt='menu' />
+      <span
+        style={{
+          width: "25px",
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}>
+        <img src={imageImage} style={{ cursor: "pointer" }} alt='menu' />
+      </span>
     </Popover>
   );
 };

@@ -64,11 +64,18 @@ import {
   VideoCallResponse,
 } from "../../../../../store/actions/VideoMain_actions";
 import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { useTalkContext } from "../../../../../context/TalkContext";
+import { Tooltip } from "antd";
 
 const VideoPanelNormal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const ActiveChatBoxGS = useSelector(
+    (state) => state.talkFeatureStates.ActiveChatBoxGS
+  );
+  const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
+
   const {
     shareScreenTrue,
     setShareScreenTrue,
@@ -1752,6 +1759,35 @@ const VideoPanelNormal = () => {
     });
   };
 
+  const baseClass =
+    !NormalizeVideoFlag &&
+    !MinimizeVideoFlag &&
+    MaximizeVideoFlag &&
+    VideoChatPanel
+      ? "max-video-panel"
+      : !NormalizeVideoFlag &&
+        !MinimizeVideoFlag &&
+        MaximizeVideoFlag &&
+        !VideoChatPanel &&
+        presenterViewFlag &&
+        (presenterViewHostFlag || presenterViewJoinFlag)
+      ? "Presenter-Max-VideoPanel"
+      : NormalizeVideoFlag &&
+        !MinimizeVideoFlag &&
+        !MaximizeVideoFlag &&
+        VideoChatPanel
+      ? "videoCallScreen"
+      : NormalizeVideoFlag &&
+        !MinimizeVideoFlag &&
+        !MaximizeVideoFlag &&
+        !VideoChatPanel
+      ? "videoCallScreen "
+      : "max-video-panel ";
+  const finalClass =
+    activeVideoIcon || ActiveChatBoxGS
+      ? `${baseClass} more-zindexwithChatOpen`
+      : baseClass;
+
   return (
     <>
       {MaximizeHostVideoFlag ? (
@@ -1770,31 +1806,34 @@ const VideoPanelNormal = () => {
         <Row>
           <Col sm={12} md={12} lg={12}>
             <div
-              className={
-                NormalizeVideoFlag === true &&
-                MinimizeVideoFlag === false &&
-                MaximizeVideoFlag === false &&
-                VideoChatPanel === true
-                  ? "videoCallScreen"
-                  : NormalizeVideoFlag === true &&
-                    MinimizeVideoFlag === false &&
-                    MaximizeVideoFlag === false &&
-                    VideoChatPanel === false
-                  ? "videoCallScreen more-zindex"
-                  : NormalizeVideoFlag === false &&
-                    MinimizeVideoFlag === false &&
-                    MaximizeVideoFlag === true &&
-                    VideoChatPanel === true
-                  ? "max-video-panel"
-                  : NormalizeVideoFlag === false &&
-                    MinimizeVideoFlag === false &&
-                    MaximizeVideoFlag === true &&
-                    VideoChatPanel === false &&
-                    presenterViewFlag &&
-                    (presenterViewHostFlag || presenterViewJoinFlag)
-                  ? "Presenter-Max-VideoPanel"
-                  : "max-video-panel more-zindex"
-              }
+              className={finalClass}
+              // className={
+              //   activeVideoIcon || ActiveChatBoxGS
+              //     ? "videoCallScreen more-zindexwithChatOpen"
+              //     : NormalizeVideoFlag === true &&
+              //       MinimizeVideoFlag === false &&
+              //       MaximizeVideoFlag === false &&
+              //       VideoChatPanel === true
+              //     ? "videoCallScreen"
+              //     : NormalizeVideoFlag === true &&
+              //       MinimizeVideoFlag === false &&
+              //       MaximizeVideoFlag === false &&
+              //       VideoChatPanel === false
+              //     ? "videoCallScreen more-zindex"
+              //     : NormalizeVideoFlag === false &&
+              //       MinimizeVideoFlag === false &&
+              //       MaximizeVideoFlag === true &&
+              //       VideoChatPanel === true
+              //     ? "max-video-panel"
+              //     : NormalizeVideoFlag === false &&
+              //       MinimizeVideoFlag === false &&
+              //       MaximizeVideoFlag === true &&
+              //       VideoChatPanel === false &&
+              //       presenterViewFlag &&
+              //       (presenterViewHostFlag || presenterViewJoinFlag)
+              //     ? "Presenter-Max-VideoPanel"
+              //     : "max-video-panel more-zindex"
+              // }
             >
               {FullLoader === true ? (
                 <>
@@ -1956,6 +1995,16 @@ const VideoPanelNormal = () => {
                                           >
                                             <p className="participantModal_name">
                                               {participant.name}
+                                              {participant.isHost && (
+                                                <Tooltip
+                                                  title="Host"
+                                                  placement="top-right"
+                                                >
+                                                  <span className="hostName-in-participant">
+                                                    (Host)
+                                                  </span>
+                                                </Tooltip>
+                                              )}
                                             </p>{" "}
                                           </Col>
                                           <Col

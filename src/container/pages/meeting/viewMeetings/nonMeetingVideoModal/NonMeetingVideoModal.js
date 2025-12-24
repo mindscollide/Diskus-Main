@@ -12,7 +12,6 @@ import {
   nonMeetingVideoGlobalModal,
   normalizeVideoPanelFlag,
   presenterViewGlobalState,
-  stopPresenterViewMainApi,
 } from "../../../../../store/actions/VideoFeature_actions";
 import {
   LeaveCall,

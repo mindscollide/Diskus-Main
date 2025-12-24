@@ -6,6 +6,7 @@
   overflow-x: hidden;
   padding: 10px 0;
 }
+
 .RecentActivity_Title {
   font-weight: 700;
   font-size: 20px;
@@ -21,7 +22,7 @@
 .imageNotificationCard {
   display: flex !important;
   justify-content: start !important;
-  align-items: center !important;
+  align-items: flex-start !important;
   gap: 10px !important;
   max-width: 95% !important;
   white-space: normal !important;

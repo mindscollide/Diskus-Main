@@ -153,7 +153,7 @@ const SignatureViewer = () => {
     if (ResponseMessage) {
       try {
         showMessage(ResponseMessage, "error", setOpen);
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [ResponseMessage]);
 
@@ -216,18 +216,18 @@ const SignatureViewer = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                    try {
-                      return JSON.parse(str);
-                    } catch (error) {
-                      console.error(
-                        "Error parsing JSON:",
-                        error,
-                        "Input:",
-                        str
-                      );
-                      return null;
-                    }
-                  })
+                  try {
+                    return JSON.parse(str);
+                  } catch (error) {
+                    console.error(
+                      "Error parsing JSON:",
+                      error,
+                      "Input:",
+                      str
+                    );
+                    return null;
+                  }
+                })
                 : [];
               return {
                 actorID: item.actorID,
@@ -437,7 +437,7 @@ const SignatureViewer = () => {
               showLocalFilePicker: true,
               fullAPI: true,
               licenseKey:
-                "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd",
+                process.env.REACT_APP_APRYSEKEY,
             },
             viewer.current
           );

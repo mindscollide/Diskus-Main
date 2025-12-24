@@ -166,18 +166,18 @@ const ViewSignatureDocument = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                    try {
-                      return JSON.parse(str);
-                    } catch (error) {
-                      console.error(
-                        "Error parsing JSON:",
-                        error,
-                        "Input:",
-                        str
-                      );
-                      return null; // or handle the error as needed
-                    }
-                  })
+                  try {
+                    return JSON.parse(str);
+                  } catch (error) {
+                    console.error(
+                      "Error parsing JSON:",
+                      error,
+                      "Input:",
+                      str
+                    );
+                    return null; // or handle the error as needed
+                  }
+                })
                 : [];
               return {
                 actorID: item.actorID,
@@ -220,7 +220,7 @@ const ViewSignatureDocument = () => {
           }
           setFieldsData(newFieldsData);
         }
-      } catch {}
+      } catch { }
     }
   }, [getAllFieldsByWorkflowID]);
   // === End === //
@@ -297,7 +297,7 @@ const ViewSignatureDocument = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) {}
+      } catch (error) { }
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
@@ -369,7 +369,7 @@ const ViewSignatureDocument = () => {
           showLocalFilePicker: true,
           fullAPI: true,
           licenseKey:
-            "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
+            process.env.REACT_APP_APRYSEKEY,// sign up to get a free trial key at https://dev.apryse.com
         },
         viewer.current
       ).then(async (instance) => {

@@ -336,7 +336,7 @@ const Votepoll = () => {
                                       }
                                     >
                                       {viewProgressPollsDetails.AllowMultipleAnswers ===
-                                      true ? (
+                                        true ? (
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(

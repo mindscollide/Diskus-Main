@@ -8,6 +8,7 @@ const initialState = {
   getDataAnalyticsCountDetails: [],
   viewDocument: null,
   viewFolder: null,
+  errorSeverity: null, // Added errorSeverity to initialState
 };
 
 const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
@@ -24,6 +25,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         viewDocument: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FILE_LINK_FAIL: {
@@ -32,6 +34,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         viewDocument: null,
+        errorSeverity: "error", // Added
       };
     }
 
@@ -47,6 +50,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         viewFolder: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.VALIDATE_ENCRYPTED_STRING_VIEW_FOLDER_LINK_FAIL: {
@@ -55,6 +59,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         viewFolder: null,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETFILESANDFOLDERS_DETAILS_INIT: {
@@ -69,6 +74,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         DatafileandFolderDetails: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETFILESANDFOLDERS_DETAILS_FAIL: {
@@ -77,6 +83,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         DatafileandFolderDetails: null,
+        errorSeverity: "error", // Added
       };
     }
     case actions.UPDATEANDOPENBYANDDESCRIPTION_INIT: {
@@ -91,6 +98,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         updateFileAndFolderDetails: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.UPDATEANDOPENBYANDDESCRIPTION_FAIL: {
@@ -99,6 +107,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         updateFileAndFolderDetails: null,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETDATAANALYTICS_INIT: {
@@ -113,6 +122,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         getDataAnalyticsDetails: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETDATAANALYTICS_FAIL: {
@@ -121,6 +131,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         getDataAnalyticsDetails: null,
+        errorSeverity: "error", // Added
       };
     }
     case actions.GETDATAANALYTICSCOUNT_INIT: {
@@ -135,6 +146,7 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         getDataAnalyticsCountDetails: action.response,
+        errorSeverity: "success", // Added
       };
     }
     case actions.GETDATAANALYTICSCOUNT_FAIL: {
@@ -143,12 +155,14 @@ const DataRoomFileAndFoldersDetailsReducer = (state = initialState, action) => {
         Loading: false,
         ResponseMessage: action.message,
         getDataAnalyticsCountDetails: null,
+        errorSeverity: "error", // Added
       };
     }
     case actions.CLEAR_DATAROOM2_RESPONSE_MESSAGE: {
       return {
         ...state,
         ResponseMessage: "",
+        errorSeverity: null, // Also clear errorSeverity
       };
     }
     default: {

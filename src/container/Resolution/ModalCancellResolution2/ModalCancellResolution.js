@@ -39,38 +39,34 @@ const ModalCancellResolution2 = ({
             setCancelresolution(false);
           }}
           setShow={setCancelresolution}
-          modalFooterClassName="d-block"
+          modalFooterClassName='d-block'
           centered
           size={cancelresolution === true ? "md" : "md"}
           ModalBody={
             <>
-              <Container>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <span className={styles["Heading_For_Active_Sure"]}>
-                      {t(
-                        "The-resolution-is-currently-circulated-are-you-sure-you-want-to-cancel-the-resolution-before-voting-and-decision-date"
-                      )}
-                    </span>
-                  </Col>
-                </Row>
-              </Container>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className='d-flex justify-content-center'>
+                  <span className={styles["Heading_For_Active_Sure"]}>
+                    {t(
+                      "The-resolution-is-currently-circulated-are-you-sure-you-want-to-cancel-the-resolution-before-voting-and-decision-date"
+                    )}
+                  </span>
+                </Col>
+              </Row>
             </>
           }
           ModalFooter={
             <>
-              <Row className="mt-3 mb-4">
+              <Row className='mt-3 mb-4'>
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={t("Discard")}
                     className={

@@ -829,8 +829,8 @@ const RecentChats = () => {
           <Col lg={12} md={12} sm={12}>
             <TextField
               maxLength={200}
-              applyClass="form-control2"
-              name="Name"
+              applyClass='form-control2'
+              name='Name'
               change={(e) => {
                 searchChat(e.target.value);
               }}
@@ -857,97 +857,94 @@ const RecentChats = () => {
           return (
             <Row
               key={index}
-              className="single-chat"
-              onClick={() => chatClick(dataItem)}
-            >
-              <Col lg={2} md={2} sm={2} className="bottom-border">
-                <div className="chat-profile-icon">
+              className='single-chat'
+              onClick={() => chatClick(dataItem)}>
+              <Col lg={2} md={2} sm={2} className='bottom-border'>
+                <div className='chat-profile-icon'>
                   {dataItem.messageType === "O" ? (
                     <>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={SingleIcon}
                         width={25}
-                        alt=""
+                        alt=''
                       />
                     </>
                   ) : dataItem.messageType === "G" ? (
                     <>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={GroupIcon}
                         width={35}
-                        alt=""
+                        alt=''
                       />
                     </>
                   ) : dataItem.messageType === "B" ? (
                     <>
                       <img
-                        draggable="false"
+                        draggable='false'
                         src={ShoutIcon}
                         width={25}
-                        alt=""
+                        alt=''
                       />
                     </>
                   ) : (
-                    <img draggable="false" src={SingleIcon} width={25} alt="" />
+                    <img draggable='false' src={SingleIcon} width={25} alt='' />
                   )}
                 </div>
               </Col>
-              <Col lg={10} md={10} sm={10} className="bottom-border">
+              <Col lg={10} md={10} sm={10} className='bottom-border'>
                 <div className={"chat-block"}>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className="chat-username m-0"
-                  >
+                    className='chat-username m-0'>
                     {" "}
                     {dataItem.fullName}
                   </p>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className="chat-message m-0"
-                  >
+                    className='chat-message m-0'>
                     {dataItem.messageType === "O" ? (
-                      <span className="chat-tick-icon">
+                      <span className='chat-tick-icon'>
                         {dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate === "" &&
                         dataItem.receivedDate === "" &&
                         dataItem.seenDate === "" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={TimerIcon}
-                            className="img-cover"
-                            alt=""
+                            className='img-cover'
+                            alt=''
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate === "" &&
                           dataItem.seenDate === "" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={SingleTickIcon}
-                            className="img-cover"
-                            alt=""
+                            className='img-cover'
+                            alt=''
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate !== "" &&
                           dataItem.seenDate === "" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={DoubleTickDeliveredIcon}
-                            className="img-cover"
-                            alt=""
+                            className='img-cover'
+                            alt=''
                           />
                         ) : dataItem.senderID === parseInt(currentUserId) &&
                           dataItem.sentDate !== "" &&
                           dataItem.receivedDate !== "" &&
                           dataItem.seenDate !== "" ? (
                           <img
-                            draggable="false"
+                            draggable='false'
                             src={DoubleTickIcon}
-                            className="img-cover"
-                            alt=""
+                            className='img-cover'
+                            alt=''
                           />
                         ) : null}
                       </span>
@@ -956,8 +953,8 @@ const RecentChats = () => {
                     {dataItem.messageBody === "" &&
                     dataItem.attachmentLocation !== "" ? (
                       <>
-                        <span className="attachment-recent-chat">
-                          <img draggable="false" src={ClipIcon} alt="" />
+                        <span className='attachment-recent-chat'>
+                          <img draggable='false' src={ClipIcon} alt='' />
                           {dataItem.attachmentLocation
                             .substring(
                               dataItem.attachmentLocation.lastIndexOf("/") + 1
@@ -971,8 +968,7 @@ const RecentChats = () => {
                   </p>
                   <p
                     // onClick={() => chatClick(dataItem)}
-                    className="chat-date m-0"
-                  >
+                    className='chat-date m-0'>
                     {dataItem.messageDate.slice(0, 8) === currentUtcDate &&
                     dataItem.messageDate !== "" &&
                     dataItem.messageDate !== undefined ? (
@@ -1005,19 +1001,19 @@ const RecentChats = () => {
                     )}
                   </p>
                   {dataItem.notiCount > 0 ? (
-                    <span className="new-message-count">
+                    <span className='new-message-count'>
                       {dataItem.notiCount}
                     </span>
                   ) : null}
-                  <div className="chathead-box-icons">
+                  <div className='chathead-box-icons'>
                     <img
-                      draggable="false"
+                      draggable='false'
                       src={DropDownIcon}
-                      alt=""
+                      alt=''
                       onClick={() => activateChatHeadMenu(dataItem.id)}
                     />
                     {chatHeadMenuActive === dataItem.id ? (
-                      <div className="dropdown-menus-chathead">
+                      <div className='dropdown-menus-chathead'>
                         {/* <span onClick={deleteChatHandler}>
                             Delete Chat
                           </span> */}
@@ -1025,31 +1021,27 @@ const RecentChats = () => {
                         dataItem.isBlock === 0 ? (
                           <span
                             onClick={() => unblockblockContactHandler(dataItem)}
-                            style={{ borderBottom: "none" }}
-                          >
+                            style={{ borderBottom: "none" }}>
                             {t("Block")}
                           </span>
                         ) : dataItem.messageType === "O" &&
                           dataItem.isBlock === 1 ? (
                           <span
                             onClick={() => unblockblockContactHandler(dataItem)}
-                            style={{ borderBottom: "none" }}
-                          >
+                            style={{ borderBottom: "none" }}>
                             {t("Unblock")}
                           </span>
                         ) : dataItem.messageType === "G" &&
                           dataItem.isBlock === 0 ? (
                           <span
                             onClick={() => leaveGroupHandler(dataItem)}
-                            style={{ borderBottom: "none" }}
-                          >
+                            style={{ borderBottom: "none" }}>
                             {t("Leave-Group")}
                           </span>
                         ) : dataItem.messageType === "B" ? (
                           <span
                             onClick={() => deleteShoutFunction(dataItem)}
-                            style={{ borderBottom: "none" }}
-                          >
+                            style={{ borderBottom: "none" }}>
                             {t("Delete-Shout")}
                           </span>
                         ) : null}
@@ -1065,9 +1057,9 @@ const RecentChats = () => {
         allChatData.length === 0 ? (
         // <p>{t('No-Chats-Available')}</p>
         <ResultMessage
-          icon={<img src={NoRecentChatsIcon} width={250} />}
+          icon={<img src={NoRecentChatsIcon} alt='' width={250} />}
           title={"It looks like you haven't made any recent chats"}
-          className="emptyRecentChats"
+          className='emptyRecentChats'
         />
       ) : null}
     </>

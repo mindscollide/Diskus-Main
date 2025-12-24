@@ -62,12 +62,14 @@ import {
 import { convertNumbersInString } from "../../../commen/functions/regex";
 import { clearMinuteReviewerMqtt } from "../../../store/actions/workflow_actions.js";
 import { MeetingContext } from "../../../context/MeetingContext";
+import { useTalkContext } from "../../../context/TalkContext.js";
 import ComplianceFeatureIcon from "../../../assets/images/ComplianceFeatureIcon.svg";
 const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
+  const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
   const { pendingApprovalsTabCount, setPendingApprovalTabCount } =
     useContext(MeetingContext);
   //Getting api result from the reducer
@@ -149,8 +151,6 @@ const Talk = () => {
 
   //for video menu
   const [videoIcon, setVideoIcon] = useState(false);
-
-  const [activeVideoIcon, setActiveVideoIcon] = useState(false);
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
@@ -490,8 +490,7 @@ const Talk = () => {
                   pendingApprovalsTabCount.pendingSignature
                     ? "talk-count"
                     : ""
-                }
-              >
+                }>
                 {pendingApprovalsTabCount.pendingMinutes ||
                 pendingApprovalsTabCount.pendingSignature
                   ? convertNumbersInString(

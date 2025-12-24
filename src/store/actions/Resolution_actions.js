@@ -1971,7 +1971,15 @@ const getAllGroupsandCommitteesforResolution = (navigate, t) => {
   };
 };
 
+const resolutionMQTTVoteCounter = (response) => {
+  return {
+    type: actions.RESOULUTION_VOTE_COUNTER,
+    response: response,
+  };
+};
+
 export {
+  resolutionMQTTVoteCounter,
   getAllGroupsandCommitteesforResolution,
   viewResolutionModal,
   saveFilesResolutionApi,

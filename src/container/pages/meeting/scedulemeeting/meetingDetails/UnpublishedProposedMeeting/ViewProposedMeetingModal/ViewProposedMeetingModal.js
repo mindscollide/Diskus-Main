@@ -22,6 +22,10 @@ const ViewProposedMeetingModal = () => {
   const navigate = useNavigate();
   //Getting the Current Language from LocalStorage
   let locale = localStorage.getItem("i18nextLng");
+
+  const MeetingStatusSocket = useSelector(
+    (state) => state.meetingIdReducer.MeetingStatusSocket
+  );
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
     (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -42,6 +46,7 @@ const ViewProposedMeetingModal = () => {
     Title: "",
     Description: "",
     MeetingType: "",
+    meetingId: 0,
   });
   const [sendResponseByDate, setSendResponseByDate] = useState("");
   const [partcipatns, setParticipants] = useState([]);
@@ -63,6 +68,8 @@ const ViewProposedMeetingModal = () => {
         getAllMeetingDetails.advanceMeetingDetails !== null &&
         getAllMeetingDetails.advanceMeetingDetails !== undefined
       ) {
+
+        console.log(getAllMeetingDetails, "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails")
         //For Meeting Title
         setBasicMeetingTitle({
           Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
@@ -127,6 +134,19 @@ const ViewProposedMeetingModal = () => {
     dispatch(searchNewUserMeeting(navigate, searchData, t, 1));
   };
 
+  useEffect(() => {
+    if (MeetingStatusSocket !== null && MeetingStatusSocket !== undefined) {
+      try {
+        let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
+        let meetingID = MeetingStatusSocket?.meetingID;
+
+        console.log(MeetingStatusSocket, meetingStatusID, meetingID, "MeetingStatusSocketMeetingStatusSocket")
+      } catch (error) {
+
+      }
+    }
+  }, [MeetingStatusSocket])
+
   return (
     <>
       <Row className="mt-3">
@@ -164,7 +184,7 @@ const ViewProposedMeetingModal = () => {
               </span>
               <Row>
                 {Array.isArray(meetingProposedDates) &&
-                meetingProposedDates.length > 0 ? (
+                  meetingProposedDates.length > 0 ? (
                   meetingProposedDates.map((dateData, index) => {
                     console.log(dateData, "dateData");
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
@@ -212,31 +232,31 @@ const ViewProposedMeetingModal = () => {
                       <Row>
                         {partcipatns.length > 0 && partcipatns !== null
                           ? partcipatns.map((data, index) => {
-                              return (
-                                <>
-                                  <Col
-                                    lg={6}
-                                    md={6}
-                                    sm={6}
-                                    key={index}
-                                    className="mt-3"
+                            return (
+                              <>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  key={index}
+                                  className="mt-3"
+                                >
+                                  <span
+                                    className={styles["BoxCardParticipant"]}
                                   >
-                                    <span
-                                      className={styles["BoxCardParticipant"]}
-                                    >
-                                      <img
-                                        src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                        alt=""
-                                        width={25}
-                                      />
-                                      <span className={styles["UserName"]}>
-                                        {data.userName}
-                                      </span>
+                                    <img
+                                      src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                      alt=""
+                                      width={25}
+                                    />
+                                    <span className={styles["UserName"]}>
+                                      {data.userName}
                                     </span>
-                                  </Col>
-                                </>
-                              );
-                            })
+                                  </span>
+                                </Col>
+                              </>
+                            );
+                          })
                           : null}
                       </Row>
                     </Col>

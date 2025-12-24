@@ -100,10 +100,7 @@ const emptyCommentState = () => {
   };
 };
 const deleteCommentsMQTT = (response) => {
-  console.log(
-    response,
-    "postAssigneeCommentspostAssigneeCommentspostAssigneeComments121212"
-  );
+
   return {
     type: actions.DELETE_COMMENTS,
     response: response,

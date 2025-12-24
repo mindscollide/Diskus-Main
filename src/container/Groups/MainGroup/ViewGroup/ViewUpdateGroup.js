@@ -28,6 +28,8 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
+
+  console.log(fileAttachments, "fileAttachmentsfileAttachments")
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
   const [folderID, setFolderID] = useState(0);
@@ -133,6 +135,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
             DisplayAttachmentName: fileData.name,
             OriginalAttachmentName: fileData.name,
             fileSize: fileData.originFileObj.size,
+            fk_UserID: Number(localStorage.getItem("userID")),
           };
           setFileAttachments((prevAttachments) => [...prevAttachments, file]);
           fileSizeArr += fileData.originFileObj.size;

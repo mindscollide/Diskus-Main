@@ -56,7 +56,6 @@ const EditUserModal = ({ editModalData }) => {
     editModalData.mobileCode
   );
   const [selected, setSelected] = useState(initialCountryCode);
-  const [selectedCountry, setSelectedCountry] = useState({});
   const [editPakageID, setEditPakageID] = useState(0);
   console.log(editPakageID, "editPakageIDeditPakageIDeditPakageID");
   const [editUserModalValues, setEditUserModalValues] = useState({
@@ -134,35 +133,26 @@ const EditUserModal = ({ editModalData }) => {
   }, []);
 
   useEffect(() => {
-    // Update state when the editModalData.userStatus changes
-    setUserStatus(findOptionByValue(editModalData.userStatus));
-  }, [editModalData.userStatus]);
-
-  // Update selected state when editModalData.mobileCode changes
-  useEffect(() => {
     if (editModalData.mobileCode) {
       const countryCode = findCountryCodeByMobileCode(editModalData.mobileCode);
       setSelected(countryCode);
     }
   }, [editModalData.mobileCode]);
 
-  // package assigned option dropdown useEffect it will disable option when packageAllotedUsers greater then headCount
   useEffect(() => {
     if (
       UserMangementReducergetOrganizationUserStatsGraphData &&
       Object.keys(UserMangementReducergetOrganizationUserStatsGraphData)
         .length > 0
     ) {
-      let temp = [];
-      UserMangementReducergetOrganizationUserStatsGraphData.selectedPackageDetails.forEach(
-        (data) => {
-          temp.push({
+      const temp =
+        UserMangementReducergetOrganizationUserStatsGraphData.selectedPackageDetails.map(
+          (data) => ({
             value: data.pK_PackageID,
             label: data.name,
             isDisabled: data.packageAllotedUsers > data.headCount,
-          });
-        }
-      );
+          })
+        );
       setPackageAssignedOption(temp);
     }
   }, [UserMangementReducergetOrganizationUserStatsGraphData]);
@@ -176,7 +166,6 @@ const EditUserModal = ({ editModalData }) => {
   // Handle the country selection
   const handleSelect = (country) => {
     setSelected(country);
-    setSelectedCountry(country);
   };
 
   const handleUpdateModal = (e) => {

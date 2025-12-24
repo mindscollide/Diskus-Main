@@ -151,6 +151,8 @@ const VideoCallNormalHeader = ({
 
   console.log(waitingParticipantsList, "waitingParticipantsList");
 
+  console.log(inCallParticipantsList, "inCallParticipantsList");
+
   const getAllParticipantMain = useSelector(
     (state) => state.videoFeatureReducer.getAllParticipantMain
   );
@@ -417,13 +419,17 @@ const VideoCallNormalHeader = ({
   // For InCall Participant List
   useEffect(() => {
     if (
-      inCallParticipantList !== undefined &&
-      inCallParticipantList !== null &&
-      inCallParticipantList.length !== 0
+      Array.isArray(inCallParticipantList) &&
+      inCallParticipantList.length > 0
     ) {
-      setInCallParticipantsList(inCallParticipantList);
+      // Filter out the current user
+      const filteredList = inCallParticipantList.filter(
+        (participant) => participant.userID !== currentUserID
+      );
+
+      setInCallParticipantsList(filteredList); // set filtered list
     } else {
-      setInCallParticipantsList([]);
+      setInCallParticipantsList([]); // no participants
     }
   }, [inCallParticipantList]);
 
@@ -795,6 +801,7 @@ const VideoCallNormalHeader = ({
   };
 
   const closeParticipantHandler = (flag, value) => {
+    console.log(flag, "CheckFlagFlag");
     if (flag === 1) {
       let check = priticipantListModalFlagForHost ? false : true;
       dispatch(participantWaitingListBox(check));
@@ -812,6 +819,8 @@ const VideoCallNormalHeader = ({
         }
       }
     }
+
+  
   };
 
   const normalizeScreen = () => {
@@ -1573,9 +1582,8 @@ const VideoCallNormalHeader = ({
                 !presenterViewJoinFlag &&
                 !presenterViewHostFlag ? (
                   <>
-                    {console.log("Check QUick Is Coming or Not")}
                     {/* if Recording is start */}
-                    {startRecordingState && (
+                    {/* {startRecordingState && (
                       <div
                         className="start-Recording-div"
                         onClick={onStartRecording}
@@ -1596,10 +1604,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )}
+                    )} */}
 
                     {/* if Recording is Pause and Stop */}
-                    {pauseRecordingState && (
+                    {/* {pauseRecordingState && (
                       <div className={"Record-Start-Background-MeetingVideo"}>
                         <Tooltip
                           placement={presenterViewFlag ? "bottom" : "topRight"}
@@ -1636,10 +1644,10 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )}
+                    )} */}
 
                     {/* if Recording is Pause and Resume */}
-                    {resumeRecordingState && (
+                    {/* {resumeRecordingState && (
                       <div
                         className={"Record-Start-BackgroundRed-VideoMeeting"}
                       >
@@ -1663,7 +1671,7 @@ const VideoCallNormalHeader = ({
                           />
                         </Tooltip>
                       </div>
-                    )}
+                    )} */}
                   </>
                 ) : null}
               </>
@@ -1799,6 +1807,26 @@ const VideoCallNormalHeader = ({
               />
             </Tooltip>
           </div>
+
+          {(currentCallType === 1 || isMeetingVideo || presenterViewFlag) &&
+            checkFeatureIDAvailability(3) && (
+              <div
+                className={
+                  LeaveCallModalFlag
+                    ? "grayScaleImage"
+                    : "screenShare-Toggle inactive-state"
+                }
+              >
+                <Tooltip placement="topRight" title={t("Chat")}>
+                  <img
+                    onClick={onClickCloseChatHandler}
+                    src={ChatIcon}
+                    alt="Chat"
+                  />
+                </Tooltip>
+              </div>
+            )}
+
           {!presenterViewHostFlag && getMeetingHostInfo?.isDashboardVideo && (
             <div
               className={
@@ -1953,6 +1981,18 @@ const VideoCallNormalHeader = ({
                     <img
                       src={ActiveParticipantIcon}
                       onClick={() => {
+                        // ✅ If viewer (not caller, not host, not dashboard)
+                        if (
+                          !isCaller &&
+                          !isMeetingVideo &&
+                          !getMeetingHostInfo.isHost &&
+                          !getMeetingHostInfo.isDashboard
+                        ) {
+                          dispatch(participantPopup(false));
+                          return; // Stop here, don't call handler
+                        }
+
+                        // ✅ Existing logic for caller/host
                         const role = getMeetingHostInfo.isHost ? 1 : 2;
                         closeParticipantHandler(role, true);
                       }}
@@ -1960,83 +2000,93 @@ const VideoCallNormalHeader = ({
                     />
                   </div>
                   <div className="participants-list">
-                    {isCaller && (
-                      <>
-                        {groupCallParticipantList !== null &&
-                        groupCallParticipantList.length > 0
-                          ? groupCallParticipantList.map(
-                              (participantData, index) => {
-                                const displayStatus =
-                                  participantData.callStatusID === 4
-                                    ? t("Calling")
-                                    : participantData.callStatus;
+                    {!isCaller &&
+                    !getMeetingHostInfo.isHost &&
+                    !getMeetingHostInfo.isDashboard
+                      ? /* ===== VIEWER LIST ===== */
+                        inCallParticipantsList &&
+                        inCallParticipantsList.length > 0 &&
+                        inCallParticipantsList.map((participant, index) => (
+                          <Row className="m-0" key={index}>
+                            <Col className="p-0" lg={12} md={12} sm={12}>
+                              <p className="participant-name">
+                                {participant.name}
+                                {participant.isHost && (
+                                  <span className="ms-1">(Caller)</span>
+                                )}
+                              </p>
+                            </Col>
+                          </Row>
+                        ))
+                      : /* ===== CALLER LIST ===== */
+                        isCaller && (
+                          <>
+                            {groupCallParticipantList !== null &&
+                            groupCallParticipantList.length > 0
+                              ? groupCallParticipantList.map(
+                                  (participantData, index) => {
+                                    const displayStatus =
+                                      participantData.callStatusID === 4
+                                        ? t("Calling")
+                                        : participantData.callStatus;
 
-                                // Check if participant is in the accepted list
-                                const isMatchingParticipant =
-                                  groupVideoCallAccepted.some(
-                                    (user) =>
-                                      user.recepientID ===
-                                        participantData.userID &&
-                                      user.recepientName ===
-                                        participantData.name
-                                  );
+                                    const isMatchingParticipant =
+                                      groupVideoCallAccepted.some(
+                                        (user) =>
+                                          user.recepientID ===
+                                            participantData.userID &&
+                                          user.recepientName ===
+                                            participantData.name
+                                      );
 
-                                // Check if participant is in the accepted list
-                                const isMatchingParticipantUnanswered =
-                                  unansweredCallParticipant.some(
-                                    (user) =>
-                                      user.recepientID ===
-                                        participantData.userID &&
-                                      user.recepientName ===
-                                        participantData.name
-                                  );
+                                    const isMatchingParticipantUnanswered =
+                                      unansweredCallParticipant.some(
+                                        (user) =>
+                                          user.recepientID ===
+                                            participantData.userID &&
+                                          user.recepientName ===
+                                            participantData.name
+                                      );
 
-                                return (
-                                  <Row className="m-0" key={index}>
-                                    <Col className="p-0" lg={8} md={8} sm={12}>
-                                      <p className="participant-name">
-                                        {participantData.name}
-                                      </p>
-                                    </Col>
-                                    <Col
-                                      className="d-flex justify-content-end align-items-baseline gap-3 p-0"
-                                      lg={4}
-                                      md={4}
-                                      sm={12}
-                                    >
-                                      {isMatchingParticipant ? (
-                                        <>
-                                          <Row>
-                                            <Col>
-                                              <p className="participant-state">
-                                                {t("Accepted")}
-                                              </p>
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      ) : isMatchingParticipantUnanswered ? (
-                                        <>
-                                          <Row>
-                                            <Col>
-                                              <p className="participant-state">
-                                                {t("Unanswered")}
-                                              </p>
-                                            </Col>
-                                          </Row>
-                                        </>
-                                      ) : (
-                                        <p className="participant-state">
-                                          {displayStatus}
-                                        </p>
-                                      )}
-                                    </Col>
-                                  </Row>
-                                );
-                              }
-                            )
-                          : null}
-                      </>
-                    )}
+                                    return (
+                                      <Row className="m-0" key={index}>
+                                        <Col
+                                          className="p-0"
+                                          lg={8}
+                                          md={8}
+                                          sm={12}
+                                        >
+                                          <p className="participant-name">
+                                            {participantData.name}
+                                          </p>
+                                        </Col>
+                                        <Col
+                                          className="d-flex justify-content-end align-items-baseline gap-3 p-0"
+                                          lg={4}
+                                          md={4}
+                                          sm={12}
+                                        >
+                                          {isMatchingParticipant ? (
+                                            <p className="participant-state">
+                                              {t("Accepted")}
+                                            </p>
+                                          ) : isMatchingParticipantUnanswered ? (
+                                            <p className="participant-state">
+                                              {t("Unanswered")}
+                                            </p>
+                                          ) : (
+                                            <p className="participant-state">
+                                              {displayStatus}
+                                            </p>
+                                          )}
+                                        </Col>
+                                      </Row>
+                                    );
+                                  }
+                                )
+                              : null}
+                          </>
+                        )}
                   </div>
                 </>
               ) : (
@@ -2051,16 +2101,30 @@ const VideoCallNormalHeader = ({
                     <img
                       src={ParticipantsIcon}
                       onClick={() => {
+                        if (
+                          !isCaller &&
+                          !isMeetingVideo &&
+                          !getMeetingHostInfo.isHost &&
+                          !getMeetingHostInfo.isDashboard
+                        ) {
+                          // JUST TOGGLE PARTICIPANT POPUP
+                          dispatch(participantPopup(!ParticipantPopupFlag));
+                          return; // ⛔ STOP HERE — DO NOT CALL closeParticipantHandler
+                        }
+
+                        // EXISTING LOGIC (UNCHANGED)
                         const role = getMeetingHostInfo.isHost
                           ? 1
                           : presenterViewHostFlag
                           ? 1
                           : 2;
+
                         const flag = getMeetingHostInfo.isHost
                           ? false
                           : presenterViewHostFlag
                           ? false
                           : true;
+
                         closeParticipantHandler(role, flag);
                       }}
                       alt="Participants"
@@ -2112,8 +2176,13 @@ const VideoCallNormalHeader = ({
                           )}
 
                           {convertNumbersInString(
-                            Array.isArray(groupCallParticipantList) &&
-                              groupCallParticipantList?.length,
+                            !isCaller &&
+                              !isMeetingVideo &&
+                              !getMeetingHostInfo.isHost &&
+                              !getMeetingHostInfo.isDashboard
+                              ? inCallParticipantsList?.length
+                              : Array.isArray(groupCallParticipantList) &&
+                                  groupCallParticipantList?.length,
                             lan
                           )}
                         </>
@@ -2132,28 +2201,6 @@ const VideoCallNormalHeader = ({
               )}
             </div>
           ) : null}
-
-          {currentCallType === 1 && !isMeetingVideo && !presenterViewFlag && (
-            <>
-              {currentCallType === 1 && checkFeatureIDAvailability(3) && (
-                <div
-                  className={
-                    LeaveCallModalFlag === true
-                      ? "grayScaleImage"
-                      : "screenShare-Toggle inactive-state"
-                  }
-                >
-                  <Tooltip placement="topRight" title={t("Chat")}>
-                    <img
-                      onClick={onClickCloseChatHandler}
-                      src={ChatIcon}
-                      alt="Chat"
-                    />
-                  </Tooltip>
-                </div>
-              )}
-            </>
-          )}
 
           <Tooltip
             placement={presenterViewFlag ? "bottom" : "topRight"}

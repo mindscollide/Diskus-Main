@@ -34,8 +34,12 @@ import { Spin } from "antd";
 import { DataRoomDownloadFileApiFunc } from "../../store/actions/DataRoom_actions";
 import { fileFormatforSignatureFlow } from "../../commen/functions/utils";
 import { showMessage } from "../../components/elements/snack_bar/utill";
+import { useMeetingContext } from "../../context/MeetingContext";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
+
+  const { editorRole, viewAdvanceMeetingModal, advanceMeetingModalID } = useMeetingContext();
+  console.log(editorRole, viewAdvanceMeetingModal, advanceMeetingModalID, "editorRoleeditorRole")
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -359,7 +363,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
           });
         }
       }
-    } catch {}
+    } catch { }
   }, [socketTodoStatusData]);
 
   const handleClickCommentSubmit = async (e, id) => {
@@ -401,13 +405,25 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   };
 
   const handleLinkClick = (data, ext) => {
-    if (fileFormatforSignatureFlow.includes(ext)) {
+    if (viewAdvanceMeetingModal) {
+      if (advanceMeetingModalID !== 0 && Number(editorRole.status) === 10) {
+
+        window.open(
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(data)}`,
+          "_blank",
+          "noopener noreferrer"
+        );
+        return;
+      }
+    } else {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",
         "noopener noreferrer"
       );
     }
+
+
   };
 
   useEffect(() => {
@@ -501,88 +517,88 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
               <Col sm={12} md={12} lg={12} className='taskComments'>
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                      if (Number(commentData.userID) === Number(createrID)) {
-                        return (
-                          <>
-                            <Col
-                              sm={12}
-                              lg={12}
-                              md={12}
-                              className='MontserratRegular my-1 FontArabicRegular position-relative'
-                              key={commentData.taskCommentID}>
-                              <TextArea
-                                rows={2}
-                                timeValue={newTimeFormaterAsPerUTCFullDate(
-                                  commentData.DateTime,
-                                  currentLanguage
-                                )}
-                                label={commentData.taskCommentUserName}
-                                labelClassName=' d-flex justify-content-start  fw-bold '
-                                disable='false'
-                                className='comment-view sender text-white  '
-                                value={commentData.Comment}
-                                timeClass={"timeClass"}
-                                formClassPosition='relative-position-form'
-                              />
+                    if (Number(commentData.userID) === Number(createrID)) {
+                      return (
+                        <>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className='MontserratRegular my-1 FontArabicRegular position-relative'
+                            key={commentData.taskCommentID}>
+                            <TextArea
+                              rows={2}
+                              timeValue={newTimeFormaterAsPerUTCFullDate(
+                                commentData.DateTime,
+                                currentLanguage
+                              )}
+                              label={commentData.taskCommentUserName}
+                              labelClassName=' d-flex justify-content-start  fw-bold '
+                              disable='false'
+                              className='comment-view sender text-white  '
+                              value={commentData.Comment}
+                              timeClass={"timeClass"}
+                              formClassPosition='relative-position-form'
+                            />
 
-                              {DeleteCommentSpinnerData &&
+                            {DeleteCommentSpinnerData &&
                               deleteCommentsId === commentData.taskCommentID ? (
-                                <span className='deleteCommentSpinner'>
-                                  <Spin size='small' />
-                                </span>
-                              ) : commentData.taskCommentID === 0 ||
-                                commentData.taskCommentID !== 0 ? (
-                                <>
-                                  <img
-                                    draggable='false'
-                                    src={CrossIcon}
-                                    width={14}
-                                    alt=''
-                                    onClick={() =>
-                                      handleDeleteComments(
-                                        commentData.taskCommentID,
-                                        commentData.TaskID
-                                      )
-                                    }
-                                    className={
-                                      commentData.taskCommentID !== 0
-                                        ? "crossIconTodoComment"
-                                        : "crossIconTodoComment_disable"
-                                    }
-                                  />
-                                </>
-                              ) : null}
-                            </Col>
-                          </>
-                        );
-                      } else {
-                        return (
-                          <>
-                            <Col
-                              sm={12}
-                              lg={12}
-                              md={12}
-                              className='MontserratRegular my-1 FontArabicRegular'
-                              key={commentData.taskCommentID}>
-                              <TextArea
-                                rows={2}
-                                label={commentData.taskCommentUserName}
-                                disable='false'
-                                className='comment-view'
-                                value={commentData.Comment}
-                                labelClassName=' d-flex justify-content-start mx-2 '
-                                timeValue={newTimeFormaterAsPerUTCFullDate(
-                                  commentData.DateTime,
-                                  currentLanguage
-                                )}
-                                timeClass={"timeClass Participant"}
-                                formClassPosition='relative-position-form'
-                              />
-                            </Col>
-                          </>
-                        );
-                      }
-                    })
+                              <span className='deleteCommentSpinner'>
+                                <Spin size='small' />
+                              </span>
+                            ) : commentData.taskCommentID === 0 ||
+                              commentData.taskCommentID !== 0 ? (
+                              <>
+                                <img
+                                  draggable='false'
+                                  src={CrossIcon}
+                                  width={14}
+                                  alt=''
+                                  onClick={() =>
+                                    handleDeleteComments(
+                                      commentData.taskCommentID,
+                                      commentData.TaskID
+                                    )
+                                  }
+                                  className={
+                                    commentData.taskCommentID !== 0
+                                      ? "crossIconTodoComment"
+                                      : "crossIconTodoComment_disable"
+                                  }
+                                />
+                              </>
+                            ) : null}
+                          </Col>
+                        </>
+                      );
+                    } else {
+                      return (
+                        <>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className='MontserratRegular my-1 FontArabicRegular'
+                            key={commentData.taskCommentID}>
+                            <TextArea
+                              rows={2}
+                              label={commentData.taskCommentUserName}
+                              disable='false'
+                              className='comment-view'
+                              value={commentData.Comment}
+                              labelClassName=' d-flex justify-content-start mx-2 '
+                              timeValue={newTimeFormaterAsPerUTCFullDate(
+                                commentData.DateTime,
+                                currentLanguage
+                              )}
+                              timeClass={"timeClass Participant"}
+                              formClassPosition='relative-position-form'
+                            />
+                          </Col>
+                        </>
+                      );
+                    }
+                  })
                   : null}
                 <div ref={todoComments} />
               </Col>
@@ -641,48 +657,48 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                 {tasksAttachments.TasksAttachments.length > 0
                   ? t("Attachement")
                   : t("No-attachement")}
-                {}
+                { }
               </Col>
               {/* Task Attachment List */}
               <Col sm={12} md={12} lg={12} className='todoModalViewFiles'>
                 {tasksAttachments.TasksAttachments.length > 0
                   ? tasksAttachments.TasksAttachments.map(
-                      (modalviewAttachmentFiles, index) => {
-                        let ext =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            "."
-                          ).pop();
+                    (modalviewAttachmentFiles, index) => {
+                      let ext =
+                        modalviewAttachmentFiles.DisplayAttachmentName.split(
+                          "."
+                        ).pop();
 
-                        const pdfData = {
-                          taskId: modalviewAttachmentFiles.FK_TID,
-                          attachmentID: Number(
-                            modalviewAttachmentFiles.OriginalAttachmentName
-                          ),
-                          fileName:
-                            modalviewAttachmentFiles.DisplayAttachmentName,
-                          commingFrom: 4,
-                        };
-                        const pdfDataJson = JSON.stringify(pdfData);
-                        return (
-                          <AttachmentViewer
-                            handleClickDownload={() =>
-                              handleClickDownloadFile(
-                                modalviewAttachmentFiles.OriginalAttachmentName,
-                                modalviewAttachmentFiles.DisplayAttachmentName
-                              )
-                            }
-                            handleEyeIcon={() =>
-                              handleLinkClick(pdfDataJson, ext)
-                            }
-                            id={modalviewAttachmentFiles.OriginalAttachmentName}
-                            data={modalviewAttachmentFiles}
-                            name={
+                      const pdfData = {
+                        taskId: modalviewAttachmentFiles.FK_TID,
+                        attachmentID: Number(
+                          modalviewAttachmentFiles.OriginalAttachmentName
+                        ),
+                        fileName:
+                          modalviewAttachmentFiles.DisplayAttachmentName,
+                        commingFrom: 4,
+                      };
+                      const pdfDataJson = JSON.stringify(pdfData);
+                      return (
+                        <AttachmentViewer
+                          handleClickDownload={() =>
+                            handleClickDownloadFile(
+                              modalviewAttachmentFiles.OriginalAttachmentName,
                               modalviewAttachmentFiles.DisplayAttachmentName
-                            }
-                          />
-                        );
-                      }
-                    )
+                            )
+                          }
+                          handleEyeIcon={() =>
+                            handleLinkClick(pdfDataJson, ext)
+                          }
+                          id={modalviewAttachmentFiles.OriginalAttachmentName}
+                          data={modalviewAttachmentFiles}
+                          name={
+                            modalviewAttachmentFiles.DisplayAttachmentName
+                          }
+                        />
+                      );
+                    }
+                  )
                   : null}
               </Col>
             </Row>
