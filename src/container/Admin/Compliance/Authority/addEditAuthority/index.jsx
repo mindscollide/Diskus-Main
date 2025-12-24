@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./addEditAuthority.module.css";
 import { Check2 } from "react-bootstrap-icons";
 
-import CheckIcon from "../../../../../assets/images/newElements/check.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  Modal,
-  TextArea,
-  TextField,
-} from "../../../../../components/elements";
+import { Button, Modal, TextArea } from "../../../../../components/elements";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
@@ -26,6 +20,8 @@ import {
   IsAuthorityNameExistsAPI,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
+import TextField from "../../../../../components/elements/input_field/Input_field2";
+
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -45,6 +41,7 @@ const AddEditViewAuthorityModal = () => {
 
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
+  const authorityNameRef = useRef(null);
 
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
@@ -87,9 +84,12 @@ const AddEditViewAuthorityModal = () => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
   );
-
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
   useEffect(() => {
+    if (authorityViewState !== 3) {
+      authorityNameRef.current && authorityNameRef.current.focus();
+    }
     return () => {
       dispatch(initialAddEditAuthority());
     };
@@ -184,7 +184,6 @@ const AddEditViewAuthorityModal = () => {
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
-    // console.log(country, "CountryIDCountryID");
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -194,14 +193,13 @@ const AddEditViewAuthorityModal = () => {
       phoneCode: a.secondary,
     });
     console.log(a, "CountryIDCountryID");
-    // setSignUpDetails({
-    //   ...signUpDetails,
-    //   FK_CCID: a.id,
-    //   PhoneNumberCountryID: a.id,
-    // });
   };
 
   const handleCancelButton = () => {
+    if (authorityViewState === 3) {
+      setAddEditViewAuthoriyModal(false);
+      setAddViewAuthorityDetails(true);
+    }
     setCloseConfirmationModal(true);
     setAddViewAuthorityDetails(false);
   };
@@ -230,6 +228,8 @@ const AddEditViewAuthorityModal = () => {
     authorityDetails.shortCode.trim() !== "" &&
     errors.website === "" &&
     errors.email === "" &&
+    errors.shortCode === "" &&
+    errors.name === "" &&
     selectCountry !== null;
   console.log(isAllValid, "isAllValidisAllValid");
   const handleAddAuthority = () => {
@@ -299,7 +299,9 @@ const AddEditViewAuthorityModal = () => {
   };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  // const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  const urlRegex =
+    /^(https?:\/\/)?((([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/.*)?$/i;
 
   const phoneRegex = /^[0-9+\-() ]{0,20}$/;
 
@@ -310,12 +312,14 @@ const AddEditViewAuthorityModal = () => {
 
     switch (name) {
       case "name":
+        setIsAuthorityExist(null);
         if (!value.trim()) {
           error = "Authority Name is required";
         }
         break;
 
       case "shortCode":
+        setIsShortCodeExist(null);
         if (!value.trim()) {
           error = "Short Code is required";
         }
@@ -491,8 +495,11 @@ const AddEditViewAuthorityModal = () => {
                           change={handleValueChange}
                           onBlur={handleBlur}
                           name="name"
+                          ref={authorityNameRef}
                           maxLength={100}
-                          placeholder={t("Authority-name")}
+                          placeholder={
+                            authorityViewState !== 3 ? t("Authority-name") : ""
+                          }
                           applyClass={
                             authorityViewState === 3
                               ? "viewField_Name"
@@ -538,7 +545,9 @@ const AddEditViewAuthorityModal = () => {
                         change={handleValueChange}
                         onBlur={handleBlur}
                         name="shortCode"
-                        placeholder={t("Short-code")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Short-code") : ""
+                        }
                         applyClass={
                           authorityViewState === 3
                             ? "viewField_Name"
@@ -582,7 +591,9 @@ const AddEditViewAuthorityModal = () => {
                     <Col sm={12} md={12} lg={12}>
                       <TextArea
                         labelClassName={styles["labelStyle"]}
-                        placeholder={t("Description")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Description") : ""
+                        }
                         maxLength={500}
                         onChange={handleValueChange}
                         name="description"
@@ -599,7 +610,9 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Sector")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Sector") : ""
+                        }
                         maxLength={50}
                         label={t("Sector")}
                         change={handleValueChange}
@@ -615,7 +628,9 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Website")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Website") : ""
+                        }
                         label={t("Website")}
                         maxLength={100}
                         change={handleValueChange}
@@ -659,7 +674,11 @@ const AddEditViewAuthorityModal = () => {
                             labelInValue={t("Country")}
                             onChange={(event) => setSelectCountry(event)}
                             value={selectCountry}
-                            placeholder={t("Please-select-country")}
+                            placeholder={
+                              authorityViewState !== 3
+                                ? t("Please-select-country")
+                                : ""
+                            }
                             classNamePrefix="Select_country_Authoriy"
                           />
                         )}
@@ -669,7 +688,9 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
                       <TextField
-                        placeholder={t("Address")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Address") : ""
+                        }
                         label={t("Address")}
                         maxLength={300}
                         change={handleValueChange}
@@ -687,7 +708,11 @@ const AddEditViewAuthorityModal = () => {
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Contact-person-name")}
+                        placeholder={
+                          authorityViewState !== 3
+                            ? t("Contact-person-name")
+                            : ""
+                        }
                         label={t("Contact-person-name")}
                         maxLength={50}
                         change={handleValueChange}
@@ -703,7 +728,7 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Email")}
+                        placeholder={authorityViewState !== 3 ? t("Email") : ""}
                         label={t("Email")}
                         maxLength={50}
                         change={handleValueChange}
@@ -793,15 +818,15 @@ const AddEditViewAuthorityModal = () => {
                     <Row className="mt-2">
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["labelStyleActive"]}>
-                          {t("Active")}
+                          {t("Status")}
                         </div>
-                        {authorityDetails.status === true ? (
+                        {authorityDetails.status === "Active" ? (
                           <span className={styles["activeAuthorityStyle"]}>
-                            Active
+                            {t("Active")}
                           </span>
                         ) : (
                           <span className={styles["inactiveAuthorityStyle"]}>
-                            InActive
+                            {t("InActive")}
                           </span>
                         )}
                       </Col>
@@ -854,7 +879,7 @@ const AddEditViewAuthorityModal = () => {
                     )}
 
                     <Button
-                      text={t("Cancel")}
+                      text={authorityViewState !== 3 ? t("Cancel") : t("Close")}
                       className={styles["CancelButtonStyle"]}
                       onClick={handleCancelButton}
                     />

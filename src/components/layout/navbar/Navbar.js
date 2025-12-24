@@ -64,7 +64,7 @@ const NavbarAdmin = () => {
                             eventKey="link-8"
                             className="text-black border-none"
                           >
-                            {t("General-setting")}
+                            {t("General-settings")}
                           </NavDropdown.Item>
                         </NavDropdown>
 
@@ -251,7 +251,7 @@ const NavbarAdmin = () => {
                                 eventKey="link-8"
                                 className="text-black border-none"
                               >
-                                {t("General-setting")}
+                                {t("General-settings")}
                               </NavDropdown.Item>
                             </NavDropdown>
                             <Nav.Link

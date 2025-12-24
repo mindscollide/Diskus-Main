@@ -52,7 +52,7 @@ const DueDateAlert = ({ organizationSettingData, setOrganizationSetting }) => {
           sm={12}
           md={6}
           lg={6}
-          className="d-flex align-items-center justify-content-start gap-3"
+          className="d-flex align-items-center justify-content-start gap-3 mt-3"
         >
           <div
             className={`${styles["dueDateAlert_color-span"]} ${styles["color-green"]}`}
@@ -84,7 +84,7 @@ const DueDateAlert = ({ organizationSettingData, setOrganizationSetting }) => {
           sm={12}
           md={6}
           lg={6}
-          className="d-flex align-items-center justify-content-start gap-3"
+          className="d-flex align-items-center justify-content-start gap-3  mt-3"
         >
           <div
             className={`${styles["dueDateAlert_color-span"]} ${styles["color-orange"]}`}
@@ -117,7 +117,7 @@ const DueDateAlert = ({ organizationSettingData, setOrganizationSetting }) => {
           sm={12}
           md={6}
           lg={6}
-          className="d-flex align-items-center justify-content-start gap-3"
+          className="d-flex align-items-center justify-content-start gap-3  mt-3"
         >
           <div
             className={`${styles["dueDateAlert_color-span"]} ${styles["color-purple"]}`}

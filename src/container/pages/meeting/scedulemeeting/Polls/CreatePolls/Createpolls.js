@@ -659,6 +659,7 @@ const Createpolls = ({ setCreatepoll, currentMeeting }) => {
                       calendar={gregorian}
                       locale={gregorian_en}
                       ref={calendRef}
+                      onChange={(value) => changeDateStartHandler(value)}
                       onFocusedDateChange={(value) =>
                         changeDateStartHandler(value)
                       }

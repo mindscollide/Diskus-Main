@@ -245,6 +245,13 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         SocketAuthorityUpdated: action.response,
         ResponseMessage: action.message,
       };
+
+    case actions.GET_CLEAREMESSAGE_AUTHORITY:
+      return {
+        ...state,
+        ResponseMessage: "",
+        severity: null,
+      };
     // ================= DEFAULT =================
     default:
       return state;
