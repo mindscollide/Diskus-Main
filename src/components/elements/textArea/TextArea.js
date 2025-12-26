@@ -17,6 +17,7 @@ const TextArea = ({
   onChange,
   applyClass,
   name,
+  maxLength,
 }) => {
   return (
     <Form className={formClassPosition}>
@@ -32,6 +33,7 @@ const TextArea = ({
             ? styles[applyClass]
             : className
         }
+        maxLength={maxLength}
         disabled={disable}
         value={value}
         placeholder={placeholder}

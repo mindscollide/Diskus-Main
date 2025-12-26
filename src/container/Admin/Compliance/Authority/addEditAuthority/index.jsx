@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./addEditAuthority.module.css";
 import { Check2 } from "react-bootstrap-icons";
 
-import CheckIcon from "../../../../../assets/images/newElements/check.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  Modal,
-  TextArea,
-  TextField,
-} from "../../../../../components/elements";
+import { Button, Modal, TextArea } from "../../../../../components/elements";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
@@ -27,6 +21,8 @@ import {
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
 import InputfieldwithCount from "../../../../../components/elements/input_field/Input_field_withCount";
+import TextField from "../../../../../components/elements/input_field/Input_field2";
+
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -46,6 +42,7 @@ const AddEditViewAuthorityModal = () => {
 
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
+  const authorityNameRef = useRef(null);
 
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
@@ -88,9 +85,12 @@ const AddEditViewAuthorityModal = () => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
   );
-
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
   useEffect(() => {
+    if (authorityViewState !== 3) {
+      authorityNameRef.current && authorityNameRef.current.focus();
+    }
     return () => {
       dispatch(initialAddEditAuthority());
     };
@@ -185,7 +185,6 @@ const AddEditViewAuthorityModal = () => {
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
-    // console.log(country, "CountryIDCountryID");
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -195,14 +194,13 @@ const AddEditViewAuthorityModal = () => {
       phoneCode: a.secondary,
     });
     console.log(a, "CountryIDCountryID");
-    // setSignUpDetails({
-    //   ...signUpDetails,
-    //   FK_CCID: a.id,
-    //   PhoneNumberCountryID: a.id,
-    // });
   };
 
   const handleCancelButton = () => {
+    if (authorityViewState === 3) {
+      setAddEditViewAuthoriyModal(false);
+      setAddViewAuthorityDetails(true);
+    }
     setCloseConfirmationModal(true);
     setAddViewAuthorityDetails(false);
   };
@@ -231,6 +229,8 @@ const AddEditViewAuthorityModal = () => {
     authorityDetails.shortCode.trim() !== "" &&
     errors.website === "" &&
     errors.email === "" &&
+    errors.shortCode === "" &&
+    errors.name === "" &&
     selectCountry !== null;
   console.log(isAllValid, "isAllValidisAllValid");
   const handleAddAuthority = () => {
@@ -300,7 +300,9 @@ const AddEditViewAuthorityModal = () => {
   };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  // const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  const urlRegex =
+    /^(https?:\/\/)?((([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/.*)?$/i;
 
   const phoneRegex = /^[0-9+\-() ]{0,20}$/;
 
@@ -311,12 +313,14 @@ const AddEditViewAuthorityModal = () => {
 
     switch (name) {
       case "name":
+        setIsAuthorityExist(null);
         if (!value.trim()) {
           error = "Authority Name is required";
         }
         break;
 
       case "shortCode":
+        setIsShortCodeExist(null);
         if (!value.trim()) {
           error = "Short Code is required";
         }
@@ -487,13 +491,15 @@ const AddEditViewAuthorityModal = () => {
               {addViewAuthorityDetails ? (
                 <>
                   <Row>
-                    <Col sm={12} md={8} lg={8} className="m-0 pe-0 ">
+                    <Col sm={12} md={8} lg={8} className='m-0 pe-0 '>
                       <InputfieldwithCount
                         value={authorityDetails.name}
                         onChange={handleValueChange}
-                        name="name"
+                        name='name'
                         showCount={authorityViewState === 3 ? false : true}
-                        placeholder={t("Authority-name")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Authority-name") : ""
+                        }
                         preFixClas={
                           authorityViewState === 3
                             ? "viewField_Name"
@@ -518,8 +524,7 @@ const AddEditViewAuthorityModal = () => {
                           errors.name
                             ? styles["errorMessage-inLogin"]
                             : styles["errorMessage-inLogin_hidden"]
-                        }
-                      >
+                        }>
                         {errors.name}
                       </p>
                     </Col>
@@ -527,23 +532,24 @@ const AddEditViewAuthorityModal = () => {
                       sm={12}
                       md={1}
                       lg={1}
-                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
-                    >
+                      className='m-0 p-0 d-flex justify-content-center align-items-center mt-3'>
                       {isAuthorityExist === true ? (
-                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                        <Spinner size='md' className={styles["SpinnerClass"]} />
                       ) : isAuthorityExist === false ? (
                         <Check2 className={styles["CheckIcon"]} />
                       ) : null}
                     </Col>
-                    <Col sm={12} md={2} lg={2} className="m-0 p-0">
+                    <Col sm={12} md={2} lg={2} className='m-0 p-0'>
                       <InputfieldwithCount
                         maxLength={10}
                         showCount={authorityViewState === 3 ? false : true}
                         onChange={handleValueChange}
                         onBlur={handleBlur}
-                        name="shortCode"
+                        name='shortCode'
                         pattern={"^[a-zA-Z0-9 ]+$"}
-                        placeholder={t("Short-code")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Short-code") : ""
+                        }
                         preFixClas={
                           authorityViewState === 3
                             ? "viewField_Name"
@@ -566,8 +572,7 @@ const AddEditViewAuthorityModal = () => {
                           errors.shortCode
                             ? styles["errorMessage-inLogin"]
                             : styles["errorMessage-inLogin_hidden"]
-                        }
-                      >
+                        }>
                         {errors.shortCode}
                       </p>
                     </Col>
@@ -575,23 +580,24 @@ const AddEditViewAuthorityModal = () => {
                       sm={12}
                       md={1}
                       lg={1}
-                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
-                    >
+                      className='m-0 p-0 d-flex justify-content-center align-items-center mt-3'>
                       {isShortCodeExist === true ? (
-                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                        <Spinner size='md' className={styles["SpinnerClass"]} />
                       ) : isShortCodeExist === false ? (
                         <Check2 className={styles["CheckIcon"]} />
                       ) : null}
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col sm={12} md={12} lg={12}>
                       <TextArea
                         labelClassName={styles["labelStyle"]}
-                        placeholder={t("Description")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Description") : ""
+                        }
                         maxLength={500}
                         onChange={handleValueChange}
-                        name="description"
+                        name='description'
                         applyClass={
                           authorityViewState === 3
                             ? "viewField"
@@ -602,14 +608,16 @@ const AddEditViewAuthorityModal = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Sector")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Sector") : ""
+                        }
                         maxLength={50}
                         label={t("Sector")}
                         change={handleValueChange}
-                        name="sector"
+                        name='sector'
                         labelclass={styles["labelStyle"]}
                         applyClass={
                           authorityViewState === 3
@@ -621,12 +629,14 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Website")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Website") : ""
+                        }
                         label={t("Website")}
                         maxLength={100}
                         change={handleValueChange}
                         onBlur={handleBlur}
-                        name="website"
+                        name='website'
                         applyClass={
                           authorityViewState === 3
                             ? "viewField"
@@ -641,15 +651,13 @@ const AddEditViewAuthorityModal = () => {
                           errors && errors.website
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {errors.website}
                       </p>
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <div
-                        className={`${styles["labelStyle"]} ${styles["Select_country_Authoriy_label"]}`}
-                      >
+                        className={`${styles["labelStyle"]} ${styles["Select_country_Authoriy_label"]}`}>
                         {t("Country")}
                         <span className={styles["sterick"]}>
                           {authorityViewState !== 3 ? " *" : ""}
@@ -665,21 +673,27 @@ const AddEditViewAuthorityModal = () => {
                             labelInValue={t("Country")}
                             onChange={(event) => setSelectCountry(event)}
                             value={selectCountry}
-                            placeholder={t("Please-select-country")}
-                            classNamePrefix="Select_country_Authoriy"
+                            placeholder={
+                              authorityViewState !== 3
+                                ? t("Please-select-country")
+                                : ""
+                            }
+                            classNamePrefix='Select_country_Authoriy'
                           />
                         )}
                       </div>
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col sm={12} md={12} lg={12}>
                       <TextField
-                        placeholder={t("Address")}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Address") : ""
+                        }
                         label={t("Address")}
                         maxLength={300}
                         change={handleValueChange}
-                        name="address"
+                        name='address'
                         applyClass={
                           authorityViewState === 3
                             ? "viewField"
@@ -690,14 +704,18 @@ const AddEditViewAuthorityModal = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className="mt-2">
+                  <Row className='mt-2'>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Contact-person-name")}
+                        placeholder={
+                          authorityViewState !== 3
+                            ? t("Contact-person-name")
+                            : ""
+                        }
                         label={t("Contact-person-name")}
                         maxLength={50}
                         change={handleValueChange}
-                        name="contactPersonName"
+                        name='contactPersonName'
                         applyClass={
                           authorityViewState === 3
                             ? "viewField"
@@ -709,12 +727,12 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                     <Col sm={12} md={4} lg={4}>
                       <TextField
-                        placeholder={t("Email")}
+                        placeholder={authorityViewState !== 3 ? t("Email") : ""}
                         label={t("Email")}
                         maxLength={50}
                         change={handleValueChange}
                         onBlur={handleBlur}
-                        name="email"
+                        name='email'
                         applyClass={
                           authorityViewState === 3
                             ? "viewField"
@@ -729,22 +747,20 @@ const AddEditViewAuthorityModal = () => {
                           errors && errors.email
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {errors.email}
                       </p>
                     </Col>
 
                     <Col lg={4} md={4} sm={12}>
                       <div
-                        className={`${styles["labelStyle"]} ${styles["Select_Phone_Authoriy_label"]}`}
-                      >
+                        className={`${styles["labelStyle"]} ${styles["Select_Phone_Authoriy_label"]}`}>
                         {t("Phone")}
                       </div>
 
                       <Row>
                         {authorityViewState !== 3 && (
-                          <Col sm={4} md={4} lg={4} className=" pe-0">
+                          <Col sm={4} md={4} lg={4} className=' pe-0'>
                             <ReactFlagsSelect
                               fullWidth={false}
                               selected={selected}
@@ -757,7 +773,7 @@ const AddEditViewAuthorityModal = () => {
                           </Col>
                         )}
 
-                        <Col sm={8} md={8} lg={8} className=" me-0 pe-0">
+                        <Col sm={8} md={8} lg={8} className=' me-0 pe-0'>
                           {authorityViewState === 3 && (
                             <span className={styles["contactNumberView"]}>
                               {authorityDetails.phoneCode}
@@ -769,7 +785,7 @@ const AddEditViewAuthorityModal = () => {
                               placeholder={t("Phone")}
                               maxLength={20}
                               change={handleValueChange}
-                              name="phone"
+                              name='phone'
                               applyClass={
                                 authorityViewState === 3
                                   ? "viewField"
@@ -784,7 +800,7 @@ const AddEditViewAuthorityModal = () => {
                     </Col>
                   </Row>
                   {authorityViewState === 2 ? (
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col sm={12} md={12} lg={12}>
                         <span className={styles["labelStyleActive"]}>
                           {t("Active")}
@@ -796,18 +812,18 @@ const AddEditViewAuthorityModal = () => {
                       </Col>
                     </Row>
                   ) : authorityViewState === 3 ? (
-                    <Row className="mt-2">
+                    <Row className='mt-2'>
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["labelStyleActive"]}>
-                          {t("Active")}
+                          {t("Status")}
                         </div>
-                        {authorityDetails.status === true ? (
+                        {authorityDetails.status === "Active" ? (
                           <span className={styles["activeAuthorityStyle"]}>
-                            Active
+                            {t("Active")}
                           </span>
                         ) : (
                           <span className={styles["inactiveAuthorityStyle"]}>
-                            InActive
+                            {t("InActive")}
                           </span>
                         )}
                       </Col>
@@ -824,8 +840,7 @@ const AddEditViewAuthorityModal = () => {
                       md={12}
                       sm={12}
                       xs={12}
-                      className="text-center"
-                    >
+                      className='text-center'>
                       <div className={styles["ConfirmationHeading"]}>
                         {t(
                           "All your changes will be lost. Are you sure you want to discard them?"
@@ -843,14 +858,13 @@ const AddEditViewAuthorityModal = () => {
             {addViewAuthorityDetails ? (
               <>
                 {" "}
-                <Row className="mt-4">
+                <Row className='mt-4'>
                   <Col
                     sm={12}
                     md={12}
                     lg={12}
                     xl={12}
-                    className="d-flex justify-content-end gap-2 align-items-center"
-                  >
+                    className='d-flex justify-content-end gap-2 align-items-center'>
                     {authorityViewState === 3 && (
                       <Button
                         text={t("Edit")}
@@ -860,7 +874,7 @@ const AddEditViewAuthorityModal = () => {
                     )}
 
                     <Button
-                      text={t("Cancel")}
+                      text={authorityViewState !== 3 ? t("Cancel") : t("Close")}
                       className={styles["CancelButtonStyle"]}
                       onClick={handleCancelButton}
                     />
@@ -891,8 +905,7 @@ const AddEditViewAuthorityModal = () => {
                     md={12}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-center gap-2"
-                  >
+                    className='d-flex justify-content-center gap-2'>
                     <Button
                       text={t("Yes")}
                       className={styles["AddButtonStyles"]}

@@ -101,7 +101,8 @@ const GeneralSetting = () => {
     isFridayWorkingDay: true,
     isSaturdayWorkingDay: true,
     isSundayWorkingDay: true,
-    fiscalEndMonth: 2,
+    fiscalStartMonth: 2,
+    fiscalYearStartDay: 1,
     complianceAlertOne: 1,
     complianceAlertThree: 1,
     complianceAlertTwo: 1,
@@ -549,7 +550,7 @@ const GeneralSetting = () => {
           <Col lg={6} md={6} sm={12} xs={12}>
             <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
               <label className={styles["General_Setting-Main-Heading"]}>
-                {t("General-setting")}
+                {t("General-settings")}
               </label>
             </div>
           </Col>
@@ -680,11 +681,11 @@ const GeneralSetting = () => {
             sm={12}
             className="d-flex gap-3 justify-content-end"
           >
-            <Button
+            {/* <Button
               text={t("Cancel")}
               className={styles["New_settings_Cancel_Button"]}
               onClick={cancelOrganizationLevelSettings}
-            />
+            /> */}
             <Button
               text={t("Save")}
               className={styles["New_settings_Update_Button"]}

@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useSelector } from "react-redux";
 
 // Create the Context
@@ -13,8 +19,8 @@ export const AuthorityProvider = ({ children }) => {
 
   const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
     useState(false);
-  const [shortCodeSort, setShortCodeSort] = useState("ascend");
-  const [authorityNameSort, setAuthorityNameSort] = useState(null);
+  const [authorityNameSort, setAuthorityNameSort] = useState("ascend");
+  const [shortCodeSort, setShortCodeSort] = useState(null);
   const [countrySort, setCountrySort] = useState(null);
   const [sectorSort, setSectorSort] = useState(null);
   const [authorityViewState, setAuthorityViewState] = useState(0);
@@ -25,6 +31,8 @@ export const AuthorityProvider = ({ children }) => {
     label: "",
     value: 0,
   });
+
+  const [dataAfterSearch, setDataAfterSearch] = useState(false);
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [searchPayload, setSearchPayload] = useState({
@@ -63,10 +71,6 @@ export const AuthorityProvider = ({ children }) => {
       setSelectCountry(null);
     };
   }, [countryNamesReducerCountryNamesData]);
-  // const [sortState, setSortState] = useState({
-  //   columnKey: null,
-  //   order: null, // 'ascend' | 'descend' | null
-  // });
 
   return (
     <AuthorityContext.Provider
@@ -103,8 +107,8 @@ export const AuthorityProvider = ({ children }) => {
         setCountryNames,
         selectCountry,
         setSelectCountry,
-        // sortState,
-        // setSortState,
+        dataAfterSearch,
+        setDataAfterSearch,
       }}
     >
       {children}

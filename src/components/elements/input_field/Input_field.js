@@ -57,7 +57,7 @@ const TextField = ({
           onBlur={onBlur}
           autoComplete={autoComplete}
           className={
-            applyClass != undefined && applyClass != null
+            applyClass !== undefined && applyClass !== null
               ? styles[applyClass]
               : "form-control2 Saved_money_Tagline"
           }
@@ -87,13 +87,7 @@ const TextField = ({
           onKeyDown={onKeyDown}
         />
         <FormControl.Feedback className={iconclassname} onClick={clickIcon}>
-          {/* <span
-                     ref={iconRef}
-                     onDragStart={preventDrag} // Prevent drag start
-                     draggable="true" // Enable dragging for other items
-          > */}
           {inputicon}
-          {/* </span> */}
         </FormControl.Feedback>
       </FormGroup>
     </>
