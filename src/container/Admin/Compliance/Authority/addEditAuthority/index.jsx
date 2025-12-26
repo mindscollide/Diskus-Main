@@ -26,6 +26,7 @@ import {
   IsAuthorityNameExistsAPI,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
+import InputfieldwithCount from "../../../../../components/elements/input_field/Input_field_withCount";
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -355,6 +356,7 @@ const AddEditViewAuthorityModal = () => {
   };
 
   const handleBlur = (event) => {
+    if (authorityViewState === 3) return;
     const { name, value } = event.target;
 
     // EMAIL validation
@@ -485,77 +487,69 @@ const AddEditViewAuthorityModal = () => {
               {addViewAuthorityDetails ? (
                 <>
                   <Row>
-                    <Col sm={12} md={10} lg={10}>
-                      <div className="position-relative">
-                        <TextField
-                          change={handleValueChange}
-                          onBlur={handleBlur}
-                          name="name"
-                          maxLength={100}
-                          placeholder={t("Authority-name")}
-                          applyClass={
-                            authorityViewState === 3
-                              ? "viewField_Name"
-                              : "AddEditAuthorityInputField"
-                          }
-                          value={authorityDetails.name}
-                          // inputicon={<Check2 className={styles["CheckIcon"]} />}
-                          inputicon={
-                            isAuthorityExist === true ? (
-                              <Spinner
-                                size="md"
-                                className={styles["SpinnerClass"]}
-                              />
-                            ) : isAuthorityExist === false ? (
-                              <Check2 className={styles["CheckIcon"]} />
-                            ) : null
-                          }
-                          label={
-                            <>
-                              {t("Authority-name")}
-                              <span className={styles["sterick"]}>
-                                {authorityViewState !== 3 ? " *" : ""}
-                              </span>
-                            </>
-                          }
-                          iconclassname={styles["SearchIconClass"]}
-                          labelclass={styles["labelStyle"]}
-                        />
-                        <p
-                          className={
-                            errors.name
-                              ? styles["errorMessage-inLogin"]
-                              : styles["errorMessage-inLogin_hidden"]
-                          }
-                        >
-                          {errors.name}
-                        </p>
-                      </div>
-                    </Col>
-                    <Col sm={12} md={2} lg={2}>
-                      <TextField
-                        maxLength={10}
-                        change={handleValueChange}
-                        onBlur={handleBlur}
-                        name="shortCode"
-                        placeholder={t("Short-code")}
-                        applyClass={
+                    <Col sm={12} md={8} lg={8} className="m-0 pe-0 ">
+                      <InputfieldwithCount
+                        value={authorityDetails.name}
+                        onChange={handleValueChange}
+                        name="name"
+                        showCount={authorityViewState === 3 ? false : true}
+                        placeholder={t("Authority-name")}
+                        preFixClas={
                           authorityViewState === 3
                             ? "viewField_Name"
-                            : "AddEditAuthorityInputField"
+                            : "AddEditAuthorityCounterInputField"
+                        }
+                        maxLength={100}
+                        minLength={1}
+                        pattern={"^[a-zA-Z0-9 ]+$"}
+                        labelClass={styles["labelStyle"]}
+                        onBlur={handleBlur}
+                        label={
+                          <>
+                            {t("Authority-name")}
+                            <span className={styles["sterick"]}>
+                              {authorityViewState !== 3 ? " *" : ""}
+                            </span>
+                          </>
+                        }
+                      />
+                      <p
+                        className={
+                          errors.name
+                            ? styles["errorMessage-inLogin"]
+                            : styles["errorMessage-inLogin_hidden"]
+                        }
+                      >
+                        {errors.name}
+                      </p>
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={1}
+                      lg={1}
+                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                    >
+                      {isAuthorityExist === true ? (
+                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                      ) : isAuthorityExist === false ? (
+                        <Check2 className={styles["CheckIcon"]} />
+                      ) : null}
+                    </Col>
+                    <Col sm={12} md={2} lg={2} className="m-0 p-0">
+                      <InputfieldwithCount
+                        maxLength={10}
+                        showCount={authorityViewState === 3 ? false : true}
+                        onChange={handleValueChange}
+                        onBlur={handleBlur}
+                        name="shortCode"
+                        pattern={"^[a-zA-Z0-9 ]+$"}
+                        placeholder={t("Short-code")}
+                        preFixClas={
+                          authorityViewState === 3
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.shortCode}
-                        inputicon={
-                          isShortCodeExist === true ? (
-                            <Spinner
-                              size="md"
-                              className={styles["SpinnerClass"]}
-                            />
-                          ) : isShortCodeExist === false ? (
-                            <Check2 className={styles["CheckIcon"]} />
-                          ) : null
-                        }
-                        iconclassname={styles["SearchIconClass"]}
                         label={
                           <>
                             {t("Short-code")}
@@ -564,7 +558,7 @@ const AddEditViewAuthorityModal = () => {
                             </span>
                           </>
                         }
-                        labelclass={styles["labelStyle"]}
+                        labelClass={styles["labelStyle"]}
                       />
 
                       <p
@@ -576,6 +570,18 @@ const AddEditViewAuthorityModal = () => {
                       >
                         {errors.shortCode}
                       </p>
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={1}
+                      lg={1}
+                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                    >
+                      {isShortCodeExist === true ? (
+                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                      ) : isShortCodeExist === false ? (
+                        <Check2 className={styles["CheckIcon"]} />
+                      ) : null}
                     </Col>
                   </Row>
                   <Row className="mt-2">

@@ -1,0 +1,51 @@
+.AddEditAuthorityCounterInputField-affix-wrapper {
+  width: 100% !important;
+  display: block;
+  position: relative;
+  outline: none !important;
+}
+
+.AddEditAuthorityCounterInputField {
+  width: 100%;
+  position: relative;
+  height: 39px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 0 10px;
+  outline: none !important;
+}
+.AddEditAuthorityCounterInputField-suffix {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
+
+.AddEditAuthorityCounterInputField-show-count-suffix {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 8px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
+.viewField_Name-affix-wrapper {
+  width: 100% !important;
+  display: block;
+  position: relative;
+  outline: none !important;
+}
+
+.viewField_Name {
+  width: 100%;
+  position: relative;
+  height: 20px;
+  border: none;
+  padding: 0;
+  outline: none !important;
+  pointer-events: none;
+}
+.counter_Loader {
+  position: absolute;
+  right: 5px;
+  top: -20px;
+}

@@ -199,9 +199,8 @@ body[dir="rtl"] .SearchIconClass {
 }
 
 .SpinnerClass {
-  margin-top: 12px;
+  font-size: 2px !important;
 }
 .CheckIcon {
   font-size: 2rem;
-  margin-top: 12px;
 }
