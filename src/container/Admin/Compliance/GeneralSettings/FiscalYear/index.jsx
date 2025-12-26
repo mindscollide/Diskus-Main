@@ -6,37 +6,80 @@ import styles from "./fiscalYear.module.css";
 import { TextField } from "../../../../../components/elements";
 import Select from "react-select";
 
-const FiscalYear = ({ organizationSettingData }) => {
+const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
   const { t } = useTranslation();
-  const [fiscalYearStartDate, setfiscalYearStartDate] = useState(1);
+
   const months = [
-    { label: "January", value: "January" },
-    { label: "February", value: "February" },
-    { label: "March", value: "March" },
-    { label: "April", value: "April" },
-    { label: "May", value: "May" },
-    { label: "June", value: "June" },
-    { label: "July", value: "July" },
-    { label: "August", value: "August" },
-    { label: "September", value: "September" },
-    { label: "October", value: "October" },
-    { label: "November", value: "November" },
-    { label: "December", value: "December" },
+    { label: "January", value: 1 },
+    { label: "February", value: 2 },
+    { label: "March", value: 3 },
+    { label: "April", value: 4 },
+    { label: "May", value: 5 },
+    { label: "June", value: 6 },
+    { label: "July", value: 7 },
+    { label: "August", value: 8 },
+    { label: "September", value: 9 },
+    { label: "October", value: 10 },
+    { label: "November", value: 11 },
+    { label: "December", value: 12 },
   ];
-  const [selectMonthOfYear, setSelectMonthOfYear] = useState(months[6]);
+  const [fiscalYearStartDay, setfiscalYearStartDay] = useState(1);
+  const [selectStartMonthOfYear, setSelectStartMonthOfYear] = useState(
+    months[6]
+  );
+  const [endDate, setEndDate] = useState(null);
 
-  useEffect(() => {
-    if (organizationSettingData !== null) {
+  // useEffect(() => {
+  //   if (organizationSettingData !== null) {
+  //     setfiscalYearStartDay(organizationSettingData.fiscalYearStartDay);
+
+  //     const monthIndex = organizationSettingData.fiscalStartMonth - 1;
+
+  //     setSelectStartMonthOfYear(months[monthIndex]);
+  //     // calculateFiscalYearEndDate();
+
+  //     // setEndDate(
+  //     //   `${organizationSettingData.fiscalYearDay} ${months[monthIndex]?.label}`
+  //     // );
+  //   }
+  // }, [organizationSettingData]);
+
+  const onChangeFYStartDate = (event) => {
+    const { name, value } = event.target;
+    console.log(name, value, "handleChangeDueDatehandleChangeDueDate");
+    if (name === "FYStartDate") {
+      setOrganizationSetting((organizationSettings) => {
+        return {
+          ...organizationSettings,
+          fiscalYearDay: Number(value),
+        };
+      });
+      return;
     }
-  }, [organizationSettingData]);
-
-  const onChangeFYStartDate = (e) => {
-    // const { value } = e.target;
-    // console.log(e, "onChangeFYStartDate");
-    // if (parseInt(value) >= 0 && parseInt(value) <= 31) {
-    //   setfiscalYearStartDate();
-    // }
   };
+
+  const calculateFiscalYearEndDate = () => {
+    if (!fiscalYearStartDay || !selectStartMonthOfYear) return;
+
+    // Create start date (year is dummy, logic still works)
+    const startDate = new Date(
+      2024,
+      selectStartMonthOfYear.value - 1,
+      fiscalYearStartDay
+    );
+
+    // Subtract 1 day
+    startDate.setDate(startDate.getDate() - 1);
+
+    // Format result
+    const endDay = startDate.getDate();
+    const endMonth = months[startDate.getMonth()]?.label;
+
+    console.log(endDay, endMonth, "setEndDatesetEndDate");
+
+    setEndDate(`${endDay} ${endMonth}`);
+  };
+
   return (
     <Row>
       <Col lg={3} md={3} sm={12} className="mt-4">
@@ -51,13 +94,16 @@ const FiscalYear = ({ organizationSettingData }) => {
         </div>
         <TextField
           labelclass={"d-none"}
-          // placeholder={t("Authority-name")}
           maxLength={10}
+          onKeyDown={(e) => e.preventDefault()}
           name={"FYStartDate"}
-          value={fiscalYearStartDate}
+          value={fiscalYearStartDay}
           type="number"
+          min={1}
+          max={31}
           applyClass={"usermanagementTextField"}
           change={onChangeFYStartDate}
+          onBlur={calculateFiscalYearEndDate}
         />
       </Col>
 
@@ -70,8 +116,9 @@ const FiscalYear = ({ organizationSettingData }) => {
         <Select
           isSearchable={true}
           options={months}
-          onChange={(event) => setSelectMonthOfYear(event)}
-          value={selectMonthOfYear}
+          onChange={(event) => setSelectStartMonthOfYear(event)}
+          onBlur={calculateFiscalYearEndDate}
+          value={selectStartMonthOfYear}
           placeholder={t("Please-select-Month")}
           classNamePrefix="Select_fical_year_month"
         />
@@ -85,7 +132,7 @@ const FiscalYear = ({ organizationSettingData }) => {
         <div className={`${styles["dropdownHeading"]}`}>
           {t("Fiscal-year-end")}
         </div>
-        <span className={styles["endYearText"]}>{"30 June"}</span>
+        <span className={styles["endYearText"]}>{endDate}</span>
       </Col>
     </Row>
   );

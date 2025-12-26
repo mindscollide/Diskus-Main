@@ -17,3 +17,10 @@
   font-size: 20px;
   color: #5a5a5a;
 }
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}

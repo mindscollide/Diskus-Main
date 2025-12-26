@@ -19,8 +19,8 @@ export const AuthorityProvider = ({ children }) => {
 
   const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
     useState(false);
-  const [shortCodeSort, setShortCodeSort] = useState("ascend");
-  const [authorityNameSort, setAuthorityNameSort] = useState(null);
+  const [authorityNameSort, setAuthorityNameSort] = useState("ascend");
+  const [shortCodeSort, setShortCodeSort] = useState(null);
   const [countrySort, setCountrySort] = useState(null);
   const [sectorSort, setSectorSort] = useState(null);
   const [authorityViewState, setAuthorityViewState] = useState(0);

@@ -392,36 +392,6 @@ const ManageAuthority = () => {
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Short-code")}
-            {shortCodeSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : shortCodeSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
-          </span>
-        ),
-
-        dataIndex: "shortCode",
-        key: "shortCode",
-        width: "15%",
-        align: "left",
-        ellipsis: true,
-        sorter: (a, b) =>
-          shortCodeSort === "descend"
-            ? b.shortCode
-                ?.toLowerCase()
-                .localeCompare(a.shortCode?.toLowerCase())
-            : shortCodeSort === "ascend"
-            ? a.shortCode
-                ?.toLowerCase()
-                .localeCompare(b.shortCode?.toLowerCase())
-            : null,
-      },
-      {
-        title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Authority-name")}
             {authorityNameSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
@@ -449,6 +419,36 @@ const ManageAuthority = () => {
             : a.authorityName
                 ?.toLowerCase()
                 .localeCompare(b.authorityName?.toLowerCase()),
+      },
+      {
+        title: (
+          <span className="d-flex gap-2 align-items-center justify-content-start">
+            {t("Short-code")}
+            {shortCodeSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+            ) : shortCodeSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            )}
+          </span>
+        ),
+
+        dataIndex: "shortCode",
+        key: "shortCode",
+        width: "15%",
+        align: "left",
+        ellipsis: true,
+        sorter: (a, b) =>
+          shortCodeSort === "descend"
+            ? b.shortCode
+                ?.toLowerCase()
+                .localeCompare(a.shortCode?.toLowerCase())
+            : shortCodeSort === "ascend"
+            ? a.shortCode
+                ?.toLowerCase()
+                .localeCompare(b.shortCode?.toLowerCase())
+            : null,
       },
       {
         title: (
