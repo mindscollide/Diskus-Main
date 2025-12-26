@@ -23,26 +23,42 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
     { label: "November", value: 11 },
     { label: "December", value: 12 },
   ];
-  const [fiscalYearStartDay, setfiscalYearStartDay] = useState(1);
-  const [selectStartMonthOfYear, setSelectStartMonthOfYear] = useState(
-    months[6]
-  );
+  const [fiscalYearStartDay, setfiscalYearStartDay] = useState(null);
+  const [selectStartMonthOfYear, setSelectStartMonthOfYear] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  // useEffect(() => {
-  //   if (organizationSettingData !== null) {
-  //     setfiscalYearStartDay(organizationSettingData.fiscalYearStartDay);
+  useEffect(() => {
+    if (!organizationSettingData) return;
 
-  //     const monthIndex = organizationSettingData.fiscalStartMonth - 1;
+    const monthIndex = organizationSettingData.fiscalStartMonth - 1;
 
-  //     setSelectStartMonthOfYear(months[monthIndex]);
-  //     // calculateFiscalYearEndDate();
+    setfiscalYearStartDay(organizationSettingData.fiscalYearStartDay);
+    setSelectStartMonthOfYear(months[monthIndex]);
+  }, [organizationSettingData]);
 
-  //     // setEndDate(
-  //     //   `${organizationSettingData.fiscalYearDay} ${months[monthIndex]?.label}`
-  //     // );
-  //   }
-  // }, [organizationSettingData]);
+  useEffect(() => {
+    if (!fiscalYearStartDay || !selectStartMonthOfYear) return;
+
+    // Fix invalid day when month changes
+    const maxDays = getDaysInMonth(selectStartMonthOfYear.value);
+    if (fiscalYearStartDay > maxDays) {
+      setOrganizationSetting((organizationSettings) => {
+        return {
+          ...organizationSettings,
+          fiscalYearStartDay: Number(maxDays),
+        };
+      });
+      setfiscalYearStartDay(maxDays);
+      return;
+    }
+
+    const end = calculateFiscalYearEndDate(
+      fiscalYearStartDay,
+      selectStartMonthOfYear.value
+    );
+    //
+    setEndDate(end);
+  }, [fiscalYearStartDay, selectStartMonthOfYear]);
 
   const onChangeFYStartDate = (event) => {
     const { name, value } = event.target;
@@ -51,33 +67,39 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
       setOrganizationSetting((organizationSettings) => {
         return {
           ...organizationSettings,
-          fiscalYearDay: Number(value),
+          fiscalYearStartDay: Number(value),
         };
       });
+      setfiscalYearStartDay(value);
       return;
     }
   };
 
-  const calculateFiscalYearEndDate = () => {
-    if (!fiscalYearStartDay || !selectStartMonthOfYear) return;
+  const handleChangeMonth = (event) => {
+    console.log(event, "handleChangeMonth");
+    setOrganizationSetting((organizationSettings) => {
+      return {
+        ...organizationSettings,
+        fiscalStartMonth: Number(event.value),
+      };
+    });
+    setSelectStartMonthOfYear(event);
+    return;
+  };
 
-    // Create start date (year is dummy, logic still works)
-    const startDate = new Date(
-      2024,
-      selectStartMonthOfYear.value - 1,
-      fiscalYearStartDay
-    );
+  const getDaysInMonth = (monthValue) => {
+    return new Date(2024, monthValue, 0).getDate();
+  };
 
-    // Subtract 1 day
+  const calculateFiscalYearEndDate = (day, month) => {
+    if (!day || !month) return null;
+
+    // Fiscal year end = one year later, minus one day
+    const startDate = new Date(2024, month - 1, day);
+    startDate.setFullYear(startDate.getFullYear() + 1);
     startDate.setDate(startDate.getDate() - 1);
 
-    // Format result
-    const endDay = startDate.getDate();
-    const endMonth = months[startDate.getMonth()]?.label;
-
-    console.log(endDay, endMonth, "setEndDatesetEndDate");
-
-    setEndDate(`${endDay} ${endMonth}`);
+    return `${startDate.getDate()} ${months[startDate.getMonth()].label}`;
   };
 
   return (
@@ -100,7 +122,8 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
           value={fiscalYearStartDay}
           type="number"
           min={1}
-          max={31}
+          // max={31}
+          max={getDaysInMonth(selectStartMonthOfYear?.value)}
           applyClass={"usermanagementTextField"}
           change={onChangeFYStartDate}
           onBlur={calculateFiscalYearEndDate}
@@ -116,8 +139,11 @@ const FiscalYear = ({ organizationSettingData, setOrganizationSetting }) => {
         <Select
           isSearchable={true}
           options={months}
-          onChange={(event) => setSelectStartMonthOfYear(event)}
-          onBlur={calculateFiscalYearEndDate}
+          onChange={handleChangeMonth}
+          // onChange={(event) => {
+          //   setSelectStartMonthOfYear(event);
+          // }}
+          // onBlur={calculateFiscalYearEndDate}
           value={selectStartMonthOfYear}
           placeholder={t("Please-select-Month")}
           classNamePrefix="Select_fical_year_month"

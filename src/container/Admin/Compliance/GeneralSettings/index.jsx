@@ -259,11 +259,13 @@ const GeneralSetting = () => {
           isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
           isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
           isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
-          fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          // fiscalEndMonth: organizationSettings.fiscalEndMonth,
           complianceAlertOne: organizationSettings.complianceAlertOne,
           complianceAlertThree: organizationSettings.complianceAlertThree,
           complianceAlertTwo: organizationSettings.complianceAlertTwo,
           autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          fiscalStartMonth: organizationSettings.fiscalStartMonth,
+          fiscalYearStartDay: organizationSettings.fiscalYearStartDay,
         });
       }
     }
@@ -381,7 +383,7 @@ const GeneralSetting = () => {
       EmailWhenActiveMeetingAgendaUpdated:
         userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
       AutoCloseResolutionDays: userOrganizationSetting.autoCloseResolutionDays,
-      FiscalEndMonth: 2,
+      // FiscalEndMonth: 2,
       ComplianceAlertOne: userOrganizationSetting.complianceAlertOne,
       ComplianceAlertTwo: userOrganizationSetting.complianceAlertTwo,
       ComplianceAlertThree: userOrganizationSetting.complianceAlertThree,
@@ -392,7 +394,10 @@ const GeneralSetting = () => {
       IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
       IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
       IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
+      FiscalStartMonth: userOrganizationSetting.fiscalStartMonth,
+      FiscalYearStartDay: userOrganizationSetting.fiscalYearStartDay,
     };
+
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
 
@@ -534,11 +539,13 @@ const GeneralSetting = () => {
           isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
           isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
           isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
-          fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          // fiscalEndMonth: organizationSettings.fiscalEndMonth,
           complianceAlertOne: organizationSettings.complianceAlertOne,
           complianceAlertThree: organizationSettings.complianceAlertThree,
           complianceAlertTwo: organizationSettings.complianceAlertTwo,
           autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          fiscalStartMonth: organizationSettings.fiscalStartMonth,
+          fiscalYearStartDay: organizationSettings.fiscalYearStartDay,
         });
       }
     }
