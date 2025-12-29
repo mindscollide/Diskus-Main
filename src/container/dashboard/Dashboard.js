@@ -223,6 +223,7 @@ import {
   meetingVideoRecording,
   videoRecording,
 } from "../../store/actions/DataRoom2_actions";
+
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
 
@@ -496,6 +497,22 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
+  const activeCallsessionStorage = sessionStorage.getItem(
+    "activeCallSessionforOtoandGroup"
+  );
+  const activeCallLocalStorage =
+    localStorage.getItem("activeCall") !== null &&
+    JSON.parse(localStorage.getItem("activeCall"));
+  // useEffect(() => {
+  //   const activeCall = sessionStorage.getItem(
+  //     "activeCallSessionforOtoandGroup"
+  //   );
+
+  //   if (activeCall === "true") {
+  //     // Redirect to AlreadyInGroupAndOtoCall page
+  //     navigate("Diskus/AlreadyInGroupAndOtoCall");
+  //   }
+  // }, [navigate]);
 
   // For End QUick Meeting
 
@@ -881,6 +898,34 @@ const Dashboard = () => {
     }
   };
 
+  // async function joinRequestForMeetingVideo(mqttData) {
+  //   try {
+  //     const currentMeetingID = localStorage.getItem("currentMeetingID");
+  //     const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
+  //     const isMeetingVideoHostCheck = JSON.parse(
+  //       localStorage.getItem("isMeetingVideoHostCheck")
+  //     );
+  //     if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+  //       if (isMeetingVideo) {
+  //         if (presenterViewJoinFlagRef.current) {
+  //           console.log("Check PresenterIssue Once");
+  //         } else {
+  //           console.log("Check PresenterIssue Once");
+  //           if (isMeetingVideoHostCheck) {
+  //             console.log("Check PresenterIssue Once");
+  //             if (mqttData.payload.isGuest) {
+  //               dispatch(admitGuestUserRequest(mqttData.payload));
+  //             } else {
+  //               console.log("Check PresenterIssue Once");
+  //               dispatch(participantWaitingList(mqttData.payload));
+  //             }
+  //             dispatch(guestJoinPopup(true));
+  //           }
+  //         }
+  //       }
+  //   } catch {}
+  // }
+
   async function joinRequestForMeetingVideo(mqttData) {
     try {
       const currentMeetingID = localStorage.getItem("currentMeetingID");
@@ -888,25 +933,41 @@ const Dashboard = () => {
       const isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
       );
-      if (Number(mqttData.payload.meetingID) === Number(currentMeetingID))
+
+      const { meetingID, userID } = mqttData.payload;
+      console.log("Check PresenterIssue Once");
+
+      if (Number(meetingID) === Number(currentMeetingID)) {
+        // ✅ DEDUPE CHECK (meetingID + userID)
+        const alreadyRequested = waitingParticipantsList?.some(
+          (p) =>
+            Number(p.userID) === Number(userID) &&
+            Number(p.meetingID) === Number(meetingID)
+        );
+
+        if (alreadyRequested) {
+          console.log("Duplicate join request ignored:", userID);
+          return;
+        }
+
         if (isMeetingVideo) {
           if (presenterViewJoinFlagRef.current) {
             console.log("Check PresenterIssue Once");
           } else {
-            console.log("Check PresenterIssue Once");
             if (isMeetingVideoHostCheck) {
-              console.log("Check PresenterIssue Once");
               if (mqttData.payload.isGuest) {
                 dispatch(admitGuestUserRequest(mqttData.payload));
               } else {
-                console.log("Check PresenterIssue Once");
                 dispatch(participantWaitingList(mqttData.payload));
               }
               dispatch(guestJoinPopup(true));
             }
           }
         }
-    } catch { }
+      }
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const sendStopRecordingMessageForMQTT = () => {
@@ -3325,6 +3386,7 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
           console.log(existingData.length, "existingDatalength");
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
 
           //For Stop Recording while user reject the call
           if (isZoomEnabled) {
@@ -3550,6 +3612,8 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
           console.log("mqtt", typeof data.payload.roomID);
@@ -3748,6 +3812,7 @@ const Dashboard = () => {
           let roomID = 0;
           let flagCheck1 = false;
           localStorage.setItem("MicOff", true);
+          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
 
           if (isZoomEnabled) {
             if (String(initiateCallRoomID) !== String(data.payload.roomID)) {
@@ -4854,6 +4919,14 @@ const Dashboard = () => {
     window.close();
   }, []);
 
+  const isOtoCallisActive =
+    activeCallLocalStorage && !activeCallsessionStorage ? true : false;
+  useEffect(() => {
+    if (isOtoCallisActive) {
+      navigate("/AlreadyInGroupAndOtoCall");
+    }
+  }, [isOtoCallisActive]);
+
   return (
     <>
       <ConfigProvider
@@ -4894,15 +4967,15 @@ const Dashboard = () => {
                         <AlreadyInMeeting handleClickClose={handleClickClose} />
                       )
                     : null} */}
-                  {isMeetingLocal
+                  {/* {isMeetingLocal
                     ? !isMeetingSession &&
-                    !(
-                      Number(editorRole.status) === 10 ||
-                      location.pathname.includes("meetingDocumentViewer")
-                    ) && (
-                      <AlreadyInMeeting handleClickClose={handleClickClose} />
-                    )
-                    : null}
+                      !(
+                        Number(editorRole.status) === 10 ||
+                        location.pathname.includes("meetingDocumentViewer")
+                      ) && (
+                        <AlreadyInMeeting handleClickClose={handleClickClose} />
+                      )
+                    : null} */}
                   <Outlet />
                 </>
               </div>

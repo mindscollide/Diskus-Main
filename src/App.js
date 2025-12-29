@@ -76,7 +76,7 @@ const App = () => {
     // Listen for tab visibility changes
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        syncSessionAndRedirect();
+        // syncSessionAndRedirect();
       }
     };
 
