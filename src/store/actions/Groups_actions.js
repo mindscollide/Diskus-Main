@@ -64,7 +64,8 @@ const getGroups = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByUserIdRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -188,7 +189,8 @@ const getArcheivedGroups = (navigate, t, currentPage) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByUserIdRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -300,7 +302,8 @@ const getbyGroupID = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByGroupIdRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -434,7 +437,8 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", creategroupRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -547,7 +551,8 @@ const getGroupMembersRoles = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllOrganizationGroupRoles.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -625,7 +630,8 @@ const getOrganizationGroupTypes = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllOrganizationGroupTypes.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -703,7 +709,8 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updateGroupRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -815,7 +822,8 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", updateGroupStatusRequestMethod.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -904,7 +912,8 @@ const getAllGroups = (navigate, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllOrganizationGroups.RequestMethod);
-    axiosInstance.post(getGroupsApi,form)
+    axiosInstance
+      .post(getGroupsApi, form)
 
       .then(async (response) => {
         if (response.data.responseCode === 417) {
@@ -976,7 +985,8 @@ const CreateUpdateDataRoadMapApiFunc = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", CreateUpdateGroupDataRoadMap.RequestMethod);
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1129,7 +1139,8 @@ const uploadDocumentsGroupsApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await     axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1234,7 +1245,8 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await     axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1255,7 +1267,10 @@ const saveFilesGroupsApi = (navigate, t, data, folderID, newFolder) => {
                 fileIds.map((newFileID, index) => {
                   console.log(newFileID, "newFileID");
 
-                  return newFolder.push({ pK_FileID: newFileID.pK_FileID });
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                    displayFileName: newFileID.displayFileName,
+                  });
                 });
               } catch (error) {
                 console.log(error, "newFileID");
@@ -1335,7 +1350,8 @@ const SaveGroupsDocumentsApiFunc = (
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", SaveTheGroupsDocuments.RequestMethod);
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1429,7 +1445,8 @@ const RetriveDocumentsGroupsApiFunc = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", RetrieveGroupDocuments.RequestMethod);
-        axiosInstance.post(dataRoomApi, form)
+    axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
