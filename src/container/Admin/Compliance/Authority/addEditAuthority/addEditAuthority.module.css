@@ -204,3 +204,11 @@ body[dir="rtl"] .SearchIconClass {
 .CheckIcon {
   font-size: 2rem;
 }
+.authorityDetailsViewDescription {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  margin: 0;
+  overflow-wrap: break-word;
+  min-height: 26px;
+}

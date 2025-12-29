@@ -18,6 +18,7 @@ const initialState = {
   SocketAuthorityDeleted: null,
   SocketAuthorityCreated: null,
   SocketAuthorityUpdated: null,
+  MqttOrganizationSettingUpdated: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -243,6 +244,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         SocketAuthorityUpdated: action.response,
+        ResponseMessage: action.message,
+      };
+
+    // Settings updated
+    case actions.ORGANIZATION_SETTINGS_UPDATED:
+      return {
+        ...state,
+        MqttOrganizationSettingUpdated: action.response,
         ResponseMessage: action.message,
       };
 

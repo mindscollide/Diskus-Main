@@ -821,6 +821,14 @@ const setAuthorityUpdatedData = (response) => {
   };
 };
 
+// get OraganizationSettingUpdated Data from Socket
+const setOrganizationSettingUpdateData = (response) => {
+  return {
+    type: actions.ORGANIZATION_SETTINGS_UPDATED,
+    response: response,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -836,4 +844,5 @@ export {
   setDeleteStatusData,
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
+  setOrganizationSettingUpdateData,
 };

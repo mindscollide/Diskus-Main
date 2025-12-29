@@ -45,7 +45,7 @@ const AddEditViewAuthorityModal = () => {
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
   const authorityNameRef = useRef(null);
-
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
 
@@ -91,7 +91,11 @@ const AddEditViewAuthorityModal = () => {
   // Initial useEffect
   useEffect(() => {
     if (authorityViewState !== 3) {
-      authorityNameRef.current && authorityNameRef.current.focus();
+      console.log(authorityNameRef);
+      authorityNameRef.current &&
+        authorityNameRef.current.focus({
+          cursor: "start",
+        });
     }
     return () => {
       dispatch(initialAddEditAuthority());
@@ -503,6 +507,7 @@ const AddEditViewAuthorityModal = () => {
                         value={authorityDetails.name}
                         onChange={handleValueChange}
                         name="name"
+                        ref={authorityNameRef}
                         showCount={authorityViewState === 3 ? false : true}
                         placeholder={
                           authorityViewState !== 3 ? t("Authority-name") : ""
@@ -601,23 +606,38 @@ const AddEditViewAuthorityModal = () => {
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
-                      <TextAreafieldwithCount
-                        labelClass={styles["labelStyle"]}
-                        placeholder={
-                          authorityViewState !== 3 ? t("Description") : ""
-                        }
-                        showCount={authorityViewState === 3 ? false : true}
-                        maxLength={500}
-                        onChange={handleValueChange}
-                        name="description"
-                        preFixClas={
-                          authorityViewState === 3
-                            ? "viewField_Name"
-                            : "AddEditAuthorityCounterInputField"
-                        }
-                        value={authorityDetails.description}
-                        label={t("Description")}
-                      />
+                      {authorityViewState === 3 ? (
+                        <>
+                          <label className={styles["labelStyle"]}>
+                            {t("Description")}
+                          </label>
+                          <p
+                            className={
+                              styles["authorityDetailsViewDescription"]
+                            }
+                          >
+                            {authorityDetails.description}
+                          </p>
+                        </>
+                      ) : (
+                        <TextAreafieldwithCount
+                          labelClass={styles["labelStyle"]}
+                          placeholder={
+                            authorityViewState !== 3 ? t("Description") : ""
+                          }
+                          showCount={authorityViewState === 3 ? false : true}
+                          maxLength={500}
+                          onChange={handleValueChange}
+                          name="description"
+                          preFixClas={
+                            authorityViewState === 3
+                              ? "viewField_TextArea_Name"
+                              : "AddEditAuthorityCounterInputFieldTextArea"
+                          }
+                          value={authorityDetails.description}
+                          label={t("Description")}
+                        />
+                      )}
                     </Col>
                   </Row>
                   <Row className="mt-2">
@@ -641,25 +661,6 @@ const AddEditViewAuthorityModal = () => {
                       />
                     </Col>
                     <Col sm={12} md={4} lg={4}>
-                      {/* <InputfieldwithCount
-                        placeholder={
-                          authorityViewState !== 3 ? t("Website") : ""
-                        }
-                        showCount={authorityViewState === 3 ? false : true}
-                        maxLength={100}
-                        onChange={handleValueChange}
-                        name="website"
-                        labelclass={styles["labelStyle"]}
-                        label={t("Website")}
-                        onBlur={handleBlur}
-                        preFixClas={
-                          authorityViewState === 3
-                            ? "viewField_Name"
-                            : "AddEditAuthorityCounterInputField"
-                        }
-                        value={authorityDetails.website}
-                      /> */}
-
                       <InputfieldwithCount
                         placeholder={
                           authorityViewState !== 3 ? t("Website") : ""

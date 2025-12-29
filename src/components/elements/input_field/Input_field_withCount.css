@@ -43,7 +43,10 @@
   padding: 0;
   outline: none !important;
   pointer-events: none;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
 }
+
 .counter_Loader {
   position: absolute;
   right: 5px;
@@ -58,4 +61,68 @@
   border: 1px solid #e1e1e1;
   padding: 0 10px;
   border-radius: 4px;
+}
+
+/* Text Area */
+
+.AddEditAuthorityCounterInputFieldTextArea-affix-wrapper {
+  width: 100% !important;
+  display: block;
+  position: relative;
+  outline: none !important;
+}
+
+.AddEditAuthorityCounterInputFieldTextArea {
+  width: 100%;
+  position: relative;
+  height: 86px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 0 10px;
+  outline: none !important;
+}
+.AddEditAuthorityCounterInputFieldTextArea-suffix {
+  position: absolute;
+  right: 10px;
+  top: 18px;
+}
+
+.AddEditAuthorityCounterInputFieldTextArea-show-count-suffix {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 8px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
+.AddEditAuthorityCounterInputFieldTextArea-textarea-show-count::after {
+  content: attr(data-count);
+  position: absolute;
+  right: 10px;
+  bottom: 7px;
+  font-weight: 600;
+  font-size: 8px;
+  color: #5a5a5a;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+.AddEditAuthorityCounterInputFieldTextArea-textarea {
+  position: relative;
+}
+.viewField_TextArea_Name-affix-wrapper {
+  width: 100% !important;
+  display: block;
+  position: relative;
+  outline: none !important;
+}
+
+.viewField_TextArea_Name {
+  width: 100%;
+  position: relative;
+  height: 20px;
+  border: none;
+  padding: 0;
+  outline: none !important;
+  pointer-events: none;
 }

@@ -964,7 +964,7 @@ const ManageAuthority = () => {
                     searchPayload.countryId !== 0 ||
                     searchPayload.sector !== "" ||
                     searchPayload.authorityTitle !== ""
-                      ? t("No-matching-records.")
+                      ? t("No-matching-records")
                       : t("No-authority-available")}
                   </span>
                 </Col>
@@ -977,7 +977,13 @@ const ManageAuthority = () => {
                   className="d-flex justify-content-center"
                 >
                   <span className={styles["EmptyAuthorityState_subHeading"]}>
-                    {t("You-dont-have-any-authority-at-the-moment")}
+                    {searchPayload.shortCode !== "" ||
+                    searchPayload.authorityName !== "" ||
+                    searchPayload.countryId !== 0 ||
+                    searchPayload.sector !== "" ||
+                    searchPayload.authorityTitle !== ""
+                      ? null
+                      : t("You-dont-have-any-authority-at-the-moment")}
                   </span>
                 </Col>
               </Row>
