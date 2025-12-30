@@ -7,10 +7,22 @@ import { useTranslation } from "react-i18next";
 import FiscalYearCalendar_Icon from "../../assets/images/FiscalYearCalendar_Icon.svg";
 import ComplianceDashboard from "./Tabs/Dashboard";
 import ComplianceByMe from "./Tabs/ComplainceByMe";
+import CreateEditCompliance from "./Tabs/ComplainceByMe/createEditCompliance";
+import { useComplianceContext } from "../../context/ComplianceContext";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
   const [tabs, setTabs] = useState(1);
+  const { createEditCompliance, setCreateEditComplaince } =
+    useComplianceContext();
+
+  const handleOpenCreateEditCompliance = () => {
+    setCreateEditComplaince(true);
+  };
+
+  if (createEditCompliance) {
+    return <CreateEditCompliance />;
+  }
   return (
     <>
       <section className={styles["MainCompliance_Container"]}>
@@ -28,7 +40,7 @@ const MainCompliance = () => {
               <Button
                 text={t("Create-compliance")}
                 className={styles["createComplianceButton"]}
-                // onClick={handleAddAuthority}
+                onClick={handleOpenCreateEditCompliance}
               />
             )}
           </Col>

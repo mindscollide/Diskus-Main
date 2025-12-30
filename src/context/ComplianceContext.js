@@ -3,10 +3,23 @@ import { createContext, useContext, useState } from "react";
 const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
-  //   const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
-  //     useState(false);
+  const [createEditCompliance, setCreateEditComplaince] = useState(false);
+
+  const [complianceAddEditViewState, setComplianceAddEditViewState] =
+    useState(0);
+
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   return (
-    <ComplianceContext.Provider value={{}}>
+    <ComplianceContext.Provider
+      value={{
+        createEditCompliance,
+        setCreateEditComplaince,
+        complianceAddEditViewState,
+        setComplianceAddEditViewState,
+        closeConfirmationModal,
+        setCloseConfirmationModal,
+      }}
+    >
       {children}
     </ComplianceContext.Provider>
   );

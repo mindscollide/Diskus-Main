@@ -1,3 +1,4 @@
+import { GetAllAuthoritiesDropdown } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -19,6 +20,8 @@ const initialState = {
   SocketAuthorityCreated: null,
   SocketAuthorityUpdated: null,
   MqttOrganizationSettingUpdated: null,
+  GetAllAuthoritiesDropdown: null,
+  GetAllTagsByOrganizationID: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -212,7 +215,59 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
       };
 
-    //MQTT Work
+    // GetAllAuthoritiesDropDown
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetAllAuthoritiesDropdown: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetAllAuthoritiesDropdown: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // GetAllTagsByOrganizationID
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetAllTagsByOrganizationID: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetAllTagsByOrganizationID: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {
         ...state,
@@ -261,6 +316,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: "",
         severity: null,
       };
+
     // ================= DEFAULT =================
     default:
       return state;

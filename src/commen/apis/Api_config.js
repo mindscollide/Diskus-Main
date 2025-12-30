@@ -2042,6 +2042,14 @@ const IsAuthorityNameExists = {
   RequestMethod: "ServiceManager.IsAuthorityNameExists",
 };
 
+const GetAllAuthoritiesDropdown = {
+  RequestMethod: "ServiceManager.GetAllAuthoritiesWithoutPagination",
+};
+
+const GetAllTagsByOrganizationID = {
+  RequestMethod: "ServiceManager.GetAllTagsByOrganizationID",
+};
+
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2574,4 +2582,6 @@ export {
   AddAuthority,
   IsShortCodeExists,
   IsAuthorityNameExists,
+  GetAllAuthoritiesDropdown,
+  GetAllTagsByOrganizationID,
 };

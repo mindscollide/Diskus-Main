@@ -19,6 +19,7 @@ import { ResolutionProvider } from "./context/ResolutionContext";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 import { TalkProvider } from "./context/TalkContext";
+import { ComlianceProvider } from "./context/ComplianceContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -64,7 +65,9 @@ root.render(
                   <PollsProvider>
                     <NotesProvider>
                       <ResolutionProvider>
-                        <App />
+                        <ComlianceProvider>
+                          <App />
+                        </ComlianceProvider>
                       </ResolutionProvider>
                     </NotesProvider>
                   </PollsProvider>

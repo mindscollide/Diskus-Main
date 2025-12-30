@@ -2556,5 +2556,16 @@
   "Compliances-for-me": "Compliances for Me",
   "No-matching-records": "No matching records.",
   "Authorities": "Authorities",
-  "Create-compliance": "Create compliance"
+  "Create-compliance": "Create compliance",
+  "Create-new-compliance": "Create New Compliance",
+  "Compliance-details": "Compliances Details",
+  "Checklists": "Checklists",
+  "Compliance-title": "Compliance Title",
+  "compliance-description": "Compliance Description",
+  "Please-select-authority": "Please Select Authority",
+  "Criticalityy": "Criticality",
+  "Tags": "Tags",
+  "Add-tags": "Add Tags",
+  "Add-upto-5-tags": "Add upto 5 tags",
+  "Add-tag": "Add Tag"
 }

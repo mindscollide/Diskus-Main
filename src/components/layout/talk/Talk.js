@@ -64,12 +64,14 @@ import { clearMinuteReviewerMqtt } from "../../../store/actions/workflow_actions
 import { MeetingContext } from "../../../context/MeetingContext";
 import { useTalkContext } from "../../../context/TalkContext.js";
 import ComplianceFeatureIcon from "../../../assets/images/ComplianceFeatureIcon.svg";
+import { useComplianceContext } from "../../../context/ComplianceContext.js";
 const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
   const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
+  const { setCreateEditComplaince } = useComplianceContext();
   const { pendingApprovalsTabCount, setPendingApprovalTabCount } =
     useContext(MeetingContext);
   //Getting api result from the reducer
@@ -202,6 +204,7 @@ const Talk = () => {
 
   const handleClickComplianceIcon = () => {
     navigate("/Diskus/compliance");
+    setCreateEditComplaince(false);
   };
 
   //Setting state data of global response all chat to chatdata

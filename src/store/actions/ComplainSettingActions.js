@@ -11,6 +11,8 @@ import {
   UpdateAuthority,
   IsAuthorityNameExists,
   IsShortCodeExists,
+  GetAllAuthoritiesDropdown,
+  GetAllTagsByOrganizationID,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -771,6 +773,173 @@ const IsAuthorityNameExistsAPI = (
   };
 };
 
+// GetALAUthorityDropDown
+const GetAllAuthoritiesWithoutPaginationInit = () => {
+  return {
+    type: actions.GET_ALL_AUTHORITIES_DROPDOWN_INIT,
+  };
+};
+
+const GetAllAuthoritiesWithoutPaginationSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_AUTHORITIES_DROPDOWN_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAllAuthoritiesWithoutPaginationFail = (message) => {
+  return {
+    type: actions.GET_ALL_AUTHORITIES_DROPDOWN_FAIL,
+    message: message,
+  };
+};
+
+const GetAllAuthoritiesWithoutPaginationAPI = (navigate, t) => {
+  return (dispatch) => {
+    dispatch(GetAllAuthoritiesWithoutPaginationInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllAuthoritiesDropdown.RequestMethod);
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllAuthoritiesWithoutPaginationAPI(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllAuthoritiesWithoutPagination_01".toLowerCase()
+                )
+            ) {
+              await dispatch(GetAllAuthoritiesWithoutPaginationSuccess(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllAuthoritiesWithoutPagination_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(GetAllAuthoritiesWithoutPaginationFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllAuthoritiesWithoutPagination_03".toLowerCase()
+                )
+            ) {
+              await dispatch(GetAllAuthoritiesWithoutPaginationFail(""));
+            }
+          } else {
+            await dispatch(
+              GetAllAuthoritiesWithoutPaginationFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetAllAuthoritiesWithoutPaginationFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetAllAuthoritiesWithoutPaginationFail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+// GetAllTagsByOrganizationID
+const GetAllTagsByOrganizationIDInit = () => {
+  return {
+    type: actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_INIT,
+  };
+};
+
+const GetAllTagsByOrganizationIDSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAllTagsByOrganizationIDFail = (message) => {
+  return {
+    type: actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_FAIL,
+    message: message,
+  };
+};
+
+const GetAllTagsByOrganizationIDAPI = (navigate, value, t) => {
+  let Data = {
+    TagsTitle: value,
+  };
+
+  return (dispatch) => {
+    dispatch(GetAllTagsByOrganizationIDInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetAllTagsByOrganizationID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllTagsByOrganizationIDAPI(navigate, value, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetAllTagsByOrganizationIDSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(GetAllTagsByOrganizationIDFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_03".toLowerCase()
+                )
+            ) {
+              await dispatch(GetAllTagsByOrganizationIDFail(""));
+            }
+          } else {
+            await dispatch(
+              GetAllTagsByOrganizationIDFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetAllTagsByOrganizationIDFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAllTagsByOrganizationIDFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const clearAuthorityMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
@@ -845,4 +1014,6 @@ export {
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
   setOrganizationSettingUpdateData,
+  GetAllAuthoritiesWithoutPaginationAPI,
+  GetAllTagsByOrganizationIDAPI,
 };

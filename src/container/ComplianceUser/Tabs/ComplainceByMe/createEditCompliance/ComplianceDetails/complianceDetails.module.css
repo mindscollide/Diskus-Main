@@ -1,0 +1,118 @@
+.labelStyle {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.labelStyleActive {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  padding-right: 20px;
+}
+.Select_Authoriy_div {
+  margin-top: 2.5px;
+}
+.Select_label {
+  margin-top: 8.2px;
+}
+.Tags_label {
+  margin-top: 8.2px;
+  margin-bottom: 4px;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.sterick {
+  color: #f16b6b;
+}
+.datepicker_input {
+  margin-top: 3px;
+  padding: 0px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ced4da;
+  max-width: 100% !important;
+  min-width: 100% !important;
+
+  height: 38px !important;
+  font-weight: 500;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  outline: none !important;
+}
+.tagsStyle {
+  background-color: #ecefff;
+  color: #6172d6;
+  border-radius: 4px;
+}
+.limitLabel {
+  font-weight: 700;
+  font-size: 10px;
+  color: #a2a2a2;
+}
+.Compliance_NextButton {
+  border-radius: 4px;
+  background: #6172d6;
+  font-weight: 600;
+  border: 1px solid #6172d6;
+  font-size: 12px;
+  padding: 12px 30px;
+  /* height: 39px;
+  width: 89px; */
+}
+
+.Compliance_NextButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #6172d6;
+  background: #6172d6;
+  padding: 12px 30px;
+  /* height: 39px;
+  width: 89px; */
+}
+.Compliance_CloseButton {
+  border-radius: 4px;
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 12px;
+  background: #e1e1e1;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+  /* height: 39px;
+  width: 94px; */
+}
+.Compliance_CloseButton:is(:hover, :active, :focus, :focus-visible) {
+  background: #e1e1e1;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.TagsOptionsBox {
+  border: 1px solid #e1e1e1 !important;
+  position: absolute;
+  width: 100%;
+  border-radius: 4px;
+  padding: 16px;
+}
+.TagsOption_Value {
+  border-bottom: 1px solid #e1e1e1;
+}
+.boldTag {
+  font-weight: bold;
+}
+.buttonPosition {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  bottom: 20px;
+  right: 20px;
+}
