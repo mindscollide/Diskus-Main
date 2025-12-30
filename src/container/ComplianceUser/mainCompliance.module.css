@@ -58,3 +58,25 @@
   vertical-align: middle !important;
   color: #5a5a5a !important;
 }
+
+.createComplianceButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  margin-left: 30px;
+}
+
+.createComplianceButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  margin-left: 30px;
+}

@@ -67,7 +67,7 @@ const GetAllAuthorityAPI = (navigate, data, t) => {
                   "Compliance_ComplianceServiceManager_GetAllAuthority_02".toLowerCase()
                 )
             ) {
-              await dispatch(GetAllAuthorityFail(t("No-records-found")));
+              await dispatch(GetAllAuthorityFail(""));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -771,7 +771,7 @@ const IsAuthorityNameExistsAPI = (
   };
 };
 
-const cleareMessage = () => {
+const clearAuthorityMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
   };
@@ -821,8 +821,16 @@ const setAuthorityUpdatedData = (response) => {
   };
 };
 
+// get OraganizationSettingUpdated Data from Socket
+const setOrganizationSettingUpdateData = (response) => {
+  return {
+    type: actions.ORGANIZATION_SETTINGS_UPDATED,
+    response: response,
+  };
+};
+
 export {
-  cleareMessage,
+  clearAuthorityMessage,
   initialAddEditAuthority,
   GetAllAuthorityAPI,
   GetAuthorityByIDAPI,
@@ -836,4 +844,5 @@ export {
   setDeleteStatusData,
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
+  setOrganizationSettingUpdateData,
 };

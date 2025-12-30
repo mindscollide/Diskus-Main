@@ -360,11 +360,17 @@ const VideoCallNormalHeader = ({
   });
 
   //when Duplicate data come in the waiting participantListCOunter
+  // when duplicate data comes in waitingParticipantsListCounter
   useEffect(() => {
     if (waitingParticipantsList?.length) {
       const uniqueParticipants = Object.values(
         waitingParticipantsList.reduce((acc, item) => {
-          acc[item.guid] = item; // Last occurrence wins. Use `|| item` for first.
+          const key = `${item.meetingID}_${item.userID}`;
+
+          if (!acc[key]) {
+            acc[key] = item; // keep first occurrence
+          }
+
           return acc;
         }, {})
       );
@@ -819,8 +825,6 @@ const VideoCallNormalHeader = ({
         }
       }
     }
-
-  
   };
 
   const normalizeScreen = () => {

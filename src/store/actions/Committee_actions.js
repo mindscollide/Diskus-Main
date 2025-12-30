@@ -198,7 +198,10 @@ const saveFilesCommitteesApi = (navigate, t, data, folderID, newFolder) => {
                 fileIds.map((newFileID, index) => {
                   console.log(fileIds, "newFileID");
 
-                  return newFolder.push({ pK_FileID: newFileID.pK_FileID });
+                  return newFolder.push({
+                    pK_FileID: newFileID.pK_FileID,
+                    displayFileName: newFileID.displayFileName,
+                  });
                 });
               } catch (error) {
                 console.log(
@@ -1389,8 +1392,8 @@ const saveCommitteeDocumentsApi = (navigate, t, data, setCreategrouppage) => {
             }
             if (typeof setCreategrouppage === "number") {
               if (setCreategrouppage === 1) {
-                localStorage.removeItem("ViewCommitteeID");
-                dispatch(viewCommitteePageFlag(false));
+                // localStorage.removeItem("ViewCommitteeID");
+                // dispatch(viewCommitteePageFlag(false));
               }
             }
           } else if (

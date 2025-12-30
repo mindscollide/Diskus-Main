@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./addEditAuthority.module.css";
 import { Check2 } from "react-bootstrap-icons";
 
-import CheckIcon from "../../../../../assets/images/newElements/check.png";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import {
-  Button,
-  Modal,
-  TextArea,
-  TextField,
-} from "../../../../../components/elements";
+import { Button, Modal, TextArea } from "../../../../../components/elements";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
@@ -26,6 +20,11 @@ import {
   IsAuthorityNameExistsAPI,
   UpdateAuthorityAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
+import TextField from "../../../../../components/elements/input_field/Input_field2";
+import {
+  InputfieldwithCount,
+  TextAreafieldwithCount,
+} from "../../../../../components/elements/input_field/Input_field_withCount";
 const AddEditViewAuthorityModal = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -45,7 +44,8 @@ const AddEditViewAuthorityModal = () => {
 
   const [isAuthorityExist, setIsAuthorityExist] = useState(null);
   const [isShortCodeExist, setIsShortCodeExist] = useState(null);
-
+  const authorityNameRef = useRef(null);
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   const [addViewAuthorityDetails, setAddViewAuthorityDetails] = useState(true);
   const [selected, setSelected] = useState("US");
 
@@ -87,9 +87,16 @@ const AddEditViewAuthorityModal = () => {
   const countryNamesReducerCountryNamesData = useSelector(
     (state) => state.countryNamesReducer.CountryNamesData
   );
-
+  console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
   useEffect(() => {
+    if (authorityViewState !== 3) {
+      console.log(authorityNameRef);
+      authorityNameRef.current &&
+        authorityNameRef.current.focus({
+          cursor: "start",
+        });
+    }
     return () => {
       dispatch(initialAddEditAuthority());
     };
@@ -184,7 +191,6 @@ const AddEditViewAuthorityModal = () => {
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
-    // console.log(country, "CountryIDCountryID");
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -194,14 +200,13 @@ const AddEditViewAuthorityModal = () => {
       phoneCode: a.secondary,
     });
     console.log(a, "CountryIDCountryID");
-    // setSignUpDetails({
-    //   ...signUpDetails,
-    //   FK_CCID: a.id,
-    //   PhoneNumberCountryID: a.id,
-    // });
   };
 
   const handleCancelButton = () => {
+    if (authorityViewState === 3) {
+      setAddEditViewAuthoriyModal(false);
+      setAddViewAuthorityDetails(true);
+    }
     setCloseConfirmationModal(true);
     setAddViewAuthorityDetails(false);
   };
@@ -230,6 +235,8 @@ const AddEditViewAuthorityModal = () => {
     authorityDetails.shortCode.trim() !== "" &&
     errors.website === "" &&
     errors.email === "" &&
+    errors.shortCode === "" &&
+    errors.name === "" &&
     selectCountry !== null;
   console.log(isAllValid, "isAllValidisAllValid");
   const handleAddAuthority = () => {
@@ -299,7 +306,9 @@ const AddEditViewAuthorityModal = () => {
   };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  // const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
+  const urlRegex =
+    /^(https?:\/\/)?((([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/.*)?$/i;
 
   const phoneRegex = /^[0-9+\-() ]{0,20}$/;
 
@@ -310,12 +319,14 @@ const AddEditViewAuthorityModal = () => {
 
     switch (name) {
       case "name":
+        setIsAuthorityExist(null);
         if (!value.trim()) {
           error = "Authority Name is required";
         }
         break;
 
       case "shortCode":
+        setIsShortCodeExist(null);
         if (!value.trim()) {
           error = "Short Code is required";
         }
@@ -355,6 +366,7 @@ const AddEditViewAuthorityModal = () => {
   };
 
   const handleBlur = (event) => {
+    if (authorityViewState === 3) return;
     const { name, value } = event.target;
 
     // EMAIL validation
@@ -466,8 +478,13 @@ const AddEditViewAuthorityModal = () => {
         contentClassName={styles["addEditViewAuthorityModal_Content"]}
         size={addViewAuthorityDetails && "xl"}
         onHide={() => {
-          setCloseConfirmationModal(true);
-          setAddViewAuthorityDetails(false);
+          if (authorityViewState === 3) {
+            setAddEditViewAuthoriyModal(false);
+            setAddViewAuthorityDetails(true);
+          } else {
+            setCloseConfirmationModal(true);
+            setAddViewAuthorityDetails(false);
+          }
         }}
         ModalTitle={
           !addViewAuthorityDetails
@@ -485,77 +502,74 @@ const AddEditViewAuthorityModal = () => {
               {addViewAuthorityDetails ? (
                 <>
                   <Row>
-                    <Col sm={12} md={10} lg={10}>
-                      <div className="position-relative">
-                        <TextField
-                          change={handleValueChange}
-                          onBlur={handleBlur}
-                          name="name"
-                          maxLength={100}
-                          placeholder={t("Authority-name")}
-                          applyClass={
-                            authorityViewState === 3
-                              ? "viewField_Name"
-                              : "AddEditAuthorityInputField"
-                          }
-                          value={authorityDetails.name}
-                          // inputicon={<Check2 className={styles["CheckIcon"]} />}
-                          inputicon={
-                            isAuthorityExist === true ? (
-                              <Spinner
-                                size="md"
-                                className={styles["SpinnerClass"]}
-                              />
-                            ) : isAuthorityExist === false ? (
-                              <Check2 className={styles["CheckIcon"]} />
-                            ) : null
-                          }
-                          label={
-                            <>
-                              {t("Authority-name")}
-                              <span className={styles["sterick"]}>
-                                {authorityViewState !== 3 ? " *" : ""}
-                              </span>
-                            </>
-                          }
-                          iconclassname={styles["SearchIconClass"]}
-                          labelclass={styles["labelStyle"]}
-                        />
-                        <p
-                          className={
-                            errors.name
-                              ? styles["errorMessage-inLogin"]
-                              : styles["errorMessage-inLogin_hidden"]
-                          }
-                        >
-                          {errors.name}
-                        </p>
-                      </div>
-                    </Col>
-                    <Col sm={12} md={2} lg={2}>
-                      <TextField
-                        maxLength={10}
-                        change={handleValueChange}
-                        onBlur={handleBlur}
-                        name="shortCode"
-                        placeholder={t("Short-code")}
-                        applyClass={
+                    <Col sm={12} md={8} lg={8} className="m-0 pe-0 ">
+                      <InputfieldwithCount
+                        value={authorityDetails.name}
+                        onChange={handleValueChange}
+                        name="name"
+                        ref={authorityNameRef}
+                        showCount={authorityViewState === 3 ? false : true}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Authority-name") : ""
+                        }
+                        preFixClas={
                           authorityViewState === 3
                             ? "viewField_Name"
-                            : "AddEditAuthorityInputField"
+                            : "AddEditAuthorityCounterInputField"
+                        }
+                        maxLength={100}
+                        minLength={1}
+                        pattern={"^[a-zA-Z0-9 ]+$"}
+                        labelClass={styles["labelStyle"]}
+                        onBlur={handleBlur}
+                        label={
+                          <>
+                            {t("Authority-name")}
+                            <span className={styles["sterick"]}>
+                              {authorityViewState !== 3 ? " *" : ""}
+                            </span>
+                          </>
+                        }
+                      />
+                      <p
+                        className={
+                          errors.name
+                            ? styles["errorMessage-inLogin"]
+                            : styles["errorMessage-inLogin_hidden"]
+                        }
+                      >
+                        {errors.name}
+                      </p>
+                    </Col>
+                    <Col
+                      sm={12}
+                      md={1}
+                      lg={1}
+                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                    >
+                      {isAuthorityExist === true ? (
+                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                      ) : isAuthorityExist === false ? (
+                        <Check2 className={styles["CheckIcon"]} />
+                      ) : null}
+                    </Col>
+                    <Col sm={12} md={2} lg={2} className="m-0 p-0">
+                      <InputfieldwithCount
+                        maxLength={10}
+                        showCount={authorityViewState === 3 ? false : true}
+                        onChange={handleValueChange}
+                        onBlur={handleBlur}
+                        name="shortCode"
+                        pattern={"^[a-zA-Z0-9 ]+$"}
+                        placeholder={
+                          authorityViewState !== 3 ? t("Short-code") : ""
+                        }
+                        preFixClas={
+                          authorityViewState === 3
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.shortCode}
-                        inputicon={
-                          isShortCodeExist === true ? (
-                            <Spinner
-                              size="md"
-                              className={styles["SpinnerClass"]}
-                            />
-                          ) : isShortCodeExist === false ? (
-                            <Check2 className={styles["CheckIcon"]} />
-                          ) : null
-                        }
-                        iconclassname={styles["SearchIconClass"]}
                         label={
                           <>
                             {t("Short-code")}
@@ -564,7 +578,7 @@ const AddEditViewAuthorityModal = () => {
                             </span>
                           </>
                         }
-                        labelclass={styles["labelStyle"]}
+                        labelClass={styles["labelStyle"]}
                       />
 
                       <p
@@ -577,57 +591,92 @@ const AddEditViewAuthorityModal = () => {
                         {errors.shortCode}
                       </p>
                     </Col>
+                    <Col
+                      sm={12}
+                      md={1}
+                      lg={1}
+                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                    >
+                      {isShortCodeExist === true ? (
+                        <Spinner size="md" className={styles["SpinnerClass"]} />
+                      ) : isShortCodeExist === false ? (
+                        <Check2 className={styles["CheckIcon"]} />
+                      ) : null}
+                    </Col>
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
-                      <TextArea
-                        labelClassName={styles["labelStyle"]}
-                        placeholder={t("Description")}
-                        maxLength={500}
-                        onChange={handleValueChange}
-                        name="description"
-                        applyClass={
-                          authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField_textArea"
-                        }
-                        value={authorityDetails.description}
-                        label={t("Description")}
-                      />
+                      {authorityViewState === 3 ? (
+                        <>
+                          <label className={styles["labelStyle"]}>
+                            {t("Description")}
+                          </label>
+                          <p
+                            className={
+                              styles["authorityDetailsViewDescription"]
+                            }
+                          >
+                            {authorityDetails.description}
+                          </p>
+                        </>
+                      ) : (
+                        <TextAreafieldwithCount
+                          labelClass={styles["labelStyle"]}
+                          placeholder={
+                            authorityViewState !== 3 ? t("Description") : ""
+                          }
+                          showCount={authorityViewState === 3 ? false : true}
+                          maxLength={500}
+                          onChange={handleValueChange}
+                          name="description"
+                          preFixClas={
+                            authorityViewState === 3
+                              ? "viewField_TextArea_Name"
+                              : "AddEditAuthorityCounterInputFieldTextArea"
+                          }
+                          value={authorityDetails.description}
+                          label={t("Description")}
+                        />
+                      )}
                     </Col>
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
-                      <TextField
-                        placeholder={t("Sector")}
+                      <InputfieldwithCount
+                        placeholder={
+                          authorityViewState !== 3 ? t("Sector") : ""
+                        }
+                        showCount={authorityViewState === 3 ? false : true}
                         maxLength={50}
-                        label={t("Sector")}
-                        change={handleValueChange}
+                        onChange={handleValueChange}
                         name="sector"
-                        labelclass={styles["labelStyle"]}
-                        applyClass={
+                        labelClass={styles["labelStyle"]}
+                        label={t("Sector")}
+                        preFixClas={
                           authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField"
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.sector}
                       />
                     </Col>
                     <Col sm={12} md={4} lg={4}>
-                      <TextField
-                        placeholder={t("Website")}
-                        label={t("Website")}
-                        maxLength={100}
-                        change={handleValueChange}
-                        onBlur={handleBlur}
+                      <InputfieldwithCount
+                        placeholder={
+                          authorityViewState !== 3 ? t("Website") : ""
+                        }
+                        showCount={authorityViewState === 3 ? false : true}
+                        maxLength={50}
+                        onChange={handleValueChange}
                         name="website"
-                        applyClass={
+                        labelClass={styles["labelStyle"]}
+                        label={t("Website")}
+                        preFixClas={
                           authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField"
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.website}
-                        labelclass={styles["labelStyle"]}
                       />
 
                       <p
@@ -659,7 +708,11 @@ const AddEditViewAuthorityModal = () => {
                             labelInValue={t("Country")}
                             onChange={(event) => setSelectCountry(event)}
                             value={selectCountry}
-                            placeholder={t("Please-select-country")}
+                            placeholder={
+                              authorityViewState !== 3
+                                ? t("Please-select-country")
+                                : ""
+                            }
                             classNamePrefix="Select_country_Authoriy"
                           />
                         )}
@@ -668,54 +721,63 @@ const AddEditViewAuthorityModal = () => {
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
-                      <TextField
-                        placeholder={t("Address")}
-                        label={t("Address")}
+                      <InputfieldwithCount
+                        placeholder={
+                          authorityViewState !== 3 ? t("Address") : ""
+                        }
+                        showCount={authorityViewState === 3 ? false : true}
                         maxLength={300}
-                        change={handleValueChange}
+                        onChange={handleValueChange}
                         name="address"
-                        applyClass={
+                        preFixClas={
                           authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField"
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.address}
-                        labelclass={styles["labelStyle"]}
+                        labelClass={styles["labelStyle"]}
+                        label={t("Address")}
                       />
                     </Col>
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={4} lg={4}>
-                      <TextField
-                        placeholder={t("Contact-person-name")}
-                        label={t("Contact-person-name")}
+                      <InputfieldwithCount
+                        placeholder={
+                          authorityViewState !== 3
+                            ? t("Contact-person-name")
+                            : ""
+                        }
                         maxLength={50}
-                        change={handleValueChange}
+                        onChange={handleValueChange}
                         name="contactPersonName"
-                        applyClass={
+                        showCount={authorityViewState === 3 ? false : true}
+                        preFixClas={
                           authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField"
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.contactPersonName}
-                        labelclass={styles["labelStyle"]}
+                        labelClass={styles["labelStyle"]}
+                        label={t("Contact-person-name")}
                       />
                     </Col>
                     <Col sm={12} md={4} lg={4}>
-                      <TextField
-                        placeholder={t("Email")}
-                        label={t("Email")}
+                      <InputfieldwithCount
+                        placeholder={authorityViewState !== 3 ? t("Email") : ""}
+                        showCount={authorityViewState === 3 ? false : true}
                         maxLength={50}
-                        change={handleValueChange}
+                        onChange={handleValueChange}
                         onBlur={handleBlur}
                         name="email"
-                        applyClass={
+                        labelClass={styles["labelStyle"]}
+                        label={t("Email")}
+                        preFixClas={
                           authorityViewState === 3
-                            ? "viewField"
-                            : "AddEditAuthorityInputField"
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
                         value={authorityDetails.email}
-                        labelclass={styles["labelStyle"]}
                       />
 
                       <p
@@ -793,15 +855,15 @@ const AddEditViewAuthorityModal = () => {
                     <Row className="mt-2">
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["labelStyleActive"]}>
-                          {t("Active")}
+                          {t("Status")}
                         </div>
-                        {authorityDetails.status === true ? (
+                        {authorityDetails.status === "Active" ? (
                           <span className={styles["activeAuthorityStyle"]}>
-                            Active
+                            {t("Active")}
                           </span>
                         ) : (
                           <span className={styles["inactiveAuthorityStyle"]}>
-                            InActive
+                            {t("InActive")}
                           </span>
                         )}
                       </Col>
@@ -854,7 +916,7 @@ const AddEditViewAuthorityModal = () => {
                     )}
 
                     <Button
-                      text={t("Cancel")}
+                      text={authorityViewState !== 3 ? t("Cancel") : t("Close")}
                       className={styles["CancelButtonStyle"]}
                       onClick={handleCancelButton}
                     />

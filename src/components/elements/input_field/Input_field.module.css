@@ -420,6 +420,7 @@ body[dir="rtl"] .updateNotes_titleInputForContactFieldAdminUserFreeTrial {
   pointer-events: none !important;
   cursor: default !important;
   font-size: 20px !important;
+  color: #5a5a5a !important;
 }
 .AddEditAuthorityInputField {
   border-radius: 4px !important;

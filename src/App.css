@@ -3676,7 +3676,7 @@ p.Disabled-Close {
 
 input[type="text"] {
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-weight: 500 ;
   box-shadow: none !important;
 }
 

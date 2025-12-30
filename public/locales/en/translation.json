@@ -2517,7 +2517,7 @@
   "File-is-saved-successfully": "File is saved successfully",
   "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
   "Please-try-again-after": "Please try again after",
-
+  "You-are-currently-in-a-Video-Call-this-feature-cannot-be-accessed-right-now": "You are currently in a Video Call. This feature cannot be accessed right now",
   "Complaince-setting": "Complaince Setting",
   "Authority": "Authority",
   "Manage-authority": "Manage Authority",
@@ -2553,5 +2553,8 @@
   "Select-day-number": "Select Day Number",
   "Select-working-days": "Select Working Days",
   "Compliances-by-me": "Compliances by Me",
-  "Compliances-for-me":"Compliances for Me"
+  "Compliances-for-me": "Compliances for Me",
+  "No-matching-records": "No matching records.",
+  "Authorities": "Authorities",
+  "Create-compliance": "Create compliance"
 }

@@ -56,7 +56,6 @@ const NavbarAdmin = () => {
                           >
                             {t("Manage-authority")}
                           </NavDropdown.Item>
-                          {/* ) : null} */}
 
                           <NavDropdown.Item
                             as={Link}
@@ -64,7 +63,7 @@ const NavbarAdmin = () => {
                             eventKey="link-8"
                             className="text-black border-none"
                           >
-                            {t("General-setting")}
+                            {t("General-settings")}
                           </NavDropdown.Item>
                         </NavDropdown>
 
@@ -231,29 +230,33 @@ const NavbarAdmin = () => {
                           </Nav.Link>
                         ) : (
                           <>
-                            <NavDropdown
-                              title={t("Complaince-setting")}
-                              id="collasible-nav-dropdown"
-                              className="DiskusAdminNavBar"
-                            >
-                              <NavDropdown.Item
-                                as={Link}
-                                to="manageAuthority"
-                                eventKey="link-8"
-                                className="text-black border-none "
+                            {process.env.REACT_APP_COMPLIANCE_MODULE ===
+                              "TRUE" && (
+                              <NavDropdown
+                                title={t("Complaince-setting")}
+                                id="collasible-nav-dropdown"
+                                className="DiskusAdminNavBar"
                               >
-                                {t("Manage-authority")}
-                              </NavDropdown.Item>
+                                <NavDropdown.Item
+                                  as={Link}
+                                  to="manageAuthority"
+                                  eventKey="link-8"
+                                  className="text-black border-none "
+                                >
+                                  {t("Manage-authority")}
+                                </NavDropdown.Item>
 
-                              <NavDropdown.Item
-                                as={Link}
-                                to="generalSetting"
-                                eventKey="link-8"
-                                className="text-black border-none"
-                              >
-                                {t("General-setting")}
-                              </NavDropdown.Item>
-                            </NavDropdown>
+                                <NavDropdown.Item
+                                  as={Link}
+                                  to="generalSetting"
+                                  eventKey="link-8"
+                                  className="text-black border-none"
+                                >
+                                  {t("General-settings")}
+                                </NavDropdown.Item>
+                              </NavDropdown>
+                            )}
+
                             <Nav.Link
                               as={Link}
                               to="ManageUsers"

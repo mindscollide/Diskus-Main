@@ -127,6 +127,7 @@ export const signOut = async (message, dispatch) => {
     localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     localStorage.setItem("rememberEmail", RememberEmailLocal);
     localStorage.setItem("rememberEmailValue", RememberEmailLocalValue);
+    sessionStorage.removeItem("activeCallSessionforOtoandGroup");
   } else if (RememberEmailLocal === true) {
     let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 

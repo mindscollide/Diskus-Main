@@ -19,6 +19,7 @@ import {
 } from "../../../../store/actions/OrganizationSettings";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setOrganizationSettingUpdateData } from "../../../../store/actions/ComplainSettingActions";
 
 const GeneralSetting = () => {
   const { t } = useTranslation();
@@ -101,7 +102,8 @@ const GeneralSetting = () => {
     isFridayWorkingDay: true,
     isSaturdayWorkingDay: true,
     isSundayWorkingDay: true,
-    fiscalEndMonth: 2,
+    fiscalStartMonth: 2,
+    fiscalYearStartDay: 1,
     complianceAlertOne: 1,
     complianceAlertThree: 1,
     complianceAlertTwo: 1,
@@ -112,6 +114,11 @@ const GeneralSetting = () => {
     (state) => state.settingReducer.GetOrganizationLevelSettingResponse
   );
 
+  const MqttOrganizationSettingUpdated = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated
+  );
+  console.log(MqttOrganizationSettingUpdated, "MqttOrganizationSettingUpdated");
   console.log(
     userOrganizationSetting,
     "settingReducerGetOrganizationLevelSettingResponseData"
@@ -119,6 +126,153 @@ const GeneralSetting = () => {
   useEffect(() => {
     dispatch(getOrganizationLevelSetting(navigate, t));
   }, []);
+  // MQTT
+  useEffect(() => {
+    if (
+      MqttOrganizationSettingUpdated &&
+      MqttOrganizationSettingUpdated !== null
+    ) {
+      try {
+        const { organizationSettings } = MqttOrganizationSettingUpdated;
+
+        setOrganizationSetting({
+          Is2FAEnabled: organizationSettings.is2FAEnabled,
+          EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
+          EmailEditMeeting: organizationSettings.emailOnEditMeeting,
+          EmailCancelOrDeleteMeeting:
+            organizationSettings.emailOnCancelledDeletedMeeting,
+          PushNotificationonNewMeeting:
+            organizationSettings.pushNotificationOnNewMeeting,
+          PushNotificationEditMeeting:
+            organizationSettings.pushNotificationOnEditMeeting,
+          PushNotificationCancelledOrDeleteMeeting:
+            organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          ShowNotificationOnParticipantJoining:
+            organizationSettings.showNotificationOnParticipantJoining,
+          AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
+          AllowMicrosoftCalenderSync:
+            organizationSettings.userAllowMicrosoftCalendarSynch,
+          EmailWhenAddedToCommittee:
+            organizationSettings.emailWhenAddedToCommittee,
+          EmailWhenRemovedFromCommittee:
+            organizationSettings.emailWhenRemovedFromCommittee,
+          EmailWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.emailWhenCommitteeIsDissolvedArchived,
+          EmailWhenCommitteeIsSetInactive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenAddedToCommittee:
+            organizationSettings.pushNotificationwhenAddedtoCommittee,
+          PushNotificationWhenRemovedFromCommittee:
+            organizationSettings.pushNotificationwhenRemovedfromCommittee,
+          PushNotificationWhenCommitteeIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
+          PushNotificationWhenCommitteeIsInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
+          EmailWhenRemovedFromGroup:
+            organizationSettings.emailWhenRemovedFromGroup,
+          EmailWhenGroupIsDissolvedOrArchived:
+            organizationSettings.emailWhenGroupIsClosedArchived,
+          EmailWhenGroupisSetInactive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenAddedToGroup:
+            organizationSettings.pushNotificationwhenAddedtoGroup,
+          PushNotificationWhenRemovedFromGroup:
+            organizationSettings.pushNotificationwhenRemovedfromGroup,
+          PushNotificationWhenGroupIsDissolvedOrArchived:
+            organizationSettings.pushNotificationwhenGroupisClosedArchived,
+          PushNotificationWhenGroupIsInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenResolutionIsCirculated:
+            organizationSettings.emailwhenaResolutionisClosed,
+          EmailWhenNewResolutionIsCancelledAfterCirculation:
+            organizationSettings.emailwhenResolutionisCancelledafterCirculation,
+          EmailWhenResolutionIsClosed:
+            organizationSettings.emailwhenaResolutionisClosed,
+          PushNotificationWhenNewResolutionIsCirculated:
+            organizationSettings.pushNotificationwhenNewResolutionisCirculated,
+          PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+            organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
+          PushNotificationWhenResolutionISClosed:
+            organizationSettings.pushNotificationWhenResolutionIsClosed,
+          EmailWhenNewPollIsPublished:
+            organizationSettings.emailWhenNewPollIsPublished,
+          EmailWhenPollDueDateIsPassed:
+            organizationSettings.emailWhenPollDueDateIsPassed,
+          EmailWhenPublishedPollIsDeleted:
+            organizationSettings.emailWhenPublishedPollIsDeleted,
+          EmailWhenPublishedPollIsUpdated:
+            organizationSettings.emailWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewPollIsPublished:
+            organizationSettings.pushNotificationWhenNewPollIsPublished,
+          PushNotificationWhenPollDueDateIsPassed:
+            organizationSettings.pushNotificationWhenPollDueDateIsPassed,
+          PushNotificationWhenPublishedPollIsDeleted:
+            organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
+          PushNotificationWhenPublishedPollIsUpdated:
+            organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
+          DormatInactiveUsersforDays:
+            organizationSettings.dormantInactiveUsersForDays,
+          MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
+          TimeZoneId: organizationSettings.timeZones?.pK_TZID,
+          worldCountryID: organizationSettings.fK_WorldCountryID,
+          EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
+          EmailWhenGroupIsSetInActive:
+            organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenGroupisActive:
+            organizationSettings.pushNotificationwhenGroupissetActive,
+          PushNotificationWhenGroupisSetInActive:
+            organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenCommitteeisActive:
+            organizationSettings.emailWhenCommitteeIsActive,
+          EmailWhenCommitteeIsSetInActive:
+            organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenCommitteeisActive:
+            organizationSettings.pushNotificationwhenCommitteeissetActive,
+          PushNotificationWhenCommitteeisSetInActive:
+            organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          PushNotificationWhenNewTODOAssigned:
+            organizationSettings.pushNotificationWhenNewTODOAssigned,
+          PushNotificationWhenNewTODODeleted:
+            organizationSettings.pushNotificationWhenNewTODODeleted,
+          PushNotificationWhenNewTODOEdited:
+            organizationSettings.pushNotificationWhenNewTODOEdited,
+          PushNotificationWhenNewCommentAdded:
+            organizationSettings.pushNotificationWhenNewCommentAdded,
+          PushNotificationWhenCommentDeleted:
+            organizationSettings.pushNotificationWhenCommentDeleted,
+          EmailWhenCommentDeleted: organizationSettings.emailWhenCommentDeleted,
+          EmailWhenNewCommentAdded:
+            organizationSettings.emailWhenNewCommentAdded,
+          EmailWhenNewTODOAssigned:
+            organizationSettings.emailWhenNewTODOAssigned,
+          EmailWhenNewTODODeleted: organizationSettings.emailWhenNewTODODeleted,
+          EmailWhenNewTODOEdited: organizationSettings.emailWhenNewTODOEdited,
+          EmailWhenActiveMeetingAgendaUpdated:
+            organizationSettings.emailWhenActiveMeetingAgendaUpdated,
+          isMondayWorkingDay: organizationSettings.isMondayWorkingDay,
+          isTuesdayWorkingDay: organizationSettings.isTuesdayWorkingDay,
+          isWednesdayWorkingDay: organizationSettings.isWednesdayWorkingDay,
+          isThursdayWorkingDay: organizationSettings.isThursdayWorkingDay,
+          isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
+          isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
+          isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
+          // fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          complianceAlertOne: organizationSettings.complianceAlertOne,
+          complianceAlertThree: organizationSettings.complianceAlertThree,
+          complianceAlertTwo: organizationSettings.complianceAlertTwo,
+          autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          fiscalStartMonth: organizationSettings.fiscalStartMonth,
+          fiscalYearStartDay: organizationSettings.fiscalYearStartDay,
+        });
+
+        dispatch(setOrganizationSettingUpdateData(null));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [MqttOrganizationSettingUpdated]);
 
   useEffect(() => {
     if (
@@ -258,11 +412,13 @@ const GeneralSetting = () => {
           isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
           isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
           isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
-          fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          // fiscalEndMonth: organizationSettings.fiscalEndMonth,
           complianceAlertOne: organizationSettings.complianceAlertOne,
           complianceAlertThree: organizationSettings.complianceAlertThree,
           complianceAlertTwo: organizationSettings.complianceAlertTwo,
           autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          fiscalStartMonth: organizationSettings.fiscalStartMonth,
+          fiscalYearStartDay: organizationSettings.fiscalYearStartDay,
         });
       }
     }
@@ -380,7 +536,7 @@ const GeneralSetting = () => {
       EmailWhenActiveMeetingAgendaUpdated:
         userOrganizationSetting.EmailWhenActiveMeetingAgendaUpdated,
       AutoCloseResolutionDays: userOrganizationSetting.autoCloseResolutionDays,
-      FiscalEndMonth: 2,
+      // FiscalEndMonth: 2,
       ComplianceAlertOne: userOrganizationSetting.complianceAlertOne,
       ComplianceAlertTwo: userOrganizationSetting.complianceAlertTwo,
       ComplianceAlertThree: userOrganizationSetting.complianceAlertThree,
@@ -391,7 +547,10 @@ const GeneralSetting = () => {
       IsFridayWorkingDay: userOrganizationSetting.isFridayWorkingDay,
       IsSaturdayWorkingDay: userOrganizationSetting.isSaturdayWorkingDay,
       IsSundayWorkingDay: userOrganizationSetting.isSundayWorkingDay,
+      FiscalStartMonth: userOrganizationSetting.fiscalStartMonth,
+      FiscalYearStartDay: userOrganizationSetting.fiscalYearStartDay,
     };
+
     dispatch(updateOrganizationLevelSetting(navigate, Data, t));
   };
 
@@ -533,11 +692,13 @@ const GeneralSetting = () => {
           isFridayWorkingDay: organizationSettings.isFridayWorkingDay,
           isSaturdayWorkingDay: organizationSettings.isSaturdayWorkingDay,
           isSundayWorkingDay: organizationSettings.isSundayWorkingDay,
-          fiscalEndMonth: organizationSettings.fiscalEndMonth,
+          // fiscalEndMonth: organizationSettings.fiscalEndMonth,
           complianceAlertOne: organizationSettings.complianceAlertOne,
           complianceAlertThree: organizationSettings.complianceAlertThree,
           complianceAlertTwo: organizationSettings.complianceAlertTwo,
           autoCloseResolutionDays: organizationSettings.autoCloseResolutionDays,
+          fiscalStartMonth: organizationSettings.fiscalStartMonth,
+          fiscalYearStartDay: organizationSettings.fiscalYearStartDay,
         });
       }
     }
@@ -549,7 +710,7 @@ const GeneralSetting = () => {
           <Col lg={6} md={6} sm={12} xs={12}>
             <div className="d-flex gap-3 align-items-center w-100 justify-content-start">
               <label className={styles["General_Setting-Main-Heading"]}>
-                {t("General-setting")}
+                {t("General-settings")}
               </label>
             </div>
           </Col>
@@ -680,11 +841,11 @@ const GeneralSetting = () => {
             sm={12}
             className="d-flex gap-3 justify-content-end"
           >
-            <Button
+            {/* <Button
               text={t("Cancel")}
               className={styles["New_settings_Cancel_Button"]}
               onClick={cancelOrganizationLevelSettings}
-            />
+            /> */}
             <Button
               text={t("Save")}
               className={styles["New_settings_Update_Button"]}

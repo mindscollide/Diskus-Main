@@ -26,6 +26,7 @@ import {
   setAuthorityUpdatedData,
   setDeleteStatusData,
   setInactiveStatusData,
+  setOrganizationSettingUpdateData,
 } from "../../../store/actions/ComplainSettingActions";
 
 const AdminHome = () => {
@@ -164,6 +165,18 @@ const AdminHome = () => {
       if (data.message.toLowerCase() === "AUTHORITY_UPDATED".toLowerCase()) {
         console.log("AUTHORITY_UPDATED", data);
         dispatch(setAuthorityUpdatedData(data.payload));
+      }
+    }
+
+    // Settings
+    if (data.action.toLowerCase() === "Settings".toLowerCase()) {
+      console.log("MQTT Settings", data.action);
+      if (
+        data.message.toLowerCase() ===
+        "ORGANIZATION_SETTINGS_UPDATED".toLowerCase()
+      ) {
+        console.log("ORGANIZATION_SETTINGS_UPDATED", data);
+        dispatch(setOrganizationSettingUpdateData(data.payload));
       }
     }
   };

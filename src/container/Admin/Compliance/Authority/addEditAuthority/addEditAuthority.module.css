@@ -199,9 +199,16 @@ body[dir="rtl"] .SearchIconClass {
 }
 
 .SpinnerClass {
-  margin-top: 12px;
+  font-size: 2px !important;
 }
 .CheckIcon {
   font-size: 2rem;
-  margin-top: 12px;
+}
+.authorityDetailsViewDescription {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  margin: 0;
+  overflow-wrap: break-word;
+  min-height: 26px;
 }

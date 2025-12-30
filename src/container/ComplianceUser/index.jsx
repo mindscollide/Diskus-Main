@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./mainCompliance.module.css";
-import { Switch } from "../../components/elements";
+import { Button, Switch } from "../../components/elements";
 import CustomButton from "../../components/elements/button/Button";
 import { useTranslation } from "react-i18next";
 import FiscalYearCalendar_Icon from "../../assets/images/FiscalYearCalendar_Icon.svg";
 import ComplianceDashboard from "./Tabs/Dashboard";
+import ComplianceByMe from "./Tabs/ComplainceByMe";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -18,11 +19,18 @@ const MainCompliance = () => {
             sm={12}
             md={6}
             lg={6}
-            className="d-flex justify-content-start align-items-center"
+            className="d-flex justify-content-start align-items-center mb-2"
           >
             <span className={styles["Compliance_dashboard_heading"]}>
-              Compliance Dashboard
+              {tabs === 2 ? t("Compliances-by-me") : "Compliance Dashboard"}
             </span>
+            {tabs === 2 && (
+              <Button
+                text={t("Create-compliance")}
+                className={styles["createComplianceButton"]}
+                // onClick={handleAddAuthority}
+              />
+            )}
           </Col>
           <Col
             sm={12}
@@ -93,6 +101,7 @@ const MainCompliance = () => {
           </Col>
         </Row>
         {tabs === 1 && <ComplianceDashboard />}
+        {tabs === 2 && <ComplianceByMe />}
       </section>
     </>
   );

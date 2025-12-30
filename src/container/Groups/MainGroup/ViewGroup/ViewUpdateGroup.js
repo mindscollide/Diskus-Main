@@ -29,7 +29,7 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
   const navigate = useNavigate();
   const [fileAttachments, setFileAttachments] = useState([]);
 
-  console.log(fileAttachments, "fileAttachmentsfileAttachments")
+  console.log(fileAttachments, "fileAttachmentsfileAttachments");
   const [previousFileIDs, setPreviousFileIDs] = useState([]);
 
   const [folderID, setFolderID] = useState(0);
@@ -262,14 +262,39 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
         saveFilesGroupsApi(navigate, t, fileObj, folderID, newfile)
       );
     }
+    setFileAttachments((prev) =>
+      prev.map((data) => {
+        const updateId = newfile.find(
+          (item) => item.displayFileName === data.DisplayAttachmentName
+        );
 
+        if (updateId) {
+          return { ...data, pK_FileID: updateId.pK_FileID };
+        }
+        return data;
+      })
+    );
+
+    setPreviousFileIDs((prev) => {
+      const newItems = newfile
+        .filter((item) => !prev.some((p) => p.pK_FileID === item.pK_FileID))
+        .map((item) => ({
+          DisplayAttachmentName: item.displayFileName,
+          pK_FileID: item.pK_FileID,
+        }));
+
+      return [...prev, ...newItems];
+    });
+    setFileForSend([]);
     let Data = {
       GroupID: Number(viewGroupDetails.GroupID),
       UpdateFileList: newfile.map((data, index) => {
         return { PK_FileID: Number(data.pK_FileID) };
       }),
     };
-    dispatch(SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage));
+    dispatch(
+      SaveGroupsDocumentsApiFunc(navigate, Data, t, setViewGroupPage, 1)
+    );
   };
   const handleClose = () => {
     localStorage.removeItem("ViewGroupID");
@@ -386,7 +411,13 @@ const ViewUpdateGroup = ({ setViewGroupPage, groupStatus }) => {
                   {viewGroupDetails.GroupMembers !== null
                     ? viewGroupDetails.GroupMembers.map((data, index) => {
                         return (
-                          <Col lg={6} md={6} sm={12} className="mt-3" key={index}>
+                          <Col
+                            lg={6}
+                            md={6}
+                            sm={12}
+                            className="mt-3"
+                            key={index}
+                          >
                             <Row>
                               <Col lg={3} md={3} sm={12}>
                                 <img

@@ -208,3 +208,7 @@
   font-weight: 600 !important;
   margin-left: 3px !important;
 }
+
+span.status-muted.d-block {
+  font-size: 12px;
+}
