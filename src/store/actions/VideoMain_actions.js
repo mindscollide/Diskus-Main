@@ -161,6 +161,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 JSON.stringify(meetingHost)
               );
               localStorage.setItem("initiateVideoCall", true);
+              sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
               // localStorage.setItem("meetingTitle", "");
               if (Data.CallTypeID === 2) {
                 localStorage.setItem(
@@ -740,6 +741,7 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                 localStorage.removeItem("incommingCallTypeID");
                 localStorage.removeItem("incommingCallType");
                 localStorage.removeItem("incommingNewCallerID");
+                sessionStorage.removeItem("activeCallSessionforOtoandGroup");
                 dispatch(incomingVideoCallFlag(false));
                 setIsTimerRunning(false);
               }

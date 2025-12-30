@@ -80,6 +80,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import AuditTrial from "../container/Admin/Reports/AuditTrial/AuditTrial.js";
 import UserSettingsWrapper from "./UserSettingsWrapper.js";
 import MeetingDocumentViewer from "../components/elements/meetingDocumentViewer/meetingDocumentViewer.js";
+import AlreadyInGroupAndOtoCall from "../components/layout/talk/videoCallScreen/alreadyInGroupAndOtoCall/AlreadyInGroupAndOtoCall.jsx";
 import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
 import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
 import { AuthorityProvider } from "../context/AuthorityContext.js";
@@ -109,6 +110,14 @@ export const router = createBrowserRouter(
         element={
           <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
             <GuestVideoCall />
+          </ErrorBoundary>
+        }
+      />
+      <Route
+        path="/AlreadyInGroupAndOtoCall"
+        element={
+          <ErrorBoundary FallbackComponent={ErrorFallback} onError={logErrors}>
+            <AlreadyInGroupAndOtoCall />
           </ErrorBoundary>
         }
       />
@@ -422,6 +431,19 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
+          {/* <Route
+            path="AlreadyInGroupAndOtoCall"
+            element={
+              <RouteWrapperUser name="">
+                <ErrorBoundary
+                  FallbackComponent={ErrorFallback}
+                  onError={logErrors}
+                >
+                  <AlreadyInGroupAndOtoCall />
+                </ErrorBoundary>
+              </RouteWrapperUser>
+            }
+          /> */}
           <Route
             path="committee"
             element={
