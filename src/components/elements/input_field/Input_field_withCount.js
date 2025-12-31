@@ -21,6 +21,8 @@ const InputfieldwithCount = forwardRef(
       prefix,
       onBlur,
       loading,
+      onKeyDown,
+      disabled = false,
       ...rest
     },
     ref
@@ -44,6 +46,8 @@ const InputfieldwithCount = forwardRef(
           prefix={prefix}
           onBlur={onBlur}
           ref={ref}
+          onKeyDown={onKeyDown}
+          disabled={disabled}
         />
       </div>
     );

@@ -16,6 +16,9 @@
   font-weight: 600;
   font-size: 24px;
   color: #6172d6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .createNewComplianceBtn {

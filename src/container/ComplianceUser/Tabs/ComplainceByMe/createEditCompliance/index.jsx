@@ -6,10 +6,13 @@ import CustomButton from "../../../../../components/elements/button/Button";
 import ComplainceDetails from "./ComplianceDetails";
 import ComplianceChecklist from "./CreateEditViewComplianceChecklist";
 import ComplianceTask from "./CreateEditViewComplianceTask";
+import { useComplianceContext } from "../../../../../context/ComplianceContext";
 
 const CreateEditCompliance = () => {
   const { t } = useTranslation();
-  const [tabs, setTabs] = useState(1);
+  const { complianceInfo, checkListTabs, setChecklistTabs } =
+    useComplianceContext();
+
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
@@ -18,7 +21,9 @@ const CreateEditCompliance = () => {
       <section className={styles["MainCompliance_Container"]}>
         <Row className="my-2">
           <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
-            {t("Create-new-compliance")}
+            {complianceInfo.complianceId !== 0
+              ? complianceInfo.complianceName
+              : t("Create-new-compliance")}
           </Col>
         </Row>
         <section
@@ -35,43 +40,45 @@ const CreateEditCompliance = () => {
             >
               <CustomButton
                 className={
-                  tabs === 1
+                  checkListTabs === 1
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
                 text={t("Compliance-details")}
                 onClick={() => {
-                  setTabs(1);
+                  setChecklistTabs(1);
                 }}
               />
               <CustomButton
                 className={
-                  tabs === 2
+                  checkListTabs === 2
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
+                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
-                  setTabs(2);
+                  setChecklistTabs(2);
                 }}
               />
               <CustomButton
                 className={
-                  tabs === 3
+                  checkListTabs === 3
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
+                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {
-                  setTabs(3);
+                  setChecklistTabs(3);
                 }}
               />
             </Col>
           </Row>
 
-          {tabs === 1 && <ComplainceDetails />}
-          {tabs === 2 && <ComplianceChecklist />}
-          {tabs === 3 && <ComplianceTask />}
+          {checkListTabs === 1 && <ComplainceDetails />}
+          {checkListTabs === 2 && <ComplianceChecklist />}
+          {checkListTabs === 3 && <ComplianceTask />}
         </section>
       </section>
     </>

@@ -2567,5 +2567,10 @@
   "Tags": "Tags",
   "Add-tags": "Add Tags",
   "Add-upto-5-tags": "Add upto 5 tags",
-  "Add-tag": "Add Tag"
+  "Add-tag": "Add Tag",
+  "Compliance-created-successfully": "Compliance Created Successfully",
+  "Compliance-not-created": "Compliance Not Created",
+  "Checklist-title": "Checklist Title",
+  "Checklist-description": "Checklist Description",
+  "Checklist-created-successfully": "Checklist Created Successfully"
 }

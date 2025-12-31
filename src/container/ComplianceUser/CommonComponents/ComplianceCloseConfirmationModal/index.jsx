@@ -2,11 +2,9 @@ import React from "react";
 import styles from "./complianceCloseConfrmationModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Modal } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-// import { deleteOrganizationUserAPI } from "../../../../../store/actions/UserManagementActions";
-import { showDeleteAuthorityModal } from "../../../../../store/actions/ManageAuthoriyAction";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import { Button, Modal } from "../../../../components/elements";
 const ComplianceCloseConfirmationModal = () => {
   const { t } = useTranslation();
 
@@ -15,10 +13,12 @@ const ComplianceCloseConfirmationModal = () => {
     useComplianceContext();
 
   const handleCancelButton = () => {
-    // dispatch(showDeleteAuthorityModal(false));
+    setCloseConfirmationModal(false);
   };
 
-  const handleProceedButton = () => {};
+  const handleProceedButton = () => {
+    setCloseConfirmationModal(false);
+  };
 
   return (
     <Modal
@@ -32,11 +32,8 @@ const ComplianceCloseConfirmationModal = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12} className="text-center">
               <div className={styles["ConfirmationHeading"]}>
-                {t("Confirmation")}
-              </div>
-              <div className={styles["ConfirmationHeading"]}>
                 {t(
-                  "“All your changes will be lost. Are you sure you want to discard them?"
+                  "All your changes will be lost. Are you sure you want to discard them?"
                 )}
               </div>
             </Col>

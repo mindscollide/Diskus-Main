@@ -4,11 +4,16 @@ const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
-
+  const [complianceInfo, setComplianceInfo] = useState({
+    complianceId: 0,
+    complianceName: "",
+  });
   const [complianceAddEditViewState, setComplianceAddEditViewState] =
     useState(0);
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
+
+  const [checkListTabs, setChecklistTabs] = useState(1);
   return (
     <ComplianceContext.Provider
       value={{
@@ -18,6 +23,10 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceAddEditViewState,
         closeConfirmationModal,
         setCloseConfirmationModal,
+        complianceInfo,
+        setComplianceInfo,
+        checkListTabs,
+        setChecklistTabs,
       }}
     >
       {children}

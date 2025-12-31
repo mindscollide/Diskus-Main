@@ -83,14 +83,14 @@
   color: #5a5a5a;
   font-weight: 600;
   font-size: 12px;
-  background: #e1e1e1;
+  background: #fff;
   border: 1px solid #e1e1e1;
   padding: 12px 30px;
   /* height: 39px;
   width: 94px; */
 }
 .Compliance_CloseButton:is(:hover, :active, :focus, :focus-visible) {
-  background: #e1e1e1;
+  background: #fff;
   color: #5a5a5a;
   border: 1px solid #e1e1e1;
   padding: 12px 30px;
@@ -104,10 +104,14 @@
 }
 .TagsOption_Value {
   border-bottom: 1px solid #e1e1e1;
+  cursor: default;
 }
-.boldTag {
-  font-weight: bold;
+.tagDisabled {
+  opacity: 0.5;
+  /* pointer-events: none; */
+  cursor: not-allowed !important;
 }
+
 .buttonPosition {
   position: absolute;
   display: flex;

@@ -1,0 +1,111 @@
+.labelStyle {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  color: #6172d6;
+}
+.labelStyleActive {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  padding-right: 20px;
+}
+
+.datepicker_input {
+  margin-top: 2px;
+  padding: 0px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ced4da;
+  max-width: 100% !important;
+  min-width: 100% !important;
+
+  height: 39px !important;
+  font-weight: 500;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  outline: none !important;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.sterick {
+  color: #f16b6b;
+}
+.Select_label {
+  margin-top: 8.2px;
+}
+.Compliance_CloseButton {
+  border-radius: 4px;
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 12px;
+  background: #ffff;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.Compliance_CloseButton:is(:hover, :active, :focus, :focus-visible) {
+  background: #ffff;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.Compliance_NextButton {
+  border-radius: 4px;
+  background: #6172d6;
+  font-weight: 600;
+  border: 1px solid #6172d6;
+  font-size: 12px;
+  padding: 12px 30px;
+}
+
+.Compliance_NextButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #6172d6;
+  background: #6172d6;
+  padding: 12px 30px;
+}
+.ChecklistButtonPosition {
+  margin: 15px 0;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  align-items: center;
+  bottom: 20px;
+  right: 20px;
+}
+
+.mainButtonPosition {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  bottom: 20px;
+  right: 20px;
+}
+.checklistAccordian {
+  height: 44px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.checklistAccordian::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.checklistAccordian::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

@@ -2050,6 +2050,16 @@ const GetAllTagsByOrganizationID = {
   RequestMethod: "ServiceManager.GetAllTagsByOrganizationID",
 };
 
+const AddCompliance = {
+  RequestMethod: "ServiceManager.AddCompliance",
+};
+
+const AddComplianceChecklist = {
+  RequestMethod: "ServiceManager.AddComplianceChecklist",
+};
+const GetComplianceChecklistsByComplianceId = {
+  RequestMethod: "ServiceManager.GetComplianceChecklistsByComplianceId",
+};
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2584,4 +2594,7 @@ export {
   IsAuthorityNameExists,
   GetAllAuthoritiesDropdown,
   GetAllTagsByOrganizationID,
+  AddCompliance,
+  AddComplianceChecklist,
+  GetComplianceChecklistsByComplianceId,
 };
