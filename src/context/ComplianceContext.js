@@ -3,10 +3,32 @@ import { createContext, useContext, useState } from "react";
 const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
-  //   const [addEditViewAuthoriyModal, setAddEditViewAuthoriyModal] =
-  //     useState(false);
+  const [createEditCompliance, setCreateEditComplaince] = useState(false);
+  const [complianceInfo, setComplianceInfo] = useState({
+    complianceId: 0,
+    complianceName: "",
+  });
+  const [complianceAddEditViewState, setComplianceAddEditViewState] =
+    useState(0);
+
+  const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
+
+  const [checkListTabs, setChecklistTabs] = useState(1);
   return (
-    <ComplianceContext.Provider value={{}}>
+    <ComplianceContext.Provider
+      value={{
+        createEditCompliance,
+        setCreateEditComplaince,
+        complianceAddEditViewState,
+        setComplianceAddEditViewState,
+        closeConfirmationModal,
+        setCloseConfirmationModal,
+        complianceInfo,
+        setComplianceInfo,
+        checkListTabs,
+        setChecklistTabs,
+      }}
+    >
       {children}
     </ComplianceContext.Provider>
   );

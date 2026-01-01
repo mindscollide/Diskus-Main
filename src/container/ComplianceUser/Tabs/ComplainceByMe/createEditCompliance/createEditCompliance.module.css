@@ -1,0 +1,48 @@
+.MainCompliance_Container {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-bottom: 14px;
+}
+.ComplianceInnerSection {
+  background-color: #fff;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1;
+  padding: 15px 10px 10px 10px;
+  height: 100% !important;
+  min-height: 80vh;
+}
+.mainHeading {
+  font-weight: 600;
+  font-size: 24px;
+  color: #6172d6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.createNewComplianceBtn {
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 100% !important;
+  letter-spacing: 0% !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.createNewComplianceBtn_active {
+  background-color: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 100% !important;
+  letter-spacing: 0% !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  border: none !important;
+  border-radius: 4px !important;
+}

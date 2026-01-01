@@ -1,3 +1,4 @@
+import { GetAllAuthoritiesDropdown } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -19,6 +20,11 @@ const initialState = {
   SocketAuthorityCreated: null,
   SocketAuthorityUpdated: null,
   MqttOrganizationSettingUpdated: null,
+  GetAllAuthoritiesDropdown: null,
+  GetAllTagsByOrganizationID: null,
+  AddCompliance: null,
+  AddComplianceChecklist: null,
+  GetComplianceChecklistsByComplianceId: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -212,7 +218,136 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
       };
 
-    //MQTT Work
+    // GetAllAuthoritiesDropDown
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetAllAuthoritiesDropdown: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_AUTHORITIES_DROPDOWN_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetAllAuthoritiesDropdown: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // GetAllTagsByOrganizationID
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetAllTagsByOrganizationID: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetAllTagsByOrganizationID: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // AddCompliance
+    case actions.ADD_COMPLIANCE_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.ADD_COMPLIANCE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        AddCompliance: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.ADD_COMPLIANCE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        AddCompliance: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // AddComplianceChecklist
+    case actions.ADD_COMPLIANCE_CHECKLIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.ADD_COMPLIANCE_CHECKLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        AddComplianceChecklist: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.ADD_COMPLIANCE_CHECKLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        AddComplianceChecklist: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // GetComplianceChecklistsByComplianceId
+    case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsByComplianceId: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsByComplianceId: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+    //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {
         ...state,
@@ -261,6 +396,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: "",
         severity: null,
       };
+
     // ================= DEFAULT =================
     default:
       return state;
