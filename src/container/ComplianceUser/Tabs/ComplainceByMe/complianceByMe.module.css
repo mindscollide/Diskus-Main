@@ -1,0 +1,10 @@
+.actionButtons_complianceList {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  color: #ffffff !important;
+  background: #6172d6 !important;
+  padding: 8px 20px !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
