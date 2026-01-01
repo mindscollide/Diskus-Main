@@ -1,32 +1,25 @@
+/* Accordion Container */
 .accordion-custom {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  height: auto;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   padding: 15px 10px;
   margin-bottom: 10px;
-  overflow: hidden;
-  max-height: 200px;
   background: #fff;
-  transition: max-height 0.2s ease-in-out;
-}
-.accordion-custom-extended {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  height: auto;
-  border: 1px solid #e1e1e1 !important;
-  border-radius: 4px;
-  padding: 15px 10px;
-  margin-bottom: 10px;
   overflow: hidden;
-  background: #fff;
-  transition: height 0.2s ease-in-out;
+
+  /* animation */
+  max-height: 50px; /* collapsed height */
+  transition: max-height 0.35s ease;
 }
+
+/* Expanded state */
+.accordion-custom.expanded {
+  max-height: 500px; /* must be greater than content */
+}
+
 .FirstRow {
   display: flex;
   justify-content: space-between;
@@ -63,5 +56,12 @@
 .SecondRow {
   width: 100%;
   height: auto;
+  opacity: 0;
+  padding: 12px 10px;
+}
+.SecondRow.show {
+  width: 100%;
+  height: auto;
+  opacity: 1;
   padding: 12px 10px;
 }

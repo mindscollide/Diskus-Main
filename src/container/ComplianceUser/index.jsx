@@ -12,9 +12,13 @@ import { useComplianceContext } from "../../context/ComplianceContext";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
-  const [tabs, setTabs] = useState(1);
-  const { createEditCompliance, setCreateEditComplaince } =
-    useComplianceContext();
+  // const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
+  const {
+    createEditCompliance,
+    setCreateEditComplaince,
+    mainComplianceTabs,
+    setMainComplianceTabs,
+  } = useComplianceContext();
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
@@ -34,9 +38,11 @@ const MainCompliance = () => {
             className="d-flex justify-content-start align-items-center mb-2"
           >
             <span className={styles["Compliance_dashboard_heading"]}>
-              {tabs === 2 ? t("Compliances-by-me") : "Compliance Dashboard"}
+              {mainComplianceTabs === 2
+                ? t("Compliances-by-me")
+                : "Compliance Dashboard"}
             </span>
-            {tabs === 2 && (
+            {mainComplianceTabs === 2 && (
               <Button
                 text={t("Create-compliance")}
                 className={styles["createComplianceButton"]}
@@ -65,38 +71,38 @@ const MainCompliance = () => {
           >
             <CustomButton
               className={
-                tabs === 1
+                mainComplianceTabs === 1
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
               text={t("Dashboard")}
-              onClick={() => setTabs(1)}
+              onClick={() => setMainComplianceTabs(1)}
             />
             <CustomButton
               className={
-                tabs === 2
+                mainComplianceTabs === 2
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setTabs(2)}
+              onClick={() => setMainComplianceTabs(2)}
               text={t("Compliances-by-me")}
             />
             <CustomButton
               className={
-                tabs === 3
+                mainComplianceTabs === 3
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setTabs(3)}
+              onClick={() => setMainComplianceTabs(3)}
               text={t("Compliances-for-me")}
             />
             <CustomButton
               className={
-                tabs === 4
+                mainComplianceTabs === 4
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setTabs(4)}
+              onClick={() => setMainComplianceTabs(4)}
               text={t("Reports")}
             />
           </Col>
@@ -112,8 +118,8 @@ const MainCompliance = () => {
             </span>
           </Col>
         </Row>
-        {tabs === 1 && <ComplianceDashboard />}
-        {tabs === 2 && <ComplianceByMe />}
+        {mainComplianceTabs === 1 && <ComplianceDashboard />}
+        {mainComplianceTabs === 2 && <ComplianceByMe />}
       </section>
     </>
   );
