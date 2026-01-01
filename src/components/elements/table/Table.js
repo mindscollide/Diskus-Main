@@ -17,6 +17,7 @@ const CustomTable = ({
   prefixClassName,
   size,
   ref,
+  sticky = true
 }) => {
   return (
     <>
@@ -37,6 +38,8 @@ const CustomTable = ({
         ref={ref}
         size={size}
         showSorterTooltip={false}
+        sticky={sticky}
+        tableLayout="fixed"
       />
     </>
   );
