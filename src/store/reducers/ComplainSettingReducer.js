@@ -25,6 +25,8 @@ const initialState = {
   AddCompliance: null,
   AddComplianceChecklist: null,
   GetComplianceChecklistsByComplianceId: null,
+  CheckComplianceTitleExists: null,
+  ViewComplianceById: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -347,6 +349,59 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // CheckComplianceTitleExists
+    case actions.CHECK_COMPLIANCE_TITLE_EXIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.CHECK_COMPLIANCE_TITLE_EXIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        CheckComplianceTitleExists: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.CHECK_COMPLIANCE_TITLE_EXIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        CheckComplianceTitleExists: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // ViewComplianceById
+    case actions.VIEW_COMPLIANCE_BY_ID_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceById: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceById: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
     //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {

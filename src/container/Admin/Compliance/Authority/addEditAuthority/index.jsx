@@ -5,7 +5,7 @@ import { Check2 } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Button, Modal, TextArea } from "../../../../../components/elements";
+import { Button, Modal } from "../../../../../components/elements";
 import { Col, Row, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";

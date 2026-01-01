@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./createEditCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -10,11 +10,13 @@ import { useComplianceContext } from "../../../../../context/ComplianceContext";
 
 const CreateEditCompliance = () => {
   const { t } = useTranslation();
-  const { complianceInfo, checkListTabs, setChecklistTabs } =
-    useComplianceContext();
-
-  const [checklistCount, setChecklistCount] = useState(0);
-  const [taskCount, setTaskCount] = useState(0);
+  const {
+    complianceInfo,
+    checkListTabs,
+    setChecklistTabs,
+    checklistCount,
+    taskCount,
+  } = useComplianceContext();
 
   return (
     <>

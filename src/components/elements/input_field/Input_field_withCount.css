@@ -126,3 +126,17 @@
   outline: none !important;
   pointer-events: none;
 }
+/* Red border (wrapper) */
+.input-max-error.AddEditAuthorityCounterInputField-affix-wrapper {
+  border-color: #ff4d4f !important;
+}
+
+/* Red input border */
+.input-max-error .AddEditAuthorityCounterInputField {
+  border-color: #ff4d4f !important;
+}
+
+/* ✅ COUNT TEXT — THIS IS THE FIX */
+.input-max-error .AddEditAuthorityCounterInputField-show-count-suffix {
+  color: #ff4d4f !important;
+}

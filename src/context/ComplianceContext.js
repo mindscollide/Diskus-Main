@@ -12,8 +12,19 @@ export const ComlianceProvider = ({ children }) => {
     useState(0);
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
+  const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
 
   const [checkListTabs, setChecklistTabs] = useState(1);
+  const [complianceDetailsState, setComplianceDetailsState] = useState({
+    complianceTitle: "",
+    description: "",
+    authorityId: 0,
+    criticality: 0,
+    dueDate: "",
+    tags: [],
+  });
+  const [checklistCount, setChecklistCount] = useState(0);
+  const [taskCount, setTaskCount] = useState(0);
   return (
     <ComplianceContext.Provider
       value={{
@@ -27,6 +38,14 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceInfo,
         checkListTabs,
         setChecklistTabs,
+        mainComplianceTabs,
+        setMainComplianceTabs,
+        complianceDetailsState,
+        setComplianceDetailsState,
+        checklistCount,
+        setChecklistCount,
+        taskCount,
+        setTaskCount,
       }}
     >
       {children}

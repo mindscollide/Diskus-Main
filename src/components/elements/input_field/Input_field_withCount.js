@@ -3,51 +3,100 @@ import { Input } from "antd";
 import "./Input_field_withCount.css";
 const { TextArea } = Input;
 
+// const InputfieldwithCount = forwardRef(
+//   (
+//     {
+//       showCount = true,
+//       value,
+//       onChange,
+//       enterKeyHint,
+//       name,
+//       preFixClas,
+//       placeholder,
+//       maxLength,
+//       minLength,
+//       pattern,
+//       label,
+//       labelClass,
+//       prefix,
+//       onBlur,
+//       loading,
+//       onKeyDown,
+//       disabled = false,
+//       ...rest
+//     },
+//     ref
+//   ) => {
+//     const isMaxReached = maxLength && value.length >= maxLength;
+//     return (
+//       <div className="position-relative">
+//         {label && <label className={labelClass}>{label}</label>}
+
+//         <Input
+//           {...rest}
+//           showCount={showCount}
+//           value={value}
+//           onChange={onChange}
+//           name={name}
+//           enterKeyHint={enterKeyHint}
+//           placeholder={placeholder}
+//           prefixCls={preFixClas}
+//           maxLength={maxLength}
+//           minLength={minLength}
+//           pattern={pattern}
+//           prefix={prefix}
+//           onBlur={onBlur}
+//           ref={ref}
+//           onKeyDown={onKeyDown}
+//           disabled={disabled}
+//           status={isMaxReached ? "error" : ""}
+//         />
+//       </div>
+//     );
+//   }
+// );
+
 const InputfieldwithCount = forwardRef(
   (
     {
       showCount = true,
-      value,
+      value = "",
       onChange,
-      enterKeyHint,
       name,
       preFixClas,
       placeholder,
       maxLength,
-      minLength,
-      pattern,
       label,
       labelClass,
       prefix,
       onBlur,
-      loading,
       onKeyDown,
       disabled = false,
       ...rest
     },
     ref
   ) => {
+    const isMaxReached = maxLength && value.length >= maxLength;
+
     return (
       <div className="position-relative">
         {label && <label className={labelClass}>{label}</label>}
 
         <Input
           {...rest}
-          showCount={showCount}
           value={value}
           onChange={onChange}
           name={name}
-          enterKeyHint={enterKeyHint}
           placeholder={placeholder}
           prefixCls={preFixClas}
           maxLength={maxLength}
-          minLength={minLength}
-          pattern={pattern}
+          showCount={showCount}
           prefix={prefix}
           onBlur={onBlur}
           ref={ref}
           onKeyDown={onKeyDown}
           disabled={disabled}
+          className={isMaxReached ? "input-max-error" : ""}
         />
       </div>
     );
@@ -73,7 +122,9 @@ const TextAreafieldwithCount = memo(
     loading,
     rows,
     ref,
+    disabled,
   }) => {
+    const isMaxReached = maxLength && value.length >= maxLength;
     return (
       <>
         <div className="position-relative">
@@ -93,6 +144,8 @@ const TextAreafieldwithCount = memo(
             rows={rows}
             onBlur={onBlur}
             ref={ref}
+            disabled={disabled}
+            className={isMaxReached ? "input-max-error" : ""}
           />
         </div>
       </>

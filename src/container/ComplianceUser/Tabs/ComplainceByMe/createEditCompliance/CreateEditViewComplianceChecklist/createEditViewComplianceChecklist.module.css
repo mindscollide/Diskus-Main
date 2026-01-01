@@ -4,6 +4,7 @@
   font-size: 10px;
   line-height: 100%;
   color: #6172d6;
+  margin: 0;
 }
 .labelStyleActive {
   font-weight: 700 !important;
@@ -90,22 +91,39 @@
   bottom: 20px;
   right: 20px;
 }
+
+.accordianChecklistTitle {
+  font-weight: 600;
+  font-size: 16px;
+}
+.ViewChecklistDetailStyles {
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin: 0;
+}
+
+.AccordionArrowDown {
+  transform: rotate(-180deg);
+}
+
 .checklistAccordian {
-  height: 44px;
+  max-height: 220px !important;
   overflow-y: auto;
-  overflow-x: hidden;
-  border: 1px solid #e1e1e1;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+}
+.createNewChecklistStyle {
+  font-weight: 600;
+  font-size: 12px;
+  color: #6172d6;
+  border: 1px dashed #bfc7d5;
   border-radius: 4px;
-}
-
-.checklistAccordian::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-
-.checklistAccordian::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
+  height: 39px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

@@ -10,8 +10,10 @@ const CustomAccordion = ({
   notesID,
   handleClickTitleNotes,
 }) => {
+  const expanded = isExpand === notesID;
+
   return (
-    <div className={"accordion-custom"}>
+    <div className={`accordion-custom ${!expanded ? "expanded" : ""}`}>
       <div className="FirstRow">
         <div className="title-cont" onClick={handleClickTitleNotes}>
           {StartField}
@@ -19,7 +21,8 @@ const CustomAccordion = ({
         <div className="dateTime">{centerField}</div>
         <div className="icons">{endField}</div>
       </div>
-      <div className={isExpand === notesID ? "SecondRow" : "d-none"}>
+
+      <div className={`SecondRow ${!expanded ? "show" : ""}`}>
         {attachmentsRow}
       </div>
     </div>

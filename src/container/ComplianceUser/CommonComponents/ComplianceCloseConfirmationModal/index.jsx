@@ -5,18 +5,28 @@ import { useDispatch } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 import { Button, Modal } from "../../../../components/elements";
+import { useNavigate } from "react-router-dom";
+import ComplianceByMe from "../../Tabs/ComplainceByMe";
 const ComplianceCloseConfirmationModal = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const { closeConfirmationModal, setCloseConfirmationModal } =
-    useComplianceContext();
+  const navigate = useNavigate();
+  const {
+    closeConfirmationModal,
+    setCloseConfirmationModal,
+    setMainComplianceTabs,
+    checkListTabs,
+    setChecklistTabs,
+  } = useComplianceContext();
 
-  const handleCancelButton = () => {
+  const handleYesButton = () => {
+    // setMainComplianceTabs(2);
+    // setChecklistTabs(0);
     setCloseConfirmationModal(false);
   };
 
-  const handleProceedButton = () => {
+  const handleNoButton = () => {
     setCloseConfirmationModal(false);
   };
 
@@ -53,12 +63,12 @@ const ComplianceCloseConfirmationModal = () => {
               <Button
                 text={t("Yes")}
                 className={styles["CancelButton"]}
-                onClick={handleCancelButton}
+                onClick={handleYesButton}
               />
               <Button
                 text={t("No")}
                 className={styles["ProceedButtonStyles"]}
-                onClick={handleProceedButton}
+                onClick={handleNoButton}
               />
             </Col>
           </Row>
