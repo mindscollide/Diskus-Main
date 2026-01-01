@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import {
   InputfieldwithCount,
   TextAreafieldwithCount,
@@ -27,6 +27,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { parseUTCDateString } from "../../../../CommonComponents/commonFunctions";
+import { Check2 } from "react-bootstrap-icons";
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const ComplainceDetails = () => {
   const [selectCriticality, setSelectCriticality] = useState("");
   const [complianceDueDate, setComplianceDueDate] = useState("");
   const [errors, setErrors] = useState({});
+  const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
@@ -331,7 +333,7 @@ const ComplainceDetails = () => {
             labelClass={styles["labelStyle"]}
             disabled={selectAuthority === ""}
           />
-          {/* <p
+          <p
             className={
               errors.name
                 ? styles["errorMessage-inLogin"]
@@ -339,7 +341,19 @@ const ComplainceDetails = () => {
             }
           >
             {errors.name}
-          </p> */}
+          </p>
+        </Col>
+        <Col
+          sm={12}
+          md={1}
+          lg={1}
+          className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+        >
+          {isChecklistTitleExist === true ? (
+            <Spinner size="md" className={styles["SpinnerClass"]} />
+          ) : isChecklistTitleExist === false ? (
+            <Check2 className={styles["CheckIcon"]} />
+          ) : null}
         </Col>
       </Row>
       <Row className="mt-2">
