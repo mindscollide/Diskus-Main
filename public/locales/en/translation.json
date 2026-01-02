@@ -2574,5 +2574,6 @@
   "Checklist-title": "Checklist Title",
   "Checklist-description": "Checklist Description",
   "Checklist-created-successfully": "Checklist Created Successfully",
-  "Create-new-checklist": "Create New Checklist"
+  "Create-new-checklist": "Create New Checklist",
+  "Add-task": "Add Task"
 }

@@ -103,7 +103,12 @@
   color: #5a5a5a;
   margin: 0;
 }
-
+.ViewChecklistDetailStyles_notexpanded {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  color: #6172d6;
+}
 .AccordionArrowDown {
   transform: rotate(-180deg);
 }
@@ -118,7 +123,7 @@
   font-weight: 600;
   font-size: 12px;
   color: #6172d6;
-  border: 1px dashed #bfc7d5;
+  border: 1px dashed #6172d6;
   border-radius: 4px;
   height: 39px;
   width: 100%;
@@ -126,4 +131,26 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
+}
+.SpinnerClass {
+  font-size: 2px !important;
+}
+.CheckIcon {
+  font-size: 2rem;
+}
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  display: none;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
 }
