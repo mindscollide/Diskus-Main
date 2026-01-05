@@ -1,0 +1,84 @@
+.checkListTitle {
+  font-weight: 600;
+  font-size: 12px;
+  color: #6172d6;
+}
+.checklistAccordian {
+  max-height: 480px !important;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin: 20px 0;
+}
+.AccordionArrowDown {
+  transform: rotate(-180deg);
+}
+.dueDateStyle {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: right;
+  color: #5a5a5a;
+}
+.createNewTaskBtnStyle {
+  border-radius: 4px;
+  border-width: 1px;
+  padding: 4px 0;
+
+  border: 1px dashed #6172d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  color: #6172d6;
+  font-weight: 600;
+  font-size: 16px;
+}
+.TaskStyle {
+  border-radius: 4px;
+  border-width: 1px;
+  padding: 4px 0;
+  margin-bottom: 10px;
+  border: 1px solid #e1e1e1;
+
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+}
+.TaskTitle {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  margin-left: 10px;
+}
+.mainButtonPosition {
+  position: absolute;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  bottom: 20px;
+  right: 20px;
+}
+
+.Compliance_CloseButton {
+  border-radius: 4px;
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 12px;
+  background: #ffff;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.Compliance_CloseButton:is(:hover, :active, :focus, :focus-visible) {
+  background: #ffff;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.TaskList {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-right: 10px;
+  overflow-x: hidden;
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import {
   InputfieldwithCount,
   TextAreafieldwithCount,
@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   AddComplianceAPI,
+  CheckComplianceTitleExistsAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
@@ -27,9 +28,11 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { parseUTCDateString } from "../../../../CommonComponents/commonFunctions";
+import { Check2 } from "react-bootstrap-icons";
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const {
     complianceAddEditViewState,
     setCloseConfirmationModal,
@@ -50,7 +53,10 @@ const ComplainceDetails = () => {
   });
   const [selectCriticality, setSelectCriticality] = useState("");
   const [complianceDueDate, setComplianceDueDate] = useState("");
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    complianceTitle: "",
+  });
+  const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
@@ -160,24 +166,23 @@ const ComplainceDetails = () => {
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
-    console.log("handleValueChange", name, value);
     let error = "";
 
-    switch (name) {
-      case "complienceTitle":
-        if (!value.trim()) {
-          error = "Compliance Title is required";
-        }
-        break;
-      case "complianceDescription":
-        if (!value.trim()) {
-          error = "Compliance Description is required";
-        }
-        break;
-
-      default:
-        break;
-    }
+    // switch (name) {
+    //   case "complianceTitle":
+    //     setIsChecklistTitleExist(null);
+    //     if (!value.trim()) {
+    //       error = "Compliance Title is required";
+    //     }
+    //     break;
+    //   case "complianceDescription":
+    //     if (!value.trim()) {
+    //       error = "Compliance Description is required";
+    //     }
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     setComplianceDetails((prev) => ({
       ...prev,
@@ -250,7 +255,6 @@ const ComplainceDetails = () => {
 
   const handleClickNextBtn = () => {
     const tagsArr = selectedTags.map((data) => data.tagTitle);
-
     const Data = {
       complianceTitle: complianceDetails.complianceTitle,
       description: complianceDetails.complianceDescription,
@@ -259,7 +263,15 @@ const ComplainceDetails = () => {
       dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
       tags: tagsArr,
     };
-    setComplianceDetailsState(Data);
+    setComplianceDetailsState({
+      complianceTitle: complianceDetails.complianceTitle,
+      description: complianceDetails.complianceDescription,
+      authorityId: selectAuthority.value,
+      criticality: selectCriticality.value,
+      dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
+      tags: tagsArr,
+      complianceDueDateForChecklist: complianceDueDate,
+    });
     dispatch(
       AddComplianceAPI(navigate, Data, t, setComplianceInfo, setChecklistTabs)
     );
@@ -272,6 +284,52 @@ const ComplainceDetails = () => {
     meetingDateValueFormat2.setSeconds(58);
     setComplianceDueDate(meetingDateValueFormat2);
   };
+
+  const handleBlur = (event) => {
+    if (complianceAddEditViewState === 3) return;
+    const { name, value } = event.target;
+
+    if (name === "complianceTitle" && value) {
+      const Data = {
+        ComplianceTitle: complianceDetails.complianceTitle,
+        AuthorityID: selectAuthority.value,
+      };
+
+      dispatch(
+        CheckComplianceTitleExistsAPI(
+          navigate,
+          Data,
+          t,
+          setIsChecklistTitleExist,
+          setErrors
+        )
+      );
+    }
+  };
+
+  const handleSelectAuthority = (event) => {
+    console.log(event, "event");
+    if (complianceDetails.complianceTitle === "") {
+      setSelectAuthority(event);
+    } else if (complianceDetails.complianceTitle !== "") {
+      setSelectAuthority(event);
+      const Data = {
+        ComplianceTitle: complianceDetails.complianceTitle,
+        AuthorityID: event.value,
+      };
+
+      dispatch(
+        CheckComplianceTitleExistsAPI(
+          navigate,
+          Data,
+          t,
+          setIsChecklistTitleExist,
+          setErrors
+        )
+      );
+    }
+  };
+
   return (
     <>
       <Row className="mt-2">
@@ -290,9 +348,7 @@ const ComplainceDetails = () => {
                 isSearchable={true}
                 options={authorityOptions}
                 labelInValue={t("Authority")}
-                onChange={(event) => {
-                  setSelectAuthority(event);
-                }}
+                onChange={handleSelectAuthority}
                 value={selectAuthority}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Authority") : ""
@@ -304,9 +360,8 @@ const ComplainceDetails = () => {
         </Col>
       </Row>
       <Row className="mt-2">
-        <Col sm={11} md={11} lg={11}>
+        <div className={styles["ConplianceTitleInput"]}>
           <InputfieldwithCount
-            // label={t("Compliance-title")}
             label={
               <>
                 {t("Compliance-title")}
@@ -330,17 +385,26 @@ const ComplainceDetails = () => {
             value={complianceDetails.complianceTitle}
             labelClass={styles["labelStyle"]}
             disabled={selectAuthority === ""}
+            onBlur={handleBlur}
           />
-          {/* <p
+          {console.log(errors, "COmplainceError")}
+          <p
             className={
-              errors.name
+              errors.complianceTitle
                 ? styles["errorMessage-inLogin"]
                 : styles["errorMessage-inLogin_hidden"]
             }
           >
-            {errors.name}
-          </p> */}
-        </Col>
+            {errors.complianceTitle}
+          </p>
+        </div>
+        <div className={styles["ConplianceTitleInput_loading"]}>
+          {isChecklistTitleExist === true ? (
+            <Spinner size="md" className={styles["SpinnerClass"]} />
+          ) : isChecklistTitleExist === false ? (
+            <Check2 className={styles["CheckIcon"]} />
+          ) : null}
+        </div>
       </Row>
       <Row className="mt-2">
         <Col sm={12} md={12} lg={12}>
@@ -542,7 +606,8 @@ const ComplainceDetails = () => {
             complianceDetails.complianceDescription !== "" &&
             selectAuthority !== "" &&
             selectCriticality !== "" &&
-            complianceDueDate !== ""
+            complianceDueDate !== "" &&
+            errors.complianceTitle === ""
               ? false
               : true
           }

@@ -1112,7 +1112,7 @@ const AddComplianceChecklistAPI = (
               await dispatch(
                 AddComplianceChecklistSuccess(
                   response.data.responseResult,
-                  t("Checklist-created-successfully")
+                  t("Checklist-added-successfully")
                 )
               );
               dispatch(
@@ -1273,7 +1273,14 @@ const CheckComplianceTitleExistsFail = (message) => {
   };
 };
 
-const CheckComplianceTitleExistsAPI = (navigate, Data, t) => {
+const CheckComplianceTitleExistsAPI = (
+  navigate,
+  Data,
+  t,
+  setIsChecklistTitleExist,
+  setErrors
+) => {
+  setIsChecklistTitleExist(true);
   return (dispatch) => {
     dispatch(CheckComplianceTitleExistsInit());
     let form = new FormData();
@@ -1284,7 +1291,15 @@ const CheckComplianceTitleExistsAPI = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(CheckComplianceTitleExistsAPI(navigate, Data, t));
+          dispatch(
+            CheckComplianceTitleExistsAPI(
+              navigate,
+              Data,
+              t,
+              setIsChecklistTitleExist,
+              setErrors
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1294,6 +1309,8 @@ const CheckComplianceTitleExistsAPI = (navigate, Data, t) => {
                   "Compliance_ComplianceServiceManager_CheckComplianceTitleExists_01".toLowerCase()
                 )
             ) {
+              // Title Unique
+              setIsChecklistTitleExist(false);
               await dispatch(
                 CheckComplianceTitleExistsSuccess(
                   response.data.responseResult,
@@ -1307,8 +1324,15 @@ const CheckComplianceTitleExistsAPI = (navigate, Data, t) => {
                   "Compliance_ComplianceServiceManager_CheckComplianceTitleExists_02".toLowerCase()
                 )
             ) {
-              // The Name is Unique
+              // Name Already Exist
+
               await dispatch(CheckComplianceTitleExistsFail(""));
+              setIsChecklistTitleExist(null);
+              setErrors((prev) => ({
+                ...prev,
+                complianceTitle:
+                  "Compliance Title already exists within this Authority",
+              }));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1316,20 +1340,24 @@ const CheckComplianceTitleExistsAPI = (navigate, Data, t) => {
                   "Compliance_ComplianceServiceManager_CheckComplianceTitleExists_03".toLowerCase()
                 )
             ) {
+              setIsChecklistTitleExist(null);
               await dispatch(CheckComplianceTitleExistsFail(""));
             }
           } else {
+            setIsChecklistTitleExist(null);
             await dispatch(
               CheckComplianceTitleExistsFail(t("Something-went-wrong"))
             );
           }
         } else {
+          setIsChecklistTitleExist(null);
           await dispatch(
             CheckComplianceTitleExistsFail(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
+        setIsChecklistTitleExist(null);
         dispatch(CheckComplianceTitleExistsFail(t("Something-went-wrong")));
       });
   };

@@ -14,9 +14,27 @@
   max-height: 50px; /* collapsed height */
   transition: max-height 0.35s ease;
 }
-
 /* Expanded state */
 .accordion-custom.expanded {
+  max-height: 500px; /* must be greater than content */
+}
+/* Accordion Container */
+.accordion-customForChecklist {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 10px 10px;
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  /* animation */
+  max-height: 44px; /* collapsed height */
+  transition: max-height 0.35s ease;
+}
+.accordion-customForChecklist.expanded {
   max-height: 500px; /* must be greater than content */
 }
 
@@ -64,4 +82,16 @@
   height: auto;
   opacity: 1;
   padding: 12px 10px;
+}
+.SecondRowForChecklist {
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  padding-top: 12px;
+}
+.SecondRowForChecklist.show {
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  padding-top: 12px;
 }

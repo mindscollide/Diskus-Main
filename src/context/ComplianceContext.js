@@ -15,12 +15,14 @@ export const ComlianceProvider = ({ children }) => {
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
 
   const [checkListTabs, setChecklistTabs] = useState(1);
+
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
     description: "",
     authorityId: 0,
     criticality: 0,
     dueDate: "",
+    complianceDueDateForChecklist: "",
     tags: [],
   });
   const [checklistCount, setChecklistCount] = useState(0);

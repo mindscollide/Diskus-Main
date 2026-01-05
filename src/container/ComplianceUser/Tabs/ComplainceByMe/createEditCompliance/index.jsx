@@ -57,7 +57,7 @@ const CreateEditCompliance = () => {
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
-                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
+                disableBtn={complianceInfo.complianceId !== 0 ? false : true}
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
                   setChecklistTabs(2);
@@ -69,7 +69,13 @@ const CreateEditCompliance = () => {
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
-                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
+                disableBtn={
+                  complianceInfo.complianceId === 0
+                    ? true
+                    : checklistCount === 0
+                    ? true
+                    : false
+                }
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {
                   setChecklistTabs(3);

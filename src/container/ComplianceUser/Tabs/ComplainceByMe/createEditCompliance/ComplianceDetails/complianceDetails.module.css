@@ -120,3 +120,34 @@
   bottom: 20px;
   right: 20px;
 }
+
+.ConplianceTitleInput {
+  width: 97%;
+}
+.ConplianceTitleInput_loading {
+  width: 3%;
+  margin-top: 24px;
+  padding: 0 !important;
+}
+.SpinnerClass {
+  font-size: 2px !important;
+}
+.CheckIcon {
+  font-size: 2rem;
+}
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  display: none;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
+}
