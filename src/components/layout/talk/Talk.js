@@ -19,6 +19,7 @@ import {
   uploadGlobalFlag,
   LeaveCurrentMeeting,
   currentMeetingStatus,
+  showEndMeetingModal,
 } from "../../../store/actions/NewMeetingActions";
 import {
   recentChatFlag,
@@ -72,8 +73,14 @@ const Talk = () => {
   const [notesModal, setNotesModal] = useState(false);
   const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
   const { setCreateEditComplaince } = useComplianceContext();
-  const { pendingApprovalsTabCount, setPendingApprovalTabCount } =
-    useContext(MeetingContext);
+  const {
+    pendingApprovalsTabCount,
+    setPendingApprovalTabCount,
+    advanceMeetingModalID,
+    viewAdvanceMeetingModal,
+    editorRole,
+    setEditorRole,
+  } = useContext(MeetingContext);
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const talkSocketUnreadMessageCount = useSelector(
@@ -203,6 +210,15 @@ const Talk = () => {
   };
 
   const handleClickComplianceIcon = () => {
+    if (
+      Number(editorRole?.status) === 10 &&
+      viewAdvanceMeetingModal &&
+      advanceMeetingModalID !== 0
+    ) {
+      dispatch(showEndMeetingModal(true));
+      console.log("Currently Meeting is OnGOing");
+      return;
+    }
     navigate("/Diskus/compliance");
     setCreateEditComplaince(false);
   };
@@ -229,6 +245,15 @@ const Talk = () => {
     dispatch
   );
   const handleMeetingPendingApprovals = async () => {
+    if (
+      Number(editorRole?.status) === 10 &&
+      viewAdvanceMeetingModal &&
+      advanceMeetingModalID !== 0
+    ) {
+      dispatch(showEndMeetingModal(true));
+      console.log("Currently Meeting is OnGOing");
+      return;
+    }
     dispatch(clearMinuteReviewerMqtt());
     if (
       (scheduleMeetingPageFlagReducer === true ||
