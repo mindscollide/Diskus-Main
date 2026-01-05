@@ -15,7 +15,10 @@
   color: #6172d6;
   padding-right: 20px;
 }
-
+.checklistInputStyle {
+  height: 177px !important;
+  overflow-y: auto;
+}
 .datepicker_input {
   margin-top: 2px;
   padding: 0px 10px !important;
@@ -153,4 +156,15 @@
   height: 13px;
   color: #f16b6b;
   font-weight: 500 !important;
+}
+.checklistTitle {
+  width: 65%;
+}
+.checklistTitle_Loader {
+  width: 5%;
+  margin-top: 24px;
+  padding: 0 !important;
+}
+.checklistDueDate {
+  width: 30%;
 }

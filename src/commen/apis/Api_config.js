@@ -2066,6 +2066,14 @@ const CheckComplianceTitleExists = {
 const ViewComplianceById = {
   RequestMethod: "ServiceManager.ViewComplianceById",
 };
+
+const CheckChecklistTitleExists = {
+  RequestMethod: "ServiceManager.CheckChecklistTitleExists",
+};
+
+const AddTaskMappingToChecklist = {
+  RequestMethod: "ServiceManager.AddTaskMappingToChecklist",
+};
 export {
   ValidateUserPasswordRM,
   RequestMeetingRecordingTranscriptRM,
@@ -2605,4 +2613,6 @@ export {
   GetComplianceChecklistsByComplianceId,
   CheckComplianceTitleExists,
   ViewComplianceById,
+  CheckChecklistTitleExists,
+  AddTaskMappingToChecklist,
 };

@@ -33,6 +33,7 @@ import {
 import { updateTodoStatusFunc } from "./GetTodos";
 import { emptyCommentState } from "./Post_AssigneeComments";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { AddTaskMappingToChecklistAPI } from "./ComplainSettingActions";
 
 const ClearMappingFolderID = () => {
   return {
@@ -1117,7 +1118,8 @@ const uploadDocumentsTaskApi = (
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("File", data);
-    await  axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -1220,7 +1222,8 @@ const saveFilesTaskApi = (navigate, t, data, folderID, newFolder) => {
     let form = new FormData();
     form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await  axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -1304,7 +1307,8 @@ const createUpdateTaskDataRoomApi = (navigate, Data, t) => {
     let form = new FormData();
     form.append("RequestMethod", createupdateTaskDataroom.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await  axiosInstance.post(dataRoomApi, form)
+    await axiosInstance
+      .post(dataRoomApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
@@ -1425,7 +1429,8 @@ const saveTaskDocumentsAndAssigneesApi = (
   Data,
   t,
   value,
-  setShow
+  setShow,
+  checkListId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -1440,7 +1445,14 @@ const saveTaskDocumentsAndAssigneesApi = (
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            saveTaskDocumentsAndAssigneesApi(navigate, Data, t, value, setShow)
+            saveTaskDocumentsAndAssigneesApi(
+              navigate,
+              Data,
+              t,
+              value,
+              setShow,
+              checkListId
+            )
           );
         } else if (
           response.data.responseCode === 200 &&
@@ -1466,7 +1478,14 @@ const saveTaskDocumentsAndAssigneesApi = (
               }),
             };
             dispatch(
-              saveTaskDocumentsApi(navigate, NewData, t, value, setShow)
+              saveTaskDocumentsApi(
+                navigate,
+                NewData,
+                t,
+                value,
+                setShow,
+                checkListId
+              )
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -1536,7 +1555,7 @@ const saveTaskDocumentsApi = (
   t,
   value,
   setShow,
-  todoStatus
+  checkListId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -1545,11 +1564,21 @@ const saveTaskDocumentsApi = (
       let form = new FormData();
       form.append("RequestMethod", saveTaskDocuments.RequestMethod);
       form.append("RequestData", JSON.stringify(Data));
-      await axiosInstance.post(dataRoomApi, form)
+      await axiosInstance
+        .post(dataRoomApi, form)
         .then(async (response) => {
           if (response.data.responseCode === 417) {
             await dispatch(RefreshToken(navigate, t));
-            dispatch(saveTaskDocumentsApi(navigate, Data, t, value, setShow));
+            dispatch(
+              saveTaskDocumentsApi(
+                navigate,
+                Data,
+                t,
+                value,
+                setShow,
+                checkListId
+              )
+            );
           } else if (
             response.data.responseCode === 200 &&
             response.data.responseResult.isExecuted === true
@@ -1656,6 +1685,12 @@ const saveTaskDocumentsApi = (
               }
               // Create Task from Meeting Actions
               if (value === 7) {
+                let Data2 = {
+                  checklistId: checkListId,
+                  taskIds: [Number(Data.ToDoID)],
+                };
+                dispatch(AddTaskMappingToChecklistAPI(navigate, Data2, t));
+                setShow(false);
               }
               // Delete Task from Meetin Actions
               if (value === 8) {

@@ -6,7 +6,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import Select from "react-select";
 import moment from "moment";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import "./ModalToDoList.css";
+import "./ModalToDoListChecklist.css";
 import deleteButtonCreateMeeting from "../../../../assets/images/cancel_meeting_icon.svg";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import {
@@ -35,17 +35,30 @@ import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../commen/functions/utils";
+import { useComplianceContext } from "../../../../context/ComplianceContext";
 
-const ModalToDoList = ({ ModalTitle, setShow, show }) => {
+const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
+  const [allAsigneeOption, setAllAsgneeOption] = useState([]);
+  const [selectedAsignee, setSelectedAsignee] = useState("");
   const { dateObject, current_value } = get_CurrentDateTime();
   const [fileSize, setFileSize] = useState(0);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
-  const state = useSelector((state) => state);
-  const { toDoListReducer, CommitteeReducer } = state;
+
+  const AllAssigneesData = useSelector(
+    (state) => state.toDoListReducer.AllAssigneesData
+  );
+
+  const todoDocumentsMapping = useSelector(
+    (state) => state.toDoListReducer.todoDocumentsMapping
+  );
+
+  console.log(AllAssigneesData, "toDoListReducerCommitteeReducer");
+
+  const { complianceAddEditViewState } = useComplianceContext();
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -347,7 +360,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TasksAttachments: newAttachmentData,
       };
       await dispatch(
-        saveTaskDocumentsAndAssigneesApi(navigate, Data, t, 5, setShow)
+        saveTaskDocumentsAndAssigneesApi(
+          navigate,
+          Data,
+          t,
+          7,
+          setShow,
+          checkListId
+        )
       );
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
@@ -355,110 +375,127 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   useEffect(() => {
-    if (toDoListReducer.todoDocumentsMapping !== 0) {
-      uploadTaskDocuments(toDoListReducer.todoDocumentsMapping);
+    if (todoDocumentsMapping !== 0) {
+      uploadTaskDocuments(todoDocumentsMapping);
     }
-  }, [toDoListReducer.todoDocumentsMapping]);
+  }, [todoDocumentsMapping]);
+
+  // useEffect(() => {
+  //   try {
+  //     const committee = CommitteeReducer.getCommitteeByCommitteeID;
+  //     if (committee && committee.committeMembers) {
+  //       const getUserDetails = committee.committeMembers;
+
+  //       const PresenterData = getUserDetails.map((user) => ({
+  //         label: (
+  //           <Row>
+  //             <Col
+  //               lg={12}
+  //               md={12}
+  //               sm={12}
+  //               className="d-flex gap-2 align-items-center"
+  //             >
+  //               <img
+  //                 src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
+  //                 height="16.45px"
+  //                 width="18.32px"
+  //                 draggable="false"
+  //                 alt=""
+  //                 className="border-rounded"
+  //               />
+  //               <span>{user.userName}</span>
+  //             </Col>
+  //           </Row>
+  //         ),
+  //         value: user.pK_UID,
+  //         name: user.userName,
+  //       }));
+
+  //       const foundCreator = getUserDetails.find(
+  //         (user) => Number(user.pK_UID) === Number(createrID)
+  //       );
+
+  //       if (foundCreator) {
+  //         setTaskAssignedTo([foundCreator.pK_UID]);
+  //         setPresenterValue({
+  //           label: (
+  //             <Row>
+  //               <Col
+  //                 lg={12}
+  //                 md={12}
+  //                 sm={12}
+  //                 className="d-flex gap-2 align-items-center"
+  //               >
+  //                 <img
+  //                   src={`data:image/jpeg;base64,${foundCreator.userProfilePicture.displayProfilePictureName}`}
+  //                   height="16.45px"
+  //                   width="18.32px"
+  //                   draggable="false"
+  //                   alt=""
+  //                   className="border-rounded"
+  //                 />
+  //                 <span>{foundCreator.userName}</span>
+  //               </Col>
+  //             </Row>
+  //           ),
+  //           value: foundCreator.pK_UID,
+  //           name: foundCreator.userName,
+  //         });
+  //       } else if (getUserDetails.length > 0) {
+  //         const fallbackUser = getUserDetails[0];
+  //         setTaskAssignedTo([fallbackUser.pK_UID]);
+  //         setPresenterValue({
+  //           label: (
+  //             <Row>
+  //               <Col
+  //                 lg={12}
+  //                 md={12}
+  //                 sm={12}
+  //                 className="d-flex gap-2 align-items-center"
+  //               >
+  //                 <img
+  //                   src={`data:image/jpeg;base64,${fallbackUser.userProfilePicture.displayProfilePictureName}`}
+  //                   height="16.45px"
+  //                   width="18.32px"
+  //                   draggable="false"
+  //                   alt=""
+  //                   className="border-rounded"
+  //                 />
+  //                 <span>{fallbackUser.userName}</span>
+  //               </Col>
+  //             </Row>
+  //           ),
+  //           value: fallbackUser.pK_UID,
+  //           name: fallbackUser.userName,
+  //         });
+  //       }
+
+  //       const sortedAssigners = PresenterData.sort((a, b) =>
+  //         a.name.localeCompare(b.name)
+  //       );
+  //       setAllPresenters(sortedAssigners);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in committee useEffect:", error);
+  //   }
+  // }, [CommitteeReducer.getCommitteeByCommitteeID]);
 
   useEffect(() => {
-    try {
-      const committee = CommitteeReducer.getCommitteeByCommitteeID;
-      if (committee && committee.committeMembers) {
-        const getUserDetails = committee.committeMembers;
+    if (AllAssigneesData && AllAssigneesData !== null) {
+      console.log("AllAsignee", AllAssigneesData);
+      try {
+        const AllAsignee = AllAssigneesData.map((data) => {
+          return {
+            ...data,
+            value: data.pK_UID,
+            label: data.name,
+          };
+        });
 
-        const PresenterData = getUserDetails.map((user) => ({
-          label: (
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 align-items-center"
-              >
-                <img
-                  src={`data:image/jpeg;base64,${user.userProfilePicture.displayProfilePictureName}`}
-                  height="16.45px"
-                  width="18.32px"
-                  draggable="false"
-                  alt=""
-                  className="border-rounded"
-                />
-                <span>{user.userName}</span>
-              </Col>
-            </Row>
-          ),
-          value: user.pK_UID,
-          name: user.userName,
-        }));
-
-        const foundCreator = getUserDetails.find(
-          (user) => Number(user.pK_UID) === Number(createrID)
-        );
-
-        if (foundCreator) {
-          setTaskAssignedTo([foundCreator.pK_UID]);
-          setPresenterValue({
-            label: (
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${foundCreator.userProfilePicture.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                    className="border-rounded"
-                  />
-                  <span>{foundCreator.userName}</span>
-                </Col>
-              </Row>
-            ),
-            value: foundCreator.pK_UID,
-            name: foundCreator.userName,
-          });
-        } else if (getUserDetails.length > 0) {
-          const fallbackUser = getUserDetails[0];
-          setTaskAssignedTo([fallbackUser.pK_UID]);
-          setPresenterValue({
-            label: (
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex gap-2 align-items-center"
-                >
-                  <img
-                    src={`data:image/jpeg;base64,${fallbackUser.userProfilePicture.displayProfilePictureName}`}
-                    height="16.45px"
-                    width="18.32px"
-                    draggable="false"
-                    alt=""
-                    className="border-rounded"
-                  />
-                  <span>{fallbackUser.userName}</span>
-                </Col>
-              </Row>
-            ),
-            value: fallbackUser.pK_UID,
-            name: fallbackUser.userName,
-          });
-        }
-
-        const sortedAssigners = PresenterData.sort((a, b) =>
-          a.name.localeCompare(b.name)
-        );
-        setAllPresenters(sortedAssigners);
-      }
-    } catch (error) {
-      console.error("Error in committee useEffect:", error);
+        setAllAsgneeOption(AllAsignee);
+      } catch (error) {}
     }
-  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  }, [AllAssigneesData]);
 
   const handleDeleteAttendee = (data, index) => {
     let newDataAssignees = [...assignees];
@@ -479,18 +516,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Selecter Assignee onChange
 
   const onChangeSearch = (item) => {
-    console.log(item, "itemitemitem");
-    setPresenterValue(item);
-    setTaskAssignedTo([item.value]);
-  };
-
-  //Searchable Filter
-  const filterFunc = (options, searchText) => {
-    if (options.data.name.toLowerCase().includes(searchText.toLowerCase())) {
-      return true;
-    } else {
-      return false;
-    }
+    // console.log(item, "itemitemitem");
+    // setPresenterValue(item);
+    // setTaskAssignedTo([item.value]);
+    setSelectedAsignee(item);
   };
 
   return (
@@ -547,13 +576,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       "Add-assignee"
                     )}*`}</span>
                     <Select
-                      options={allPresenters}
+                      isSearchable={true}
+                      options={allAsigneeOption}
                       maxMenuHeight={140}
                       onChange={onChangeSearch}
-                      value={presenterValue.value === 0 ? null : presenterValue}
+                      value={selectedAsignee}
                       placeholder={t("Add-assignee")}
                       applyClass="assigneeFindInCreateToDo"
-                      filterOption={filterFunc}
                     />
                   </Col>
                   <Col lg={2} md={2} sm={12} xs={12}></Col>
@@ -756,4 +785,4 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   );
 };
 
-export default ModalToDoList;
+export default ModalToDoListChecklist;

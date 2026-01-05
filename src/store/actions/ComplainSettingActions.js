@@ -18,6 +18,8 @@ import {
   GetComplianceChecklistsByComplianceId,
   CheckComplianceTitleExists,
   ViewComplianceById,
+  CheckChecklistTitleExists,
+  AddTaskMappingToChecklist,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -778,6 +780,107 @@ const IsAuthorityNameExistsAPI = (
   };
 };
 
+// AddTaskMappingToChecklist
+const AddTaskMappingToChecklistInit = () => {
+  return {
+    type: actions.ADD_TASK_MAPPIING_TO_CHECKLIST_INIT,
+  };
+};
+
+const AddTaskMappingToChecklistSuccess = (response, message) => {
+  return {
+    type: actions.ADD_TASK_MAPPIING_TO_CHECKLIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const AddTaskMappingToChecklistFail = (message) => {
+  return {
+    type: actions.ADD_TASK_MAPPIING_TO_CHECKLIST_FAIL,
+    message: message,
+  };
+};
+
+const AddTaskMappingToChecklistAPI = (
+  navigate,
+  Data,
+  t
+  // setErrors,
+  // setIsAuthorityExist
+) => {
+  return (dispatch) => {
+    dispatch(AddTaskMappingToChecklistInit());
+    let form = new FormData();
+    form.append("RequestMethod", AddTaskMappingToChecklist.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(IsAuthorityNameExistsAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_AddTaskToChecklist_01".toLowerCase()
+                )
+            ) {
+              // The Name Already Exist
+              await dispatch(AddTaskMappingToChecklistFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_AddTaskToChecklist_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(
+                AddTaskMappingToChecklistSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_AddTaskToChecklist_03".toLowerCase()
+                )
+            ) {
+              await dispatch(AddTaskMappingToChecklistFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_IsAuthorityNameExists_04".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                AddTaskMappingToChecklistFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              AddTaskMappingToChecklistFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            AddTaskMappingToChecklistFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(AddTaskMappingToChecklistFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 // GetALAUthorityDropDown
 const GetAllAuthoritiesWithoutPaginationInit = () => {
   return {
@@ -1010,7 +1113,8 @@ const AddComplianceAPI = (
               await dispatch(
                 AddComplianceSuccess(
                   response.data.responseResult,
-                  t("Compliance-created-successfully")
+                  ""
+                  // t("Compliance-created-successfully")
                 )
               );
               setComplianceInfo({
@@ -1330,8 +1434,9 @@ const CheckComplianceTitleExistsAPI = (
               setIsChecklistTitleExist(null);
               setErrors((prev) => ({
                 ...prev,
-                complianceTitle:
-                  "Compliance Title already exists within this Authority",
+                complianceTitle: t(
+                  "Compliance-title-already-exists-within-this-authority"
+                ),
               }));
             } else if (
               response.data.responseResult.responseMessage
@@ -1440,6 +1545,117 @@ const ViewComplianceByIdAPI = (navigate, Data, t) => {
   };
 };
 
+//CheckChecklistTitleExists
+const CheckChecklistTitleExistsInit = () => {
+  return {
+    type: actions.CHECK_CHECKLIST_TITLE_EXISTS_INIT,
+  };
+};
+
+const CheckChecklistTitleExistsSuccess = (response, message) => {
+  return {
+    type: actions.CHECK_CHECKLIST_TITLE_EXISTS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const CheckChecklistTitleExistsFail = (message) => {
+  return {
+    type: actions.CHECK_CHECKLIST_TITLE_EXISTS_FAIL,
+    message: message,
+  };
+};
+
+const CheckChecklistTitleExistsAPI = (
+  navigate,
+  Data,
+  t,
+  setErrors,
+  setIsChecklistTitleExist
+) => {
+  return (dispatch) => {
+    setIsChecklistTitleExist(true);
+    dispatch(CheckChecklistTitleExistsInit());
+    let form = new FormData();
+    form.append("RequestMethod", CheckChecklistTitleExists.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            CheckChecklistTitleExistsAPI(
+              navigate,
+              Data,
+              t,
+              setErrors,
+              setIsChecklistTitleExist
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_CheckChecklistTitleExists_01".toLowerCase()
+                )
+            ) {
+              // Unique
+              setIsChecklistTitleExist(false);
+              await dispatch(
+                CheckChecklistTitleExistsSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_CheckChecklistTitleExists_02".toLowerCase()
+                )
+            ) {
+              // Already Exist
+              setIsChecklistTitleExist(null);
+              setErrors({
+                checklistTitle: t(
+                  "Checklist-title-already-exists-in-this-compliance"
+                ),
+              });
+              await dispatch(CheckChecklistTitleExistsFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_CheckChecklistTitleExists_03".toLowerCase()
+                )
+            ) {
+              setIsChecklistTitleExist(null);
+              await dispatch(CheckChecklistTitleExistsFail(""));
+            }
+          } else {
+            setIsChecklistTitleExist(null);
+            await dispatch(
+              CheckChecklistTitleExistsFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          setIsChecklistTitleExist(null);
+          await dispatch(
+            CheckChecklistTitleExistsFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        setIsChecklistTitleExist(null);
+        dispatch(CheckChecklistTitleExistsFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const clearAuthorityMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
@@ -1521,4 +1737,6 @@ export {
   GetComplianceChecklistsByComplianceIdAPI,
   CheckComplianceTitleExistsAPI,
   ViewComplianceByIdAPI,
+  CheckChecklistTitleExistsAPI,
+  AddTaskMappingToChecklistAPI,
 };

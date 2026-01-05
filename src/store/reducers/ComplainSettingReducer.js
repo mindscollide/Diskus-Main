@@ -27,6 +27,8 @@ const initialState = {
   GetComplianceChecklistsByComplianceId: null,
   CheckComplianceTitleExists: null,
   ViewComplianceById: null,
+  CheckChecklistTitleExists: null,
+  AddTaskMappingToChecklist: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -402,6 +404,57 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
       };
 
+    // CheckChecklistTitleExists
+    case actions.CHECK_CHECKLIST_TITLE_EXISTS_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.CHECK_CHECKLIST_TITLE_EXISTS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        CheckChecklistTitleExists: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.CHECK_CHECKLIST_TITLE_EXISTS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        CheckChecklistTitleExists: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // AddTaskMappingToChecklist
+    case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        AddTaskMappingToChecklist: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        AddTaskMappingToChecklist: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
     //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {

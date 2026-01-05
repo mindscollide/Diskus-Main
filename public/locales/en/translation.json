@@ -2575,5 +2575,8 @@
   "Checklist-description": "Checklist Description",
   "Checklist-created-successfully": "Checklist Created Successfully",
   "Create-new-checklist": "Create New Checklist",
-  "Add-task": "Add Task"
+  "Add-task": "Add Task",
+  "Compliance-title-already-exists-within-this-authority": "Compliance Title already exists within this Authority",
+  "Checklist-added-successfully": "Checklist added successfully",
+  "Checklist-title-already-exists-in-this-compliance": "Checklist title already exists in this compliance"
 }

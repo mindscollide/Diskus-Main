@@ -3,7 +3,10 @@ import styles from "./createEditViewComplianceTask.module.css";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../../store/actions/ComplainSettingActions";
+import {
+  clearAuthorityMessage,
+  GetComplianceChecklistsByComplianceIdAPI,
+} from "../../../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useComplianceContext } from "../../../../../../context/ComplianceContext";
@@ -11,15 +14,29 @@ import { Col, Row } from "react-bootstrap";
 import deleteIcon from "../../../../../../assets/images/Icon material-delete.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
+import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [show, setShow] = useState(false);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState(null);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+  const authorityRespnseMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+  );
+  const authorityseverityMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.severity
+  );
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
       if (prev.includes(data.checklistId)) {
@@ -69,6 +86,21 @@ const CreateEditViewComplianceTask = () => {
       }
     }
   }, [GetComplianceChecklistsByComplianceId]);
+  useEffect(() => {
+    if (
+      authorityRespnseMessage !== null &&
+      authorityRespnseMessage !== undefined &&
+      authorityRespnseMessage !== "" &&
+      authorityseverityMessage !== null
+    ) {
+      try {
+        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        setTimeout(() => {
+          dispatch(clearAuthorityMessage());
+        }, 4000);
+      } catch (error) {}
+    }
+  }, [authorityRespnseMessage, authorityseverityMessage]);
 
   console.log(
     GetComplianceChecklistsByComplianceId,
@@ -89,26 +121,32 @@ const CreateEditViewComplianceTask = () => {
     setChecklistTabs(1);
   };
 
-  const handleAddTaskInCheckList = (checkListId) => {
-    const updatedChecklistData = ComplianceChecklistData.map((item) => {
-      if (item.checklistId === checkListId) {
-        return {
-          ...item,
-          checkListTasks: [
-            ...(item.checkListTasks || []),
-            {
-              TaskTitle: "Hello",
-              taskId: Math.random().toString(36).slice(2),
-            },
-          ],
-        };
-      }
-      return item;
-    });
+  // const handleAddTaskInCheckList = (checkListId) => {
+  //   const updatedChecklistData = ComplianceChecklistData.map((item) => {
+  //     if (item.checklistId === checkListId) {
+  //       return {
+  //         ...item,
+  //         checkListTasks: [
+  //           ...(item.checkListTasks || []),
+  //           {
+  //             TaskTitle: "Hello",
+  //             taskId: Math.random().toString(36).slice(2),
+  //           },
+  //         ],
+  //       };
+  //     }
+  //     return item;
+  //   });
 
-    setComplianceCheckListData(updatedChecklistData);
+  //   setComplianceCheckListData(updatedChecklistData);
+  // };
+
+  const [checkListId, setCheckListId] = useState(0);
+  const handleAddTaskInCheckList = (checklistId) => {
+    setCheckListId(checklistId);
+    console.log(checklistId, "checklistIdchecklistId");
+    setShow(true);
   };
-
   return (
     <>
       <div className={styles["checklistAccordian"]}>
@@ -229,6 +267,14 @@ const CreateEditViewComplianceTask = () => {
           // }
         />
       </div>
+      {show && (
+        <ModalToDoListChecklist
+          checkListId={checkListId}
+          show={show}
+          setShow={setShow}
+        />
+      )}
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };
