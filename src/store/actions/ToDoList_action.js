@@ -1430,7 +1430,8 @@ const saveTaskDocumentsAndAssigneesApi = (
   t,
   value,
   setShow,
-  checkListId
+  checkListId,
+  complianceId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -1451,7 +1452,8 @@ const saveTaskDocumentsAndAssigneesApi = (
               t,
               value,
               setShow,
-              checkListId
+              checkListId,
+              complianceId
             )
           );
         } else if (
@@ -1484,7 +1486,8 @@ const saveTaskDocumentsAndAssigneesApi = (
                 t,
                 value,
                 setShow,
-                checkListId
+                checkListId,
+                complianceId
               )
             );
           } else if (
@@ -1555,7 +1558,8 @@ const saveTaskDocumentsApi = (
   t,
   value,
   setShow,
-  checkListId
+  checkListId,
+  complianceId
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -1576,7 +1580,8 @@ const saveTaskDocumentsApi = (
                 t,
                 value,
                 setShow,
-                checkListId
+                checkListId,
+                complianceId
               )
             );
           } else if (
@@ -1689,7 +1694,9 @@ const saveTaskDocumentsApi = (
                   checklistId: checkListId,
                   taskIds: [Number(Data.ToDoID)],
                 };
-                dispatch(AddTaskMappingToChecklistAPI(navigate, Data2, t));
+                dispatch(
+                  AddTaskMappingToChecklistAPI(navigate, Data2, t, complianceId)
+                );
                 setShow(false);
               }
               // Delete Task from Meetin Actions

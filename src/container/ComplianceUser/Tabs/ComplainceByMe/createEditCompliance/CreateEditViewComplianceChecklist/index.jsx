@@ -30,6 +30,7 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+// import ChecklistAccordion from "../../../../CommonComponents/ChecklistAccordian/CustomAccordion";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,6 +65,8 @@ const CreateEditViewComplianceChecklist = () => {
     setCreateEditComplaince,
     complianceDetailsState,
     setComplianceDetailsState,
+    checkListData,
+    setChecklistData,
   } = useComplianceContext();
 
   const GetComplianceChecklistsByComplianceId = useSelector(
@@ -72,11 +75,11 @@ const CreateEditViewComplianceChecklist = () => {
         .GetComplianceChecklistsByComplianceId
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [checkListData, setChecklistData] = useState({
-    checklistTitle: "",
-    checklistDescription: "",
-    checklistDueDate: "",
-  });
+  // const [checkListData, setChecklistData] = useState({
+  //   checklistTitle: "",
+  //   checklistDescription: "",
+  //   checklistDueDate: "",
+  // });
   const changeComplainceDueDate = (date) => {
     let meetingDateValueFormat2 = new Date(date);
     meetingDateValueFormat2.setHours(23);
@@ -89,25 +92,25 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleValueChange = (event) => {
-    setIsChecklistTitleExist(null);
     const { name, value } = event.target;
     console.log("handleValueChange", name, value);
     let error = "";
 
     switch (name) {
       case "checklistTitle":
+        setIsChecklistTitleExist(null);
         if (!value.trim()) {
           setErrors({
             checklistTitle: "Checklist Title is required",
           });
         }
         break;
-      case "checklistDescription":
-        if (!value.trim()) {
-          setErrors({});
-          error = "Checklist Description is required";
-        }
-        break;
+      // case "checklistDescription":
+      //   if (!value.trim()) {
+      //     setErrors({});
+      //     error = "Checklist Description is required";
+      //   }
+      //   break;
 
       default:
         break;
@@ -119,6 +122,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
   const handleClickSaveBtn = () => {
     if (complianceInfo.complianceId !== 0) {
+      setIsChecklistTitleExist(null);
       const Data = {
         checkListTitle: checkListData.checklistTitle,
         description: checkListData.checklistDescription,
@@ -163,6 +167,8 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length
       );
+      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
+      setExpandedCheckListIds([]);
     }
   }, [GetComplianceChecklistsByComplianceId]);
 
@@ -182,26 +188,6 @@ const CreateEditViewComplianceChecklist = () => {
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
-  // useEffect(() => {
-  //   if (
-  //     !addChecklistRef.current ||
-  //     !cancelBtnRef.current ||
-  //     expandedCheckListIds.length === 0
-  //   ) {
-  //     return;
-  //   }
-
-  //   const addChecklistRect = addChecklistRef.current.getBoundingClientRect();
-  //   const cancelBtnRect = cancelBtnRef.current.getBoundingClientRect();
-
-  //   // If expanded accordion pushes content into cancel button area
-  //   const isOverlapping = addChecklistRect.bottom >= cancelBtnRect.top;
-
-  //   if (isOverlapping) {
-  //     setAddChecklistCloseState(true);
-  //   }
-  // }, [expandedCheckListIds]);
-
   const handleClickPrevBtn = () => {
     setChecklistTabs(1);
     // if (complianceInfo.complianceId !== 0) {
@@ -217,8 +203,10 @@ const CreateEditViewComplianceChecklist = () => {
     setExpandedCheckListIds((prev) => {
       if (prev.includes(data.checklistId)) {
         // collapse
+
         return prev.filter((id) => id !== data.checklistId);
       } else {
+        setAddChecklistCloseState(true);
         // expand
         return [...prev, data.checklistId];
       }
@@ -226,7 +214,9 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleCloseAddChecklistButton = () => {
-    // setAddChecklistCloseState(true);
+    setErrors({
+      checklistTitle: "",
+    });
     setIsChecklistTitleExist(null);
     setChecklistData({
       checklistTitle: "",
@@ -450,7 +440,14 @@ const CreateEditViewComplianceChecklist = () => {
         </Col>
       </Row>
 
-      <div ref={accordionContainerRef} className={styles["checklistAccordian"]}>
+      <div
+        ref={accordionContainerRef}
+        className={
+          addChecklistCloseState
+            ? styles["checklistAccordian_closed"]
+            : styles["checklistAccordian"]
+        }
+      >
         {GetComplianceChecklistsByComplianceId &&
         GetComplianceChecklistsByComplianceId?.checklistList?.length > 0
           ? GetComplianceChecklistsByComplianceId.checklistList.map(
@@ -474,14 +471,14 @@ const CreateEditViewComplianceChecklist = () => {
                                 {t("Checklist-title")}
                               </p>
                               <p
-                                className={`m-0 ${styles["ViewChecklistDetailStyles"]}`}
+                                className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
                               >
                                 {data.checklistTitle}
                               </p>
                             </div>
                           ) : (
                             <p
-                              className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]}`}
+                              className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
                             >
                               {data.checklistTitle}
                             </p>
@@ -553,8 +550,8 @@ const CreateEditViewComplianceChecklist = () => {
                                 className={`cursor-pointer
                                   ${
                                     isExpanded
-                                      ? styles["AccordionArrowDown"]
-                                      : null
+                                      ? null
+                                      : styles["AccordionArrowDown"]
                                   }`}
                               />
                             </Col>

@@ -58,7 +58,7 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
 
   console.log(AllAssigneesData, "toDoListReducerCommitteeReducer");
 
-  const { complianceAddEditViewState } = useComplianceContext();
+  const { complianceAddEditViewState, complianceInfo } = useComplianceContext();
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -366,7 +366,8 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
           t,
           7,
           setShow,
-          checkListId
+          checkListId,
+          complianceInfo.complianceId
         )
       );
     } catch (error) {
@@ -562,7 +563,7 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
                       name="Title"
                       applyClass="createtodo-title"
                       type="text"
-                      placeholder={t("Title") + "*"}
+                      placeholder={t("Task title")}
                       required
                       value={task.Title}
                       labelclass={"d-none"}

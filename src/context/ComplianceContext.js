@@ -8,6 +8,11 @@ export const ComlianceProvider = ({ children }) => {
     complianceId: 0,
     complianceName: "",
   });
+  const [checkListData, setChecklistData] = useState({
+    checklistTitle: "",
+    checklistDescription: "",
+    checklistDueDate: "",
+  });
   const [complianceAddEditViewState, setComplianceAddEditViewState] =
     useState(0);
 
@@ -27,6 +32,32 @@ export const ComlianceProvider = ({ children }) => {
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
+
+  const emptyComplianceState = () => {
+    setComplianceInfo({
+      complianceId: 0,
+      complianceName: "",
+    });
+    setChecklistData({
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "",
+    });
+    setMainComplianceTabs(1);
+    setComplianceAddEditViewState(0);
+    setChecklistTabs(1);
+    setComplianceDetailsState({
+      complianceTitle: "",
+      description: "",
+      authorityId: 0,
+      criticality: 0,
+      dueDate: "",
+      complianceDueDateForChecklist: "",
+      tags: [],
+    });
+    setChecklistCount(0);
+    setTaskCount(0);
+  };
   return (
     <ComplianceContext.Provider
       value={{
@@ -48,6 +79,9 @@ export const ComlianceProvider = ({ children }) => {
         setChecklistCount,
         taskCount,
         setTaskCount,
+        checkListData,
+        setChecklistData,
+        emptyComplianceState,
       }}
     >
       {children}

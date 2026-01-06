@@ -71,7 +71,8 @@ const Talk = () => {
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
   const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
-  const { setCreateEditComplaince } = useComplianceContext();
+  const { setCreateEditComplaince, emptyComplianceState } =
+    useComplianceContext();
   const { pendingApprovalsTabCount, setPendingApprovalTabCount } =
     useContext(MeetingContext);
   //Getting api result from the reducer
@@ -205,6 +206,7 @@ const Talk = () => {
   const handleClickComplianceIcon = () => {
     navigate("/Diskus/compliance");
     setCreateEditComplaince(false);
+    emptyComplianceState();
   };
 
   //Setting state data of global response all chat to chatdata

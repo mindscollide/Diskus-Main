@@ -101,6 +101,8 @@
   width: 100%;
   border-radius: 4px;
   padding: 16px;
+  overflow-y: scroll;
+  height: 10vh;
 }
 .TagsOption_Value {
   border-bottom: 1px solid #e1e1e1;

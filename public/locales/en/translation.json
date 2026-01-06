@@ -2578,5 +2578,6 @@
   "Add-task": "Add Task",
   "Compliance-title-already-exists-within-this-authority": "Compliance Title already exists within this Authority",
   "Checklist-added-successfully": "Checklist added successfully",
-  "Checklist-title-already-exists-in-this-compliance": "Checklist title already exists in this compliance"
+  "Checklist-title-already-exists-in-this-compliance": "Checklist title already exists in this compliance",
+  "Task-mapped-successfully": "Task mapped successfully"
 }

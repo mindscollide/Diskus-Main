@@ -19,7 +19,7 @@ const CustomAccordion = ({
         isCompliance === true
           ? "accordion-customForChecklist"
           : "accordion-custom"
-      } ${!expanded ? "expanded" : ""}`}
+      } ${expanded ? "expanded" : ""}`}
     >
       <div className="FirstRow">
         <div className="title-cont" onClick={handleClickTitleNotes}>
@@ -32,7 +32,7 @@ const CustomAccordion = ({
       <div
         className={`${
           isCompliance === true ? "SecondRowForChecklist" : "SecondRow"
-        } ${!expanded ? "show" : ""}`}
+        } ${expanded ? "show" : ""}`}
       >
         {attachmentsRow}
       </div>

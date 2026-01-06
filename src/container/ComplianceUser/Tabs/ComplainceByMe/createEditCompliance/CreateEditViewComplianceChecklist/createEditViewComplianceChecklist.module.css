@@ -87,17 +87,31 @@
 }
 
 .mainButtonPosition {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   gap: 10px;
-  align-items: center;
-  bottom: 20px;
+  align-items: end;
+  justify-content: end;
+  /* bottom: 20px;
+  right: 20px; */
+  /* position: sticky;
+  display: flex;
+  bottom: 0;
+  background: #fff;
+  padding-top: 10px;
   right: 20px;
+  gap: 10px; */
 }
 
 .accordianChecklistTitle {
   font-weight: 600;
   font-size: 16px;
+}
+.truncateTitle {
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 .ViewChecklistDetailStyles {
   font-weight: 500;
@@ -105,19 +119,32 @@
   font-size: 16px;
   color: #5a5a5a;
   margin: 0;
+  overflow-wrap: anywhere !important ;
 }
 .ViewChecklistDetailStyles_notexpanded {
   font-weight: 600;
   font-size: 16px;
   line-height: 100%;
   color: #6172d6;
+  overflow-wrap: anywhere !important ;
 }
 .AccordionArrowDown {
   transform: rotate(-180deg);
 }
 
 .checklistAccordian {
-  max-height: 220px !important;
+  /* max-height: 220px !important; */
+  max-height: 29vh !important;
+  min-height: 29vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.checklistAccordian_closed {
+  /* max-height: 410px !important; */
+  max-height: 57vh !important;
+  min-height: 57vh !important;
   overflow-y: auto;
   /* padding-right: 10px; */
   margin-top: 4px;
@@ -167,4 +194,23 @@
 }
 .checklistDueDate {
   width: 30%;
+}
+.createNewChecklistStyle {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+
+  font-weight: 600;
+  font-size: 12px;
+  color: #6172d6;
+  border: 1px dashed #6172d6;
+  border-radius: 4px;
+  height: 39px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

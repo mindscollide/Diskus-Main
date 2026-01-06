@@ -18,10 +18,12 @@ const MainCompliance = () => {
     setCreateEditComplaince,
     mainComplianceTabs,
     setMainComplianceTabs,
+    setComplianceAddEditViewState,
   } = useComplianceContext();
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
+    setComplianceAddEditViewState(1);
   };
 
   if (createEditCompliance) {
@@ -50,17 +52,19 @@ const MainCompliance = () => {
               />
             )}
           </Col>
-          <Col
-            sm={12}
-            md={6}
-            lg={6}
-            className="d-flex justify-content-end align-items-center gap-2"
-          >
-            <span className={styles["SwitchUserView_Text"]}>
-              Switch to User View
-            </span>{" "}
-            <Switch />
-          </Col>
+          {mainComplianceTabs === 1 && (
+            <Col
+              sm={12}
+              md={6}
+              lg={6}
+              className="d-flex justify-content-end align-items-center gap-2"
+            >
+              <span className={styles["SwitchUserView_Text"]}>
+                Switch to User View
+              </span>{" "}
+              <Switch />
+            </Col>
+          )}
         </Row>
         <Row>
           <Col
@@ -106,17 +110,19 @@ const MainCompliance = () => {
               text={t("Reports")}
             />
           </Col>
-          <Col
-            sm={12}
-            md={3}
-            lg={3}
-            className="d-flex justify-content-end gap-2 align-items-center"
-          >
-            <img src={FiscalYearCalendar_Icon} alt="" />
-            <span className={styles["Fiscalyear_text"]}>
-              Fiscal Year: 01 July - 30 June
-            </span>
-          </Col>
+          {mainComplianceTabs === 1 && (
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className="d-flex justify-content-end gap-2 align-items-center"
+            >
+              <img src={FiscalYearCalendar_Icon} alt="" />
+              <span className={styles["Fiscalyear_text"]}>
+                Fiscal Year: 01 July - 30 June
+              </span>
+            </Col>
+          )}
         </Row>
         {mainComplianceTabs === 1 && <ComplianceDashboard />}
         {mainComplianceTabs === 2 && <ComplianceByMe />}

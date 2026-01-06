@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   clearAuthorityMessage,
   GetComplianceChecklistsByComplianceIdAPI,
+  GetComplianceChecklistsWithTasksByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,8 @@ const CreateEditViewComplianceTask = () => {
   const { t } = useTranslation();
   const [show, setShow] = useState(false);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
-  const [ComplianceChecklistData, setComplianceCheckListData] = useState(null);
+  const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
+  console.log(ComplianceChecklistData, "ComplianceChecklistData");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -54,8 +56,19 @@ const CreateEditViewComplianceTask = () => {
     complianceInfo,
     setChecklistCount,
     setChecklistTabs,
+    setTaskCount,
   } = useComplianceContext();
 
+  useEffect(() => {
+    if (complianceInfo.complianceId !== 0) {
+      let Data = {
+        complianceId: complianceInfo.complianceId,
+      };
+      dispatch(
+        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+      );
+    }
+  }, [complianceInfo]);
   console.log(
     ComplianceChecklistData,
     "ComplianceChecklistDataComplianceChecklistData"
@@ -66,26 +79,33 @@ const CreateEditViewComplianceTask = () => {
         .GetComplianceChecklistsByComplianceId
   );
 
-  useEffect(() => {
-    if (
-      GetComplianceChecklistsByComplianceId !== null &&
-      GetComplianceChecklistsByComplianceId !== undefined
-    ) {
-      try {
-        let modifyData = [
-          ...GetComplianceChecklistsByComplianceId.checklistList,
-        ].map((data2, index) => {
-          return {
-            ...data2,
-            checkListTasks: [],
-          };
-        });
-        setComplianceCheckListData(modifyData);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }, [GetComplianceChecklistsByComplianceId]);
+  const getAllComplianceChecklistTask = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsWithTasksByComplianceId
+  );
+
+  // useEffect(() => {
+  //   if (
+  //     GetComplianceChecklistsByComplianceId !== null &&
+  //     GetComplianceChecklistsByComplianceId !== undefined
+  //   ) {
+  //     try {
+  //       let modifyData = [
+  //         ...GetComplianceChecklistsByComplianceId.checklistList,
+  //       ].map((data2, index) => {
+  //         return {
+  //           ...data2,
+  //           checkListTasks: [],
+  //         };
+  //       });
+  //       setComplianceCheckListData(modifyData);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }, [GetComplianceChecklistsByComplianceId]);
+
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -101,6 +121,32 @@ const CreateEditViewComplianceTask = () => {
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
+
+  useEffect(() => {
+    if (
+      getAllComplianceChecklistTask &&
+      getAllComplianceChecklistTask !== null
+    ) {
+      try {
+        console.log(
+          getAllComplianceChecklistTask,
+          "getAllComplianceChecklistTask"
+        );
+
+        setComplianceCheckListData(getAllComplianceChecklistTask.checklistList);
+
+        const checklistList = getAllComplianceChecklistTask.checklistList;
+
+        setComplianceCheckListData(checklistList);
+
+        const totalTaskCount = checklistList.reduce(
+          (sum, checklist) => sum + (checklist.taskList?.length || 0),
+          0
+        );
+        setTaskCount(totalTaskCount);
+      } catch (error) {}
+    }
+  }, [getAllComplianceChecklistTask]);
 
   console.log(
     GetComplianceChecklistsByComplianceId,
@@ -169,8 +215,8 @@ const CreateEditViewComplianceTask = () => {
                     attachmentsRow={
                       <>
                         <div className={styles["TaskList"]}>
-                          {data.checkListTasks.length > 0 &&
-                            data.checkListTasks.map((data2, index) => {
+                          {data.taskList.length > 0 &&
+                            data.taskList.map((data2, index) => {
                               return (
                                 <div
                                   className={styles["TaskStyle"]}
@@ -179,7 +225,7 @@ const CreateEditViewComplianceTask = () => {
                                   <Row>
                                     <Col sm={12} md={8} lg={8}>
                                       <span className={styles["TaskTitle"]}>
-                                        {data2.TaskTitle}
+                                        {data2.taskTitle}
                                       </span>
                                     </Col>
                                     <Col

@@ -29,6 +29,7 @@ const initialState = {
   ViewComplianceById: null,
   CheckChecklistTitleExists: null,
   AddTaskMappingToChecklist: null,
+  GetComplianceChecklistsWithTasksByComplianceId: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -452,6 +453,32 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         AddTaskMappingToChecklist: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // GetComplianceChecklistsWithTasksByComplianceId
+    case actions.GET_TASK_BY_COMPLIANCE_ID_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_TASK_BY_COMPLIANCE_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceId: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_TASK_BY_COMPLIANCE_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceId: null,
         ResponseMessage: action.message,
         severity: "error",
       };

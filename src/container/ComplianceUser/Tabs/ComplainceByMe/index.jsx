@@ -1,10 +1,17 @@
 import React, { useMemo, useState } from "react";
 import CustomTable from "../../../../components/elements/table/Table";
 import CustomButton from "../../../../components/elements/button/Button";
-import styles from './complianceByMe.module.css'
-
+import styles from "./complianceByMe.module.css";
+import { useComplianceContext } from "../../../../context/ComplianceContext";
 
 const ComplianceByMe = () => {
+  const { setComplianceAddEditViewState, setCreateEditComplaince } =
+    useComplianceContext();
+
+  const handleEditCompliance = () => {
+    setComplianceAddEditViewState(2);
+    setCreateEditComplaince(true);
+  };
   const [rows, setRows] = useState([
     {
       ComplianceTitle:
@@ -71,9 +78,16 @@ const ComplianceByMe = () => {
         key: "Authority",
         render: (_, record) => {
           return (
-            <div className='d-flex align-item-center justify-content-center gap-2'>
-              <CustomButton className={styles["actionButtons_complianceList"]} text={"Edit"} />
-              <CustomButton  className={styles["actionButtons_complianceList"]} text={"View Details"} />
+            <div className="d-flex align-item-center justify-content-center gap-2">
+              <CustomButton
+                className={styles["actionButtons_complianceList"]}
+                text={"Edit"}
+                onClick={handleEditCompliance}
+              />
+              <CustomButton
+                className={styles["actionButtons_complianceList"]}
+                text={"View Details"}
+              />
             </div>
           );
         },

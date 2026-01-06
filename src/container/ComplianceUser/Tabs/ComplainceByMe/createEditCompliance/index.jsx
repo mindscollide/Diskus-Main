@@ -16,17 +16,38 @@ const CreateEditCompliance = () => {
     setChecklistTabs,
     checklistCount,
     taskCount,
+    complianceAddEditViewState,
   } = useComplianceContext();
 
   return (
     <>
       <section className={styles["MainCompliance_Container"]}>
         <Row className="my-2">
-          <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+          {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
             {complianceInfo.complianceId !== 0
               ? complianceInfo.complianceName
               : t("Create-new-compliance")}
+          </Col> */}
+
+          <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+            {complianceAddEditViewState === 2
+              ? `Edit: ${complianceInfo.complianceName}`
+              : complianceInfo.complianceId !== 0
+              ? complianceInfo.complianceName
+              : t("Create-new-compliance")}
           </Col>
+
+          {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+            {complianceAddEditViewState === 0
+              ? t("Create-new-compliance")
+              : complianceAddEditViewState === 1
+              ? complianceInfo.complianceName !== ""
+                ? complianceInfo.complianceName
+                : complianceAddEditViewState === 2
+                ? `Edit: ${complianceInfo.complianceName}`
+                : ""
+              : ""} 
+          </Col>*/}
         </Row>
         <section
           className={` ${
@@ -57,7 +78,13 @@ const CreateEditCompliance = () => {
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
-                disableBtn={complianceInfo.complianceId !== 0 ? false : true}
+                disableBtn={
+                  complianceInfo.complianceId !== 0
+                    ? false
+                    : complianceAddEditViewState === 2
+                    ? false
+                    : true
+                }
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
                   setChecklistTabs(2);
@@ -70,7 +97,9 @@ const CreateEditCompliance = () => {
                     : styles["createNewComplianceBtn"]
                 }
                 disableBtn={
-                  complianceInfo.complianceId === 0
+                  complianceAddEditViewState === 2
+                    ? false
+                    : complianceInfo.complianceId === 0
                     ? true
                     : checklistCount === 0
                     ? true

@@ -437,6 +437,7 @@ const ComplainceDetails = () => {
           />
         </Col>
       </Row>
+
       <Row className="mt-2">
         <Col sm={12} md={6} lg={6}>
           <div className={`${styles["labelStyle"]} ${styles["Select_label"]}`}>
@@ -497,6 +498,37 @@ const ComplainceDetails = () => {
           />
         </Col>
       </Row>
+
+      {complianceAddEditViewState === 2 && (
+        <Row className="mt-2">
+          <Col sm={12} md={4} lg={4}>
+            <div
+              className={`${styles["labelStyle"]} ${styles["Select_label"]}`}
+            >
+              {t("Status")}
+            </div>
+            <div className={styles["Select_Authoriy_div"]}>
+              {complianceAddEditViewState === 3 ? (
+                <span>{/* {selectCountry?.label} */}</span>
+              ) : (
+                <Select
+                  isSearchable={true}
+                  options={criticalityOptions}
+                  labelInValue={t("Status")}
+                  onChange={(event) => setSelectCriticality(event)}
+                  value={selectCriticality}
+                  placeholder={
+                    complianceAddEditViewState !== 3 ? t("Status") : ""
+                  }
+                  classNamePrefix="Select_country_Authoriy"
+                  isDisabled={selectAuthority === ""}
+                />
+              )}
+            </div>
+          </Col>
+        </Row>
+      )}
+
       <Row className="mt-2">
         <Col sm={12} md={12} lg={12}>
           <div className={styles["Select_Authoriy_div"]}>
