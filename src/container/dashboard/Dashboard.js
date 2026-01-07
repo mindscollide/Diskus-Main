@@ -4981,11 +4981,18 @@ const Dashboard = () => {
                   <Outlet />
                 </>
               </div>
-              {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
-                  {activateBlur ? null : roleRoute ? null : <Talk />}
-                </div>
-              )}
+              <div
+                className={
+                  !location.pathname.includes("meetingDocumentViewer") &&
+                  "dashbaord_Talk"
+                }
+              >
+                {!location.pathname.includes("meetingDocumentViewer") && (
+                  <div className="talk_features_home">
+                    {activateBlur ? null : roleRoute ? null : <Talk />}
+                  </div>
+                )}
+              </div>
             </Content>
           </Layout>
           <NotificationBar

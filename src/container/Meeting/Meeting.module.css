@@ -1,0 +1,48 @@
+.NewMeetinHeading {
+  color: #6172d6 !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+}
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 8px;
+}
+.Search-Box_meeting {
+  max-width: 100%;
+  width: 100%;
+  /* width: 502px !important; */
+  height: 242px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  position: absolute !important;
+  right: 0;
+  z-index: 1 !important;
+  top: 39px !important;
+}
+
+.SearchButtonMeetings {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.ResetButtonMeeting {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+.Meeting_Wrapper {
+  padding: 10px 20px 0 10px !important;
+}

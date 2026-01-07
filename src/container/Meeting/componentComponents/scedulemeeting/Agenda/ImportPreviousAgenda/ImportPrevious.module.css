@@ -1,0 +1,100 @@
+.Import_previous_agenda_heading {
+  font-size: 20px !important;
+  color: #5f78d6 !important;
+  font-weight: 600 !important;
+}
+
+.Search_Btn_Import {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.Search_Btn_Import :is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.Title_desc {
+  display: inline-block !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 250px !important;
+}
+
+.Cancel_button_IMportAgenda {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.Cancel_button_IMportAgenda:hover,
+.Cancel_button_IMportAgenda:focus,
+.Cancel_button_IMportAgenda:focus-visible,
+.Cancel_button_IMportAgenda:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.Import_button_IMportAgenda {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.Import_button_IMportAgenda:hover,
+.Import_button_IMportAgenda:focus,
+.Import_button_IMportAgenda:focus-visible,
+.Import_button_IMportAgenda:active {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.OverAll_Padding {
+  padding: 0px 30px !important;
+}
+
+.PaginationStyle-Committee {
+  background-color: #fff !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: auto !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  margin-top: 3px !important;
+}
+
+body[dir="rtl"] .PaginationStyle-Committee {
+  width: auto !important;
+  padding: 12px 10px !important;
+}

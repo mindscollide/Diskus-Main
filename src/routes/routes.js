@@ -86,6 +86,7 @@ import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.
 import { AuthorityProvider } from "../context/AuthorityContext.js";
 import MainCompliance from "../container/ComplianceUser/index.jsx";
 import { ComlianceProvider } from "../context/ComplianceContext.js";
+import MainMeeting from "../container/Meeting/index.jsx";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -349,7 +350,8 @@ export const router = createBrowserRouter(
                   FallbackComponent={ErrorFallback}
                   onError={logErrors}
                 >
-                  <NewMeeting />
+                  <MainMeeting />
+                  {/* <NewMeeting /> */}
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
