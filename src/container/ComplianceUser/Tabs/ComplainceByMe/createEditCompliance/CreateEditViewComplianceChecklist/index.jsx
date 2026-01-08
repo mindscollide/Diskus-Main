@@ -21,6 +21,7 @@ import {
   AddComplianceChecklistAPI,
   CheckChecklistTitleExistsAPI,
   clearAuthorityMessage,
+  clearComplianceDetailsData,
   EditComplianceChecklistAPI,
   GetComplianceChecklistsByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
@@ -206,9 +207,6 @@ const CreateEditViewComplianceChecklist = () => {
     // dispatch(
     //   GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
     // );
-    return () => {
-      dispatch(clearAuthorityMessage());
-    };
   }, []);
 
   const [getCheckListData, setGetCheckListData] = useState([]);
@@ -355,21 +353,6 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleCloseButton = () => {
     emptyComplianceState();
-    // take user back to ComplianceByMe screen
-    setChecklistData({
-      checklistTitle: "",
-      checklistDescription: "",
-      checklistDueDate: "",
-    });
-    setComplianceDetailsState({
-      complianceTitle: "",
-      description: "",
-      authorityId: 0,
-      criticality: 0,
-      dueDate: "",
-      complianceDueDateForChecklist: "",
-      tags: [],
-    });
     setChecklistTabs(1);
     setCreateEditComplaince(false);
   };

@@ -1,8 +1,11 @@
 import { createContext, useContext, useState } from "react";
+import { clearComplianceDetailsData } from "../store/actions/ComplainSettingActions";
+import { useDispatch } from "react-redux";
 
 const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
   const [complianceInfo, setComplianceInfo] = useState({
     complianceId: 0,
@@ -35,6 +38,7 @@ export const ComlianceProvider = ({ children }) => {
   const [taskCount, setTaskCount] = useState(0);
 
   const emptyComplianceState = () => {
+    dispatch(clearComplianceDetailsData());
     setComplianceInfo({
       complianceId: 0,
       complianceName: "",

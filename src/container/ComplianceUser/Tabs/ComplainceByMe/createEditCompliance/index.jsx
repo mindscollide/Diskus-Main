@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./createEditCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -7,8 +7,13 @@ import ComplainceDetails from "./ComplianceDetails";
 import ComplianceChecklist from "./CreateEditViewComplianceChecklist";
 import ComplianceTask from "./CreateEditViewComplianceTask";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 
 const CreateEditCompliance = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const {
     complianceInfo,
@@ -18,6 +23,17 @@ const CreateEditCompliance = () => {
     taskCount,
     complianceAddEditViewState,
   } = useComplianceContext();
+
+  useEffect(() => {
+    if (complianceInfo.complianceId !== 0) {
+      try {
+        const complianceId = { complianceId: complianceInfo.complianceId };
+        dispatch(
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+        );
+      } catch (error) {}
+    }
+  }, []);
 
   return (
     <>

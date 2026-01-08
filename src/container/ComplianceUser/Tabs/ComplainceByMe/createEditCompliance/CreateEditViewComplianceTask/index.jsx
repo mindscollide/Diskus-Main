@@ -57,6 +57,8 @@ const CreateEditViewComplianceTask = () => {
     setChecklistCount,
     setChecklistTabs,
     setTaskCount,
+    emptyComplianceState,
+    setCreateEditComplaince,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -157,14 +159,11 @@ const CreateEditViewComplianceTask = () => {
     "GetComplianceChecklistsByComplianceId"
   );
   const handleDeleteTask = () => {};
+
   const handleCloseButton = () => {
-    // take user back to ComplianceByMe screen
-    // setChecklistData({
-    //   checklistTitle: "",
-    //   checklistDescription: "",
-    //   checklistDueDate: "",
-    // });
-    // setCreateEditComplaince(false);
+    emptyComplianceState();
+    setChecklistTabs(1);
+    setCreateEditComplaince(false);
   };
 
   const handleClickPrevBtn = () => {
