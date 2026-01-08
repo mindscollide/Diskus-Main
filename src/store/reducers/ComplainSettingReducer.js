@@ -30,6 +30,7 @@ const initialState = {
   CheckChecklistTitleExists: null,
   AddTaskMappingToChecklist: null,
   GetComplianceChecklistsWithTasksByComplianceId: null,
+  EditComplianceChecklist: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -482,6 +483,32 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // EditComplianceChecklist
+    case actions.EDIT_COMPLIANCE_CHECKLIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.EDIT_COMPLIANCE_CHECKLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        EditComplianceChecklist: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.EDIT_COMPLIANCE_CHECKLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        EditComplianceChecklist: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
     //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {
@@ -530,6 +557,13 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
         severity: null,
+      };
+
+    case actions.CLEAR_COMPLIANCEDETAILS_DATA:
+      return {
+        ...state,
+        GetComplianceChecklistsWithTasksByComplianceId: null,
+        GetComplianceChecklistsByComplianceId: null,
       };
 
     // ================= DEFAULT =================

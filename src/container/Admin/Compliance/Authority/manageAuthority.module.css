@@ -58,7 +58,7 @@ body[dir="rtl"] .SearchIconClass {
   background: #fff !important;
   right: 0 !important;
   min-height: 242px !important;
-  z-index: 1 !important;
+  z-index: 99 !important;
   top: 43px;
   padding: 10px 16px 13px 16px;
 }

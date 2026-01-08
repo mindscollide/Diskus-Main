@@ -480,7 +480,9 @@ const ComplainceDetails = () => {
             render={
               <InputIcon
                 placeholder={t("Due-date")}
-                className={styles["datepicker_input"]}
+                className={`${styles["datepicker_input"]} ${
+                  selectAuthority === "" ? styles["disabledInput"] : ""
+                }`}
               />
             }
             editable={false}

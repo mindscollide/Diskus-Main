@@ -457,7 +457,7 @@
   "On-start": "Onstart",
   "If-you-require-any-more-help-were-here-to-provide-click-help-button-whenever-your-feel-confused": "If you require any more help, we're here to provide. Click 'help' button,whenever your feel confused",
   "Schedule-meeting": "Schedule meeting",
-  "General-settings": "General settings",
+  "General-settings": "General Settings",
   "Time-zone": "Time zone",
   "Automatically-end-meeting-after": "Automatically end meeting after",
   "Hours": "Hours",
@@ -2542,7 +2542,7 @@
   "Fiscal-year-end": "Fiscal Year End",
   "Data-deleted-successfully": "Data deleted successfully",
   "Authority-updated-successfully": "Authority updated successfully",
-  "Authority-shortCode-already-exists-for-this-organization": "Authority ShortCode already exists for this Organization",
+  "Authority-shortCode-already-exists-for-this-organization": "Authority Short Code already exists for this Organization",
   "Authority-name-already-exists-for-this-organization": "Authority Name already exists for this Organization",
   "Authority-record-not-found-against-the-provided-authorityId": "Authority record not found Against the provided authorityId",
   "Authority-created-successfully": "Authority created successfully",
@@ -2556,7 +2556,7 @@
   "Compliances-for-me": "Compliances for Me",
   "No-matching-records": "No matching records.",
   "Authorities": "Authorities",
-  "Create-compliance": "Create compliance",
+  "Create-compliance": "Create Compliance",
   "File-successfully-uploaded": "File successfully uploaded",
   "Create-new-compliance": "Create New Compliance",
   "Compliance-details": "Compliances Details",
@@ -2579,5 +2579,9 @@
   "Compliance-title-already-exists-within-this-authority": "Compliance Title already exists within this Authority",
   "Checklist-added-successfully": "Checklist added successfully",
   "Checklist-title-already-exists-in-this-compliance": "Checklist title already exists in this compliance",
-  "Task-mapped-successfully": "Task mapped successfully"
+  "Task-mapped-successfully": "Task mapped successfully",
+  "Checklist-updated-successfully": "Checklist updated successfully",
+  "Compliance-settings": "Compliance Settings",
+  "Provided_shortCode-is-null-or-empty": "Provided Short Code is null or empty",
+  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes": "All your changes will be lost. Are you sure you want to Discard your changes?"
 }

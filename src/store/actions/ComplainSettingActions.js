@@ -21,6 +21,7 @@ import {
   CheckChecklistTitleExists,
   AddTaskMappingToChecklist,
   GetComplianceChecklistsWithTasksByComplianceId,
+  EditComplianceChecklist,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -1775,6 +1776,130 @@ const GetComplianceChecklistsWithTasksByComplianceIdAPI = (
   };
 };
 
+//EditComplianceChecklist
+const EditComplianceChecklistInit = () => {
+  return {
+    type: actions.EDIT_COMPLIANCE_CHECKLIST_INIT,
+  };
+};
+
+const EditComplianceChecklistSuccess = (response, message) => {
+  return {
+    type: actions.EDIT_COMPLIANCE_CHECKLIST_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const EditComplianceChecklistFail = (message) => {
+  return {
+    type: actions.EDIT_COMPLIANCE_CHECKLIST_FAIL,
+    message: message,
+  };
+};
+
+const EditComplianceChecklistAPI = (
+  navigate,
+  Data,
+  t,
+  complianceInfo,
+  setChecklistData,
+  setIsEditTrue
+) => {
+  const complianceId = {
+    complianceId: complianceInfo.complianceId,
+  };
+  return (dispatch) => {
+    dispatch(EditComplianceChecklistInit());
+    let form = new FormData();
+    form.append("RequestMethod", EditComplianceChecklist.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            EditComplianceChecklistAPI(
+              navigate,
+              Data,
+              t,
+              complianceInfo,
+              setChecklistData,
+              setIsEditTrue
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_EditComplianceChecklist_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                EditComplianceChecklistSuccess(
+                  response.data.responseResult,
+                  t("Checklist-updated-successfully")
+                )
+              );
+              setIsEditTrue(false);
+              dispatch(
+                GetComplianceChecklistsByComplianceIdAPI(
+                  navigate,
+                  complianceId,
+                  t
+                )
+              );
+              setChecklistData({
+                checklistTitle: "",
+                checklistDescription: "",
+                checklistDueDate: "",
+              });
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_EditComplianceChecklist_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(EditComplianceChecklistFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_EditComplianceChecklist_03".toLowerCase()
+                )
+            ) {
+              await dispatch(EditComplianceChecklistFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_EditComplianceChecklist_04".toLowerCase()
+                )
+            ) {
+              await dispatch(EditComplianceChecklistFail(""));
+            }
+          } else {
+            await dispatch(
+              EditComplianceChecklistFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            EditComplianceChecklistFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(EditComplianceChecklistFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 const clearAuthorityMessage = () => {
   return {
     type: actions.GET_CLEAREMESSAGE_AUTHORITY,
@@ -1859,4 +1984,5 @@ export {
   CheckChecklistTitleExistsAPI,
   AddTaskMappingToChecklistAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
+  EditComplianceChecklistAPI,
 };

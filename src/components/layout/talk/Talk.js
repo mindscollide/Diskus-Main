@@ -72,8 +72,11 @@ const Talk = () => {
   const navigate = useNavigate();
   const [notesModal, setNotesModal] = useState(false);
   const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
-  const { setCreateEditComplaince, emptyComplianceState } =
-    useComplianceContext();
+  const {
+    setCreateEditComplaince,
+    emptyComplianceState,
+    setMainComplianceTabs,
+  } = useComplianceContext();
   const {
     pendingApprovalsTabCount,
     setPendingApprovalTabCount,
@@ -222,6 +225,7 @@ const Talk = () => {
     }
     navigate("/Diskus/compliance");
     setCreateEditComplaince(false);
+    setMainComplianceTabs(1);
     emptyComplianceState();
   };
 

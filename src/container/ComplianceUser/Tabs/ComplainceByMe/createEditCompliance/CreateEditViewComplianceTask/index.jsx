@@ -27,7 +27,7 @@ const CreateEditViewComplianceTask = () => {
   const [show, setShow] = useState(false);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
-  console.log(ComplianceChecklistData, "ComplianceChecklistData");
+  console.log(expandedCheckListIds, "ComplianceChecklistData");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -137,7 +137,11 @@ const CreateEditViewComplianceTask = () => {
 
         const checklistList = getAllComplianceChecklistTask.checklistList;
 
-        setComplianceCheckListData(checklistList);
+        setExpandedCheckListIds(
+          getAllComplianceChecklistTask.checklistList.map(
+            (data, index) => data.checklistId
+          )
+        );
 
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
@@ -164,7 +168,7 @@ const CreateEditViewComplianceTask = () => {
   };
 
   const handleClickPrevBtn = () => {
-    setChecklistTabs(1);
+    setChecklistTabs(2);
   };
 
   // const handleAddTaskInCheckList = (checkListId) => {
@@ -278,8 +282,8 @@ const CreateEditViewComplianceTask = () => {
                               className={`cursor-pointer
                                 ${
                                   isExpanded
-                                    ? styles["AccordionArrowDown"]
-                                    : null
+                                    ? null
+                                    : styles["AccordionArrowDown"]
                                 }`}
                             />
                           </Col>

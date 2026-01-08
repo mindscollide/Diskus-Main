@@ -63,7 +63,7 @@ const AddEditViewAuthorityModal = () => {
     address: "",
     contactPersonName: "",
     email: "",
-    phoneCode: "",
+    phoneCode: "+1",
     phone: "",
     status: "",
     statusId: 0,

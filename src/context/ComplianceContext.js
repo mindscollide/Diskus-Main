@@ -9,6 +9,7 @@ export const ComlianceProvider = ({ children }) => {
     complianceName: "",
   });
   const [checkListData, setChecklistData] = useState({
+    checklistId: 0,
     checklistTitle: "",
     checklistDescription: "",
     checklistDueDate: "",
@@ -43,7 +44,7 @@ export const ComlianceProvider = ({ children }) => {
       checklistDescription: "",
       checklistDueDate: "",
     });
-    setMainComplianceTabs(1);
+    // setMainComplianceTabs(1);
     setComplianceAddEditViewState(0);
     setChecklistTabs(1);
     setComplianceDetailsState({
