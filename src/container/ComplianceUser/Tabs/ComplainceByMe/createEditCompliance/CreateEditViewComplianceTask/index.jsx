@@ -167,35 +167,22 @@ const CreateEditViewComplianceTask = () => {
   };
 
   const handleClickPrevBtn = () => {
+    // setChecklistData({
+    //   checklistTitle: "",
+    //   checklistDescription: "",
+    //   checklistDueDate: "",
+    // });
     setChecklistTabs(2);
   };
 
-  // const handleAddTaskInCheckList = (checkListId) => {
-  //   const updatedChecklistData = ComplianceChecklistData.map((item) => {
-  //     if (item.checklistId === checkListId) {
-  //       return {
-  //         ...item,
-  //         checkListTasks: [
-  //           ...(item.checkListTasks || []),
-  //           {
-  //             TaskTitle: "Hello",
-  //             taskId: Math.random().toString(36).slice(2),
-  //           },
-  //         ],
-  //       };
-  //     }
-  //     return item;
-  //   });
-
-  //   setComplianceCheckListData(updatedChecklistData);
-  // };
-
   const [checkListId, setCheckListId] = useState(0);
+
   const handleAddTaskInCheckList = (checklistId) => {
     setCheckListId(checklistId);
     console.log(checklistId, "checklistIdchecklistId");
     setShow(true);
   };
+
   return (
     <>
       <div className={styles["checklistAccordian"]}>

@@ -199,7 +199,7 @@ const AddEditViewAuthorityModal = () => {
       ...authorityDetails,
       phoneCode: a.secondary,
     });
-    console.log(a, "CountryIDCountryID");
+    console.log({ a, country }, "CountryIDCountryID");
   };
 
   const handleCancelButton = () => {
@@ -823,7 +823,9 @@ const AddEditViewAuthorityModal = () => {
                           {authorityViewState !== 3 && (
                             <TextField
                               placeholder={t("Phone")}
-                              maxLength={20}
+                              maxLength={
+                                20 - (authorityDetails.phoneCode.length || 0)
+                              }
                               change={handleValueChange}
                               name="phone"
                               applyClass={

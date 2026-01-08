@@ -139,7 +139,6 @@ const CreateEditViewComplianceChecklist = () => {
             checkListData.checklistDueDate
           ),
         };
-        console.log(Data, "handleClickSaveBtn");
         dispatch(
           EditComplianceChecklistAPI(
             navigate,
@@ -244,6 +243,11 @@ const CreateEditViewComplianceChecklist = () => {
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
   const handleClickPrevBtn = () => {
+    setChecklistData({
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "",
+    });
     setChecklistTabs(1);
     // if (complianceInfo.complianceId !== 0) {
     //   const Data = {
