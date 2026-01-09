@@ -360,6 +360,10 @@ const CreateEditViewComplianceChecklist = () => {
     setChecklistTabs(1);
     setCreateEditComplaince(false);
   };
+  console.log(
+    complianceDetailsState.complianceDueDateForChecklist,
+    "complianceDueDateForChecklist"
+  );
   return (
     <>
       {!addChecklistCloseState ? (
@@ -523,115 +527,119 @@ const CreateEditViewComplianceChecklist = () => {
             : styles["checklistAccordian"]
         }
       >
-        {getCheckListData?.length > 0
-          ? getCheckListData.map((data, index) => {
-              const isExpanded = expandedCheckListIds.find(
-                (data2, index) => data2 === data.checklistId
-              );
+        {getCheckListData?.length > 0 ? (
+          getCheckListData.map((data, index) => {
+            const isExpanded = expandedCheckListIds.find(
+              (data2, index) => data2 === data.checklistId
+            );
 
-              console.log(isExpanded, "isExpandedisExpanded");
-              return (
-                <div key={index}>
-                  <CustomAccordion
-                    isExpand={isExpanded}
-                    notesID={data.checklistId}
-                    isCompliance={true}
-                    StartField={
-                      <>
-                        {isExpanded ? (
-                          <div>
-                            <p className={styles["labelStyle"]}>
-                              {t("Checklist-title")}
-                            </p>
-                            <p
-                              className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
-                            >
-                              {data.checklistTitle}
-                            </p>
-                          </div>
-                        ) : (
+            console.log(isExpanded, "isExpandedisExpanded");
+            return (
+              <div key={index}>
+                <CustomAccordion
+                  isExpand={isExpanded}
+                  notesID={data.checklistId}
+                  isCompliance={true}
+                  StartField={
+                    <>
+                      {isExpanded ? (
+                        <div>
+                          <p className={styles["labelStyle"]}>
+                            {t("Checklist-title")}
+                          </p>
                           <p
-                            className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
+                            className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
                           >
                             {data.checklistTitle}
                           </p>
-                        )}
-                      </>
-                    }
-                    centerField={
-                      <>
-                        {isExpanded ? (
-                          <div>
-                            <p className={styles["labelStyle"]}>
-                              {t("Due-date")}
-                            </p>
-                            <p className={styles["ViewChecklistDetailStyles"]}>
-                              {formatDateToYMD(data.dueDate)}
-                            </p>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </>
-                    }
-                    attachmentsRow={
-                      <>
+                        </div>
+                      ) : (
+                        <p
+                          className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
+                        >
+                          {data.checklistTitle}
+                        </p>
+                      )}
+                    </>
+                  }
+                  centerField={
+                    <>
+                      {isExpanded ? (
                         <div>
                           <p className={styles["labelStyle"]}>
-                            {t("Description")}
-                          </p>{" "}
+                            {t("Due-date")}
+                          </p>
                           <p className={styles["ViewChecklistDetailStyles"]}>
-                            {data.checklistDescription}
+                            {formatDateToYMD(data.dueDate)}
                           </p>
                         </div>
-                      </>
-                    }
-                    endField={
-                      <>
-                        <Row>
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className="d-flex justify-content-end gap-3 align-items-center"
-                          >
-                            <img
-                              className="cursor-pointer"
-                              draggable="false"
-                              alt=""
-                              src={deleteIcon}
-                              onClick={() =>
-                                handleDeleteChecklist(data?.checklistId)
-                              }
-                            />
-                            {/* Edit Checklist */}
-                            <img
-                              className="cursor-pointer"
-                              draggable="false"
-                              alt=""
-                              src={editIcon}
-                              onClick={() => handleEditChecklist(data)}
-                            />
-                            <img
-                              src={Accordion_Arrow}
-                              onClick={() => handleClickExpandCheckList(data)}
-                              alt=""
-                              className={`cursor-pointer
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  }
+                  attachmentsRow={
+                    <>
+                      <div>
+                        <p className={styles["labelStyle"]}>
+                          {t("Description")}
+                        </p>{" "}
+                        <p className={styles["ViewChecklistDetailStyles"]}>
+                          {data.checklistDescription}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  endField={
+                    <>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-end gap-3 align-items-center"
+                        >
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={deleteIcon}
+                            onClick={() =>
+                              handleDeleteChecklist(data?.checklistId)
+                            }
+                          />
+                          {/* Edit Checklist */}
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={editIcon}
+                            onClick={() => handleEditChecklist(data)}
+                          />
+                          <img
+                            src={Accordion_Arrow}
+                            onClick={() => handleClickExpandCheckList(data)}
+                            alt=""
+                            className={`cursor-pointer
                                   ${
                                     isExpanded
                                       ? null
                                       : styles["AccordionArrowDown"]
                                   }`}
-                            />
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
-                </div>
-              );
-            })
-          : null}
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className={styles["noChecklistMsg"]}>
+            {t("No-checklist-available")}
+          </div>
+        )}
       </div>
 
       {/* Main Button */}

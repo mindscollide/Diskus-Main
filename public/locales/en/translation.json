@@ -357,7 +357,7 @@
   "Organization-subscription-is-in-active-and-this-is-an-admin-user": "Organization subscription is in active and this is an admin user.",
   "Organization-subscription-is-in-active-and-this-is-a-partial-admin-user": "Organization subscription is in active and this is a partial admin user.",
   "Organization-subscription-is-in-active-and-this-is-not-an-admin-user": "Organization subscription is in active and this is not an admin user.",
-  "The-organization-is-inactive-and-the-user-is-an-admin-user": "The organization is inactive and the user is an admin user.",
+  "The-organization-is-inactive-and-tInActivehe-user-is-an-admin-user": "The organization is inactive and the user is an admin user.",
   "The-organization-is-inactive-please-contact-your-admin": "The organization is inactive. Please contact your admin.",
   "The-user-is-an-admin-user-the-organization-subscription-is-not-active-please-activate-it": "The user is an admin user. The organization subscription is not active. Please activate it. ",
   "The-user-is-not-an-admin-user-the-organization-subscription-is-not-activated-please-contact-your-admin": "The user is not an admin user. The organization subscription is not activated. Please contact your admin.",
@@ -1953,7 +1953,7 @@
   "Send-for-approval": "Sent for approval",
   "Send For Approval": "Send for approval",
   "Leave-a-comment": "Leave a comment",
-  "User-dashboard": "User dashboard",
+  "User-dashboard": "User Dashboard",
   "organization-subscription-not-cancelled": "organization subscription not cancelled",
   "invalid-subscription-status-id-provided": "invalid subscription status id provided",
   "Non-primary": "Non-primary",
@@ -2583,5 +2583,6 @@
   "Checklist-updated-successfully": "Checklist updated successfully",
   "Compliance-settings": "Compliance Settings",
   "Provided_shortCode-is-null-or-empty": "Provided Short Code is null or empty",
-  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes": "All your changes will be lost. Are you sure you want to Discard your changes?"
+  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes": "All your changes will be lost. Are you sure you want to Discard your changes?",
+  "No-checklist-available": "No Checklist Available"
 }

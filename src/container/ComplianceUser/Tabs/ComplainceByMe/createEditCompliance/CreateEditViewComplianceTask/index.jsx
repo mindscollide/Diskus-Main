@@ -175,11 +175,11 @@ const CreateEditViewComplianceTask = () => {
     setChecklistTabs(2);
   };
 
-  const [checkListId, setCheckListId] = useState(0);
+  const [checkListData, setCheckListData] = useState(0);
 
-  const handleAddTaskInCheckList = (checklistId) => {
-    setCheckListId(checklistId);
-    console.log(checklistId, "checklistIdchecklistId");
+  const handleAddTaskInCheckList = (checkListData) => {
+    setCheckListData(checkListData);
+    console.log(checkListData, "checklistIdchecklistId");
     setShow(true);
   };
 
@@ -235,9 +235,7 @@ const CreateEditViewComplianceTask = () => {
                           <Col sm={12} md={12} lg={12}>
                             <div
                               className={styles["createNewTaskBtnStyle"]}
-                              onClick={() =>
-                                handleAddTaskInCheckList(data.checklistId)
-                              }
+                              onClick={() => handleAddTaskInCheckList(data)}
                             >
                               {t("Add-task")}
                             </div>
@@ -305,7 +303,7 @@ const CreateEditViewComplianceTask = () => {
       </div>
       {show && (
         <ModalToDoListChecklist
-          checkListId={checkListId}
+          checkListData={checkListData}
           show={show}
           setShow={setShow}
         />

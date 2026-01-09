@@ -40,6 +40,7 @@ const ComplainceDetails = () => {
     setChecklistTabs,
     complianceDetailsState,
     setComplianceDetailsState,
+    complianceInfo,
   } = useComplianceContext();
   const { t } = useTranslation();
   const [selectedTags, setSelectedTags] = useState([]);
@@ -254,27 +255,32 @@ const ComplainceDetails = () => {
   };
 
   const handleClickNextBtn = () => {
-    const tagsArr = selectedTags.map((data) => data.tagTitle);
-    const Data = {
-      complianceTitle: complianceDetails.complianceTitle,
-      description: complianceDetails.complianceDescription,
-      authorityId: selectAuthority.value,
-      criticality: selectCriticality.value,
-      dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
-      tags: tagsArr,
-    };
-    setComplianceDetailsState({
-      complianceTitle: complianceDetails.complianceTitle,
-      description: complianceDetails.complianceDescription,
-      authorityId: selectAuthority.value,
-      criticality: selectCriticality.value,
-      dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
-      tags: tagsArr,
-      complianceDueDateForChecklist: complianceDueDate,
-    });
-    dispatch(
-      AddComplianceAPI(navigate, Data, t, setComplianceInfo, setChecklistTabs)
-    );
+    if (complianceInfo.complianceId !== 0) {
+      console.log("clicked");
+      setChecklistTabs(2);
+    } else {
+      const tagsArr = selectedTags.map((data) => data.tagTitle);
+      const Data = {
+        complianceTitle: complianceDetails.complianceTitle,
+        description: complianceDetails.complianceDescription,
+        authorityId: selectAuthority.value,
+        criticality: selectCriticality.value,
+        dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
+        tags: tagsArr,
+      };
+      setComplianceDetailsState({
+        complianceTitle: complianceDetails.complianceTitle,
+        description: complianceDetails.complianceDescription,
+        authorityId: selectAuthority.value,
+        criticality: selectCriticality.value,
+        dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
+        tags: tagsArr,
+        complianceDueDateForChecklist: complianceDueDate,
+      });
+      dispatch(
+        AddComplianceAPI(navigate, Data, t, setComplianceInfo, setChecklistTabs)
+      );
+    }
   };
 
   const changeComplainceDueDate = (date) => {
@@ -287,6 +293,7 @@ const ComplainceDetails = () => {
 
   const handleBlur = (event) => {
     if (complianceAddEditViewState === 3) return;
+
     const { name, value } = event.target;
 
     if (name === "complianceTitle" && value) {
@@ -312,6 +319,9 @@ const ComplainceDetails = () => {
     if (complianceDetails.complianceTitle === "") {
       setSelectAuthority(event);
     } else if (complianceDetails.complianceTitle !== "") {
+      setErrors({
+        complianceTitle: "",
+      });
       setSelectAuthority(event);
       const Data = {
         ComplianceTitle: complianceDetails.complianceTitle,

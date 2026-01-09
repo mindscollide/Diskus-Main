@@ -10,6 +10,7 @@ import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
+import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 
 const CreateEditCompliance = () => {
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const CreateEditCompliance = () => {
     checklistCount,
     taskCount,
     complianceAddEditViewState,
+    complianceDetailsState,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -38,19 +40,26 @@ const CreateEditCompliance = () => {
   return (
     <>
       <section className={styles["MainCompliance_Container"]}>
-        <Row className="my-2">
+        <Row className="my-2 ">
           {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
             {complianceInfo.complianceId !== 0
               ? complianceInfo.complianceName
               : t("Create-new-compliance")}
           </Col> */}
 
-          <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+          <Col sm={12} md={9} lg={9} className={styles["mainHeading"]}>
             {complianceAddEditViewState === 2
               ? `Edit: ${complianceInfo.complianceName}`
               : complianceInfo.complianceId !== 0
               ? complianceInfo.complianceName
               : t("Create-new-compliance")}
+          </Col>
+
+          {}
+          <Col sm={12} md={3} lg={3} className={styles["mainHeading2"]}>
+            {complianceDetailsState.dueDate !== ""
+              ? `Due Date: ${formatDateToYMD(complianceDetailsState.dueDate)}`
+              : ""}
           </Col>
 
           {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>

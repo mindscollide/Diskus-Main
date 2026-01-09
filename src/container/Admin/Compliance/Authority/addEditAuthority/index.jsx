@@ -227,7 +227,7 @@ const AddEditViewAuthorityModal = () => {
 
     setAuthorityDetails((prev) => ({
       ...prev,
-      status: checked ? "Active" : "Inactive", // update status accordingly
+      status: checked ? "Active" : "In Active", // update status accordingly
     }));
   };
   let isAllValid =
@@ -310,7 +310,7 @@ const AddEditViewAuthorityModal = () => {
   const urlRegex =
     /^(https?:\/\/)?((([\w-]+\.)+[\w-]{2,})|(\d{1,3}(\.\d{1,3}){3}))(:\d+)?(\/.*)?$/i;
 
-  const phoneRegex = /^[0-9+\-() ]{0,20}$/;
+  const phoneRegex = /^[0-9]+$/;
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
@@ -502,7 +502,7 @@ const AddEditViewAuthorityModal = () => {
               {addViewAuthorityDetails ? (
                 <>
                   <Row>
-                    <Col sm={12} md={8} lg={8} className="m-0 pe-0 ">
+                    <Col sm={12} md={8} lg={8} className="m-0 pe-0">
                       <InputfieldwithCount
                         value={authorityDetails.name}
                         onChange={handleValueChange}
@@ -541,68 +541,117 @@ const AddEditViewAuthorityModal = () => {
                         {errors.name}
                       </p>
                     </Col>
-                    <Col
-                      sm={12}
-                      md={1}
-                      lg={1}
-                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
-                    >
-                      {isAuthorityExist === true ? (
-                        <Spinner size="md" className={styles["SpinnerClass"]} />
-                      ) : isAuthorityExist === false ? (
-                        <Check2 className={styles["CheckIcon"]} />
-                      ) : null}
-                    </Col>
-                    <Col sm={12} md={2} lg={2} className="m-0 p-0">
-                      <InputfieldwithCount
-                        maxLength={10}
-                        showCount={authorityViewState === 3 ? false : true}
-                        onChange={handleValueChange}
-                        onBlur={handleBlur}
-                        name="shortCode"
-                        pattern={"^[a-zA-Z0-9 ]+$"}
-                        placeholder={
-                          authorityViewState !== 3 ? t("Short-code") : ""
-                        }
-                        preFixClas={
-                          authorityViewState === 3
-                            ? "viewField_Name"
-                            : "AddEditAuthorityCounterInputField"
-                        }
-                        value={authorityDetails.shortCode}
-                        label={
-                          <>
-                            {t("Short-code")}
-                            <span className={styles["sterick"]}>
-                              {authorityViewState !== 3 ? " *" : ""}
-                            </span>
-                          </>
-                        }
-                        labelClass={styles["labelStyle"]}
-                      />
+                    {authorityViewState === 1 || authorityViewState === 2 ? (
+                      <>
+                        <Col
+                          sm={12}
+                          md={1}
+                          lg={1}
+                          className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                        >
+                          {isAuthorityExist === true ? (
+                            <Spinner
+                              size="md"
+                              className={styles["SpinnerClass"]}
+                            />
+                          ) : isAuthorityExist === false ? (
+                            <Check2 className={styles["CheckIcon"]} />
+                          ) : null}
+                        </Col>
+                        <Col sm={12} md={2} lg={2} className="m-0 p-0">
+                          <InputfieldwithCount
+                            maxLength={10}
+                            showCount={authorityViewState === 3 ? false : true}
+                            onChange={handleValueChange}
+                            onBlur={handleBlur}
+                            name="shortCode"
+                            pattern={"^[a-zA-Z0-9 ]+$"}
+                            placeholder={
+                              authorityViewState !== 3 ? t("Short-code") : ""
+                            }
+                            preFixClas={
+                              authorityViewState === 3
+                                ? "viewField_Name"
+                                : "AddEditAuthorityCounterInputField"
+                            }
+                            value={authorityDetails.shortCode}
+                            label={
+                              <>
+                                {t("Short-code")}
+                                <span className={styles["sterick"]}>
+                                  {authorityViewState !== 3 ? " *" : ""}
+                                </span>
+                              </>
+                            }
+                            labelClass={styles["labelStyle"]}
+                          />
 
-                      <p
-                        className={
-                          errors.shortCode
-                            ? styles["errorMessage-inLogin"]
-                            : styles["errorMessage-inLogin_hidden"]
-                        }
-                      >
-                        {errors.shortCode}
-                      </p>
-                    </Col>
-                    <Col
-                      sm={12}
-                      md={1}
-                      lg={1}
-                      className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
-                    >
-                      {isShortCodeExist === true ? (
-                        <Spinner size="md" className={styles["SpinnerClass"]} />
-                      ) : isShortCodeExist === false ? (
-                        <Check2 className={styles["CheckIcon"]} />
-                      ) : null}
-                    </Col>
+                          <p
+                            className={
+                              errors.shortCode
+                                ? styles["errorMessage-inLogin"]
+                                : styles["errorMessage-inLogin_hidden"]
+                            }
+                          >
+                            {errors.shortCode}
+                          </p>
+                        </Col>
+                        <Col
+                          sm={12}
+                          md={1}
+                          lg={1}
+                          className="m-0 p-0 d-flex justify-content-center align-items-center mt-3"
+                        >
+                          {isShortCodeExist === true ? (
+                            <Spinner
+                              size="md"
+                              className={styles["SpinnerClass"]}
+                            />
+                          ) : isShortCodeExist === false ? (
+                            <Check2 className={styles["CheckIcon"]} />
+                          ) : null}
+                        </Col>
+                      </>
+                    ) : (
+                      <Col sm={12} md={4} lg={4}>
+                        <InputfieldwithCount
+                          maxLength={10}
+                          showCount={authorityViewState === 3 ? false : true}
+                          onChange={handleValueChange}
+                          onBlur={handleBlur}
+                          name="shortCode"
+                          pattern={"^[a-zA-Z0-9 ]+$"}
+                          placeholder={
+                            authorityViewState !== 3 ? t("Short-code") : ""
+                          }
+                          preFixClas={
+                            authorityViewState === 3
+                              ? "viewField_Name"
+                              : "AddEditAuthorityCounterInputField"
+                          }
+                          value={authorityDetails.shortCode}
+                          label={
+                            <>
+                              {t("Short-code")}
+                              <span className={styles["sterick"]}>
+                                {authorityViewState !== 3 ? " *" : ""}
+                              </span>
+                            </>
+                          }
+                          labelClass={styles["labelStyle"]}
+                        />
+
+                        <p
+                          className={
+                            errors.shortCode
+                              ? styles["errorMessage-inLogin"]
+                              : styles["errorMessage-inLogin_hidden"]
+                          }
+                        >
+                          {errors.shortCode}
+                        </p>
+                      </Col>
+                    )}
                   </Row>
                   <Row className="mt-2">
                     <Col sm={12} md={12} lg={12}>
@@ -626,7 +675,7 @@ const AddEditViewAuthorityModal = () => {
                             authorityViewState !== 3 ? t("Description") : ""
                           }
                           showCount={authorityViewState === 3 ? false : true}
-                          maxLength={500}
+                          maxLength={160}
                           onChange={handleValueChange}
                           name="description"
                           preFixClas={
@@ -865,7 +914,7 @@ const AddEditViewAuthorityModal = () => {
                           </span>
                         ) : (
                           <span className={styles["inactiveAuthorityStyle"]}>
-                            {t("InActive")}
+                            {t("In-active")}
                           </span>
                         )}
                       </Col>
@@ -919,7 +968,11 @@ const AddEditViewAuthorityModal = () => {
 
                     <Button
                       text={authorityViewState !== 3 ? t("Cancel") : t("Close")}
-                      className={styles["CancelButtonStyle"]}
+                      className={
+                        authorityViewState !== 3
+                          ? styles["CancelButtonStyle"]
+                          : styles["CloseButtonStyle"]
+                      }
                       onClick={handleCancelButton}
                     />
                     {authorityViewState === 1 && (
