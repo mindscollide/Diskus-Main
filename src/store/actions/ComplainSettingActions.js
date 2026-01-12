@@ -22,6 +22,8 @@ import {
   AddTaskMappingToChecklist,
   GetComplianceChecklistsWithTasksByComplianceId,
   EditComplianceChecklist,
+  SearchCompliancesByCreatorIdRM,
+  ViewComplianceByMeDetailsRM,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -1958,6 +1960,219 @@ const setOrganizationSettingUpdateData = (response) => {
   };
 };
 
+// get listOfComplianceByCreator Data from Socket
+const listOfComplianceByCreator_init = () => {
+  return {
+    type: actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT,
+  };
+};
+
+const listOfComplianceByCreator_success = (response, message) => {
+  return {
+    type: actions.LIST_OF_COMPLIANCE_BY_CREATOR_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const listOfComplianceByCreator_fail = (response) => {
+  return {
+    type: actions.LIST_OF_COMPLIANCE_BY_CREATOR_FAIL,
+    response: response,
+  };
+};
+
+const listOfComplianceByCreatorApi = (navigate, Data, t) => {
+  return (dispatch) => {
+    dispatch(listOfComplianceByCreator_init());
+    let form = new FormData();
+    form.append("RequestMethod", SearchCompliancesByCreatorIdRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_SearchCompliancesByCreatorId_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                listOfComplianceByCreator_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_SearchCompliancesByCreatorId_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(listOfComplianceByCreator_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_SearchCompliancesByCreatorId_03".toLowerCase()
+                )
+            ) {
+              await dispatch(listOfComplianceByCreator_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_EditComplianceChecklist_04".toLowerCase()
+                )
+            ) {
+              await dispatch(listOfComplianceByCreator_fail(""));
+            }
+          } else {
+            await dispatch(
+              listOfComplianceByCreator_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            listOfComplianceByCreator_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(listOfComplianceByCreator_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const viewComplianceByMeDetails_init = () => {
+  return {
+    type: actions.VIEW_COMPLIANCE_BY_ME_DETAILS_INIT,
+  };
+};
+
+const viewComplianceByMeDetails_success = (response, message) => {
+  return {
+    type: actions.VIEW_COMPLIANCE_BY_ME_DETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const viewComplianceByMeDetails_fail = (response) => {
+  return {
+    type: actions.VIEW_COMPLIANCE_BY_ME_DETAILS_FAIL,
+    response: response,
+  };
+};
+
+const ViewComplianceByMeDetailsAPI = (
+  navigate,
+  Data,
+  t,
+  value,
+  setComplianceAddEditViewState,
+  setCreateEditComplaince
+) => {
+  // Value 1 is when User Perform Edit Operation
+  // Value 2 is when User Perform View Operation
+  return (dispatch) => {
+    dispatch(viewComplianceByMeDetails_init());
+    let form = new FormData();
+    form.append("RequestMethod", ViewComplianceByMeDetailsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            ViewComplianceByMeDetailsAPI(
+              navigate,
+              Data,
+              t,
+              value,
+              setComplianceAddEditViewState,
+              setCreateEditComplaince
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ViewComplianceDetails_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                viewComplianceByMeDetails_success(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+              switch (value) {
+                case 1:
+                  setComplianceAddEditViewState(2);
+                  setCreateEditComplaince(true);
+                  break;
+                case 2:
+                  setComplianceAddEditViewState(3);
+                  setCreateEditComplaince(false);
+                  break;
+                default:
+                  break;
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ViewComplianceDetails_02".toLowerCase()
+                )
+            ) {
+              // The Name is Unique
+              await dispatch(viewComplianceByMeDetails_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ViewComplianceDetails_03".toLowerCase()
+                )
+            ) {
+              await dispatch(viewComplianceByMeDetails_fail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ViewComplianceDetails_04".toLowerCase()
+                )
+            ) {
+              await dispatch(viewComplianceByMeDetails_fail(""));
+            }
+          } else {
+            await dispatch(
+              viewComplianceByMeDetails_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            viewComplianceByMeDetails_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(viewComplianceByMeDetails_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -1985,4 +2200,6 @@ export {
   AddTaskMappingToChecklistAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
   EditComplianceChecklistAPI,
+  listOfComplianceByCreatorApi,
+  ViewComplianceByMeDetailsAPI,
 };

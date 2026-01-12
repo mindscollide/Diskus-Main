@@ -1,4 +1,3 @@
-import { GetAllAuthoritiesDropdown } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -12,6 +11,8 @@ const initialState = {
   AddAuthority: null,
   IsShortCodeExists: null,
   IsAuthorityNameExists: null,
+  listOfComplianceByCreator: null,
+  ViewComplianceByMeDetails: null,
 
   // MQTT
   SocketAuthorityInactive: null,
@@ -564,6 +565,56 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         GetComplianceChecklistsWithTasksByComplianceId: null,
         GetComplianceChecklistsByComplianceId: null,
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        listOfComplianceByCreator: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        listOfComplianceByCreator: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceByMeDetails: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceByMeDetails: null,
+        ResponseMessage: action.message,
+        severity: "error",
       };
 
     // ================= DEFAULT =================

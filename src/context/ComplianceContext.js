@@ -25,11 +25,21 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
     description: "",
-    authorityId: 0,
-    criticality: 0,
+    authority: {
+      value: 0,
+      label: "",
+    },
+    criticality: {
+      value: 0,
+      label: "",
+    },
     dueDate: "",
     complianceDueDateForChecklist: "",
     tags: [],
+    status: {
+      value: 0,
+      label: "",
+    },
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);

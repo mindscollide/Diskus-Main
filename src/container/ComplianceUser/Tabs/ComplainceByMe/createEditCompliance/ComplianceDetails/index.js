@@ -44,14 +44,20 @@ const ComplainceDetails = () => {
   const { t } = useTranslation();
   const [selectedTags, setSelectedTags] = useState([]);
   const [tagsOptions, setTagsOptions] = useState([]);
-  const [selectAuthority, setSelectAuthority] = useState("");
+  const [selectAuthority, setSelectAuthority] = useState({
+    value: 0,
+    label: "",
+  });
   const [authorityOptions, setAuthorityOptions] = useState([]);
   const calendRef = useRef();
   const [complianceDetails, setComplianceDetails] = useState({
     complianceTitle: "",
     complianceDescription: "",
   });
-  const [selectCriticality, setSelectCriticality] = useState("");
+  const [selectCriticality, setSelectCriticality] = useState({
+    value: 0,
+    label: "",
+  });
   const [complianceDueDate, setComplianceDueDate] = useState("");
   const [errors, setErrors] = useState({
     complianceTitle: "",
@@ -64,6 +70,14 @@ const ComplainceDetails = () => {
   );
   const GetAllTagsByOrganizationIDData = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetAllTagsByOrganizationID
+  );
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
+  );
+  console.log(
+    viewComplianceByMeDetails,
+    complianceAddEditViewState,
+    "viewComplianceByMeDetailsviewComplianceByMeDetails"
   );
 
   const criticalityOptions = [
@@ -84,6 +98,56 @@ const ComplainceDetails = () => {
   useEffect(() => {
     dispatch(GetAllAuthoritiesWithoutPaginationAPI(navigate, t));
   }, []);
+
+  useEffect(() => {
+    if (viewComplianceByMeDetails !== null) {
+      try {
+        const {
+          allowedComplianceStatuses,
+          authority,
+          checklistTasks,
+          checklists,
+          completedTasks,
+          complianceId,
+          complianceStatus,
+          complianceStatusChangeHistory,
+          complianceTitle,
+          createdBy,
+          criticalityLevel,
+          description,
+          dueDate,
+          isExecuted,
+          progressPercent,
+          showProgressBar,
+          tags,
+          totalTasks,
+        } = viewComplianceByMeDetails;
+        setComplianceInfo({
+          complianceId: complianceId,
+          complianceName: complianceTitle,
+        });
+        setComplianceDetails({
+          complianceTitle,
+          complianceDescription: description,
+        });
+        console.log(
+          viewComplianceByMeDetails,
+          "complianceDetailscomplianceDetails"
+        );
+        setComplianceDetailsState({
+          complianceTitle: complianceTitle,
+          description: description,
+          authorityId: authority.authorityID,
+          criticality: criticalityLevel,
+          dueDate: dueDate,
+          tags: [],
+        });
+        // setSelectAuthority(authority);
+        // setSelectCriticality(criticalityLevel);
+        // setComplianceDueDate(dueDate);
+      } catch (error) {}
+    }
+  }, [viewComplianceByMeDetails]);
 
   // GetAllAuthority
   useEffect(() => {
@@ -121,7 +185,13 @@ const ComplainceDetails = () => {
   }, [GetAllTagsByOrganizationIDData]);
 
   useEffect(() => {
-    if (!complianceDetailsState) return;
+    if (complianceAddEditViewState === 1) return;
+
+    console.log(
+      complianceAddEditViewState,
+      complianceDetailsState,
+      "complianceDetailsState"
+    );
 
     // ✅ Set Authority (react-select needs full object)
     if (
@@ -141,17 +211,23 @@ const ComplainceDetails = () => {
       );
       setSelectCriticality(selectedCriticality || "");
     }
-
+    console.log(
+      viewComplianceByMeDetails,
+      "complianceDetailscomplianceDetails"
+    );
     // ✅ Due Date FIX
     if (complianceDetailsState.dueDate) {
       const parsedDate = parseUTCDateString(complianceDetailsState.dueDate);
       setComplianceDueDate(parsedDate);
     }
-
+    console.log(
+      viewComplianceByMeDetails,
+      "complianceDetailscomplianceDetails"
+    );
     // ✅ Set Title & Description
     setComplianceDetails({
-      complianceTitle: complianceDetailsState.complianceTitle || "",
-      complianceDescription: complianceDetailsState.description || "",
+      complianceTitle: complianceDetailsState.complianceTitle,
+      complianceDescription: complianceDetailsState.description,
     });
 
     // ✅ Set Tags (if coming from API/state)
@@ -162,7 +238,7 @@ const ComplainceDetails = () => {
       }));
       setSelectedTags(mappedTags);
     }
-  }, [complianceDetailsState, authorityOptions]);
+  }, [complianceDetailsState, authorityOptions, complianceAddEditViewState]);
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
