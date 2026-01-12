@@ -1908,6 +1908,12 @@ const clearAuthorityMessage = () => {
   };
 };
 
+const clearComplianceDetailsData = () => {
+  return {
+    type: actions.CLEAR_COMPLIANCEDETAILS_DATA,
+  };
+};
+
 const initialAddEditAuthority = () => {
   return {
     type: actions.INITIAL_STATE_ADD_AUTHORITY,
@@ -2202,4 +2208,5 @@ export {
   EditComplianceChecklistAPI,
   listOfComplianceByCreatorApi,
   ViewComplianceByMeDetailsAPI,
+  clearComplianceDetailsData,
 };

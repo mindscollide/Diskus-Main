@@ -44,9 +44,27 @@
   align-items: center;
   width: 100%;
 }
+.FirstRow_Checklist {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
 
 .title-cont {
   width: 33.33%;
+  justify-content: flex-start;
+  display: flex;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #2197d7;
+  cursor: pointer !important;
+}
+.title-cont_Checklist {
+  width: 65%;
   justify-content: flex-start;
   display: flex;
   overflow: hidden !important;
@@ -64,11 +82,25 @@
   width: 33.33%;
   gap: 20px;
 }
+.dateTime_Checklist {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 15%;
+  gap: 20px;
+}
 .icons {
   display: flex;
   justify-content: flex-end;
   align-items: center;
   width: 33.33%;
+  gap: 20px;
+}
+.icons_Checklist {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 20%;
   gap: 20px;
 }
 .SecondRow {

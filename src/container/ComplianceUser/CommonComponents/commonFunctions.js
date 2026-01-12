@@ -31,3 +31,13 @@ export const formatDateToYMD = (yyyymmdd) => {
     year: "numeric",
   });
 };
+
+export const parseYYYYMMDDToEndOfDay = (dateString) => {
+  if (!dateString || dateString.length < 8) return null;
+
+  const year = dateString.slice(0, 4);
+  const month = dateString.slice(4, 6) - 1; // JS months are 0-based
+  const day = dateString.slice(6, 8);
+
+  return new Date(year, month, day, 23, 59, 58);
+};

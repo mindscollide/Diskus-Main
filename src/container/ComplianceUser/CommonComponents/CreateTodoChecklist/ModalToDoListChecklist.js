@@ -36,8 +36,15 @@ import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import { parseYYYYMMDDToEndOfDay } from "../commonFunctions";
 
-const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
+const ModalToDoListChecklist = ({
+  checkListData,
+  ModalTitle,
+  setShow,
+  show,
+}) => {
+  console.log(checkListData, "checkListDatacheckListData");
   //For Localization
   const { t } = useTranslation();
   const [allAsigneeOption, setAllAsgneeOption] = useState([]);
@@ -366,7 +373,7 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
           t,
           7,
           setShow,
-          checkListId,
+          checkListData.checklistId,
           complianceInfo.complianceId
         )
       );
@@ -523,6 +530,8 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
     setSelectedAsignee(item);
   };
 
+  console.log(`duedate: ${checkListData.dueDate}${checkListData.dueTime}`);
+
   return (
     <>
       <Modal
@@ -601,6 +610,7 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
                       onFocusedDateChange={toDoDateHandler}
                       format={"DD/MM/YYYY"}
                       value={task.creationDate}
+                      maxDate={parseYYYYMMDDToEndOfDay(checkListData.dueDate)}
                       minDate={moment().toDate()}
                       placeholder="DD/MM/YYYY"
                       render={

@@ -21,12 +21,19 @@ const CustomAccordion = ({
           : "accordion-custom"
       } ${expanded ? "expanded" : ""}`}
     >
-      <div className="FirstRow">
-        <div className="title-cont" onClick={handleClickTitleNotes}>
+      <div className={isCompliance ? "FirstRow_Checklist" : "FirstRow"}>
+        <div
+          className={isCompliance ? "title-cont_Checklist" : "title-cont"}
+          onClick={handleClickTitleNotes}
+        >
           {StartField}
         </div>
-        <div className="dateTime">{centerField}</div>
-        <div className="icons">{endField}</div>
+        <div className={isCompliance ? "dateTime_Checklist" : "dateTime"}>
+          {centerField}
+        </div>
+        <div className={isCompliance ? "icons_Checklist" : "icons"}>
+          {endField}
+        </div>
       </div>
 
       <div
