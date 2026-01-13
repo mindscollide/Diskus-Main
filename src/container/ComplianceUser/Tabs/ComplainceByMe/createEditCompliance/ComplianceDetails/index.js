@@ -568,7 +568,12 @@ const ComplainceDetails = () => {
                 isSearchable={true}
                 options={criticalityOptions}
                 labelInValue={t("Criticality")}
-                // onChange={(event) => setSelectCriticality(event)}
+                onChange={(event) =>
+                  setComplianceDetailsState((prev) => ({
+                    ...prev,
+                    criticality: event,
+                  }))
+                }
                 value={complianceDetailsState.criticality}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Criticality") : ""
