@@ -2085,7 +2085,8 @@ const ViewComplianceByMeDetailsAPI = (
   t,
   value,
   setComplianceAddEditViewState,
-  setCreateEditComplaince
+  setCreateEditComplaince,
+  setShowViewCompliance
 ) => {
   // Value 1 is when User Perform Edit Operation
   // Value 2 is when User Perform View Operation
@@ -2106,7 +2107,8 @@ const ViewComplianceByMeDetailsAPI = (
               t,
               value,
               setComplianceAddEditViewState,
-              setCreateEditComplaince
+              setCreateEditComplaince,
+              setShowViewCompliance
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -2128,10 +2130,12 @@ const ViewComplianceByMeDetailsAPI = (
                 case 1:
                   setComplianceAddEditViewState(2);
                   setCreateEditComplaince(true);
+                  setShowViewCompliance(false);
                   break;
                 case 2:
                   setComplianceAddEditViewState(3);
                   setCreateEditComplaince(false);
+                  setShowViewCompliance(true);
                   break;
                 default:
                   break;

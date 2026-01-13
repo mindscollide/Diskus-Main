@@ -27,7 +27,10 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
-import { parseUTCDateString } from "../../../../CommonComponents/commonFunctions";
+import {
+  parseUTCDateString,
+  parseYYYYMMDDToEndOfDay,
+} from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -42,24 +45,14 @@ const ComplainceDetails = () => {
     setComplianceDetailsState,
     complianceInfo,
   } = useComplianceContext();
+
+  console.log(complianceDetailsState, "complianceDetailsState");
   const { t } = useTranslation();
-  const [selectedTags, setSelectedTags] = useState([]);
   const [tagsOptions, setTagsOptions] = useState([]);
-  const [selectAuthority, setSelectAuthority] = useState({
-    value: 0,
-    label: "",
-  });
+
   const [authorityOptions, setAuthorityOptions] = useState([]);
   const calendRef = useRef();
-  const [complianceDetails, setComplianceDetails] = useState({
-    complianceTitle: "",
-    complianceDescription: "",
-  });
-  const [selectCriticality, setSelectCriticality] = useState({
-    value: 0,
-    label: "",
-  });
-  const [complianceDueDate, setComplianceDueDate] = useState("");
+
   const [errors, setErrors] = useState({
     complianceTitle: "",
   });
@@ -74,11 +67,6 @@ const ComplainceDetails = () => {
   );
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
-  );
-  console.log(
-    viewComplianceByMeDetails,
-    complianceAddEditViewState,
-    "viewComplianceByMeDetailsviewComplianceByMeDetails"
   );
 
   const criticalityOptions = [
@@ -111,7 +99,6 @@ const ComplainceDetails = () => {
           completedTasks,
           complianceId,
           complianceStatus,
-          complianceStatusChangeHistory,
           complianceTitle,
           createdBy,
           criticalityLevel,
@@ -127,25 +114,27 @@ const ComplainceDetails = () => {
           complianceId: complianceId,
           complianceName: complianceTitle,
         });
-        setComplianceDetails({
-          complianceTitle,
-          complianceDescription: description,
-        });
+
         console.log(
           viewComplianceByMeDetails,
           "complianceDetailscomplianceDetails"
         );
-        setComplianceDetailsState({
+        const selectedCriticality = criticalityOptions.find(
+          (item) => item.label === criticalityLevel
+        );
+        setComplianceDetailsState((prev) => ({
+          ...prev,
           complianceTitle: complianceTitle,
           description: description,
-          authorityId: authority.authorityID,
-          criticality: criticalityLevel,
-          dueDate: dueDate,
+          authority: {
+            ...authority,
+            value: authority.authorityId,
+            label: `${authority.authorityName} (${authority.authorityShortCode})`,
+          },
+          criticality: selectedCriticality,
+          dueDate: parseYYYYMMDDToEndOfDay(dueDate),
           tags: [],
-        });
-        // setSelectAuthority(authority);
-        // setSelectCriticality(criticalityLevel);
-        // setComplianceDueDate(dueDate);
+        }));
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
@@ -185,61 +174,61 @@ const ComplainceDetails = () => {
     }
   }, [GetAllTagsByOrganizationIDData]);
 
-  useEffect(() => {
-    if (complianceAddEditViewState === 1) return;
+  // useEffect(() => {
+  //   if (complianceAddEditViewState === 1) return;
 
-    console.log(
-      complianceAddEditViewState,
-      complianceDetailsState,
-      "complianceDetailsState"
-    );
+  //   console.log(
+  //     complianceAddEditViewState,
+  //     complianceDetailsState,
+  //     "complianceDetailsState"
+  //   );
 
-    // ✅ Set Authority (react-select needs full object)
-    if (
-      complianceDetailsState.authorityId !== 0 &&
-      authorityOptions.length > 0
-    ) {
-      const selectedAuthority = authorityOptions.find(
-        (item) => item.value === complianceDetailsState.authorityId
-      );
-      setSelectAuthority(selectedAuthority || "");
-    }
+  //   // ✅ Set Authority (react-select needs full object)
+  //   if (
+  //     complianceDetailsState.authorityId !== 0 &&
+  //     authorityOptions.length > 0
+  //   ) {
+  //     const selectedAuthority = authorityOptions.find(
+  //       (item) => item.value === complianceDetailsState.authorityId
+  //     );
+  //     setSelectAuthority(selectedAuthority || "");
+  //   }
 
-    // ✅ Set Criticality
-    if (complianceDetailsState.criticality !== 0) {
-      const selectedCriticality = criticalityOptions.find(
-        (item) => item.value === complianceDetailsState.criticality
-      );
-      setSelectCriticality(selectedCriticality || "");
-    }
-    console.log(
-      viewComplianceByMeDetails,
-      "complianceDetailscomplianceDetails"
-    );
-    // ✅ Due Date FIX
-    if (complianceDetailsState.dueDate) {
-      const parsedDate = parseUTCDateString(complianceDetailsState.dueDate);
-      setComplianceDueDate(parsedDate);
-    }
-    console.log(
-      viewComplianceByMeDetails,
-      "complianceDetailscomplianceDetails"
-    );
-    // ✅ Set Title & Description
-    setComplianceDetails({
-      complianceTitle: complianceDetailsState.complianceTitle,
-      complianceDescription: complianceDetailsState.description,
-    });
+  //   // ✅ Set Criticality
+  //   if (complianceDetailsState.criticality !== 0) {
+  //     const selectedCriticality = criticalityOptions.find(
+  //       (item) => item.value === complianceDetailsState.criticality
+  //     );
+  //     setSelectCriticality(selectedCriticality || "");
+  //   }
+  //   console.log(
+  //     viewComplianceByMeDetails,
+  //     "complianceDetailscomplianceDetails"
+  //   );
+  //   // ✅ Due Date FIX
+  //   if (complianceDetailsState.dueDate) {
+  //     const parsedDate = parseUTCDateString(complianceDetailsState.dueDate);
+  //     setComplianceDueDate(parsedDate);
+  //   }
+  //   console.log(
+  //     viewComplianceByMeDetails,
+  //     "complianceDetailscomplianceDetails"
+  //   );
+  //   // ✅ Set Title & Description
+  //   setComplianceDetails({
+  //     complianceTitle: complianceDetailsState.complianceTitle,
+  //     complianceDescription: complianceDetailsState.description,
+  //   });
 
-    // ✅ Set Tags (if coming from API/state)
-    if (Array.isArray(complianceDetailsState.tags)) {
-      const mappedTags = complianceDetailsState.tags.map((tag, index) => ({
-        tagTitle: tag,
-        tagID: index + 1,
-      }));
-      setSelectedTags(mappedTags);
-    }
-  }, [complianceDetailsState, authorityOptions, complianceAddEditViewState]);
+  //   // ✅ Set Tags (if coming from API/state)
+  //   if (Array.isArray(complianceDetailsState.tags)) {
+  //     const mappedTags = complianceDetailsState.tags.map((tag, index) => ({
+  //       tagTitle: tag,
+  //       tagID: index + 1,
+  //     }));
+  //     setSelectedTags(mappedTags);
+  //   }
+  // }, [complianceDetailsState, authorityOptions, complianceAddEditViewState]);
 
   const handleValueChange = (event) => {
     const { name, value } = event.target;
@@ -260,10 +249,9 @@ const ComplainceDetails = () => {
     //   default:
     //     break;
     // }
-
-    setComplianceDetails((prev) => ({
+    setComplianceDetailsState((prev) => ({
       ...prev,
-      [name]: value.trimStart(),
+      [name]: value,
     }));
 
     setErrors((prev) => ({
@@ -293,30 +281,62 @@ const ComplainceDetails = () => {
       event.key === "Enter" &&
       tagsValue.length >= 3 &&
       // tagsOptions.length === 0 &&
-      selectedTags.length < 5
+      complianceDetailsState.tags.length < 5
     ) {
-      const isSelected = selectedTags.some(
+      const isSelected = complianceDetailsState.tags.some(
         (selectedTag) => selectedTag.tagTitle === tagsValue
       );
       if (!isSelected) {
-        setSelectedTags([
-          ...selectedTags,
-          { tagTitle: tagsValue, tagID: Math.random(Math.floor()) * 5 },
-        ]);
+        // setSelectedTags([
+        //   ... complianceDetailsState.tags,
+        //   { tagTitle: tagsValue, tagID: Math.random(Math.floor()) * 5 },
+        // ]);
+        setComplianceDetailsState((prev) => ({
+          ...prev,
+          // tags: { tagTitle: tagsValue, tagID: Math.random(Math.floor()) * 5 },
+
+          tags: [
+            ...prev.tags,
+            {
+              tagTitle: tagsValue,
+              tagID: Math.random(),
+            },
+          ],
+        }));
         setTagsValue("");
         setTagsOptions([]);
       }
     }
   };
 
-  const handleAddTags = (option) => {
-    // setSelectedTags((prev) => [...prev, option]);
+  // const handleAddTags = (option) => {
+  //   // setSelectedTags((prev) => [...prev, option]);
 
-    const isSelected = selectedTags.some(
-      (selectedTag) => selectedTag.tagTitle === tagsValue
+  //   const isSelected = complianceDetailsState.tags.some(
+  //     (selectedTag) => selectedTag.tagTitle === tagsValue
+  //   );
+  //   if (!isSelected) {
+  //     setComplianceDetailsState((prev) => ({
+  //       ...prev,
+  //       setSelectedTags: [...prev.tags, option],
+  //     }));
+  //     // setSelectedTags([... complianceDetailsState.tags, option]);
+  //     setTagsValue("");
+  //     setTagsOptions([]);
+  //   }
+  // };
+
+  const handleAddTags = (option) => {
+    const isSelected = complianceDetailsState.tags.some(
+      (selectedTag) => selectedTag.tagTitle === option.tagTitle
     );
+
     if (!isSelected) {
-      setSelectedTags([...selectedTags, option]);
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        tags: [...prev.tags, option],
+      }));
+
       setTagsValue("");
       setTagsOptions([]);
     }
@@ -332,27 +352,19 @@ const ComplainceDetails = () => {
 
   const handleClickNextBtn = () => {
     if (complianceInfo.complianceId !== 0) {
-      console.log("clicked");
       setChecklistTabs(2);
     } else {
-      const tagsArr = selectedTags.map((data) => data.tagTitle);
+      const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
       const Data = {
-        complianceTitle: complianceDetails.complianceTitle,
-        description: complianceDetails.complianceDescription,
-        authorityId: selectAuthority.value,
-        criticality: selectCriticality.value,
-        dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
+        complianceTitle: complianceDetailsState.complianceTitle,
+        description: complianceDetailsState.description,
+        authorityId: complianceDetailsState.authority.value,
+        criticality: complianceDetailsState.criticality.value,
+        dueDate: multiDatePickerDateChangIntoUTC(
+          complianceDetailsState.dueDate
+        ),
         tags: tagsArr,
       };
-      setComplianceDetailsState({
-        complianceTitle: complianceDetails.complianceTitle,
-        description: complianceDetails.complianceDescription,
-        authorityId: selectAuthority.value,
-        criticality: selectCriticality.value,
-        dueDate: multiDatePickerDateChangIntoUTC(complianceDueDate),
-        tags: tagsArr,
-        complianceDueDateForChecklist: complianceDueDate,
-      });
       dispatch(
         AddComplianceAPI(navigate, Data, t, setComplianceInfo, setChecklistTabs)
       );
@@ -364,7 +376,14 @@ const ComplainceDetails = () => {
     meetingDateValueFormat2.setHours(23);
     meetingDateValueFormat2.setMinutes(59);
     meetingDateValueFormat2.setSeconds(58);
-    setComplianceDueDate(meetingDateValueFormat2);
+
+    console.log(meetingDateValueFormat2, "meetingDateValueFormat2");
+
+    setComplianceDetailsState((prev) => ({
+      ...prev,
+      dueDate: meetingDateValueFormat2,
+    }));
+    // setComplianceDueDate(meetingDateValueFormat2);
   };
 
   const handleBlur = (event) => {
@@ -374,8 +393,8 @@ const ComplainceDetails = () => {
 
     if (name === "complianceTitle" && value) {
       const Data = {
-        ComplianceTitle: complianceDetails.complianceTitle,
-        AuthorityID: selectAuthority.value,
+        ComplianceTitle: complianceDetailsState.complianceTitle,
+        AuthorityID: complianceDetailsState.authority.value,
       };
 
       dispatch(
@@ -391,16 +410,21 @@ const ComplainceDetails = () => {
   };
 
   const handleSelectAuthority = (event) => {
-    console.log(event, "event");
-    if (complianceDetails.complianceTitle === "") {
-      setSelectAuthority(event);
-    } else if (complianceDetails.complianceTitle !== "") {
+    if (complianceDetailsState.complianceTitle === "") {
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        authority: event,
+      }));
+    } else if (complianceDetailsState.complianceTitle !== "") {
       setErrors({
         complianceTitle: "",
       });
-      setSelectAuthority(event);
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        authority: event,
+      }));
       const Data = {
-        ComplianceTitle: complianceDetails.complianceTitle,
+        ComplianceTitle: complianceDetailsState.complianceTitle,
         AuthorityID: event.value,
       };
 
@@ -435,7 +459,7 @@ const ComplainceDetails = () => {
                 options={authorityOptions}
                 labelInValue={t("Authority")}
                 onChange={handleSelectAuthority}
-                value={selectAuthority}
+                value={complianceDetailsState.authority}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Authority") : ""
                 }
@@ -468,9 +492,11 @@ const ComplainceDetails = () => {
                 ? "viewField_Name"
                 : "AddEditAuthorityCounterInputField"
             }
-            value={complianceDetails.complianceTitle}
+            value={complianceDetailsState.complianceTitle}
             labelClass={styles["labelStyle"]}
-            disabled={selectAuthority === ""}
+            disabled={
+              complianceDetailsState.authority.value === 0 ? true : false
+            }
             onBlur={handleBlur}
           />
           {console.log(errors, "COmplainceError")}
@@ -512,14 +538,16 @@ const ComplainceDetails = () => {
             showCount={complianceAddEditViewState === 3 ? false : true}
             maxLength={500}
             onChange={handleValueChange}
-            name="complianceDescription"
+            name="description"
             preFixClas={
               complianceAddEditViewState === 3
                 ? "viewField_TextArea_Name"
                 : "AddEditAuthorityCounterInputFieldTextArea"
             }
-            value={complianceDetails.complianceDescription}
-            disabled={selectAuthority === ""}
+            value={complianceDetailsState.description}
+            disabled={
+              complianceDetailsState.authority.value === 0 ? true : false
+            }
           />
         </Col>
       </Row>
@@ -540,13 +568,15 @@ const ComplainceDetails = () => {
                 isSearchable={true}
                 options={criticalityOptions}
                 labelInValue={t("Criticality")}
-                onChange={(event) => setSelectCriticality(event)}
-                value={selectCriticality}
+                // onChange={(event) => setSelectCriticality(event)}
+                value={complianceDetailsState.criticality}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Criticality") : ""
                 }
                 classNamePrefix="Select_country_Authoriy"
-                isDisabled={selectAuthority === ""}
+                isDisabled={
+                  complianceDetailsState.authority.value === 0 ? true : false
+                }
               />
             )}
           </div>
@@ -559,7 +589,7 @@ const ComplainceDetails = () => {
             </span>
           </div>
           <DatePicker
-            value={complianceDueDate}
+            value={complianceDetailsState.dueDate}
             format={"DD/MM/YYYY"}
             minDate={moment().toDate()}
             placeholder={t("Due-date")}
@@ -567,7 +597,9 @@ const ComplainceDetails = () => {
               <InputIcon
                 placeholder={t("Due-date")}
                 className={`${styles["datepicker_input"]} ${
-                  selectAuthority === "" ? styles["disabledInput"] : ""
+                  complianceDetailsState.authority.value === 0
+                    ? styles["disabledInput"]
+                    : ""
                 }`}
               />
             }
@@ -582,7 +614,9 @@ const ComplainceDetails = () => {
             ref={calendRef}
             onFocusedDateChange={changeComplainceDueDate}
             onChange={changeComplainceDueDate}
-            disabled={selectAuthority === ""}
+            disabled={
+              complianceDetailsState.authority.value === 0 ? true : false
+            }
           />
         </Col>
       </Row>
@@ -601,15 +635,17 @@ const ComplainceDetails = () => {
               ) : (
                 <Select
                   isSearchable={true}
-                  options={criticalityOptions}
+                  // options={criticalityOptions}
                   labelInValue={t("Status")}
-                  onChange={(event) => setSelectCriticality(event)}
-                  value={selectCriticality}
+                  // onChange={(event) => setSelectCriticality(event)}
+                  value={complianceDetailsState.status}
                   placeholder={
                     complianceAddEditViewState !== 3 ? t("Status") : ""
                   }
                   classNamePrefix="Select_country_Authoriy"
-                  isDisabled={selectAuthority === ""}
+                  isDisabled={
+                    complianceDetailsState.authority.value === 0 ? true : false
+                  }
                 />
               )}
             </div>
@@ -629,9 +665,9 @@ const ComplainceDetails = () => {
                     <div className="w-100 position-relative">
                       <InputfieldwithCount
                         disabled={
-                          selectAuthority === ""
+                          complianceDetailsState.authority.value === 0
                             ? true
-                            : selectedTags.length === 5
+                            : complianceDetailsState.tags.length === 5
                             ? true
                             : false
                         }
@@ -655,8 +691,9 @@ const ComplainceDetails = () => {
                       {tagsOptions.length > 0 && (
                         <div className={styles["TagsOptionsBox"]}>
                           {tagsOptions.map((tag) => {
-                            const isSelected = selectedTags.some(
-                              (selectedTag) => selectedTag.tagID === tag.tagID
+                            const isSelected = complianceDetailsState.tags.some(
+                              (selectedTag) =>
+                                selectedTag.tagTitle === tag.tagTitle
                             );
 
                             return (
@@ -684,16 +721,19 @@ const ComplainceDetails = () => {
                     className="d-flex justify-content-start align-items-end flex-wrap"
                   >
                     {/* Selected Tags Outside */}
-                    {selectedTags.length > 0 &&
-                      selectedTags.map((tag) => (
+                    {complianceDetailsState.tags.length > 0 &&
+                      complianceDetailsState.tags.map((tag) => (
                         <Tag
                           key={tag.tagID}
                           closable
                           className={styles["tagsStyle"]}
                           onClose={() =>
-                            setSelectedTags(
-                              selectedTags.filter((t) => t.tagID !== tag.tagID)
-                            )
+                            setComplianceDetailsState((prev) => ({
+                              ...prev,
+                              tags: prev.tags.filter(
+                                (t) => t.tagID !== tag.tagID
+                              ),
+                            }))
                           }
                         >
                           {tag.tagTitle}
@@ -722,11 +762,9 @@ const ComplainceDetails = () => {
           className={styles["Compliance_NextButton"]}
           onClick={handleClickNextBtn}
           disableBtn={
-            complianceDetails.complianceTitle !== "" &&
-            complianceDetails.complianceDescription !== "" &&
-            selectAuthority !== "" &&
-            selectCriticality !== "" &&
-            complianceDueDate !== "" &&
+            complianceDetailsState.authority.value !== 0 &&
+            complianceDetailsState.criticality.value !== 0 &&
+            complianceDetailsState.dueDate !== "" &&
             errors.complianceTitle === ""
               ? false
               : true

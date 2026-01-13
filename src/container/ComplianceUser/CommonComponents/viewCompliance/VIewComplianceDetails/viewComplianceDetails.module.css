@@ -1,0 +1,28 @@
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  color: #6172d6;
+}
+.tagLabel {
+  font-weight: 700 !important;
+  font-size: 10px;
+  color: #6172d6;
+  margin-top: 4px;
+}
+.CompDescriptionStyle {
+  display: inline-table !important;
+}
+
+.Select_label {
+  margin-top: 8.2px;
+}
+.Select_Authoriy_div {
+  margin-top: 2.5px;
+}
+.tagsStyle {
+  background-color: #ecefff;
+  color: #6172d6;
+  border-radius: 4px;
+  margin-top: 6px;
+}

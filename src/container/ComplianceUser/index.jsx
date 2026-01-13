@@ -9,6 +9,7 @@ import ComplianceDashboard from "./Tabs/Dashboard";
 import ComplianceByMe from "./Tabs/ComplainceByMe";
 import CreateEditCompliance from "./Tabs/ComplainceByMe/createEditCompliance";
 import { useComplianceContext } from "../../context/ComplianceContext";
+import ViewCompliance from "./CommonComponents/viewCompliance";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -19,6 +20,7 @@ const MainCompliance = () => {
     mainComplianceTabs,
     setMainComplianceTabs,
     setComplianceAddEditViewState,
+    showViewCompliance,
   } = useComplianceContext();
 
   const handleOpenCreateEditCompliance = () => {
@@ -28,6 +30,9 @@ const MainCompliance = () => {
 
   if (createEditCompliance) {
     return <CreateEditCompliance />;
+  }
+  if (showViewCompliance) {
+    return <ViewCompliance />;
   }
   return (
     <>

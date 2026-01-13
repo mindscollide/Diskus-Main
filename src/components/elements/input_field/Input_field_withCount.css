@@ -127,6 +127,17 @@
   outline: none !important;
   pointer-events: none;
 }
+.viewField_TextArea_Name_complianceDetails {
+  width: 100%;
+  position: relative;
+  height: 20px;
+  border: none;
+  padding: 0;
+  outline: none !important;
+  pointer-events: none;
+  display: inline-table;
+}
+
 /* Red border (wrapper) */
 .input-max-error.AddEditAuthorityCounterInputField-affix-wrapper {
   border-color: #ff4d4f !important;

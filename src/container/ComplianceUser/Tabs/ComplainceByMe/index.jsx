@@ -12,6 +12,7 @@ import {
   ViewComplianceByMeDetailsAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
+import ViewCompliance from "../../CommonComponents/viewCompliance";
 
 const ComplianceByMe = () => {
   const dispatch = useDispatch();
@@ -27,8 +28,12 @@ const ComplianceByMe = () => {
     getCompliancesForCreator,
     complianceList
   );
-  const { setComplianceAddEditViewState, setCreateEditComplaince, setC } =
-    useComplianceContext();
+  const {
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    showViewCompliance,
+    setShowViewCompliance,
+  } = useComplianceContext();
 
   useEffect(() => {
     let Data = {
@@ -69,7 +74,26 @@ const ComplianceByMe = () => {
         t,
         1,
         setComplianceAddEditViewState,
-        setCreateEditComplaince
+        setCreateEditComplaince,
+        setShowViewCompliance
+      )
+    );
+  };
+
+  const handleViewCompliance = (record) => {
+    console.log("reached here");
+    const Data = {
+      complianceId: record.complianceId,
+    };
+    dispatch(
+      ViewComplianceByMeDetailsAPI(
+        navigate,
+        Data,
+        t,
+        2,
+        setComplianceAddEditViewState,
+        setCreateEditComplaince,
+        setShowViewCompliance
       )
     );
   };
@@ -80,9 +104,12 @@ const ComplianceByMe = () => {
         title: "Compliance Title",
         dataIndex: "complianceTitle",
         key: "complianceTitle",
-        width: 350,
+        width: 150,
         ellipsis: true,
         align: "left",
+        render: (text) => {
+          return <span>{text}</span>;
+        },
       },
       {
         title: "Criticality",
@@ -90,6 +117,7 @@ const ComplianceByMe = () => {
         key: "criticality",
         width: 150,
         align: "center",
+
         render: (text, record) => {
           return (
             <span>
@@ -137,6 +165,7 @@ const ComplianceByMe = () => {
               <CustomButton
                 className={styles["actionButtons_complianceList"]}
                 text={"View Details"}
+                onClick={() => handleViewCompliance(record)}
               />
             </div>
           );
@@ -153,7 +182,7 @@ const ComplianceByMe = () => {
         className={"Compliance_Table mt-3"}
         scroll={{ x: "max-content", y: 550 }}
         pagination={false}
-      />{" "}
+      />
     </>
   );
 };

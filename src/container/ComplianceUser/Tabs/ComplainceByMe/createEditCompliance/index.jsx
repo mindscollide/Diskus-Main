@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import ViewCompliance from "../../../CommonComponents/viewCompliance";
 
 const CreateEditCompliance = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,8 @@ const CreateEditCompliance = () => {
     taskCount,
     complianceAddEditViewState,
     complianceDetailsState,
+    showViewCompliance,
+    setShowViewCompliance,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -36,6 +39,11 @@ const CreateEditCompliance = () => {
       } catch (error) {}
     }
   }, []);
+
+  console.log(
+    complianceDetailsState,
+    "complianceDetailsStatecomplianceDetailsState"
+  );
 
   return (
     <>
@@ -58,7 +66,12 @@ const CreateEditCompliance = () => {
           {}
           <Col sm={12} md={3} lg={3} className={styles["mainHeading2"]}>
             {complianceDetailsState.dueDate !== ""
-              ? `Due Date: ${formatDateToYMD(complianceDetailsState.dueDate)}`
+              ? `Due Date: ${
+                  complianceDetailsState.dueDate !== null &&
+                  complianceDetailsState.dueDate !== undefined &&
+                  complianceDetailsState.dueDate !== "" &&
+                  formatDateToYMD(complianceDetailsState.dueDate)
+                }`
               : ""}
           </Col>
 

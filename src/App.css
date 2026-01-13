@@ -6358,6 +6358,37 @@ th.ant-table-cell.notification-class-table {
   color: #a2a2a2 !important;
   font-weight: 500;
 }
+
+/* Normal state */
+.Select_status_compliance__control {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5a5a5a;
+
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Focused state */
+.Select_status_compliance__control--is-focused {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Also remove hover border (important) */
+.Select_status_compliance__control:hover {
+  border: none !important;
+}
+.Select_status_compliance__value-container {
+  padding: 0 !important;
+}
 /* dataroom Searches React select */
 .searchResult_Document__control.css-13cymwt-control {
   width: 200px !important;

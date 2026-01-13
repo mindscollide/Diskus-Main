@@ -36,13 +36,15 @@ export const ComlianceProvider = ({ children }) => {
       value: 0,
       label: "",
     },
-    dueDate: "",
+    dueDate: null,
     complianceDueDateForChecklist: "",
     tags: [],
     status: {
       value: 0,
       label: "",
     },
+
+    progressPercent: 0,
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
@@ -64,15 +66,29 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceDetailsState({
       complianceTitle: "",
       description: "",
-      authorityId: 0,
-      criticality: 0,
+      authority: {
+        value: 0,
+        label: "",
+      },
+      criticality: {
+        value: 0,
+        label: "",
+      },
       dueDate: "",
       complianceDueDateForChecklist: "",
       tags: [],
+      progressPercent: 0,
     });
     setChecklistCount(0);
     setTaskCount(0);
   };
+
+  // view compliance
+  const [showViewCompliance, setShowViewCompliance] = useState(false);
+  const [viewComplianceDetailsTab, setViewComplianceDetailsTab] = useState(1);
+  const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
+    useState([]);
+
   return (
     <ComplianceContext.Provider
       value={{
@@ -97,6 +113,12 @@ export const ComlianceProvider = ({ children }) => {
         checkListData,
         setChecklistData,
         emptyComplianceState,
+        showViewCompliance,
+        setShowViewCompliance,
+        viewComplianceDetailsTab,
+        setViewComplianceDetailsTab,
+        allowedComplianceStatusOptions,
+        setAllowedComplianceStatusOptions,
       }}
     >
       {children}
