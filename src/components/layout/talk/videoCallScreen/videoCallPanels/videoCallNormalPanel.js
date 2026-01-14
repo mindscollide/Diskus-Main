@@ -261,6 +261,7 @@ const VideoPanelNormal = () => {
 
   console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
   console.log(iframeRef, "iframeRef");
+  console.log(participantsVisible, "participantsVisible");
 
   const presenterViewHostFlag = useSelector(
     (state) => state.videoFeatureReducer.presenterViewHostFlag
@@ -1328,7 +1329,7 @@ const VideoPanelNormal = () => {
               console.log("is Zoom Connected");
               setTimeout(() => {
                 dispatch(disableZoomBeforeJoinSession(false));
-              }, 2000);
+              }, 4000);
             }
 
             if (presenterViewFlag && presenterViewHostFlag) {

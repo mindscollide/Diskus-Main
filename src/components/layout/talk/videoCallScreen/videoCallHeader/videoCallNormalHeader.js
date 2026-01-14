@@ -1396,11 +1396,6 @@ const VideoCallNormalHeader = ({
     setShowNotification(false);
   };
 
-  const raiseHandFunction = () => {
-    setHandStatus(!handStatus);
-    dispatch(participantPopup(false));
-  };
-
   const copyToClipboardd = () => {
     let data = {
       MeetingId: Number(currentMeetingID),
@@ -1506,29 +1501,6 @@ const VideoCallNormalHeader = ({
     return null;
   };
 
-  // const onHandleClickForStartRecording = () => {
-  //   console.log("onHandleClickForStartRecording");
-  //   setStartRecordingState(false);
-  //   setPauseRecordingState(true);
-  //   setResumeRecordingState(false);
-  //   if (presenterViewFlag && presenterViewHostFlag) {
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow) {
-  //       if (startRecordingState === false) {
-  //         iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
-  //       } else {
-  //         iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-  //       }
-  //     }
-  //   }
-  // };
-
-  const onHandleClickForPauseRecording = () => {
-    console.log("onHandleClickForStartRecording");
-    setStartRecordingState(false);
-    setPauseRecordingState(false);
-    setResumeRecordingState(true);
-  };
 
   return (
     <>
@@ -2148,7 +2120,7 @@ const VideoCallNormalHeader = ({
               ) : (
                 <>
                   <div className="main-icon-div">
-                    {isMeetingVideo && (
+                    {isMeetingVideo && isMeetingVideoHostCheck && (
                       <>
                         {handRaiseCounter > 0 && (
                           <span className="HandRaise-Counter-for-participant">
