@@ -45,7 +45,7 @@ const ComplianceByMe = () => {
       criticalityIds: [],
       statusIds: [],
       pageNumber: 0,
-      length: 10,
+      length: 100,
     };
 
     dispatch(listOfComplianceByCreatorApi(navigate, Data, t));

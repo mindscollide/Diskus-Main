@@ -565,6 +565,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         GetComplianceChecklistsWithTasksByComplianceId: null,
         GetComplianceChecklistsByComplianceId: null,
+        ViewComplianceByMeDetails: null,
       };
 
     case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:

@@ -2586,5 +2586,13 @@
   "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes": "All your changes will be lost. Are you sure you want to Discard your changes?",
   "No-checklist-available": "No Checklist Available",
   "My-progress": "My Progress",
-  "Criticality-level": "Criticality Level"
+  "Criticality-level": "Criticality Level",
+  "Expand-all": "Expand All",
+  "No-checklist-found": "No Checklist Found",
+  "No-checklist-has-been-assigned-yet.": "No checklist has been assigned yet.",
+  "view-tasks": "view Tasks",
+  "Collapse-all": "Collapse All",
+  "No-tasks-created": "No tasks created",
+  "Checklist-progress": "Checklist Progress",
+  "The-status-of-this-compliance-was-changed-multiple-times.": "The status of this compliance was changed multiple times."
 }

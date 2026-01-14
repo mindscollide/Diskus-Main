@@ -27,6 +27,7 @@ export const ComlianceProvider = ({ children }) => {
 
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
+    complianceId: 0,
     description: "",
     authority: {
       value: 0,
@@ -45,11 +46,15 @@ export const ComlianceProvider = ({ children }) => {
     },
 
     progressPercent: 0,
+    createdBy: "",
+    totalComplianceTasks: 0,
+    showProgressBar: false,
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
   const emptyComplianceState = () => {
+    console.log("cleared");
     dispatch(clearComplianceDetailsData());
     setComplianceInfo({
       complianceId: 0,
@@ -65,6 +70,7 @@ export const ComlianceProvider = ({ children }) => {
     setChecklistTabs(1);
     setComplianceDetailsState({
       complianceTitle: "",
+      complianceId: 0,
       description: "",
       authority: {
         value: 0,
@@ -78,9 +84,16 @@ export const ComlianceProvider = ({ children }) => {
       complianceDueDateForChecklist: "",
       tags: [],
       progressPercent: 0,
+      createdBy: "",
+      totalComplianceTasks: 0,
+      showProgressBar: false,
     });
     setChecklistCount(0);
     setTaskCount(0);
+    setViewComplianceDetailsTab(1);
+    setShowViewCompliance(false);
+    setAllowedComplianceStatusOptions([]);
+    setAllCheckListByComplianceId([]);
   };
 
   // view compliance
@@ -88,6 +101,9 @@ export const ComlianceProvider = ({ children }) => {
   const [viewComplianceDetailsTab, setViewComplianceDetailsTab] = useState(1);
   const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
     useState([]);
+  const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
+    []
+  );
 
   return (
     <ComplianceContext.Provider
@@ -119,6 +135,8 @@ export const ComlianceProvider = ({ children }) => {
         setViewComplianceDetailsTab,
         allowedComplianceStatusOptions,
         setAllowedComplianceStatusOptions,
+        allCheckListByComplianceId,
+        setAllCheckListByComplianceId,
       }}
     >
       {children}

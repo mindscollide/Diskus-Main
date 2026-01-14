@@ -2,7 +2,7 @@
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 10px;
-  padding-bottom: 14px;
+  padding-bottom: 5px;
 }
 .ComplianceNameHeading {
   font-weight: 600;
@@ -16,7 +16,7 @@
   background-color: #fff;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1;
-  padding: 15px 25px 15px 25px;
+  padding: 15px 25px 10px 25px;
   height: 100% !important;
   min-height: 80vh;
 }
@@ -31,6 +31,7 @@
   vertical-align: middle !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  height: 36px !important;
 }
 .viewComplianceTabBtn_active {
   background-color: #6172d6 !important;
@@ -43,9 +44,42 @@
   vertical-align: middle !important;
   border: none !important;
   border-radius: 4px !important;
+  height: 36px !important;
 }
 .progressBarHeading {
   font-weight: 700;
   font-size: 10px;
   color: #5a5a5a;
+}
+.noTaskMsg {
+  font-weight: 600;
+  font-size: 16px;
+  color: #a2a2a2;
+}
+.viewComplianceDetailsArea {
+  border-radius: 8px;
+  padding: 7px 15px;
+  color: #6172d6;
+  font-weight: 600;
+  font-size: 14px;
+  background-color: #ecefff;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.viewComplianceDetailsBtn {
+  border-radius: 4px !important;
+  padding: 5px 20px !important;
+  background-color: #6172d6 !important;
+  color: #ffffff !important;
+  font-weight: 400 !important;
+  font-size: 12px !important;
+  border: none !important;
+}
+.displayBtnStyle {
+  padding-left: 10px;
+}
+.ProgressBarDiv {
+  min-width: 238px;
+  margin-top: 10px;
 }

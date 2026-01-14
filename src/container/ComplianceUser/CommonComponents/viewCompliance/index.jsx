@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./viewCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -8,9 +8,12 @@ import { useTranslation } from "react-i18next";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import ViewComplianceDetails from "./VIewComplianceDetails";
 import ViewComplianceTasks from "./ViewComplianceTasks";
+import { Button } from "../../../../components/elements";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
+  const [isViewDetailsBtnActive, setIsViewDetailsBtnActive] = useState(true);
+
   // Compliance Context
   const {
     setComplianceInfo,
@@ -19,6 +22,7 @@ const ViewCompliance = () => {
     setViewComplianceDetailsTab,
     complianceDetailsState,
     setAllowedComplianceStatusOptions,
+    setAllCheckListByComplianceId,
   } = useComplianceContext();
 
   //   Get Comliance Details
@@ -63,6 +67,7 @@ const ViewCompliance = () => {
         );
         setComplianceDetailsState({
           complianceTitle: complianceTitle,
+          complianceId: complianceId,
           description: description,
           //   authorityId: authority.authorityID,
           //   criticality: criticalityLevel,
@@ -86,7 +91,11 @@ const ViewCompliance = () => {
             value: complianceStatus.statusId,
             label: complianceStatus.statusName,
           },
+          createdBy: createdBy,
+          totalComplianceTasks: totalTasks,
+          showProgressBar: showProgressBar,
         });
+        setAllCheckListByComplianceId(checklists);
         if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
           const allowedStatuses = allowedComplianceStatuses.map(
             (data, index) => {
@@ -99,6 +108,7 @@ const ViewCompliance = () => {
           );
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
+
         // setSelectAuthority(authority);
         // setSelectCriticality(criticalityLevel);
         // setComplianceDueDate(dueDate);
@@ -109,7 +119,7 @@ const ViewCompliance = () => {
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
-        <Row className="mt2">
+        <Row>
           <Col
             sm={12}
             md={12}
@@ -123,8 +133,8 @@ const ViewCompliance = () => {
           <Row>
             <Col
               sm={12}
-              md={9}
-              lg={9}
+              md={3}
+              lg={3}
               className="d-flex align-items-left justify-content-start gap-3"
             >
               <CustomButton
@@ -157,18 +167,55 @@ const ViewCompliance = () => {
                 }}
               />
             </Col>
-            <Col sm={12} md={3} lg={3}>
-              <div className="d-flex justify-content-between align-items-center">
-                <span className={styles["progressBarHeading"]}>
-                  {t("My-progress")}
-                </span>
-                <span className={styles["progressBarHeading"]}>
-                  {`${complianceDetailsState.progressPercent}%`}
-                </span>
-              </div>
-
-              <ProgressLoader progress={50} />
-            </Col>
+            {/* isViewDetailsBtnActive */}
+            {viewComplianceDetailsTab === 1 && (
+              <Col
+                sm={12}
+                md={9}
+                lg={9}
+                className="d-flex justify-content-end align-items-center gap-3"
+              >
+                {isViewDetailsBtnActive && (
+                  <>
+                    <div className={styles["viewComplianceDetailsArea"]}>
+                      <span>
+                        {t(
+                          "The-status-of-this-compliance-was-changed-multiple-times."
+                        )}
+                      </span>
+                      <Button
+                        text={t("View-details")}
+                        className={styles["viewComplianceDetailsBtn"]}
+                      />
+                    </div>
+                    {!complianceDetailsState.showProgressBar ? (
+                      <>
+                        {/* <Col sm={12} md={3} lg={3} className="mt-2"> */}
+                        <div className={styles.ProgressBarDiv}>
+                          <div className="d-flex justify-content-between">
+                            <span className={styles["progressBarHeading"]}>
+                              {t("My-progress")}
+                            </span>
+                            <span className={styles["progressBarHeading"]}>
+                              {`${complianceDetailsState.progressPercent}%`}
+                            </span>
+                          </div>
+                          <ProgressLoader
+                            progress={complianceDetailsState.progressPercent}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <span className={styles["noTaskMsg"]}>
+                          {t("No-tasks-created")}
+                        </span>
+                      </>
+                    )}
+                  </>
+                )}
+              </Col>
+            )}
           </Row>
           {viewComplianceDetailsTab === 1 && <ViewComplianceDetails />}
           {viewComplianceDetailsTab === 2 && <ViewComplianceTasks />}
