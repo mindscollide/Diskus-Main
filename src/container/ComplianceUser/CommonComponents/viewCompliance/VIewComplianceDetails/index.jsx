@@ -60,7 +60,7 @@ const ViewComplianceDetails = () => {
 
     menu: (provided, state) => ({
       ...provided,
-      width: "150px",
+      width: "160px",
     }),
     singleValue: (provided, state) => ({
       ...provided,
@@ -70,7 +70,7 @@ const ViewComplianceDetails = () => {
 
     control: (provided, state) => ({
       ...provided,
-      width: "150px",
+      width: "160px",
       minHeight: "36px",
       border: "none",
       borderColor: state.isFocused ? "#6172d6" : "#d9d9d9",

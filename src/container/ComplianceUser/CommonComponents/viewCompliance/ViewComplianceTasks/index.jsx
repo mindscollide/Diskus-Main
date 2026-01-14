@@ -20,6 +20,7 @@ import IconAttachment from "../../../../../assets/images/Icon-Attachment.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
 import { formatDateToYMD } from "../../commonFunctions";
+import Select from "react-select";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,16 @@ const ViewComplianceTasks = () => {
   const [dueDateSort, setDueDateSort] = useState(null);
   const [statusFilter, setStatusFilter] = useState(["Active", "In Progress"]);
 
+  // Status Options
+  const TASK_STATUS_TRANSITIONS = {
+    Pending: ["In Progress", "Cancelled"],
+    "In Progress": ["Completed", "Cancelled"],
+    Completed: [], // No transitions allowed
+    Cancelled: [], // No transitions allowed
+  };
+  const getAllowedStatusOptions = (currentStatus) => {
+    return TASK_STATUS_TRANSITIONS[currentStatus] || [];
+  };
   // context
   const { allCheckListByComplianceId, complianceDetailsState } =
     useComplianceContext();
@@ -89,8 +100,95 @@ const ViewComplianceTasks = () => {
     });
   };
 
+  // const handleStatusChange = async (taskId, newStatus) => {
+  //   let previousStatus = null;
+
+  //   // 🔎 Find current task + status
+  //   viewComplianceTasksData.forEach((checklist) => {
+  //     checklist.taskList?.forEach((task) => {
+  //       if (task.taskId === taskId) {
+  //         previousStatus = task.taskStatus;
+  //       }
+  //     });
+  //   });
+
+  //   // ❌ Safety check (UI should already block this)
+  //   const allowedTransitions = TASK_STATUS_TRANSITIONS[previousStatus] || [];
+
+  //   if (!allowedTransitions.includes(newStatus)) {
+  //     console.warn(`Invalid transition: ${previousStatus} → ${newStatus}`);
+  //     return;
+  //   }
+
+  //   // ✅ Optimistic UI update
+  //   setViewComplianceTasksData((prev) =>
+  //     prev.map((checklist) => ({
+  //       ...checklist,
+  //       taskList: checklist.taskList?.map((task) =>
+  //         task.taskId === taskId ? { ...task, taskStatus: newStatus } : task
+  //       ),
+  //     }))
+  //   );
+
+  //   try {
+  //     // 🚀 API payload
+  //     const payload = {
+  //       taskId,
+  //       status: newStatus,
+  //     };
+
+  //     // await dispatch(
+  //     //   UpdateComplianceTaskStatusAPI(navigate, payload, t)
+  //     // );
+  //   } catch (error) {
+  //     // 🔁 Rollback on failure
+  //     setViewComplianceTasksData((prev) =>
+  //       prev.map((checklist) => ({
+  //         ...checklist,
+  //         taskList: checklist.taskList?.map((task) =>
+  //           task.taskId === taskId
+  //             ? { ...task, taskStatus: previousStatus }
+  //             : task
+  //         ),
+  //       }))
+  //     );
+  //   }
+  // };
+  const resetAllSorts = () => {
+    setTaskTitleSort(null);
+    setAssignedToSort(null);
+    setDueDateSort(null);
+  };
+  const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
+    console.log(
+      pagination,
+      filters,
+      sorter,
+      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter"
+    );
+    // 🔁 Reset all icons first
+    resetAllSorts();
+
+    if (sorter.columnKey === "taskTitle") {
+      setTaskTitleSort(sorter.order);
+    }
+
+    if (sorter.columnKey === "assignedUsers") {
+      setAssignedToSort(sorter.order);
+    }
+    if (sorter.columnKey === "deadLineDate") {
+      setDueDateSort(sorter.order);
+    }
+
+    // ✅ Status filter
+    // if (filters?.status) {
+    //   setStatusFilter(filters.status || ["Active", "Inactive"]); // ["Active"] | ["Inactive"] | null
+    // }
+  };
+
   // TABLES
   // Column
+
   const columnsTasks = [
     {
       title: (
@@ -135,19 +233,32 @@ const ViewComplianceTasks = () => {
         </span>
       ),
 
-      dataIndex: "shortCode",
-      key: "shortCode",
+      dataIndex: "assignedUsers",
+      key: "assignedUsers",
       width: "15%",
       align: "left",
       ellipsis: true,
+      render: (assignedUsers) => {
+        const firstUser = assignedUsers?.[0];
+        return (
+          <span className="text-truncate">
+            {firstUser ? firstUser.name : "-"}
+          </span>
+        );
+      },
+
       sorter: (a, b) =>
         assignedToSort === "descend"
-          ? b.shortCode?.toLowerCase().localeCompare(a.shortCode?.toLowerCase())
-          : assignedToSort === "ascend"
-          ? a.shortCode?.toLowerCase().localeCompare(b.shortCode?.toLowerCase())
-          : a.shortCode
+          ? b.assignedUsers[0]?.name
               ?.toLowerCase()
-              .localeCompare(b.shortCode?.toLowerCase()),
+              .localeCompare(a.assignedUsers[0]?.name?.toLowerCase())
+          : assignedToSort === "ascend"
+          ? a.assignedUsers[0]?.name
+              ?.toLowerCase()
+              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
+          : a.assignedUsers[0]?.name
+              ?.toLowerCase()
+              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
     },
     {
       title: (
@@ -204,12 +315,40 @@ const ViewComplianceTasks = () => {
       // filterIcon: () => (
       //   <ChevronDown className="filter-chevron-icon-todolist" />
       // ),
-    },
+      // render: (status, record) => {
+      //   const allowedTransitions = getAllowedStatusOptions(status);
 
+      //   // No transitions allowed → show label only
+      //   if (allowedTransitions.length === 0) {
+      //     return <span>{status}</span>;
+      //   }
+
+      //   return (
+      //     <Select
+      //       menuPortalTarget={document.body}
+      //       value={status}
+      //       className={styles.statusDropdown}
+      //       onChange={(e) => handleStatusChange(record.taskId, e.target.value)}
+      //     >
+      //       {/* Current status (disabled) */}
+      //       <option value={status} disabled>
+      //         {status}
+      //       </option>
+
+      //       {/* Allowed transitions only */}
+      //       {allowedTransitions.map((nextStatus) => (
+      //         <option key={nextStatus} value={nextStatus}>
+      //           {nextStatus}
+      //         </option>
+      //       ))}
+      //     </Select>
+      //   );
+      // },
+    },
     {
       title: t(""),
-      dataIndex: "Delete",
-      key: "Delete",
+      dataIndex: "Attachment",
+      key: "Attachment",
       width: "20%",
 
       // Action buttons column
@@ -222,7 +361,7 @@ const ViewComplianceTasks = () => {
               lg={12}
               className="d-flex justify-content-end align-items-center gap-4"
             >
-              {/* Delete Authority */}
+              {/* Attachment */}
               <img
                 className="cursor-pointer"
                 draggable="false"
@@ -305,7 +444,7 @@ const ViewComplianceTasks = () => {
                           rows={taskData}
                           // scroll={{ x: "scroll", y: 500 }}
                           pagination={false}
-                          // onChange={handleChangeAuthorityFilerSorter}
+                          onChange={handleChangeAuthorityFilerSorter}
                         />
                       </>
                     )
