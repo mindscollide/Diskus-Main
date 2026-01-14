@@ -66,6 +66,7 @@ import {
   participantVideoButtonState,
   clearMessegesVideoFeature,
   getParticipantMeetingJoinMainApi,
+  disableZoomBeforeJoinSession,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -609,6 +610,7 @@ const ViewMeetingDetails = ({}) => {
     let nonMeetingCheck = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
+    dispatch(disableZoomBeforeJoinSession(true));
 
     // Orgainzer  = 10 ,Participant = 2 , Agenda Contributor = 3,
 

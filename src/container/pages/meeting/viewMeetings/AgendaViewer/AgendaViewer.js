@@ -811,7 +811,7 @@ const AgendaViewer = () => {
     setPauseRecordingState(false);
     setResumeRecordingState(false);
     setStopRecordingState(false);
-    dispatch(disableZoomBeforeJoinSession(true));
+    dispatch(disableZoomBeforeJoinSession(true)); 
 
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(

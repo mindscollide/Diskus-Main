@@ -39,6 +39,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
   clearMessegesVideoFeature,
+  disableZoomBeforeJoinSession,
   endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   leaveMeetingOnlogout,
@@ -1191,6 +1192,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       let getMeetingVideoHost = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
       );
+      dispatch(disableZoomBeforeJoinSession(true));
 
       if (!getMeetingVideoHost) {
         dispatch(participantVideoButtonState(true));

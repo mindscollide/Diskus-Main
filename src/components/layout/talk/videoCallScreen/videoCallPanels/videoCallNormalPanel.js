@@ -1293,6 +1293,7 @@ const VideoPanelNormal = () => {
                     : isMeetingVideoHostCheck
                     ? newRoomID
                     : participantRoomId;
+                console.log(RoomID, "Check isShare Issue");
 
                 if (alreadyInMeetingVideo || presenterViewHostFlag) {
                   console.log("busyCall");

@@ -581,6 +581,7 @@ const VideoCallNormalHeader = ({
       if (presenterStartedFlag) {
         console.log("busyCall");
         console.log("Check isShare Issue");
+        console.log(RoomID, "Check isShare Issue");
         if (iframeCurrent && iframeCurrent.contentWindow) {
           iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
         }
@@ -1501,7 +1502,6 @@ const VideoCallNormalHeader = ({
     return null;
   };
 
-
   return (
     <>
       <Row className="mb-4">
@@ -1788,7 +1788,7 @@ const VideoCallNormalHeader = ({
             checkFeatureIDAvailability(3) && (
               <div
                 className={
-                  LeaveCallModalFlag
+                  LeaveCallModalFlag || (isZoomEnabled && disableBeforeJoinZoom)
                     ? "grayScaleImage"
                     : "screenShare-Toggle inactive-state"
                 }
