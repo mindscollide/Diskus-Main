@@ -9,20 +9,38 @@ const CustomAccordion = ({
   isExpand,
   notesID,
   handleClickTitleNotes,
+  isCompliance = false,
 }) => {
   const expanded = isExpand === notesID;
 
   return (
-    <div className={`accordion-custom ${!expanded ? "expanded" : ""}`}>
-      <div className="FirstRow">
-        <div className="title-cont" onClick={handleClickTitleNotes}>
+    <div
+      className={`${
+        isCompliance === true
+          ? "accordion-customForChecklist"
+          : "accordion-custom"
+      } ${expanded ? "expanded" : ""}`}
+    >
+      <div className={isCompliance ? "FirstRow_Checklist" : "FirstRow"}>
+        <div
+          className={isCompliance ? "title-cont_Checklist" : "title-cont"}
+          onClick={handleClickTitleNotes}
+        >
           {StartField}
         </div>
-        <div className="dateTime">{centerField}</div>
-        <div className="icons">{endField}</div>
+        <div className={isCompliance ? "dateTime_Checklist" : "dateTime"}>
+          {centerField}
+        </div>
+        <div className={isCompliance ? "icons_Checklist" : "icons"}>
+          {endField}
+        </div>
       </div>
 
-      <div className={`SecondRow ${!expanded ? "show" : ""}`}>
+      <div
+        className={`${
+          isCompliance === true ? "SecondRowForChecklist" : "SecondRow"
+        } ${expanded ? "show" : ""}`}
+      >
         {attachmentsRow}
       </div>
     </div>

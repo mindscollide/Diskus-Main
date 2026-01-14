@@ -57,6 +57,8 @@ const DocumentViewer = () => {
     return JSON.parse(params || "{}");
   }, [location.search]);
 
+  console.log(pdfData, "pdfDatapdfData");
+
   const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
 
   // Utility: Clear Local Storage
@@ -80,31 +82,18 @@ const DocumentViewer = () => {
 
   // Fetch Annotations
   useEffect(() => {
-    const fetchAnnotations = () => {
-      const actions = {
-        1: getAnnotationsOfToDoAttachement,
-        2: getAnnotationsOfNotesAttachement,
-        3: getAnnotationsOfResolutionAttachement,
-        4: getAnnotationsOfDataroomAttachement,
-      };
-
+    try {
       const data = {
-        1: { TaskID: Number(taskId), TaskAttachementID: Number(attachmentID) },
-        2: { NoteID: Number(taskId), NoteAttachementID: Number(attachmentID) },
-        3: {
-          ResolutionID: Number(taskId),
-          ResolutionAttachementID: Number(attachmentID),
-        },
-        4: { FileID: attachmentID },
+        FileID: attachmentID,
       };
 
-      const action = actions[Number(commingFrom)];
-      if (action) dispatch(action(navigate, t, data[Number(commingFrom)]));
-    };
+      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
 
-    if (taskId && attachmentID) fetchAnnotations();
-    return clearLocalStorage;
-  }, [dispatch, navigate, t, taskId, attachmentID, commingFrom]);
+      return clearLocalStorage;
+    } catch (error) {
+      console.log({ error }, "pdfDatapdfData");
+    }
+  }, [attachmentID]);
 
   // Handle File Removal via MQTT
   useEffect(() => {
@@ -222,8 +211,7 @@ const DocumentViewer = () => {
       WebViewer(
         {
           path: "/webviewer/lib",
-          licenseKey:
-            process.env.REACT_APP_APRYSEKEY, // Replace with your key
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
           fullAPI: true,
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
@@ -411,8 +399,8 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className='document-viewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="document-viewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       <Notification open={open} setOpen={setOpen} />

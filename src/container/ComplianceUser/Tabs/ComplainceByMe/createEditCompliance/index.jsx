@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./createEditCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -7,8 +7,14 @@ import ComplainceDetails from "./ComplianceDetails";
 import ComplianceChecklist from "./CreateEditViewComplianceChecklist";
 import ComplianceTask from "./CreateEditViewComplianceTask";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
+import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 
 const CreateEditCompliance = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const {
     complianceInfo,
@@ -16,17 +22,57 @@ const CreateEditCompliance = () => {
     setChecklistTabs,
     checklistCount,
     taskCount,
+    complianceAddEditViewState,
+    complianceDetailsState,
   } = useComplianceContext();
+
+  useEffect(() => {
+    if (complianceInfo.complianceId !== 0) {
+      try {
+        const complianceId = { complianceId: complianceInfo.complianceId };
+        dispatch(
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+        );
+      } catch (error) {}
+    }
+  }, []);
 
   return (
     <>
       <section className={styles["MainCompliance_Container"]}>
-        <Row className="my-2">
-          <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+        <Row className="my-2 ">
+          {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
             {complianceInfo.complianceId !== 0
               ? complianceInfo.complianceName
               : t("Create-new-compliance")}
+          </Col> */}
+
+          <Col sm={12} md={9} lg={9} className={styles["mainHeading"]}>
+            {complianceAddEditViewState === 2
+              ? `Edit: ${complianceInfo.complianceName}`
+              : complianceInfo.complianceId !== 0
+              ? complianceInfo.complianceName
+              : t("Create-new-compliance")}
           </Col>
+
+          {}
+          <Col sm={12} md={3} lg={3} className={styles["mainHeading2"]}>
+            {complianceDetailsState.dueDate !== ""
+              ? `Due Date: ${formatDateToYMD(complianceDetailsState.dueDate)}`
+              : ""}
+          </Col>
+
+          {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
+            {complianceAddEditViewState === 0
+              ? t("Create-new-compliance")
+              : complianceAddEditViewState === 1
+              ? complianceInfo.complianceName !== ""
+                ? complianceInfo.complianceName
+                : complianceAddEditViewState === 2
+                ? `Edit: ${complianceInfo.complianceName}`
+                : ""
+              : ""} 
+          </Col>*/}
         </Row>
         <section
           className={` ${
@@ -57,7 +103,13 @@ const CreateEditCompliance = () => {
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
-                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
+                disableBtn={
+                  complianceInfo.complianceId !== 0
+                    ? false
+                    : complianceAddEditViewState === 2
+                    ? false
+                    : true
+                }
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
                   setChecklistTabs(2);
@@ -69,7 +121,15 @@ const CreateEditCompliance = () => {
                     ? styles["createNewComplianceBtn_active"]
                     : styles["createNewComplianceBtn"]
                 }
-                // disableBtn={complianceInfo.complianceId !== 0 ? false : true}
+                disableBtn={
+                  complianceAddEditViewState === 2
+                    ? false
+                    : complianceInfo.complianceId === 0
+                    ? true
+                    : checklistCount === 0
+                    ? true
+                    : false
+                }
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {
                   setChecklistTabs(3);

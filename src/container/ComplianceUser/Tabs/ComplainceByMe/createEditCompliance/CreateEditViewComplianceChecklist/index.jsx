@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./createEditViewComplianceChecklist.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import {
   InputfieldwithCount,
   TextAreafieldwithCount,
@@ -13,13 +13,17 @@ import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   AddComplianceChecklistAPI,
-  ViewComplianceByIdAPI,
+  CheckChecklistTitleExistsAPI,
+  clearAuthorityMessage,
+  clearComplianceDetailsData,
+  EditComplianceChecklistAPI,
+  GetComplianceChecklistsByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import deleteIcon from "../../../../../../assets/images/Icon material-delete.png";
@@ -27,27 +31,65 @@ import editIcon from "../../../../../../assets/images/Icon material-edit.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
+import { Check2 } from "react-bootstrap-icons";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+// import ChecklistAccordion from "../../../../CommonComponents/ChecklistAccordian/CustomAccordion";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  const checklistTitleRef = useRef(null);
+  const addChecklistRef = useRef(null);
+  const cancelBtnRef = useRef(null);
+  const accordionContainerRef = useRef(null);
+  const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+  const authorityRespnseMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+  );
+  const authorityseverityMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.severity
+  );
+  // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
+  const [errors, setErrors] = useState({
+    checklistTitle: "",
+  });
+  const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
 
-  const { complianceAddEditViewState, complianceInfo, setChecklistCount } =
-    useComplianceContext();
+  const [isEditTrue, setIsEditTrue] = useState(false);
+  const {
+    complianceAddEditViewState,
+    complianceInfo,
+    setChecklistCount,
+    setChecklistTabs,
+    setCreateEditComplaince,
+    complianceDetailsState,
+    setComplianceDetailsState,
+    checkListData,
+    emptyComplianceState,
+    setChecklistData,
+  } = useComplianceContext();
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId
   );
+  console.log(
+    GetComplianceChecklistsByComplianceId,
+    "GetComplianceChecklistsByComplianceId"
+  );
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const [checkListData, setChecklistData] = useState({
-    checklistTitle: "",
-    checklistDescription: "",
-    checklistDueDate: "",
-  });
+  // const [checkListData, setChecklistData] = useState({
+  //   checklistTitle: "",
+  //   checklistDescription: "",
+  //   checklistDueDate: "",
+  // });
   const changeComplainceDueDate = (date) => {
     let meetingDateValueFormat2 = new Date(date);
     meetingDateValueFormat2.setHours(23);
@@ -66,13 +108,11 @@ const CreateEditViewComplianceChecklist = () => {
 
     switch (name) {
       case "checklistTitle":
+        setIsChecklistTitleExist(null);
         if (!value.trim()) {
-          error = "Checklist Title is required";
-        }
-        break;
-      case "checklistDescription":
-        if (!value.trim()) {
-          error = "Checklist Description is required";
+          setErrors({
+            checklistTitle: "Checklist Title is required",
+          });
         }
         break;
 
@@ -84,26 +124,52 @@ const CreateEditViewComplianceChecklist = () => {
       [name]: value.trimStart(),
     }));
   };
+
   const handleClickSaveBtn = () => {
     if (complianceInfo.complianceId !== 0) {
-      const Data = {
-        checkListTitle: checkListData.checklistTitle,
-        description: checkListData.checklistDescription,
-        complianceId: complianceInfo.complianceId,
-        dueDate: multiDatePickerDateChangIntoUTC(
-          checkListData.checklistDueDate
-        ),
-      };
-      console.log(Data, "handleClickSaveBtn");
-      dispatch(
-        AddComplianceChecklistAPI(
-          navigate,
-          Data,
-          t,
-          complianceInfo,
-          setChecklistData
-        )
-      );
+      setIsChecklistTitleExist(null);
+      if (isEditTrue) {
+        // Update;
+        const Data = {
+          checklistId: isEditTrue ? checkListData.checklistId : 0,
+          checkListTitle: checkListData.checklistTitle,
+          description: checkListData.checklistDescription,
+          complianceId: complianceInfo.complianceId,
+          dueDate: multiDatePickerDateChangIntoUTC(
+            checkListData.checklistDueDate
+          ),
+        };
+        dispatch(
+          EditComplianceChecklistAPI(
+            navigate,
+            Data,
+            t,
+            complianceInfo,
+            setChecklistData,
+            setIsEditTrue
+          )
+        );
+      } else {
+        // Add
+        const Data = {
+          checkListTitle: checkListData.checklistTitle,
+          description: checkListData.checklistDescription,
+          complianceId: complianceInfo.complianceId,
+          dueDate: multiDatePickerDateChangIntoUTC(
+            checkListData.checklistDueDate
+          ),
+        };
+        console.log(Data, "handleClickSaveBtn");
+        dispatch(
+          AddComplianceChecklistAPI(
+            navigate,
+            Data,
+            t,
+            complianceInfo,
+            setChecklistData
+          )
+        );
+      }
     }
   };
 
@@ -112,7 +178,38 @@ const CreateEditViewComplianceChecklist = () => {
     // setAuthorityId(authorityID);
   };
 
-  const handleEditChecklist = (checklistID) => {};
+  const handleEditChecklist = (checklistData) => {
+    console.log(checklistData, "checklistData");
+    if (checklistData)
+      try {
+        setAddChecklistCloseState(false);
+        setIsEditTrue(true);
+        setChecklistData({
+          checklistId: checklistData.checklistId,
+          checklistTitle: checklistData.checklistTitle,
+          checklistDescription: checklistData.checklistDescription,
+          checklistDueDate: checklistData.dueDate
+            ? moment(checklistData.dueDate, "YYYYMMDD").toDate()
+            : null,
+        });
+      } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (complianceAddEditViewState !== 3) {
+      checklistTitleRef.current &&
+        checklistTitleRef.current.focus({
+          cursor: "start",
+        });
+    }
+    // const complianceId = { complianceId: complianceInfo.complianceId };
+    // dispatch(
+    //   GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+    // );
+  }, []);
+
+  const [getCheckListData, setGetCheckListData] = useState([]);
+
   useEffect(() => {
     if (
       GetComplianceChecklistsByComplianceId &&
@@ -121,27 +218,54 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length
       );
+      setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
+      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
+      setExpandedCheckListIds([]);
+    } else {
+      setChecklistCount(0);
     }
-  });
+  }, [GetComplianceChecklistsByComplianceId]);
+
+  useEffect(() => {
+    if (
+      authorityRespnseMessage !== null &&
+      authorityRespnseMessage !== undefined &&
+      authorityRespnseMessage !== "" &&
+      authorityseverityMessage !== null
+    ) {
+      try {
+        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        setTimeout(() => {
+          dispatch(clearAuthorityMessage());
+        }, 4000);
+      } catch (error) {}
+    }
+  }, [authorityRespnseMessage, authorityseverityMessage]);
 
   const handleClickPrevBtn = () => {
-    if (complianceInfo.complianceId !== 0) {
-      const Data = {
-        complianceId: complianceInfo.complianceId,
-      };
+    setChecklistData({
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "",
+    });
+    setChecklistTabs(1);
+    // if (complianceInfo.complianceId !== 0) {
+    //   const Data = {
+    //     complianceId: complianceInfo.complianceId,
+    //   };
 
-      dispatch(ViewComplianceByIdAPI(navigate, Data, t));
-    }
+    //   dispatch(ViewComplianceByIdAPI(navigate, Data, t));
+    // }
   };
-
-  const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
 
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
       if (prev.includes(data.checklistId)) {
         // collapse
+
         return prev.filter((id) => id !== data.checklistId);
       } else {
+        setAddChecklistCloseState(true);
         // expand
         return [...prev, data.checklistId];
       }
@@ -149,20 +273,105 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleCloseAddChecklistButton = () => {
-    setAddChecklistCloseState(true);
+    setIsEditTrue(false);
+    setErrors({
+      checklistTitle: "",
+    });
+    setIsChecklistTitleExist(null);
+    setChecklistData({
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "",
+    });
   };
 
   const handleOpenAddChecklist = () => {
     setAddChecklistCloseState(false);
   };
 
+  const handleBlur = (event) => {
+    setIsChecklistTitleExist(null);
+    setErrors({
+      checklistTitle: "",
+    });
+    const { name, value } = event.target;
+
+    if (complianceAddEditViewState === 3) return;
+    if (complianceAddEditViewState === 2 || isEditTrue) {
+      let getCheckObj = getCheckListData.find(
+        (data, index) => data.checklistId === checkListData.checklistId
+      );
+      if (getCheckObj !== undefined) {
+        if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
+          if (complianceInfo.complianceId !== 0) {
+            const Data = {
+              ComplianceID: complianceInfo.complianceId,
+              ChecklistTitle: checkListData.checklistTitle,
+            };
+            dispatch(
+              CheckChecklistTitleExistsAPI(
+                navigate,
+                Data,
+                t,
+                setErrors,
+                setIsChecklistTitleExist
+              )
+            );
+          }
+        }
+      }
+      console.log(
+        { getCheckObj, getCheckListData, checkListData },
+        "handleBlur"
+      );
+      return;
+    }
+
+    // Checklist uniqueness (API placeholder)
+    if (name === "checklistTitle" && value) {
+      try {
+        // if (complianceAddEditViewState === 2) {
+        if (
+          checkListData.checklistTitle !== null &&
+          complianceInfo.complianceId !== 0
+        ) {
+          const Data = {
+            ComplianceID: complianceInfo.complianceId,
+            ChecklistTitle: checkListData.checklistTitle,
+          };
+          // call API here
+          dispatch(
+            CheckChecklistTitleExistsAPI(
+              navigate,
+              Data,
+              t,
+              setErrors,
+              setIsChecklistTitleExist
+            )
+          );
+        }
+        // }
+      } catch (error) {}
+    }
+  };
+
+  const handleCloseButton = () => {
+    emptyComplianceState();
+    setChecklistTabs(1);
+    setCreateEditComplaince(false);
+  };
+  console.log(
+    complianceDetailsState.complianceDueDateForChecklist,
+    "complianceDueDateForChecklist"
+  );
   return (
     <>
       {!addChecklistCloseState ? (
-        <>
-          <Row className="mt-2">
-            <Col sm={12} md={9} lg={9}>
+        <div ref={addChecklistRef}>
+          <Row className="mt-2 d-flex flex-row">
+            <div className={styles["checklistTitle"]}>
               <InputfieldwithCount
+                ref={checklistTitleRef}
                 label={
                   <>
                     {t("Checklist-title")}
@@ -178,6 +387,7 @@ const CreateEditViewComplianceChecklist = () => {
                 maxLength={100}
                 onChange={handleValueChange}
                 name="checklistTitle"
+                onBlur={handleBlur}
                 preFixClas={
                   complianceAddEditViewState === 3
                     ? "viewField_Name"
@@ -186,8 +396,25 @@ const CreateEditViewComplianceChecklist = () => {
                 value={checkListData.checklistTitle}
                 labelClass={styles["labelStyle"]}
               />
-            </Col>
-            <Col sm={12} md={3} lg={3}>
+              <p
+                className={
+                  errors.checklistTitle
+                    ? styles["errorMessage-inLogin"]
+                    : styles["errorMessage-inLogin_hidden"]
+                }
+              >
+                {errors.checklistTitle}
+              </p>
+            </div>
+            <div className={styles["checklistTitle_Loader"]}>
+              {/* <Spinner size="md" className={styles["SpinnerClass"]} /> */}
+              {isChecklistTitleExist === true ? (
+                <Spinner size="md" className={styles["SpinnerClass"]} />
+              ) : isChecklistTitleExist === false ? (
+                <Check2 className={styles["CheckIcon"]} />
+              ) : null}
+            </div>
+            <div className={styles["checklistDueDate"]}>
               <div
                 className={`${styles["labelStyle"]} ${styles["Select_label"]}`}
               >
@@ -201,6 +428,7 @@ const CreateEditViewComplianceChecklist = () => {
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
                 placeholder={t("Due-date")}
+                maxDate={complianceDetailsState.complianceDueDateForChecklist}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
@@ -218,7 +446,7 @@ const CreateEditViewComplianceChecklist = () => {
                 onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
               />
-            </Col>
+            </div>
           </Row>
           <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
@@ -250,26 +478,28 @@ const CreateEditViewComplianceChecklist = () => {
               />
             </Col>
           </Row>
-          <div className={styles["ChecklistButtonPosition"]}>
+
+          <div ref={cancelBtnRef} className={styles["ChecklistButtonPosition"]}>
             <Button
               text={t("Cancel")}
               className={styles["Compliance_CloseButton"]}
               onClick={handleCloseAddChecklistButton}
             />
             <Button
-              text={t("Add")}
+              text={isEditTrue ? t("Update") : t("Add")}
               className={styles["Compliance_NextButton"]}
               onClick={handleClickSaveBtn}
               disableBtn={
                 checkListData.checklistDescription !== "" &&
                 checkListData.checklistDueDate !== "" &&
-                checkListData.checklistTitle !== ""
+                checkListData.checklistTitle !== "" &&
+                errors.checklistTitle === ""
                   ? false
                   : true
               }
             />
           </div>
-        </>
+        </div>
       ) : (
         <Row className="mt-2">
           <Col sm={12} md={12} lg={12}>
@@ -289,121 +519,127 @@ const CreateEditViewComplianceChecklist = () => {
         </Col>
       </Row>
 
-      <div className={styles["checklistAccordian"]}>
-        {GetComplianceChecklistsByComplianceId &&
-        GetComplianceChecklistsByComplianceId?.checklistList?.length > 0
-          ? GetComplianceChecklistsByComplianceId.checklistList.map(
-              (data, index) => {
-                const isExpanded = expandedCheckListIds.find(
-                  (data2, index) => data2 === data.checklistId
-                );
-                console.log(isExpanded, "isExpandedisExpanded");
-                return (
-                  <div key={index}>
-                    <CustomAccordion
-                      isExpand={isExpanded}
-                      notesID={data.checklistId}
-                      StartField={
-                        <>
-                          {!isExpanded ? (
-                            <div>
-                              <p className={styles["labelStyle"]}>
-                                {t("Checklist-title")}
-                              </p>
-                              <p
-                                className={`m-0 ${styles["ViewChecklistDetailStyles"]}`}
-                              >
-                                {data.checklistTitle}
-                              </p>
-                            </div>
-                          ) : (
-                            <p
-                              className={`m-0 ${styles["ViewChecklistDetailStyles"]}`}
-                            >
-                              {data.checklistTitle}
-                            </p>
-                          )}
-                        </>
-                      }
-                      centerField={
-                        <>
-                          {!isExpanded ? (
-                            <div>
-                              <p className={styles["labelStyle"]}>
-                                {t("Due-date")}
-                              </p>
-                              <p
-                                className={styles["ViewChecklistDetailStyles"]}
-                              >
-                                {formatDateToYMD(data.dueDate)}
-                              </p>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </>
-                      }
-                      attachmentsRow={
-                        <>
-                          <div>
-                            <p className={styles["labelStyle"]}>
-                              {t("Description")}
-                            </p>{" "}
-                            <p className={styles["ViewChecklistDetailStyles"]}>
-                              {data.checklistDescription}
-                            </p>
-                          </div>
-                        </>
-                      }
-                      endField={
-                        <>
-                          <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              className="d-flex justify-content-end gap-3 align-items-center"
-                            >
-                              <img
-                                className="cursor-pointer"
-                                draggable="false"
-                                alt=""
-                                src={deleteIcon}
-                                onClick={() =>
-                                  handleDeleteChecklist(data?.checklistId)
-                                }
-                              />
-                              {/* Edit Authority */}
-                              <img
-                                className="cursor-pointer"
-                                draggable="false"
-                                alt=""
-                                src={editIcon}
-                                onClick={() =>
-                                  handleEditChecklist(data?.checklistId)
-                                }
-                              />
-                              <img
-                                src={Accordion_Arrow}
-                                onClick={() => handleClickExpandCheckList(data)}
-                                alt=""
-                                className={`cursor-pointer
+      <div
+        ref={accordionContainerRef}
+        className={
+          addChecklistCloseState
+            ? styles["checklistAccordian_closed"]
+            : styles["checklistAccordian"]
+        }
+      >
+        {getCheckListData?.length > 0 ? (
+          getCheckListData.map((data, index) => {
+            const isExpanded = expandedCheckListIds.find(
+              (data2, index) => data2 === data.checklistId
+            );
+
+            console.log(isExpanded, "isExpandedisExpanded");
+            return (
+              <div key={index}>
+                <CustomAccordion
+                  isExpand={isExpanded}
+                  notesID={data.checklistId}
+                  isCompliance={true}
+                  StartField={
+                    <>
+                      {isExpanded ? (
+                        <div>
+                          <p className={styles["labelStyle"]}>
+                            {t("Checklist-title")}
+                          </p>
+                          <p
+                            className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
+                          >
+                            {data.checklistTitle}
+                          </p>
+                        </div>
+                      ) : (
+                        <p
+                          className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
+                        >
+                          {data.checklistTitle}
+                        </p>
+                      )}
+                    </>
+                  }
+                  centerField={
+                    <>
+                      {isExpanded ? (
+                        <div>
+                          <p className={styles["labelStyle"]}>
+                            {t("Due-date")}
+                          </p>
+                          <p className={styles["ViewChecklistDetailStyles"]}>
+                            {formatDateToYMD(data.dueDate)}
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  }
+                  attachmentsRow={
+                    <>
+                      <div>
+                        <p className={styles["labelStyle"]}>
+                          {t("Description")}
+                        </p>{" "}
+                        <p className={styles["ViewChecklistDetailStyles"]}>
+                          {data.checklistDescription}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  endField={
+                    <>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-end gap-3 align-items-center"
+                        >
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={deleteIcon}
+                            onClick={() =>
+                              handleDeleteChecklist(data?.checklistId)
+                            }
+                          />
+                          {/* Edit Checklist */}
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={editIcon}
+                            onClick={() => handleEditChecklist(data)}
+                          />
+                          <img
+                            src={Accordion_Arrow}
+                            onClick={() => handleClickExpandCheckList(data)}
+                            alt=""
+                            className={`cursor-pointer
                                   ${
                                     isExpanded
-                                      ? styles["AccordionArrowDown"]
-                                      : null
+                                      ? null
+                                      : styles["AccordionArrowDown"]
                                   }`}
-                              />
-                            </Col>
-                          </Row>
-                        </>
-                      }
-                    />
-                  </div>
-                );
-              }
-            )
-          : null}
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className={styles["noChecklistMsg"]}>
+            {t("No-checklist-available")}
+          </div>
+        )}
       </div>
 
       {/* Main Button */}
@@ -411,7 +647,7 @@ const CreateEditViewComplianceChecklist = () => {
         <Button
           text={t("Close")}
           className={styles["Compliance_CloseButton"]}
-          // onClick={handleCloseButton}
+          onClick={handleCloseButton}
         />
         <Button
           text={t("Previous")}
@@ -428,6 +664,7 @@ const CreateEditViewComplianceChecklist = () => {
           // }
         />
       </div>
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

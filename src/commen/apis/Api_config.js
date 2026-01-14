@@ -1,2608 +1,2093 @@
-const signuprequest = {
+export const signuprequest = {
   RequestMethod: "ServiceManager.SignUp",
 };
 
-const signinauthenication = {
+export const signinauthenication = {
   RequestMethod: "ServiceManager.Login",
 };
 
-const forgetpassword = {
+export const forgetpassword = {
   RequestMethod: "ServiceManager.ForgotPassword",
 };
 
-const verifyOTPSignUp = {
+export const verifyOTPSignUp = {
   RequestMethod: "ServiceManager.OTPVerification",
 };
 
-const resendOTP = {
+export const resendOTP = {
   RequestMethod: "ServiceManager.GenerateOTP",
 };
 
-const resendOTPForgotPassword = {
+export const resendOTPForgotPassword = {
   RequestMethod: "ServiceManager.ResendPassConfirmationOTP",
 };
 
-const changepassword = {
+export const changepassword = {
   RequestMethod: "ServiceManager.ChangePassword",
 };
 
-const authenticationRefreshToken = {
+export const authenticationRefreshToken = {
   RequestMethod: "ServiceManager.RefreshToken",
 };
 
 // schedule new metings
-const scheduleNewMeeting = {
+export const scheduleNewMeeting = {
   RequestMethod: "ServiceManager.ScheduleNewMeeting",
 };
 // update metings
-const updateMeeting = {
+export const updateMeeting = {
   RequestMethod: "ServiceManager.UpdateMeeting",
 };
 //To-Do List APIs
 //Get List By ID
-const getToDoListByUserID = {
+export const getToDoListByUserID = {
   RequestMethod: "ServiceManager.GetToDoListByUserID",
 };
 
 //Create To-Do List
-const createToDoList = {
+export const createToDoList = {
   RequestMethod: "ServiceManager.CreateToDoList",
 };
 
 //Create To-Do List
-const uploadDocument = {
+export const uploadDocument = {
   RequestMethod: "ServiceManager.UploadDocument",
 };
 
 //Get All Assignees for To-Do List
-const getAllAssigneesToDoList = {
+export const getAllAssigneesToDoList = {
   RequestMethod: "ServiceManager.GetAllAssignees",
 };
 
 // ali work
-const getUserSettings = {
+export const getUserSettings = {
   RequestMethod: "ServiceManager.GetUserSettings",
 };
-const updateUserNotificationSetting = {
+export const updateUserNotificationSetting = {
   RequestMethod: "ServiceManager.UpdateUserNotificationSettings",
 };
-const updateUserGeneralSetting = {
+export const updateUserGeneralSetting = {
   RequestMethod: "ServiceManager.UpdateUserGeneralSettings",
 };
-const updateUserProfileSetting = {
+export const updateUserProfileSetting = {
   RequestMethod: "ServiceManager.UpdateUserProfileSettings",
 };
-const getUserNotifcations = {
+export const getUserNotifcations = {
   RequestMethod: "ServiceManager.GetUserNotifications",
 };
-const getCountryCode = {
+export const getCountryCode = {
   RequestMethod: "ServiceManager.GetAllCountryCodes",
 };
-const getTimeZOne = {
+export const getTimeZOne = {
   RequestMethod: "ServiceManager.GetAllTimeZones",
 };
 // aun
 //Get FAQ's
-const getFaqs = {
+export const getFaqs = {
   RequestMethod: "ServiceManager.GetFAQs",
 };
 
 //aun
 // Get Meeting Id By User id
-const getMeetingId = {
+export const getMeetingId = {
   RequestMethod: "ServiceManager.GetMeetingsByUserID",
 };
 
 //startMeeting
-const startMeeting = {
+export const startMeeting = {
   RequestMethod: "ServiceManager.StartMeeting",
 };
 
 //endMeeting
-const endMeeting = {
+export const endMeeting = {
   RequestMethod: "ServiceManager.EndMeeting",
 };
 
 // schedule View metings
-const getMeetingByMeetingID = {
+export const getMeetingByMeetingID = {
   RequestMethod: "ServiceManager.GetMeetingByMeetingID",
 };
 
 // View To-Do List
-const getToDoListByToDoListID = {
+export const getToDoListByToDoListID = {
   RequestMethod: "ServiceManager.GetToDoListByToDoListID",
 };
 
 // Edit To-Do List
-const updateToDoList = {
+export const updateToDoList = {
   RequestMethod: "ServiceManager.UpdateToDoList",
 };
 
 // Edit To-Do List
-const cancelMeeting = {
+export const cancelMeeting = {
   RequestMethod: "ServiceManager.CancelMeeting",
 };
 // Get Data for Calender
 
-const calendarDataRequest = {
+export const calendarDataRequest = {
   RequestMethod: "ServiceManager.GetCalenderList",
 };
 
 //search todolist by userId
-const searchTodoList = {
+export const searchTodoList = {
   RequestMethod: "ServiceManager.SearchToDoList",
 };
 
 // search Meeting Id By User id
-const searchMeetingId = {
+export const searchMeetingId = {
   RequestMethod: "ServiceManager.SearchMeetings",
 };
 
-const todosStatus = {
+export const todosStatus = {
   RequestMethod: "ServiceManager.GetAllTodoStatus",
 };
-const updateTodoStatus = {
+export const updateTodoStatus = {
   RequestMethod: "ServiceManager.UpdateTaskStatus",
 };
 
 //Download File
-const downloadDocument = {
+export const downloadDocument = {
   RequestMethod: "ServiceManager.FileDownload",
 };
 
-const postComment = {
+export const postComment = {
   RequestMethod: "ServiceManager.CreateComment",
 };
 
 //Dashboard APIs
 //Meeting Count
-const getWeekMeetings = {
+export const getWeekMeetings = {
   RequestMethod: "ServiceManager.GetWeekMeetings",
 };
 
 //Upcoming Events
-const upcomingEvents = {
+export const upcomingEvents = {
   RequestMethod: "ServiceManager.GetUpcomingMeetingEventsByUserId",
 };
 
 //Upcoming Events
-const getWeekToDo = {
+export const getWeekToDo = {
   RequestMethod: "ServiceManager.GetNumberOfToDoListInWeekByUserIDAndDate",
 };
 
-const getAttachmentByMeetingId = {
+export const getAttachmentByMeetingId = {
   RequestMethod: "ServiceManager.GetAgendaAttachmentsByMeetingId",
 };
-const getAgendasByMeetingId = {
+export const getAgendasByMeetingId = {
   RequestMethod: "ServiceManager.GetMeetingAgendasByMeetingId",
 };
-const updateAgendaAttachments = {
+export const updateAgendaAttachments = {
   RequestMethod: "ServiceManager.AgendaAttachments",
 };
 
-const getAllReminders = {
+export const getAllReminders = {
   RequestMethod: "ServiceManager.GetMeetingReminders",
 };
-const addMinuteofMeetings = {
+export const addMinuteofMeetings = {
   RequestMethod: "ServiceManager.RecordMinutesofMeeting",
 };
-const updateMinuteofMeetings = {
+export const updateMinuteofMeetings = {
   RequestMethod: "ServiceManager.UpdateRecordMinutesofMeeting",
 };
-const getCountryNames = {
+export const getCountryNames = {
   RequestMethod: "ServiceManager.GetWorldCountries",
 };
-const getSubscriptionDetailRequestMethod = {
+export const getSubscriptionDetailRequestMethod = {
   RequestMethod: "ServiceManager.GetSubscriptionPackages",
 };
-const createOrganizationRequestMethod = {
+export const createOrganizationRequestMethod = {
   RequestMethod: "ServiceManager.SaveOrganizationAndSelectedPackage",
 };
-const userEmailVerification = {
+export const userEmailVerification = {
   RequestMethod: "ServiceManager.UserEmailVerification",
 };
-const userPasswordCreation = {
+export const userPasswordCreation = {
   RequestMethod: "ServiceManager.UsersPasswordCreation",
 };
-const userEmailValidation = {
+export const userEmailValidation = {
   RequestMethod: "ServiceManager.LoginWithUserEmail",
 };
-const userPasswordVerify = {
+export const userPasswordVerify = {
   RequestMethod: "ServiceManager.UserPasswordVerification",
   // RequestMethod: "ServiceManager.PasswordVerification",
 };
-const getSelectedPacakge_Detail = {
+export const getSelectedPacakge_Detail = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackage",
 };
 // For Check Is Organization Exsists or NOT
-const IsOrganizationExsists = {
+export const IsOrganizationExsists = {
   RequestMethod: "ServiceManager.IsOrganizationExsists",
 };
 // For Check Is Organization Email Exsists or NOT
-const IsOrganizationEmailExsists = {
+export const IsOrganizationEmailExsists = {
   RequestMethod: "ServiceManager.IsUserEmailExsists",
 };
 
 // schedule View metings
-const OrganizationUserListStatistics = {
+export const OrganizationUserListStatistics = {
   RequestMethod: "ServiceManager.OrganizationUserListStatistics",
 };
 // schedule AddOrganizationUser
-const AddOrganizationUser = {
+export const AddOrganizationUser = {
   RequestMethod: "ServiceManager.AddOrganizationUser",
 };
 // schedule GetAllOrganizationRoles
-const getAllOrganizationRoles = {
+export const getAllOrganizationRoles = {
   RequestMethod: "ServiceManager.GetAllOrganizationRoles",
 };
 // schedule GetAllUserRoles
-const getAllUserRoles = {
+export const getAllUserRoles = {
   RequestMethod: "ServiceManager.GetAllUserRoles",
 };
 // schedule GetAllUserRoles
-const getOrganizationByID = {
+export const getOrganizationByID = {
   RequestMethod: "ServiceManager.GetOrganizationByID",
 };
 // GET AddOrganizationUser
-const allOrganizationUsers = {
+export const allOrganizationUsers = {
   RequestMethod: "ServiceManager.AllOrganizationUsers",
 };
 // schedule GetAllUserRoles
-const getAllUserStatus = {
+export const getAllUserStatus = {
   RequestMethod: "ServiceManager.GetAllUserStatus",
 };
 
 //  Edit Organization User
-const editOrganizationUser = {
+export const editOrganizationUser = {
   RequestMethod: "ServiceManager.EditOrganizationUser",
 };
 
 // Dlete Organization User
-const deleteOrganizationUser = {
+export const deleteOrganizationUser = {
   RequestMethod: "ServiceManager.DeleteOrganizationUser",
 };
 
-const IsPackageExpiryDetail = {
+export const IsPackageExpiryDetail = {
   RequestMethod: "ServiceManager.GetOrganizationSubscriptionExpiryDetails",
 };
-const AllMeetingOrganization = {
+export const AllMeetingOrganization = {
   RequestMethod: "ServiceManager.SearchOrganizationMeetings",
 };
-const OrganizationMeetingStatus = {
+export const OrganizationMeetingStatus = {
   RequestMethod: "ServiceManager.OrganizationMeetingStatusUpdate",
 };
 
-const deleteOrganizationMeeting = {
+export const deleteOrganizationMeeting = {
   RequestMethod: "ServiceManager.DeleteOrganizationMeeting",
 };
-const updateOrganizationLevelSettings = {
+export const updateOrganizationLevelSettings = {
   RequestMethod: "ServiceManager.UpdateOrganizationSettings",
 };
-const getOrganizationLevelSettings = {
+export const getOrganizationLevelSettings = {
   RequestMethod: "ServiceManager.GetOrganizationSettings",
 };
-const GetOrganizationSeletedPackageByOrganizationID = {
+export const GetOrganizationSeletedPackageByOrganizationID = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID",
 };
-const GetSubscriptionPackagesByOrganizationID = {
+export const GetSubscriptionPackagesByOrganizationID = {
   RequestMethod: "ServiceManager.GetSubscriptionPackagesForUpgrade",
 };
-const getMeetingStatus = {
+export const getMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingStatus",
 };
-const cancelSubscription = {
+export const cancelSubscription = {
   RequestMethod: "ServiceManager.CancelOrganizationSubscription",
 };
-const updateSubscriptionPackage = {
+export const updateSubscriptionPackage = {
   RequestMethod: "ServiceManager.UpgradeOrganizationSubscription",
 };
-const updateOrganizationUserSetting = {
+export const updateOrganizationUserSetting = {
   RequestMethod: "ServiceManager.UpdateOrganizationUserSettings",
 };
-const OrganizationPackageReselection = {
+export const OrganizationPackageReselection = {
   RequestMethod: "ServiceManager.OrganizationPackageReselection",
 };
-const TwoFaAuthenticateRequestMethod = {
+export const TwoFaAuthenticateRequestMethod = {
   RequestMethod: "ServiceManager.Authenticate2FA",
 };
-const sendTwoFacOTP = {
+export const sendTwoFacOTP = {
   RequestMethod: "ServiceManager.Send2FAOTP",
 };
-const verifyTwoFacOTP = {
+export const verifyTwoFacOTP = {
   RequestMethod: "ServiceManager.Verify2FAOTP",
 };
-const resendTwoFacOTP = {
+export const resendTwoFacOTP = {
   RequestMethod: "ServiceManager.Resend2FAOTP",
 };
 
 //for get Admin customer info userDetails organization Api
-const CustomerInfoOrganization = {
+export const CustomerInfoOrganization = {
   RequestMethod: "ServiceManager.GetOrganizationDetails",
 };
 
-const updateCustomerOrganizationProfile = {
+export const updateCustomerOrganizationProfile = {
   RequestMethod: "ServiceManager.UpdateOrganizationProfile",
 };
 
-const passswordUpdationOnForgetPassword = {
+export const passswordUpdationOnForgetPassword = {
   RequestMethod: "ServiceManager.PasswordUpdationOnForgetPassword",
 };
 
-const revokeProcess = {
+export const revokeProcess = {
   RequestMethod: "ServiceManager.RevokeCancelation",
 };
-const getuserdetails = {
+export const getuserdetails = {
   RequestMethod: "ServiceManager.GetUserDetails",
 };
 
-const updateProfileData = {
+export const updateProfileData = {
   RequestMethod: "ServiceManager.UpdateUserProfile",
 };
-const deleteOrganizationAPI = {
+export const deleteOrganizationAPI = {
   RequestMethod: "ServiceManager.DeleteOrganization",
 };
-const SavesNotesRequestMethod = {
+export const SavesNotesRequestMethod = {
   RequestMethod: "ServiceManager.SaveNotes",
 };
-const GetNotesByUserIDAndOrganizationID = {
+export const GetNotesByUserIDAndOrganizationID = {
   RequestMethod: "ServiceManager.GetNotesByUserIDAndOrganizationID",
 };
-const UpdateNotesRequestMethod = {
+export const UpdateNotesRequestMethod = {
   RequestMethod: "ServiceManager.UpdateNotes",
 };
-const GetNotesByNotesIDRequestMethod = {
+export const GetNotesByNotesIDRequestMethod = {
   RequestMethod: "ServiceManager.GetNotesByNotesID",
 };
 
 //Refresh Token Talk
-const refreshTokenTalk = {
+export const refreshTokenTalk = {
   // RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
 };
 
 //Get All User Chats Talk
-const getAllUserChats = {
+export const getAllUserChats = {
   RequestMethod: "ServiceManager.GetRecentAllMessagesWithUserDetails",
 };
 
 //GetUserOTOMessages
-const getUserOTOMessages = {
+export const getUserOTOMessages = {
   RequestMethod: "ServiceManager.GetUserOTOMessages",
 };
 
 //GetUndeliveredUserOTOMessages
-const getUndeliveredUserOTOMessages = {
+export const getUndeliveredUserOTOMessages = {
   RequestMethod: "ServiceManager.GetUndeliveredUserOTOMessages",
 };
 
 //GetGroupMessages
-const getGroupMessages = {
+export const getGroupMessages = {
   RequestMethod: "ServiceManager.GetGroupMessages",
 };
 
 //Get Broadcast Messages
-const getBroadCastMessages = {
+export const getBroadCastMessages = {
   RequestMethod: "ServiceManager.GetBroadcastMessages",
 };
 
 //Get Archived Data By User ID
-const getArchivedDataByUserID = {
+export const getArchivedDataByUserID = {
   RequestMethod: "ServiceManager.GetRecentArchiveDataByUserID",
 };
 
 //Get Flag Messages
-const getFlagMessages = {
+export const getFlagMessages = {
   RequestMethod: "ServiceManager.GetRecentFlag",
 };
 
 //Get Follow Messages
-const getFollowMessages = {
+export const getFollowMessages = {
   RequestMethod: "ServiceManager.GetRecentFollowDataByUserID",
 };
 
 //Get Recent Tags
-const getAllRecentTags = {
+export const getAllRecentTags = {
   RequestMethod: "ServiceManager.GetAllRecentTags",
 };
 
 //Get Tags Messages
-const getTagsMessages = {
+export const getTagsMessages = {
   RequestMethod: "ServiceManager.GetTagsMessages",
 };
 
 //Get Message Seen Receive Time
-const getMessageSentReceivedTime = {
+export const getMessageSentReceivedTime = {
   RequestMethod: "ServiceManager.GetSentReceiveSeenTime",
 };
 
 //Get Recent Flag Count
-const getRecentFlagCount = {
+export const getRecentFlagCount = {
   RequestMethod: "ServiceManager.GetRecentFlagCount",
 };
 
 //getRecentFollowDataCountByUserID
-const getRecentFollowDataCountByUserID = {
+export const getRecentFollowDataCountByUserID = {
   RequestMethod: "ServiceManager.GetRecentFollowDataCountByUserID",
 };
 
 //GetAllRecentTagsCount
-const getAllRecentTagsCount = {
+export const getAllRecentTagsCount = {
   RequestMethod: "ServiceManager.GetAllRecentTagsCount",
 };
 
 //GetAllRecentTagsCount
-const getRecentArchiveDataCountByUserID = {
+export const getRecentArchiveDataCountByUserID = {
   RequestMethod: "ServiceManager.GetRecentArchiveDataCountByUserID",
 };
 
 //GetBlockedUsersCount
-const getBlockedUsersCount = {
+export const getBlockedUsersCount = {
   RequestMethod: "ServiceManager.GetBlockedUsersCount",
 };
 
 //getBlockedUsers
-const getBlockedUsers = {
+export const getBlockedUsers = {
   RequestMethod: "ServiceManager.GetBlockedUsers",
 };
 
 //GetAllUsers
-const getAllUsers = {
+export const getAllUsers = {
   RequestMethod: "ServiceManager.GetAllUsers",
 };
 
 //GetAllUsersGroupsRoomsList
-const getAllUsersGroupsRoomsList = {
+export const getAllUsersGroupsRoomsList = {
   RequestMethod: "ServiceManager.GetAllUsersGroupsRoomsList",
 };
 
 //GetActiveUsersByGroupID
-const getActiveUsersByGroupID = {
+export const getActiveUsersByGroupID = {
   RequestMethod: "ServiceManager.GetActiveUsersByGroupID",
 };
 
 //GetActiveUsersByRoomID
-const getActiveUsersByRoomID = {
+export const getActiveUsersByRoomID = {
   RequestMethod: "ServiceManager.GetActiveUsersByRoomID",
 };
 
 //GetActiveUsersByBroadcastID
-const getActiveUsersByBroadcastID = {
+export const getActiveUsersByBroadcastID = {
   RequestMethod: "ServiceManager.GetActiveUsersByBroadcastID",
 };
 
 //InsertOTOMessages
-const insertOTOMessages = {
+export const insertOTOMessages = {
   RequestMethod: "ServiceManager.InsertOTOMessages",
 };
 
-const getCommitteeByIdRequestMethod = {
+export const getCommitteeByIdRequestMethod = {
   RequestMethod: "ServiceManager.GetCommitteeByCommitteeID",
 };
-const getGroupsByUserIdRequestMethod = {
+export const getGroupsByUserIdRequestMethod = {
   RequestMethod: "ServiceManager.SearchGroups",
 };
-const getGroupsByGroupIdRequestMethod = {
+export const getGroupsByGroupIdRequestMethod = {
   RequestMethod: "ServiceManager.GetGroupByGroupID",
 };
-const creategroupRequestMethod = {
+export const creategroupRequestMethod = {
   RequestMethod: "ServiceManager.CreateNewGroup",
 };
-const getAllOrganizationGroupRoles = {
+export const getAllOrganizationGroupRoles = {
   RequestMethod: "ServiceManager.GetAllOrganizationGroupRoles",
 };
-const getAllOrganizationGroupTypes = {
+export const getAllOrganizationGroupTypes = {
   RequestMethod: "ServiceManager.GetAllOrgainzationGroupTypes",
 };
-const updateGroupRequestMethod = {
+export const updateGroupRequestMethod = {
   RequestMethod: "ServiceManager.UpdateGroup",
 };
-const updateGroupStatusRequestMethod = {
+export const updateGroupStatusRequestMethod = {
   RequestMethod: "ServiceManager.UpdateGroupStatus",
 };
-const getCommitteesByUserID = {
+export const getCommitteesByUserID = {
   RequestMethod: "ServiceManager.SearchCommittees",
 };
-const getallOrganizationCommitteType = {
+export const getallOrganizationCommitteType = {
   RequestMethod: "ServiceManager.GetallOrganizationCommitteType",
 };
-const getallOrganizationCommitteMemberRole = {
+export const getallOrganizationCommitteMemberRole = {
   RequestMethod: "ServiceManager.GetallOrganizationCommitteMemberRole",
 };
-const createCommitteeRequestMethod = {
+export const createCommitteeRequestMethod = {
   RequestMethod: "ServiceManager.CreateNewcommittee",
 };
-const updateCommitteeStatusRequestMethod = {
+export const updateCommitteeStatusRequestMethod = {
   RequestMethod: "ServiceManager.UpdateCommitteeStatus",
 };
-const updateCommitteeRequestMethod = {
+export const updateCommitteeRequestMethod = {
   RequestMethod: "ServiceManager.UpdateCommittee",
 };
 
-const insertPrivateGroupMessage = {
+export const insertPrivateGroupMessage = {
   RequestMethod: "ServiceManager.InsertGroupMessage",
 };
 
 //Block & Unblock User
-const blockUnblockUser = {
+export const blockUnblockUser = {
   RequestMethod: "ServiceManager.BlockUnBlockUser",
 };
 
-const scheduleResolutionRequestMethod = {
+export const scheduleResolutionRequestMethod = {
   RequestMethod: "ServiceManager.AddUpdateScheduleResolution",
 };
 
-const addUpdateResolutionRequestMethod = {
+export const addUpdateResolutionRequestMethod = {
   RequestMethod: "ServiceManager.AddUpdateResolutionDetails",
 };
-const getAllVotingRequestMethod = {
+export const getAllVotingRequestMethod = {
   RequestMethod: "ServiceManager.GetAllVotingMethod",
 };
-const getAllVotingStatusRequestMethod = {
+export const getAllVotingStatusRequestMethod = {
   RequestMethod: "ServiceManager.GetAllResolutionStatus",
 };
-const getResolutionsRequestMethod = {
+export const getResolutionsRequestMethod = {
   RequestMethod: "ServiceManager.SearchResolutions",
 };
 
-const getVoterResolutionRequestMethod = {
+export const getVoterResolutionRequestMethod = {
   RequestMethod: "ServiceManager.SearchVoterResolutions",
 };
-const getResolutionByIDRequestMethod = {
+export const getResolutionByIDRequestMethod = {
   RequestMethod: "ServiceManager.GetResolutionByID",
 };
 //Delete Single Message
-const deleteSingleMessage = {
+export const deleteSingleMessage = {
   RequestMethod: "ServiceManager.SetMessageDelete",
 };
 
 //Broadcast Message
-const insertBroadcastMessage = {
+export const insertBroadcastMessage = {
   RequestMethod: "ServiceManager.InsertBroadcastMessage",
 };
 
 //Create Talk Group
-const createTalkPrivateGroup = {
+export const createTalkPrivateGroup = {
   RequestMethod: "ServiceManager.InsertGroup",
 };
 
 //Get Private Group Members
-const getPrivateGroupMembers = {
+export const getPrivateGroupMembers = {
   RequestMethod: "ServiceManager.GetActiveUsersByGroupID",
 };
 
 //Edit Group
-const updatePrivateGroup = {
+export const updatePrivateGroup = {
   RequestMethod: "ServiceManager.ModifyGroup",
 };
 
-const deleteNotes = {
+export const deleteNotes = {
   RequestMethod: "ServiceManager.DeleteNotes",
 };
 
-const getAllOrganizationGroups = {
+export const getAllOrganizationGroups = {
   RequestMethod: "ServiceManager.GetAllOrganizationGroups",
 };
 
-const CommitteeAndGroupMappingRequestMethod = {
+export const CommitteeAndGroupMappingRequestMethod = {
   RequestMethod: "ServiceManager.CommitteeAndGroupMapping",
 };
-const getResolutionResultsDetails = {
+export const getResolutionResultsDetails = {
   RequestMethod: "ServiceManager.GetResultDetails",
 };
-const getVoteDetailsByID = {
+export const getVoteDetailsByID = {
   RequestMethod: "ServiceManager.GetVoteDetailsByID",
 };
-const cancelResolutionRequestMethod = {
+export const cancelResolutionRequestMethod = {
   RequestMethod: "ServiceManager.CancelResolution",
 };
-const updateVoteRequestMethod = {
+export const updateVoteRequestMethod = {
   RequestMethod: "ServiceManager.UpdateVote",
 };
-const closeResolutionRequestMethod = {
+export const closeResolutionRequestMethod = {
   RequestMethod: "ServiceManager.CloseResolution",
 };
 
-const getBillingInformationRequestMethod = {
+export const getBillingInformationRequestMethod = {
   RequestMethod: "ServiceManager.GetBillingInformation",
 };
-const payOutStandingRequestMethod = {
+export const payOutStandingRequestMethod = {
   RequestMethod: "ServiceManager.PayOustanding",
 };
 
-const invoiceandPaymentHistoryRequestMethod = {
+export const invoiceandPaymentHistoryRequestMethod = {
   RequestMethod: "ServiceManager.InvoicesAndPaymentHistory",
 };
-const markStarredMessage = {
+export const markStarredMessage = {
   RequestMethod: "ServiceManager.SetMessageFlag",
 };
 
-const saveFilesRequestMethod = {
+export const saveFilesRequestMethod = {
   RequestMethod: "ServiceManager.SaveFiles",
 };
 
-const uploadDocumentsRequestMethod = {
+export const uploadDocumentsRequestMethod = {
   RequestMethod: "ServiceManager.UploadDocuments",
 };
 
-const saveFolderRequestMethod = {
+export const saveFolderRequestMethod = {
   RequestMethod: "ServiceManager.SaveFolder",
 };
 
-const getFolderDocumentsRequestMethod = {
+export const getFolderDocumentsRequestMethod = {
   RequestMethod: "ServiceManager.GetFolderDocuments",
 };
 
-const createFolderRequestMethod = {
+export const createFolderRequestMethod = {
   RequestMethod: "ServiceManager.CreateFolder",
 };
 
-const getDocumentsAndFolderRequestMethod = {
+export const getDocumentsAndFolderRequestMethod = {
   RequestMethod: "ServiceManager.GetDocumentsAndFolders",
 };
 
-const shareFilesRequestMethod = {
+export const shareFilesRequestMethod = {
   RequestMethod: "ServiceManager.ShareFiles",
 };
 
-const shareFolderRequestMethod = {
+export const shareFolderRequestMethod = {
   RequestMethod: "ServiceManager.ShareFolders",
 };
 
-const deleteFileRequestMethod = {
+export const deleteFileRequestMethod = {
   RequestMethod: "ServiceManager.DeleteFile",
 };
-const FolderisExistRequestMethod = {
+export const FolderisExistRequestMethod = {
   RequestMethod: "ServiceManager.FolderExist",
 };
-const FileisExistRequestMethod = {
+export const FileisExistRequestMethod = {
   RequestMethod: "ServiceManager.FileExist",
 };
-const deleteFolderRequestMethod = {
+export const deleteFolderRequestMethod = {
   RequestMethod: "ServiceManager.DeleteFolder",
 };
 
-const leaveGroup = {
+export const leaveGroup = {
   RequestMethod: "ServiceManager.RemoveUserFromGroup",
 };
 
-const createShoutAll = {
+export const createShoutAll = {
   RequestMethod: "ServiceManager.InsertBroadcast",
 };
 
-const deleteShoutAll = {
+export const deleteShoutAll = {
   RequestMethod: "ServiceManager.RemoveUserFromShout",
 };
 
-const updateShoutAll = {
+export const updateShoutAll = {
   RequestMethod: "ServiceManager.UpdateBroadcast",
 };
 
-const insertBulkMessages = {
+export const insertBulkMessages = {
   RequestMethod: "ServiceManager.InsertBulkMessages",
 };
 
-const googleValidToken = {
+export const googleValidToken = {
   RequestMethod: "ServiceManager.GetGoogleValidToken",
 };
-const revoketoken = {
+export const revoketoken = {
   RequestMethod: "ServiceManager.RevokeToken",
 };
-const searchUserMeetings = {
+export const searchUserMeetings = {
   RequestMethod: "ServiceManager.SearchMeetings",
 };
 
-const searchTodoListRequestMethod = {
+export const searchTodoListRequestMethod = {
   RequestMethod: "ServiceManager.SearchToDoList",
 };
 
-const searchNoteRequetMethod = {
+export const searchNoteRequetMethod = {
   RequestMethod: "ServiceManager.SearchNotes",
 };
-const paymentMethodsRequestMethod = {
+export const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods",
 };
 
-const downloadChat = {
+export const downloadChat = {
   RequestMethod: "ServiceManager.DownloadChat",
 };
 
-const searchPaymentHistoryRequestMethod = {
+export const searchPaymentHistoryRequestMethod = {
   RequestMethod: "ServiceManager.InvoicesAndPaymentHistory",
 };
 
-const searcPollsRequestMethod = {
+export const searcPollsRequestMethod = {
   RequestMethod: "ServiceManager.SearchPolls",
 };
 
-const savePollsRequestMethod = {
+export const savePollsRequestMethod = {
   RequestMethod: "ServiceManager.SavePoll",
 };
 
-const getAllCommittesandGroupsforPolls = {
+export const getAllCommittesandGroupsforPolls = {
   RequestMethod: "ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID",
 };
 
-const renameFolderRequestMethod = {
+export const renameFolderRequestMethod = {
   RequestMethod: "ServiceManager.RenameFolder",
 };
-const renameFileRequestMethod = {
+export const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile",
 };
-const subscriptiondetailsRequestMethod = {
+export const subscriptiondetailsRequestMethod = {
   RequestMethod: "ServiceManager.SubscriptionDetail",
 };
 
-const searchPolls = {
+export const searchPolls = {
   RequestMethod: "ServiceManager.SearchPolls",
 };
 
-const castVote = {
+export const castVote = {
   RequestMethod: "ServiceManager.CastVote",
 };
 
-const getAllPollStatus = {
+export const getAllPollStatus = {
   RequestMethod: "ServiceManager.GetAllPollStatus",
 };
 
-const getPollByPollID = {
+export const getPollByPollID = {
   RequestMethod: "ServiceManager.GetPollByPollID",
 };
 
-const updatePolls = {
+export const updatePolls = {
   RequestMethod: "ServiceManager.UpdatePoll",
 };
 
-const getPollByPollId = {
+export const getPollByPollId = {
   RequestMethod: "ServiceManager.GetAllPollOptionsByPollId",
 };
 
-const subscriptionPackageUpgradeAmount = {
+export const subscriptionPackageUpgradeAmount = {
   RequestMethod: "ServiceManager.GetPackageUpgradeTotalAmount",
 };
 
-const subscriptionPackageUpgradePayment = {
+export const subscriptionPackageUpgradePayment = {
   RequestMethod: "ServiceManager.PackageUpgradePaymentComplete",
 };
-const paymentCompleteMethod = {
+export const paymentCompleteMethod = {
   RequestMethod: "ServiceManager.PaymentComplete",
 };
 
-const viewvotes = {
+export const viewvotes = {
   RequestMethod: "ServiceManager.ViewVotes",
 };
-const deltePolls = {
+export const deltePolls = {
   RequestMethod: "ServiceManager.UpdatePollStatusByPollId",
 };
 
-const updateMessageAcknowledgement = {
+export const updateMessageAcknowledgement = {
   RequestMethod: "ServiceManager.UpdateMessageAcknowledgement",
 };
 
-const getAllStarredMessages = {
+export const getAllStarredMessages = {
   RequestMethod: "ServiceManager.GetAllFlaggedMessages",
 };
 
-const saveFilesandFolderRM = {
+export const saveFilesandFolderRM = {
   RequestMethod: "ServiceManager.SaveFileAndFolder",
 };
 
-const DeleteCommentRM = {
+export const DeleteCommentRM = {
   RequestMethod: "ServiceManager.DeleteComment",
 };
 
-const getSystemSupportedLanguage = {
+export const getSystemSupportedLanguage = {
   RequestMethod: "ServiceManager.GetSystemSupportedLanguage",
 };
 
-const getLastSelectedLanguage = {
+export const getLastSelectedLanguage = {
   RequestMethod: "ServiceManager.GetLastSelectedLanguage",
 };
 
-const setLastSelectedLanguage = {
+export const setLastSelectedLanguage = {
   RequestMethod: "ServiceManager.SetLastSelectedLanguage",
 };
 
-const getAllVideoCallUsers = {
+export const getAllVideoCallUsers = {
   RequestMethod: "ServiceManager.GetAllUsers",
 };
 
-const initiateVideoCall = {
+export const initiateVideoCall = {
   RequestMethod: "ServiceManager.InitiateVideoCall",
 };
 
-const videoCallResponse = {
+export const videoCallResponse = {
   RequestMethod: "ServiceManager.VideoCallResponse",
 };
 
-const getUserRecentCalls = {
+export const getUserRecentCalls = {
   RequestMethod: "ServiceManager.GetUserRecetCalls",
 };
 
-const updateProfilePictureRM = {
+export const updateProfilePictureRM = {
   RequestMethod: "ServiceManager.UpdateProfilePicture",
 };
 
-const callRequestReceived = {
+export const callRequestReceived = {
   RequestMethod: "ServiceManager.CallRequestReceived",
 };
 
-const getUserMissedCallCount = {
+export const getUserMissedCallCount = {
   RequestMethod: "ServiceManager.GetUserMissedCallCount",
 };
 
-const searchDocumentsFoldersAPI = {
+export const searchDocumentsFoldersAPI = {
   RequestMethod: "ServiceManager.SearchDocumentsAndFolders",
 };
 
-const leaveCall = {
+export const leaveCall = {
   RequestMethod: "ServiceManager.LeaveCall",
 };
 
-const getAnnotationOfToDoAttachement = {
+export const getAnnotationOfToDoAttachement = {
   RequestMethod: "ServiceManager.GetAnnotationOfToDoAttachement",
 };
-const addAnnotationOnToDoAttachement = {
+export const addAnnotationOnToDoAttachement = {
   RequestMethod: "ServiceManager.AddAnnotationOnToDoAttachement",
 };
 
-const getEventsTypeRM = {
+export const getEventsTypeRM = {
   RequestMethod: "ServiceManager.GetAllEventTypes",
 };
-const GetDiskusEventDetailsRM = {
+export const GetDiskusEventDetailsRM = {
   RequestMethod: "ServiceManager.GetDiskusEventDetails",
 };
 
-const getAnnotationOfNotesAttachment = {
+export const getAnnotationOfNotesAttachment = {
   RequestMethod: "ServiceManager.GetAnnotationOfNotesAttachement",
 };
 
-const addAnnotationOnNotesAttachment = {
+export const addAnnotationOnNotesAttachment = {
   RequestMethod: "ServiceManager.AddAnnotationOnNotesAttachement",
 };
 
-const getAnnotationOfResolutionAttachment = {
+export const getAnnotationOfResolutionAttachment = {
   RequestMethod: "ServiceManager.GetAnnotationOfResolutionAttachement",
 };
 
-const addAnnotationOnResolutionAttachment = {
+export const addAnnotationOnResolutionAttachment = {
   RequestMethod: "ServiceManager.AddAnnotationOnResolutionAttachement",
 };
 
-const getAnnotationOfDataroomAttachment = {
+export const getAnnotationOfDataroomAttachment = {
   RequestMethod: "ServiceManager.GetAnnotationOfFilesAttachement",
 };
 
-const addAnnotationOnDataroomAttachment = {
+export const addAnnotationOnDataroomAttachment = {
   RequestMethod: "ServiceManager.AddAnnotationOnFilesAttachement",
 };
 
-const deleteMultipleGroupMessages = {
+export const deleteMultipleGroupMessages = {
   RequestMethod: "ServiceManager.DeleteMultipleMessages",
 };
 
-const getRecentDocumentsRM = {
+export const getRecentDocumentsRM = {
   RequestMethod: "ServiceManager.GetRecentDocuments",
 };
 
-const getAllGroupsUsersAndCommitteesByOrganizaitonID = {
+export const getAllGroupsUsersAndCommitteesByOrganizaitonID = {
   RequestMethod: "ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID",
 };
 
-const saveMeetingOrganizers = {
+export const saveMeetingOrganizers = {
   RequestMethod: "ServiceManager.SaveMeetingOrganizers",
 };
 
-const getallMeetingType = {
+export const getallMeetingType = {
   RequestMethod: "ServiceManager.GetAllMeetingTypes",
 };
 
-const saveMeetingDetials = {
+export const saveMeetingDetials = {
   RequestMethod: "ServiceManager.SaveMeetingDetails",
 };
 
-const GetMeetingNewFrequencyReminder = {
+export const GetMeetingNewFrequencyReminder = {
   RequestMethod: "ServiceManager.GetMeetingReminders",
 };
 
-const GetAllRecurringNewMeeting = {
+export const GetAllRecurringNewMeeting = {
   RequestMethod: "ServiceManager.GetAllRecurringFactor",
 };
 
-const meetingStatusUpdate = {
+export const meetingStatusUpdate = {
   RequestMethod: "ServiceManager.MeetingStatusUpdate",
 };
 
-const getParticipantsRoles = {
+export const getParticipantsRoles = {
   RequestMethod: "ServiceManager.GetAllParticipantRoles",
 };
 
-const saveAgendaContributorsRM = {
+export const saveAgendaContributorsRM = {
   RequestMethod: "ServiceManager.SaveAgendaContributors",
 };
 
-// const FetchVideoUrl = {
+// export const FetchVideoUrl = {
 //   RequestMethod: "ServiceManager.GetMeetingVideoURL",
 // };
 
-const FetchVideoUrl = {
+export const FetchVideoUrl = {
   RequestMethod: "ServiceManager.GetMeetingVideoURLNew",
 };
 
-const saveParticipantsMeeting = {
+export const saveParticipantsMeeting = {
   RequestMethod: "ServiceManager.SaveMeetingParticipants",
 };
 
-const getAllAgendaContributorRM = {
+export const getAllAgendaContributorRM = {
   RequestMethod: "ServiceManager.GetAllMeetingAgendaContributors",
 };
 
-const getAllSavedParticipants = {
+export const getAllSavedParticipants = {
   RequestMethod: "ServiceManager.GetAllMeetingParticipants",
 };
 
-const getAllMeetingOrganizers = {
+export const getAllMeetingOrganizers = {
   RequestMethod: "ServiceManager.GetAllMeetingOrganizers",
 };
 
-const getUserAgainstShareFileRM = {
+export const getUserAgainstShareFileRM = {
   RequestMethod: "ServiceManager.GetUsersAgainstSharedFile",
 };
 
-const getUserAgainstShareFolderRM = {
+export const getUserAgainstShareFolderRM = {
   RequestMethod: "ServiceManager.GetUsersAgainstSharedFolder",
 };
 
-const createFileLinkRM = {
+export const createFileLinkRM = {
   RequestMethod: "ServiceManager.CreateFileLink",
 };
 
-const createFolderLinkRM = {
+export const createFolderLinkRM = {
   RequestMethod: "ServiceManager.CreateFolderFileLink",
 };
 
-const updateGeneralAccessRM = {
+export const updateGeneralAccessRM = {
   RequestMethod: "ServiceManager.UpdateGeneralAccess",
 };
 
-const updateFolderGeneralAccessRM = {
+export const updateFolderGeneralAccessRM = {
   RequestMethod: "ServiceManager.UpdateFolderGeneralAccess",
 };
 
-const checkFileLinkRM = {
+export const checkFileLinkRM = {
   RequestMethod: "ServiceManager.CreateFileLink",
 };
 
-const requestAccessRM = {
+export const requestAccessRM = {
   RequestMethod: "ServiceManager.RequestAccess",
 };
 
-const sendNotification = {
+export const sendNotification = {
   RequestMethod: "ServiceManager.SendRecentNotifications",
 };
 
-const getAllMeetingDetailsByMeetingID = {
+export const getAllMeetingDetailsByMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingDetailsByMeetingID",
 };
 
-const getPollsByMeetingID = {
+export const getPollsByMeetingID = {
   RequestMethod: "ServiceManager.GetPollsByMeetingID",
 };
 
-const getAllmeetingUsers = {
+export const getAllmeetingUsers = {
   RequestMethod: "ServiceManager.GetAllMeetingUsers",
 };
 
-const SetMeetingPolls = {
+export const SetMeetingPolls = {
   RequestMethod: "ServiceManager.SetMeetingPolls",
 };
 
-const SettingMeetingProposedDates = {
+export const SettingMeetingProposedDates = {
   RequestMethod: "ServiceManager.SetMeetingProposedDates",
 };
 
-const getAllPropsedMeetingdates = {
+export const getAllPropsedMeetingdates = {
   RequestMethod: "ServiceManager.GetAllMeetingProposedDates",
 };
 
 //AUN working on Attendance Meeting
-const getAllAttendanceMeeting = {
+export const getAllAttendanceMeeting = {
   RequestMethod: "ServiceManager.GetAllMeetingAttendanceReport",
 };
 
 //Aun working on Save Attendance Meeting
-const saveMeetingAttendance = {
+export const saveMeetingAttendance = {
   RequestMethod: "ServiceManager.SaveMeetingAttendanceReport",
 };
 
-const updateResolutionDataRoomMapRM = {
+export const updateResolutionDataRoomMapRM = {
   RequestMethod: "ServiceManager.UpdateResolutionDataRoomMap",
 };
 
-const saveResolutionDocumentsRM = {
+export const saveResolutionDocumentsRM = {
   RequestMethod: "ServiceManager.SaveResolutionDocuments",
 };
 
-const setMeetingProposedDatesResponse = {
+export const setMeetingProposedDatesResponse = {
   RequestMethod: "ServiceManager.SetMeetingProposedDatesResponse",
 };
 
-const CreateUpdateCommitteeDatarRoomRM = {
+export const CreateUpdateCommitteeDatarRoomRM = {
   RequestMethod: "ServiceManager.CreateUpdateCommiteeDataRoomMap",
 };
-const saveCommitteeDocumentsRM = {
+export const saveCommitteeDocumentsRM = {
   RequestMethod: "ServiceManager.SaveCommitteeDocuments",
 };
 
-const reteriveCommitteeDocumentsRM = {
+export const reteriveCommitteeDocumentsRM = {
   RequestMethod: "ServiceManager.ReteriveCommitteeDocuments",
 };
 
 //Aun work on Get meetingMaterial
-const getAllMeetingMaterial = {
+export const getAllMeetingMaterial = {
   RequestMethod: "ServiceManager.GetAllMeetingMaterial",
 };
 
 //Aun working on download Attendance Report
-const downloadMeetingAttendanceReport = {
+export const downloadMeetingAttendanceReport = {
   RequestMethod: "ServiceManager.DownloadMeetingAttendanceReportExcel",
 };
 
-const CreateUpdateGroupDataRoadMap = {
+export const CreateUpdateGroupDataRoadMap = {
   RequestMethod: "ServiceManager.CreateUpdateGroupDataRoomMap",
 };
 
-const SaveTheGroupsDocuments = {
+export const SaveTheGroupsDocuments = {
   RequestMethod: "ServiceManager.SaveGroupsDocuments",
 };
 
-const RetrieveGroupDocuments = {
+export const RetrieveGroupDocuments = {
   RequestMethod: "ServiceManager.ReteriveGroupDocuments",
 };
 
-const MeetingAgendaLock = {
+export const MeetingAgendaLock = {
   RequestMethod: "ServiceManager.UpdateMeetingAgendaLockStatus",
 };
 
-const GetAllUserAgendaRights = {
+export const GetAllUserAgendaRights = {
   RequestMethod: "ServiceManager.GetAllUserAgendaRights",
 };
 
-const saveUserAttachmentPermission = {
+export const saveUserAttachmentPermission = {
   RequestMethod: "ServiceManager.SaveUserAttachmentPermission",
 };
 
-const getPollbyCommitteeIdRM = {
+export const getPollbyCommitteeIdRM = {
   RequestMethod: "ServiceManager.GetPollsByComitteeID",
 };
-const setCommitteePollsRM = {
+export const setCommitteePollsRM = {
   RequestMethod: "ServiceManager.SetCommitteePolls",
 };
 
-const getAgendaVotingDetails = {
+export const getAgendaVotingDetails = {
   RequestMethod: "ServiceManager.GetAgendaVotingDetails",
 };
 
-const getAllVotingResultDisplay = {
+export const getAllVotingResultDisplay = {
   RequestMethod: "ServiceManager.GetAllVotingResultDisplay",
 };
 
-const saveAgendaVoting = {
+export const saveAgendaVoting = {
   RequestMethod: "ServiceManager.SaveAgendaVoting",
 };
 
-const getAgendaAndVotingInfo = {
+export const getAgendaAndVotingInfo = {
   RequestMethod: "ServiceManager.GetAgendaAndVotingInfo",
 };
 
-const casteVoteForAgenda = {
+export const casteVoteForAgenda = {
   RequestMethod: "ServiceManager.CasteVoteForAgenda",
 };
 
-const viewAgendaVotingResults = {
+export const viewAgendaVotingResults = {
   RequestMethod: "ServiceManager.ViewAgendaVotingResults",
 };
 
-const getPollByGroupIDApi = {
+export const getPollByGroupIDApi = {
   RequestMethod: "ServiceManager.GetPollsByGroupID",
 };
 
-const setGroupPollsApi = {
+export const setGroupPollsApi = {
   RequestMethod: "ServiceManager.SetGroupPolls",
 };
 
-const getGeneralMinutes = {
+export const getGeneralMinutes = {
   RequestMethod: "ServiceManager.GetMeetingGeneralMinutes",
 };
 
-const SaveminutesGeneral = {
+export const SaveminutesGeneral = {
   RequestMethod: "ServiceManager.AddGeneralMinute",
 };
 
-const SaveGeneralWiseSavingDocuments = {
+export const SaveGeneralWiseSavingDocuments = {
   RequestMethod: "ServiceManager.SaveGeneralMinutesDocuments",
 };
 
-const RetriveGeneralMinutesDocuments = {
+export const RetriveGeneralMinutesDocuments = {
   RequestMethod: "ServiceManager.ReteriveGeneralMinuteDocuments",
 };
 
-const getAllGeneralMiintuesDocument = {
+export const getAllGeneralMiintuesDocument = {
   RequestMethod: "ServiceManager.GetAllGeneralMiuteDocumentsForMeeting",
 };
 
-const getTaskGroupIDApi = {
+export const getTaskGroupIDApi = {
   RequestMethod: "ServiceManager.GetTasksByGroupID",
 };
 
-const setGroupTaskApi = {
+export const setGroupTaskApi = {
   RequestMethod: "ServiceManager.SetGroupTasks",
 };
 
-const getTaskByCommitteeIDApi = {
+export const getTaskByCommitteeIDApi = {
   RequestMethod: "ServiceManager.GetTasksByCommitteeID",
 };
 
-const setCommitteeTaskApi = {
+export const setCommitteeTaskApi = {
   RequestMethod: "ServiceManager.SetCommitteeTasks",
 };
 
-const DeleteGeneralMinutes = {
+export const DeleteGeneralMinutes = {
   RequestMethod: "ServiceManager.DeleteGeneralMinute",
 };
 
-const UpdateGeneralMinutes = {
+export const UpdateGeneralMinutes = {
   RequestMethod: "ServiceManager.UpdateGeneralMinute",
 };
 
-const agenwiseMinutes = {
+export const agenwiseMinutes = {
   RequestMethod: "ServiceManager.AddAgendaWiseMinutes",
 };
 
-const DeleteagendaWiseMinutes = {
+export const DeleteagendaWiseMinutes = {
   RequestMethod: "ServiceManager.DeleteAgendaWiseMinute",
 };
 
-const updateAgendaWiseMinutes = {
+export const updateAgendaWiseMinutes = {
   RequestMethod: "ServiceManager.UpdateAgendaWiseMinute",
 };
 
-const getAllAgendaWiseMinutes = {
+export const getAllAgendaWiseMinutes = {
   RequestMethod: "ServiceManager.GetAllMeetingAgendaWiseMinutes",
 };
-const deleteCommitteePollRM = {
+export const deleteCommitteePollRM = {
   RequestMethod: "ServiceManager.DeleteCommitteePolls",
 };
 
-const deleteGroupPollsRM = {
+export const deleteGroupPollsRM = {
   RequestMethod: "ServiceManager.DeleteGroupPolls",
 };
 
-const deleteMeetingPollsRM = {
+export const deleteMeetingPollsRM = {
   RequestMethod: "ServiceManager.DeleteMeetingPolls",
 };
 
-const deleteCommitteeTaskRM = {
+export const deleteCommitteeTaskRM = {
   RequestMethod: "ServiceManager.DeleteCommitteeTasks",
 };
 
-const deleteGroupTaskRM = {
+export const deleteGroupTaskRM = {
   RequestMethod: "ServiceManager.DeleteGroupTasks",
 };
 
-const getUserWiseProposeDate = {
+export const getUserWiseProposeDate = {
   RequestMethod: "ServiceManager.GetParticipantWiseProposedDates",
 };
 
-const getAdvanceMeetingAgendabyMeetingID = {
+export const getAdvanceMeetingAgendabyMeetingID = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
 };
 
-const saveDocumentAgendaWiseMinutes = {
+export const saveDocumentAgendaWiseMinutes = {
   RequestMethod: "ServiceManager.SaveAgendaWiseMinutesDocuments",
 };
 
-const RetriveAgendaWiseDocuments = {
+export const RetriveAgendaWiseDocuments = {
   RequestMethod: "ServiceManager.ReteriveAgendaWiseMiuteDocuments",
 };
 
-const DeleteDocumentGenralMinute = {
+export const DeleteDocumentGenralMinute = {
   RequestMethod: "ServiceManager.DeleteGeneralMinuteDocuments",
 };
 
-const createUpdateMeetingDataRoomMap = {
+export const createUpdateMeetingDataRoomMap = {
   RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
 };
 
-const ScheduleMeetingOnSelectedDate = {
+export const ScheduleMeetingOnSelectedDate = {
   RequestMethod: "ServiceManager.ScheduleMeetingOnSelectedDate",
 };
 
-const getMeetingbyGroupIDRM = {
+export const getMeetingbyGroupIDRM = {
   RequestMethod: "ServiceManager.GetMeetingsByGroupID",
 };
 
-const getMeetingbyCommitteeIDRM = {
+export const getMeetingbyCommitteeIDRM = {
   RequestMethod: "ServiceManager.GetMeetingsByCommitteeID",
 };
 
-const setMeetingbyGroupIDRM = {
+export const setMeetingbyGroupIDRM = {
   RequestMethod: "ServiceManager.SetGroupMeeting",
 };
 
-const setMeetingbyCommitteeIDRM = {
+export const setMeetingbyCommitteeIDRM = {
   RequestMethod: "ServiceManager.SetCommitteeMeetings",
 };
-const DeleteAgendaWiseDocuments = {
+export const DeleteAgendaWiseDocuments = {
   RequestMethod: "ServiceManager.DeleteAgendaWiseMinuteDocuments",
 };
 
-const CreateUpdateMeetingDataroomMapped = {
+export const CreateUpdateMeetingDataroomMapped = {
   RequestMethod: "ServiceManager.CreateUpdateMeetingDataRoomMap",
 };
 
-const UpdateMeetingUserhit = {
+export const UpdateMeetingUserhit = {
   RequestMethod: "ServiceManager.UpdateMeetingUsers",
 };
 
-const addUpdateAdvanceMeetingAgenda = {
+export const addUpdateAdvanceMeetingAgenda = {
   RequestMethod: "ServiceManager.AddUpdateAdvanceMeetingAgenda",
 };
 
 // report download Attendance in Excel
-const downloadAttendanceReport = {
+export const downloadAttendanceReport = {
   RequestMethod: "ServiceManager.DownloadAttendenceReportPDF",
 };
 
-const agendaVotingStatusUpdate = {
+export const agendaVotingStatusUpdate = {
   RequestMethod: "ServiceManager.AgendaVotingStatusUpdate",
 };
 
-const saveMeetingDocuments = {
+export const saveMeetingDocuments = {
   RequestMethod: "ServiceManager.SaveMeetingDocuments",
 };
 
 // get All Meeting Tasks in Action
-const getMeetingTasksAction = {
+export const getMeetingTasksAction = {
   RequestMethod: "ServiceManager.GetMeetingTasks",
 };
 
-const dataRoomFileDownloadService = {
+export const dataRoomFileDownloadService = {
   RequestMethod: "ServiceManager.DownloadFile",
 };
 
-const dataRoomFolderDownloadService = {
+export const dataRoomFolderDownloadService = {
   RequestMethod: "ServiceManager.DownloadFolder",
 };
 
-const saveTaskandAssgineesRM = {
+export const saveTaskandAssgineesRM = {
   RequestMethod: "ServiceManager.SaveTaskDocumentsAndAssignees",
 };
 
-const createupdateTaskDataroom = {
+export const createupdateTaskDataroom = {
   RequestMethod: "ServiceManager.CreateUpdateToDoDataRoomMap",
 };
 
-const saveTaskDocuments = {
+export const saveTaskDocuments = {
   RequestMethod: "ServiceManager.SaveToDoDocuments",
 };
 
-const mapTaskWithMeetingAgenda = {
+export const mapTaskWithMeetingAgenda = {
   RequestMethod: "ServiceManager.MapTaskWithMeetingAndAgenda",
 };
 
-const removeTaskMeetingMapping = {
+export const removeTaskMeetingMapping = {
   RequestMethod: "ServiceManager.RemoveTaskMeetingMapping",
 };
 
-const getAllagendaWiseDocumentsApi = {
+export const getAllagendaWiseDocumentsApi = {
   RequestMethod: "ServiceManager.GetAllAgendaWiseMinuteDocumentsForMeeting",
 };
 
-const getAllAgendaForAgendaWise = {
+export const getAllAgendaForAgendaWise = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingID",
 };
 
-const getAllMeetingForAgendaImport = {
+export const getAllMeetingForAgendaImport = {
   RequestMethod: "ServiceManager.GetAllMeetingForAgendaImport",
 };
 
-const getAgendaWithMeetingIDForImport = {
+export const getAgendaWithMeetingIDForImport = {
   RequestMethod: "ServiceManager.GetAgendaWithMeetingIDForImport",
 };
 
-const inviteForCollaboration = {
+export const inviteForCollaboration = {
   RequestMethod: "ServiceManager.InviteForMinuteCollaboration",
 };
 
-const getFileFolderDetailsRM = {
+export const getFileFolderDetailsRM = {
   RequestMethod: "ServiceManager.GetFileFolderDetails",
 };
 
-const updateAndOpenByAndDescriptionRM = {
+export const updateAndOpenByAndDescriptionRM = {
   RequestMethod: "ServiceManager.UpdateOpenedByAndDescription",
 };
 
-const getDataAnalyticsRM = {
+export const getDataAnalyticsRM = {
   RequestMethod: "ServiceManager.GetDataAnalytics",
 };
 
-const getDataAnalyticsCountRM = {
+export const getDataAnalyticsCountRM = {
   RequestMethod: "ServiceManager.GetDataAnalyticsCount",
 };
 
-const validateEncryptedStringUserAvailabilityForMeeting = {
+export const validateEncryptedStringUserAvailabilityForMeeting = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringUserAvailabilityForMeeting",
 };
 
-const validateEncyptedStringUserDataRoom = {
+export const validateEncyptedStringUserDataRoom = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringUserAvailabilityForDataRoom",
 };
 
-const validateMicrosoftToken = {
+export const validateMicrosoftToken = {
   RequestMethod: "ServiceManager.GetMicrosoftValidToken",
 };
 
 // when organizer hit the view button in unpublished meeting
-const getUserWiseProposeDateOrganizer = {
+export const getUserWiseProposeDateOrganizer = {
   RequestMethod: "ServiceManager.GetUserWiseProposedDates",
 };
-const UserLoginHistoryRM = {
+export const UserLoginHistoryRM = {
   RequestMethod: "ServiceManager.GetUserLoginHistoryForOA",
 };
-const UserLogout = {
+export const UserLogout = {
   RequestMethod: "ServiceManager.LogOut",
 };
 
-const createWorkFlowRM = {
+export const createWorkFlowRM = {
   RequestMethod: "ServiceManager.CreateSignatureFlow",
 };
 
-const saveWorkFlowRM = {
+export const saveWorkFlowRM = {
   RequestMethod: "ServiceManager.SaveWorkFlow",
 };
 
-const updateActorBundleStatusRM = {
+export const updateActorBundleStatusRM = {
   RequestMethod: "ServiceManager.UpdateActorBundleStatus",
 };
 
-const getActorBundleStatusStateRM = {
+export const getActorBundleStatusStateRM = {
   RequestMethod: "ServiceManager.GetActorBundleStatusState",
 };
 
-const getActionableBundleStatusStateRM = {
+export const getActionableBundleStatusStateRM = {
   RequestMethod: "ServiceManager.GetActionableBundleStatusState",
 };
 
-const getEntityTypesRM = {
+export const getEntityTypesRM = {
   RequestMethod: "ServiceManager.GetEntityTypes",
 };
-const getWorkFlowRM = {
+export const getWorkFlowRM = {
   RequestMethod: "ServiceManager.GetWorkFlow",
 };
-const getWorkFlowsRM = {
+export const getWorkFlowsRM = {
   RequestMethod: "ServiceManager.GetWorkFlows",
 };
-const saveActorRM = {
+export const saveActorRM = {
   RequestMethod: "ServiceManager.SaveActorColor",
 };
 
-const saveActorColorRM = {
+export const saveActorColorRM = {
   RequestMethod: "ServiceManager.SaveActorColor",
 };
-const saveAndEditFormFieldsRM = {
+export const saveAndEditFormFieldsRM = {
   RequestMethod: "ServiceManager.SaveAndEditFormFields",
 };
 
-const sendDocumentRM = {
+export const sendDocumentRM = {
   RequestMethod: "ServiceManager.SendDocument",
 };
 
-const DeclineReason = {
+export const DeclineReason = {
   RequestMethod: "ServiceManager.DeclineReason",
 };
 
-const getAllFieldsByWorkFlowIdRM = {
+export const getAllFieldsByWorkFlowIdRM = {
   RequestMethod: "ServiceManager.GetAllFieldsByWorkFlowID",
 };
 
-const addUpdateFieldValueRM = {
+export const addUpdateFieldValueRM = {
   RequestMethod: "ServiceManager.AddUpdateFieldValue",
 };
 
-const saveAuditTrailRM = {
+export const saveAuditTrailRM = {
   RequestMethod: "ServiceManager.SaveAuditTrail",
 };
 
-const getAllAuditTrailByWorkFlowIdRM = {
+export const getAllAuditTrailByWorkFlowIdRM = {
   RequestMethod: "ServiceManager.GetAllAuditTrailByWorkFlowID",
 };
 
-const getDeclineReasonRM = {
+export const getDeclineReasonRM = {
   RequestMethod: "ServiceManager.GetDeclineReason",
 };
-const getSignatureFormFieldTypesRM = {
+export const getSignatureFormFieldTypesRM = {
   RequestMethod: "ServiceManager.GetSignatureFormFieldTypes",
 };
-const getColorPlattesRM = {
+export const getColorPlattesRM = {
   RequestMethod: "ServiceManager.GetColorPalettes",
 };
-const getAuditTrailActionsRM = {
+export const getAuditTrailActionsRM = {
   RequestMethod: "ServiceManager.GetAuditTrailActions",
 };
-const getActorFieldValuesRM = {
+export const getActorFieldValuesRM = {
   RequestMethod: "ServiceManager.GetActorFieldValues",
 };
 
-const addNewSignatureRM = {
+export const addNewSignatureRM = {
   RequestMethod: "ServiceManager.AddANewSignature",
 };
 
-const getAllSignaturesRM = {
+export const getAllSignaturesRM = {
   RequestMethod: "ServiceManager.GetAllSignatures",
 };
 
-const getUserSignatureRM = {
+export const getUserSignatureRM = {
   RequestMethod: "ServiceManager.GetUserSignature",
 };
 
-const deleteUserSignatureRM = {
+export const deleteUserSignatureRM = {
   RequestMethod: "ServiceManager.DeleteUserSignature",
 };
 
-const getWorkFlowByFileIdRM = {
+export const getWorkFlowByFileIdRM = {
   RequestMethod: "ServiceManager.GetWorkFlowByFileID",
 };
 // new api for end quick meeting
-const endMeetingStatus = {
+export const endMeetingStatus = {
   RequestMethod: "ServiceManager.MeetingStatusUpdate",
 };
 
-const saveSignatureDocumentRM = {
+export const saveSignatureDocumentRM = {
   RequestMethod: "ServiceManager.SaveSignatureDocument",
 };
 
-const getMeetingParticipantsInfo = {
+export const getMeetingParticipantsInfo = {
   RequestMethod: "ServiceManager.GetMeetingParticipantsInfo",
 };
 
-const sendAgendaPDFAsEmail = {
+export const sendAgendaPDFAsEmail = {
   RequestMethod: "ServiceManager.SendAgendaPDFAsEmail",
 };
 
-const exportAgendaAsPDF = {
+export const exportAgendaAsPDF = {
   RequestMethod: "ServiceManager.ExportAgendaAsPDF",
 };
 
-const printMeetingAgenda = {
+export const printMeetingAgenda = {
   RequestMethod: "ServiceManager.PrintMeetingAgenda",
 };
 
-const SaveOrganizationAndPakageSelection = {
+export const SaveOrganizationAndPakageSelection = {
   RequestMethod: "ServiceManager.SaveOrganizationsAndSelectedPackage",
 };
 
-const ExtendOrganizationTrial = {
+export const ExtendOrganizationTrial = {
   RequestMethod: "ServiceManager.ExtendOrganizationTrial",
 };
 
-const AddOrganizationsUser = {
+export const AddOrganizationsUser = {
   RequestMethod: "ServiceManager.AddOrganizationsUsers",
 };
 
-const EditOrganizationsUser = {
+export const EditOrganizationsUser = {
   RequestMethod: "ServiceManager.EditOrganizationsUser",
 };
 
-const AllOrganizationsUsers = {
+export const AllOrganizationsUsers = {
   RequestMethod: "ServiceManager.ManageUserScreen",
 };
 
-const OrganizationPackageDetailsAndUserStats = {
+export const OrganizationPackageDetailsAndUserStats = {
   RequestMethod: "ServiceManager.OrganizationPackageDetailsAndUserStats",
 };
 
-const GetOrganizationSelectedPackagesByOrganizationID = {
+export const GetOrganizationSelectedPackagesByOrganizationID = {
   RequestMethod:
     "ServiceManager.GetOrganizationSelectedPackagesByOrganizationID",
 };
 
-const joinMeeting = {
+export const joinMeeting = {
   RequestMethod: "ServiceManager.JoinMeeting",
 };
 
-const leaveMeeting = {
+export const leaveMeeting = {
   RequestMethod: "ServiceManager.LeaveMeeting",
 };
 
-const getOrganizationSelectedPakages = {
+export const getOrganizationSelectedPakages = {
   RequestMethod: "ServiceManager.GetOrganizationSelectedPackages",
 };
 
-const GetAllUserTypePackages = {
+export const GetAllUserTypePackages = {
   RequestMethod: "ServiceManager.GetAllUserTypePackages",
 };
 
-const leaveFileSharingRM = {
+export const leaveFileSharingRM = {
   RequestMethod: "ServiceManager.DeleteFileSharing",
 };
 
-// const delete organization User for Admin
+// export const delete organization User for Admin
 
-const ResendForgotPasswordCode = {
+export const ResendForgotPasswordCode = {
   RequestMethod: "ServiceManager.ResendForgotPasswordCode",
 };
 
-const DeleteOrganizationsUser = {
+export const DeleteOrganizationsUser = {
   RequestMethod: "ServiceManager.DeleteOrganizationsUser",
 };
 
-const leaveFolderSharingRM = {
+export const leaveFolderSharingRM = {
   RequestMethod: "ServiceManager.DeleteFolderSharing",
 };
 
-const PaymentInitiateStepperThree = {
+export const PaymentInitiateStepperThree = {
   RequestMethod: "ServiceManager.PaymentInitiate",
 };
 
 // for get Cancel Subscription Reasons
-const CancelSubReasons = {
+export const CancelSubReasons = {
   RequestMethod: "ServiceManager.GetCancelSubscriptionReasons",
 };
 
 // for cancel subscription
-const CancelOrganizationsSubscriptions = {
+export const CancelOrganizationsSubscriptions = {
   RequestMethod: "ServiceManager.CancelOrganizationsSubscription",
 };
 
 // Api for upgrade button on package details which is not ready yet but structure should be ready when Api will implemented ready to go
-// const upgradePackageApiCallOnPackageDetailPage = {
+// export const upgradePackageApiCallOnPackageDetailPage = {
 //   RequestMethod: ""
 // };
 
-const revokeMicrosoftToken = {
+export const revokeMicrosoftToken = {
   RequestMethod: "ServiceManager.RevokeMicrosoftToken",
 };
 
-const requestOrganizationTrialExtend = {
+export const requestOrganizationTrialExtend = {
   RequestMethod: "ServiceManager.RequestOrganizationTrialExtend",
 };
 
-const paymentStatus = {
+export const paymentStatus = {
   RequestMethod: "ServiceManager.PaymentStatus",
 };
 
-const ValidateEmailRelatedString = {
+export const ValidateEmailRelatedString = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
-const ValidateEmailRelatedStringPolls = {
+export const ValidateEmailRelatedStringPolls = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringPollRelatedEmailData",
 };
 
-const downloadAttachmentTalk = {
+export const downloadAttachmentTalk = {
   RequestMethod: "ServiceManager.DownloadAttachment",
 };
 
-const changeSelectedSubscription = {
+export const changeSelectedSubscription = {
   RequestMethod: "ServiceManager.ChangeSelectedSubscriptionDetails",
 };
-const CancelTrailandUpdageOrganiztionRM = {
+export const CancelTrailandUpdageOrganiztionRM = {
   RequestMethod: "ServiceManager.CancelTrialAndUpgradeOrganizationSubscription",
 };
 
-const GetAllSignatureFlowDocumentsForCreatorRM = {
+export const GetAllSignatureFlowDocumentsForCreatorRM = {
   RequestMethod:
     "ServiceManager.GetAllSignatureFlowDocumentsForCreatorWithFilters",
 };
 
-const ListOfPendingForApprovalSignaturesRM = {
+export const ListOfPendingForApprovalSignaturesRM = {
   RequestMethod: "ServiceManager.ListOfPendingForApprovalSignatures",
 };
-const GetInvoiceHTMLByOrganizatonID = {
+export const GetInvoiceHTMLByOrganizatonID = {
   RequestMethod: "ServiceManager.GetInvoiceHtmlByOrganizationID",
 };
-const LoginHistoryReportExporttoExcel = {
+export const LoginHistoryReportExporttoExcel = {
   RequestMethod: "ServiceManager.LoginHistoryReport",
 };
-const GetAllPendingForApprovalStatsRM = {
+export const GetAllPendingForApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetAllPendingForApprovalStats",
 };
 //Minutes APIs
 
-const listOfDefaultRejectionComments = {
+export const listOfDefaultRejectionComments = {
   RequestMethod: "ServiceManager.ListOfDefaultRejectionComments",
 };
 
-const pendingApprovalsCount = {
+export const pendingApprovalsCount = {
   RequestMethod: "ServiceManager.PendingApprovalsCount",
 };
 
-const getMinuteReviewStatsForOrganizerByMeetingId = {
+export const getMinuteReviewStatsForOrganizerByMeetingId = {
   RequestMethod: "ServiceManager.GetMinuteReviewStatsForOrganizerByMeetingId",
 };
 
-const getAllOrganizationUsersForReview = {
+export const getAllOrganizationUsersForReview = {
   RequestMethod: "ServiceManager.GetAllOrganizationUsersForReview",
 };
 
-const getMinutesForReviewerByMeetingId = {
+export const getMinutesForReviewerByMeetingId = {
   RequestMethod: "ServiceManager.GetMinutesForReviewerByMeetingId",
 };
 
-const getMinuteReviewPendingApprovalsStatsByReviewerId = {
+export const getMinuteReviewPendingApprovalsStatsByReviewerId = {
   RequestMethod:
     "ServiceManager.GetMinuteReviewPendingApprovalsStatsByReviewerId",
 };
 
-const getMinuteReviewPendingApprovalsByReviewerId = {
+export const getMinuteReviewPendingApprovalsByReviewerId = {
   RequestMethod: "ServiceManager.GetMinuteReviewPendingApprovalsByReviewerId",
 };
 
-const saveMinutesReviewFlow = {
+export const saveMinutesReviewFlow = {
   RequestMethod: "ServiceManager.SaveMinutesReviewFlow",
 };
 
-const getPendingApprovalStatusesForMinuteReview = {
+export const getPendingApprovalStatusesForMinuteReview = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForMinuteReview",
 };
 
-const acceptRejectMinuteReview = {
+export const acceptRejectMinuteReview = {
   RequestMethod: "ServiceManager.AcceptRejectMinuteReview",
 };
 
-const resendUpdatedMinuteForReview = {
+export const resendUpdatedMinuteForReview = {
   RequestMethod: "ServiceManager.ResendUpdatedMinuteForReview",
 };
 
-const getMinuteVersionHistoryWithComments = {
+export const getMinuteVersionHistoryWithComments = {
   RequestMethod: "ServiceManager.GetMinuteVersionHistoryWithComments",
 };
 
-const getMinuteReviewFlowByMeetingId = {
+export const getMinuteReviewFlowByMeetingId = {
   RequestMethod: "ServiceManager.GetMinuteReviewFlowByMeetingId",
 };
 
-const updateCommentForRejectedMinute = {
+export const updateCommentForRejectedMinute = {
   RequestMethod: "ServiceManager.UpdateCommentForRejectedMinute",
 };
 
-const getMinuteReviewDetailsForOrganizerByMinuteId = {
+export const getMinuteReviewDetailsForOrganizerByMinuteId = {
   RequestMethod: "ServiceManager.GetMinuteReviewDetailsForOrganizerByMinuteId",
 };
 
-const deleteMinuteReviewByReviewer = {
+export const deleteMinuteReviewByReviewer = {
   RequestMethod: "ServiceManager.DeleteMinuteReviewByReviewer",
 };
 
-const downgradeOrganizationSubscription = {
+export const downgradeOrganizationSubscription = {
   RequestMethod: "ServiceManager.DowngradeOrganizationSubscription",
 };
 
-const getOrganizationWallet = {
+export const getOrganizationWallet = {
   RequestMethod: "ServiceManager.GetOrganizationWallet",
 };
 
-const BoardDeckSendEmail = {
+export const BoardDeckSendEmail = {
   RequestMethod: "ServiceManager.SendBoardDeckPDFAsEmail",
 };
 
-const DownloadBoarddeckPDF = {
+export const DownloadBoarddeckPDF = {
   RequestMethod: "ServiceManager.DownloadBoardDeckPDF",
 };
 
-const GetPendingApprovalStatusforSignatureFlowRM = {
+export const GetPendingApprovalStatusforSignatureFlowRM = {
   RequestMethod: "ServiceManager.GetPendingApprovalStatusesForSignatureFlow",
 };
-const DeleteSignatureDocumentRM = {
+export const DeleteSignatureDocumentRM = {
   RequestMethod: "ServiceManager.DeleteSignatureFlowByWorkFlowId",
 };
 
-const GetAllSignatoriesStatusRM = {
+export const GetAllSignatoriesStatusRM = {
   RequestMethod: "ServiceManager.GetAllSignatoriesStatus",
 };
 
-const PublishMeetingMinutesRM = {
+export const PublishMeetingMinutesRM = {
   RequestMethod: "ServiceManager.PublishMeetingMinutes",
 };
-const GetAllPublishedMeetingMinutesRM = {
+export const GetAllPublishedMeetingMinutesRM = {
   RequestMethod: "ServiceManager.GetAllPublishedMinutes",
 };
-const DownloadInvoiceRM = {
+export const DownloadInvoiceRM = {
   RequestMethod: "ServiceManager.DownloadInvoiceForOA",
 };
 
-const publishMeetingMinutes = {
+export const publishMeetingMinutes = {
   RequestMethod: "ServiceManager.PublishMeetingMinutes",
 };
 
-const getDataForResendMinuteReview = {
+export const getDataForResendMinuteReview = {
   RequestMethod: "ServiceManager.GetDataForResendMinuteReview",
 };
 
-const validateVideoRecordingURL = {
+export const validateVideoRecordingURL = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringVideoURlBoardDeck",
 };
 
-const getMinuteAndSignatureApprovalThisWeekRM = {
+export const getMinuteAndSignatureApprovalThisWeekRM = {
   RequestMethod: "ServiceManager.GetMinuteAndSignatureApprovalsThisWeek",
 };
-const getDashboardMeetingStatsRM = {
+export const getDashboardMeetingStatsRM = {
   RequestMethod: "ServiceManager.GetDashboardMeetingData",
 };
-const getDashboardTaskStatsRM = {
+export const getDashboardTaskStatsRM = {
   RequestMethod: "ServiceManager.GetDashboardToDoListData",
 };
-const getDashboardPendingApprovalStatsRM = {
+export const getDashboardPendingApprovalStatsRM = {
   RequestMethod: "ServiceManager.GetDashboardMinuteAndSignatureApprovals",
 };
 
-const ValidateEncryptedStringForOTPEmailLinkRM = {
+export const ValidateEncryptedStringForOTPEmailLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringForOTPEmailLink",
 };
 
-const getAdvanceMeetingAgendabyMeetingIDForView = {
+export const getAdvanceMeetingAgendabyMeetingIDForView = {
   RequestMethod: "ServiceManager.GetAdvanceMeetingAgendabyMeetingIDForView",
 };
 
-const getStatsForPublishingMinutesByWorkFlowId = {
+export const getStatsForPublishingMinutesByWorkFlowId = {
   RequestMethod: "ServiceManager.GetStatsForPublishingMinutesByWorkFlowId",
 };
-const GetMeetingBoardDeckCredentialsStatus = {
+export const GetMeetingBoardDeckCredentialsStatus = {
   RequestMethod: "ServiceManager.GetMeetingBoardDeckCredentialsStatus",
 };
 
-const validateEncryptedStringParticipantProposedRM = {
+export const validateEncryptedStringParticipantProposedRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesSelection",
 };
 
-const validateEncryptedStringResolutionRelatedEmailDataRM = {
+export const validateEncryptedStringResolutionRelatedEmailDataRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringResolutionRelatedEmailData",
 };
 
-const getAllMeetingUsersRSVPDetailsRM = {
+export const getAllMeetingUsersRSVPDetailsRM = {
   RequestMethod: "ServiceManager.GetAllMeetingUserRSVPDetails",
 };
 
-const downloadCallRecording = {
+export const downloadCallRecording = {
   RequestMethod: "ServiceManager.DownloadCallRecording",
 };
 
-const downloadMeetingRecording = {
+export const downloadMeetingRecording = {
   RequestMethod: "ServiceManager.DownloadMeetingRecording",
 };
 
-const leaveMeetingVideo = {
+export const leaveMeetingVideo = {
   RequestMethod: "ServiceManager.LeaveMeetingVideo",
 };
 
-const getMeetingGuestVideoURL = {
+export const getMeetingGuestVideoURL = {
   RequestMethod: "ServiceManager.GetMeetingGuestVideoURL",
 };
 
-const ValidateEncryptedStringGuestVideoLink = {
+export const ValidateEncryptedStringGuestVideoLink = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringGuestVideoLink",
 };
 
-const joinGuestVideo = {
+export const joinGuestVideo = {
   RequestMethod: "ServiceManager.JoinGuestVideo",
 };
 
-const admitRejectAttendee = {
+export const admitRejectAttendee = {
   RequestMethod: "ServiceManager.AdmitRejectAttendee",
 };
 
-const raiseUnRaisedHand = {
+export const raiseUnRaisedHand = {
   RequestMethod: "ServiceManager.RaiseUnRaiseHand",
 };
 
-const muteUnMuteParticipant = {
+export const muteUnMuteParticipant = {
   RequestMethod: "ServiceManager.MuteUnMuteParticpant",
 };
 
-const transferMeetingHost = {
+export const transferMeetingHost = {
   RequestMethod: "ServiceManager.TransferMeetingHost",
 };
 
-const removeParticipantMeeting = {
+export const removeParticipantMeeting = {
   RequestMethod: "ServiceManager.RemoveParticipantFromMeeting",
 };
 
-const guestLeaveMeetingVideo = {
+export const guestLeaveMeetingVideo = {
   RequestMethod: "ServiceManager.GuestLeaveMeetingVideo",
 };
 
-const muteUnMuteSelf = {
+export const muteUnMuteSelf = {
   RequestMethod: "ServiceManager.MuteUnMuteSelf",
 };
 
-const hideUnHideVideoSelf = {
+export const hideUnHideVideoSelf = {
   RequestMethod: "ServiceManager.HideUnHideVideo",
 };
 
-const hideUnHidePaticipantVideo = {
+export const hideUnHidePaticipantVideo = {
   RequestMethod: "ServiceManager.HideUnHideParticpantVideo",
 };
 
-const ProposeNewMeetingSaveParticipants = {
+export const ProposeNewMeetingSaveParticipants = {
   RequestMethod: "ServiceManager.SaveMeetingParticipantsForProposedMeeting",
 };
 
-const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
+export const ValidateEncryptedStringUserMeetingProposeDatesPollRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringUserMeetingProposeDatesPoll",
 };
 
-const getVideoCallParticipantsForGuest = {
+export const getVideoCallParticipantsForGuest = {
   RequestMethod: "ServiceManager.GetVideoCallParticipants",
 };
 
-const joinMeetingVideoRequest = {
+export const joinMeetingVideoRequest = {
   RequestMethod: "ServiceManager.JoinMeetingVideoRequest",
 };
 
 // for host waitingList and Participant List
-const getVideoCallParticipantsAndWaitingList = {
+export const getVideoCallParticipantsAndWaitingList = {
   RequestMethod: "ServiceManager.GetVideoCallParticipantsAndWaitingList",
 };
 
-const GetSignatureFileAnnotationRM = {
+export const GetSignatureFileAnnotationRM = {
   RequestMethod: "ServiceManager.GetSignatureFileAnnotation",
 };
-const AddUpdateSignatureFileAnnotationRM = {
+export const AddUpdateSignatureFileAnnotationRM = {
   RequestMethod: "ServiceManager.AddUpdateSignatureFileAnnotation",
 };
 
 //Web Notfication
-const DiskusWebNotification = {
+export const DiskusWebNotification = {
   RequestMethod: "ServiceManager.GetUserWebNotifications",
 };
 
-const DiskusWebNotificationMarkAsRead = {
+export const DiskusWebNotificationMarkAsRead = {
   RequestMethod: "ServiceManager.MarkNotificationsAsRead",
 };
 
 //Get Meeting Status
-const GetMeetingStatus = {
+export const GetMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingAttendeeAndStatusData",
 };
 
 //Get DataRoom File Shared Persmission
 
-const GetDataRoomFileSharedPersmission = {
+export const GetDataRoomFileSharedPersmission = {
   RequestMethod: "ServiceManager.GetDataRoomSharedFilePermission",
 };
 
 //Minutes Work Flow Actor Status WebNotification
 
-const MinutesWorkFlowActorStatusNotification = {
+export const MinutesWorkFlowActorStatusNotification = {
   RequestMethod: "ServiceManager.GetWorkFlowStatusForActor",
 };
 
 // Email Related Api for Committees
-const ValidateEncryptedStringViewCommitteeListLinkRM = {
+export const ValidateEncryptedStringViewCommitteeListLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewCommitteeListLink",
 };
-const ValidateEncryptedStringViewCommitteeDetailLinkRM = {
+export const ValidateEncryptedStringViewCommitteeDetailLinkRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringViewCommitteeDetailsLink",
 };
 
-const ValidateEncryptedStringViewGroupDetailsLinkRM = {
+export const ValidateEncryptedStringViewGroupDetailsLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewGroupDetailsLink",
 };
-const ValidateEncryptedStringViewGroupListLinkRM = {
+export const ValidateEncryptedStringViewGroupListLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewGroupListLink",
 };
-const ValidateEncryptedStringViewTaskListLinkRM = {
+export const ValidateEncryptedStringViewTaskListLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewTaskListLink",
 };
 
-const ValidateEncryptedStringViewTaskDetailsLinkRM = {
+export const ValidateEncryptedStringViewTaskDetailsLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewTaskDetailsLink",
 };
 
-const ValidateEncryptedStringViewFileLinkRM = {
+export const ValidateEncryptedStringViewFileLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewFileLink",
 };
 
-const ValidateEncryptedStringViewFolderLinkRM = {
+export const ValidateEncryptedStringViewFolderLinkRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringViewFolderLink",
 };
 
-const CreateUpdateNotesDataRoomMap = {
+export const CreateUpdateNotesDataRoomMap = {
   RequestMethod: "ServiceManager.CreateUpdateNotesDataRoomMap",
 };
 
-const SaveNotesDocument = {
+export const SaveNotesDocument = {
   RequestMethod: "ServiceManager.SaveNotesDocuments",
 };
 
-const RetrieveNotesDocument = {
+export const RetrieveNotesDocument = {
   RequestMethod: "ServiceManager.ReteriveNotesDocuments",
 };
 
-const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
+export const ValidateEncryptedStringMeetingRelatedEmailDataRM = {
   RequestMethod:
     "ServiceManager.ValidateEncryptedStringMeetingRelatedEmailData",
 };
 
-const MoveFilesToFoldersRM = {
+export const MoveFilesToFoldersRM = {
   RequestMethod: "ServiceManager.MoveFilesToFolders",
 };
 
 // Delete Notes Document
-const DeleteNotesDocuments = {
+export const DeleteNotesDocuments = {
   RequestMethod: "ServiceManager.DeleteNotesDocuments",
 };
 
 //update cast vote
-const updateCastVotePolls = {
+export const updateCastVotePolls = {
   RequestMethod: "ServiceManager.UpdateCastedVote",
 };
 
 //Open Presenter View
-const openPresenterView = {
+export const openPresenterView = {
   RequestMethod: "ServiceManager.OpenPresenterView",
 };
 
 //Start Presenter View
-const startPresenterView = {
+export const startPresenterView = {
   RequestMethod: "ServiceManager.StartPresenterView",
 };
 
 //Stop Presenter View
-const stopPresenterView = {
+export const stopPresenterView = {
   RequestMethod: "ServiceManager.StopPresenterView",
 };
 
 //Join Presenter View
-const joinPresenterView = {
+export const joinPresenterView = {
   RequestMethod: "ServiceManager.JoinPresenterView",
 };
 
 //Leave Presenter View
-const leavePresenterView = {
+export const leavePresenterView = {
   RequestMethod: "ServiceManager.LeavePresenterView",
 };
 
-const ValidateEncryptedStringMinuteReviewDataRM = {
+export const ValidateEncryptedStringMinuteReviewDataRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringMinuteReviewData",
 };
 
-const ValidateEncryptedStringSignatureDataRM = {
+export const ValidateEncryptedStringSignatureDataRM = {
   RequestMethod: "ServiceManager.ValidateEncryptedStringSignatureData",
 };
-const GetMeetingRecordingFilesRM = {
+export const GetMeetingRecordingFilesRM = {
   RequestMethod: "ServiceManager.GetMeetingRecordingFiles",
 };
-const RequestMeetingRecordingTranscriptRM = {
+export const RequestMeetingRecordingTranscriptRM = {
   RequestMethod: "ServiceManager.RequestMeetingRecordingTranscript",
 };
 
-const ValidateUserPasswordRM = {
+export const ValidateUserPasswordRM = {
   RequestMethod: "ServiceManager.ValidateUserPassword",
 };
 
-const participantOfGroupCall = {
+export const participantOfGroupCall = {
   RequestMethod: "ServiceManager.GetGroupCallParticipants",
 };
 
 // For Shared Screen when someone share screen then others need to Disable
-const isSharedScreenCall = {
+export const isSharedScreenCall = {
   RequestMethod: "ServiceManager.IsSharedScreen",
 };
 
 //Save Audit log
-const SaveAuditLog = {
+export const SaveAuditLog = {
   RequestMethod: "ServiceManager.SaveAuditLog",
 };
 
 // Audit listing
-const GetUsersAuditListing = {
+export const GetUsersAuditListing = {
   RequestMethod: "ServiceManager.GetUsersAuditListing",
 };
 
 // Audit Actions
-const GetUsersAuditActions = {
+export const GetUsersAuditActions = {
   RequestMethod: "ServiceManager.GetUserAuditActionsForOA",
 };
 
-const AuditTrialReportExporttoExcel = {
+export const AuditTrialReportExporttoExcel = {
   RequestMethod: "ServiceManager.DownloadAuditReportForOA",
 };
 
 // Authority Work
-const GetAllAuthority = {
+export const GetAllAuthority = {
   RequestMethod: "ServiceManager.GetAllAuthority",
 };
 
-const GetAuthorityByID = {
+export const GetAuthorityByID = {
   RequestMethod: "ServiceManager.GetAuthorityByID",
 };
 
-const DeleteAuthority = {
+export const DeleteAuthority = {
   RequestMethod: "ServiceManager.DeleteAuthority",
 };
 
-const UpdateAuthority = {
+export const UpdateAuthority = {
   RequestMethod: "ServiceManager.UpdateAuthority",
 };
-const AddAuthority = {
+export const AddAuthority = {
   RequestMethod: "ServiceManager.AddAuthority",
 };
-const IsShortCodeExists = {
+export const IsShortCodeExists = {
   RequestMethod: "ServiceManager.IsShortCodeExists",
 };
 
-const IsAuthorityNameExists = {
+export const IsAuthorityNameExists = {
   RequestMethod: "ServiceManager.IsAuthorityNameExists",
 };
 
-const GetAllAuthoritiesDropdown = {
+export const GetAllAuthoritiesDropdown = {
   RequestMethod: "ServiceManager.GetAllAuthoritiesWithoutPagination",
 };
 
-const GetAllTagsByOrganizationID = {
+export const GetAllTagsByOrganizationID = {
   RequestMethod: "ServiceManager.GetAllTagsByOrganizationID",
 };
 
-const AddCompliance = {
+export const AddCompliance = {
   RequestMethod: "ServiceManager.AddCompliance",
 };
 
-const AddComplianceChecklist = {
+export const AddComplianceChecklist = {
   RequestMethod: "ServiceManager.AddComplianceChecklist",
 };
-const GetComplianceChecklistsByComplianceId = {
+export const GetComplianceChecklistsByComplianceId = {
   RequestMethod: "ServiceManager.GetComplianceChecklistsByComplianceId",
 };
-const CheckComplianceTitleExists = {
+export const CheckComplianceTitleExists = {
   RequestMethod: "ServiceManager.CheckComplianceTitleExists",
 };
-const ViewComplianceById = {
+export const ViewComplianceById = {
   RequestMethod: "ServiceManager.ViewComplianceById",
 };
-export {
-  ValidateUserPasswordRM,
-  RequestMeetingRecordingTranscriptRM,
-  GetMeetingRecordingFilesRM,
-  ValidateEncryptedStringSignatureDataRM,
-  ValidateEncryptedStringMinuteReviewDataRM,
-  MoveFilesToFoldersRM,
-  ValidateEncryptedStringMeetingRelatedEmailDataRM,
-  ValidateEncryptedStringViewFileLinkRM,
-  ValidateEncryptedStringViewFolderLinkRM,
-  ValidateEncryptedStringViewTaskListLinkRM,
-  ValidateEncryptedStringViewTaskDetailsLinkRM,
-  ValidateEncryptedStringViewGroupDetailsLinkRM,
-  ValidateEncryptedStringViewGroupListLinkRM,
-  ValidateEncryptedStringViewCommitteeListLinkRM,
-  ValidateEncryptedStringViewCommitteeDetailLinkRM,
-  GetSignatureFileAnnotationRM,
-  AddUpdateSignatureFileAnnotationRM,
-  ValidateEncryptedStringUserMeetingProposeDatesPollRM,
-  getAllMeetingUsersRSVPDetailsRM,
-  validateEncryptedStringResolutionRelatedEmailDataRM,
-  validateEncryptedStringParticipantProposedRM,
-  ValidateEncryptedStringForOTPEmailLinkRM,
-  getDashboardMeetingStatsRM,
-  getDashboardTaskStatsRM,
-  getDashboardPendingApprovalStatsRM,
-  getMinuteAndSignatureApprovalThisWeekRM,
-  DownloadInvoiceRM,
-  GetAllPublishedMeetingMinutesRM,
-  PublishMeetingMinutesRM,
-  GetAllSignatoriesStatusRM,
-  DeleteSignatureDocumentRM,
-  GetPendingApprovalStatusforSignatureFlowRM,
-  GetAllPendingForApprovalStatsRM,
-  ListOfPendingForApprovalSignaturesRM,
-  LoginHistoryReportExporttoExcel,
-  GetInvoiceHTMLByOrganizatonID,
-  GetAllSignatureFlowDocumentsForCreatorRM,
-  ValidateEmailRelatedStringPolls,
-  ValidateEmailRelatedString,
-  revokeMicrosoftToken,
-  leaveFolderSharingRM,
-  leaveFileSharingRM,
-  UserLoginHistoryRM,
-  getDataAnalyticsCountRM,
-  updateAndOpenByAndDescriptionRM,
-  getFileFolderDetailsRM,
-  getDataAnalyticsRM,
-  saveTaskandAssgineesRM,
-  saveTaskDocuments,
-  createupdateTaskDataroom,
-  setMeetingbyCommitteeIDRM,
-  setMeetingbyGroupIDRM,
-  getMeetingbyCommitteeIDRM,
-  getMeetingbyGroupIDRM,
-  deleteCommitteeTaskRM,
-  deleteGroupTaskRM,
-  deleteMeetingPollsRM,
-  deleteGroupPollsRM,
-  deleteCommitteePollRM,
-  setCommitteePollsRM,
-  getPollbyCommitteeIdRM,
-  saveCommitteeDocumentsRM,
-  reteriveCommitteeDocumentsRM,
-  CreateUpdateCommitteeDatarRoomRM,
-  saveResolutionDocumentsRM,
-  updateResolutionDataRoomMapRM,
-  updateGeneralAccessRM,
-  checkFileLinkRM,
-  requestAccessRM,
-  updateFolderGeneralAccessRM,
-  createFileLinkRM,
-  createFolderLinkRM,
-  getUserAgainstShareFolderRM,
-  getUserAgainstShareFileRM,
-  getAllAgendaContributorRM,
-  saveAgendaContributorsRM,
-  getRecentDocumentsRM,
-  updateProfilePictureRM,
-  DeleteCommentRM,
-  subscriptionPackageUpgradeAmount,
-  paymentCompleteMethod,
-  subscriptionPackageUpgradePayment,
-  revoketoken,
-  googleValidToken,
-  signuprequest,
-  signinauthenication,
-  forgetpassword,
-  verifyOTPSignUp,
-  resendOTP,
-  resendOTPForgotPassword,
-  changepassword,
-  authenticationRefreshToken,
-  scheduleNewMeeting,
-  getToDoListByUserID,
-  createToDoList,
-  uploadDocument,
-  downloadDocument,
-  getAllAssigneesToDoList,
-  passswordUpdationOnForgetPassword,
-  // ali work
-  getUserSettings,
-  updateUserNotificationSetting,
-  updateUserGeneralSetting,
-  updateUserProfileSetting,
-  getUserNotifcations,
-  getCountryCode,
-  getTimeZOne,
-  todosStatus,
-  updateTodoStatus,
-  postComment,
-  getAttachmentByMeetingId,
-  getAgendasByMeetingId,
-  updateAgendaAttachments,
-  addMinuteofMeetings,
-  updateMinuteofMeetings,
-  getCountryNames,
-  getSubscriptionDetailRequestMethod,
-  createOrganizationRequestMethod,
-  userEmailVerification,
-  userPasswordCreation,
-  userEmailValidation,
-  userPasswordVerify,
-  getSelectedPacakge_Detail,
-  IsPackageExpiryDetail,
-  updateOrganizationLevelSettings,
-  getOrganizationLevelSettings,
-  GetOrganizationSeletedPackageByOrganizationID,
-  GetSubscriptionPackagesByOrganizationID,
-  cancelSubscription,
-  updateSubscriptionPackage,
-  updateOrganizationUserSetting,
-  // Aun
-  getFaqs,
-  getMeetingId,
-  // view meetings
-  getMeetingByMeetingID,
-  getToDoListByToDoListID,
-  updateMeeting,
-  updateToDoList,
-  cancelMeeting,
-  startMeeting,
-  endMeeting,
-  // calender data
-  calendarDataRequest,
-  searchTodoList,
-  searchMeetingId,
-  //Dashboard APIs
-  getWeekMeetings,
-  upcomingEvents,
-  getWeekToDo,
-  getAllReminders,
-  // organisation check
-  IsOrganizationExsists,
-  IsOrganizationEmailExsists,
-  OrganizationUserListStatistics,
-  AddOrganizationUser,
-  getAllUserRoles,
-  getAllOrganizationRoles,
-  getOrganizationByID,
-  allOrganizationUsers,
-  getAllUserStatus,
-  editOrganizationUser,
-  deleteOrganizationUser,
-  AllMeetingOrganization,
-  OrganizationMeetingStatus,
-  deleteOrganizationMeeting,
-  getMeetingStatus,
-  OrganizationPackageReselection,
-  TwoFaAuthenticateRequestMethod,
-  sendTwoFacOTP,
-  verifyTwoFacOTP,
-  resendTwoFacOTP,
-  revokeProcess,
-  // CustomerInfo
-  CustomerInfoOrganization,
-  updateCustomerOrganizationProfile,
-  getuserdetails,
-  updateProfileData,
-  deleteOrganizationAPI,
-  //notes implementation
-  SavesNotesRequestMethod,
-  GetNotesByUserIDAndOrganizationID,
-  UpdateNotesRequestMethod,
-  GetNotesByNotesIDRequestMethod,
-  //talk implementation
-  refreshTokenTalk,
-  getAllUserChats,
-  getUserOTOMessages,
-  getUndeliveredUserOTOMessages,
-  getGroupMessages,
-  getBroadCastMessages,
-  getArchivedDataByUserID,
-  getFlagMessages,
-  getFollowMessages,
-  getAllRecentTags,
-  getTagsMessages,
-  getMessageSentReceivedTime,
-  getRecentFlagCount,
-  getRecentFollowDataCountByUserID,
-  getAllRecentTagsCount,
-  getRecentArchiveDataCountByUserID,
-  getBlockedUsersCount,
-  getBlockedUsers,
-  getAllUsers,
-  getAllUsersGroupsRoomsList,
-  getActiveUsersByGroupID,
-  getActiveUsersByRoomID,
-  getActiveUsersByBroadcastID,
-  insertOTOMessages,
-  getCommitteeByIdRequestMethod,
-  getGroupsByUserIdRequestMethod,
-  getGroupsByGroupIdRequestMethod,
-  creategroupRequestMethod,
-  getAllOrganizationGroupRoles,
-  getAllOrganizationGroupTypes,
-  updateGroupRequestMethod,
-  updateGroupStatusRequestMethod,
-  getCommitteesByUserID,
-  getallOrganizationCommitteType,
-  getallOrganizationCommitteMemberRole,
-  createCommitteeRequestMethod,
-  updateCommitteeStatusRequestMethod,
-  updateCommitteeRequestMethod,
-  insertPrivateGroupMessage,
-  blockUnblockUser,
-  scheduleResolutionRequestMethod,
-  getAllVotingRequestMethod,
-  getAllVotingStatusRequestMethod,
-  getResolutionsRequestMethod,
-  deleteSingleMessage,
-  insertBroadcastMessage,
-  addUpdateResolutionRequestMethod,
-  deleteNotes,
-  getAllOrganizationGroups,
-  CommitteeAndGroupMappingRequestMethod,
-  getResolutionByIDRequestMethod,
-  getResolutionResultsDetails,
-  getVoteDetailsByID,
-  cancelResolutionRequestMethod,
-  updateVoteRequestMethod,
-  closeResolutionRequestMethod,
-  createTalkPrivateGroup,
-  getPrivateGroupMembers,
-  invoiceandPaymentHistoryRequestMethod,
-  payOutStandingRequestMethod,
-  getBillingInformationRequestMethod,
-  markStarredMessage,
-  getVoterResolutionRequestMethod,
-  saveFilesRequestMethod,
-  uploadDocumentsRequestMethod,
-  saveFolderRequestMethod,
-  getFolderDocumentsRequestMethod,
-  createFolderRequestMethod,
-  getDocumentsAndFolderRequestMethod,
-  shareFilesRequestMethod,
-  shareFolderRequestMethod,
-  FileisExistRequestMethod,
-  FolderisExistRequestMethod,
-  deleteFileRequestMethod,
-  deleteFolderRequestMethod,
-  updatePrivateGroup,
-  leaveGroup,
-  createShoutAll,
-  deleteShoutAll,
-  updateShoutAll,
-  insertBulkMessages,
-  searchUserMeetings,
-  searchTodoListRequestMethod,
-  searchNoteRequetMethod,
-  paymentMethodsRequestMethod,
-  searchPaymentHistoryRequestMethod,
-  searcPollsRequestMethod,
-  savePollsRequestMethod,
-  getAllCommittesandGroupsforPolls,
-  renameFolderRequestMethod,
-  renameFileRequestMethod,
-  downloadChat,
-  subscriptiondetailsRequestMethod,
-  searchPolls,
-  castVote,
-  getAllPollStatus,
-  getPollByPollID,
-  updatePolls,
-  getPollByPollId,
-  viewvotes,
-  deltePolls,
-  updateMessageAcknowledgement,
-  getAllStarredMessages,
-  saveFilesandFolderRM,
-  //Languages
-  getSystemSupportedLanguage,
-  getLastSelectedLanguage,
-  setLastSelectedLanguage,
-  //Video Panel
-  getAllVideoCallUsers,
-  initiateVideoCall,
-  videoCallResponse,
-  getUserRecentCalls,
-  callRequestReceived,
-  getUserMissedCallCount,
-  searchDocumentsFoldersAPI,
-  leaveCall,
-  getAnnotationOfToDoAttachement,
-  addAnnotationOnToDoAttachement,
-  getEventsTypeRM,
-  GetDiskusEventDetailsRM,
-  getAnnotationOfNotesAttachment,
-  addAnnotationOnNotesAttachment,
-  addAnnotationOnResolutionAttachment,
-  getAnnotationOfResolutionAttachment,
-  addAnnotationOnDataroomAttachment,
-  getAnnotationOfDataroomAttachment,
-  deleteMultipleGroupMessages,
-  getAllGroupsUsersAndCommitteesByOrganizaitonID,
-  saveMeetingOrganizers,
-  getallMeetingType,
-  saveMeetingDetials,
-  GetMeetingNewFrequencyReminder,
-  GetAllRecurringNewMeeting,
-  meetingStatusUpdate,
-  getParticipantsRoles,
-  FetchVideoUrl,
-  saveParticipantsMeeting,
-  getAllSavedParticipants,
-  getAllMeetingOrganizers,
-  sendNotification,
-  getAllMeetingDetailsByMeetingID,
-  getPollsByMeetingID,
-  getAllmeetingUsers,
-  SetMeetingPolls,
-  SettingMeetingProposedDates,
-  getAllPropsedMeetingdates,
-  //Aun attendance
-  getAllAttendanceMeeting,
-  saveMeetingAttendance,
-  setMeetingProposedDatesResponse,
 
-  //Agenda Voting
-  getAgendaVotingDetails,
-  getAllVotingResultDisplay,
-  saveAgendaVoting,
-  getAgendaAndVotingInfo,
-  casteVoteForAgenda,
-  viewAgendaVotingResults,
-  //Aun MeetingMaterial
-  getAllMeetingMaterial,
-  downloadMeetingAttendanceReport,
-  CreateUpdateGroupDataRoadMap,
-  SaveTheGroupsDocuments,
-  RetrieveGroupDocuments,
-  MeetingAgendaLock,
-  GetAllUserAgendaRights,
-  saveUserAttachmentPermission,
-  getPollByGroupIDApi,
-  setGroupPollsApi,
-  getGeneralMinutes,
-  SaveminutesGeneral,
-  SaveGeneralWiseSavingDocuments,
-  RetriveGeneralMinutesDocuments,
-  getAllGeneralMiintuesDocument,
-  getTaskGroupIDApi,
-  setGroupTaskApi,
-  getTaskByCommitteeIDApi,
-  setCommitteeTaskApi,
-  DeleteGeneralMinutes,
-  UpdateGeneralMinutes,
-  agenwiseMinutes,
-  DeleteagendaWiseMinutes,
-  updateAgendaWiseMinutes,
-  getAllAgendaWiseMinutes,
-  getUserWiseProposeDate,
-  getAdvanceMeetingAgendabyMeetingID,
-  saveDocumentAgendaWiseMinutes,
-  RetriveAgendaWiseDocuments,
-  DeleteDocumentGenralMinute,
-  createUpdateMeetingDataRoomMap,
-  ScheduleMeetingOnSelectedDate,
-  DeleteAgendaWiseDocuments,
-  CreateUpdateMeetingDataroomMapped,
-  UpdateMeetingUserhit,
-  addUpdateAdvanceMeetingAgenda,
-  downloadAttendanceReport,
-  agendaVotingStatusUpdate,
-  saveMeetingDocuments,
-  getMeetingTasksAction,
-  dataRoomFileDownloadService,
-  dataRoomFolderDownloadService,
-  mapTaskWithMeetingAgenda,
-  removeTaskMeetingMapping,
-  getAllagendaWiseDocumentsApi,
-  getAllAgendaForAgendaWise,
-  //Import Agenda
-  getAllMeetingForAgendaImport,
-  getAgendaWithMeetingIDForImport,
-  inviteForCollaboration,
-  validateEncryptedStringUserAvailabilityForMeeting,
-  //Validate userAvailibility Encrypted String
-  validateEncyptedStringUserDataRoom,
-  //Validate Microsoft Token
-  validateMicrosoftToken,
-  getUserWiseProposeDateOrganizer,
-  UserLogout,
-  createWorkFlowRM,
-  saveWorkFlowRM,
-  updateActorBundleStatusRM,
-  getActorBundleStatusStateRM,
-  getActionableBundleStatusStateRM,
-  getEntityTypesRM,
-  getWorkFlowRM,
-  getWorkFlowsRM,
-  saveActorRM,
-  saveActorColorRM,
-  saveAndEditFormFieldsRM,
-  sendDocumentRM,
-  DeclineReason,
-  getAllFieldsByWorkFlowIdRM,
-  addUpdateFieldValueRM,
-  saveAuditTrailRM,
-  getAllAuditTrailByWorkFlowIdRM,
-  getDeclineReasonRM,
-  getSignatureFormFieldTypesRM,
-  getColorPlattesRM,
-  getAuditTrailActionsRM,
-  getActorFieldValuesRM,
-  addNewSignatureRM,
-  getAllSignaturesRM,
-  getUserSignatureRM,
-  deleteUserSignatureRM,
-  getWorkFlowByFileIdRM,
-  endMeetingStatus,
-  saveSignatureDocumentRM,
-  getMeetingParticipantsInfo,
-  sendAgendaPDFAsEmail,
-  exportAgendaAsPDF,
-  printMeetingAgenda,
-  SaveOrganizationAndPakageSelection,
-  ExtendOrganizationTrial,
-  AddOrganizationsUser,
-  EditOrganizationsUser,
-  AllOrganizationsUsers,
-  OrganizationPackageDetailsAndUserStats,
-  GetOrganizationSelectedPackagesByOrganizationID,
-  joinMeeting,
-  leaveMeeting,
-  getOrganizationSelectedPakages,
-  GetAllUserTypePackages,
-  ResendForgotPasswordCode,
-  DeleteOrganizationsUser,
-  PaymentInitiateStepperThree,
-  CancelSubReasons,
-  CancelOrganizationsSubscriptions,
-  // upgradePackageApiCallOnPackageDetailPage,
-  requestOrganizationTrialExtend,
-  paymentStatus,
-  downloadAttachmentTalk,
-  changeSelectedSubscription,
-  CancelTrailandUpdageOrganiztionRM,
-  //Minutes Flow
-  listOfDefaultRejectionComments,
-  pendingApprovalsCount,
-  getMinuteReviewStatsForOrganizerByMeetingId,
-  getAllOrganizationUsersForReview,
-  getMinutesForReviewerByMeetingId,
-  getMinuteReviewPendingApprovalsStatsByReviewerId,
-  getMinuteReviewPendingApprovalsByReviewerId,
-  saveMinutesReviewFlow,
-  getPendingApprovalStatusesForMinuteReview,
-  acceptRejectMinuteReview,
-  resendUpdatedMinuteForReview,
-  getMinuteVersionHistoryWithComments,
-  getMinuteReviewFlowByMeetingId,
-  updateCommentForRejectedMinute,
-  getMinuteReviewDetailsForOrganizerByMinuteId,
-  deleteMinuteReviewByReviewer,
-  downgradeOrganizationSubscription,
-  getOrganizationWallet,
-  BoardDeckSendEmail,
-  DownloadBoarddeckPDF,
-  publishMeetingMinutes,
-  getDataForResendMinuteReview,
-  validateVideoRecordingURL,
-  getAdvanceMeetingAgendabyMeetingIDForView,
-  getStatsForPublishingMinutesByWorkFlowId,
-  GetMeetingBoardDeckCredentialsStatus,
-  downloadCallRecording,
-  downloadMeetingRecording,
-  leaveMeetingVideo,
-  getMeetingGuestVideoURL,
-  ValidateEncryptedStringGuestVideoLink,
-  joinGuestVideo,
-  admitRejectAttendee,
-  raiseUnRaisedHand,
-  muteUnMuteParticipant,
-  transferMeetingHost,
-  removeParticipantMeeting,
-  guestLeaveMeetingVideo,
-  muteUnMuteSelf,
-  hideUnHideVideoSelf,
-  hideUnHidePaticipantVideo,
-  ProposeNewMeetingSaveParticipants,
-  getVideoCallParticipantsForGuest,
-  joinMeetingVideoRequest,
-  getVideoCallParticipantsAndWaitingList,
-  DiskusWebNotification,
-  DiskusWebNotificationMarkAsRead,
-  GetMeetingStatus,
-  GetDataRoomFileSharedPersmission,
-  MinutesWorkFlowActorStatusNotification,
-  CreateUpdateNotesDataRoomMap,
-  SaveNotesDocument,
-  RetrieveNotesDocument,
-  DeleteNotesDocuments,
-  updateCastVotePolls,
-  openPresenterView,
-  startPresenterView,
-  stopPresenterView,
-  joinPresenterView,
-  leavePresenterView,
-  participantOfGroupCall,
-  isSharedScreenCall,
-  SaveAuditLog,
-  GetUsersAuditListing,
-  GetUsersAuditActions,
-  AuditTrialReportExporttoExcel,
-  GetAllAuthority,
-  GetAuthorityByID,
-  DeleteAuthority,
-  UpdateAuthority,
-  AddAuthority,
-  IsShortCodeExists,
-  IsAuthorityNameExists,
-  GetAllAuthoritiesDropdown,
-  GetAllTagsByOrganizationID,
-  AddCompliance,
-  AddComplianceChecklist,
-  GetComplianceChecklistsByComplianceId,
-  CheckComplianceTitleExists,
-  ViewComplianceById,
+export const CheckChecklistTitleExists = {
+  RequestMethod: "ServiceManager.CheckChecklistTitleExists",
+};
+
+export const AddTaskMappingToChecklist = {
+  RequestMethod: "ServiceManager.AddTaskMappingToChecklist",
+};
+
+export const GetComplianceChecklistsWithTasksByComplianceId = {
+  RequestMethod:
+    "ServiceManager.GetComplianceChecklistsWithTasksByComplianceId",
+};
+
+export const EditComplianceChecklist = {
+  RequestMethod: "ServiceManager.EditComplianceChecklist",
+};
+
+export const SearchCompliancesByCreatorIdRM = {
+  RequestMethod: "ServiceManager.SearchCompliancesByCreatorId",
+};
+
+export const ViewComplianceByMeDetailsRM = {
+  RequestMethod: "ServiceManager.ViewComplianceByMeDetails",
 };

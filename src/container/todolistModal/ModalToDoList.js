@@ -617,7 +617,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         type="text"
                         as={"textarea"}
                         value={task.Description}
-                        rows='7'
+                        rows="7"
                         placeholder={t("Description")}
                         maxLength={2000}
                       />

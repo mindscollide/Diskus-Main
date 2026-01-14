@@ -448,7 +448,9 @@ const ManageAuthority = () => {
             ? a.shortCode
                 ?.toLowerCase()
                 .localeCompare(b.shortCode?.toLowerCase())
-            : null,
+            : a.shortCode
+                ?.toLowerCase()
+                .localeCompare(b.shortCode?.toLowerCase()),
       },
       {
         title: (
@@ -500,7 +502,7 @@ const ManageAuthority = () => {
             ? b.sector?.toLowerCase().localeCompare(a.sector?.toLowerCase())
             : sectorSort === "ascend"
             ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
-            : null,
+            : a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase()),
 
         dataIndex: "sector",
         key: "sector",
@@ -517,9 +519,9 @@ const ManageAuthority = () => {
         ellipsis: true,
         filters: [
           { text: "Active", value: "Active" },
-          { text: "Inactive", value: "Inactive" },
+          { text: "In Active", value: "Inactive" },
         ],
-        filteredValue: statusFilter || null, // ✅ controls filter state
+        filteredValue: statusFilter, // ✅ controls filter state
 
         onFilter: (value, record) => {
           return record.status === value;
@@ -721,7 +723,7 @@ const ManageAuthority = () => {
     }
     // ✅ Status filter
     if (filters?.status) {
-      setStatusFilter(filters.status); // ["Active"] | ["Inactive"] | null
+      setStatusFilter(filters.status || ["Active", "Inactive"]); // ["Active"] | ["Inactive"] | null
     }
   };
 

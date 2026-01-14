@@ -75,10 +75,10 @@
 .AddEditAuthorityCounterInputFieldTextArea {
   width: 100%;
   position: relative;
-  height: 86px;
+  min-height: 90px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
-  padding: 0 10px;
+  padding: 5px 10px 10px 10px !important;
   outline: none !important;
 }
 .AddEditAuthorityCounterInputFieldTextArea-suffix {
@@ -94,12 +94,13 @@
   line-height: 100%;
   letter-spacing: 0%;
   color: #5a5a5a;
+  /* padding: 10px !important; */
 }
 .AddEditAuthorityCounterInputFieldTextArea-textarea-show-count::after {
   content: attr(data-count);
   position: absolute;
   right: 10px;
-  bottom: 7px;
+  bottom: 10px;
   font-weight: 600;
   font-size: 8px;
   color: #5a5a5a;
@@ -138,5 +139,19 @@
 
 /* ✅ COUNT TEXT — THIS IS THE FIX */
 .input-max-error .AddEditAuthorityCounterInputField-show-count-suffix {
+  color: #ff4d4f !important;
+}
+
+/* TextArea wrapper */
+.input-max-error.AddEditAuthorityCounterInputFieldTextArea-affix-wrapper {
+  border-color: #ff4d4f !important;
+}
+
+/* Actual textarea */
+.input-max-error .AddEditAuthorityCounterInputFieldTextArea {
+  border-color: #ff4d4f !important;
+}
+/* TextArea count text */
+.input-max-error.AddEditAuthorityCounterInputFieldTextArea-textarea-show-count::after {
   color: #ff4d4f !important;
 }

@@ -20,7 +20,7 @@ export const AuthorityProvider = ({ children }) => {
   const [authorityViewState, setAuthorityViewState] = useState(0);
   const [statusOptions, setStatusOptions] = useState([]);
   const [visible, setVisible] = useState(false);
-  const [statusFilter, setStatusFilter] = useState(null);
+  const [statusFilter, setStatusFilter] = useState(["Active", "Inactive"]);
   const [searchCountryId, setSearchCountryId] = useState({
     label: "",
     value: 0,
