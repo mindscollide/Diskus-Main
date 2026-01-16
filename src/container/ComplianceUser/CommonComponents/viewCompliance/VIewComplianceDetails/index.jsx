@@ -84,6 +84,7 @@ const ViewComplianceDetails = () => {
       display: "none",
     }),
   };
+
   return (
     <>
       <Row className="mt-3">

@@ -21,6 +21,10 @@ import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
 import { formatDateToYMD } from "../../commonFunctions";
 import Select from "react-select";
+import {
+  cleareMessage,
+  getTodoStatus,
+} from "../../../../../store/actions/GetTodos";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
@@ -35,21 +39,37 @@ const ViewComplianceTasks = () => {
   const [taskTitleSort, setTaskTitleSort] = useState("ascend");
   const [assignedToSort, setAssignedToSort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState(null);
-  const [statusFilter, setStatusFilter] = useState(["Active", "In Progress"]);
+  const [statusFilter, setStatusFilter] = useState([
+    "In Progress",
+    "Pending",
+    "Cancelled",
+    "Completed",
+  ]);
+
+  const [taskStatus, setTaskStatus] = useState([]);
+
+  console.log(taskStatus, "taskStatustaskStatus");
 
   // Status Options
   const TASK_STATUS_TRANSITIONS = {
-    Pending: ["In Progress", "Cancelled"],
-    "In Progress": ["Completed", "Cancelled"],
-    Completed: [], // No transitions allowed
-    Cancelled: [], // No transitions allowed
+    2: [1, 4], // Pending → In Progress, Cancelled
+    1: [5, 4], // In Progress → Completed, Cancelled
+    5: [], // Completed → none
+    4: [], // Cancelled → none
   };
-  const getAllowedStatusOptions = (currentStatus) => {
-    return TASK_STATUS_TRANSITIONS[currentStatus] || [];
+  const getAllowedStatusOptions = (record) => {
+    const allowedStatusIds = TASK_STATUS_TRANSITIONS[record.taskStatusId] || [];
+
+    return taskStatus.filter((status) =>
+      allowedStatusIds.includes(status.value)
+    );
   };
   // context
-  const { allCheckListByComplianceId, complianceDetailsState } =
-    useComplianceContext();
+  const {
+    complianceDetailsState,
+    expandChecklistOnTasksPage,
+    setExpandChecklistOnTasksPage,
+  } = useComplianceContext();
   console.log(
     complianceDetailsState,
     "complianceDetailsStatecomplianceDetailsState"
@@ -60,7 +80,38 @@ const ViewComplianceTasks = () => {
         .GetComplianceChecklistsWithTasksByComplianceId
   );
 
+  console.log(
+    getAllComplianceChecklistTask,
+    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask"
+  );
+
+  // Status for All tasks
+  const getAllTasksStatus = useSelector(
+    (state) => state.getTodosStatus.Response
+  );
+  console.log(getAllTasksStatus, "getAllTasksStatus");
   // global State Response
+
+  // initial UseEffect
+  useEffect(() => {
+    dispatch(getTodoStatus(navigate, t));
+
+    return () => {
+      dispatch(cleareMessage());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (getAllTasksStatus && getAllTasksStatus.length > 0) {
+      try {
+        const statuses = getAllTasksStatus.map((item) => ({
+          value: item.pK_TSID,
+          label: item.status,
+        }));
+        setTaskStatus(statuses);
+      } catch (error) {}
+    }
+  }, [getAllTasksStatus]);
 
   useEffect(() => {
     if (complianceDetailsState.complianceId !== 0) {
@@ -72,6 +123,16 @@ const ViewComplianceTasks = () => {
       );
     }
   }, [complianceDetailsState]);
+
+  useEffect(() => {
+    if (expandChecklistOnTasksPage && viewComplianceTasksData?.length > 0) {
+      setExpandedCheckListIds([expandChecklistOnTasksPage]); // 👈 expand only one
+      setAddChecklistCloseState(true);
+
+      // 🔁 Reset so refresh / tab switch doesn't re-trigger
+      setExpandChecklistOnTasksPage(null);
+    }
+  }, [expandChecklistOnTasksPage, viewComplianceTasksData]);
 
   useEffect(() => {
     if (
@@ -181,9 +242,104 @@ const ViewComplianceTasks = () => {
     }
 
     // ✅ Status filter
-    // if (filters?.status) {
-    //   setStatusFilter(filters.status || ["Active", "Inactive"]); // ["Active"] | ["Inactive"] | null
-    // }
+    if (filters?.status) {
+      setStatusFilter(
+        filters.status || [
+          "In Progress",
+          "Pending",
+          "Upcoming",
+          "Cancelled",
+          "Completed",
+          "Deleted",
+        ]
+      );
+    }
+  };
+
+  // styles for status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Not Started":
+        return "#9E9E9E";
+      case "In Progress":
+        return "#F5A623";
+      case "Completed":
+        return "#2ECC71";
+      case "Overdue":
+        return "#E74C3C";
+      case "Submitted for Approval":
+        return "#5B6EF5";
+      case "Responded":
+        return "#4FC3F7";
+      case "On Hold":
+        return "#26C6DA";
+      case "Closed":
+        return "#616161";
+      default:
+        return "#000";
+    }
+  };
+  const statusSelectStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: getStatusColor(state.data.label),
+      backgroundColor: state.isFocused ? "#F5F7FF" : "#fff",
+      fontWeight: 500,
+      cursor: "pointer",
+    }),
+
+    menu: (provided, state) => ({
+      ...provided,
+      width: "160px",
+    }),
+    singleValue: (provided, state) => ({
+      ...provided,
+      color: getStatusColor(state.data.label),
+      fontWeight: 600,
+    }),
+
+    control: (provided, state) => ({
+      ...provided,
+      width: "160px",
+      minHeight: "36px",
+      border: "none",
+      borderColor: state.isFocused ? "#6172d6" : "#d9d9d9",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "#6172d6",
+      },
+    }),
+
+    indicatorSeparator: () => ({
+      display: "none",
+    }),
+  };
+  // functions
+  const handleStatusChange = (taskId, selectedStatus) => {
+    setViewComplianceTasksData((prev) =>
+      prev.map((checklist) => ({
+        ...checklist,
+        taskList: checklist.taskList?.map((task) =>
+          task.taskId === taskId
+            ? {
+                ...task,
+                taskStatusId: selectedStatus.value,
+                taskStatus: selectedStatus.label,
+              }
+            : task
+        ),
+      }))
+    );
+
+    // 🔗 API payload (when you connect backend)
+    /*
+    dispatch(
+      UpdateComplianceTaskStatusAPI(navigate, {
+        taskId,
+        statusId: selectedStatus.value,
+      }, t)
+    );
+    */
   };
 
   // TABLES
@@ -295,64 +451,104 @@ const ViewComplianceTasks = () => {
         <span className="text-truncate">{formatDateToYMD(text)}</span>
       ),
     },
+    // {
+    //   title: t("Status"),
+    //   dataIndex: "taskStatus",
+    //   key: "taskStatus",
+    //   width: "10%",
+    //   align: "center",
+    //   ellipsis: true,
+    //   // filters: [
+    //   //   { text: "In Progress", value: "1" },
+    //   //   { text: "Pending", value: "2" },
+    //   //   { text: "Cancelled", value: "4" },
+    //   //   { text: "Completed", value: "5" },
+    //   // ],
+    //   // filteredValue: statusFilter,
+
+    //   // onFilter: (value, record) => {
+    //   //   return record.taskStatus === value; // ✅ FIX
+    //   // },
+
+    //   // filterIcon: () => (
+    //   //   <ChevronDown className="filter-chevron-icon-todolist" />
+    //   // ),
+    //   render: (taskStatus, record) => {
+    //     console.log(taskStatus, record, "recordStatus");
+    //     const allowedTransitions = getAllowedStatusOptions(record);
+
+    //     const statusObj = {
+    //       label: record.taskStatus,
+    //       value: record.taskStatusId,
+    //     };
+    //     // No transitions allowed → show label only
+    //     if (allowedTransitions.length === 0) {
+    //       return <span>{taskStatus}</span>;
+    //     }
+
+    //     return (
+    //       <Select
+    //         isSearchable={false}
+    //         options={allowedTransitions}
+    //         labelInValue={t("Status")}
+    //         // onChange={handleChangeComplianceStatus}
+    //         styles={statusSelectStyles}
+    //         // value={complianceDetailsState.status}
+    //         value={statusObj}
+    //         // classNamePrefix="Select_status_compliance"
+    //         className={styles.Select_status_compliance}
+    //       />
+    //     );
+    //   },
+    // },
+
     {
       title: t("Status"),
       dataIndex: "taskStatus",
       key: "taskStatus",
       width: "10%",
       align: "center",
-      ellipsis: true,
-      // filters: [
-      //   { text: "Active", value: "In Progress" },
-      //   { text: "In Active", value: "Inactive" },
-      // ],
-      // filteredValue: statusFilter,
 
-      // onFilter: (value, record) => {
-      //   return record.taskStatus === value; // ✅ FIX
-      // },
+      render: (taskStatusText, record) => {
+        const allowedOptions = getAllowedStatusOptions(record);
 
-      // filterIcon: () => (
-      //   <ChevronDown className="filter-chevron-icon-todolist" />
-      // ),
-      // render: (status, record) => {
-      //   const allowedTransitions = getAllowedStatusOptions(status);
+        const currentStatus = {
+          label: record.taskStatus,
+          value: record.taskStatusId,
+        };
 
-      //   // No transitions allowed → show label only
-      //   if (allowedTransitions.length === 0) {
-      //     return <span>{status}</span>;
-      //   }
+        // 🚫 No transitions allowed → show plain text
+        if (allowedOptions.length === 0) {
+          return (
+            <span style={{ color: getStatusColor(record.taskStatus) }}>
+              {record.taskStatus}
+            </span>
+          );
+        }
 
-      //   return (
-      //     <Select
-      //       menuPortalTarget={document.body}
-      //       value={status}
-      //       className={styles.statusDropdown}
-      //       onChange={(e) => handleStatusChange(record.taskId, e.target.value)}
-      //     >
-      //       {/* Current status (disabled) */}
-      //       <option value={status} disabled>
-      //         {status}
-      //       </option>
-
-      //       {/* Allowed transitions only */}
-      //       {allowedTransitions.map((nextStatus) => (
-      //         <option key={nextStatus} value={nextStatus}>
-      //           {nextStatus}
-      //         </option>
-      //       ))}
-      //     </Select>
-      //   );
-      // },
+        // ✅ Transitions allowed → dropdown
+        return (
+          <Select
+            menuPortalTarget={document.body}
+            isSearchable={false}
+            options={allowedOptions}
+            value={currentStatus}
+            styles={statusSelectStyles}
+            onChange={(selected) => handleStatusChange(record.taskId, selected)}
+          />
+        );
+      },
     },
+
     {
       title: t(""),
-      dataIndex: "Attachment",
-      key: "Attachment",
+      dataIndex: "hasAttachments",
+      key: "hasAttachments",
       width: "20%",
 
       // Action buttons column
-      render: (text, record) => {
+      render: (hasAttachments) => {
+        console.log(hasAttachments, "hasAttachmentshasAttachments");
         return (
           <Row>
             <Col
@@ -362,20 +558,17 @@ const ViewComplianceTasks = () => {
               className="d-flex justify-content-end align-items-center gap-4"
             >
               {/* Attachment */}
-              <img
-                className="cursor-pointer"
-                draggable="false"
-                alt=""
-                src={IconAttachment}
-                // onClick={() => handleDeleteTaskModal(record.authorityId)}
-              />
-
-              {/* View Authority */}
-              {/* <Button
-                  text={t("View-details")}
-                  className={styles["viewAuthorityBtn"]}
-                  onClick={() => handleViewAuthority(record.authorityId)}
-                /> */}
+              {hasAttachments > 0 ? (
+                <img
+                  className="cursor-pointer"
+                  draggable="false"
+                  alt=""
+                  src={IconAttachment}
+                  // onClick={() => handleDeleteTaskModal(record.authorityId)}
+                />
+              ) : (
+                ""
+              )}
             </Col>
           </Row>
         );

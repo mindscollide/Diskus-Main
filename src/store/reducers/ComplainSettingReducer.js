@@ -13,6 +13,8 @@ const initialState = {
   IsAuthorityNameExists: null,
   listOfComplianceByCreator: null,
   ViewComplianceByMeDetails: null,
+  SearchComplianceForMe: null,
+  ViewComplianceForMeById: null,
 
   // MQTT
   SocketAuthorityInactive: null,
@@ -614,6 +616,56 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ViewComplianceByMeDetails: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: null,
         ResponseMessage: action.message,
         severity: "error",
       };

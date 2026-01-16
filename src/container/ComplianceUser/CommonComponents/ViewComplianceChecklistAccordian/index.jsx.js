@@ -20,7 +20,11 @@ const ViewComplianceChecklistAccordian = () => {
   const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
 
   // context
-  const { allCheckListByComplianceId } = useComplianceContext();
+  const {
+    allCheckListByComplianceId,
+    setExpandChecklistOnTasksPage,
+    setViewComplianceDetailsTab,
+  } = useComplianceContext();
 
   console.log(allCheckListByComplianceId, "allCheckListByComplianceId");
 
@@ -314,7 +318,13 @@ const ViewComplianceChecklistAccordian = () => {
                               </span>
                             )
                           ) : (
-                            <span className={styles["viewTaskBtn"]}>
+                            <span
+                              className={styles["viewTaskBtn"]}
+                              onClick={() => {
+                                setExpandChecklistOnTasksPage(data.checklistId); // 👈 key line
+                                setViewComplianceDetailsTab(2); // switch to Tasks tab
+                              }}
+                            >
                               {t("view-tasks")}
                             </span>
                           )}

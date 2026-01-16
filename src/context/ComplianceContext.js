@@ -24,6 +24,8 @@ export const ComlianceProvider = ({ children }) => {
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
 
   const [checkListTabs, setChecklistTabs] = useState(1);
+  const [expandChecklistOnTasksPage, setExpandChecklistOnTasksPage] =
+    useState(null);
 
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
@@ -49,6 +51,7 @@ export const ComlianceProvider = ({ children }) => {
     createdBy: "",
     totalComplianceTasks: 0,
     showProgressBar: false,
+    complianceStatusChangeHistory: [],
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
@@ -87,6 +90,7 @@ export const ComlianceProvider = ({ children }) => {
       createdBy: "",
       totalComplianceTasks: 0,
       showProgressBar: false,
+      complianceStatusChangeHistory: [],
     });
     setChecklistCount(0);
     setTaskCount(0);
@@ -94,6 +98,7 @@ export const ComlianceProvider = ({ children }) => {
     setShowViewCompliance(false);
     setAllowedComplianceStatusOptions([]);
     setAllCheckListByComplianceId([]);
+    setExpandChecklistOnTasksPage(null);
   };
 
   // view compliance
@@ -137,6 +142,8 @@ export const ComlianceProvider = ({ children }) => {
         setAllowedComplianceStatusOptions,
         allCheckListByComplianceId,
         setAllCheckListByComplianceId,
+        expandChecklistOnTasksPage,
+        setExpandChecklistOnTasksPage,
       }}
     >
       {children}

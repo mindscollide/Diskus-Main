@@ -12,6 +12,7 @@ import { Button } from "../../../../components/elements";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
+
   const [isViewDetailsBtnActive, setIsViewDetailsBtnActive] = useState(true);
 
   // Compliance Context
@@ -23,96 +24,202 @@ const ViewCompliance = () => {
     complianceDetailsState,
     setAllowedComplianceStatusOptions,
     setAllCheckListByComplianceId,
+    mainComplianceTabs,
   } = useComplianceContext();
+
+  console.log(mainComplianceTabs, "mainComplianceTabs");
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
   );
-  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
-  useEffect(() => {
-    if (viewComplianceByMeDetails !== null) {
-      try {
-        const {
-          allowedComplianceStatuses,
-          authority,
-          checklistTasks,
-          checklists,
-          completedTasks,
-          complianceId,
-          complianceStatus,
-          complianceStatusChangeHistory,
-          complianceTitle,
-          createdBy,
-          criticalityLevel,
-          description,
-          dueDate,
-          isExecuted,
-          progressPercent,
-          showProgressBar,
-          tags,
-          totalTasks,
-        } = viewComplianceByMeDetails;
-        setComplianceInfo({
-          complianceId: complianceId,
-          complianceName: complianceTitle,
-        });
-        // setComplianceDetails({
-        //   complianceTitle,
-        //   complianceDescription: description,
-        // });
-        console.log(
-          viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails"
-        );
-        setComplianceDetailsState({
-          complianceTitle: complianceTitle,
-          complianceId: complianceId,
-          description: description,
-          //   authorityId: authority.authorityID,
-          //   criticality: criticalityLevel,
-          authority: {
-            value: authority.authorityId,
-            label: authority.authorityName,
-          },
-          criticality: {
-            value: 0,
-            label: criticalityLevel,
-          },
-          dueDate: dueDate,
-          tags: Array.isArray(tags)
-            ? tags.map((tag, index) => ({
-                tagID: index + 1,
-                tagTitle: tag,
-              }))
-            : [],
-          progressPercent: progressPercent,
-          status: {
-            value: complianceStatus.statusId,
-            label: complianceStatus.statusName,
-          },
-          createdBy: createdBy,
-          totalComplianceTasks: totalTasks,
-          showProgressBar: showProgressBar,
-        });
-        setAllCheckListByComplianceId(checklists);
-        if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
-          const allowedStatuses = allowedComplianceStatuses.map(
-            (data, index) => {
-              return {
-                ...data,
-                value: data.statusId,
-                label: data.statusName,
-              };
-            }
-          );
-          setAllowedComplianceStatusOptions(allowedStatuses);
-        }
 
-        // setSelectAuthority(authority);
-        // setSelectCriticality(criticalityLevel);
-        // setComplianceDueDate(dueDate);
-      } catch (error) {}
+  const ViewComplianceForMeById = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceForMeById
+  );
+
+  console.log(
+    { forme: ViewComplianceForMeById, byMe: viewComplianceByMeDetails },
+    "ViewComplianceForMeById"
+  );
+
+  useEffect(() => {
+    if (mainComplianceTabs === 2) {
+      if (viewComplianceByMeDetails !== null) {
+        try {
+          const {
+            allowedComplianceStatuses,
+            authority,
+            checklistTasks,
+            checklists,
+            completedTasks,
+            complianceId,
+            complianceStatus,
+            complianceStatusChangeHistory,
+            complianceTitle,
+            createdBy,
+            criticalityLevel,
+            description,
+            dueDate,
+            isExecuted,
+            progressPercent,
+            showProgressBar,
+            tags,
+            totalTasks,
+          } = viewComplianceByMeDetails;
+          setComplianceInfo({
+            complianceId: complianceId,
+            complianceName: complianceTitle,
+          });
+          // setComplianceDetails({
+          //   complianceTitle,
+          //   complianceDescription: description,
+          // });
+          console.log(
+            viewComplianceByMeDetails,
+            "complianceDetailscomplianceDetails"
+          );
+          setComplianceDetailsState({
+            complianceTitle: complianceTitle,
+            complianceId: complianceId,
+            description: description,
+            //   authorityId: authority.authorityID,
+            //   criticality: criticalityLevel,
+            authority: {
+              value: authority.authorityId,
+              label: authority.authorityName,
+            },
+            criticality: {
+              value: 0,
+              label: criticalityLevel,
+            },
+            dueDate: dueDate,
+            tags: Array.isArray(tags)
+              ? tags.map((tag, index) => ({
+                  tagID: index + 1,
+                  tagTitle: tag,
+                }))
+              : [],
+            progressPercent: progressPercent,
+            status: {
+              value: complianceStatus.statusId,
+              label: complianceStatus.statusName,
+            },
+            createdBy: createdBy,
+            totalComplianceTasks: totalTasks,
+            showProgressBar: showProgressBar,
+            complianceStatusChangeHistory: complianceStatusChangeHistory,
+          });
+          setAllCheckListByComplianceId(checklists);
+          if (
+            allowedComplianceStatuses &&
+            allowedComplianceStatuses.length > 0
+          ) {
+            const allowedStatuses = allowedComplianceStatuses.map(
+              (data, index) => {
+                return {
+                  ...data,
+                  value: data.statusId,
+                  label: data.statusName,
+                };
+              }
+            );
+            setAllowedComplianceStatusOptions(allowedStatuses);
+          }
+
+          // setSelectAuthority(authority);
+          // setSelectCriticality(criticalityLevel);
+          // setComplianceDueDate(dueDate);
+        } catch (error) {}
+      }
+    } else if (mainComplianceTabs === 3) {
+      if (ViewComplianceForMeById !== null) {
+        try {
+          const {
+            allowedComplianceStatuses,
+            authority,
+            checklistTasks,
+            checklists,
+            completedTasks,
+            complianceId,
+            complianceStatus,
+            complianceStatusChangeHistory,
+            complianceTitle,
+            createdBy,
+            criticalityLevel,
+            description,
+            dueDate,
+            isExecuted,
+            progressPercent,
+            showProgressBar,
+            tags,
+            totalTasks,
+          } = ViewComplianceForMeById;
+          setComplianceInfo({
+            complianceId: complianceId,
+            complianceName: complianceTitle,
+          });
+          // setComplianceDetails({
+          //   complianceTitle,
+          //   complianceDescription: description,
+          // });
+          console.log(
+            viewComplianceByMeDetails,
+            "complianceDetailscomplianceDetails"
+          );
+          setComplianceDetailsState({
+            complianceTitle: complianceTitle,
+            complianceId: complianceId,
+            description: description,
+            //   authorityId: authority.authorityID,
+            //   criticality: criticalityLevel,
+            authority: {
+              value: authority.authorityId,
+              label: authority.authorityName,
+            },
+            criticality: {
+              value: 0,
+              label: criticalityLevel,
+            },
+            dueDate: dueDate,
+            tags: Array.isArray(tags)
+              ? tags.map((tag, index) => ({
+                  tagID: index + 1,
+                  tagTitle: tag,
+                }))
+              : [],
+            progressPercent: progressPercent,
+            status: {
+              value: complianceStatus.statusId,
+              label: complianceStatus.statusName,
+            },
+            createdBy: createdBy,
+            totalComplianceTasks: totalTasks,
+            showProgressBar: showProgressBar,
+            complianceStatusChangeHistory: complianceStatusChangeHistory,
+          });
+          setAllCheckListByComplianceId(checklists);
+          if (
+            allowedComplianceStatuses &&
+            allowedComplianceStatuses.length > 0
+          ) {
+            const allowedStatuses = allowedComplianceStatuses.map(
+              (data, index) => {
+                return {
+                  ...data,
+                  value: data.statusId,
+                  label: data.statusName,
+                };
+              }
+            );
+            setAllowedComplianceStatusOptions(allowedStatuses);
+          }
+
+          // setSelectAuthority(authority);
+          // setSelectCriticality(criticalityLevel);
+          // setComplianceDueDate(dueDate);
+        } catch (error) {}
+      }
     }
   }, [viewComplianceByMeDetails]);
   console.log("complianceDetailsState", complianceDetailsState);
@@ -175,8 +282,10 @@ const ViewCompliance = () => {
                 lg={9}
                 className="d-flex justify-content-end align-items-center gap-3"
               >
-                {isViewDetailsBtnActive && (
-                  <>
+                {/* {isViewDetailsBtnActive && ( */}
+                <>
+                  {complianceDetailsState.complianceStatusChangeHistory.length <
+                    0 && (
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
@@ -188,32 +297,33 @@ const ViewCompliance = () => {
                         className={styles["viewComplianceDetailsBtn"]}
                       />
                     </div>
-                    {!complianceDetailsState.showProgressBar ? (
-                      <>
-                        {/* <Col sm={12} md={3} lg={3} className="mt-2"> */}
-                        <div className={styles.ProgressBarDiv}>
-                          <div className="d-flex justify-content-between">
-                            <span className={styles["progressBarHeading"]}>
-                              {t("My-progress")}
-                            </span>
-                            <span className={styles["progressBarHeading"]}>
-                              {`${complianceDetailsState.progressPercent}%`}
-                            </span>
-                          </div>
-                          <ProgressLoader
-                            progress={complianceDetailsState.progressPercent}
-                          />
+                  )}
+                  {complianceDetailsState.showProgressBar ? (
+                    <>
+                      {/* <Col sm={12} md={3} lg={3} className="mt-2"> */}
+                      <div className={styles.ProgressBarDiv}>
+                        <div className="d-flex justify-content-between">
+                          <span className={styles["progressBarHeading"]}>
+                            {t("My-progress")}
+                          </span>
+                          <span className={styles["progressBarHeading"]}>
+                            {`${complianceDetailsState.progressPercent}%`}
+                          </span>
                         </div>
-                      </>
-                    ) : (
-                      <>
-                        <span className={styles["noTaskMsg"]}>
-                          {t("No-tasks-created")}
-                        </span>
-                      </>
-                    )}
-                  </>
-                )}
+                        <ProgressLoader
+                          progress={complianceDetailsState.progressPercent}
+                        />
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <span className={styles["noTaskMsg"]}>
+                        {t("No-tasks-created")}
+                      </span>
+                    </>
+                  )}
+                </>
+                {/* )} */}
               </Col>
             )}
           </Row>

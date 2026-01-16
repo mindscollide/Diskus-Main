@@ -10,6 +10,7 @@ import ComplianceByMe from "./Tabs/ComplainceByMe";
 import CreateEditCompliance from "./Tabs/ComplainceByMe/createEditCompliance";
 import { useComplianceContext } from "../../context/ComplianceContext";
 import ViewCompliance from "./CommonComponents/viewCompliance";
+import ComplianceForMe from "./Tabs/ComplainceForMe";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -131,6 +132,7 @@ const MainCompliance = () => {
         </Row>
         {mainComplianceTabs === 1 && <ComplianceDashboard />}
         {mainComplianceTabs === 2 && <ComplianceByMe />}
+        {mainComplianceTabs === 3 && <ComplianceForMe />}
       </section>
     </>
   );

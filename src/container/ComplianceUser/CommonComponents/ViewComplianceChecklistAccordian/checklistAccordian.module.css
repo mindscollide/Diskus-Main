@@ -62,20 +62,22 @@
 }
 .checklistAccordian {
   /* max-height: 220px !important; */
-  max-height: 29vh !important;
-  min-height: 29vh !important;
+  /* max-height: 30vh !important;
+  min-height: 30vh !important; */
   padding-right: 10px;
 
   overflow-y: auto;
-  /* padding-right: 10px; */
+  overflow-x: hidden;
+
   margin-top: 4px;
   margin-bottom: 4px;
 }
 .checklistAccordian_closed {
   /* max-height: 410px !important; */
-  max-height: 30vh !important;
-  min-height: 30vh !important;
+  max-height: 25vh !important;
+  min-height: 25vh !important;
   overflow-y: auto;
+  overflow-x: hidden;
   padding-right: 10px;
 }
 

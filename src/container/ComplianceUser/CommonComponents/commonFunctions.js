@@ -54,3 +54,20 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
 
   return new Date(year, month, day, 23, 59, 58);
 };
+
+export const getDueDateTimeNumber = (dueDate, dueTime) => {
+  if (!dueDate) return 0;
+
+  const year = dueDate.substring(0, 4);
+  const month = dueDate.substring(4, 6);
+  const day = dueDate.substring(6, 8);
+
+  const hours = dueTime?.substring(0, 2) || "00";
+  const minutes = dueTime?.substring(2, 4) || "00";
+  const seconds = dueTime?.substring(4, 6) || "00";
+
+  // ISO format (SAFE)
+  const isoDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+  return new Date(isoDateTime).getTime(); // NUMBER
+};
