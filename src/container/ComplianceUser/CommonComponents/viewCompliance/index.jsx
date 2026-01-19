@@ -44,183 +44,181 @@ const ViewCompliance = () => {
   );
 
   useEffect(() => {
-    if (mainComplianceTabs === 2) {
-      if (viewComplianceByMeDetails !== null) {
-        try {
-          const {
-            allowedComplianceStatuses,
-            authority,
-            checklistTasks,
-            checklists,
-            completedTasks,
-            complianceId,
-            complianceStatus,
-            complianceStatusChangeHistory,
-            complianceTitle,
-            createdBy,
-            criticalityLevel,
-            description,
-            dueDate,
-            isExecuted,
-            progressPercent,
-            showProgressBar,
-            tags,
-            totalTasks,
-          } = viewComplianceByMeDetails;
-          setComplianceInfo({
-            complianceId: complianceId,
-            complianceName: complianceTitle,
-          });
-          // setComplianceDetails({
-          //   complianceTitle,
-          //   complianceDescription: description,
-          // });
-          console.log(
-            viewComplianceByMeDetails,
-            "complianceDetailscomplianceDetails"
+    // if (mainComplianceTabs === 2) {
+    if (viewComplianceByMeDetails !== null) {
+      try {
+        const {
+          allowedComplianceStatuses,
+          authority,
+          checklistTasks,
+          checklists,
+          completedTasks,
+          complianceId,
+          complianceStatus,
+          complianceStatusChangeHistory,
+          complianceTitle,
+          createdBy,
+          criticalityLevel,
+          description,
+          dueDate,
+          isExecuted,
+          progressPercent,
+          showProgressBar,
+          tags,
+          totalTasks,
+        } = viewComplianceByMeDetails;
+        setComplianceInfo({
+          complianceId: complianceId,
+          complianceName: complianceTitle,
+        });
+        // setComplianceDetails({
+        //   complianceTitle,
+        //   complianceDescription: description,
+        // });
+        console.log(
+          viewComplianceByMeDetails,
+          "complianceDetailscomplianceDetails"
+        );
+        setComplianceDetailsState({
+          complianceTitle: complianceTitle,
+          complianceId: complianceId,
+          description: description,
+          //   authorityId: authority.authorityID,
+          //   criticality: criticalityLevel,
+          authority: {
+            value: authority.authorityId,
+            label: authority.authorityName,
+          },
+          criticality: {
+            value: 0,
+            label: criticalityLevel,
+          },
+          dueDate: dueDate,
+          tags: Array.isArray(tags)
+            ? tags.map((tag, index) => ({
+                tagID: index + 1,
+                tagTitle: tag,
+              }))
+            : [],
+          progressPercent: progressPercent,
+          status: {
+            value: complianceStatus.statusId,
+            label: complianceStatus.statusName,
+          },
+          createdBy: createdBy,
+          totalComplianceTasks: totalTasks,
+          showProgressBar: showProgressBar,
+          complianceStatusChangeHistory: complianceStatusChangeHistory,
+        });
+        setAllCheckListByComplianceId(checklists);
+        if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
+          const allowedStatuses = allowedComplianceStatuses.map(
+            (data, index) => {
+              return {
+                ...data,
+                value: data.statusId,
+                label: data.statusName,
+              };
+            }
           );
-          setComplianceDetailsState({
-            complianceTitle: complianceTitle,
-            complianceId: complianceId,
-            description: description,
-            //   authorityId: authority.authorityID,
-            //   criticality: criticalityLevel,
-            authority: {
-              value: authority.authorityId,
-              label: authority.authorityName,
-            },
-            criticality: {
-              value: 0,
-              label: criticalityLevel,
-            },
-            dueDate: dueDate,
-            tags: Array.isArray(tags)
-              ? tags.map((tag, index) => ({
-                  tagID: index + 1,
-                  tagTitle: tag,
-                }))
-              : [],
-            progressPercent: progressPercent,
-            status: {
-              value: complianceStatus.statusId,
-              label: complianceStatus.statusName,
-            },
-            createdBy: createdBy,
-            totalComplianceTasks: totalTasks,
-            showProgressBar: showProgressBar,
-            complianceStatusChangeHistory: complianceStatusChangeHistory,
-          });
-          setAllCheckListByComplianceId(checklists);
-          if (
-            allowedComplianceStatuses &&
-            allowedComplianceStatuses.length > 0
-          ) {
-            const allowedStatuses = allowedComplianceStatuses.map(
-              (data, index) => {
-                return {
-                  ...data,
-                  value: data.statusId,
-                  label: data.statusName,
-                };
-              }
-            );
-            setAllowedComplianceStatusOptions(allowedStatuses);
-          }
+          setAllowedComplianceStatusOptions(allowedStatuses);
+        }
 
-          // setSelectAuthority(authority);
-          // setSelectCriticality(criticalityLevel);
-          // setComplianceDueDate(dueDate);
-        } catch (error) {}
-      }
-    } else if (mainComplianceTabs === 3) {
-      if (ViewComplianceForMeById !== null) {
-        try {
-          const {
-            allowedComplianceStatuses,
-            authority,
-            checklistTasks,
-            checklists,
-            completedTasks,
-            complianceId,
-            complianceStatus,
-            complianceStatusChangeHistory,
-            complianceTitle,
-            createdBy,
-            criticalityLevel,
-            description,
-            dueDate,
-            isExecuted,
-            progressPercent,
-            showProgressBar,
-            tags,
-            totalTasks,
-          } = ViewComplianceForMeById;
-          setComplianceInfo({
-            complianceId: complianceId,
-            complianceName: complianceTitle,
-          });
-          // setComplianceDetails({
-          //   complianceTitle,
-          //   complianceDescription: description,
-          // });
-          console.log(
-            viewComplianceByMeDetails,
-            "complianceDetailscomplianceDetails"
-          );
-          setComplianceDetailsState({
-            complianceTitle: complianceTitle,
-            complianceId: complianceId,
-            description: description,
-            //   authorityId: authority.authorityID,
-            //   criticality: criticalityLevel,
-            authority: {
-              value: authority.authorityId,
-              label: authority.authorityName,
-            },
-            criticality: {
-              value: 0,
-              label: criticalityLevel,
-            },
-            dueDate: dueDate,
-            tags: Array.isArray(tags)
-              ? tags.map((tag, index) => ({
-                  tagID: index + 1,
-                  tagTitle: tag,
-                }))
-              : [],
-            progressPercent: progressPercent,
-            status: {
-              value: complianceStatus.statusId,
-              label: complianceStatus.statusName,
-            },
-            createdBy: createdBy,
-            totalComplianceTasks: totalTasks,
-            showProgressBar: showProgressBar,
-            complianceStatusChangeHistory: complianceStatusChangeHistory,
-          });
-          setAllCheckListByComplianceId(checklists);
-          if (
-            allowedComplianceStatuses &&
-            allowedComplianceStatuses.length > 0
-          ) {
-            const allowedStatuses = allowedComplianceStatuses.map(
-              (data, index) => {
-                return {
-                  ...data,
-                  value: data.statusId,
-                  label: data.statusName,
-                };
-              }
-            );
-            setAllowedComplianceStatusOptions(allowedStatuses);
-          }
-
-          // setSelectAuthority(authority);
-          // setSelectCriticality(criticalityLevel);
-          // setComplianceDueDate(dueDate);
-        } catch (error) {}
-      }
+        // setSelectAuthority(authority);
+        // setSelectCriticality(criticalityLevel);
+        // setComplianceDueDate(dueDate);
+      } catch (error) {}
     }
+    // }
+    // else if (mainComplianceTabs === 3) {
+    //   if (ViewComplianceForMeById !== null) {
+    //     try {
+    //       const {
+    //         allowedComplianceStatuses,
+    //         authority,
+    //         checklistTasks,
+    //         checklists,
+    //         completedTasks,
+    //         complianceId,
+    //         complianceStatus,
+    //         complianceStatusChangeHistory,
+    //         complianceTitle,
+    //         createdBy,
+    //         criticalityLevel,
+    //         description,
+    //         dueDate,
+    //         isExecuted,
+    //         progressPercent,
+    //         showProgressBar,
+    //         tags,
+    //         totalTasks,
+    //       } = ViewComplianceForMeById;
+    //       setComplianceInfo({
+    //         complianceId: complianceId,
+    //         complianceName: complianceTitle,
+    //       });
+    //       // setComplianceDetails({
+    //       //   complianceTitle,
+    //       //   complianceDescription: description,
+    //       // });
+    //       console.log(
+    //         viewComplianceByMeDetails,
+    //         "complianceDetailscomplianceDetails"
+    //       );
+    //       setComplianceDetailsState({
+    //         complianceTitle: complianceTitle,
+    //         complianceId: complianceId,
+    //         description: description,
+    //         //   authorityId: authority.authorityID,
+    //         //   criticality: criticalityLevel,
+    //         authority: {
+    //           value: authority.authorityId,
+    //           label: authority.authorityName,
+    //         },
+    //         criticality: {
+    //           value: 0,
+    //           label: criticalityLevel,
+    //         },
+    //         dueDate: dueDate,
+    //         tags: Array.isArray(tags)
+    //           ? tags.map((tag, index) => ({
+    //               tagID: index + 1,
+    //               tagTitle: tag,
+    //             }))
+    //           : [],
+    //         progressPercent: progressPercent,
+    //         status: {
+    //           value: complianceStatus.statusId,
+    //           label: complianceStatus.statusName,
+    //         },
+    //         createdBy: createdBy,
+    //         totalComplianceTasks: totalTasks,
+    //         showProgressBar: showProgressBar,
+    //         complianceStatusChangeHistory: complianceStatusChangeHistory,
+    //       });
+    //       setAllCheckListByComplianceId(checklists);
+    //       if (
+    //         allowedComplianceStatuses &&
+    //         allowedComplianceStatuses.length > 0
+    //       ) {
+    //         const allowedStatuses = allowedComplianceStatuses.map(
+    //           (data, index) => {
+    //             return {
+    //               ...data,
+    //               value: data.statusId,
+    //               label: data.statusName,
+    //             };
+    //           }
+    //         );
+    //         setAllowedComplianceStatusOptions(allowedStatuses);
+    //       }
+
+    //       // setSelectAuthority(authority);
+    //       // setSelectCriticality(criticalityLevel);
+    //       // setComplianceDueDate(dueDate);
+    //     } catch (error) {}
+    //   }
+    // }
   }, [viewComplianceByMeDetails]);
   console.log("complianceDetailsState", complianceDetailsState);
   return (

@@ -8,16 +8,20 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
+import { DatePicker } from "antd";
+import { useTableScrollBottom } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 const SearchComplianceBoxModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [data, setData] = useState([]);
+  const isLoadMoreRef = useRef(false);
   // Search States
   const searchBoxRef = useRef(null);
   const [searchbox, setsearchbox] = useState(false);
   const [searchCompliancePayload, setSearchCompliancePayload] = useState({
     complianceTitle: "",
+    complianceTitleOutside: "",
     dueDateFrom: "",
     dueDateTo: "",
     authorityShortCode: "",
@@ -29,25 +33,28 @@ const SearchComplianceBoxModal = () => {
   });
   const [enterpressed, setEnterpressed] = useState(true);
 
+  // Scroll
+  const [recordsLength, setRecordLength] = useState(0);
+
   //   Functions
-  const handleKeyDownSearchAuthority = (e) => {
+  const handleKeyDownSearchCompliance = (e) => {
     if (
       e.key === "Enter" &&
-      searchCompliancePayload.complianceTitle.trim() !== ""
+      searchCompliancePayload.complianceTitleOutside.trim() !== ""
     ) {
       setEnterpressed(true);
 
       const updatedPayload = {
         ...searchCompliancePayload,
-        complianceTitle: searchCompliancePayload.complianceTitle,
-        // authorityTitle: searchPayload.authorityTitle,
+        complianceTitle: searchCompliancePayload.complianceTitleOutside,
+        complianceTitleOutside: searchCompliancePayload.complianceTitleOutside,
       };
 
       setSearchCompliancePayload(updatedPayload);
       dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
     }
   };
-  const handleSearchCompliance = (e) => {
+  const handleChangeCompliance = (e) => {
     let name = e.target.name;
     let value = e.target.value;
 
@@ -60,24 +67,52 @@ const SearchComplianceBoxModal = () => {
         complianceTitle: trimmedValue,
       });
     }
+    if (name === "complianceTitleOutside") {
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
+        complianceTitleOutside: trimmedValue,
+      });
+    }
     if (name === "authorityShortCode") {
       setSearchCompliancePayload({
         ...searchCompliancePayload,
         authorityShortCode: trimmedValue,
       });
     }
-    // if (name === "Tags") {
-    //   setSearchCompliancePayload({
-    //     ...searchCompliancePayload,
-    //     Tags: trimmedValue,
-    //   });
-    // }
-    // if (name === "sector") {
-    //   setSearchCompliancePayload({ ...searchCompliancePayload, sector: trimmedValue });
-    // }
-    // if (name === "authorityTitle") {
-    //   setSearchCompliancePayload({ ...searchCompliancePayload, authorityTitle: trimmedValue });
-    // }
+  };
+  const { setHasReachedBottom } = useTableScrollBottom(() => {
+    if (recordsLength !== data.length) {
+      isLoadMoreRef.current = true;
+
+      dispatch(
+        listOfComplianceByCreatorApi(
+          navigate,
+          {
+            ...searchCompliancePayload,
+            sRow: data.length,
+          },
+          t
+        )
+      );
+    }
+  });
+  const handleSearchCompliance = () => {
+    setHasReachedBottom(false);
+    setData([]);
+    setRecordLength(0);
+
+    setSearchCompliancePayload({
+      ...searchCompliancePayload,
+      pageNumber: 0,
+      length: 10,
+    });
+    console.log(
+      searchCompliancePayload,
+      "searchCompliancePayloadompliancePayload"
+    );
+    dispatch(
+      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
+    );
   };
   // Reset all search fields
   const handleResetComplianceButton = () => {
@@ -95,10 +130,7 @@ const SearchComplianceBoxModal = () => {
       pageNumber: 0,
       length: 10,
     });
-    // setSelectCountry({
-    //   value: 0,
-    //   label: "",
-    // });
+
     const Data = {
       complianceTitle: "",
       dueDateFrom: "",
@@ -118,11 +150,11 @@ const SearchComplianceBoxModal = () => {
     setsearchbox(!searchbox);
 
     // Move title search into authority name when opening search box
-    if (searchCompliancePayload.complianceTitle !== "") {
+    if (searchCompliancePayload.complianceTitleOutside !== "") {
       setSearchCompliancePayload({
         ...searchCompliancePayload,
-        complianceTitle: searchCompliancePayload.complianceTitle,
-        // authorityTitle: "",
+        complianceTitle: searchCompliancePayload.complianceTitleOutside,
+        complianceTitleOutside: "",
       });
     }
   };
@@ -130,27 +162,23 @@ const SearchComplianceBoxModal = () => {
   const handleCrossSearchBox = () => {
     setsearchbox(false);
   };
+  const handleChangeDates = () => {};
+
   return (
     <>
       <Row>
-        <Col
-          lg={5}
-          md={5}
-          sm={12}
-          xs={12}
-          className="justify-content-end  align-items-center "
-        >
+        <Col lg={12} md={12} sm={12} xs={12}>
           <span ref={searchBoxRef} className="position-relative">
             <TextField
               placeholder={t("Search")}
-              name={"comlianceTitle"}
+              name={"complianceTitleOutside"}
               disable={searchbox}
-              value={searchCompliancePayload.complianceTitle}
-              onKeyDown={handleKeyDownSearchAuthority}
+              value={searchCompliancePayload.complianceTitleOutside}
+              onKeyDown={handleKeyDownSearchCompliance}
               applyClass={"PollingSearchInput"}
               maxLength={100}
               labelclass="d-none"
-              change={handleSearchCompliance}
+              change={handleChangeCompliance}
               inputicon={
                 <>
                   <Row>
@@ -160,7 +188,7 @@ const SearchComplianceBoxModal = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      {searchCompliancePayload.complianceTitle &&
+                      {searchCompliancePayload.complianceTitleOutside &&
                       enterpressed ? (
                         <>
                           <img
@@ -216,53 +244,56 @@ const SearchComplianceBoxModal = () => {
                       <Col lg={6} md={6} sm={6} xs={6}>
                         <TextField
                           labelclass={"d-none"}
-                          placeholder={t("Authority-name")}
+                          placeholder={t("Compliance-title")}
                           maxLength={100}
-                          name={"authorityName"}
+                          name={"complianceTitle"}
                           value={searchCompliancePayload.complianceTitle}
                           type="text"
                           applyClass={"usermanagementTextField"}
-                          change={handleSearchCompliance}
+                          change={handleChangeCompliance}
                         />
                       </Col>
-                      <Col lg={6} md={6} sm={6} xs={6}>
+                      <Col lg={6} md={6} sm={12} xs={12}>
                         <TextField
                           labelclass={"d-none"}
-                          placeholder={t("Short-code")}
+                          placeholder={t("Authority-short-code")}
                           maxLength={10}
-                          name={"shortCode"}
+                          name={"authorityShortCode"}
                           value={searchCompliancePayload.authorityShortCode}
                           type="text"
                           applyClass={"usermanagementTextField"}
-                          change={handleSearchCompliance}
+                          change={handleChangeCompliance}
                         />
                       </Col>
                     </Row>
 
-                    {/* <Row className="mt-4">
-                      <Col lg={6} md={6} sm={12} xs={12}>
-                        <Select
-                          value={
-                            selectCountry?.value !== 0 ? selectCountry : null
-                          }
-                          options={countryNames}
-                          onChange={handleChangeCountry}
-                          placeholder="Country"
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12} xs={12}>
+                        <DatePicker.RangePicker
+                          format="DD/MM/YYYY"
+                          placeholder={["Start Date", "End Date"]}
+                          allowEmpty={[true, true]}
+                          className="custom-range-picker"
+                          separator="-"
+                          onChange={(dates) => {
+                            setSearchCompliancePayload((prev) => ({
+                              ...prev,
+                              dueDateFrom: dates?.[0]
+                                ? dates[0].format("YYYYMMDD")
+                                : "",
+                              dueDateTo: dates?.[1]
+                                ? dates[1].format("YYYYMMDD")
+                                : "",
+                            }));
+                          }}
+                          superNextIcon={false}
+                          superPrevIcon={false}
+                          inputReadOnly
+                          dropdownClassName="complaicenClassDropdownd"
                         />
                       </Col>
-                      <Col lg={6} md={6} sm={12} xs={12}>
-                        <TextField
-                          labelclass={"d-none"}
-                          placeholder={t("Sector")}
-                          name={"sector"}
-                          maxLength={50}
-                          applyClass={"usermanagementTextField"}
-                          type="text"
-                          value={searchPayload.sector}
-                          change={handleSearchAuthority}
-                        />
-                      </Col>
-                    </Row> */}
+                    </Row>
+
                     <Row className="mt-4">
                       <Col
                         lg={12}
@@ -282,10 +313,9 @@ const SearchComplianceBoxModal = () => {
                           onClick={handleSearchCompliance}
                           disableBtn={
                             searchCompliancePayload.complianceTitle === "" &&
-                            searchCompliancePayload.authorityShortCode === ""
-                            // searchPayload.country === "" &&
-                            // searchPayload.sector === "" &&
-                            // searchPayload.authorityTitle === ""
+                            searchCompliancePayload.authorityShortCode === "" &&
+                            searchCompliancePayload.dueDateFrom === "" &&
+                            searchCompliancePayload.dueDateTo === ""
                           }
                         />
                       </Col>

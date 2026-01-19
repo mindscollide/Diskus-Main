@@ -2597,5 +2597,6 @@
   "The-status-of-this-compliance-was-changed-multiple-times.": "The status of this compliance was changed multiple times.",
   "You-haven't-created-any-compliance-items": "You haven't created any compliance items",
   "No-compliance-records": "No Compliance Records",
-  "You-don't-have-any-compliance-yet": "You don't have any compliance yet"
+  "You-don't-have-any-compliance-yet": "You don't have any compliance yet",
+  "Authority-short-code": "Authority Short Code"
 }

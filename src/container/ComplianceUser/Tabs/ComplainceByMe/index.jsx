@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   listOfComplianceByCreatorApi,
-  ViewComplianceByMeDetailsAPI,
+  // ViewComplianceByMeDetailsAPI,
+  ViewComplianceDetailsByViewTypeAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import {
@@ -46,6 +47,7 @@ const ComplianceByMe = () => {
     setCreateEditComplaince,
     showViewCompliance,
     setShowViewCompliance,
+    compliancebyMePayload,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -58,7 +60,7 @@ const ComplianceByMe = () => {
       criticalityIds: [],
       statusIds: [],
       pageNumber: 0,
-      length: 100,
+      length: 10,
     };
 
     dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
@@ -79,9 +81,10 @@ const ComplianceByMe = () => {
   const handleEditCompliance = (record) => {
     const Data = {
       complianceId: record.complianceId,
+      viewType: 1,
     };
     dispatch(
-      ViewComplianceByMeDetailsAPI(
+      ViewComplianceDetailsByViewTypeAPI(
         navigate,
         Data,
         t,
@@ -97,9 +100,10 @@ const ComplianceByMe = () => {
     console.log("reached here");
     const Data = {
       complianceId: record.complianceId,
+      viewType: 1,
     };
     dispatch(
-      ViewComplianceByMeDetailsAPI(
+      ViewComplianceDetailsByViewTypeAPI(
         navigate,
         Data,
         t,
@@ -290,7 +294,7 @@ const ComplianceByMe = () => {
           rows={complianceList}
           column={columns}
           className={"Compliance_Table mt-3"}
-          scroll={{ x: "scroll", y: 550 }}
+          scroll={{ x: "scroll", y: 520 }}
           pagination={false}
           onChange={handleChangeComplianceSorter}
         />

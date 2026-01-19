@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   SearchComplianceForMeApi,
-  viewComplianceForMeByIdAPI,
+  ViewComplianceDetailsByViewTypeAPI,
+  // viewComplianceForMeByIdAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import {
@@ -73,30 +74,14 @@ const ComplianceForMe = () => {
     }
   }, [SearchComplianceForMe]);
 
-  //   const handleEditCompliance = (record) => {
-  //     const Data = {
-  //       complianceId: record.complianceId,
-  //     };
-  //     dispatch(
-  //       ViewComplianceByMeDetailsAPI(
-  //         navigate,
-  //         Data,
-  //         t,
-  //         1,
-  //         setComplianceAddEditViewState,
-  //         setCreateEditComplaince,
-  //         setShowViewCompliance
-  //       )
-  //     );
-  //   };
-
   const handleViewCompliance = (record) => {
     console.log("reached here");
     const Data = {
       complianceId: record.complianceId,
+      viewType: 2,
     };
     dispatch(
-      viewComplianceForMeByIdAPI(
+      ViewComplianceDetailsByViewTypeAPI(
         navigate,
         Data,
         t,

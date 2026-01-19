@@ -8209,3 +8209,7 @@ td.ant-table-column-sort {
   color: #5a5a5a;
   outline: none !important;
 }
+.custom-range-picker {
+  height: 39px;
+  width: 100%;
+}

@@ -56,6 +56,19 @@ export const ComlianceProvider = ({ children }) => {
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
+  // Search Context
+  const [compliancebyMePayload, setComplianceByMePayload] = useState({
+    complianceTitle: "",
+    dueDateFrom: "",
+    dueDateTo: "",
+    authorityShortCode: "",
+    tagsCSV: "",
+    criticalityIds: [],
+    statusIds: [],
+    pageNumber: 0,
+    length: 10,
+  });
+
   const emptyComplianceState = () => {
     console.log("cleared");
     dispatch(clearComplianceDetailsData());
@@ -99,6 +112,17 @@ export const ComlianceProvider = ({ children }) => {
     setAllowedComplianceStatusOptions([]);
     setAllCheckListByComplianceId([]);
     setExpandChecklistOnTasksPage(null);
+    setComplianceByMePayload({
+      complianceTitle: "",
+      dueDateFrom: "",
+      dueDateTo: "",
+      authorityShortCode: "",
+      tagsCSV: "",
+      criticalityIds: [],
+      statusIds: [],
+      pageNumber: 0,
+      length: 10,
+    });
   };
 
   // view compliance
@@ -144,6 +168,8 @@ export const ComlianceProvider = ({ children }) => {
         setAllCheckListByComplianceId,
         expandChecklistOnTasksPage,
         setExpandChecklistOnTasksPage,
+        compliancebyMePayload,
+        setComplianceByMePayload,
       }}
     >
       {children}

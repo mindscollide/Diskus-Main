@@ -2092,6 +2092,12 @@ export const ViewComplianceByMeDetailsRM = {
   RequestMethod: "ServiceManager.ViewComplianceByMeDetails",
 };
 
+// to be replaced by
+
+export const ViewComplianceDetailsByViewTypeRM = {
+  RequestMethod: "ServiceManager.ViewComplianceDetailsByViewType",
+};
+
 export const ViewComplianceForMeById = {
   RequestMethod: "ServiceManager.ViewComplianceForMeById",
 };

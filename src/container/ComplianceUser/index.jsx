@@ -11,6 +11,7 @@ import CreateEditCompliance from "./Tabs/ComplainceByMe/createEditCompliance";
 import { useComplianceContext } from "../../context/ComplianceContext";
 import ViewCompliance from "./CommonComponents/viewCompliance";
 import ComplianceForMe from "./Tabs/ComplainceForMe";
+import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModal";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -58,7 +59,7 @@ const MainCompliance = () => {
               />
             )}
           </Col>
-          {mainComplianceTabs === 1 && (
+          {mainComplianceTabs === 1 ? (
             <Col
               sm={12}
               md={6}
@@ -70,7 +71,11 @@ const MainCompliance = () => {
               </span>{" "}
               <Switch />
             </Col>
-          )}
+          ) : mainComplianceTabs === 2 ? (
+            <Col sm={12} md={6} lg={6}>
+              <SearchComplianceBoxModal />
+            </Col>
+          ) : null}
         </Row>
         <Row>
           <Col
