@@ -2,56 +2,68 @@ import React, { useRef, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
-import { listOfComplianceByCreatorApi } from "../../../../store/actions/ComplainSettingActions";
+import {
+  listOfComplianceByCreatorApi,
+  SearchComplianceForMeApi,
+} from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
 import { DatePicker } from "antd";
-import { useTableScrollBottom } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
-const SearchComplianceBoxModal = () => {
+import { useComplianceContext } from "../../../../context/ComplianceContext";
+const SearchComplianceBoxModal = ({ type = "byMe" }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [data, setData] = useState([]);
-  const isLoadMoreRef = useRef(false);
   // Search States
   const searchBoxRef = useRef(null);
   const [searchbox, setsearchbox] = useState(false);
-  const [searchCompliancePayload, setSearchCompliancePayload] = useState({
-    complianceTitle: "",
-    complianceTitleOutside: "",
-    dueDateFrom: "",
-    dueDateTo: "",
-    authorityShortCode: "",
-    tagsCSV: "",
-    criticalityIds: [],
-    statusIds: [],
-    pageNumber: 0,
-    length: 10,
-  });
   const [enterpressed, setEnterpressed] = useState(true);
 
+  const {
+    compliancebyMePayload,
+    setComplianceByMePayload,
+    setComplianceByMeList,
+    // setComplianceByMeTotal,
+    complianceForMePayload,
+    setComplianceForMePayload,
+    complianceForMeList,
+    setComplianceForMeList,
+  } = useComplianceContext();
   // Scroll
-  const [recordsLength, setRecordLength] = useState(0);
 
+  // Determine which payload/list to use
+  const payload =
+    type === "byMe" ? compliancebyMePayload : complianceForMePayload;
+  const setPayload =
+    type === "byMe" ? setComplianceByMePayload : setComplianceForMePayload;
+  const setList =
+    type === "byMe" ? setComplianceByMeList : setComplianceForMeList;
   //   Functions
   const handleKeyDownSearchCompliance = (e) => {
     if (
       e.key === "Enter" &&
-      searchCompliancePayload.complianceTitleOutside.trim() !== ""
+      compliancebyMePayload.complianceTitleOutside.trim() !== ""
     ) {
       setEnterpressed(true);
 
       const updatedPayload = {
-        ...searchCompliancePayload,
-        complianceTitle: searchCompliancePayload.complianceTitleOutside,
-        complianceTitleOutside: searchCompliancePayload.complianceTitleOutside,
+        ...compliancebyMePayload,
+        complianceTitle: compliancebyMePayload.complianceTitleOutside,
+        complianceTitleOutside: compliancebyMePayload.complianceTitleOutside,
+        pageNumber: 0,
+        length: 10,
       };
 
-      setSearchCompliancePayload(updatedPayload);
-      dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
+      if (type === "byMe") {
+        setComplianceByMePayload(updatedPayload);
+        dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
+      } else {
+        setComplianceForMePayload(updatedPayload);
+        dispatch(SearchComplianceForMeApi(navigate, updatedPayload, t));
+      }
     }
   };
   const handleChangeCompliance = (e) => {
@@ -62,64 +74,55 @@ const SearchComplianceBoxModal = () => {
     const trimmedValue = value.trimStart();
 
     if (name === "complianceTitle") {
-      setSearchCompliancePayload({
-        ...searchCompliancePayload,
+      setComplianceByMePayload({
+        ...compliancebyMePayload,
         complianceTitle: trimmedValue,
       });
     }
     if (name === "complianceTitleOutside") {
-      setSearchCompliancePayload({
-        ...searchCompliancePayload,
+      setComplianceByMePayload({
+        ...compliancebyMePayload,
         complianceTitleOutside: trimmedValue,
       });
     }
     if (name === "authorityShortCode") {
-      setSearchCompliancePayload({
-        ...searchCompliancePayload,
+      setComplianceByMePayload({
+        ...compliancebyMePayload,
         authorityShortCode: trimmedValue,
       });
     }
   };
-  const { setHasReachedBottom } = useTableScrollBottom(() => {
-    if (recordsLength !== data.length) {
-      isLoadMoreRef.current = true;
 
+  const handleSearchCompliance = () => {
+    setList([]); // reset list
+    setPayload({ ...payload, pageNumber: 0, length: 10 });
+
+    if (type === "byMe") {
       dispatch(
         listOfComplianceByCreatorApi(
           navigate,
-          {
-            ...searchCompliancePayload,
-            sRow: data.length,
-          },
+          { ...payload, pageNumber: 0, length: 10 },
+          t
+        )
+      );
+    } else {
+      dispatch(
+        SearchComplianceForMeApi(
+          navigate,
+          { ...payload, pageNumber: 0, length: 10 },
           t
         )
       );
     }
-  });
-  const handleSearchCompliance = () => {
-    setHasReachedBottom(false);
-    setData([]);
-    setRecordLength(0);
-
-    setSearchCompliancePayload({
-      ...searchCompliancePayload,
-      pageNumber: 0,
-      length: 10,
-    });
-    console.log(
-      searchCompliancePayload,
-      "searchCompliancePayloadompliancePayload"
-    );
-    dispatch(
-      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
-    );
   };
-  // Reset all search fields
   const handleResetComplianceButton = () => {
     // setHasReachedBottom(false);
     // setRecordLength(0);
+    // setComplianceByMeList([]);
+    // setComplianceByMeTotal(0);
     // setData([]);
-    setSearchCompliancePayload({
+    setComplianceByMePayload({
+      complianceTitleOutside: "",
       complianceTitle: "",
       dueDateFrom: "",
       dueDateTo: "",
@@ -142,18 +145,23 @@ const SearchComplianceBoxModal = () => {
       pageNumber: 0,
       length: 10,
     };
-    dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
-    setsearchbox(false);
+    if (type === "byMe") {
+      dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
+      setsearchbox(false);
+    } else {
+      dispatch(SearchComplianceForMeApi(navigate, Data, t));
+      setsearchbox(false);
+    }
   };
   // Open advanced search box
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
 
     // Move title search into authority name when opening search box
-    if (searchCompliancePayload.complianceTitleOutside !== "") {
-      setSearchCompliancePayload({
-        ...searchCompliancePayload,
-        complianceTitle: searchCompliancePayload.complianceTitleOutside,
+    if (compliancebyMePayload.complianceTitleOutside !== "") {
+      setComplianceByMePayload({
+        ...compliancebyMePayload,
+        complianceTitle: compliancebyMePayload.complianceTitleOutside,
         complianceTitleOutside: "",
       });
     }
@@ -162,7 +170,6 @@ const SearchComplianceBoxModal = () => {
   const handleCrossSearchBox = () => {
     setsearchbox(false);
   };
-  const handleChangeDates = () => {};
 
   return (
     <>
@@ -173,7 +180,7 @@ const SearchComplianceBoxModal = () => {
               placeholder={t("Search")}
               name={"complianceTitleOutside"}
               disable={searchbox}
-              value={searchCompliancePayload.complianceTitleOutside}
+              value={compliancebyMePayload.complianceTitleOutside}
               onKeyDown={handleKeyDownSearchCompliance}
               applyClass={"PollingSearchInput"}
               maxLength={100}
@@ -188,7 +195,7 @@ const SearchComplianceBoxModal = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      {searchCompliancePayload.complianceTitleOutside &&
+                      {compliancebyMePayload.complianceTitleOutside &&
                       enterpressed ? (
                         <>
                           <img
@@ -247,7 +254,7 @@ const SearchComplianceBoxModal = () => {
                           placeholder={t("Compliance-title")}
                           maxLength={100}
                           name={"complianceTitle"}
-                          value={searchCompliancePayload.complianceTitle}
+                          value={compliancebyMePayload.complianceTitle}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChangeCompliance}
@@ -259,7 +266,7 @@ const SearchComplianceBoxModal = () => {
                           placeholder={t("Authority-short-code")}
                           maxLength={10}
                           name={"authorityShortCode"}
-                          value={searchCompliancePayload.authorityShortCode}
+                          value={compliancebyMePayload.authorityShortCode}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChangeCompliance}
@@ -276,7 +283,7 @@ const SearchComplianceBoxModal = () => {
                           className="custom-range-picker"
                           separator="-"
                           onChange={(dates) => {
-                            setSearchCompliancePayload((prev) => ({
+                            setComplianceByMePayload((prev) => ({
                               ...prev,
                               dueDateFrom: dates?.[0]
                                 ? dates[0].format("YYYYMMDD")
@@ -312,10 +319,10 @@ const SearchComplianceBoxModal = () => {
                           className={styles["SearchButtonSearchBox"]}
                           onClick={handleSearchCompliance}
                           disableBtn={
-                            searchCompliancePayload.complianceTitle === "" &&
-                            searchCompliancePayload.authorityShortCode === "" &&
-                            searchCompliancePayload.dueDateFrom === "" &&
-                            searchCompliancePayload.dueDateTo === ""
+                            compliancebyMePayload.complianceTitle === "" &&
+                            compliancebyMePayload.authorityShortCode === "" &&
+                            compliancebyMePayload.dueDateFrom === "" &&
+                            compliancebyMePayload.dueDateTo === ""
                           }
                         />
                       </Col>

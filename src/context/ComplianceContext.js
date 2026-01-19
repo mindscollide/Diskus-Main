@@ -56,7 +56,7 @@ export const ComlianceProvider = ({ children }) => {
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
-  // Search Context
+  // Search Context for compliance By me
   const [compliancebyMePayload, setComplianceByMePayload] = useState({
     complianceTitle: "",
     dueDateFrom: "",
@@ -68,6 +68,23 @@ export const ComlianceProvider = ({ children }) => {
     pageNumber: 0,
     length: 10,
   });
+  const [complianceByMeList, setComplianceByMeList] = useState([]);
+  const [complianceByMeTotal, setComplianceByMeTotal] = useState(0);
+
+  // Search COntext for ComplianceForMe
+  const [complianceForMePayload, setComplianceForMePayload] = useState({
+    complianceTitle: "",
+    dueDateFrom: "",
+    dueDateTo: "",
+    authorityShortCode: "",
+    tagsCSV: "",
+    criticalityIds: [],
+    statusIds: [],
+    pageNumber: 0,
+    length: 10,
+  });
+
+  const [complianceForMeList, setComplianceForMeList] = useState([]);
 
   const emptyComplianceState = () => {
     console.log("cleared");
@@ -114,6 +131,7 @@ export const ComlianceProvider = ({ children }) => {
     setExpandChecklistOnTasksPage(null);
     setComplianceByMePayload({
       complianceTitle: "",
+      complianceTitleOutside: "",
       dueDateFrom: "",
       dueDateTo: "",
       authorityShortCode: "",
@@ -123,6 +141,20 @@ export const ComlianceProvider = ({ children }) => {
       pageNumber: 0,
       length: 10,
     });
+    setComplianceByMeList([]);
+    setComplianceByMeTotal(0);
+    setComplianceForMePayload({
+      complianceTitle: "",
+      dueDateFrom: "",
+      dueDateTo: "",
+      authorityShortCode: "",
+      tagsCSV: "",
+      criticalityIds: [],
+      statusIds: [],
+      pageNumber: 0,
+      length: 10,
+    });
+    setComplianceForMeList([]);
   };
 
   // view compliance
@@ -170,6 +202,14 @@ export const ComlianceProvider = ({ children }) => {
         setExpandChecklistOnTasksPage,
         compliancebyMePayload,
         setComplianceByMePayload,
+        complianceByMeList,
+        setComplianceByMeList,
+        complianceByMeTotal,
+        setComplianceByMeTotal,
+        complianceForMePayload,
+        setComplianceForMePayload,
+        complianceForMeList,
+        setComplianceForMeList,
       }}
     >
       {children}

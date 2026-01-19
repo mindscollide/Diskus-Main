@@ -42,3 +42,33 @@ export const useTableScrollBottom = (onBottomReach, threshold = 0) => {
     setHasReachedBottom,
   };
 };
+
+export const useAntTableScrollBottomVirtual = (
+  onBottomReach,
+  threshold = 20
+) => {
+  const calledRef = useRef(false);
+
+  useEffect(() => {
+    const tableBody = document.querySelector(".ant-table-body");
+    if (!tableBody) return;
+
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = tableBody;
+
+      const isBottom = scrollTop + clientHeight >= scrollHeight - threshold;
+
+      if (isBottom && !calledRef.current) {
+        calledRef.current = true;
+        onBottomReach?.();
+      }
+
+      if (!isBottom) {
+        calledRef.current = false;
+      }
+    };
+
+    tableBody.addEventListener("scroll", handleScroll);
+    return () => tableBody.removeEventListener("scroll", handleScroll);
+  }, [onBottomReach, threshold]);
+};

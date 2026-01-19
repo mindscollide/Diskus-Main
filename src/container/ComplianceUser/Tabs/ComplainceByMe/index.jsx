@@ -21,6 +21,10 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAsce
 import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { Col, Row } from "react-bootstrap";
+import {
+  useAntTableScrollBottomVirtual,
+  useTableScrollBottom,
+} from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 
 const ComplianceByMe = () => {
   const dispatch = useDispatch();
@@ -29,13 +33,8 @@ const ComplianceByMe = () => {
   const getCompliancesForCreator = useSelector(
     (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
   );
-  const [complianceList, setComplianceList] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  console.log(
-    "getCompliancesForCreator",
-    getCompliancesForCreator,
-    complianceList
-  );
+  // const [complianceList, setComplianceList] = useState([]);
+  // const [totalRecords, setTotalRecords] = useState(0);
 
   // Sort State
   const [complianceTitleSort, setComplianceTitleSort] = useState(null);
@@ -48,34 +47,32 @@ const ComplianceByMe = () => {
     showViewCompliance,
     setShowViewCompliance,
     compliancebyMePayload,
+    complianceByMeList,
+    setComplianceByMeList,
+    setComplianceByMeTotal,
+    setComplianceByMePayload,
+    complianceByMeTotal,
   } = useComplianceContext();
 
   useEffect(() => {
-    let Data = {
-      complianceTitle: "",
-      dueDateFrom: "",
-      dueDateTo: "",
-      authorityShortCode: "",
-      tagsCSV: "",
-      criticalityIds: [],
-      statusIds: [],
-      pageNumber: 0,
-      length: 10,
-    };
-
-    dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
+    dispatch(listOfComplianceByCreatorApi(navigate, compliancebyMePayload, t));
   }, []);
 
   useEffect(() => {
     if (!getCompliancesForCreator) return;
-    try {
-      if (getCompliancesForCreator.complianceList.length > 0) {
-        setComplianceList(getCompliancesForCreator.complianceList);
-        setTotalRecords(getCompliancesForCreator.totalCount);
-      }
-    } catch (error) {
-      console.log(error);
+
+    if (compliancebyMePayload.pageNumber === 0) {
+      // fresh search
+      setComplianceByMeList(getCompliancesForCreator.complianceList || []);
+    } else {
+      // lazy load
+      setComplianceByMeList((prev) => [
+        ...prev,
+        ...(getCompliancesForCreator.complianceList || []),
+      ]);
     }
+
+    setComplianceByMeTotal(getCompliancesForCreator.totalCount || 0);
   }, [getCompliancesForCreator]);
 
   const handleEditCompliance = (record) => {
@@ -285,13 +282,24 @@ const ComplianceByMe = () => {
         },
       },
     ],
-    [complianceList, t, authoritySort, dueDateSort, complianceTitleSort]
+    [complianceByMeList, t, authoritySort, dueDateSort, complianceTitleSort]
   );
+  useAntTableScrollBottomVirtual(() => {
+    if (complianceByMeList.length < complianceByMeTotal) {
+      const nextPayload = {
+        ...compliancebyMePayload,
+        pageNumber: compliancebyMePayload.pageNumber + 10,
+      };
+
+      setComplianceByMePayload(nextPayload);
+      dispatch(listOfComplianceByCreatorApi(navigate, nextPayload, t));
+    }
+  }, 10);
   return (
     <>
-      {complianceList.length > 0 ? (
+      {complianceByMeList.length > 0 ? (
         <CustomTable
-          rows={complianceList}
+          rows={complianceByMeList}
           column={columns}
           className={"Compliance_Table mt-3"}
           scroll={{ x: "scroll", y: 520 }}

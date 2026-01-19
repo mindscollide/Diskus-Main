@@ -73,7 +73,11 @@ const MainCompliance = () => {
             </Col>
           ) : mainComplianceTabs === 2 ? (
             <Col sm={12} md={6} lg={6}>
-              <SearchComplianceBoxModal />
+              <SearchComplianceBoxModal type="byMe" />
+            </Col>
+          ) : mainComplianceTabs === 3 ? (
+            <Col sm={12} md={6} lg={6}>
+              <SearchComplianceBoxModal type="forMe" />
             </Col>
           ) : null}
         </Row>
