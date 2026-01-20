@@ -48,7 +48,7 @@ const ViewComplianceTasks = () => {
     "Cancelled",
     "Completed",
   ]);
-
+  const [activeSortedChecklistId, setActiveSortedChecklistId] = useState(null);
   const [taskStatus, setTaskStatus] = useState([]);
 
   console.log(taskStatus, "taskStatustaskStatus");
@@ -252,14 +252,14 @@ const ViewComplianceTasks = () => {
     setAssignedToSort(null);
     setDueDateSort(null);
   };
-  const handleChangeAuthorityFilerSorter = (pagination, filters, sorter) => {
-    console.log(
-      pagination,
-      filters,
-      sorter,
-      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter"
-    );
-    // 🔁 Reset all icons first
+  const handleChangeAuthorityFilerSorter = (
+    checklistId,
+    pagination,
+    filters,
+    sorter
+  ) => {
+    setActiveSortedChecklistId(checklistId);
+
     resetAllSorts();
 
     if (sorter.columnKey === "taskTitle") {
@@ -269,22 +269,9 @@ const ViewComplianceTasks = () => {
     if (sorter.columnKey === "assignedUsers") {
       setAssignedToSort(sorter.order);
     }
+
     if (sorter.columnKey === "deadLineDate") {
       setDueDateSort(sorter.order);
-    }
-
-    // ✅ Status filter
-    if (filters?.status) {
-      setStatusFilter(
-        filters.status || [
-          "In Progress",
-          "Pending",
-          "Upcoming",
-          "Cancelled",
-          "Completed",
-          "Deleted",
-        ]
-      );
     }
   };
 
@@ -377,17 +364,21 @@ const ViewComplianceTasks = () => {
   // TABLES
   // Column
 
-  const columnsTasks = [
+  const getColumnsTasks = (checklistId) => [
     {
       title: (
         <span className="d-flex gap-2 align-items-center justify-content-start">
           {t("Task-title")}
-          {taskTitleSort === "descend" ? (
-            <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-          ) : taskTitleSort === "ascend" ? (
-            <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+          {activeSortedChecklistId === checklistId ? (
+            taskTitleSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" />
+            ) : taskTitleSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" />
+            )
           ) : (
-            <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            <img src={DefaultSortIcon} alt="" />
           )}
         </span>
       ),
@@ -411,12 +402,16 @@ const ViewComplianceTasks = () => {
       title: (
         <span className="d-flex gap-2 align-items-center justify-content-start">
           {t("Assigned-to")}
-          {assignedToSort === "descend" ? (
-            <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-          ) : assignedToSort === "ascend" ? (
-            <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+          {activeSortedChecklistId === checklistId ? (
+            assignedToSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+            ) : assignedToSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            )
           ) : (
-            <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            <img src={DefaultSortIcon} alt="" />
           )}
         </span>
       ),
@@ -452,12 +447,16 @@ const ViewComplianceTasks = () => {
       title: (
         <span className="d-flex gap-2 align-items-center justify-content-start">
           {t("Due-date")}
-          {dueDateSort === "descend" ? (
-            <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-          ) : dueDateSort === "ascend" ? (
-            <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+          {activeSortedChecklistId === checklistId ? (
+            dueDateSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+            ) : dueDateSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            )
           ) : (
-            <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            <img src={DefaultSortIcon} alt="" />
           )}
         </span>
       ),
@@ -628,12 +627,17 @@ const ViewComplianceTasks = () => {
                     taskData.length > 0 && (
                       <>
                         <CustomTable
-                          column={columnsTasks}
-                          className="Authority_Table mt-2"
+                          column={getColumnsTasks(data.checklistId)}
                           rows={taskData}
-                          // scroll={{ x: "scroll", y: 500 }}
                           pagination={false}
-                          onChange={handleChangeAuthorityFilerSorter}
+                          onChange={(pagination, filters, sorter) =>
+                            handleChangeAuthorityFilerSorter(
+                              data.checklistId,
+                              pagination,
+                              filters,
+                              sorter
+                            )
+                          }
                         />
                       </>
                     )

@@ -80,6 +80,18 @@
   color: #2197d7;
   cursor: pointer !important;
 }
+.titleForTask {
+  width: 95%;
+  justify-content: flex-start;
+  display: flex;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #2197d7;
+  cursor: pointer !important;
+}
 .title-cont_Checklist {
   width: 65%;
   justify-content: flex-start;
@@ -117,6 +129,10 @@
   display: inline-block;
   width: 20%;
 }
+.icons_Task {
+  display: inline-block;
+  width: 5%;
+}
 .SecondRow {
   width: 100%;
   height: auto;
@@ -140,4 +156,7 @@
   height: auto;
   opacity: 1;
   padding-top: 12px;
+}
+.NodateTime_Task {
+  width: 0%;
 }

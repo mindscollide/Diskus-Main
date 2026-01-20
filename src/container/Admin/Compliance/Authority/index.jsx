@@ -584,6 +584,7 @@ const ManageAuthority = () => {
         align: "center",
         ellipsis: true,
         ...getStatusColumnProps(),
+        render: (text) => (text === "Inactive" ? t("In-active") : text),
       },
       {
         title: t(""),

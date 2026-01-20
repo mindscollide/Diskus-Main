@@ -28,6 +28,7 @@ import {
   SearchComplianceForMe,
   ViewComplianceDetailsByViewTypeRM,
   GetComplianceChecklistsWithTasksByComplianceIdForMe,
+  GetComplianceAndTaskStatuses,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -2605,6 +2606,90 @@ const GetComplianceChecklistsWithTasksByComplianceIdForMeAPI = (
       });
   };
 };
+const GetComplianceAndTaskStatusesInit = () => {
+  return {
+    type: actions.GET_COMPLIACE_STATUS_INIT,
+  };
+};
+
+const GetComplianceAndTaskStatusesSuccess = (response, message) => {
+  return {
+    type: actions.GET_COMPLIACE_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceAndTaskStatusesFail = (message) => {
+  return {
+    type: actions.GET_COMPLIACE_STATUS_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceAndTaskStatusesAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceAndTaskStatusesInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceAndTaskStatuses.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceAndTaskStatusesAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceAndTaskStatuses_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceAndTaskStatusesSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceAndTaskStatuses_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceAndTaskStatusesFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceAndTaskStatuses_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceAndTaskStatusesFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceAndTaskStatusesFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceAndTaskStatusesFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceAndTaskStatusesFail(t("Something-went-wrong")));
+      });
+  };
+};
 
 export {
   clearAuthorityMessage,
@@ -2640,4 +2725,5 @@ export {
   SearchComplianceForMeApi,
   ViewComplianceDetailsByViewTypeAPI,
   GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
+  GetComplianceAndTaskStatusesAPI,
 };

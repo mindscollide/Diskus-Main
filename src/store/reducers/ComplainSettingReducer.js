@@ -16,6 +16,7 @@ const initialState = {
   SearchComplianceForMe: null,
   ViewComplianceForMeById: null,
   GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
+  GetComplianceAndTaskStatuses: null,
 
   // MQTT
   SocketAuthorityInactive: null,
@@ -694,6 +695,31 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ViewComplianceForMeById: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.GET_COMPLIACE_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIACE_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceAndTaskStatuses: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIACE_STATUS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceAndTaskStatuses: null,
         ResponseMessage: action.message,
         severity: "error",
       };

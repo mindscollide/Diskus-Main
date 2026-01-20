@@ -135,6 +135,30 @@ const ReopenOrOnHoldDetailsModal = () => {
       },
     ]);
 
+  // styling for select:
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "Not Started":
+        return "#9E9E9E";
+      case "In Progress":
+        return "#F5A623";
+      case "Completed":
+        return "#2ECC71";
+      case "Overdue":
+        return "#E74C3C";
+      case "Submitted for Approval":
+        return "#5B6EF5";
+      case "Responded":
+        return "#4FC3F7";
+      case "On Hold":
+        return "#26C6DA";
+      case "Closed":
+        return "#616161";
+      default:
+        return "#000";
+    }
+  };
+
   return (
     <Modal
       show={isViewDetailsOpen}
@@ -142,59 +166,59 @@ const ReopenOrOnHoldDetailsModal = () => {
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
       size={"xl"}
-      ModalTitle={
-        <span className={styles.mainHeading}>{t("Reopen-compliance")}</span>
-      }
+      ModalTitle={<span className={styles.mainHeading}>{t("Details")}</span>}
       ModalBody={
         <div className={styles.mainBody}>
           {complianceStatusChangeHistory?.map((item) => (
             <div className={styles.detailsBlock} key={item.historyId}>
               <Row>
-                <Col sm={12} md={10} lg={10}>
-                  <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
-                  <div className={styles.textValue}>
-                    {item.statusChangeReason || "-"}
-                  </div>
+                <Col sm={12} md={10} lg={10} className={styles.firstCol}>
+                  <Row>
+                    <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
+                    <div className={styles.textValue}>
+                      {item.statusChangeReason || "-"}
+                    </div>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col sm={12}>
+                      <div className={styles.textLabel}>{t("Attachments")}</div>
+                    </Col>
+                    {item.attachments?.length > 0
+                      ? item.attachments.map((file) => (
+                          <Col sm={3} md={3} lg={3}>
+                            <AttachmentViewer
+                              data={file}
+                              name={file.displayFileName}
+                              id={file.fileId}
+                            />
+                          </Col>
+                        ))
+                      : ""}
+                  </Row>
                 </Col>
-
                 <Col sm={12} md={2} lg={2}>
-                  <div className={styles.textLabel}>{`${t("Due-date")}:`}</div>
-                  <div className={styles.textValue}>
-                    {formatDateToYMD(item.updatedDueDate) || "-"}
-                  </div>
+                  <Row>
+                    <div className={styles.textLabel}>{`${t(
+                      "Status-updated"
+                    )}:`}</div>
+                    <div
+                      className={styles.textValue}
+                      style={{
+                        color: getStatusColor(item.toStatus.statusName),
+                      }}
+                    >
+                      {item.toStatus.statusName || "-"}
+                    </div>
+                  </Row>
+                  <Row className="mt-3">
+                    <div className={styles.textLabel}>{`${t(
+                      "Action-date"
+                    )}:`}</div>
+                    <div className={styles.textValue}>
+                      {formatDateToYMD(item.updatedDueDate) || "-"}
+                    </div>
+                  </Row>
                 </Col>
-              </Row>
-
-              {/* Attachments */}
-              <Row className="mt-3">
-                <Col sm={12}>
-                  <div className={styles.textLabel}>{t("Attachments")}</div>
-                </Col>
-                {item.attachments?.length > 0
-                  ? item.attachments.map((file) => (
-                      <Col sm={3} md={3} lg={3}>
-                        <AttachmentViewer
-                          data={file}
-                          name={file.displayFileName}
-                          id={file.fileId}
-                        />
-                      </Col>
-
-                      // <div
-                      //   clas
-                      //   key={file.fileId}
-                      //   className={styles.attachmentStyles}
-                      // >
-                      //   <span>
-
-                      //   {file.displayFileName}
-                      //   </span>
-                      //   <span>
-
-                      //   </span>
-                      // </div>
-                    ))
-                  : ""}
               </Row>
             </div>
           ))}

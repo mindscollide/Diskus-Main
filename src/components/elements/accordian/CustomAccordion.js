@@ -26,15 +26,37 @@ const CustomAccordion = ({
     >
       <div className={isCompliance ? "FirstRow_Checklist" : "FirstRow"}>
         <div
-          className={isCompliance ? "title-cont_Checklist" : "title-cont"}
+          className={
+            isCompliance
+              ? "title-cont_Checklist"
+              : isComplianceTask
+              ? "titleForTask"
+              : "title-cont"
+          }
           onClick={handleClickTitleNotes}
         >
           {StartField}
         </div>
-        <div className={isCompliance ? "dateTime_Checklist" : "dateTime"}>
+        <div
+          className={
+            isCompliance
+              ? "dateTime_Checklist"
+              : isComplianceTask
+              ? "NodateTime_Task"
+              : "dateTime"
+          }
+        >
           {centerField}
         </div>
-        <div className={isCompliance ? "icons_Checklist" : "icons"}>
+        <div
+          className={
+            isCompliance
+              ? "icons_Checklist"
+              : isComplianceTask
+              ? "icons_Task"
+              : "icons"
+          }
+        >
           {endField}
         </div>
       </div>

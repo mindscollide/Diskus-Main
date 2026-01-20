@@ -750,7 +750,7 @@ const AddEditViewAuthorityModal = () => {
                             authorityViewState !== 3 ? t("Website") : ""
                           }
                           showCount={authorityViewState === 3 ? false : true}
-                          maxLength={50}
+                          maxLength={160}
                           onChange={handleValueChange}
                           name="website"
                           labelClass={styles["labelStyle"]}
