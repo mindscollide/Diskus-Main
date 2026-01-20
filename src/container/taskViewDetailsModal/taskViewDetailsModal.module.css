@@ -1,0 +1,55 @@
+.taskHeading {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.label {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.labelBig {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.taskTitle {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 30px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
+.TaskDescriptionHeading {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.TaskDescription {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+  min-height: 100px;
+  overflow-y: auto;
+  margin-right: 5px;
+}
+.AssigneAndDeadling {
+  display: flex;
+  justify-content: space-between;
+}
