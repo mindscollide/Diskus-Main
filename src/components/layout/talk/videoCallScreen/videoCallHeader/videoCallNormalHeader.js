@@ -546,6 +546,8 @@ const VideoCallNormalHeader = ({
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("isCaller", false);
     localStorage.setItem("acceptedRoomID", 0);
     localStorage.setItem("activeRoomID", 0);
@@ -581,6 +583,7 @@ const VideoCallNormalHeader = ({
       if (presenterStartedFlag) {
         console.log("busyCall");
         console.log("Check isShare Issue");
+        console.log(RoomID, "Check isShare Issue");
         if (iframeCurrent && iframeCurrent.contentWindow) {
           iframeCurrent.contentWindow.postMessage("ScreenShare", "*");
         }
@@ -682,6 +685,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeetingVideo", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -726,6 +731,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       localStorage.setItem("acceptedRecipientID", 0);
@@ -1108,6 +1115,8 @@ const VideoCallNormalHeader = ({
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isCaller", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -1290,6 +1299,8 @@ const VideoCallNormalHeader = ({
         const emptyArray = [];
         localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
         localStorage.setItem("activeCall", false);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("acceptedRoomID", 0);
         localStorage.setItem("activeRoomID", 0);
@@ -1369,6 +1380,8 @@ const VideoCallNormalHeader = ({
         const emptyArray = [];
         localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
         localStorage.setItem("activeCall", false);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("acceptedRoomID", 0);
         localStorage.setItem("activeRoomID", 0);
@@ -1394,11 +1407,6 @@ const VideoCallNormalHeader = ({
 
   const closeNotification = () => {
     setShowNotification(false);
-  };
-
-  const raiseHandFunction = () => {
-    setHandStatus(!handStatus);
-    dispatch(participantPopup(false));
   };
 
   const copyToClipboardd = () => {
@@ -1504,30 +1512,6 @@ const VideoCallNormalHeader = ({
     }
 
     return null;
-  };
-
-  // const onHandleClickForStartRecording = () => {
-  //   console.log("onHandleClickForStartRecording");
-  //   setStartRecordingState(false);
-  //   setPauseRecordingState(true);
-  //   setResumeRecordingState(false);
-  //   if (presenterViewFlag && presenterViewHostFlag) {
-  //     const iframe = iframeRef.current;
-  //     if (iframe && iframe.contentWindow) {
-  //       if (startRecordingState === false) {
-  //         iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
-  //       } else {
-  //         iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
-  //       }
-  //     }
-  //   }
-  // };
-
-  const onHandleClickForPauseRecording = () => {
-    console.log("onHandleClickForStartRecording");
-    setStartRecordingState(false);
-    setPauseRecordingState(false);
-    setResumeRecordingState(true);
   };
 
   return (
@@ -1816,7 +1800,7 @@ const VideoCallNormalHeader = ({
             checkFeatureIDAvailability(3) && (
               <div
                 className={
-                  LeaveCallModalFlag
+                  LeaveCallModalFlag || (isZoomEnabled && disableBeforeJoinZoom)
                     ? "grayScaleImage"
                     : "screenShare-Toggle inactive-state"
                 }
@@ -1990,6 +1974,7 @@ const VideoCallNormalHeader = ({
                           !isCaller &&
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
+                          !presenterViewHostFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           dispatch(participantPopup(false));
@@ -2006,6 +1991,7 @@ const VideoCallNormalHeader = ({
                   <div className="participants-list">
                     {!isCaller &&
                     !getMeetingHostInfo.isHost &&
+                    !presenterViewHostFlag &&
                     !getMeetingHostInfo.isDashboard
                       ? /* ===== VIEWER LIST ===== */
                         inCallParticipantsList &&
@@ -2109,6 +2095,7 @@ const VideoCallNormalHeader = ({
                           !isCaller &&
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
+                          !presenterViewHostFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           // JUST TOGGLE PARTICIPANT POPUP
@@ -2148,7 +2135,7 @@ const VideoCallNormalHeader = ({
               ) : (
                 <>
                   <div className="main-icon-div">
-                    {isMeetingVideo && (
+                    {isMeetingVideo && isMeetingVideoHostCheck && (
                       <>
                         {handRaiseCounter > 0 && (
                           <span className="HandRaise-Counter-for-participant">

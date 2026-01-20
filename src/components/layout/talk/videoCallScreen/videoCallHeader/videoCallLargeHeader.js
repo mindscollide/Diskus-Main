@@ -53,6 +53,8 @@ const VideoCallLargeHeader = () => {
     dispatch(minimizeVideoPanelFlag(false));
     console.log("busyCall");
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
   };
 
   return (

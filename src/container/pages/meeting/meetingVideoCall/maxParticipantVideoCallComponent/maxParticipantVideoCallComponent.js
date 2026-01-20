@@ -122,6 +122,9 @@ const ParticipantVideoCallComponent = () => {
   // Other hooks and state declarations
   const [minimizeState, setMinimizeState] = useState(false);
 
+  // local state for Video Html Tag event state
+  const [canVideoPlay, setCanVideoPlay] = useState(false);
+
   console.log(minimizeState, "minimizeState");
 
   useEffect(() => {
@@ -235,6 +238,34 @@ const ParticipantVideoCallComponent = () => {
       dispatch(maximizeVideoPanelFlag(true));
     }
   }, [allNavigatorVideoStream]);
+
+  // it'll check when Video Html Tag is Connected when connected then make video Icon enable otherwise it'll disable
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => {
+      setCanVideoPlay(true);
+    };
+
+    const handleError = () => {
+      setCanVideoPlay(false);
+    };
+
+    const handleStalled = () => {
+      setCanVideoPlay(false);
+    };
+
+    video.addEventListener("canplay", handleCanPlay);
+    video.addEventListener("error", handleError);
+    video.addEventListener("stalled", handleStalled);
+
+    return () => {
+      video.removeEventListener("canplay", handleCanPlay);
+      video.removeEventListener("error", handleError);
+      video.removeEventListener("stalled", handleStalled);
+    };
+  }, []);
 
   // for set Video Web Cam on CLick
   const toggleAudio = (enable) => {
@@ -583,7 +614,14 @@ const ParticipantVideoCallComponent = () => {
             sm={12}
             className="d-flex justify-content-end align-items-center gap-2"
           >
-            <div className="max-videoParticipant-Icons-state">
+            <div
+              className="max-videoParticipant-Icons-state"
+              style={{
+                pointerEvents: canVideoPlay ? "auto" : "none",
+                opacity: canVideoPlay ? 1 : 0.4,
+                cursor: canVideoPlay ? "pointer" : "not-allowed",
+              }}
+            >
               {isMicEnabled ? (
                 <Tooltip placement="topRight" title={t("Enable-mic")}>
                   <img
@@ -606,7 +644,14 @@ const ParticipantVideoCallComponent = () => {
                 </Tooltip>
               )}
             </div>
-            <div className="max-videoParticipant-Icons-state">
+            <div
+              className="max-videoParticipant-Icons-state"
+              style={{
+                pointerEvents: canVideoPlay ? "auto" : "none",
+                opacity: canVideoPlay ? 1 : 0.4,
+                cursor: canVideoPlay ? "pointer" : "not-allowed",
+              }}
+            >
               {isWebCamEnabled ? (
                 <Tooltip placement="topRight" title={t("Enable-video")}>
                   <img

@@ -73,7 +73,7 @@ const App = () => {
     };
 
     // Run on initial load
-    syncSessionAndRedirect();
+    // syncSessionAndRedirect();
 
     // Listen for tab visibility changes
     const handleVisibilityChange = () => {

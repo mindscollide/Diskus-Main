@@ -195,6 +195,8 @@ const InitiateVideoCall = (Data, navigate, t) => {
               localStorage.setItem("isCaller", false);
               localStorage.setItem("callerID", 0);
               localStorage.setItem("activeCall", false);
+              sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
               await dispatch(videoOutgoingCallFlag(false));
               await dispatch(normalizeVideoPanelFlag(false));
               await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
@@ -207,6 +209,8 @@ const InitiateVideoCall = (Data, navigate, t) => {
             localStorage.setItem("isCaller", false);
             localStorage.setItem("callerID", 0);
             localStorage.setItem("activeCall", false);
+            sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
             await dispatch(videoOutgoingCallFlag(false));
             await dispatch(normalizeVideoPanelFlag(false));
             await dispatch(initiateVideoCallFail(t("Something-went-wrong")));
@@ -715,6 +719,11 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "incommingNewCallerID"
                 );
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
+
                 localStorage.setItem("isMeetingVideo", false);
                 localStorage.setItem("acceptedRoomID", 0);
                 localStorage.setItem("activeRoomID", 0);
@@ -773,6 +782,11 @@ const LeaveCall = (Data, navigate, t, flag, setIsTimerRunning) => {
                   "incommingNewCallerID"
                 );
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
+
                 localStorage.setItem("isMeetingVideo", false);
                 localStorage.setItem("acceptedRoomID", 0);
                 localStorage.setItem("activeRoomID", 0);
