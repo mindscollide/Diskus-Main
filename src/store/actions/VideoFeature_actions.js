@@ -783,6 +783,11 @@ const getParticipantMeetingJoinMainApi = (
                 localStorage.setItem("isWebCamEnabled", false);
                 localStorage.setItem("isMicEnabled", false);
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
+
                 localStorage.setItem("isMeetingVideoHostCheck", false);
                 await dispatch(setAudioControlHost(false));
                 console.log("videoHideUnHideForHost");

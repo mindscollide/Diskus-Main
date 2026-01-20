@@ -299,6 +299,7 @@ const VideoPanelNormal = () => {
   const startPresenterTriggered = useSelector(
     (state) => state.videoFeatureReducer.startPresenterTriggered
   );
+
   console.log(startPresenterTriggered, "startPresenterTriggered");
 
   console.log(leavePresenterOrJoinOtherCalls, "leavePresenterOrJoinOtherCalls");
@@ -382,22 +383,16 @@ const VideoPanelNormal = () => {
 
   useEffect(() => {
     if (stopScreenShareOnPresenter) {
-      console.log("mqtt mqmqmqmqmqmq");
       if (isScreenActive) {
-        console.log("mqtt mqmqmqmqmqmq");
-
         try {
-          console.log("mqtt mqmqmqmqmqmq");
-
           if (iframe && iframe.contentWindow) {
-            console.log("mqtt mqmqmqmqmqmq");
+            console.log("Check ScreenShareMessage");
+
             setIsScreenActive(false);
             sessionStorage.setItem("nonPresenter", true);
             // Post message to iframe
-            console.log("mqtt mqmqmqmqmqmq");
             iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
           } else {
-            console.log("mqtt mqmqmqmqmqmq");
             console.log("share screen Iframe contentWindow is not available.");
           }
         } catch (error) {}
@@ -952,7 +947,8 @@ const VideoPanelNormal = () => {
         const iframe = iframeRef.current;
         console.log("maximizeParticipantVideoFlag");
         if (iframe && iframe.contentWindow) {
-          console.log("maximizeParticipantVideoFlag");
+          console.log("Check ScreenShareMessage");
+
           // Post message to iframe
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
           dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(false));
@@ -969,6 +965,7 @@ const VideoPanelNormal = () => {
       if (shareScreenTrue) {
         const iframe = iframeRef.current;
         if (iframe && iframe.contentWindow) {
+          console.log("Check ScreenShareMessage");
           // Post message to iframe
           sessionStorage.setItem("nonPresenter", true);
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
@@ -987,7 +984,7 @@ const VideoPanelNormal = () => {
         if (iframe && iframe.contentWindow) {
           sessionStorage.setItem("nonPresenter", true);
           // Post message to iframe
-          console.log("handlePostMessage");
+          console.log("Check ScreenShareMessage");
           iframe.contentWindow.postMessage("ScreenShare", "*"); // Replace with actual origin
         } else {
           console.log("share screen Iframe contentWindow is not available.");
@@ -1001,23 +998,38 @@ const VideoPanelNormal = () => {
   const handlePresenterView = async () => {
     const iframe = iframeRef.current;
     console.log("videoHideUnHideForHost");
+
     if (iframe && iframe.contentWindow) {
-      // Post message to iframe
       sessionStorage.removeItem("nonPresenter");
+
       console.log("videoHideUnHideForHost");
       await dispatch(setVideoControlHost(true));
       dispatch(setAudioControlHost(false));
-      console.log("videoHideUnHideForHost");
-      setTimeout(() => {
-        iframe?.contentWindow?.postMessage("ScreenShare", "*");
-      }, 1000); // Replace with actual origin
+
+      const isFirefox = navigator.userAgent.toLowerCase().includes("firefox");
+
+      const targetOrigin = process.env.REACT_APP_VIDEO_EVENTS || "*";
+
+      if (isFirefox) {
+        console.log("Yes Its FireFox");
+        console.log("Check ScreenShareMessage");
+        // 🔥 Firefox requires synchronous user gesture
+        iframe.contentWindow.postMessage("ScreenShare", targetOrigin);
+      } else {
+        console.log("No, Its not FireFox");
+        console.log("Check ScreenShareMessage");
+        // Existing behavior preserved for Chrome / Edge
+        setTimeout(() => {
+          iframe?.contentWindow?.postMessage("ScreenShare", targetOrigin);
+        }, 1000);
+      }
     } else {
       console.log("share screen Iframe contentWindow is not available.");
     }
   };
 
   // For Recording Scenario In One To One
-  const RecordingStartScenarioForOneToOne = () => {
+  const RecordingStopScenarioForOneToOne = () => {
     let initiateVideoCall = JSON.parse(
       localStorage.getItem("initiateVideoCall")
     );
@@ -1033,7 +1045,7 @@ const VideoPanelNormal = () => {
           setTimeout(() => {
             console.log("Does Check Recording Start");
             iframe?.contentWindow?.postMessage(
-              "RecordingStartMsgFromIframe",
+              "RecordingStopMsgFromIframe",
               "*"
             );
           }, 1000);
@@ -1230,6 +1242,17 @@ const VideoPanelNormal = () => {
           case "ScreenSharedStopMsgFromIframe":
             setIsScreenActive(false);
             console.log("ScreenSharedStopMsgFromIframe");
+            const isFirefox = navigator.userAgent
+              .toLowerCase()
+              .includes("firefox");
+
+            // 🔒 Firefox false stop protection
+            if (isFirefox && !isScreenActive) {
+              console.warn(
+                "Firefox blocked screen share – ignoring stop event"
+              );
+              return;
+            }
 
             console.log("busyCall");
             if (isZoomEnabled) {
@@ -1324,7 +1347,7 @@ const VideoPanelNormal = () => {
 
           case "StreamConnected":
             console.log("disableZoomBeforeJoinSession", event.data);
-            RecordingStartScenarioForOneToOne();
+            RecordingStopScenarioForOneToOne();
 
             if (isZoomEnabled) {
               console.log("is Zoom Connected");

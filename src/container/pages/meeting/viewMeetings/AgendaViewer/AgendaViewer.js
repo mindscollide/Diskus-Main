@@ -269,7 +269,11 @@ const AgendaViewer = () => {
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
+  const UpgradeNowModalReducer = useSelector(
+    (state) => state.UserManagementModals.UpgradeNowModal
+  );
 
+  console.log("UpgradeNowModalReducer", UpgradeNowModalReducer);
   console.log("Video Feature Debug Data:", {
     editorRole,
     presenterViewFlag,
@@ -811,7 +815,7 @@ const AgendaViewer = () => {
     setPauseRecordingState(false);
     setResumeRecordingState(false);
     setStopRecordingState(false);
-    dispatch(disableZoomBeforeJoinSession(true)); 
+    dispatch(disableZoomBeforeJoinSession(true));
 
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(

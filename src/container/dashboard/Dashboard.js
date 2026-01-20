@@ -497,9 +497,10 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
-  const activeCallsessionStorage = sessionStorage.getItem(
-    "activeCallSessionforOtoandGroup"
-  );
+  const activeCallsessionStorage =
+    sessionStorage.getItem("activeCallSessionforOtoandGroup") !== null
+      ? sessionStorage.getItem("activeCallSessionforOtoandGroup")
+      : null;
   const activeCallLocalStorage =
     localStorage.getItem("activeCall") !== null &&
     JSON.parse(localStorage.getItem("activeCall"));
@@ -928,42 +929,37 @@ const Dashboard = () => {
 
   async function joinRequestForMeetingVideo(mqttData) {
     try {
-      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      const currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeetingVideoHostCheck = JSON.parse(
         localStorage.getItem("isMeetingVideoHostCheck")
       );
 
       const { meetingID, userID } = mqttData.payload;
-      console.log("Check PresenterIssue Once");
 
-      if (Number(meetingID) === Number(currentMeetingID)) {
-        // ✅ DEDUPE CHECK (meetingID + userID)
-        const alreadyRequested = waitingParticipantsList?.some(
-          (p) =>
-            Number(p.userID) === Number(userID) &&
-            Number(p.meetingID) === Number(meetingID)
-        );
+      if (Number(meetingID) !== currentMeetingID) return;
 
-        if (alreadyRequested) {
-          console.log("Duplicate join request ignored:", userID);
-          return;
+      // ✅ Check for duplicates in the Redux array
+      const alreadyRequested = waitingParticipantsList?.some(
+        (p) =>
+          Number(p.userID) === Number(userID) &&
+          Number(p.meetingID) === Number(meetingID)
+      );
+      console.log(alreadyRequested, "Filtered unique participants");
+
+      if (alreadyRequested) {
+        console.log("Duplicate join request ignored for user:", userID);
+        return;
+      }
+
+      // ✅ Dispatch to Redux ONLY if not duplicate
+      if (isMeetingVideo && isMeetingVideoHostCheck) {
+        if (mqttData.payload.isGuest) {
+          dispatch(admitGuestUserRequest(mqttData.payload));
+        } else {
+          dispatch(participantWaitingList(mqttData.payload));
         }
-
-        if (isMeetingVideo) {
-          if (presenterViewJoinFlagRef.current) {
-            console.log("Check PresenterIssue Once");
-          } else {
-            if (isMeetingVideoHostCheck) {
-              if (mqttData.payload.isGuest) {
-                dispatch(admitGuestUserRequest(mqttData.payload));
-              } else {
-                dispatch(participantWaitingList(mqttData.payload));
-              }
-              dispatch(guestJoinPopup(true));
-            }
-          }
-        }
+        dispatch(guestJoinPopup(true));
       }
     } catch (e) {
       console.error(e);
@@ -1005,6 +1001,25 @@ const Dashboard = () => {
       if (iframe && iframe.contentWindow) {
         console.log("Does Check Recording Start");
         iframe.contentWindow.postMessage("RecordingStartMsgFromIframe", "*");
+
+        // Optional delay if iframe needs time to handle the message
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      } else {
+        // Immediately resolve if iframe is not ready or Zoom isn't enabled
+        resolve();
+      }
+    });
+  };
+
+  const onHandleClickForStopRecording = () => {
+    return new Promise((resolve) => {
+      const iframe = iframeRef.current;
+
+      if (iframe && iframe.contentWindow) {
+        console.log("Does Check Recording Start");
+        iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
 
         // Optional delay if iframe needs time to handle the message
         setTimeout(() => {
@@ -3161,7 +3176,7 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStartRecording();
+              await onHandleClickForStopRecording();
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
@@ -3242,7 +3257,7 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStartRecording();
+              await onHandleClickForStopRecording();
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
@@ -3388,7 +3403,7 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
           console.log(existingData.length, "existingDatalength");
-          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+          sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
           //For Stop Recording while user reject the call
           if (isZoomEnabled) {
@@ -3614,7 +3629,7 @@ const Dashboard = () => {
           let isMeetingVideo = JSON.parse(
             localStorage.getItem("isMeetingVideo")
           );
-          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+          sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
@@ -3869,6 +3884,10 @@ const Dashboard = () => {
               let newCallerID = Number(localStorage.getItem("newCallerID"));
               if (callerID === newCallerID) {
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
@@ -3915,6 +3934,10 @@ const Dashboard = () => {
               if (callerID === newCallerID) {
                 console.log("Check 123");
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
@@ -3932,6 +3955,11 @@ const Dashboard = () => {
               if (activeRoomID !== acceptedRoomID) {
                 console.log("Check 123");
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
+
                 localStorage.removeItem("acceptedRoomID");
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(incomingVideoCallFlag(false));
@@ -3978,6 +4006,10 @@ const Dashboard = () => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
                 dispatch(incomingVideoCallFlag(false));
@@ -4004,6 +4036,10 @@ const Dashboard = () => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false
+                );
               }
             } else {
             }
@@ -4921,13 +4957,11 @@ const Dashboard = () => {
     window.close();
   }, []);
 
-  const isOtoCallisActive =
-    activeCallLocalStorage && !activeCallsessionStorage ? true : false;
   useEffect(() => {
-    if (isOtoCallisActive) {
+    if (activeCallLocalStorage && !activeCallsessionStorage) {
       navigate("/AlreadyInGroupAndOtoCall");
     }
-  }, [isOtoCallisActive]);
+  }, [activeCallLocalStorage, activeCallsessionStorage]);
 
   return (
     <>

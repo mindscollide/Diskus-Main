@@ -546,6 +546,8 @@ const VideoCallNormalHeader = ({
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("isCaller", false);
     localStorage.setItem("acceptedRoomID", 0);
     localStorage.setItem("activeRoomID", 0);
@@ -683,6 +685,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeetingVideo", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -727,6 +731,8 @@ const VideoCallNormalHeader = ({
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       localStorage.setItem("acceptedRecipientID", 0);
@@ -1109,6 +1115,8 @@ const VideoCallNormalHeader = ({
       const emptyArray = [];
       localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isCaller", false);
       localStorage.setItem("acceptedRoomID", 0);
       localStorage.setItem("activeRoomID", 0);
@@ -1291,6 +1299,8 @@ const VideoCallNormalHeader = ({
         const emptyArray = [];
         localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
         localStorage.setItem("activeCall", false);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("acceptedRoomID", 0);
         localStorage.setItem("activeRoomID", 0);
@@ -1370,6 +1380,8 @@ const VideoCallNormalHeader = ({
         const emptyArray = [];
         localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
         localStorage.setItem("activeCall", false);
+        sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
         localStorage.setItem("isCaller", false);
         localStorage.setItem("acceptedRoomID", 0);
         localStorage.setItem("activeRoomID", 0);
@@ -1962,6 +1974,7 @@ const VideoCallNormalHeader = ({
                           !isCaller &&
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
+                          !presenterViewHostFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           dispatch(participantPopup(false));
@@ -1978,6 +1991,7 @@ const VideoCallNormalHeader = ({
                   <div className="participants-list">
                     {!isCaller &&
                     !getMeetingHostInfo.isHost &&
+                    !presenterViewHostFlag &&
                     !getMeetingHostInfo.isDashboard
                       ? /* ===== VIEWER LIST ===== */
                         inCallParticipantsList &&
@@ -2081,6 +2095,7 @@ const VideoCallNormalHeader = ({
                           !isCaller &&
                           !isMeetingVideo &&
                           !getMeetingHostInfo.isHost &&
+                          !presenterViewHostFlag &&
                           !getMeetingHostInfo.isDashboard
                         ) {
                           // JUST TOGGLE PARTICIPANT POPUP

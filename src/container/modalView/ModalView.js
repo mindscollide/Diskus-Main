@@ -1051,6 +1051,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       await dispatch(maximizeVideoPanelFlag(false));
       await dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       localStorage.setItem("meetingTitle", "");

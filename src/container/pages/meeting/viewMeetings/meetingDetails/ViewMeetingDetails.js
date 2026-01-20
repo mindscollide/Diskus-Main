@@ -553,6 +553,8 @@ const ViewMeetingDetails = ({}) => {
     // localStorage.setItem("activeCall", true);
 
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("callerID", 0);
     localStorage.setItem("recipentCalledID", 0);
     dispatch(callRequestReceivedMQTT({}, ""));
@@ -598,6 +600,8 @@ const ViewMeetingDetails = ({}) => {
     // localStorage.setItem("activeCall", true);
 
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", true);

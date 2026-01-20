@@ -245,28 +245,21 @@ const VideoNewParticipantList = () => {
 
   // Update filteredWaitingParticipants based on waitingParticipants
   useEffect(() => {
-    console.log("hell");
-
-    if (waitingParticipants?.length) {
-      console.log(waitingParticipants, "usersDatausersData");
-
-      // ✅ Deduplicate by meetingID + userID (NOT guid)
-      const uniqueByUser = Object.values(
-        waitingParticipants.reduce((acc, item) => {
-          const key = `${item.meetingID}_${item.userID}`;
-
-          if (!acc[key]) {
-            acc[key] = item; // keep first occurrence
-          }
-
-          return acc;
-        }, {})
-      );
-
-      setFilteredWaitingParticipants(uniqueByUser);
-    } else {
+    if (!waitingParticipants?.length) {
       setFilteredWaitingParticipants([]);
+      return;
     }
+
+    const map = new Map();
+
+    waitingParticipants.forEach((item) => {
+      const key = `${item.meetingID}_${item.userID}`;
+      if (!map.has(key)) map.set(key, item);
+    });
+    console.log(waitingParticipants, "Filtered unique participants");
+
+    setFilteredWaitingParticipants(Array.from(map.values()));
+    console.log(Array.from(map.values()), "Filtered unique participants");
   }, [waitingParticipants]);
 
   const makeHostOnClick = async (usersData) => {
@@ -480,7 +473,10 @@ const VideoNewParticipantList = () => {
       const participantsToProcess = filteredWaitingParticipants;
 
       if (!participantsToProcess.length) return;
-
+      console.log(
+        participantsToProcess,
+        "participantsToProcessparticipantsToProcess"
+      );
       let Data = {
         MeetingId: participantsToProcess[0]?.meetingID,
         RoomId: String(roomID),
