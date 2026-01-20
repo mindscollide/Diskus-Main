@@ -28,6 +28,8 @@ import {
   cleareMessage,
   getTodoStatus,
 } from "../../../../../store/actions/GetTodos";
+import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
+import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ const ViewComplianceTasks = () => {
   const { t } = useTranslation();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
+  const [taskView, setTaskView] = useState(false);
 
   // Sort States
   const [taskTitleSort, setTaskTitleSort] = useState("ascend");
@@ -361,6 +364,11 @@ const ViewComplianceTasks = () => {
     */
   };
 
+  const handleClickTitle = (id) => {
+    let Data = { ToDoListID: id };
+    dispatch(ViewToDoList(navigate, Data, t, setTaskView));
+  };
+
   // TABLES
   // Column
 
@@ -387,7 +395,14 @@ const ViewComplianceTasks = () => {
       width: "25%",
       ellipsis: true,
       align: "left",
-      render: (text) => <span className="text-truncate">{text}</span>,
+      render: (text, record) => (
+        <span
+          className="text-truncate"
+          onClick={() => handleClickTitle(record.taskId)}
+        >
+          {text}
+        </span>
+      ),
       sorter: (a, b) =>
         taskTitleSort === "descend"
           ? b.taskTitle?.toLowerCase().localeCompare(a.taskTitle?.toLowerCase())
@@ -573,136 +588,146 @@ const ViewComplianceTasks = () => {
 
   // Row
   return (
-    <Row className="mt-3">
-      <div
-        ref={accordionContainerRef}
-        className={
-          addChecklistCloseState
-            ? styles["taskAccordian_closed"]
-            : styles["taskAccordian"]
-        }
-      >
-        {viewComplianceTasksData?.length > 0 ? (
-          viewComplianceTasksData.map((data, index) => {
-            const isExpanded = expandedCheckListIds.find(
-              (data2, index) => data2 === data.checklistId
-            );
+    <>
+      <Row className="mt-3">
+        <div
+          ref={accordionContainerRef}
+          className={
+            addChecklistCloseState
+              ? styles["taskAccordian_closed"]
+              : styles["taskAccordian"]
+          }
+        >
+          {viewComplianceTasksData?.length > 0 ? (
+            viewComplianceTasksData.map((data, index) => {
+              const isExpanded = expandedCheckListIds.find(
+                (data2, index) => data2 === data.checklistId
+              );
 
-            // const taskData = data.taskList;
-            const taskData = (data.taskList || []).map((task, index) => ({
-              ...task,
-              key: task.taskId || `${data.checklistId}-${index}`,
-            }));
-            console.log(taskData, "isExpandedisExpanded");
+              // const taskData = data.taskList;
+              const taskData = (data.taskList || []).map((task, index) => ({
+                ...task,
+                key: task.taskId || `${data.checklistId}-${index}`,
+              }));
+              console.log(taskData, "isExpandedisExpanded");
 
-            return (
-              <div key={data.checklistId}>
-                <CustomAccordion
-                  isExpand={isExpanded}
-                  notesID={data.checklistId}
-                  isCompliance={false}
-                  isComplianceTask={true}
-                  StartField={
-                    <Row>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className={styles.checklistTitleLabel}
-                      >
-                        {t("Checklist-title")}
-                      </Col>
-
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className={`m-0 ${styles.checklistTitleValue}`}
-                      >
-                        {data.checklistTitle}
-                      </Col>
-                    </Row>
-                  }
-                  attachmentsRow={
-                    taskData.length > 0 && (
-                      <>
-                        <CustomTable
-                          column={getColumnsTasks(data.checklistId)}
-                          rows={taskData}
-                          pagination={false}
-                          onChange={(pagination, filters, sorter) =>
-                            handleChangeAuthorityFilerSorter(
-                              data.checklistId,
-                              pagination,
-                              filters,
-                              sorter
-                            )
-                          }
-                        />
-                      </>
-                    )
-                  }
-                  endField={
-                    <>
+              return (
+                <div key={data.checklistId}>
+                  <CustomAccordion
+                    isExpand={isExpanded}
+                    notesID={data.checklistId}
+                    isCompliance={false}
+                    isComplianceTask={true}
+                    StartField={
                       <Row>
                         <Col
-                          sm={11}
-                          md={11}
-                          lg={11}
-                          className="d-flex justify-content-end align-items-center"
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className={styles.checklistTitleLabel}
                         >
-                          <img
-                            src={Accordion_Arrow}
-                            onClick={() => handleClickExpandCheckList(data)}
-                            alt=""
-                            className={`cursor-pointer ${
-                              isExpanded ? "" : styles["AccordionArrowDown"]
-                            }`}
-                          />
+                          {t("Checklist-title")}
+                        </Col>
+
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className={`m-0 ${styles.checklistTitleValue}`}
+                        >
+                          {data.checklistTitle}
                         </Col>
                       </Row>
-                    </>
-                  }
-                />
-              </div>
-            );
-          })
-        ) : (
-          <>
-            <Row className="mt-3 ">
-              <Col
-                lg={12}
-                ms={12}
-                sm={12}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <img draggable={false} src={NoChecklistImg} alt="" />
-              </Col>
-            </Row>
-            <Row>
-              <Col
-                lg={12}
-                ms={12}
-                sm={12}
-                className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
-              >
-                {t("No-checklist-found")}
-              </Col>
-            </Row>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
-              >
-                {t("No-checklist-has-been-assigned-yet.")}
-              </Col>
-            </Row>
-          </>
-        )}
-      </div>
-    </Row>
+                    }
+                    attachmentsRow={
+                      taskData.length > 0 && (
+                        <>
+                          <CustomTable
+                            column={getColumnsTasks(data.checklistId)}
+                            rows={taskData}
+                            pagination={false}
+                            onChange={(pagination, filters, sorter) =>
+                              handleChangeAuthorityFilerSorter(
+                                data.checklistId,
+                                pagination,
+                                filters,
+                                sorter
+                              )
+                            }
+                          />
+                        </>
+                      )
+                    }
+                    endField={
+                      <>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles.checklistTitleLabel}
+                          >
+                            {t("Checklist-title")}
+                          </Col>
+
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={`m-0 ${styles.checklistTitleValue}`}
+                          >
+                            {data.checklistTitle}
+                          </Col>
+                        </Row>
+                      </>
+                    }
+                  />
+                </div>
+              );
+            })
+          ) : (
+            <>
+              <Row className="mt-3 ">
+                <Col
+                  lg={12}
+                  ms={12}
+                  sm={12}
+                  className="d-flex justify-content-center align-items-center"
+                >
+                  <img draggable={false} src={NoChecklistImg} alt="" />
+                </Col>
+              </Row>
+              <Row>
+                <Col
+                  lg={12}
+                  ms={12}
+                  sm={12}
+                  className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+                >
+                  {t("No-checklist-found")}
+                </Col>
+              </Row>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+                >
+                  {t("No-checklist-has-been-assigned-yet.")}
+                </Col>
+              </Row>
+            </>
+          )}
+        </div>
+      </Row>
+      {taskView && (
+        <TaskDetailsViewModal
+          viewFlagToDo={taskView}
+          setViewFlagToDo={setTaskView}
+        />
+      )}
+    </>
   );
 };
 
