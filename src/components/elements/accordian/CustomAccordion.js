@@ -10,6 +10,7 @@ const CustomAccordion = ({
   notesID,
   handleClickTitleNotes,
   isCompliance = false,
+  isComplianceTask = false,
 }) => {
   const expanded = isExpand === notesID;
 
@@ -18,6 +19,8 @@ const CustomAccordion = ({
       className={`${
         isCompliance === true
           ? "accordion-customForChecklist"
+          : isComplianceTask === true
+          ? "accordion-customForTasks"
           : "accordion-custom"
       } ${expanded ? "expanded" : ""}`}
     >

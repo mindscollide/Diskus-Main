@@ -47,6 +47,26 @@
   font-weight: 600 !important;
 }
 
+.viewComplianceDetails-affix-wrapper {
+  width: 100% !important;
+  display: block;
+  position: relative;
+  outline: none !important;
+}
+
+.viewComplianceDetails {
+  width: 100%;
+  position: relative;
+  height: 20px;
+  border: none;
+  padding: 0;
+  outline: none !important;
+  pointer-events: none;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+}
+
 .counter_Loader {
   position: absolute;
   right: 5px;
@@ -127,6 +147,20 @@
   outline: none !important;
   pointer-events: none;
 }
+
+.viewField_TextArea_ViewcomplianceDetails {
+  width: 100%;
+  position: relative;
+  height: 20px;
+  border: none;
+  padding: 0;
+  outline: none !important;
+  pointer-events: none;
+  display: inline-table;
+  font-size: 16px !important;
+  color: #5a5a5a;
+}
+
 /* Red border (wrapper) */
 .input-max-error.AddEditAuthorityCounterInputField-affix-wrapper {
   border-color: #ff4d4f !important;

@@ -13,6 +13,9 @@ const initialState = {
   IsAuthorityNameExists: null,
   listOfComplianceByCreator: null,
   ViewComplianceByMeDetails: null,
+  SearchComplianceForMe: null,
+  ViewComplianceForMeById: null,
+  GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
 
   // MQTT
   SocketAuthorityInactive: null,
@@ -510,6 +513,33 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // GetComplianceChecklistsWithTasksByComplianceId
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceIdForMe: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
     //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {
@@ -565,6 +595,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         GetComplianceChecklistsWithTasksByComplianceId: null,
         GetComplianceChecklistsByComplianceId: null,
+        ViewComplianceByMeDetails: null,
       };
 
     case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:
@@ -613,6 +644,56 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ViewComplianceByMeDetails: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: null,
         ResponseMessage: action.message,
         severity: "error",
       };

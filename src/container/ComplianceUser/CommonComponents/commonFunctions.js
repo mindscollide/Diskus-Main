@@ -18,12 +18,25 @@ export const parseUTCDateString = (dateStr) => {
   );
 };
 
-export const formatDateToYMD = (yyyymmdd) => {
-  const year = yyyymmdd.substring(0, 4);
-  const month = yyyymmdd.substring(4, 6);
-  const day = yyyymmdd.substring(6, 8);
+export const formatDateToYMD = (value) => {
+  if (!value) return "";
 
-  const date = new Date(`${year}-${month}-${day}`);
+  let date;
+
+  // ✅ If it's already a Date instance
+  if (value instanceof Date && !isNaN(value)) {
+    date = value;
+  }
+  // ✅ If it's a yyyymmdd string
+  else if (typeof value === "string" && value.length >= 8) {
+    const year = value.substring(0, 4);
+    const month = value.substring(4, 6);
+    const day = value.substring(6, 8);
+
+    date = new Date(`${year}-${month}-${day}`);
+  } else {
+    return "";
+  }
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
@@ -40,4 +53,21 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
   const day = dateString.slice(6, 8);
 
   return new Date(year, month, day, 23, 59, 58);
+};
+
+export const getDueDateTimeNumber = (dueDate, dueTime) => {
+  if (!dueDate) return 0;
+
+  const year = dueDate.substring(0, 4);
+  const month = dueDate.substring(4, 6);
+  const day = dueDate.substring(6, 8);
+
+  const hours = dueTime?.substring(0, 2) || "00";
+  const minutes = dueTime?.substring(2, 4) || "00";
+  const seconds = dueTime?.substring(4, 6) || "00";
+
+  // ISO format (SAFE)
+  const isoDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+
+  return new Date(isoDateTime).getTime(); // NUMBER
 };

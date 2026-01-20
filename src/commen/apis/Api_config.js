@@ -2091,3 +2091,21 @@ export const SearchCompliancesByCreatorIdRM = {
 export const ViewComplianceByMeDetailsRM = {
   RequestMethod: "ServiceManager.ViewComplianceByMeDetails",
 };
+
+// to be replaced by
+
+export const ViewComplianceDetailsByViewTypeRM = {
+  RequestMethod: "ServiceManager.ViewComplianceDetailsByViewType",
+};
+
+export const ViewComplianceForMeById = {
+  RequestMethod: "ServiceManager.ViewComplianceForMeById",
+};
+
+export const SearchComplianceForMe = {
+  RequestMethod: "ServiceManager.SearchComplianceForMe",
+};
+export const GetComplianceChecklistsWithTasksByComplianceIdForMe = {
+  RequestMethod:
+    "ServiceManager.GetComplianceChecklistsWithTasksByComplianceIdForMe",
+};

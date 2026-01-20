@@ -24,9 +24,12 @@ export const ComlianceProvider = ({ children }) => {
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
 
   const [checkListTabs, setChecklistTabs] = useState(1);
+  const [expandChecklistOnTasksPage, setExpandChecklistOnTasksPage] =
+    useState(null);
 
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
+    complianceId: 0,
     description: "",
     authority: {
       value: 0,
@@ -36,18 +39,49 @@ export const ComlianceProvider = ({ children }) => {
       value: 0,
       label: "",
     },
-    dueDate: "",
+    dueDate: null,
     complianceDueDateForChecklist: "",
     tags: [],
     status: {
       value: 0,
       label: "",
     },
+
+    progressPercent: 0,
+    createdBy: "",
+    totalComplianceTasks: 0,
+    showProgressBar: false,
+    complianceStatusChangeHistory: [],
   });
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
+  // Search Context for compliance By me
+
+  const [searchCompliancePayload, setSearchCompliancePayload] = useState({
+    complianceTitle: "",
+    complianceTitleOutside: "",
+    dueDateFrom: "",
+    dueDateTo: "",
+    authorityShortCode: "",
+    tagsCSV: "",
+    criticalityIds: [],
+    statusIds: [],
+    pageNumber: 0,
+    length: 10,
+  });
+
+  const [complianceByMeList, setComplianceByMeList] = useState([]);
+  const [complianceByMeTotal, setComplianceByMeTotal] = useState(0);
+
+  const [complianceForMeList, setComplianceForMeList] = useState([]);
+  const [complianceForMeTotal, setComplianceForMeTotal] = useState(0);
+
+  const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
+  const [complianceViewMode, setComplianceViewMode] = useState("byMe");
+
   const emptyComplianceState = () => {
+    console.log("cleared");
     dispatch(clearComplianceDetailsData());
     setComplianceInfo({
       complianceId: 0,
@@ -63,16 +97,62 @@ export const ComlianceProvider = ({ children }) => {
     setChecklistTabs(1);
     setComplianceDetailsState({
       complianceTitle: "",
+      complianceId: 0,
       description: "",
-      authorityId: 0,
-      criticality: 0,
+      authority: {
+        value: 0,
+        label: "",
+      },
+      criticality: {
+        value: 0,
+        label: "",
+      },
       dueDate: "",
       complianceDueDateForChecklist: "",
       tags: [],
+      progressPercent: 0,
+      createdBy: "",
+      totalComplianceTasks: 0,
+      showProgressBar: false,
+      complianceStatusChangeHistory: [],
     });
     setChecklistCount(0);
     setTaskCount(0);
+    setViewComplianceDetailsTab(1);
+    setShowViewCompliance(false);
+    setAllowedComplianceStatusOptions([]);
+    setAllCheckListByComplianceId([]);
+    setExpandChecklistOnTasksPage(null);
+    setSearchCompliancePayload({
+      complianceTitle: "",
+      complianceTitleOutside: "",
+      dueDateFrom: "",
+      dueDateTo: "",
+      authorityShortCode: "",
+      tagsCSV: "",
+      criticalityIds: [],
+      statusIds: [],
+      pageNumber: 0,
+      length: 10,
+    });
+    setComplianceByMeList([]);
+    setComplianceByMeTotal(0);
+    setComplianceForMeList([]);
+    setIsViewDetailsOpen(false);
+    setsearchbox(false);
+    setComplianceForMeTotal(0);
   };
+
+  // view compliance
+  const [showViewCompliance, setShowViewCompliance] = useState(false);
+  const [viewComplianceDetailsTab, setViewComplianceDetailsTab] = useState(1);
+  const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
+    useState([]);
+  const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
+    []
+  );
+  const [searchbox, setsearchbox] = useState(false);
+
   return (
     <ComplianceContext.Provider
       value={{
@@ -97,6 +177,32 @@ export const ComlianceProvider = ({ children }) => {
         checkListData,
         setChecklistData,
         emptyComplianceState,
+        showViewCompliance,
+        setShowViewCompliance,
+        viewComplianceDetailsTab,
+        setViewComplianceDetailsTab,
+        allowedComplianceStatusOptions,
+        setAllowedComplianceStatusOptions,
+        allCheckListByComplianceId,
+        setAllCheckListByComplianceId,
+        expandChecklistOnTasksPage,
+        setExpandChecklistOnTasksPage,
+        complianceByMeList,
+        setComplianceByMeList,
+        complianceByMeTotal,
+        setComplianceByMeTotal,
+        complianceForMeList,
+        setComplianceForMeList,
+        isViewDetailsOpen,
+        setIsViewDetailsOpen,
+        complianceViewMode,
+        setComplianceViewMode,
+        setSearchCompliancePayload,
+        searchCompliancePayload,
+        complianceForMeTotal,
+        setComplianceForMeTotal,
+        searchbox,
+        setsearchbox,
       }}
     >
       {children}

@@ -201,7 +201,8 @@ body[dir="rtl"] .AddButtonStyles {
   font-weight: 500 !important;
 }
 .contactNumberView {
-  font-size: 14px !important;
+  font-size: 16px !important;
+  font-weight: 500px;
 }
 .SearchIconClass {
   display: inline-block;
@@ -225,10 +226,27 @@ body[dir="rtl"] .SearchIconClass {
   font-size: 2rem;
 }
 .authorityDetailsViewDescription {
-  font-size: 12px !important;
+  font-size: 16px !important;
   color: #5a5a5a !important;
-  font-weight: 600 !important;
+  font-weight: 500;
   margin: 0;
   overflow-wrap: break-word;
   min-height: 26px;
+  line-height: 120%;
+  letter-spacing: 0%;
+}
+.authorityViewLabel {
+  font-weight: 700 !important;
+  font-size: 12px;
+  line-height: 100%;
+  color: #6172d6;
+  margin-bottom: 5px;
+}
+.authorityViewValue {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 120%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+  word-break: break-all;
 }
