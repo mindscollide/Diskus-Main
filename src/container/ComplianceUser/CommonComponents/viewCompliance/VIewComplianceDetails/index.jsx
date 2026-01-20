@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -9,12 +9,11 @@ import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccor
 import { formatDateToYMD } from "../../commonFunctions.js";
 
 const ViewComplianceDetails = () => {
-  const [isComplianceByMe, setIsComplianceByMe] = useState(true);
-
   const {
     complianceDetailsState,
     allowedComplianceStatusOptions,
     setComplianceDetailsState,
+    complianceViewMode,
   } = useComplianceContext();
   const { t } = useTranslation();
   console.log(complianceDetailsState, "complianceDetailsState");
@@ -97,19 +96,20 @@ const ViewComplianceDetails = () => {
           </div>
         </Col>
       </Row>
-      {isComplianceByMe ? (
-        <>
-          <Row className="mt-3">
-            <Col sm={12} md={8} lg={8}>
-              <div className={styles["complianceViewLabel"]}>
-                {t("Authority")}
-              </div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.authority.label}
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{t("Status")}</div>
+      <>
+        <Row className="mt-3">
+          <Col sm={12} md={8} lg={8}>
+            <div className={styles["complianceViewLabel"]}>
+              {t("Authority")}
+            </div>
+            <div className={styles["complianceViewValue"]}>
+              {complianceDetailsState.authority.label}
+            </div>
+          </Col>
+
+          <Col sm={12} md={2} lg={2}>
+            <div className={styles["complianceViewLabel"]}>{t("Status")}</div>
+            {complianceViewMode === "byMe" ? (
               <Select
                 isSearchable={false}
                 options={allowedComplianceStatusOptions}
@@ -120,109 +120,44 @@ const ViewComplianceDetails = () => {
                 // classNamePrefix="Select_status_compliance"
                 className={styles.Select_status_compliance}
               />
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Criticality-level"
-              )}:`}</div>
+            ) : (
               <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.criticality.label}
+                {complianceDetailsState?.status?.label}
               </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Due-date"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {formatDateToYMD(complianceDetailsState.dueDate)}
-              </div>
-            </Col>
-            <Col sm={12} md={8} lg={8}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Tags"
-              )}:`}</div>
-              {Array.isArray(complianceDetailsState.tags) &&
-                complianceDetailsState.tags.length > 0 &&
-                complianceDetailsState.tags.map((tag) => (
-                  <Tag key={tag.tagID} className={styles["tagsStyle"]}>
-                    {tag.tagTitle}
-                  </Tag>
-                ))}
-            </Col>
-          </Row>
-        </>
-      ) : (
-        <>
-          <Row className="mt-3">
-            <Col sm={12} md={3} lg={3}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Authority"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.authority.label}
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Due-date"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.dueDate}
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Criticality-level"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.criticality.label}
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Status"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.status.label}
-              </div>
-            </Col>
-            <Col sm={12} md={2} lg={2}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Created-by"
-              )}:`}</div>
-              <div className={styles["complianceViewValue"]}>
-                {complianceDetailsState.createdBy}
-              </div>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col sm={12} md={12} lg={12}>
-              <div className={styles["complianceViewLabel"]}>{`${t(
-                "Tags"
-              )}:`}</div>
-              {Array.isArray(complianceDetailsState.tags) &&
-                complianceDetailsState.tags.length > 0 &&
-                complianceDetailsState.tags.map((tag) => (
-                  <Tag
-                    key={tag.tagID}
-                    // closable
-                    className={styles["tagsStyle"]}
-                    onClose={() =>
-                      setComplianceDetailsState((prev) => ({
-                        ...prev,
-                        tags: prev.tags.filter((t) => t.tagID !== tag.tagID),
-                      }))
-                    }
-                  >
-                    {tag.tagTitle}
-                  </Tag>
-                ))}
-            </Col>
-          </Row>
-        </>
-      )}
+            )}
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col sm={12} md={2} lg={2}>
+            <div className={styles["complianceViewLabel"]}>{`${t(
+              "Criticality-level"
+            )}:`}</div>
+            <div className={styles["complianceViewValue"]}>
+              {complianceDetailsState.criticality.label}
+            </div>
+          </Col>
+          <Col sm={12} md={2} lg={2}>
+            <div className={styles["complianceViewLabel"]}>{`${t(
+              "Due-date"
+            )}:`}</div>
+            <div className={styles["complianceViewValue"]}>
+              {formatDateToYMD(complianceDetailsState.dueDate)}
+            </div>
+          </Col>
+          <Col sm={12} md={8} lg={8}>
+            <div className={styles["complianceViewLabel"]}>{`${t(
+              "Tags"
+            )}:`}</div>
+            {Array.isArray(complianceDetailsState.tags) &&
+              complianceDetailsState.tags.length > 0 &&
+              complianceDetailsState.tags.map((tag) => (
+                <Tag key={tag.tagID} className={styles["tagsStyle"]}>
+                  {tag.tagTitle}
+                </Tag>
+              ))}
+          </Col>
+        </Row>
+      </>
 
       <ViewComplianceChecklistAccordian />
     </>

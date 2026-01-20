@@ -483,56 +483,6 @@ const ViewComplianceTasks = () => {
         <span className="text-truncate">{formatDateToYMD(text)}</span>
       ),
     },
-    // {
-    //   title: t("Status"),
-    //   dataIndex: "taskStatus",
-    //   key: "taskStatus",
-    //   width: "10%",
-    //   align: "center",
-    //   ellipsis: true,
-    //   // filters: [
-    //   //   { text: "In Progress", value: "1" },
-    //   //   { text: "Pending", value: "2" },
-    //   //   { text: "Cancelled", value: "4" },
-    //   //   { text: "Completed", value: "5" },
-    //   // ],
-    //   // filteredValue: statusFilter,
-
-    //   // onFilter: (value, record) => {
-    //   //   return record.taskStatus === value; // ✅ FIX
-    //   // },
-
-    //   // filterIcon: () => (
-    //   //   <ChevronDown className="filter-chevron-icon-todolist" />
-    //   // ),
-    //   render: (taskStatus, record) => {
-    //     console.log(taskStatus, record, "recordStatus");
-    //     const allowedTransitions = getAllowedStatusOptions(record);
-
-    //     const statusObj = {
-    //       label: record.taskStatus,
-    //       value: record.taskStatusId,
-    //     };
-    //     // No transitions allowed → show label only
-    //     if (allowedTransitions.length === 0) {
-    //       return <span>{taskStatus}</span>;
-    //     }
-
-    //     return (
-    //       <Select
-    //         isSearchable={false}
-    //         options={allowedTransitions}
-    //         labelInValue={t("Status")}
-    //         // onChange={handleChangeComplianceStatus}
-    //         styles={statusSelectStyles}
-    //         // value={complianceDetailsState.status}
-    //         value={statusObj}
-    //         // classNamePrefix="Select_status_compliance"
-    //         className={styles.Select_status_compliance}
-    //       />
-    //     );
-    //   },
-    // },
 
     {
       title: t("Status"),
@@ -552,14 +502,19 @@ const ViewComplianceTasks = () => {
         // 🚫 No transitions allowed → show plain text
         if (allowedOptions.length === 0) {
           return (
-            <span style={{ color: getStatusColor(record.taskStatus) }}>
+            <span
+              style={{
+                color: getStatusColor(record.taskStatus),
+                fontWeight: 600,
+              }}
+            >
               {record.taskStatus}
             </span>
           );
         }
 
-        // ✅ Transitions allowed → dropdown
-        return (
+        // ✅ Transitions allowed
+        return complianceViewMode === "byMe" ? (
           <Select
             menuPortalTarget={document.body}
             isSearchable={false}
@@ -568,6 +523,15 @@ const ViewComplianceTasks = () => {
             styles={statusSelectStyles}
             onChange={(selected) => handleStatusChange(record.taskId, selected)}
           />
+        ) : (
+          <span
+            style={{
+              color: getStatusColor(currentStatus.label),
+              fontWeight: 600,
+            }}
+          >
+            {currentStatus.label}
+          </span>
         );
       },
     },

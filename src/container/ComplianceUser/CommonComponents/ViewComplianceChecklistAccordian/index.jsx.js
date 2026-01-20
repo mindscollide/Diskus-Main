@@ -24,6 +24,7 @@ const ViewComplianceChecklistAccordian = () => {
     allCheckListByComplianceId,
     setExpandChecklistOnTasksPage,
     setViewComplianceDetailsTab,
+    complianceViewMode,
   } = useComplianceContext();
 
   console.log(allCheckListByComplianceId, "allCheckListByComplianceId");
@@ -255,21 +256,27 @@ const ViewComplianceChecklistAccordian = () => {
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Status"
                           )}:`}</div>
-                          <Select
-                            isSearchable={true}
-                            options={checklistStatusOptions}
-                            labelInValue={t("Status")}
-                            onChange={(selectedOption) =>
-                              handleChecklistStatusChange(
-                                data.checklistId,
-                                selectedOption
-                              )
-                            }
-                            styles={statusSelectStyles}
-                            value={selectedChecklistStatus}
-                            menuPortalTarget={document.body}
-                            className={styles.Select_status_compliance}
-                          />
+                          {complianceViewMode === "byMe" ? (
+                            <Select
+                              isSearchable={true}
+                              options={checklistStatusOptions}
+                              labelInValue={t("Status")}
+                              onChange={(selectedOption) =>
+                                handleChecklistStatusChange(
+                                  data.checklistId,
+                                  selectedOption
+                                )
+                              }
+                              styles={statusSelectStyles}
+                              value={selectedChecklistStatus}
+                              menuPortalTarget={document.body}
+                              className={styles.Select_status_compliance}
+                            />
+                          ) : (
+                            <div className={styles["complianceViewValue"]}>
+                              {selectedChecklistStatus.label}
+                            </div>
+                          )}
                         </Col>
                         {data.tasksCount === 0 ? (
                           <Col

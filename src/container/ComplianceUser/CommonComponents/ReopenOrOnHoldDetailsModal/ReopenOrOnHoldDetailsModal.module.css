@@ -1,14 +1,37 @@
-.ConfirmationHeading {
-  font-size: 16px !important;
-  color: #5a5a5a !important;
+.mainHeading {
   font-weight: 600 !important;
+  font-size: 24px !important;
+  color: #6172d6;
+}
+.mainBody {
+  max-height: 70vh;
+  min-height: 70vh;
+  overflow-y: auto;
 }
 
-body[dir="rtl"] .ConfirmationHeading {
-  font-weight: 600 !important;
+.detailsBlock {
+  margin: 0px 20px 20px 20px;
+  /* width: 1369;
+  height: 243; */
+  border: 1px solid #e1e1e1;
+  gap: 10px;
+  border-radius: 8px;
+  padding: 20px;
+}
+.textLabel {
+  font-weight: 700;
+  font-size: 10px;
+  color: #6172d6;
+}
+.textValue {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
 }
 
-.CancelButton {
+.viewDetailCloseBtn {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
@@ -18,7 +41,7 @@ body[dir="rtl"] .ConfirmationHeading {
   font-weight: 600 !important;
 }
 
-.CancelButton:is(:hover, :active, :focus, :focus-visible) {
+.viewDetailCloseBtn:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
@@ -27,31 +50,18 @@ body[dir="rtl"] .ConfirmationHeading {
   color: #5a5a5a !important;
   font-weight: 600 !important;
 }
-
-body[dir="rtl"] .CancelButton {
-  font-weight: 600 !important;
-}
-
-.ProceedButtonStyles {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  border: none !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-weight: 600 !important;
-}
-
-.ProceedButtonStyles:is(:hover, :active, :focus, :focus-visible) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  border: none !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-weight: 600 !important;
-}
-
-body[dir="rtl"] .ProceedButtonStyles {
-  font-weight: 600 !important;
+.attachmentStyles {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 226px;
+  height: 24px;
+  border: 1px solid #bcbcbc;
+  background-color: #f5f5f5;
+  color: #5a5a5a;
+  gap: 10px;
+  border-radius: 47px;
+  padding: 3px 13px;
+  font-size: 10px;
+  font-weight: 600;
 }

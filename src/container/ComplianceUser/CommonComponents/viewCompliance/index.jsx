@@ -10,6 +10,7 @@ import ViewComplianceDetails from "./VIewComplianceDetails";
 import ViewComplianceTasks from "./ViewComplianceTasks";
 import { Button } from "../../../../components/elements";
 import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
+import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
@@ -28,6 +29,7 @@ const ViewCompliance = () => {
     mainComplianceTabs,
     isViewDetailsOpen,
     setIsViewDetailsOpen,
+    setShowViewCompliance,
   } = useComplianceContext();
 
   console.log();
@@ -126,6 +128,10 @@ const ViewCompliance = () => {
   const handleOpenReopenModal = () => {
     setIsViewDetailsOpen(true);
   };
+  const handleClickBackIcon = () => {
+    setShowViewCompliance(false);
+    setViewComplianceDetailsTab(1);
+  };
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
@@ -136,6 +142,14 @@ const ViewCompliance = () => {
             lg={12}
             className={styles["ComplianceNameHeading"]}
           >
+            <img
+              src={ArrowBack}
+              alt=""
+              width={17.75}
+              height={17.75}
+              className="cursor-pointer"
+              onClick={handleClickBackIcon}
+            />
             {complianceDetailsState.complianceTitle}
           </Col>
         </Row>

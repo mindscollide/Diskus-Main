@@ -1,83 +1,204 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ReopenOrOnHoldDetailsModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
-import { Button, Modal } from "../../../../components/elements";
+import {
+  AttachmentViewer,
+  Button,
+  Modal,
+} from "../../../../components/elements";
+import { formatDateToYMD } from "../commonFunctions";
+import downloadIcon from "../../../../assets/images/download.png";
 const ReopenOrOnHoldDetailsModal = () => {
   // ReopenOrOnHoldDetailsModal
   const { t } = useTranslation();
 
-  const {
-    closeConfirmationModal,
-    setCloseConfirmationModal,
-    setMainComplianceTabs,
-    // setChecklistTabs,
-    // setChecklistData,
-    // setComplianceDetailsState,
-    setCreateEditComplaince,
-    // setChecklistCount,
-    // setTaskCount,
-    // setComplianceInfo,
-    emptyComplianceState,
-  } = useComplianceContext();
+  const { isViewDetailsOpen, setIsViewDetailsOpen } = useComplianceContext();
 
-  const handleYesButton = () => {
-    setMainComplianceTabs(2);
-    setCloseConfirmationModal(false);
-    setCreateEditComplaince(false);
-    // // setChecklistTabs(0);
-    // setChecklistCount(0);
-    // setTaskCount(0);
-    // setCloseConfirmationModal(false);
-    // // take user back to ComplianceByMe screen
-    // setChecklistData({
-    //   checklistTitle: "",
-    //   checklistDescription: "",
-    //   checklistDueDate: "",
-    // });
-    // setComplianceDetailsState({
-    //   complianceTitle: "",
-    //   description: "",
-    //   authorityId: 0,
-    //   criticality: 0,
-    //   dueDate: "",
-    //   complianceDueDateForChecklist: "",
-    //   tags: [],
-    // });
-    // setChecklistTabs(1);
-    // setCreateEditComplaince(false);
-    // setComplianceInfo({
-    //   complianceId: 0,
-    //   complianceName: "",
-    // });
-    setMainComplianceTabs(2);
-    emptyComplianceState();
+  const handleCloseButton = () => {
+    setIsViewDetailsOpen(false);
   };
-
-  const handleNoButton = () => {
-    setCloseConfirmationModal(false);
-  };
+  const [complianceStatusChangeHistory, setComplianceStatusChangeHistory] =
+    useState([
+      {
+        historyId: 3,
+        fromStatus: {
+          statusId: 6,
+          statusName: "Reopened",
+        },
+        toStatus: {
+          statusId: 7,
+          statusName: "On Hold",
+        },
+        statusChangeReason: "Testing",
+        currentDueDate: "20251231",
+        currentDueTime: "235959",
+        updatedDueDate: "20260131",
+        updatedDueTime: "185958",
+        statusChangeBy: 1353,
+        statusChangeByName: "Saif Professional ",
+        statusChangeByEmail: "SaifProfessional@yopmail.com",
+        statusChangeDate: "20260114",
+        statusChangeTime: "102424",
+        attachments: [],
+      },
+      {
+        historyId: 1,
+        fromStatus: {
+          statusId: 5,
+          statusName: "Submitted for Approval",
+        },
+        toStatus: {
+          statusId: 6,
+          statusName: "Reopened",
+        },
+        statusChangeReason:
+          "Hi, How are you? . I hope you are doing well. This reason is for testing purposes, so dont worry about it ,we are just testing not more than that .The Actual reason to reopen this to test the api end to end. thanks for corporation",
+        currentDueDate: "20251231",
+        currentDueTime: "235959",
+        updatedDueDate: "20260131",
+        updatedDueTime: "185958",
+        statusChangeBy: 1353,
+        statusChangeByName: "Saif Professional ",
+        statusChangeByEmail: "SaifProfessional@yopmail.com",
+        statusChangeDate: "20260108",
+        statusChangeTime: "102424",
+        attachments: [
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+          {
+            fileId: 4840,
+            displayFileName: "SRS - Axi Compliance 4.0.docx",
+            diskusFileName: "2026010810530166352",
+            shareAbleLink: "2026010810530166352",
+          },
+        ],
+      },
+    ]);
 
   return (
     <Modal
-      show={closeConfirmationModal}
-      setShow={setCloseConfirmationModal}
+      show={isViewDetailsOpen}
+      setShow={isViewDetailsOpen}
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
-      size={"md"}
+      size={"xl"}
+      ModalTitle={
+        <span className={styles.mainHeading}>{t("Reopen-compliance")}</span>
+      }
       ModalBody={
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} xs={12} className="text-center">
-              <div className={styles["ConfirmationHeading"]}>
-                {t(
-                  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes"
-                )}
-              </div>
-            </Col>
-          </Row>
-        </>
+        <div className={styles.mainBody}>
+          {complianceStatusChangeHistory?.map((item) => (
+            <div className={styles.detailsBlock} key={item.historyId}>
+              <Row>
+                <Col sm={12} md={10} lg={10}>
+                  <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
+                  <div className={styles.textValue}>
+                    {item.statusChangeReason || "-"}
+                  </div>
+                </Col>
+
+                <Col sm={12} md={2} lg={2}>
+                  <div className={styles.textLabel}>{`${t("Due-date")}:`}</div>
+                  <div className={styles.textValue}>
+                    {formatDateToYMD(item.updatedDueDate) || "-"}
+                  </div>
+                </Col>
+              </Row>
+
+              {/* Attachments */}
+              <Row className="mt-3">
+                <Col sm={12}>
+                  <div className={styles.textLabel}>{t("Attachments")}</div>
+                </Col>
+                {item.attachments?.length > 0
+                  ? item.attachments.map((file) => (
+                      <Col sm={3} md={3} lg={3}>
+                        <AttachmentViewer
+                          data={file}
+                          name={file.displayFileName}
+                          id={file.fileId}
+                        />
+                      </Col>
+
+                      // <div
+                      //   clas
+                      //   key={file.fileId}
+                      //   className={styles.attachmentStyles}
+                      // >
+                      //   <span>
+
+                      //   {file.displayFileName}
+                      //   </span>
+                      //   <span>
+
+                      //   </span>
+                      // </div>
+                    ))
+                  : ""}
+              </Row>
+            </div>
+          ))}
+        </div>
       }
       ModalFooter={
         <>
@@ -87,17 +208,12 @@ const ReopenOrOnHoldDetailsModal = () => {
               md={12}
               sm={12}
               xs={12}
-              className="d-flex justify-content-center gap-2"
+              className="d-flex justify-content-end gap-2"
             >
               <Button
-                text={t("Yes")}
-                className={styles["CancelButton"]}
-                onClick={handleYesButton}
-              />
-              <Button
-                text={t("No")}
-                className={styles["ProceedButtonStyles"]}
-                onClick={handleNoButton}
+                text={t("Close")}
+                className={styles["viewDetailCloseBtn"]}
+                onClick={handleCloseButton}
               />
             </Col>
           </Row>
