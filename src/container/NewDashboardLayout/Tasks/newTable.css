@@ -30,6 +30,7 @@
   width: 100% !important;
   border-spacing: 0 10px !important;
   outline: none !important;
+  padding-right: 10px;
 }
 .newDashboardTable table .ant-table-tbody .ant-table-measure-row {
   visibility: collapse !important;

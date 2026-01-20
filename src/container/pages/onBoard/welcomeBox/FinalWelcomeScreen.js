@@ -15,8 +15,13 @@ const FinalWelcomeScreen = () => {
   let userName = localStorage.getItem("name");
 
   const handleClickNavigate = () => {
-    handleNavigation(navigate, false, dispatch);
     document.body.style.overflow = "";
+    let hasAdminRights = localStorage.getItem("hasAdminRights");
+    if (hasAdminRights) {
+      navigate("/Admin/ManageUsers");
+      return;
+    }
+    handleNavigation(navigate, false, dispatch);
     // navigate("/Diskus")
   };
   return (
