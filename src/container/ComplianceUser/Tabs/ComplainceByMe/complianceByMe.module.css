@@ -24,3 +24,12 @@
   text-align: center;
   color: #5a5a5a;
 }
+.ResetButtonFilter {
+  padding: 2px 15px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}

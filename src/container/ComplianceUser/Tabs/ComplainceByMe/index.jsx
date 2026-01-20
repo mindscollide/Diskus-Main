@@ -21,15 +21,21 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAsce
 import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { Col, Row } from "react-bootstrap";
-import {
-  useAntTableScrollBottomVirtual,
-  useTableScrollBottom,
-} from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
+import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
+import { ChevronDown } from "react-bootstrap-icons";
+import { Checkbox } from "antd";
 
 const ComplianceByMe = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [isScroll, setIsScroll] = useState(false);
+  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+  const criticalityOptions = [
+    { label: t("High"), value: 1 },
+    { label: t("Medium"), value: 2 },
+    { label: t("Low"), value: 3 },
+  ];
   const getCompliancesForCreator = useSelector(
     (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
   );
@@ -46,33 +52,45 @@ const ComplianceByMe = () => {
     setCreateEditComplaince,
     showViewCompliance,
     setShowViewCompliance,
-    compliancebyMePayload,
     complianceByMeList,
     setComplianceByMeList,
     setComplianceByMeTotal,
-    setComplianceByMePayload,
     complianceByMeTotal,
+    searchCompliancePayload,
+    setSearchCompliancePayload,
   } = useComplianceContext();
 
   useEffect(() => {
-    dispatch(listOfComplianceByCreatorApi(navigate, compliancebyMePayload, t));
+    dispatch(
+      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
+    );
   }, []);
 
   useEffect(() => {
-    if (!getCompliancesForCreator) return;
-
-    if (compliancebyMePayload.pageNumber === 0) {
-      // fresh search
-      setComplianceByMeList(getCompliancesForCreator.complianceList || []);
-    } else {
-      // lazy load
-      setComplianceByMeList((prev) => [
-        ...prev,
-        ...(getCompliancesForCreator.complianceList || []),
-      ]);
+    // API not called yet
+    if (getCompliancesForCreator === null) {
+      if (!isScroll) {
+        setComplianceByMeList([]);
+        setComplianceByMeTotal(0);
+      }
+      return;
     }
 
-    setComplianceByMeTotal(getCompliancesForCreator.totalCount || 0);
+    const list = getCompliancesForCreator.complianceList || [];
+    const total = getCompliancesForCreator.totalCount || 0;
+
+    setComplianceByMeTotal(total);
+
+    if (isScroll) {
+      // Lazy load → append
+      setComplianceByMeList((prev) => [...prev, ...list]);
+    } else {
+      // Fresh load → replace
+      setComplianceByMeList(list);
+    }
+
+    // reset scroll flag after handling
+    setIsScroll(false);
   }, [getCompliancesForCreator]);
 
   const handleEditCompliance = (record) => {
@@ -132,8 +150,63 @@ const ComplianceByMe = () => {
     if (sorter.columnKey === "authorityShortCode") {
       setAuthority(sorter.order);
     }
+
+    // ✅ Criticality filter
+    if (filters?.criticality) {
+      setCriticalityFilter(filters.criticality || [1, 2, 3]);
+    }
   };
 
+  const getCriticalityColumnProps = () => ({
+    filteredValue: criticalityFilter, // controlled filter
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
+      // default: select all
+      if (selectedKeys.length === 0) {
+        setSelectedKeys(criticalityOptions.map((c) => c.value));
+      }
+
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={criticalityOptions}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
+            }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            {/* Reset */}
+            <CustomButton
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = criticalityOptions.map((c) => c.value);
+                setSelectedKeys(all);
+                setCriticalityFilter(all);
+                confirm();
+              }}
+            />
+
+            {/* OK */}
+            <CustomButton
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setCriticalityFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
+        </div>
+      );
+    },
+    onFilter: (value, record) => value === record.criticality,
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
   const columns = useMemo(
     () => [
       {
@@ -170,21 +243,37 @@ const ComplianceByMe = () => {
                 ?.toLowerCase()
                 .localeCompare(b.complianceTitle?.toLowerCase()),
       },
+      // {
+      //   title: "Criticality",
+      //   dataIndex: "criticality",
+      //   key: "criticality",
+      //   width: "10%",
+      //   ellipsis: true,
+      //   align: "center",
+
+      //   render: (text, record) => {
+      //     return (
+      //       <span>
+      //         {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+      //       </span>
+      //     );
+      //   },
+      // },
+
       {
-        title: "Criticality",
+        title: t("Criticality"),
         dataIndex: "criticality",
         key: "criticality",
         width: "10%",
         ellipsis: true,
         align: "center",
+        ...getCriticalityColumnProps(),
 
-        render: (text, record) => {
-          return (
-            <span>
-              {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
-            </span>
-          );
-        },
+        render: (text) => (
+          <span>
+            {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+          </span>
+        ),
       },
       {
         title: "Status",
@@ -282,16 +371,23 @@ const ComplianceByMe = () => {
         },
       },
     ],
-    [complianceByMeList, t, authoritySort, dueDateSort, complianceTitleSort]
+    [
+      complianceByMeList,
+      t,
+      authoritySort,
+      dueDateSort,
+      complianceTitleSort,
+      getCriticalityColumnProps,
+    ]
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceByMeList.length < complianceByMeTotal) {
       const nextPayload = {
-        ...compliancebyMePayload,
-        pageNumber: compliancebyMePayload.pageNumber + 10,
+        ...searchCompliancePayload,
+        pageNumber: searchCompliancePayload.pageNumber + 10,
       };
-
-      setComplianceByMePayload(nextPayload);
+      setIsScroll(true);
+      setSearchCompliancePayload(nextPayload);
       dispatch(listOfComplianceByCreatorApi(navigate, nextPayload, t));
     }
   }, 10);

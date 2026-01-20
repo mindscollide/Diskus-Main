@@ -2105,3 +2105,7 @@ export const ViewComplianceForMeById = {
 export const SearchComplianceForMe = {
   RequestMethod: "ServiceManager.SearchComplianceForMe",
 };
+export const GetComplianceChecklistsWithTasksByComplianceIdForMe = {
+  RequestMethod:
+    "ServiceManager.GetComplianceChecklistsWithTasksByComplianceIdForMe",
+};

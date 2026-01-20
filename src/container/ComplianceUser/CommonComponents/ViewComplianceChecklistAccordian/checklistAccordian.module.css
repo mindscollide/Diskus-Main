@@ -74,8 +74,8 @@
 }
 .checklistAccordian_closed {
   /* max-height: 410px !important; */
-  max-height: 25vh !important;
-  min-height: 25vh !important;
+  max-height: 35vh !important;
+  min-height: 35vh !important;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 10px;

@@ -13,59 +13,95 @@ import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
 import { DatePicker } from "antd";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
-const SearchComplianceBoxModal = ({ type = "byMe" }) => {
+const SearchComplianceBoxModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // Search States
   const searchBoxRef = useRef(null);
-  const [searchbox, setsearchbox] = useState(false);
   const [enterpressed, setEnterpressed] = useState(true);
 
   const {
-    compliancebyMePayload,
-    setComplianceByMePayload,
     setComplianceByMeList,
-    // setComplianceByMeTotal,
-    complianceForMePayload,
-    setComplianceForMePayload,
-    complianceForMeList,
     setComplianceForMeList,
+    complianceViewMode,
+    setSearchCompliancePayload,
+    searchCompliancePayload,
+    searchbox,
+    setsearchbox,
   } = useComplianceContext();
   // Scroll
 
-  // Determine which payload/list to use
-  const payload =
-    type === "byMe" ? compliancebyMePayload : complianceForMePayload;
-  const setPayload =
-    type === "byMe" ? setComplianceByMePayload : setComplianceForMePayload;
-  const setList =
-    type === "byMe" ? setComplianceByMeList : setComplianceForMeList;
   //   Functions
+  // const handleKeyDownSearchCompliance = (e) => {
+  //   if (
+  //     (e.key === "Enter" &&
+  //       complianceViewMode === "byMe" &&
+  //       compliancebyMePayload.complianceTitleOutside.trim() !== "") ||
+  //     (complianceViewMode === "forMe" &&
+  //       compliancebyMePayload.complianceTitleOutside.trim() !== "")
+  //   ) {
+  //     setEnterpressed(true);
+
+  //     const updatedPayload = {
+  //       ...compliancebyMePayload,
+  //       complianceTitle: compliancebyMePayload.complianceTitleOutside,
+  //       complianceTitleOutside: compliancebyMePayload.complianceTitleOutside,
+  //       pageNumber: 0,
+  //       length: 10,
+  //     };
+
+  //     if (complianceViewMode === "byMe") {
+  //       setComplianceByMePayload(updatedPayload);
+  //       dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
+  //     } else if (complianceViewMode === "forMe") {
+  //       setComplianceForMePayload(updatedPayload);
+  //       dispatch(SearchComplianceForMeApi(navigate, updatedPayload, t));
+  //     }
+  //   }
+  // };
+
   const handleKeyDownSearchCompliance = (e) => {
-    if (
-      e.key === "Enter" &&
-      compliancebyMePayload.complianceTitleOutside.trim() !== ""
-    ) {
-      setEnterpressed(true);
+    if (e.key === "Enter")
+      if (complianceViewMode === "byMe") {
+        setEnterpressed(true);
 
-      const updatedPayload = {
-        ...compliancebyMePayload,
-        complianceTitle: compliancebyMePayload.complianceTitleOutside,
-        complianceTitleOutside: compliancebyMePayload.complianceTitleOutside,
-        pageNumber: 0,
-        length: 10,
-      };
-
-      if (type === "byMe") {
-        setComplianceByMePayload(updatedPayload);
+        const updatedPayload = {
+          ...searchCompliancePayload,
+          complianceTitle: searchCompliancePayload.complianceTitleOutside,
+          complianceTitleOutside:
+            searchCompliancePayload.complianceTitleOutside,
+          pageNumber: 0,
+          length: 10,
+        };
+        setSearchCompliancePayload(updatedPayload);
+        setComplianceByMeList([]);
         dispatch(listOfComplianceByCreatorApi(navigate, updatedPayload, t));
-      } else {
-        setComplianceForMePayload(updatedPayload);
-        dispatch(SearchComplianceForMeApi(navigate, updatedPayload, t));
+      } else if (complianceViewMode === "forMe") {
+        console.log("here");
+        setEnterpressed(true);
+
+        const updatedPayload = {
+          ...searchCompliancePayload,
+          complianceTitle: searchCompliancePayload.complianceTitleOutside,
+          complianceTitleOutside:
+            searchCompliancePayload.complianceTitleOutside,
+          pageNumber: 0,
+          length: 10,
+        };
+        setSearchCompliancePayload(updatedPayload);
+        setComplianceForMeList([]);
+        dispatch(
+          SearchComplianceForMeApi(
+            navigate,
+            updatedPayload,
+            t,
+            setComplianceForMeList
+          )
+        );
       }
-    }
   };
+
   const handleChangeCompliance = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -74,45 +110,70 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
     const trimmedValue = value.trimStart();
 
     if (name === "complianceTitle") {
-      setComplianceByMePayload({
-        ...compliancebyMePayload,
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
         complianceTitle: trimmedValue,
       });
     }
     if (name === "complianceTitleOutside") {
-      setComplianceByMePayload({
-        ...compliancebyMePayload,
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
         complianceTitleOutside: trimmedValue,
       });
     }
     if (name === "authorityShortCode") {
-      setComplianceByMePayload({
-        ...compliancebyMePayload,
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
         authorityShortCode: trimmedValue,
       });
     }
   };
 
   const handleSearchCompliance = () => {
-    setList([]); // reset list
-    setPayload({ ...payload, pageNumber: 0, length: 10 });
+    if (complianceViewMode === "byMe") {
+      setComplianceByMeList([]);
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
+        pageNumber: 0,
+        length: 10,
+      });
+    } else if (complianceViewMode === "forMe") {
+      setComplianceForMeList([]);
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
+        pageNumber: 0,
+        length: 10,
+      });
+    }
 
-    if (type === "byMe") {
-      dispatch(
-        listOfComplianceByCreatorApi(
-          navigate,
-          { ...payload, pageNumber: 0, length: 10 },
-          t
-        )
-      );
-    } else {
-      dispatch(
-        SearchComplianceForMeApi(
-          navigate,
-          { ...payload, pageNumber: 0, length: 10 },
-          t
-        )
-      );
+    if (complianceViewMode === "byMe") {
+      setComplianceByMeList([]);
+      const Data = {
+        complianceTitle: searchCompliancePayload.complianceTitle,
+        dueDateFrom: searchCompliancePayload.dueDateFrom,
+        dueDateTo: searchCompliancePayload.dueDateTo,
+        authorityShortCode: searchCompliancePayload.authorityShortCode,
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      };
+      dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
+    } else if (complianceViewMode === "forMe") {
+      setComplianceForMeList([]);
+      const Data = {
+        complianceTitle: searchCompliancePayload.complianceTitle,
+        dueDateFrom: searchCompliancePayload.dueDateFrom,
+        dueDateTo: searchCompliancePayload.dueDateTo,
+        authorityShortCode: searchCompliancePayload.authorityShortCode,
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      };
+      dispatch(SearchComplianceForMeApi(navigate, Data, t));
     }
   };
   const handleResetComplianceButton = () => {
@@ -121,7 +182,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
     // setComplianceByMeList([]);
     // setComplianceByMeTotal(0);
     // setData([]);
-    setComplianceByMePayload({
+    setSearchCompliancePayload({
       complianceTitleOutside: "",
       complianceTitle: "",
       dueDateFrom: "",
@@ -145,7 +206,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
       pageNumber: 0,
       length: 10,
     };
-    if (type === "byMe") {
+    if (complianceViewMode === "byMe") {
       dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
       setsearchbox(false);
     } else {
@@ -158,10 +219,10 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
     setsearchbox(!searchbox);
 
     // Move title search into authority name when opening search box
-    if (compliancebyMePayload.complianceTitleOutside !== "") {
-      setComplianceByMePayload({
-        ...compliancebyMePayload,
-        complianceTitle: compliancebyMePayload.complianceTitleOutside,
+    if (searchCompliancePayload.complianceTitleOutside !== "") {
+      setSearchCompliancePayload({
+        ...searchCompliancePayload,
+        complianceTitle: searchCompliancePayload.complianceTitleOutside,
         complianceTitleOutside: "",
       });
     }
@@ -180,7 +241,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
               placeholder={t("Search")}
               name={"complianceTitleOutside"}
               disable={searchbox}
-              value={compliancebyMePayload.complianceTitleOutside}
+              value={searchCompliancePayload.complianceTitleOutside}
               onKeyDown={handleKeyDownSearchCompliance}
               applyClass={"PollingSearchInput"}
               maxLength={100}
@@ -195,7 +256,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      {compliancebyMePayload.complianceTitleOutside &&
+                      {searchCompliancePayload.complianceTitleOutside &&
                       enterpressed ? (
                         <>
                           <img
@@ -254,7 +315,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
                           placeholder={t("Compliance-title")}
                           maxLength={100}
                           name={"complianceTitle"}
-                          value={compliancebyMePayload.complianceTitle}
+                          value={searchCompliancePayload.complianceTitle}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChangeCompliance}
@@ -266,7 +327,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
                           placeholder={t("Authority-short-code")}
                           maxLength={10}
                           name={"authorityShortCode"}
-                          value={compliancebyMePayload.authorityShortCode}
+                          value={searchCompliancePayload.authorityShortCode}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChangeCompliance}
@@ -283,7 +344,7 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
                           className="custom-range-picker"
                           separator="-"
                           onChange={(dates) => {
-                            setComplianceByMePayload((prev) => ({
+                            setSearchCompliancePayload((prev) => ({
                               ...prev,
                               dueDateFrom: dates?.[0]
                                 ? dates[0].format("YYYYMMDD")
@@ -319,10 +380,10 @@ const SearchComplianceBoxModal = ({ type = "byMe" }) => {
                           className={styles["SearchButtonSearchBox"]}
                           onClick={handleSearchCompliance}
                           disableBtn={
-                            compliancebyMePayload.complianceTitle === "" &&
-                            compliancebyMePayload.authorityShortCode === "" &&
-                            compliancebyMePayload.dueDateFrom === "" &&
-                            compliancebyMePayload.dueDateTo === ""
+                            searchCompliancePayload.complianceTitle === "" &&
+                            searchCompliancePayload.authorityShortCode === "" &&
+                            searchCompliancePayload.dueDateFrom === "" &&
+                            searchCompliancePayload.dueDateTo === ""
                           }
                         />
                       </Col>

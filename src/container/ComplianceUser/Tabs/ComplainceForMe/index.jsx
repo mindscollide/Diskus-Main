@@ -21,29 +21,42 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAsce
 import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { Col, Row } from "react-bootstrap";
+import { ChevronDown } from "react-bootstrap-icons";
+import { Checkbox } from "antd";
+import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 
 const ComplianceForMe = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+  const criticalityOptions = [
+    { label: t("High"), value: 1 },
+    { label: t("Medium"), value: 2 },
+    { label: t("Low"), value: 3 },
+  ];
+
   const SearchComplianceForMe = useSelector(
     (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
   );
-  const [complianceList, setComplianceList] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-
-  console.log("SearchComplianceForMe", SearchComplianceForMe, complianceList);
+  // const [totalRecords, setTotalRecords] = useState(0);
 
   // Sort State
   const [complianceTitleSort, setComplianceTitleSort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState("ascend");
   const [authoritySort, setAuthority] = useState(null);
+  const [isScroll, setIsScroll] = useState(false);
 
   const {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
-    showViewCompliance,
     setShowViewCompliance,
+    setComplianceForMeList,
+    complianceForMeList,
+    complianceForMeTotal,
+    setComplianceForMeTotal,
+    searchCompliancePayload,
+    setSearchCompliancePayload,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -56,22 +69,37 @@ const ComplianceForMe = () => {
       //   criticalityIds: [],
       //   statusIds: [],
       sRow: 0,
-      length: 100,
+      length: 10,
     };
 
     dispatch(SearchComplianceForMeApi(navigate, Data, t));
   }, []);
 
   useEffect(() => {
-    if (!SearchComplianceForMe) return;
-    try {
-      if (SearchComplianceForMe.complianceList.length > 0) {
-        setComplianceList(SearchComplianceForMe.complianceList);
-        setTotalRecords(SearchComplianceForMe.totalCount);
+    // API not called yet
+    if (SearchComplianceForMe === null) {
+      if (!isScroll) {
+        setComplianceForMeList([]);
+        setComplianceForMeTotal(0);
       }
-    } catch (error) {
-      console.log(error);
+      return;
     }
+
+    const list = SearchComplianceForMe.complianceList || [];
+    const total = SearchComplianceForMe.totalCount || 0;
+
+    setComplianceForMeTotal(total);
+
+    if (isScroll) {
+      // Lazy load → append
+      setComplianceForMeList((prev) => [...prev, ...list]);
+    } else {
+      // Fresh load → replace
+      setComplianceForMeList(list);
+    }
+
+    // reset scroll flag after handling
+    setIsScroll(false);
   }, [SearchComplianceForMe]);
 
   const handleViewCompliance = (record) => {
@@ -113,8 +141,61 @@ const ComplianceForMe = () => {
     if (sorter.columnKey === "authorityShortCode") {
       setAuthority(sorter.order);
     }
+    // ✅ Criticality filter
+    if (filters?.criticality) {
+      setCriticalityFilter(filters.criticality || [1, 2, 3]);
+    }
   };
+  const getCriticalityColumnProps = () => ({
+    filteredValue: criticalityFilter, // controlled filter
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
+      // default: select all
+      if (selectedKeys.length === 0) {
+        setSelectedKeys(criticalityOptions.map((c) => c.value));
+      }
 
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={criticalityOptions}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
+            }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            {/* Reset */}
+            <CustomButton
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = criticalityOptions.map((c) => c.value);
+                setSelectedKeys(all);
+                setCriticalityFilter(all);
+                confirm();
+              }}
+            />
+
+            {/* OK */}
+            <CustomButton
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setCriticalityFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
+        </div>
+      );
+    },
+    onFilter: (value, record) => value === record.criticality,
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
   const columns = useMemo(
     () => [
       {
@@ -152,21 +233,21 @@ const ComplianceForMe = () => {
                 .localeCompare(b.complianceTitle?.toLowerCase()),
       },
       {
-        title: "Criticality",
+        title: t("Criticality"),
         dataIndex: "criticality",
         key: "criticality",
         width: "10%",
         ellipsis: true,
         align: "center",
+        ...getCriticalityColumnProps(),
 
-        render: (text, record) => {
-          return (
-            <span>
-              {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
-            </span>
-          );
-        },
+        render: (text) => (
+          <span>
+            {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+          </span>
+        ),
       },
+
       {
         title: "Status",
         dataIndex: "status",
@@ -263,13 +344,31 @@ const ComplianceForMe = () => {
         },
       },
     ],
-    [complianceList, t, authoritySort, dueDateSort, complianceTitleSort]
+    [
+      complianceForMeList,
+      t,
+      authoritySort,
+      dueDateSort,
+      complianceTitleSort,
+      getCriticalityColumnProps,
+    ]
   );
+  useAntTableScrollBottomVirtual(() => {
+    if (complianceForMeList.length < complianceForMeTotal) {
+      const nextPayload = {
+        ...searchCompliancePayload,
+        pageNumber: searchCompliancePayload.pageNumber + 10,
+      };
+      setIsScroll(true);
+      setSearchCompliancePayload(nextPayload);
+      dispatch(SearchComplianceForMeApi(navigate, nextPayload, t));
+    }
+  }, 10);
   return (
     <>
-      {complianceList.length > 0 ? (
+      {complianceForMeList.length > 0 ? (
         <CustomTable
-          rows={complianceList}
+          rows={complianceForMeList}
           column={columns}
           className={"Compliance_Table mt-3"}
           scroll={{ x: "scroll", y: 550 }}

@@ -10,7 +10,10 @@ import NoChecklistImg from "../../../../../assets/images/NoChecklistImg.png";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetComplianceChecklistsWithTasksByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
+import {
+  GetComplianceChecklistsWithTasksByComplianceIdAPI,
+  GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
+} from "../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/SorterIconDescend.png";
@@ -69,6 +72,7 @@ const ViewComplianceTasks = () => {
     complianceDetailsState,
     expandChecklistOnTasksPage,
     setExpandChecklistOnTasksPage,
+    complianceViewMode,
   } = useComplianceContext();
   console.log(
     complianceDetailsState,
@@ -78,6 +82,12 @@ const ViewComplianceTasks = () => {
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId
+  );
+
+  const getAllComplianceChecklistTaskForMe = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsWithTasksByComplianceIdForMe
   );
 
   console.log(
@@ -118,9 +128,19 @@ const ViewComplianceTasks = () => {
       let Data = {
         complianceId: complianceDetailsState.complianceId,
       };
-      dispatch(
-        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
-      );
+      if (complianceViewMode === "byMe") {
+        dispatch(
+          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+        );
+      } else if (complianceViewMode === "forMe") {
+        dispatch(
+          GetComplianceChecklistsWithTasksByComplianceIdForMeAPI(
+            navigate,
+            Data,
+            t
+          )
+        );
+      }
     }
   }, [complianceDetailsState]);
 
@@ -135,16 +155,28 @@ const ViewComplianceTasks = () => {
   }, [expandChecklistOnTasksPage, viewComplianceTasksData]);
 
   useEffect(() => {
-    if (
-      getAllComplianceChecklistTask &&
-      getAllComplianceChecklistTask !== null
-    ) {
-      try {
-        const { checklistList } = getAllComplianceChecklistTask;
-        setViewComplianceTasksData(checklistList);
-      } catch (error) {}
+    if (complianceViewMode === "byMe") {
+      if (
+        getAllComplianceChecklistTask &&
+        getAllComplianceChecklistTask !== null
+      ) {
+        try {
+          const { checklistList } = getAllComplianceChecklistTask;
+          setViewComplianceTasksData(checklistList);
+        } catch (error) {}
+      }
+    } else if (complianceViewMode === "forMe") {
+      if (
+        getAllComplianceChecklistTaskForMe &&
+        getAllComplianceChecklistTaskForMe !== null
+      ) {
+        try {
+          const { checklistList } = getAllComplianceChecklistTaskForMe;
+          setViewComplianceTasksData(checklistList);
+        } catch (error) {}
+      }
     }
-  }, [getAllComplianceChecklistTask]);
+  }, [getAllComplianceChecklistTask, getAllComplianceChecklistTaskForMe]);
 
   // functions
   const handleClickExpandCheckList = (data) => {

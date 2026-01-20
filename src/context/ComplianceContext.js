@@ -57,8 +57,10 @@ export const ComlianceProvider = ({ children }) => {
   const [taskCount, setTaskCount] = useState(0);
 
   // Search Context for compliance By me
-  const [compliancebyMePayload, setComplianceByMePayload] = useState({
+
+  const [searchCompliancePayload, setSearchCompliancePayload] = useState({
     complianceTitle: "",
+    complianceTitleOutside: "",
     dueDateFrom: "",
     dueDateTo: "",
     authorityShortCode: "",
@@ -68,23 +70,15 @@ export const ComlianceProvider = ({ children }) => {
     pageNumber: 0,
     length: 10,
   });
+
   const [complianceByMeList, setComplianceByMeList] = useState([]);
   const [complianceByMeTotal, setComplianceByMeTotal] = useState(0);
 
-  // Search COntext for ComplianceForMe
-  const [complianceForMePayload, setComplianceForMePayload] = useState({
-    complianceTitle: "",
-    dueDateFrom: "",
-    dueDateTo: "",
-    authorityShortCode: "",
-    tagsCSV: "",
-    criticalityIds: [],
-    statusIds: [],
-    pageNumber: 0,
-    length: 10,
-  });
-
   const [complianceForMeList, setComplianceForMeList] = useState([]);
+  const [complianceForMeTotal, setComplianceForMeTotal] = useState(0);
+
+  const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
+  const [complianceViewMode, setComplianceViewMode] = useState("byMe");
 
   const emptyComplianceState = () => {
     console.log("cleared");
@@ -129,7 +123,7 @@ export const ComlianceProvider = ({ children }) => {
     setAllowedComplianceStatusOptions([]);
     setAllCheckListByComplianceId([]);
     setExpandChecklistOnTasksPage(null);
-    setComplianceByMePayload({
+    setSearchCompliancePayload({
       complianceTitle: "",
       complianceTitleOutside: "",
       dueDateFrom: "",
@@ -143,18 +137,10 @@ export const ComlianceProvider = ({ children }) => {
     });
     setComplianceByMeList([]);
     setComplianceByMeTotal(0);
-    setComplianceForMePayload({
-      complianceTitle: "",
-      dueDateFrom: "",
-      dueDateTo: "",
-      authorityShortCode: "",
-      tagsCSV: "",
-      criticalityIds: [],
-      statusIds: [],
-      pageNumber: 0,
-      length: 10,
-    });
     setComplianceForMeList([]);
+    setIsViewDetailsOpen(false);
+    setsearchbox(false);
+    setComplianceForMeTotal(0);
   };
 
   // view compliance
@@ -165,6 +151,7 @@ export const ComlianceProvider = ({ children }) => {
   const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
     []
   );
+  const [searchbox, setsearchbox] = useState(false);
 
   return (
     <ComplianceContext.Provider
@@ -200,16 +187,22 @@ export const ComlianceProvider = ({ children }) => {
         setAllCheckListByComplianceId,
         expandChecklistOnTasksPage,
         setExpandChecklistOnTasksPage,
-        compliancebyMePayload,
-        setComplianceByMePayload,
         complianceByMeList,
         setComplianceByMeList,
         complianceByMeTotal,
         setComplianceByMeTotal,
-        complianceForMePayload,
-        setComplianceForMePayload,
         complianceForMeList,
         setComplianceForMeList,
+        isViewDetailsOpen,
+        setIsViewDetailsOpen,
+        complianceViewMode,
+        setComplianceViewMode,
+        setSearchCompliancePayload,
+        searchCompliancePayload,
+        complianceForMeTotal,
+        setComplianceForMeTotal,
+        searchbox,
+        setsearchbox,
       }}
     >
       {children}

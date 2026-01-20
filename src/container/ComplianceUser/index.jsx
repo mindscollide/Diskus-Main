@@ -15,7 +15,6 @@ import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModa
 
 const MainCompliance = () => {
   const { t } = useTranslation();
-  // const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
   const {
     createEditCompliance,
     setCreateEditComplaince,
@@ -23,11 +22,51 @@ const MainCompliance = () => {
     setMainComplianceTabs,
     setComplianceAddEditViewState,
     showViewCompliance,
+    setComplianceViewMode,
+    setSearchCompliancePayload,
+    setsearchbox,
   } = useComplianceContext();
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
     setComplianceAddEditViewState(1);
+  };
+  const handleClickComplianceMode = (mode) => {
+    if (mode === 2) {
+      setSearchCompliancePayload({
+        complianceTitle: "",
+        complianceTitleOutside: "",
+        dueDateFrom: "",
+        dueDateTo: "",
+        authorityShortCode: "",
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      });
+      setMainComplianceTabs(2);
+      setComplianceViewMode("byMe");
+      setsearchbox(false);
+      return;
+    } else if (mode === 3) {
+      setSearchCompliancePayload({
+        complianceTitle: "",
+        complianceTitleOutside: "",
+        dueDateFrom: "",
+        dueDateTo: "",
+        authorityShortCode: "",
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      });
+      setMainComplianceTabs(3);
+      setComplianceViewMode("forMe");
+      setsearchbox(false);
+      return;
+    }
   };
 
   if (createEditCompliance) {
@@ -71,13 +110,9 @@ const MainCompliance = () => {
               </span>{" "}
               <Switch />
             </Col>
-          ) : mainComplianceTabs === 2 ? (
+          ) : mainComplianceTabs === 2 || mainComplianceTabs === 3 ? (
             <Col sm={12} md={6} lg={6}>
-              <SearchComplianceBoxModal type="byMe" />
-            </Col>
-          ) : mainComplianceTabs === 3 ? (
-            <Col sm={12} md={6} lg={6}>
-              <SearchComplianceBoxModal type="forMe" />
+              <SearchComplianceBoxModal />
             </Col>
           ) : null}
         </Row>
@@ -103,7 +138,7 @@ const MainCompliance = () => {
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setMainComplianceTabs(2)}
+              onClick={() => handleClickComplianceMode(2)}
               text={t("Compliances-by-me")}
             />
             <CustomButton
@@ -112,7 +147,7 @@ const MainCompliance = () => {
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setMainComplianceTabs(3)}
+              onClick={() => handleClickComplianceMode(3)}
               text={t("Compliances-for-me")}
             />
             <CustomButton

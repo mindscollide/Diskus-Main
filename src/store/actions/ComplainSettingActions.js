@@ -27,6 +27,7 @@ import {
   ViewComplianceForMeById,
   SearchComplianceForMe,
   ViewComplianceDetailsByViewTypeRM,
+  GetComplianceChecklistsWithTasksByComplianceIdForMe,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -2493,6 +2494,118 @@ const SearchComplianceForMeApi = (navigate, Data, t) => {
       });
   };
 };
+
+// GetComplianceChecklistsWithTasksByComplianceId
+const GetComplianceChecklistsWithTasksByComplianceIdForMeInit = () => {
+  return {
+    type: actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_INIT,
+  };
+};
+
+const GetComplianceChecklistsWithTasksByComplianceIdForMeSuccess = (
+  response,
+  message
+) => {
+  return {
+    type: actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceChecklistsWithTasksByComplianceIdForMeFail = (message) => {
+  return {
+    type: actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceChecklistsWithTasksByComplianceIdForMeAPI = (
+  navigate,
+  Data,
+  t
+) => {
+  return (dispatch) => {
+    dispatch(GetComplianceChecklistsWithTasksByComplianceIdForMeInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetComplianceChecklistsWithTasksByComplianceIdForMe.RequestMethod
+    );
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetComplianceChecklistsWithTasksByComplianceIdForMeAPI(
+              navigate,
+              Data,
+              t
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceChecklistsWithTasksByComplianceIdForMe_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceChecklistsWithTasksByComplianceIdForMeSuccess(
+                  response.data.responseResult,
+                  t("")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceChecklistsWithTasksByComplianceIdForMe_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceChecklistsWithTasksByComplianceIdForMeFail("")
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceChecklistsWithTasksByComplianceIdForMe_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceChecklistsWithTasksByComplianceIdForMeFail("")
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceChecklistsWithTasksByComplianceIdForMeFail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceChecklistsWithTasksByComplianceIdForMeFail(
+              t("Something-went-wrong")
+            )
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetComplianceChecklistsWithTasksByComplianceIdForMeFail(
+            t("Something-went-wrong")
+          )
+        );
+      });
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -2526,4 +2639,5 @@ export {
   // viewComplianceForMeByIdAPI,
   SearchComplianceForMeApi,
   ViewComplianceDetailsByViewTypeAPI,
+  GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
 };
