@@ -47,27 +47,27 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
   let createrID = localStorage.getItem("userID");
 
   const TodoListReducerData = useSelector(
-    (state) => state.toDoListReducer.ToDoDetails,
+    (state) => state.toDoListReducer.ToDoDetails
   );
 
   const DeleteCommentSpinnerData = useSelector(
-    (state) => state.toDoListReducer.deleteCommentSpinner,
+    (state) => state.toDoListReducer.deleteCommentSpinner
   );
 
   const postAssigneeCommentsDeleteCommentIDsData = useSelector(
-    (state) => state.postAssigneeComments.DeleteCommentsId,
+    (state) => state.postAssigneeComments.DeleteCommentsId
   );
 
   const postAssigneeCommentsResponseMessege = useSelector(
-    (state) => state.postAssigneeComments.ResponseMessage,
+    (state) => state.postAssigneeComments.ResponseMessage
   );
 
   const CommentsData = useSelector(
-    (state) => state.postAssigneeComments.Comments,
+    (state) => state.postAssigneeComments.Comments
   );
 
   const socketTodoStatusData = useSelector(
-    (state) => state.toDoListReducer.socketTodoStatusData,
+    (state) => state.toDoListReducer.socketTodoStatusData
   );
 
   //To Display Modal
@@ -181,7 +181,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
             displayProfilePicture: data.displayProfilePictureName,
             datetimeFormating: newTimeFormaterAsPerUTCFullDate(
               deadlineDateTime,
-              currentLanguage,
+              currentLanguage
             ),
           });
         });
@@ -249,7 +249,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         });
         // Update Comment ID
         let commentIndex2 = taskAssigneeComments.find(
-          (data, index) => data?.taskCommentID === Number(CommentsData.pK_TCID),
+          (data, index) => data?.taskCommentID === Number(CommentsData.pK_TCID)
         );
 
         // Update Comment ID
@@ -300,7 +300,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         let findNewIndex = taskAssigneeComments.findIndex(
           (data, index) =>
             data.taskCommentID ===
-            postAssigneeCommentsDeleteCommentIDsData.commentID,
+            postAssigneeCommentsDeleteCommentIDsData.commentID
         );
         if (findNewIndex !== -1) {
           let newData = [...taskAssigneeComments];
@@ -408,7 +408,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         window.open(
           `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(data)}`,
           "_blank",
-          "noopener noreferrer",
+          "noopener noreferrer"
         );
         return;
       }
@@ -416,7 +416,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(data)}`,
         "_blank",
-        "noopener noreferrer",
+        "noopener noreferrer"
       );
     }
   };
@@ -717,7 +717,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                     {task.DeadLineDate
                       ? newTimeFormaterAsPerUTCFullDate(
                           task.DeadLineDate + task.DeadLineTime,
-                          currentLanguage,
+                          currentLanguage
                         )
                       : "-"}
                   </Col>
@@ -732,51 +732,53 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                 <Row className="mb-4">
                   <Col sm={12} md={12} lg={12}>
                     <p className={styles.labelBig}>Attachments</p>
-                    <Row>
-                      {tasksAttachments.TasksAttachments.length > 0
-                        ? tasksAttachments.TasksAttachments.map(
-                            (modalviewAttachmentFiles, index) => {
-                              let ext =
-                                modalviewAttachmentFiles.DisplayAttachmentName.split(
-                                  ".",
-                                ).pop();
+                    <section className={styles.taskAttachmentsList}>
+                      <Row>
+                        {tasksAttachments.TasksAttachments.length > 0
+                          ? tasksAttachments.TasksAttachments.map(
+                              (modalviewAttachmentFiles, index) => {
+                                let ext =
+                                  modalviewAttachmentFiles.DisplayAttachmentName.split(
+                                    "."
+                                  ).pop();
 
-                              const pdfData = {
-                                taskId: modalviewAttachmentFiles.FK_TID,
-                                attachmentID: Number(
-                                  modalviewAttachmentFiles.OriginalAttachmentName,
-                                ),
-                                fileName:
-                                  modalviewAttachmentFiles.DisplayAttachmentName,
-                                commingFrom: 4,
-                              };
-                              const pdfDataJson = JSON.stringify(pdfData);
-                              return (
-                                <Col sm={6} md={6} lg={6}>
-                                  <AttachmentViewer
-                                    handleClickDownload={() =>
-                                      handleClickDownloadFile(
-                                        modalviewAttachmentFiles.OriginalAttachmentName,
-                                        modalviewAttachmentFiles.DisplayAttachmentName,
-                                      )
-                                    }
-                                    handleEyeIcon={() =>
-                                      handleLinkClick(pdfDataJson, ext)
-                                    }
-                                    id={
-                                      modalviewAttachmentFiles.OriginalAttachmentName
-                                    }
-                                    data={modalviewAttachmentFiles}
-                                    name={
-                                      modalviewAttachmentFiles.DisplayAttachmentName
-                                    }
-                                  />
-                                </Col>
-                              );
-                            },
-                          )
-                        : null}
-                    </Row>
+                                const pdfData = {
+                                  taskId: modalviewAttachmentFiles.FK_TID,
+                                  attachmentID: Number(
+                                    modalviewAttachmentFiles.OriginalAttachmentName
+                                  ),
+                                  fileName:
+                                    modalviewAttachmentFiles.DisplayAttachmentName,
+                                  commingFrom: 4,
+                                };
+                                const pdfDataJson = JSON.stringify(pdfData);
+                                return (
+                                  <Col sm={6} md={6} lg={6}>
+                                    <AttachmentViewer
+                                      handleClickDownload={() =>
+                                        handleClickDownloadFile(
+                                          modalviewAttachmentFiles.OriginalAttachmentName,
+                                          modalviewAttachmentFiles.DisplayAttachmentName
+                                        )
+                                      }
+                                      handleEyeIcon={() =>
+                                        handleLinkClick(pdfDataJson, ext)
+                                      }
+                                      id={
+                                        modalviewAttachmentFiles.OriginalAttachmentName
+                                      }
+                                      data={modalviewAttachmentFiles}
+                                      name={
+                                        modalviewAttachmentFiles.DisplayAttachmentName
+                                      }
+                                    />
+                                  </Col>
+                                );
+                              }
+                            )
+                          : null}
+                      </Row>
+                    </section>
                   </Col>
                 </Row>
               </Col>
@@ -784,7 +786,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                 <Row>
                   <Col sm={12} md={12} lg={12}>
                     <p className={styles.labelBig}>Comments</p>
-                    <section>
+                    <section className={styles.taskCommentList}>
                       {taskAssigneeComments.length > 0
                         ? taskAssigneeComments.map((commentData, index) => {
                             if (
@@ -803,7 +805,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                                       rows={2}
                                       timeValue={newTimeFormaterAsPerUTCFullDate(
                                         commentData.DateTime,
-                                        currentLanguage,
+                                        currentLanguage
                                       )}
                                       label={commentData.taskCommentUserName}
                                       labelClassName=" d-flex justify-content-start  fw-bold "
@@ -831,7 +833,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                                           onClick={() =>
                                             handleDeleteComments(
                                               commentData.taskCommentID,
-                                              commentData.TaskID,
+                                              commentData.TaskID
                                             )
                                           }
                                           className={
@@ -864,7 +866,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                                       labelClassName=" d-flex justify-content-start mx-2 "
                                       timeValue={newTimeFormaterAsPerUTCFullDate(
                                         commentData.DateTime,
-                                        currentLanguage,
+                                        currentLanguage
                                       )}
                                       timeClass={"timeClass Participant"}
                                       formClassPosition="relative-position-form"

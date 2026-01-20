@@ -662,21 +662,19 @@ const ViewComplianceTasks = () => {
                       <>
                         <Row>
                           <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className={styles.checklistTitleLabel}
+                            sm={11}
+                            md={11}
+                            lg={11}
+                            className="d-flex justify-content-end align-items-center"
                           >
-                            {t("Checklist-title")}
-                          </Col>
-
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className={`m-0 ${styles.checklistTitleValue}`}
-                          >
-                            {data.checklistTitle}
+                            <img
+                              src={Accordion_Arrow}
+                              onClick={() => handleClickExpandCheckList(data)}
+                              alt=""
+                              className={`cursor-pointer ${
+                                isExpanded ? "" : styles["AccordionArrowDown"]
+                              }`}
+                            />
                           </Col>
                         </Row>
                       </>
@@ -704,7 +702,7 @@ const ViewComplianceTasks = () => {
                   sm={12}
                   className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
                 >
-                  {t("No-checklist-found")}
+                  {t("No-Task-found")}
                 </Col>
               </Row>
               <Row>
@@ -714,7 +712,7 @@ const ViewComplianceTasks = () => {
                   sm={12}
                   className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
                 >
-                  {t("No-checklist-has-been-assigned-yet.")}
+                  {t("No-Task-has-been-created-yet.")}
                 </Col>
               </Row>
             </>
