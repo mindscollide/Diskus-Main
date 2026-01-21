@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./mainCompliance.module.css";
 import { Button, Switch } from "../../components/elements";
@@ -12,9 +12,19 @@ import { useComplianceContext } from "../../context/ComplianceContext";
 import ViewCompliance from "./CommonComponents/viewCompliance";
 import ComplianceForMe from "./Tabs/ComplainceForMe";
 import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModal";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetComplianceAndTaskStatusesAPI } from "../../store/actions/ComplainSettingActions";
+import { useSelector } from "react-redux";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const AllComplianceStatus = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
+  );
   const {
     createEditCompliance,
     setCreateEditComplaince,
@@ -25,7 +35,26 @@ const MainCompliance = () => {
     setComplianceViewMode,
     setSearchCompliancePayload,
     setsearchbox,
+    setAllComplianceStatusForFilter,
+    setAllTasksStatusForFilter,
   } = useComplianceContext();
+
+  useEffect(() => {
+    dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (AllComplianceStatus && AllComplianceStatus !== null) {
+      const { complianceStatusesList, tasksStatusesList } = AllComplianceStatus;
+      if (complianceStatusesList.length > 0) {
+        setAllComplianceStatusForFilter(complianceStatusesList);
+        console.log(complianceStatusesList, "complianceStatusesList");
+      }
+      if (tasksStatusesList.length > 0) {
+        setAllTasksStatusForFilter(tasksStatusesList);
+      }
+    }
+  }, [AllComplianceStatus]);
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);

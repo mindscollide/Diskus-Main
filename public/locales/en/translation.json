@@ -2600,5 +2600,7 @@
   "You-don't-have-any-compliance-yet": "You don't have any compliance yet",
   "Authority-short-code": "Authority Short Code",
   "Reopen-compliance": "Reopen Compliance",
-  "Please-select-atleast-a-single-day": "Please select atleast a single day"
+  "Please-select-atleast-a-single-day": "Please select atleast a single day",
+  "No-task-found": "No task found",
+  "No-Task-has-been-created-yet": "No task has been created yet"
 }

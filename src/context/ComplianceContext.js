@@ -79,6 +79,9 @@ export const ComlianceProvider = ({ children }) => {
 
   const [isViewDetailsOpen, setIsViewDetailsOpen] = useState(false);
   const [complianceViewMode, setComplianceViewMode] = useState("byMe");
+  const [allComplianceStatusForFilter, setAllComplianceStatusForFilter] =
+    useState([]);
+  const [allTasksStatusForFilter, setAllTasksStatusForFilter] = useState([]);
 
   const emptyComplianceState = () => {
     console.log("cleared");
@@ -203,6 +206,10 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceForMeTotal,
         searchbox,
         setsearchbox,
+        allComplianceStatusForFilter,
+        setAllComplianceStatusForFilter,
+        allTasksStatusForFilter,
+        setAllTasksStatusForFilter,
       }}
     >
       {children}
