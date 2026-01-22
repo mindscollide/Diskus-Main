@@ -273,100 +273,100 @@ const Dashboard = () => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
   );
   const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
+    (state) => state.UserManagementModals.internetDisconnectModal,
   );
   const mobileAppPopUp = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
+    (state) => state.UserManagementModals.mobileAppPopUp,
   );
   const IncomingVideoCallFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
 
   const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage
+    (state) => state.VideoMainReducer.ResponseMessage,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
 
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const MaximizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
 
   const ShowGuestPopup = useSelector(
-    (state) => state.videoFeatureReducer.ShowGuestPopup
+    (state) => state.videoFeatureReducer.ShowGuestPopup,
   );
 
   const VideoChatMessagesFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
 
   const MeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
   );
 
   const waitingParticipantsList = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList
+    (state) => state.videoFeatureReducer.waitingParticipantsList,
   );
 
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
-    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState,
   );
 
   const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
+    (state) => state.videoFeatureReducer.videoControlForParticipant,
   );
 
   const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
+    (state) => state.videoFeatureReducer.audioControlForParticipant,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const leavePresenterOrJoinOtherCalls = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
 
   console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
@@ -378,7 +378,7 @@ const Dashboard = () => {
       resumeRecordingState,
       stopRecordingState,
     },
-    "CheckisPausedOccurOrNot"
+    "CheckisPausedOccurOrNot",
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -412,10 +412,10 @@ const Dashboard = () => {
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
   const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
 
   // Update ref whenever presenterViewJoinFlag changes
@@ -478,7 +478,7 @@ const Dashboard = () => {
 
   function checkCallStatus(data) {
     return !data.some(
-      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing"
+      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing",
     );
   }
 
@@ -540,6 +540,7 @@ const Dashboard = () => {
           if (isMeetingVideo) {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+            dispatch(leaveMeetingOnEndStatusMqtt(true));
           } else {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(leaveMeetingOnEndStatusMqtt(true));
@@ -555,7 +556,7 @@ const Dashboard = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
+      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck"),
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -566,7 +567,7 @@ const Dashboard = () => {
     let newRoomId = localStorage.getItem("newRoomId");
     let participantRoomId = localStorage.getItem("participantRoomId");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -587,7 +588,7 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             let data = {
               RoomID: String(
-                isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                isMeetingVideoHostCheck ? newRoomId : participantRoomId,
               ),
               UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
               IsHandRaised: false,
@@ -707,7 +708,7 @@ const Dashboard = () => {
   const stopPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq");
     let StopPresenterViewAwait = JSON.parse(
-      sessionStorage.getItem("StopPresenterViewAwait")
+      sessionStorage.getItem("StopPresenterViewAwait"),
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -722,16 +723,16 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false
+        : false,
     );
     console.log(
       String(meetingVideoID) === String(payload?.meetingID),
-      "mqtt mqmqmqmqmqmq"
+      "mqtt mqmqmqmqmqmq",
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
@@ -746,7 +747,7 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         console.log(
           "typeof StopPresenterViewAwait:",
-          typeof StopPresenterViewAwait
+          typeof StopPresenterViewAwait,
         );
         console.log("value:", StopPresenterViewAwait);
         if (
@@ -767,7 +768,7 @@ const Dashboard = () => {
 
               let dataAudio = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 IsMuted: false, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -778,7 +779,7 @@ const Dashboard = () => {
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               let dataVideo = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 HideVideo: true, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -790,7 +791,7 @@ const Dashboard = () => {
 
               let data = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
@@ -844,7 +845,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -861,7 +862,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  getVideoCallParticipantsMainApi(Data, navigate, t)
+                  getVideoCallParticipantsMainApi(Data, navigate, t),
                 );
               }
               await dispatch(transferMeetingHostSuccess(true));
@@ -875,7 +876,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("refinedVideoUrl", hostUrl);
@@ -932,7 +933,7 @@ const Dashboard = () => {
       const currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       const { meetingID, userID } = mqttData.payload;
@@ -943,7 +944,7 @@ const Dashboard = () => {
       const alreadyRequested = waitingParticipantsList?.some(
         (p) =>
           Number(p.userID) === Number(userID) &&
-          Number(p.meetingID) === Number(meetingID)
+          Number(p.meetingID) === Number(meetingID),
       );
       console.log(alreadyRequested, "Filtered unique participants");
 
@@ -1041,7 +1042,7 @@ const Dashboard = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let handStatus = JSON.parse(localStorage.getItem("handStatus"));
 
@@ -1054,7 +1055,7 @@ const Dashboard = () => {
 
           let data = {
             RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
             ),
             UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             IsHandRaised: false,
@@ -1086,7 +1087,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1103,7 +1104,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_EDITED_HOST"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1120,7 +1121,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_STARTED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1141,7 +1142,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_END"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1149,7 +1150,7 @@ const Dashboard = () => {
                 console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
                 console.log(
                   "mqtt mqmqmqmqmqmq",
-                  data?.payload?.meeting?.pK_MDID
+                  data?.payload?.meeting?.pK_MDID,
                 );
                 meetingEnded(data.payload);
                 dispatch(mqttCurrentMeetingEnded(data.payload));
@@ -1167,7 +1168,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_CANCELLED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1185,7 +1186,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_ADMIN"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1196,7 +1197,7 @@ const Dashboard = () => {
               "NEW_UPCOMING_EVENTS".toLowerCase()
             ) {
               dispatch(
-                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
+                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]),
               );
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1210,7 +1211,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PROPOSED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
               }
@@ -1225,7 +1226,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1250,7 +1251,7 @@ const Dashboard = () => {
               }
               console.log(
                 data.payload,
-                "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+                "AgendaVotingModalStartedDataAgendaVotingModalStartedData",
               );
               dispatch(meetingAgendaStartedMQTT(data.payload));
             } else if (
@@ -1296,7 +1297,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_PUBLISHED"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1316,7 +1317,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1331,7 +1332,7 @@ const Dashboard = () => {
               data.payload.message
                 ?.toLowerCase()
                 .includes(
-                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase()
+                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase(),
                 )
             ) {
               if (data.viewable) {
@@ -1341,7 +1342,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1360,7 +1361,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1378,7 +1379,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1396,7 +1397,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1405,7 +1406,7 @@ const Dashboard = () => {
               } catch (error) {
                 console.log(
                   error,
-                  "MeetingReminderNotificationMeetingReminderNotification"
+                  "MeetingReminderNotificationMeetingReminderNotification",
                 );
               }
             } else if (
@@ -1413,7 +1414,7 @@ const Dashboard = () => {
               "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
             ) {
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
@@ -1440,7 +1441,7 @@ const Dashboard = () => {
                 console.log("Is Guest True");
                 // dispatch(guestLeaveVideoMeeting(data.payload.uid));
                 const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
+                  localStorage.getItem("meetinHostInfo"),
                 );
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1455,7 +1456,7 @@ const Dashboard = () => {
                 console.log("Is Guest True");
 
                 const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
+                  localStorage.getItem("meetinHostInfo"),
                 );
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1476,8 +1477,8 @@ const Dashboard = () => {
                   data.payload,
                   false,
                   presenterViewHostFlag,
-                  presenterViewFlag
-                )
+                  presenterViewFlag,
+                ),
               );
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1487,7 +1488,7 @@ const Dashboard = () => {
               let isParticipantGuid = localStorage.getItem("participantUID");
               console.log(
                 data.payload.participantGuid === isParticipantGuid,
-                "checkchekc"
+                "checkchekc",
               );
               // if (
               //   data.payload.isHandRaised &&
@@ -1521,26 +1522,26 @@ const Dashboard = () => {
             ) {
               dispatch(screenShareTriggeredGlobally(false));
               let isMeetingVideoCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isSharedSceenEnable = JSON.parse(
-                localStorage.getItem("isSharedSceenEnable")
+                localStorage.getItem("isSharedSceenEnable"),
               );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 if (isZoomEnabled) {
                   if (isSharedSceenEnable && !globallyScreenShare) {
                     let isMeetingVideoHostCheck = JSON.parse(
-                      localStorage.getItem("isMeetingVideoHostCheck")
+                      localStorage.getItem("isMeetingVideoHostCheck"),
                     );
                     let participantRoomId = String(
-                      localStorage.getItem("participantRoomId")
+                      localStorage.getItem("participantRoomId"),
                     );
                     let participantUID = String(
-                      localStorage.getItem("participantUID")
+                      localStorage.getItem("participantUID"),
                     );
                     let RoomID =
                       isMeetingVideoCheck && !isMeetingVideoHostCheck
@@ -1558,7 +1559,7 @@ const Dashboard = () => {
                     };
                     dispatch(screenShareTriggeredGlobally(false));
                     await dispatch(
-                      isSharedScreenTriggeredApi(navigate, t, data)
+                      isSharedScreenTriggeredApi(navigate, t, data),
                     );
                   }
                   dispatch(setAudioControlHost(false));
@@ -1587,7 +1588,7 @@ const Dashboard = () => {
 
                   localStorage.setItem(
                     "meetinHostInfo",
-                    JSON.stringify(meetingHost)
+                    JSON.stringify(meetingHost),
                   );
 
                   dispatch(maximizeVideoPanelFlag(false));
@@ -1615,7 +1616,7 @@ const Dashboard = () => {
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
               const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("meetinHostInfo"),
               );
 
               if (data.payload.isForAll) {
@@ -1632,8 +1633,8 @@ const Dashboard = () => {
                     data.payload.isMuted,
                     true,
                     presenterViewHostFlag,
-                    presenterViewFlag
-                  )
+                    presenterViewFlag,
+                  ),
                 );
               } else {
                 // Handle individual mute/unmute
@@ -1642,8 +1643,8 @@ const Dashboard = () => {
                     data.payload,
                     false,
                     presenterViewHostFlag,
-                    presenterViewFlag
-                  )
+                    presenterViewFlag,
+                  ),
                 );
 
                 let isGuid = "";
@@ -1664,7 +1665,7 @@ const Dashboard = () => {
               "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
             ) {
               const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("meetinHostInfo"),
               );
               let isGuid = "";
               if (meetingHost?.isHost) {
@@ -1687,15 +1688,15 @@ const Dashboard = () => {
               dispatch(participantVideoButtonState(false));
               let currentMeetingID = 0;
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               if (isZoomEnabled) {
                 currentMeetingID = String(
-                  localStorage.getItem("currentMeetingID")
+                  localStorage.getItem("currentMeetingID"),
                 );
               } else {
                 currentMeetingID = Number(
-                  localStorage.getItem("currentMeetingID")
+                  localStorage.getItem("currentMeetingID"),
                 );
               }
 
@@ -1746,7 +1747,7 @@ const Dashboard = () => {
               localStorage.setItem("isMeetingVideo", true);
               localStorage.setItem(
                 "currentMeetingVideoUrl",
-                data.payload.videoUrl
+                data.payload.videoUrl,
               );
               console.log("iframeiframe", data.payload.userID);
 
@@ -1754,7 +1755,7 @@ const Dashboard = () => {
               if (data?.payload?.screenShare) {
                 console.log("Check Datat");
                 let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled")
+                  localStorage.getItem("isZoomEnabled"),
                 );
                 if (isZoomEnabled) {
                   console.log(data?.payload?.screenShare, "Check Datat");
@@ -1767,10 +1768,10 @@ const Dashboard = () => {
                 console.log("isMeetingVideo", audioControlForParticipant);
                 console.log("isMeetingVideo", videoControlForParticipant);
                 let videoControlForParticipantLoacl = JSON.parse(
-                  localStorage.getItem("isWebCamEnabled")
+                  localStorage.getItem("isWebCamEnabled"),
                 );
                 let audioControlForParticipantLocal = JSON.parse(
-                  localStorage.getItem("isMicEnabled")
+                  localStorage.getItem("isMicEnabled"),
                 );
                 console.log("iframeiframe", data.payload.userID);
                 dispatch(setAudioControlHost(audioControlForParticipantLocal));
@@ -1781,7 +1782,7 @@ const Dashboard = () => {
                 // Refine the URL by replacing placeholders
                 let refinedUrl = "";
                 let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled")
+                  localStorage.getItem("isZoomEnabled"),
                 );
                 if (isZoomEnabled) {
                   refinedUrl = data.payload.videoUrl;
@@ -1790,11 +1791,11 @@ const Dashboard = () => {
                     .replace("$ParticipantFullName$", currentParticipantUser)
                     .replace(
                       "$IsMute$",
-                      audioControlForParticipantLocal.toString()
+                      audioControlForParticipantLocal.toString(),
                     )
                     .replace(
                       "$IsHideCamera$",
-                      videoControlForParticipantLoacl.toString()
+                      videoControlForParticipantLoacl.toString(),
                     );
                 }
 
@@ -1824,7 +1825,7 @@ const Dashboard = () => {
                 console.log("HostTransferEvent");
 
                 const isHost = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck")
+                  localStorage.getItem("isMeetingVideoHostCheck"),
                 );
 
                 // Check if the current user's guid matches the mqtt newHost guid
@@ -1840,7 +1841,7 @@ const Dashboard = () => {
                     let isGuid = localStorage.getItem("isGuid");
                     localStorage.setItem(
                       "meetinHostInfo",
-                      JSON.stringify(meetingHost)
+                      JSON.stringify(meetingHost),
                     );
                     let refinedVideoUrl =
                       localStorage.getItem("refinedVideoUrl");
@@ -1857,29 +1858,29 @@ const Dashboard = () => {
                       RoomID: String(newRoomId),
                     };
                     await dispatch(
-                      getVideoCallParticipantsMainApi(Data, navigate, t)
+                      getVideoCallParticipantsMainApi(Data, navigate, t),
                     );
 
                     await dispatch(transferMeetingHostSuccess(true));
                   }
                   // Send HostTransferEvent to iframe
                   const iframe = iframeRef.current;
-                  if (iframe && iframe.contentWindow) {
-                    const msg = `HostTransferEvent_#_${newHostGuid}`;
-                    setTimeout(() => {
+                  if (!iframe) return;
+                  const msg = `HostTransferEvent_#_${newHostGuid}`;
+                  setTimeout(() => {
+                    if (iframe.contentWindow) {
                       iframe.contentWindow.postMessage(msg, "*");
-                      console.log("HostTransferEvent sent to iframe:", msg);
-                    }, 1000);
-                  }
+                    }
+                  }, 1000);
                 } else {
                   console.log(
-                    "Current host guid does not match MQTT newHost guid"
+                    "Current host guid does not match MQTT newHost guid",
                   );
                 }
               } catch (err) {
                 console.error(
                   "Error handling AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY MQTT:",
-                  err
+                  err,
                 );
               }
             } else if (
@@ -1888,7 +1889,7 @@ const Dashboard = () => {
             ) {
               let userID = Number(localStorage.getItem("userID"));
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
 
               handRaisedWhileHostTransferFunc();
@@ -1907,7 +1908,7 @@ const Dashboard = () => {
                 };
                 localStorage.setItem(
                   "meetinHostInfo",
-                  JSON.stringify(meetingHost)
+                  JSON.stringify(meetingHost),
                 );
                 console.log("mqtt check 22");
                 dispatch(videoIconOrButtonState(true));
@@ -1949,7 +1950,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  participantListWaitingListMainApi(Data, navigate, t)
+                  participantListWaitingListMainApi(Data, navigate, t),
                 );
               }
             } else if (
@@ -1965,7 +1966,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MeetingReminderNotification"),
                       "[Meeting Title]",
-                      data.payload.calenderEvents.title.substring(0, 100)
+                      data.payload.calenderEvents.title.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1973,7 +1974,7 @@ const Dashboard = () => {
               } catch (error) {
                 console.log(
                   error,
-                  "MeetingReminderNotificationMeetingReminderNotification"
+                  "MeetingReminderNotificationMeetingReminderNotification",
                 );
               }
             } else if (
@@ -2002,7 +2003,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MeetingReminderNotification"),
                       "[Meeting Title]",
-                      data.payload.title.substring(0, 100)
+                      data.payload.title.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -2024,7 +2025,7 @@ const Dashboard = () => {
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
             ) {
               dispatch(
-                presenterNewParticipantJoin(data.payload.newParticipant)
+                presenterNewParticipantJoin(data.payload.newParticipant),
               );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
@@ -2032,13 +2033,13 @@ const Dashboard = () => {
               "VIDEO_SHARING_ENABLED".toLowerCase()
             ) {
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let participantUID = localStorage.getItem("participantUID");
               let isGuid = localStorage.getItem("isGuid");
@@ -2059,13 +2060,13 @@ const Dashboard = () => {
               "VIDEO_SHARING_DISABLED".toLowerCase()
             ) {
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let participantUID = localStorage.getItem("participantUID");
               let isGuid = localStorage.getItem("isGuid");
@@ -2093,8 +2094,8 @@ const Dashboard = () => {
             ) {
               dispatch(
                 removeUpComingEvent(
-                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID
-                )
+                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID,
+                ),
               );
             }
           } catch (error) {
@@ -2114,7 +2115,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2130,7 +2131,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("TDOD_STATUS_EDITED"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2145,7 +2146,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("TDOD_STATUS_DELETED"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2172,7 +2173,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.comment.userName,
                 "[Task Title]",
-                data.payload.comment.todoTitle.substring(0, 100)
+                data.payload.comment.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2190,7 +2191,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2206,7 +2207,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2223,7 +2224,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2244,7 +2245,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.comment.userName,
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2262,7 +2263,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.userName,
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2279,7 +2280,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("USER_ROLE_EDITED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2297,7 +2298,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("USER_DELETED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2316,7 +2317,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2332,7 +2333,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("ORGANIZATION_DELETED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2360,7 +2361,7 @@ const Dashboard = () => {
                 description: changeMQTTJSONOne(
                   t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
                   "[Task Title]",
-                  data.payload.taskTitle
+                  data.payload.taskTitle,
                 ),
                 icon: "",
               },
@@ -2542,7 +2543,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_COMMITTEE_CREATION"),
                 "[Committe Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
@@ -2559,7 +2560,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
                 "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
@@ -2576,7 +2577,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2593,7 +2594,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_ARCHIVED"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
             });
           }
@@ -2609,7 +2610,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2628,7 +2629,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("MEMBER_REMOVED_FROM_COMMITTEE"),
                 "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2650,7 +2651,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_GROUP_CREATION"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2667,7 +2668,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_GROUP_MEMBER_ADDED"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2684,7 +2685,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_IN-ACTIVE"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
@@ -2701,7 +2702,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_ARCHIVED"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
             });
           }
@@ -2717,7 +2718,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_MEMBER_REMOVED"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2734,7 +2735,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_ACTIVE"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
@@ -2781,7 +2782,7 @@ const Dashboard = () => {
               },
             };
             dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate)
+              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
             );
           } else if (
             data.payload.data[0].senderID !== parseInt(createrID) &&
@@ -2802,7 +2803,7 @@ const Dashboard = () => {
               },
             };
             dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate)
+              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
             );
           }
         } else if (
@@ -2961,7 +2962,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle.slice(0, 30)
+                data.payload.pollTitle.slice(0, 30),
               ),
             });
           }
@@ -2978,7 +2979,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("POLL_UPDATED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -2994,7 +2995,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("POLL_EXPIRED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3014,7 +3015,7 @@ const Dashboard = () => {
                 message: changeMQTTJSONOne(
                   t("PUBLISHED_POLL_DELETED"),
                   "[Poll Title]",
-                  data.payload.pollTitle
+                  data.payload.pollTitle,
                 ),
               });
             }
@@ -3034,7 +3035,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3053,7 +3054,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3081,7 +3082,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3099,7 +3100,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_RESOLUTION_CREATION"),
                 "[Resolution Title]",
-                data.payload.model.resolution.title
+                data.payload.model.resolution.title,
               ),
             });
           }
@@ -3115,7 +3116,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("RESOLUTION_CANCELLED"),
                 "[Resolution Title]",
-                data.payload.model.resolution.title
+                data.payload.model.resolution.title,
               ),
             });
           }
@@ -3131,7 +3132,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("RESOLUTION_CLOSED"),
                 "[Resolution Title]",
-                data.payload.model.resolution.title
+                data.payload.model.resolution.title,
               ),
             });
           }
@@ -3158,7 +3159,7 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           // localStorage.setItem("RingerCallCheckFlag", true);
           // localStorage.setItem("callType", data.payload.callType);
@@ -3244,7 +3245,7 @@ const Dashboard = () => {
           let userID = localStorage.getItem("userID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -3268,7 +3269,8 @@ const Dashboard = () => {
               console.log("Filtering participant:", data.payload.recepientID);
 
               return prevList.filter(
-                (participant) => participant.userID !== data.payload.recepientID
+                (participant) =>
+                  participant.userID !== data.payload.recepientID,
               );
             });
           }
@@ -3278,7 +3280,7 @@ const Dashboard = () => {
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
-                (user) => user.recepientID === data.payload.recepientID
+                (user) => user.recepientID === data.payload.recepientID,
               );
               if (!userExists) {
                 return [...prevState, data.payload];
@@ -3319,7 +3321,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3361,19 +3363,19 @@ const Dashboard = () => {
             };
             if (RecipentIDsOninitiateVideoCall.length > 0) {
               const index = RecipentIDsOninitiateVideoCall.indexOf(
-                data.payload.recepientID
+                data.payload.recepientID,
               );
               if (index !== -1) {
                 // Remove the matching value
                 RecipentIDsOninitiateVideoCall.splice(index, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(RecipentIDsOninitiateVideoCall)
+                  JSON.stringify(RecipentIDsOninitiateVideoCall),
                 );
                 existingData.push(newData);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData)
+                  JSON.stringify(existingData),
                 );
                 dispatch(callRequestReceivedMQTT({}, ""));
               }
@@ -3392,7 +3394,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3415,7 +3417,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             }
@@ -3424,8 +3426,8 @@ const Dashboard = () => {
           if (CallType === 2) {
             setGroupCallParticipantList((prevState) =>
               prevState.filter(
-                (user) => user.userID !== data.payload.recepientID
-              )
+                (user) => user.userID !== data.payload.recepientID,
+              ),
             );
           }
           let falgCheck1 = false;
@@ -3461,7 +3463,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3493,7 +3495,7 @@ const Dashboard = () => {
               existingData.push(newData);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(existingData)
+                JSON.stringify(existingData),
               );
               let RecipentIDsOninitiateVideoCallflag = false;
               let remainingCount = 0;
@@ -3502,14 +3504,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID
+                  data.payload.recepientID,
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                    JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -3522,13 +3524,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3564,13 +3566,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3619,15 +3621,15 @@ const Dashboard = () => {
             (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
-              ? localStorage.getItem("activeRoomID") != 0 &&
-                localStorage.getItem("activeRoomID") != null
-                ? localStorage.getItem("activeRoomID")
-                : localStorage.getItem("initiateCallRoomID")
-              : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
-              ? newRoomID
-              : localStorage.getItem("participantRoomId");
+                ? localStorage.getItem("activeRoomID") != 0 &&
+                  localStorage.getItem("activeRoomID") != null
+                  ? localStorage.getItem("activeRoomID")
+                  : localStorage.getItem("initiateCallRoomID")
+                : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+                  ? newRoomID
+                  : localStorage.getItem("participantRoomId");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
@@ -3662,7 +3664,7 @@ const Dashboard = () => {
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
               let initiateVideoCall = JSON.parse(
-                localStorage.getItem("initiateVideoCall")
+                localStorage.getItem("initiateVideoCall"),
               );
               let initiateCallRoomID =
                 localStorage.getItem("initiateCallRoomID");
@@ -3683,7 +3685,7 @@ const Dashboard = () => {
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message)
+                callRequestReceivedMQTT(data.payload, data.payload.message),
               );
               console.log(data.payload.message, "datapayloadmessage");
             } else {
@@ -3693,7 +3695,7 @@ const Dashboard = () => {
                 setUnansweredCallParticipant((prevState) => {
                   // Check if the user is already in the accepted list
                   const userExists = prevState.some(
-                    (user) => user.recepientID === data.payload.recepientID
+                    (user) => user.recepientID === data.payload.recepientID,
                   );
 
                   console.log(userExists, "userExists");
@@ -3708,11 +3710,11 @@ const Dashboard = () => {
               // Step 1: Update RecipentIDsOninitiateVideoCall
               let recipientIDsOnInitiate =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
 
               const recipientIndex = recipientIDsOnInitiate.indexOf(
-                participantWhoDidNotRespond
+                participantWhoDidNotRespond,
               );
               console.log("setLeaveOneToOne", recipientIndex);
               if (recipientIndex !== -1) {
@@ -3720,7 +3722,7 @@ const Dashboard = () => {
                 recipientIDsOnInitiate.splice(recipientIndex, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(recipientIDsOnInitiate)
+                  JSON.stringify(recipientIDsOnInitiate),
                 );
               }
 
@@ -3731,19 +3733,19 @@ const Dashboard = () => {
               callerStatusList = callerStatusList.filter(
                 (obj) =>
                   obj.participantId !== participantWhoDidNotRespond &&
-                  obj.CallStatus !== "Rejected" // Remove all Rejected
+                  obj.CallStatus !== "Rejected", // Remove all Rejected
               );
 
               console.log("setLeaveOneToOne", callerStatusList);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(callerStatusList)
+                JSON.stringify(callerStatusList),
               );
 
               // Step 3: Fetch updated arrays again
               const remainingRecipients =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
               console.log("setLeaveOneToOne", remainingRecipients);
 
@@ -3751,7 +3753,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               console.log(
                 "setLeaveOneToOne",
-                checkCallStatus(remainingCallerStatus)
+                checkCallStatus(remainingCallerStatus),
               );
 
               // Step 4: Final condition
@@ -3766,7 +3768,7 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
                 dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message)
+                  callRequestReceivedMQTT(data.payload, data.payload.message),
                 );
               }
             }
@@ -3781,7 +3783,7 @@ const Dashboard = () => {
             localStorage.setItem("ringerRoomId", data.payload.roomID);
             localStorage.setItem("initiateVideoCall", true);
             dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message)
+              callRequestReceivedMQTT(data.payload, data.payload.message),
             );
             let existingData =
               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3795,7 +3797,7 @@ const Dashboard = () => {
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
+                item.RoomID === newData.RoomID,
             );
             if (existingObjectIndex !== -1) {
               existingData[existingObjectIndex] = newData;
@@ -3804,7 +3806,7 @@ const Dashboard = () => {
             }
             localStorage.setItem(
               "callerStatusObject",
-              JSON.stringify(existingData)
+              JSON.stringify(existingData),
             );
             let Dataa = {
               OrganizationID: Number(currentOrganization),
@@ -3819,7 +3821,7 @@ const Dashboard = () => {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
@@ -3886,7 +3888,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
               }
               localStorage.setItem("newCallerID", callerID);
@@ -3936,7 +3938,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
               }
               localStorage.setItem("newCallerID", callerID);
@@ -3957,7 +3959,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
 
                 localStorage.removeItem("acceptedRoomID");
@@ -4008,7 +4010,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
@@ -4016,11 +4018,11 @@ const Dashboard = () => {
                 let acceptedRoomID = "";
                 if (isZoomEnabled) {
                   acceptedRoomID = String(
-                    localStorage.getItem("acceptedRoomID")
+                    localStorage.getItem("acceptedRoomID"),
                   );
                 } else {
                   acceptedRoomID = Number(
-                    localStorage.getItem("acceptedRoomID")
+                    localStorage.getItem("acceptedRoomID"),
                   );
                 }
 
@@ -4038,7 +4040,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false
+                  false,
                 );
               }
             } else {
@@ -4058,10 +4060,10 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let isMeetingVideoHostCheck = JSON.parse(
-            localStorage.getItem("isMeetingVideoHostCheck")
+            localStorage.getItem("isMeetingVideoHostCheck"),
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -4079,7 +4081,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             } else if (
@@ -4095,7 +4097,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop Call Type 2");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             }
@@ -4106,12 +4108,12 @@ const Dashboard = () => {
                 presenterViewJoinFlagRef.current)
                 ? String(roomID)
                 : isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? String(newRoomID)
-                  : String(participantRoomId)
-                : String(initiateCallRoomID)
-                ? String(initiateCallRoomID)
-                : String(activeRoomID);
+                  ? isMeetingVideoHostCheck
+                    ? String(newRoomID)
+                    : String(participantRoomId)
+                  : String(initiateCallRoomID)
+                    ? String(initiateCallRoomID)
+                    : String(activeRoomID);
           } else {
             RoomID =
               presenterViewFlagRef.current &&
@@ -4119,12 +4121,12 @@ const Dashboard = () => {
                 presenterViewJoinFlagRef.current)
                 ? Number(roomID)
                 : isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? Number(newRoomID)
-                  : Number(participantRoomId)
-                : Number(initiateCallRoomID)
-                ? Number(initiateCallRoomID)
-                : Number(activeRoomID);
+                  ? isMeetingVideoHostCheck
+                    ? Number(newRoomID)
+                    : Number(participantRoomId)
+                  : Number(initiateCallRoomID)
+                    ? Number(initiateCallRoomID)
+                    : Number(activeRoomID);
           }
 
           console.log("mqtt");
@@ -4134,8 +4136,9 @@ const Dashboard = () => {
             // Also remove the user from groupCallParticipantList
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
-                (participant) => participant.userID !== data.payload.recipientID
-              )
+                (participant) =>
+                  participant.userID !== data.payload.recipientID,
+              ),
             );
           }
 
@@ -4162,7 +4165,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               let RecipentIDsOninitiateVideoCall =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
 
               let newData = {
@@ -4176,7 +4179,7 @@ const Dashboard = () => {
                 (item) =>
                   item.RecipientName === newData.RecipientName &&
                   item.RecipientID === newData.RecipientID &&
-                  item.RoomID === newData.RoomID
+                  item.RoomID === newData.RoomID,
               );
               // console.log("mqtt",RoomID)
 
@@ -4184,7 +4187,7 @@ const Dashboard = () => {
                 existingData.splice(existingObjectIndex, 1);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData)
+                  JSON.stringify(existingData),
                 );
                 if (
                   RecipentIDsOninitiateVideoCall.length === 0 &&
@@ -4257,7 +4260,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -4287,12 +4290,12 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           console.log(isMeetingVideo, "Check Is Mqtt");
           console.log(
             Number(data.payload.roomID) === Number(roomID),
-            "Check Is Mqtt"
+            "Check Is Mqtt",
           );
           console.log(data.payload.roomID, "Check Is Mqtt");
           console.log(roomID, "Check Is Mqtt");
@@ -4347,14 +4350,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID
+                  data.payload.recepientID,
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                    JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -4367,13 +4370,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4407,13 +4410,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4457,7 +4460,7 @@ const Dashboard = () => {
               description: changeMQTTJSONOne(
                 t("NOTES-RECENT-ACTIVITY"),
                 "[Notes Title]",
-                data.payload.model.title
+                data.payload.model.title,
               ),
               icon: "",
             },
@@ -4538,7 +4541,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("FILE_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFileName
+                    data?.payload?.data?.displayFileName,
                   ),
                 });
               }
@@ -4555,7 +4558,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("FOLDER_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFolderName
+                    data?.payload?.data?.displayFolderName,
                   ),
                 });
               }
@@ -4631,7 +4634,7 @@ const Dashboard = () => {
                 message: changeMQTTJSONOne(
                   t("MEETING_VIDEO_RECORDING_RECEIVED"),
                   "[Meeting Title]",
-                  data.payload.meetingTitle
+                  data.payload.meetingTitle,
                 ),
               });
               setNotificationID(id);
@@ -4650,12 +4653,12 @@ const Dashboard = () => {
                     ? changeMQTTJSONOne(
                         t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
                         "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name
+                        data.payload?.callReceipents[0]?.name,
                       )
                     : changeMQTTJSONOne(
                         t("VIDEO_RECORDING_GROUP_RECEIVED"),
                         "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name
+                        data.payload?.callReceipents[0]?.name,
                       ),
               });
               setNotificationID(id);
@@ -4722,13 +4725,13 @@ const Dashboard = () => {
             showMessage(
               t("Document-has-been-signed-successfully"),
               "success",
-              setOpen
+              setOpen,
             );
           } else if (data.payload.data.status === "Declined") {
             showMessage(
               t("Document-has-been-declined-successfully"),
               "success",
-              setOpen
+              setOpen,
             );
           }
         }
@@ -4736,7 +4739,7 @@ const Dashboard = () => {
           data.payload.message
             .toLowerCase()
             .includes(
-              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase()
+              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase(),
             )
         ) {
           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
@@ -4920,7 +4923,7 @@ const Dashboard = () => {
     const session = sessionStorage.getItem("isMeeting");
     const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
     const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup"
+      "activeCallSessionforOtoandGroup",
     );
 
     setIsMeetingLocal(local ? JSON.parse(local) : false);
@@ -5090,7 +5093,7 @@ const Dashboard = () => {
                         <Col className="text-center mt-4">
                           <label className={"allow-limit-modal-p"}>
                             {t(
-                              "The-organization-subscription-is-not-active-please-contact-your-admin"
+                              "The-organization-subscription-is-not-active-please-contact-your-admin",
                             )}
                           </label>
                         </Col>
