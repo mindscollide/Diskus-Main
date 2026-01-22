@@ -30,6 +30,7 @@ import {
 } from "../../../../../store/actions/GetTodos";
 import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
+import { Checkbox } from "antd";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ const ViewComplianceTasks = () => {
     expandChecklistOnTasksPage,
     setExpandChecklistOnTasksPage,
     complianceViewMode,
+    allTasksStatusForFilter,
   } = useComplianceContext();
   console.log(
     complianceDetailsState,
@@ -99,32 +101,44 @@ const ViewComplianceTasks = () => {
   );
 
   // Status for All tasks
-  const getAllTasksStatus = useSelector(
-    (state) => state.getTodosStatus.Response
-  );
-  console.log(getAllTasksStatus, "getAllTasksStatus");
+  // const getAllTasksStatus = useSelector(
+  //   (state) => state.getTodosStatus.Response
+  // );
+  // console.log(getAllTasksStatus, "getAllTasksStatus");
   // global State Response
 
   // initial UseEffect
-  useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
+  // useEffect(() => {
+  //   dispatch(getTodoStatus(navigate, t));
 
-    return () => {
-      dispatch(cleareMessage());
-    };
-  }, []);
+  //   return () => {
+  //     dispatch(cleareMessage());
+  //   };
+  // }, []);
+
+  // useEffect(() => {
+  //   if (getAllTasksStatus && getAllTasksStatus.length > 0) {
+  //     try {
+  //       const statuses = getAllTasksStatus.map((item) => ({
+  //         value: item.pK_TSID,
+  //         label: item.status,
+  //       }));
+  //       setTaskStatus(statuses);
+  //     } catch (error) {}
+  //   }
+  // }, [getAllTasksStatus]);
 
   useEffect(() => {
-    if (getAllTasksStatus && getAllTasksStatus.length > 0) {
-      try {
-        const statuses = getAllTasksStatus.map((item) => ({
-          value: item.pK_TSID,
-          label: item.status,
-        }));
-        setTaskStatus(statuses);
-      } catch (error) {}
+    if (allTasksStatusForFilter?.length > 0) {
+      const statuses = allTasksStatusForFilter.map((item) => ({
+        value: item.statusId,
+        label: item.statusTitle,
+      }));
+
+      setTaskStatus(statuses);
+      setStatusFilter(statuses.map((s) => s.label)); // select all by default
     }
-  }, [getAllTasksStatus]);
+  }, [allTasksStatusForFilter]);
 
   useEffect(() => {
     if (complianceDetailsState.complianceId !== 0) {
@@ -371,6 +385,55 @@ const ViewComplianceTasks = () => {
 
   // TABLES
   // Column
+  const getTaskStatusColumnProps = () => ({
+    filteredValue: statusFilter,
+
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
+      if (selectedKeys.length === 0) {
+        setSelectedKeys(taskStatus.map((s) => s.label));
+      }
+
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={taskStatus.map((s) => ({
+              label: s.label,
+              value: s.label,
+            }))}
+            value={selectedKeys}
+            onChange={(values) => setSelectedKeys(values)}
+            style={{ display: "flex", flexDirection: "column" }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            <Button
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = taskStatus.map((s) => s.label);
+                setSelectedKeys(all);
+                setStatusFilter(all);
+                confirm();
+              }}
+            />
+
+            <Button
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setStatusFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
+        </div>
+      );
+    },
+
+    onFilter: (value, record) => value === record.taskStatus,
+
+    filterIcon: () => <ChevronDown />,
+  });
 
   const getColumnsTasks = (checklistId) => [
     {
@@ -504,6 +567,7 @@ const ViewComplianceTasks = () => {
       key: "taskStatus",
       width: "10%",
       align: "center",
+      ...getTaskStatusColumnProps(),
 
       render: (taskStatusText, record) => {
         const allowedOptions = getAllowedStatusOptions(record);
@@ -702,7 +766,7 @@ const ViewComplianceTasks = () => {
                   sm={12}
                   className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
                 >
-                  {t("No-Task-found")}
+                  {t("No-task-found")}
                 </Col>
               </Row>
               <Row>
@@ -712,7 +776,7 @@ const ViewComplianceTasks = () => {
                   sm={12}
                   className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
                 >
-                  {t("No-Task-has-been-created-yet.")}
+                  {t("No-Task-has-been-created-yet")}
                 </Col>
               </Row>
             </>

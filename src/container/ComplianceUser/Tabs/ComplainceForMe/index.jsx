@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
+  GetComplianceAndTaskStatusesAPI,
   SearchComplianceForMeApi,
   ViewComplianceDetailsByViewTypeAPI,
   // viewComplianceForMeByIdAPI,
@@ -46,6 +47,7 @@ const ComplianceForMe = () => {
   const [dueDateSort, setDueDateSort] = useState("ascend");
   const [authoritySort, setAuthority] = useState(null);
   const [isScroll, setIsScroll] = useState(false);
+  const [statusFilter, setStatusFilter] = useState([]);
 
   const {
     setComplianceAddEditViewState,
@@ -57,6 +59,7 @@ const ComplianceForMe = () => {
     setComplianceForMeTotal,
     searchCompliancePayload,
     setSearchCompliancePayload,
+    allComplianceStatusForFilter,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -73,6 +76,7 @@ const ComplianceForMe = () => {
     };
 
     dispatch(SearchComplianceForMeApi(navigate, Data, t));
+    dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -101,6 +105,12 @@ const ComplianceForMe = () => {
     // reset scroll flag after handling
     setIsScroll(false);
   }, [SearchComplianceForMe]);
+
+  useEffect(() => {
+    if (allComplianceStatusForFilter?.length > 0) {
+      setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
+    }
+  }, [allComplianceStatusForFilter]);
 
   const handleViewCompliance = (record) => {
     console.log("reached here");
@@ -144,6 +154,11 @@ const ComplianceForMe = () => {
     // ✅ Criticality filter
     if (filters?.criticality) {
       setCriticalityFilter(filters.criticality || [1, 2, 3]);
+    }
+
+    // ✅ Status filter
+    if (filters?.complianceStatusTitle) {
+      setStatusFilter(filters.complianceStatusTitle);
     }
   };
   const getCriticalityColumnProps = () => ({
@@ -194,6 +209,61 @@ const ComplianceForMe = () => {
       );
     },
     onFilter: (value, record) => value === record.criticality,
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
+
+  const getStatusColumnProps = () => ({
+    filteredValue: statusFilter,
+
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
+      // default: select all
+      if (selectedKeys.length === 0) {
+        setSelectedKeys(allComplianceStatusForFilter.map((s) => s.statusTitle));
+      }
+
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={allComplianceStatusForFilter.map((s) => ({
+              label: s.statusTitle,
+              value: s.statusTitle,
+            }))}
+            value={selectedKeys}
+            onChange={(values) => setSelectedKeys(values)}
+            style={{ display: "flex", flexDirection: "column" }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            {/* Reset */}
+            <CustomButton
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = allComplianceStatusForFilter.map(
+                  (s) => s.statusTitle
+                );
+                setSelectedKeys(all);
+                setStatusFilter(all);
+                confirm();
+              }}
+            />
+
+            {/* OK */}
+            <CustomButton
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setStatusFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
+        </div>
+      );
+    },
+
+    onFilter: (value, record) => value === record.complianceStatusTitle,
+
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
   });
   const columns = useMemo(
@@ -249,12 +319,13 @@ const ComplianceForMe = () => {
       },
 
       {
-        title: "Status",
-        dataIndex: "status",
-        key: "status",
+        title: t("Status"),
+        dataIndex: "complianceStatusTitle",
+        key: "complianceStatusTitle",
         width: "10%",
         ellipsis: true,
         align: "center",
+        ...getStatusColumnProps(),
       },
       {
         title: (
@@ -351,6 +422,7 @@ const ComplianceForMe = () => {
       dueDateSort,
       complianceTitleSort,
       getCriticalityColumnProps,
+      getStatusColumnProps,
     ]
   );
   useAntTableScrollBottomVirtual(() => {

@@ -2627,19 +2627,19 @@ const GetComplianceAndTaskStatusesFail = (message) => {
   };
 };
 
-const GetComplianceAndTaskStatusesAPI = (navigate, data, t) => {
+const GetComplianceAndTaskStatusesAPI = (navigate, t) => {
   return (dispatch) => {
     dispatch(GetComplianceAndTaskStatusesInit());
     let form = new FormData();
     form.append("RequestMethod", GetComplianceAndTaskStatuses.RequestMethod);
     // ✅ send complete payload as JSON string
-    form.append("RequestData", JSON.stringify(data));
+    // form.append("RequestData", JSON.stringify(data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetComplianceAndTaskStatusesAPI(navigate, data, t));
+          dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
