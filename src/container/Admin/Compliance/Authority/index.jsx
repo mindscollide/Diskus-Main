@@ -55,6 +55,8 @@ import { useSelector } from "react-redux";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useTableScrollBottom } from "../CommonFunctions/reusableFunctions";
+import { Checkbox } from "antd";
+import CustomButton from "../../../../components/elements/button/Button";
 
 const ManageAuthority = () => {
   // Translation hook for multi-language support
@@ -384,6 +386,70 @@ const ManageAuthority = () => {
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
+  const statusOptions = [
+    { label: "Active", value: "Active" },
+    { label: "In Active", value: "Inactive" },
+  ];
+
+  const getStatusColumnProps = () => ({
+    filteredValue: statusFilter, // controlled filter
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      // Initialize selectedKeys to all if empty
+      if (selectedKeys.length === 0) {
+        setSelectedKeys(statusOptions.map((s) => s.value));
+      }
+
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={statusOptions.map((s) => ({
+              label: s.label,
+              value: s.value,
+            }))}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
+            }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: "10px" }}>
+            {/* Reset Button */}
+            <CustomButton
+              text="Reset"
+              onClick={() => {
+                const allValues = statusOptions.map((s) => s.value);
+                setSelectedKeys(allValues); // select all checkboxes
+                setStatusFilter(allValues); // update controlled state
+                confirm(); // refresh table
+              }}
+              className={styles["ResetButtonFilter"]}
+            />
+
+            {/* Ok Button */}
+            <CustomButton
+              text="Ok"
+              onClick={() => {
+                setStatusFilter(selectedKeys); // update controlled state
+                confirm(); // refresh table
+              }}
+              className={styles["ResetButtonFilter"]}
+            />
+          </div>
+        </div>
+      );
+    },
+    onFilter: (value, record) => value.includes(record.status),
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
+
   // ========================
   // Table Columns Definition
   // ========================
@@ -517,18 +583,8 @@ const ManageAuthority = () => {
         width: "10%",
         align: "center",
         ellipsis: true,
-        filters: [
-          { text: "Active", value: "Active" },
-          { text: "In Active", value: "Inactive" },
-        ],
-        filteredValue: statusFilter, // ✅ controls filter state
-
-        onFilter: (value, record) => {
-          return record.status === value;
-        },
-        filterIcon: () => (
-          <ChevronDown className="filter-chevron-icon-todolist" />
-        ),
+        ...getStatusColumnProps(),
+        render: (text) => (text === "Inactive" ? t("In-active") : text),
       },
       {
         title: t(""),

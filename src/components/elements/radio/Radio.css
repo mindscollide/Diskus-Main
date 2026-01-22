@@ -3,6 +3,7 @@
   margin: 0;
   appearance: none !important;
   line-height: normal;
+  border: none !important;
 }
 
 /* Radio container */
@@ -19,23 +20,31 @@
   height: 16px;
   border-radius: 50%;
   box-sizing: border-box;
+  border: 2px solid #cfd4dc !important;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* Radio circle */
+.gradient-radio .ant-radio-inner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-sizing: border-box;
   border: 2px solid #cfd4dc;
   background-color: #fff;
   transition: all 0.3s ease;
   -webkit-appearance: none;
   appearance: none;
 }
-
 /* 🚫 Remove AntD default dot (Safari safe) */
-.gradient-radio .ant-radio-inner::after {
-  opacity: 0;
-  accent-color: #6172d6 !important;
-}
 
-/* ✅ Checked state with gradient */
+/* ✅ Checked state with gradient + custom border */
 .gradient-radio .ant-radio-checked .ant-radio-inner {
   padding: 5px;
   background-image: linear-gradient(135deg, #00d2ff, #6172d6) !important;
+  border: 1px solid #e1e1e1 !important; /* ✅ required border */
   accent-color: #6172d6 !important;
 }
 
@@ -47,4 +56,5 @@ input[type="radio"] {
   height: 0;
   opacity: 0;
   position: absolute;
+  border: none !important;
 }

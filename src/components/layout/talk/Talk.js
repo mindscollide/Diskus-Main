@@ -76,6 +76,7 @@ const Talk = () => {
     setCreateEditComplaince,
     emptyComplianceState,
     setMainComplianceTabs,
+    setShowViewCompliance,
   } = useComplianceContext();
   const {
     pendingApprovalsTabCount,
@@ -227,6 +228,7 @@ const Talk = () => {
     setCreateEditComplaince(false);
     setMainComplianceTabs(1);
     emptyComplianceState();
+    setShowViewCompliance(false);
   };
 
   //Setting state data of global response all chat to chatdata

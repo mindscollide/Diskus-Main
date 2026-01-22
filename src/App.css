@@ -801,8 +801,6 @@ input[type="radio"]:checked+span:after,
 /* input[type="radio"]:checked + span:focus:after {content: '';position: absolute;top: 0px;left: 0px;background: url(../img/radio-checked.png) no-repeat;width: 24px;height: 24px;display: block;background-position: 0;opacity: 1;-webkit-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-moz-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-o-transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);transition: all 100ms cubic-bezier(0.225, 0.340, 0.925, 0.370);-webkit-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);-moz-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);-o-transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);transition-timing-function: cubic-bezier(0.225, 0.340, 0.925, 0.370);} */
 
 
-.radio,
-.radio-inline,
 .checkbox,
 .checkbox-inline {
   padding-left: 23px;
@@ -6358,6 +6356,37 @@ th.ant-table-cell.notification-class-table {
   color: #a2a2a2 !important;
   font-weight: 500;
 }
+
+/* Normal state */
+.Select_status_compliance__control {
+  width: 100% !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  font-size: 12px;
+  font-weight: 500;
+  color: #5a5a5a;
+
+  border: none !important;
+  box-shadow: none !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Focused state */
+.Select_status_compliance__control--is-focused {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+/* Also remove hover border (important) */
+.Select_status_compliance__control:hover {
+  border: none !important;
+}
+.Select_status_compliance__value-container {
+  padding: 0 !important;
+}
 /* dataroom Searches React select */
 .searchResult_Document__control.css-13cymwt-control {
   width: 200px !important;
@@ -8177,4 +8206,26 @@ td.ant-table-column-sort {
   width: 100%;
   color: #5a5a5a;
   outline: none !important;
+}
+.custom-range-picker {
+  height: 39px;
+  width: 100%;
+}
+.ant-radio-inner:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 24px !important;
+  height: 24px !important;
+  margin-top: -12px !important;
+  margin-left: -12px !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border-top: 0;
+  border-left: 0;
+  border-radius: 16px;
+  transform: scale(0);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  content: " ";
 }

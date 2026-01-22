@@ -33,7 +33,6 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
-// import ChecklistAccordion from "../../../../CommonComponents/ChecklistAccordian/CustomAccordion";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -533,13 +532,13 @@ const CreateEditViewComplianceChecklist = () => {
               (data2, index) => data2 === data.checklistId
             );
 
-            console.log(isExpanded, "isExpandedisExpanded");
             return (
               <div key={index}>
                 <CustomAccordion
                   isExpand={isExpanded}
                   notesID={data.checklistId}
                   isCompliance={true}
+                  isComplianceTask={false}
                   StartField={
                     <>
                       {isExpanded ? (

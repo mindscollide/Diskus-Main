@@ -4,7 +4,7 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import DiskusLogo from "../../../../assets/images/newElements/Diskus_newLogo.svg";
 import DiskusLogoArabic from "../../../../assets/images/Diskus Arabic Logo/Diskus Arabic Logo.png";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { Button } from "../../../../components/elements";
+import { Button, CustomRadio2 } from "../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import img5 from "../../../../assets/images/5.png";
 import img10 from "../../../../assets/images/10.png";
@@ -18,29 +18,21 @@ import { sendTwoFacAction } from "../../../../store/actions/TwoFactorsAuthentica
 import Helper from "../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../commen/functions/mqttconnection";
 import { LoginFlowRoutes } from "../../../../store/actions/UserManagementActions";
+import CustomRadioGroup from "../../../../components/elements/radio/CustomRadioGroup";
 const TwoFactorVerifyUM = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
+  const [twoFactorMethod, setTwoFactorMethod] = useState(null);
+  // values: "sms" | "email"
 
-  const { Authreducer, LanguageReducer } = useSelector((state) => state);
-
-  const AuthreducerLoadingData = useSelector(
-    (state) => state.Authreducer.Loading
-  );
-
-  const LanguageReducerLoadingData = useSelector(
-    (state) => state.LanguageReducer.Loading
-  );
   const [sendCodeEmailPhone, setSendCodeEmailPhone] = useState(false);
   const [sendCodeEmail, setSendCodeEmail] = useState(false);
 
-  //onChange For Sms
-  const onChangeHandlerTwoFactor = (e) => {
-    setSendCodeEmailPhone(true);
-    setSendCodeEmail(false);
+  const onChangeHandlerTwoFactor = (value) => {
+    setTwoFactorMethod(value);
   };
 
   //onChange For Email
@@ -57,10 +49,10 @@ const TwoFactorVerifyUM = () => {
   ];
 
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4,
   );
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60,
   );
 
   const currentLocale = Cookies.get("i18next") || "en";
@@ -76,18 +68,20 @@ const TwoFactorVerifyUM = () => {
     e.preventDefault();
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
-    let Data = {
+    const Data = {
       UserID: JSON.parse(userID),
       Device: "Browser",
       DeviceID: "1",
       OrganizationID: JSON.parse(OrganizationID),
-      isEmail: sendCodeEmail,
-      isSMS: sendCodeEmailPhone,
+      isEmail: twoFactorMethod === "email",
+      isSMS: twoFactorMethod === "sms",
       isDevice: false,
       UserDevices: [],
     };
+
     localStorage.setItem("GobackSelection", 1);
-    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+    console.log(Data, "onClickHnadleronClickHnadler");
+    // dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
   };
 
   let newClient = Helper.socket;
@@ -164,88 +158,133 @@ const TwoFactorVerifyUM = () => {
                   </Col>
                 </Row>
 
-                <Row className={styles["EmailBoxtwofac"]}>
-                  <Col sm={12} md={12} lg={12} className="mx-1">
-                    <Row>
-                      <Col sm={12} md={1} lg={1}>
-                        {" "}
-                        <img
-                          draggable="false"
-                          width={"15px"}
-                          className={
-                            !sendCodeEmailPhone
-                              ? styles["two_fac_image"]
-                              : styles["two_fac_image_active"]
-                          }
-                          src={img10}
-                          alt=""
-                        />
-                      </Col>
-                      <Col sm={12} md={9} lg={9}>
-                        {" "}
-                        <span
-                          className={
-                            !sendCodeEmailPhone
-                              ? styles["EmailLabeltwofacboth_active"]
-                              : styles["EmailLabeltwofacboth"]
-                          }
-                        >
-                          {t("Send-code-on-sms")}
-                        </span>
-                      </Col>
-                      <Col
-                        sm={12}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-end"
-                      >
-                        <Form.Check
-                          type="radio"
-                          name="TwoFactor"
-                          className="cursor-pointer"
-                          onChange={onChangeHandlerTwoFactor}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-1">
-                      <Col sm={12} md={1} lg={1}>
-                        <img
-                          draggable="false"
-                          width={"17px"}
-                          src={img5}
-                          className={
-                            !sendCodeEmail
-                              ? styles["two_fac_image"]
-                              : styles["two_fac_image_active"]
-                          }
-                          alt=""
-                        />
-                      </Col>
-                      <Col sm={12} md={9} lg={9}>
-                        <span
-                          className={
-                            !sendCodeEmail
-                              ? styles["sendCodeEmail_active"]
-                              : styles["sendCodeEmail"]
-                          }
-                        >
-                          {t("Send-code-on-email")}
-                        </span>
-                      </Col>
-                      <Col
-                        sm={12}
-                        md={2}
-                        lg={2}
-                        className="d-flex justify-content-end"
-                      >
-                        <Form.Check
-                          type="radio"
-                          name="TwoFactor"
-                          className="cursor-pointer"
-                          onChange={onChangeHandlerSendEmail}
-                        />
-                      </Col>
-                    </Row>
+                <Row className="mt-3">
+                  <Col sm={12} md={12} lg={12} className="w-100">
+                    <CustomRadioGroup
+                      value={twoFactorMethod}
+                      className="cursor-pointer"
+                      onChange={(e) => onChangeHandlerTwoFactor(e.target.value)}
+                      is2FA={true}
+                      options={[
+                        {
+                          label: (
+                            <div className="d-flex justify-content-start mb-2 align-items-center gap-2">
+                              <img
+                                draggable="false"
+                                width="15px"
+                                className={
+                                  twoFactorMethod !== "sms"
+                                    ? styles["two_fac_image"]
+                                    : styles["two_fac_image_active"]
+                                }
+                                src={img10}
+                                alt=""
+                              />
+                              <span
+                                className={
+                                  twoFactorMethod === "sms"
+                                    ? styles["EmailLabeltwofacboth"]
+                                    : styles["EmailLabeltwofacboth_active"]
+                                }
+                              >
+                                {t("Send-code-on-sms")}
+                              </span>
+                            </div>
+                          ),
+                          value: "sms",
+                        },
+                        {
+                          label: (
+                            <div className="d-flex justify-content-start align-items-center gap-2">
+                              <img
+                                draggable="false"
+                                width="17px"
+                                src={img5}
+                                className={
+                                  twoFactorMethod !== "email"
+                                    ? styles["two_fac_image"]
+                                    : styles["two_fac_image_active"]
+                                }
+                                alt=""
+                              />
+                              <span
+                                className={
+                                  twoFactorMethod === "email"
+                                    ? styles["sendCodeEmail"]
+                                    : styles["sendCodeEmail_active"]
+                                }
+                              >
+                                {t("Send-code-on-email")}
+                              </span>
+                            </div>
+                          ),
+                          value: "email",
+                        },
+                      ]}
+                    />
+
+                    {/* <CustomRadioGroup
+                      value={sendCodeEmailPhone}
+                      className="cursor-pointer"
+                      onChange={(e) => onChangeHandlerTwoFactor(e.target.value)}
+                      is2FA={true}
+                      options={[
+                        {
+                          label: (
+                            <div className="d-flex justify-content-start mb-2 align-items-center gap-2">
+                              <img
+                                draggable="false"
+                                width={"15px"}
+                                className={
+                                  !sendCodeEmailPhone
+                                    ? styles["two_fac_image"]
+                                    : styles["two_fac_image_active"]
+                                }
+                                src={img10}
+                                alt=""
+                              />
+                              <span
+                                className={
+                                  !sendCodeEmailPhone
+                                    ? styles["EmailLabeltwofacboth_active"]
+                                    : styles["EmailLabeltwofacboth"]
+                                }
+                              >
+                                {t("Send-code-on-sms")}
+                              </span>
+                            </div>
+                          ),
+                          value: sendCodeEmailPhone,
+                        },
+                        {
+                          label: (
+                            <div className="d-flex justify-content-start align-items-center gap-2">
+                              <img
+                                draggable="false"
+                                width={"17px"}
+                                src={img5}
+                                className={
+                                  !sendCodeEmail
+                                    ? styles["two_fac_image"]
+                                    : styles["two_fac_image_active"]
+                                }
+                                alt=""
+                              />
+                              <span
+                                className={
+                                  !sendCodeEmail
+                                    ? styles["sendCodeEmail_active"]
+                                    : styles["sendCodeEmail"]
+                                }
+                              >
+                                {t("Send-code-on-email")}
+                              </span>
+                            </div>
+                          ),
+                          value: sendCodeEmailPhone,
+                        },
+                      ]}
+                    /> */}
                   </Col>
                 </Row>
                 <Row className="mt-5 d-flex justify-content-center">
@@ -258,9 +297,7 @@ const TwoFactorVerifyUM = () => {
                     <Button
                       text={t("Verify").toUpperCase()}
                       onClick={onClickHnadler}
-                      disableBtn={
-                        sendCodeEmail || sendCodeEmailPhone ? false : true
-                      }
+                      disableBtn={!twoFactorMethod}
                       iconClass="d-none"
                       pdfIconClass="d-none"
                       className={styles["Next_button_EmailVerifyForTwoFac"]}

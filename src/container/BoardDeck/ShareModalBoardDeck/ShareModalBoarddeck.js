@@ -5,20 +5,21 @@ import { Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Radio } from "antd";
+import { Tooltip } from "antd";
 import { useNavigate } from "react-router-dom";
 import {
   boardDeckEmailModal,
   boardDeckShareModal,
 } from "../../../store/actions/NewMeetingActions";
 import crossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import CustomRadioGroup from "../../../components/elements/radio/CustomRadioGroup";
 const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const boarddeckSharableModal = useSelector(
-    (state) => state.NewMeetingreducer.boarddeckShareModal
+    (state) => state.NewMeetingreducer.boarddeckShareModal,
   );
   const handleRadioChange = (value) => {
     setRadioValue(value);
@@ -69,19 +70,15 @@ const ShareModalBoarddeck = ({ radioValue, setRadioValue }) => {
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <Radio.Group
-                  // onChange={(e) => handleRadioChange(index, e.target.value)}
+                <CustomRadioGroup
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
                   className="AgendaSelectGroup"
-                >
-                  <Radio value={1}>
-                    <span>{t("Share-via-dataroom")}</span>
-                  </Radio>
-                  <Radio value={2}>
-                    <span>{t("Share-via-email")}</span>
-                  </Radio>
-                </Radio.Group>
+                  options={[
+                    { value: 1, label: t("Share-via-dataroom") },
+                    { value: 2, label: t("Share-via-email") },
+                  ]}
+                />
               </Col>
             </Row>
           </>

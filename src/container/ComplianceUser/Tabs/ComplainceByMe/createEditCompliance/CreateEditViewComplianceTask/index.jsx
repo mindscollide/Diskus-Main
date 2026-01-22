@@ -196,6 +196,7 @@ const CreateEditViewComplianceTask = () => {
                   <CustomAccordion
                     isExpand={isExpanded}
                     isCompliance={true}
+                    isComplianceTask={false}
                     notesID={data.checklistId}
                     StartField={
                       <div className={styles["checkListTitle"]}>

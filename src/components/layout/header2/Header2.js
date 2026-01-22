@@ -691,7 +691,7 @@ const Header2 = ({ isVideo }) => {
 
       console.log("Checking route", viewAdvanceMeetingModal, editorRole);
     } else {
-      navigate("/Diskus");
+      navigate("/Admin");
     }
   };
 

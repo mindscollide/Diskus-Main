@@ -3129,11 +3129,12 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("RESOLUTION_CLOSED"),
-                "[Resolution Title]",
-                data.payload.model.resolution.title,
-              ),
+              message: t("RESOLUTION_CLOSED"),
+              // message: changeMQTTJSONOne(
+              //   t("RESOLUTION_CLOSED"),
+              //   "[Resolution Title]",
+              //   data.payload.model.resolution.title
+              // ),
             });
           }
           dispatch(resolutionMQTTClosed(data.payload.model));

@@ -17,7 +17,7 @@ const CustomTable = ({
   prefixClassName,
   size,
   ref,
-  sticky = true
+  sticky = true,
 }) => {
   return (
     <>
