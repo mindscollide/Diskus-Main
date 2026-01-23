@@ -214,18 +214,22 @@ const CreateEditViewComplianceTask = () => {
                                   // onClick={handleOpenAddChecklist}
                                 >
                                   <Row>
-                                    <Col sm={12} md={8} lg={8}>
-                                      <span className={styles["TaskTitle"]}>
+                                    <Col sm={12} md={11} lg={11}>
+                                      <div className={styles["TaskTitle"]}>
                                         {data2.taskTitle}
-                                      </span>
+                                      </div>
                                     </Col>
                                     <Col
                                       sm={12}
-                                      md={4}
-                                      lg={4}
+                                      md={1}
+                                      lg={1}
                                       className="d-flex justify-content-end align-items-center "
                                     >
-                                      <img src={DeleteIcon} className="me-2" />
+                                      <img
+                                        src={DeleteIcon}
+                                        alt=""
+                                        className="me-2 cursor-pointer"
+                                      />
                                     </Col>
                                   </Row>
                                 </div>

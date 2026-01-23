@@ -1008,68 +1008,41 @@ const GetAllTagsByOrganizationIDFail = (message) => {
 };
 
 const GetAllTagsByOrganizationIDAPI = (navigate, value, t) => {
-  let Data = {
-    TagsTitle: value,
-  };
+  let Data = { TagsTitle: value };
 
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(GetAllTagsByOrganizationIDInit());
+
     let form = new FormData();
     form.append("RequestMethod", GetAllTagsByOrganizationID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axiosInstance
-      .post(complainceApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(GetAllTagsByOrganizationIDAPI(navigate, value, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                GetAllTagsByOrganizationIDSuccess(
-                  response.data.responseResult,
-                  ""
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_02".toLowerCase()
-                )
-            ) {
-              // The Name is Unique
-              await dispatch(GetAllTagsByOrganizationIDFail(""));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Compliance_ComplianceServiceManager_GetAllTagsByOrganizationID_03".toLowerCase()
-                )
-            ) {
-              await dispatch(GetAllTagsByOrganizationIDFail(""));
-            }
-          } else {
-            await dispatch(
-              GetAllTagsByOrganizationIDFail(t("Something-went-wrong"))
-            );
-          }
-        } else {
-          await dispatch(
-            GetAllTagsByOrganizationIDFail(t("Something-went-wrong"))
-          );
-        }
-      })
-      .catch((response) => {
-        dispatch(GetAllTagsByOrganizationIDFail(t("Something-went-wrong")));
-      });
+
+    try {
+      const response = await axiosInstance.post(complainceApi, form);
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        return dispatch(GetAllTagsByOrganizationIDAPI(navigate, value, t));
+      }
+
+      if (
+        response.data.responseCode === 200 &&
+        response.data.responseResult?.isExecuted
+      ) {
+        dispatch(
+          GetAllTagsByOrganizationIDSuccess(response.data.responseResult, "")
+        );
+
+        // ✅ IMPORTANT: RETURN TAGS
+        return response.data.responseResult.tags || [];
+      }
+
+      dispatch(GetAllTagsByOrganizationIDFail(""));
+      return [];
+    } catch (error) {
+      dispatch(GetAllTagsByOrganizationIDFail(t("Something-went-wrong")));
+      return [];
+    }
   };
 };
 

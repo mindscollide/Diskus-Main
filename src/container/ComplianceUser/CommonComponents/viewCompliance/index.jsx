@@ -30,6 +30,7 @@ const ViewCompliance = () => {
     isViewDetailsOpen,
     setIsViewDetailsOpen,
     setShowViewCompliance,
+    emptyComplianceState,
   } = useComplianceContext();
 
   console.log();
@@ -131,6 +132,7 @@ const ViewCompliance = () => {
   const handleClickBackIcon = () => {
     setShowViewCompliance(false);
     setViewComplianceDetailsTab(1);
+    emptyComplianceState();
   };
   return (
     <>
@@ -201,8 +203,8 @@ const ViewCompliance = () => {
               >
                 {/* {isViewDetailsBtnActive && ( */}
                 <>
-                  {complianceDetailsState.complianceStatusChangeHistory
-                    .length === 0 && (
+                  {complianceDetailsState.complianceStatusChangeHistory.length >
+                    0 && (
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(

@@ -131,10 +131,10 @@ const ModalToDoListChecklist = ({
   useEffect(() => {
     try {
       setTaskCreatorID(parseInt(createrID));
-      setTask({
-        ...task,
-        creationDate: dateObject,
-      });
+      // setTask({
+      //   ...task,
+      //   creationDate: dateObject,
+      // });
       dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
       return () => {
         setCloseConfirmationBox(false);
@@ -526,7 +526,7 @@ const ModalToDoListChecklist = ({
   const onChangeSearch = (item) => {
     // console.log(item, "itemitemitem");
     // setPresenterValue(item);
-    // setTaskAssignedTo([item.value]);
+    setTaskAssignedTo([item.value]);
     setSelectedAsignee(item);
   };
 
@@ -610,7 +610,13 @@ const ModalToDoListChecklist = ({
                       onFocusedDateChange={toDoDateHandler}
                       format={"DD/MM/YYYY"}
                       value={task.creationDate}
-                      maxDate={parseYYYYMMDDToEndOfDay(checkListData.dueDate)}
+                      maxDate={moment(
+                        parseYYYYMMDDToEndOfDay(checkListData.dueDate)
+                      )
+                        .subtract(1, "day")
+                        .endOf("day")
+                        .toDate()}
+                      // maxDate={parseYYYYMMDDToEndOfDay(checkListData.dueDate)}
                       minDate={moment().toDate()}
                       placeholder="DD/MM/YYYY"
                       render={

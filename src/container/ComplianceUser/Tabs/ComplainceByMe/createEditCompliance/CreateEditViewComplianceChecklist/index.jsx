@@ -73,6 +73,7 @@ const CreateEditViewComplianceChecklist = () => {
     emptyComplianceState,
     setChecklistData,
   } = useComplianceContext();
+  console.log(complianceDetailsState, "complianceDetailsState");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
@@ -359,10 +360,7 @@ const CreateEditViewComplianceChecklist = () => {
     setChecklistTabs(1);
     setCreateEditComplaince(false);
   };
-  console.log(
-    complianceDetailsState.complianceDueDateForChecklist,
-    "complianceDueDateForChecklist"
-  );
+  console.log(complianceDetailsState.dueDate, "complianceDueDateForChecklist");
   return (
     <>
       {!addChecklistCloseState ? (
@@ -427,7 +425,10 @@ const CreateEditViewComplianceChecklist = () => {
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
                 placeholder={t("Due-date")}
-                maxDate={complianceDetailsState.complianceDueDateForChecklist}
+                maxDate={moment(complianceDetailsState.dueDate)
+                  .subtract(1, "day")
+                  .endOf("day")
+                  .toDate()}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}

@@ -2433,7 +2433,7 @@
   "Document-has-been-signed-successfully": "Document has been signed successfully",
   "Document-has-been-declined-successfully": "Document has been declined successfully",
   "Are-You-Sure-you-Want-to-Leave-One-to-One": "Are You Sure you Want to Leave One to One",
-  "Signature-is-must-required": "Signature is must required",
+  "Signature-is-required": "Signature is required",
   "Click": "Click",
   "Download-meeting-recording": "Download Meeting Recording",
   "Download-board-deck": "Download Board Deck",
@@ -2518,7 +2518,6 @@
   "Organization-registeration-limit-exceeded-please-try-again-after-sometime": "Organization registeration limit exceeded. Please try again after sometime",
   "Please-try-again-after": "Please try again after",
   "You-are-currently-in-a-Video-Call-this-feature-cannot-be-accessed-right-now": "You are currently in a Video Call. This feature cannot be accessed right now",
-  "Complaince-settings": "Complaince Settings",
   "Authority": "Authority",
   "Manage-authority": "Manage Authority",
   "General-setting": "General Setting",
@@ -2590,7 +2589,7 @@
   "Expand-all": "Expand All",
   "No-checklist-found": "No Checklist Found",
   "No-checklist-has-been-assigned-yet.": "No checklist has been assigned yet.",
-  "view-tasks": "view Tasks",
+  "view-tasks": "View Tasks",
   "Collapse-all": "Collapse All",
   "No-tasks-created": "No tasks created",
   "Checklist-progress": "Checklist Progress",
@@ -2603,5 +2602,6 @@
   "Please-select-atleast-a-single-day": "Please select atleast a single day",
   "RESOLUTION_CLOSED": "Resolution Closed",
   "No-task-found": "No task found",
-  "No-Task-has-been-created-yet": "No task has been created yet"
+  "No-Task-has-been-created-yet": "No task has been created yet",
+  "Switch-to-user-view": "Switch to User View"
 }

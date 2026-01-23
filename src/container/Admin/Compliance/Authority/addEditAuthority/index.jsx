@@ -345,8 +345,15 @@ const AddEditViewAuthorityModal = () => {
         break;
 
       case "phone":
+        // allow clearing the input
+        if (value === "") {
+          error = "";
+          break;
+        }
+
+        // block invalid characters
         if (!phoneRegex.test(value)) {
-          return; // block invalid characters
+          return;
         }
         break;
 
@@ -698,7 +705,7 @@ const AddEditViewAuthorityModal = () => {
                             authorityViewState !== 3 ? t("Description") : ""
                           }
                           showCount={authorityViewState === 3 ? false : true}
-                          maxLength={160}
+                          maxLength={500}
                           onChange={handleValueChange}
                           name="description"
                           preFixClas={
@@ -1002,7 +1009,7 @@ const AddEditViewAuthorityModal = () => {
                       </Col>
                     </Row>
                   ) : authorityViewState === 3 ? (
-                    <Row className="mt-2">
+                    <Row className="mt-3">
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["authorityViewLabel"]}>
                           {t("Status")}

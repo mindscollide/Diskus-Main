@@ -58,17 +58,17 @@
   margin-bottom: 10px;
   border: 1px solid #e1e1e1;
 
-  cursor: pointer;
+  cursor: default;
   font-weight: 600;
   font-size: 16px;
 }
 .TaskTitle {
   font-weight: 600;
   font-size: 16px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  vertical-align: middle;
   margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mainButtonPosition {
   position: absolute;

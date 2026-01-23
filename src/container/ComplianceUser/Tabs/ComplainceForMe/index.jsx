@@ -32,9 +32,9 @@ const ComplianceForMe = () => {
   const { t } = useTranslation();
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
   const criticalityOptions = [
-    { label: t("High"), value: 1 },
+    { label: t("Low"), value: 1 },
     { label: t("Medium"), value: 2 },
-    { label: t("Low"), value: 3 },
+    { label: t("High"), value: 3 },
   ];
 
   const SearchComplianceForMe = useSelector(
@@ -48,7 +48,6 @@ const ComplianceForMe = () => {
   const [authoritySort, setAuthority] = useState(null);
   const [isScroll, setIsScroll] = useState(false);
   const [statusFilter, setStatusFilter] = useState([]);
-
   const {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
@@ -61,6 +60,10 @@ const ComplianceForMe = () => {
     setSearchCompliancePayload,
     allComplianceStatusForFilter,
   } = useComplianceContext();
+  console.log(
+    { statusFilter, allComplianceStatusForFilter, complianceForMeList },
+    "statusFilter"
+  );
 
   useEffect(() => {
     let Data = {
@@ -106,11 +109,11 @@ const ComplianceForMe = () => {
     setIsScroll(false);
   }, [SearchComplianceForMe]);
 
-  useEffect(() => {
-    if (allComplianceStatusForFilter?.length > 0) {
-      setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
-    }
-  }, [allComplianceStatusForFilter]);
+  // useEffect(() => {
+  //   if (allComplianceStatusForFilter?.length > 0) {
+  //     setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
+  //   }
+  // }, [allComplianceStatusForFilter]);
 
   const handleViewCompliance = (record) => {
     console.log("reached here");
@@ -220,7 +223,7 @@ const ComplianceForMe = () => {
       if (selectedKeys.length === 0) {
         setSelectedKeys(allComplianceStatusForFilter.map((s) => s.statusTitle));
       }
-
+      console.log(selectedKeys, "selectedKeys");
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
@@ -262,7 +265,7 @@ const ComplianceForMe = () => {
       );
     },
 
-    onFilter: (value, record) => value === record.complianceStatusTitle,
+    onFilter: (value, record) => value === record.status,
 
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
   });
@@ -313,16 +316,16 @@ const ComplianceForMe = () => {
 
         render: (text) => (
           <span>
-            {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+            {text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High")}
           </span>
         ),
       },
 
       {
         title: t("Status"),
-        dataIndex: "complianceStatusTitle",
-        key: "complianceStatusTitle",
-        width: "10%",
+        dataIndex: "status",
+        key: "status",
+        width: "13%",
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
@@ -373,7 +376,7 @@ const ComplianceForMe = () => {
         ),
         dataIndex: "authorityShortCode",
         key: "authorityShortCode",
-        width: "17%",
+        width: "14%",
         ellipsis: true,
         align: "center",
         sorter: (a, b) =>
@@ -393,7 +396,7 @@ const ComplianceForMe = () => {
         title: "",
         dataIndex: "",
         key: "",
-        width: "20%",
+        width: "10%",
         ellipsis: true,
         align: "center",
 

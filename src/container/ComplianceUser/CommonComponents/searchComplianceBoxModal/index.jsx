@@ -11,8 +11,9 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./searchComplianceBoxModal.module.css";
-import { DatePicker } from "antd";
+import { DatePicker, Select } from "antd";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+
 const SearchComplianceBoxModal = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -153,12 +154,16 @@ const SearchComplianceBoxModal = () => {
         dueDateFrom: searchCompliancePayload.dueDateFrom,
         dueDateTo: searchCompliancePayload.dueDateTo,
         authorityShortCode: searchCompliancePayload.authorityShortCode,
-        tagsCSV: "",
+        tagsCSV:
+          searchCompliancePayload.tagsCSV.length > 0
+            ? searchCompliancePayload.tagsCSV.join(", ")
+            : "",
         criticalityIds: [],
         statusIds: [],
         pageNumber: 0,
         length: 10,
       };
+      console.log("dataforByme", Data);
       dispatch(listOfComplianceByCreatorApi(navigate, Data, t));
     } else if (complianceViewMode === "forMe") {
       setComplianceForMeList([]);
@@ -231,14 +236,29 @@ const SearchComplianceBoxModal = () => {
   const handleCrossSearchBox = () => {
     setsearchbox(false);
   };
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+    setSearchCompliancePayload({
+      ...searchCompliancePayload,
+      tagsCSV: value,
+    });
+  };
 
+  // const handleSearch = (value) => {
+  //   // remove leading spaces only
+  //   const trimmed = value.replace(/^\s+/, "");
+
+  //   if (value !== trimmed) {
+  //     setSearchValue(trimmed);
+  //   }
+  // };
   return (
     <>
       <Row>
         <Col lg={12} md={12} sm={12} xs={12}>
           <span ref={searchBoxRef} className="position-relative">
             <TextField
-              placeholder={t("Search")}
+              placeholder={t("Compliance-title")}
               name={"complianceTitleOutside"}
               disable={searchbox}
               value={searchCompliancePayload.complianceTitleOutside}
@@ -361,6 +381,26 @@ const SearchComplianceBoxModal = () => {
                         />
                       </Col>
                     </Row>
+                    {complianceViewMode === "byMe" && (
+                      <Row className="mt-2">
+                        <Col sm={12} md={12} lg={12}>
+                          <Select
+                            className={`Select_Tags_search_ant ${styles["selectBoxStyle"]}`}
+                            mode="tags"
+                            style={{ width: "100%" }}
+                            placeholder="Tags"
+                            onChange={handleChange}
+                            // onSearch={handleSearch}
+                            value={
+                              searchCompliancePayload.tagsCSV === ""
+                                ? []
+                                : searchCompliancePayload.tagsCSV
+                            }
+                            open={false}
+                          />
+                        </Col>
+                      </Row>
+                    )}
 
                     <Row className="mt-4">
                       <Col
@@ -383,7 +423,8 @@ const SearchComplianceBoxModal = () => {
                             searchCompliancePayload.complianceTitle === "" &&
                             searchCompliancePayload.authorityShortCode === "" &&
                             searchCompliancePayload.dueDateFrom === "" &&
-                            searchCompliancePayload.dueDateTo === ""
+                            searchCompliancePayload.dueDateTo === "" &&
+                            searchCompliancePayload.tagsCSV === ""
                           }
                         />
                       </Col>
