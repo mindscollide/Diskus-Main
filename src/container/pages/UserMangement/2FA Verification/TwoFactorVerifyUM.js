@@ -80,8 +80,7 @@ const TwoFactorVerifyUM = () => {
     };
 
     localStorage.setItem("GobackSelection", 1);
-    console.log(Data, "onClickHnadleronClickHnadler");
-    // dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
+    dispatch(sendTwoFacAction(t, navigate, Data, setSeconds, setMinutes));
   };
 
   let newClient = Helper.socket;

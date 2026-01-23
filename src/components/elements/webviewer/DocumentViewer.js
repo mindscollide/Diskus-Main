@@ -45,10 +45,10 @@ const DocumentViewer = () => {
 
   // Redux Selectors
   const FileRemoveMQTT = useSelector(
-    (state) => state.DataRoomReducer.FileRemoveMQTT
+    (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
   const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
-    (state) => state.webViewer
+    (state) => state.webViewer,
   );
 
   // Memoized PDF Data
@@ -76,7 +76,7 @@ const DocumentViewer = () => {
       [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
       {
         type: mimeType,
-      }
+      },
     );
   };
 
@@ -183,7 +183,7 @@ const DocumentViewer = () => {
 
     annotationManager.addEventListener(
       "annotationChanged",
-      handleAnnotationChange
+      handleAnnotationChange,
     );
 
     // Warn when closing tab
@@ -199,7 +199,7 @@ const DocumentViewer = () => {
     return () => {
       annotationManager.removeEventListener(
         "annotationChanged",
-        handleAnnotationChange
+        handleAnnotationChange,
       );
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -216,7 +216,7 @@ const DocumentViewer = () => {
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
         },
-        viewer.current
+        viewer.current,
       )
         .then((instance) => {
           setInstance(instance);
@@ -236,7 +236,7 @@ const DocumentViewer = () => {
 
           console.log(
             { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType"
+            "mimeTypemimeTypemimeType",
           );
 
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
@@ -250,7 +250,7 @@ const DocumentViewer = () => {
             showMessage(
               t("file_format_not_supported_for_preview"),
               "error",
-              setOpen
+              setOpen,
             );
             return;
           }

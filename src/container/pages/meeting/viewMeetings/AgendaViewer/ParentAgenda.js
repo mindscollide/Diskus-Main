@@ -86,11 +86,11 @@ const ParentAgenda = ({
   };
 
   const printFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintAgendaFlag,
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
   );
 
   const exportFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.ExportAgendaFlag,
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
   );
 
   const openAdvancePermissionModal = () => {
@@ -121,7 +121,7 @@ const ParentAgenda = ({
   //Konsa user vote kar sakta hai
   const checkUserAuthentication = (record) => {
     let flag = record.agendaVoters.find(
-      (data, index) => data.userID === Number(currentUserID),
+      (data, index) => data.userID === Number(currentUserID)
     );
     if (flag) {
       return true;
@@ -138,7 +138,7 @@ const ParentAgenda = ({
       DoVotingStart: true,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
     );
   };
 
@@ -150,7 +150,7 @@ const ParentAgenda = ({
       DoVotingStart: false,
     };
     dispatch(
-      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID),
+      AgendaVotingStatusUpdate(Data, navigate, t, advanceMeetingModalID)
     );
   };
 
@@ -185,8 +185,8 @@ const ParentAgenda = ({
         navigate,
         data,
         t,
-        record.displayAttachmentName,
-      ),
+        record.displayAttachmentName
+      )
     );
   };
 
@@ -201,15 +201,17 @@ const ParentAgenda = ({
 
     if (Number(editorRole.status) === 10) {
       window.open(
-        `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+          pdfDataJson
+        )}`,
         "_blank",
-        "noopener noreferrer",
+        "noopener noreferrer"
       );
     } else {
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
         "_blank",
-        "noopener noreferrer",
+        "noopener noreferrer"
       );
     }
   };
@@ -223,14 +225,13 @@ const ParentAgenda = ({
             editorRole.role === "Participant")
             ? "d-none"
             : ""
-        }
-      >
-        <span className="position-relative">
-          <Row key={data.id} className="mt-4 m-0 p-0">
+        }>
+        <span className='position-relative'>
+          <Row key={data.id} className='mt-4 m-0 p-0'>
             <img
               draggable={false}
               src={CollapseIcon}
-              alt=""
+              alt=''
               className={
                 expandIndex === index && expand
                   ? styles["Arrow_Expanded"]
@@ -252,11 +253,10 @@ const ParentAgenda = ({
               }
               onClick={() => {
                 handleExpandedBtn(index, true);
-              }}
-            >
+              }}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <Row key={index + 2} className="mt-4">
+                  <Row key={index + 2} className='mt-4'>
                     <Col lg={8} md={8} sm={12}>
                       <span className={styles["AgendaTitle_Heading"]}>
                         {index + 1 + ". " + data.title}
@@ -267,18 +267,17 @@ const ParentAgenda = ({
                         </span>
                       ) : null}
                     </Col>
-                    <Col lg={4} md={4} sm={12} className="">
-                      <Row className="">
+                    <Col lg={4} md={4} sm={12} className=''>
+                      <Row className=''>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex align-items-center justify-content-center gap-3 "
-                        >
+                          className='d-flex align-items-center justify-content-center gap-3 '>
                           <img
                             src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
                             className={styles["Image"]}
-                            alt=""
+                            alt=''
                             draggable={false}
                           />
                           <p className={styles["agendaCreater"]}>
@@ -286,7 +285,7 @@ const ParentAgenda = ({
                           </p>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className='mt-2'>
                         <Col
                           lg={12}
                           md={12}
@@ -295,8 +294,7 @@ const ParentAgenda = ({
                             currentLanguage === "ar"
                               ? "p-0 text-start"
                               : "p-0 text-center"
-                          }
-                        >
+                          }>
                           {/* <p
                             className={`${styles["agendaCreaterTime"]} MontserratMedium-500`}
                           >
@@ -308,74 +306,82 @@ const ParentAgenda = ({
                               "hh:mm a"
                             )}
                           </p> */}
-                          {printFlag === true || exportFlag === true ? null : (
-                            <>
-                              {Number(data.agendaVotingID) !== 0 &&
-                              Number(editorRole.status) === 10 &&
-                              Number(data.voteOwner.userid) ===
-                                Number(currentUserID) &&
-                              !data.voteOwner?.currentVotingClosed ? (
+                          {printFlag === true || exportFlag === true
+                            ? null
+                            : Number(editorRole.status) === 10 && (
                                 <>
-                                  <Button
-                                    text={t("Start-voting")}
-                                    className={styles["startVotingButton"]}
-                                    onClick={() => startVoting(data)}
-                                  />
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : Number(data.agendaVotingID) !== 0 &&
-                                Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) ===
-                                  Number(currentUserID) &&
-                                data.voteOwner?.currentVotingClosed ? (
-                                <>
-                                  <Button
-                                    text={t("End-voting")}
-                                    className={styles["startVotingButton"]}
-                                    onClick={() => endVoting(data)}
-                                  />
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : editorRole.role === "Organizer" &&
-                                Number(editorRole.status) === 10 &&
-                                (data.voteOwner?.currentVotingClosed ||
-                                  Number(data.agendaVotingID) !== 0) ? (
-                                <>
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : null}
+                                  {Number(data.agendaVotingID) !== 0 &&
+                                  Number(editorRole.status) === 10 &&
+                                  Number(data.voteOwner.userid) ===
+                                    Number(currentUserID) &&
+                                  !data.voteOwner?.currentVotingClosed ? (
+                                    <>
+                                      <Button
+                                        text={t("Start-voting")}
+                                        className={styles["startVotingButton"]}
+                                        onClick={() => startVoting(data)}
+                                      />
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : Number(data.agendaVotingID) !== 0 &&
+                                    Number(editorRole.status) === 10 &&
+                                    Number(data.voteOwner.userid) ===
+                                      Number(currentUserID) &&
+                                    data.voteOwner?.currentVotingClosed ? (
+                                    <>
+                                      <Button
+                                        text={t("End-voting")}
+                                        className={styles["startVotingButton"]}
+                                        onClick={() => endVoting(data)}
+                                      />
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : editorRole.role === "Organizer" &&
+                                    Number(editorRole.status) === 10 &&
+                                    (data.voteOwner?.currentVotingClosed ||
+                                      Number(data.agendaVotingID) !== 0) ? (
+                                    <>
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : null}
 
-                              {Number(data.agendaVotingID) ===
-                              0 ? null : Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) !==
-                                  Number(currentUserID) &&
-                                data.voteOwner?.currentVotingClosed &&
-                                editorRole.role !== "Organizer" &&
-                                checkUserAuthentication(data) ? (
-                                <Button
-                                  text={
-                                    data?.hasAlreadyVoted
-                                      ? t("Voted")
-                                      : t("Cast-your-vote")
-                                  }
-                                  className={styles["CastYourVoteButton"]}
-                                  onClick={() => EnableCastVoteModal(data)}
-                                />
-                              ) : null}
-                            </>
-                          )}
+                                  {Number(data.agendaVotingID) ===
+                                  0 ? null : Number(editorRole.status) === 10 &&
+                                    Number(data.voteOwner.userid) !==
+                                      Number(currentUserID) &&
+                                    data.voteOwner?.currentVotingClosed &&
+                                    editorRole.role !== "Organizer" &&
+                                    checkUserAuthentication(data) ? (
+                                    <Button
+                                      text={
+                                        data?.hasAlreadyVoted
+                                          ? t("Voted")
+                                          : t("Cast-your-vote")
+                                      }
+                                      className={styles["CastYourVoteButton"]}
+                                      onClick={() => EnableCastVoteModal(data)}
+                                    />
+                                  ) : null}
+                                </>
+                              )}
                         </Col>
                       </Row>
                     </Col>
@@ -401,8 +407,8 @@ const ParentAgenda = ({
                                     pdfData(
                                       filesData,
                                       getFileExtension(
-                                        filesData?.displayAttachmentName,
-                                      ),
+                                        filesData?.displayAttachmentName
+                                      )
                                     )
                                   }
                                 />

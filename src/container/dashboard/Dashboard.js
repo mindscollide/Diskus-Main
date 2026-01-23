@@ -273,100 +273,100 @@ const Dashboard = () => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   );
   const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal,
+    (state) => state.UserManagementModals.internetDisconnectModal
   );
   const mobileAppPopUp = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp,
+    (state) => state.UserManagementModals.mobileAppPopUp
   );
   const IncomingVideoCallFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
   );
 
   const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage,
+    (state) => state.VideoMainReducer.ResponseMessage
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
   );
 
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag,
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
   );
 
   const MaximizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeVideoFlag,
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag
   );
 
   const ShowGuestPopup = useSelector(
-    (state) => state.videoFeatureReducer.ShowGuestPopup,
+    (state) => state.videoFeatureReducer.ShowGuestPopup
   );
 
   const VideoChatMessagesFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag
   );
 
   const MeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded,
+    (state) => state.meetingIdReducer.MeetingStatusEnded
   );
 
   const waitingParticipantsList = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList,
+    (state) => state.videoFeatureReducer.waitingParticipantsList
   );
 
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
-    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState,
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
   );
 
   const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant,
+    (state) => state.videoFeatureReducer.videoControlForParticipant
   );
 
   const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant,
+    (state) => state.videoFeatureReducer.audioControlForParticipant
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag,
+    (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag,
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
 
   const leavePresenterOrJoinOtherCalls = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls,
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare,
+    (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
 
   console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
@@ -378,7 +378,7 @@ const Dashboard = () => {
       resumeRecordingState,
       stopRecordingState,
     },
-    "CheckisPausedOccurOrNot",
+    "CheckisPausedOccurOrNot"
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -412,10 +412,10 @@ const Dashboard = () => {
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
-    getJoinMeetingParticipantorHostrequest,
+    getJoinMeetingParticipantorHostrequest
   );
   const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
-    getJoinMeetingParticipantorHostrequest,
+    getJoinMeetingParticipantorHostrequest
   );
 
   // Update ref whenever presenterViewJoinFlag changes
@@ -478,7 +478,7 @@ const Dashboard = () => {
 
   function checkCallStatus(data) {
     return !data.some(
-      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing",
+      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing"
     );
   }
 
@@ -556,7 +556,7 @@ const Dashboard = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck"),
+      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -567,7 +567,7 @@ const Dashboard = () => {
     let newRoomId = localStorage.getItem("newRoomId");
     let participantRoomId = localStorage.getItem("participantRoomId");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck"),
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -588,7 +588,7 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             let data = {
               RoomID: String(
-                isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                isMeetingVideoHostCheck ? newRoomId : participantRoomId
               ),
               UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
               IsHandRaised: false,
@@ -708,7 +708,7 @@ const Dashboard = () => {
   const stopPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq");
     let StopPresenterViewAwait = JSON.parse(
-      sessionStorage.getItem("StopPresenterViewAwait"),
+      sessionStorage.getItem("StopPresenterViewAwait")
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -723,16 +723,16 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck"),
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false,
+        : false
     );
     console.log(
       String(meetingVideoID) === String(payload?.meetingID),
-      "mqtt mqmqmqmqmqmq",
+      "mqtt mqmqmqmqmqmq"
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
@@ -747,7 +747,7 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         console.log(
           "typeof StopPresenterViewAwait:",
-          typeof StopPresenterViewAwait,
+          typeof StopPresenterViewAwait
         );
         console.log("value:", StopPresenterViewAwait);
         if (
@@ -768,7 +768,7 @@ const Dashboard = () => {
 
               let dataAudio = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
                 ),
                 IsMuted: false, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -779,7 +779,7 @@ const Dashboard = () => {
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               let dataVideo = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
                 ),
                 HideVideo: true, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -791,7 +791,7 @@ const Dashboard = () => {
 
               let data = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
                 ),
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
@@ -845,7 +845,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost),
+                JSON.stringify(meetingHost)
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -862,7 +862,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  getVideoCallParticipantsMainApi(Data, navigate, t),
+                  getVideoCallParticipantsMainApi(Data, navigate, t)
                 );
               }
               await dispatch(transferMeetingHostSuccess(true));
@@ -876,7 +876,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost),
+                JSON.stringify(meetingHost)
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("refinedVideoUrl", hostUrl);
@@ -933,7 +933,7 @@ const Dashboard = () => {
       const currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck"),
+        localStorage.getItem("isMeetingVideoHostCheck")
       );
 
       const { meetingID, userID } = mqttData.payload;
@@ -944,7 +944,7 @@ const Dashboard = () => {
       const alreadyRequested = waitingParticipantsList?.some(
         (p) =>
           Number(p.userID) === Number(userID) &&
-          Number(p.meetingID) === Number(meetingID),
+          Number(p.meetingID) === Number(meetingID)
       );
       console.log(alreadyRequested, "Filtered unique participants");
 
@@ -1042,7 +1042,7 @@ const Dashboard = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck"),
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     let handStatus = JSON.parse(localStorage.getItem("handStatus"));
 
@@ -1055,7 +1055,7 @@ const Dashboard = () => {
 
           let data = {
             RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId
             ),
             UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             IsHandRaised: false,
@@ -1067,19 +1067,17 @@ const Dashboard = () => {
   };
 
   const onMessageArrived = async (msg) => {
-    var min = 10000;
-    var max = 90000;
-    var id = min + Math.random() * (max - min);
+    let min = 10000;
+    let max = 90000;
+    let id = min + Math.random() * (max - min);
     let data = JSON.parse(msg.payloadString);
-    console.log(data, "MQTT onMessageArrived");
     try {
-      if (data.action?.toLowerCase() === "Meeting".toLowerCase()) {
-        if (data.action && data.payload) {
-          try {
-            if (
-              data?.payload?.message.toLowerCase() ===
-              "NEW_MEETING_CREATION".toLowerCase()
-            ) {
+      if (data?.action?.toLowerCase() === "meeting" && data.payload) {
+        try {
+          const message = data.payload.message?.toLowerCase();
+
+          switch (message) {
+            case "new_meeting_creation": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1087,16 +1085,16 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
               dispatch(allMeetingsSocket(data.payload.meeting));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_EDITED_HOST".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "meeting_edited_host": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1104,16 +1102,16 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_EDITED_HOST"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
               dispatch(allMeetingsSocket(data.payload.meeting));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_STARTED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "meeting_status_edited_started": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1121,46 +1119,34 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_STARTED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
               dispatch(getMeetingStatusfromSocket(data.payload));
-            } else if (
-              data.payload.message
-                .toLowerCase()
-                .includes("MEETING_STATUS_EDITED_END".toLowerCase())
-            ) {
-              try {
-                let meetingVideoID = localStorage.getItem("currentMeetingID");
+              break;
+            }
 
-                if (data.viewable) {
-                  setNotification({
-                    ...notification,
-                    notificationShow: true,
-                    message: changeMQTTJSONOne(
-                      t("MEETING_STATUS_EDITED_END"),
-                      "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100),
-                    ),
-                  });
-                  setNotificationID(id);
-                }
-                console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
-                console.log(
-                  "mqtt mqmqmqmqmqmq",
-                  data?.payload?.meeting?.pK_MDID,
-                );
-                meetingEnded(data.payload);
-                dispatch(mqttCurrentMeetingEnded(data.payload));
-              } catch (error) {
-                console.log(error);
+            case "meeting_status_edited_end": {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_STATUS_EDITED_END"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
               }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_CANCELLED".toLowerCase()
-            ) {
+              meetingEnded(data.payload);
+              dispatch(mqttCurrentMeetingEnded(data.payload));
+              break;
+            }
+
+            case "meeting_status_edited_cancelled": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1168,17 +1154,16 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_CANCELLED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
-
               dispatch(getMeetingStatusfromSocket(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_ADMIN".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "meeting_status_edited_admin": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1186,23 +1171,23 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_ADMIN"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
               dispatch(getMeetingStatusfromSocket(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "NEW_UPCOMING_EVENTS".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "new_upcoming_events": {
               dispatch(
-                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]),
+                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
               );
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_PROPOSED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "meeting_status_edited_proposed": {
               dispatch(meetingStatusProposedMqtt(data.payload.meeting));
               if (data.viewable) {
                 setNotification({
@@ -1211,14 +1196,20 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PROPOSED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
               }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_PUBLISHED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "meeting_status_edited_published": {
+              const newMeeting = {
+                ...data.payload.meeting,
+                talkGroupID: data.payload.talkGroupID,
+              };
+              dispatch(meetingStatusPublishedMqtt(newMeeting));
+
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1226,21 +1217,15 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
+                    data.payload.meetingTitle.substring(0, 100)
                   ),
                 });
                 setNotificationID(id);
               }
-              let newMeetting = {
-                ...data.payload.meeting,
-                talkGroupID: data.payload.talkGroupID,
-              };
-              dispatch(meetingStatusPublishedMqtt(newMeetting));
-              setNotificationID(id);
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "AGENDA_VOTING_STARTED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "agenda_voting_started": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1249,15 +1234,11 @@ const Dashboard = () => {
                 });
                 setNotificationID(id);
               }
-              console.log(
-                data.payload,
-                "AgendaVotingModalStartedDataAgendaVotingModalStartedData",
-              );
               dispatch(meetingAgendaStartedMQTT(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "AGENDA_VOTING_ENDED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "agenda_voting_ended": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1267,10 +1248,10 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               dispatch(meetingAgendaEndedMQTT(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "NEW_MEETING_AGENDA_ADDED".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "new_meeting_agenda_added": {
               if (data.viewable) {
                 setNotification({
                   ...notification,
@@ -1280,1871 +1261,1013 @@ const Dashboard = () => {
                 setNotificationID(id);
               }
               dispatch(meetingAgendaUpdatedMQTT(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "NEW_MEETINGS_COUNT".toLowerCase()
-            ) {
+              break;
+            }
+
+            case "new_meetings_count": {
               dispatch(getDashboardMeetingCountMQTT(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_PUBLISHED_GROUP".toLowerCase()
-            ) {
-              try {
-                if (data.viewable) {
-                  setNotification({
-                    ...notification,
-                    notificationShow: true,
-                    message: changeMQTTJSONOne(
-                      t("MEETING_STATUS_EDITED_PUBLISHED"),
-                      "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100),
-                    ),
-                  });
-                  setNotificationID(id);
-                }
-                dispatch(createGroupMeeting(data.payload));
-              } catch (error) {
-                console.log(error);
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_STATUS_EDITED_PUBLISHED_COMMITTEE".toLowerCase()
-            ) {
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("MEETING_STATUS_EDITED_PUBLISHED"),
-                    "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100),
-                  ),
-                });
-                setNotificationID(id);
-              }
-              dispatch(createCommitteeMeeting(data.payload));
-            } else if (
-              data.payload.message?.toLowerCase() ===
-              "NEW_MEETING_AGENDA_CONTRIBUTOR_ADDED".toLowerCase()
-            ) {
-              dispatch(meetingAgendaContributorAdded(data.payload));
-            } else if (
-              data.payload.message
-                ?.toLowerCase()
-                .includes(
-                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase(),
-                )
-            ) {
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
-                    "[Place holder]",
-                    data.payload.title.substring(0, 100),
-                  ),
-                });
-                setNotificationID(id);
-              }
-
-              dispatch(meetingAgendaContributorRemoved(data.payload));
-            } else if (
-              data.payload.message
-                ?.toLowerCase()
-                .includes("NEW_MEETING_ORGANIZER_ADDED".toLowerCase())
-            ) {
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("NEW_MEETING_CREATION"),
-                    "[Place holder]",
-                    data.payload.title.substring(0, 100),
-                  ),
-                });
-                setNotificationID(id);
-              }
-              dispatch(meetingOrganizerAdded(data.payload));
-            } else if (
-              data.payload.message
-                ?.toLowerCase()
-                .includes("MEETING_ORGANIZER_DELETED".toLowerCase())
-            ) {
-              if (data.viewable) {
-                setNotification({
-                  ...notification,
-                  notificationShow: true,
-                  message: changeMQTTJSONOne(
-                    t("NEW_MEETING_CREATION"),
-                    "[Place holder]",
-                    data.payload.title.substring(0, 100),
-                  ),
-                });
-                setNotificationID(id);
-              }
-              dispatch(meetingOrganizerRemoved(data.payload));
-            } else if (
-              data?.payload?.message?.toLowerCase() ===
-              "MeetingNotConductedNotification".toLowerCase()
-            ) {
-              try {
-                if (data.viewable) {
-                  setNotification({
-                    ...notification,
-                    notificationShow: true,
-                    message: changeMQTTJSONOne(
-                      t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
-                      "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100),
-                    ),
-                  });
-                  setNotificationID(id);
-                }
-                dispatch(meetingNotConductedMQTT(data.payload));
-              } catch (error) {
-                console.log(
-                  error,
-                  "MeetingReminderNotificationMeetingReminderNotification",
-                );
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
-            ) {
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              dispatch(participantWaitingList(data.payload));
-              dispatch(admitGuestUserRequest(data.payload));
-              if (isMeetingVideo) {
-                console.log("isMeetingChecker");
-                dispatch(guestJoinPopup(true));
-              }
-            } else if (
-              //when Participant or attendee send Request to Host
-              data.payload.message.toLowerCase() ===
-              "MEETING_VIDEO_PARTICIPANT_JOIN_REQUEST".toLowerCase()
-            ) {
-              joinRequestForMeetingVideo(data);
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "VIDEO_PARTICIPANT_LEFT".toLowerCase()
-            ) {
-              console.log(data.payload, "mqtt");
-              console.log(waitingParticipantsList, "mqtt");
-
-              // dispatch(setAudioControlHost(false));
-              // dispatch(setVideoControlHost(false));
-              if (data.payload.isGuest) {
-                console.log("Is Guest True");
-                // dispatch(guestLeaveVideoMeeting(data.payload.uid));
-                const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo"),
-                );
-                let isGuid = "";
-                if (meetingHost?.isHost) {
-                  isGuid = localStorage.getItem("isGuid");
-                } else {
-                  isGuid = localStorage.getItem("participantUID");
-                }
-                if (isGuid !== data.payload.uid) {
-                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
-                }
-              } else {
-                console.log("Is Guest True");
-
-                const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo"),
-                );
-                let isGuid = "";
-                if (meetingHost?.isHost) {
-                  isGuid = localStorage.getItem("isGuid");
-                } else {
-                  isGuid = localStorage.getItem("participantUID");
-                }
-                if (isGuid !== data.payload.uid) {
-                  dispatch(participantLeaveVideoMeeting(data.payload.uid)); // Dispatch for participants
-                }
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MUTE_UNMUTE_AUDIO_BY_PARTICIPANT".toLowerCase()
-            ) {
-              dispatch(
-                participanMuteUnMuteMeeting(
-                  data.payload,
-                  false,
-                  presenterViewHostFlag,
-                  presenterViewFlag,
-                ),
-              );
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PARTICIPANT_RAISE_UNRAISE_HAND".toLowerCase()
-            ) {
-              dispatch(participanRaisedUnRaisedHand(data.payload));
-              let isParticipantGuid = localStorage.getItem("participantUID");
-              console.log(
-                data.payload.participantGuid === isParticipantGuid,
-                "checkchekc",
-              );
-              // if (
-              //   data.payload.isHandRaised &&
-              //   data.payload.participantGuid === isParticipantGuid
-              // ) {
-              //   console.log("handStatus");
-              //   dispatch(setRaisedUnRaisedParticiant(true));
-              // } else {
-              //   console.log("handStatus");
-              //   dispatch(setRaisedUnRaisedParticiant(false));
-              // }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "HIDE_UNHIDE_VIDEO_BY_PARTICIPANT".toLowerCase()
-            ) {
-              console.log(data.payload, "Partiicpantdatapayload");
-              dispatch(participantHideUnhideVideo(data.payload));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_NEW_PARTICIPANTS_JOINED".toLowerCase()
-            ) {
-              // localStorage.setItem(
-              //   "isHost",
-              //   data.payload.newParticipants.isHost
-              // );
-              dispatch(getParticipantsNewJoin(data.payload.newParticipants));
-              console.log(data.payload, "JOINEDJOINEDJOINED");
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "REMOVED_FROM_MEETING".toLowerCase()
-            ) {
-              dispatch(screenShareTriggeredGlobally(false));
-              let isMeetingVideoCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled"),
-              );
-              let isSharedSceenEnable = JSON.parse(
-                localStorage.getItem("isSharedSceenEnable"),
-              );
-              console.log("leavecallMeetingVideo", isMeetingVideoCheck);
-              if (isMeetingVideoCheck) {
-                if (isZoomEnabled) {
-                  if (isSharedSceenEnable && !globallyScreenShare) {
-                    let isMeetingVideoHostCheck = JSON.parse(
-                      localStorage.getItem("isMeetingVideoHostCheck"),
-                    );
-                    let participantRoomId = String(
-                      localStorage.getItem("participantRoomId"),
-                    );
-                    let participantUID = String(
-                      localStorage.getItem("participantUID"),
-                    );
-                    let RoomID =
-                      isMeetingVideoCheck && !isMeetingVideoHostCheck
-                        ? participantRoomId
-                        : null;
-
-                    let UID =
-                      isMeetingVideoCheck && !isMeetingVideoHostCheck
-                        ? participantUID
-                        : null;
-                    let data = {
-                      RoomID: RoomID,
-                      ShareScreen: false,
-                      UID: UID,
-                    };
-                    dispatch(screenShareTriggeredGlobally(false));
-                    await dispatch(
-                      isSharedScreenTriggeredApi(navigate, t, data),
-                    );
-                  }
-                  dispatch(setAudioControlHost(false));
-                  console.log("videoHideUnHideForHost");
-                  dispatch(setVideoControlHost(false));
-                  dispatch(toggleParticipantsVisibility(false));
-
-                  await dispatch(setParticipantRemovedFromVideobyHost(true));
-                } else {
-                  const meetingHost = {
-                    isHost: false,
-                    isHostId: 0,
-                    isDashboardVideo: true,
-                  };
-                  dispatch(makeHostNow(meetingHost));
-                  localStorage.setItem("isMeeting", true);
-                  sessionStorage.setItem("isMeeting", true);
-                  localStorage.setItem("isMeetingVideo", false);
-                  localStorage.removeItem("refinedVideoUrl");
-                  localStorage.setItem("refinedVideoGiven", false);
-                  localStorage.setItem("isWebCamEnabled", false);
-                  localStorage.setItem("isMicEnabled", false);
-                  dispatch(setAudioControlHost(false));
-                  console.log("videoHideUnHideForHost");
-                  dispatch(setVideoControlHost(false));
-
-                  localStorage.setItem(
-                    "meetinHostInfo",
-                    JSON.stringify(meetingHost),
-                  );
-
-                  dispatch(maximizeVideoPanelFlag(false));
-                  dispatch(maxParticipantVideoRemoved(true));
-                  // Participant room Id and usrrGuid
-                  let participantRoomIds =
-                    localStorage.getItem("participantRoomId");
-                  let participantUID = localStorage.getItem("participantUID");
-                  let currentMeetingID =
-                    localStorage.getItem("currentMeetingID");
-                  let newName = localStorage.getItem("name");
-                  let Data = {
-                    RoomID: String(participantRoomIds),
-                    UserGUID: String(participantUID),
-                    Name: String(newName),
-                    IsHost: false,
-                    MeetingID: Number(currentMeetingID),
-                  };
-                  dispatch(setRaisedUnRaisedParticiant(false));
-                  dispatch(LeaveMeetingVideo(Data, navigate, t));
-                }
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
-            ) {
-              const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo"),
-              );
-
-              if (data.payload.isForAll) {
-                if (presenterViewFlag) {
-                  if (!presenterViewHostFlag) {
-                    dispatch(setAudioControlHost(data.payload.isMuted));
-                  }
-                } else if (!meetingHost?.isHost) {
-                  dispatch(setAudioControlHost(data.payload.isMuted));
-                }
-                // Dispatch action with all UIDs
-                dispatch(
-                  participanMuteUnMuteMeeting(
-                    data.payload.isMuted,
-                    true,
-                    presenterViewHostFlag,
-                    presenterViewFlag,
-                  ),
-                );
-              } else {
-                // Handle individual mute/unmute
-                dispatch(
-                  participanMuteUnMuteMeeting(
-                    data.payload,
-                    false,
-                    presenterViewHostFlag,
-                    presenterViewFlag,
-                  ),
-                );
-
-                let isGuid = "";
-                if (meetingHost?.isHost) {
-                  isGuid = localStorage.getItem("isGuid");
-                } else {
-                  isGuid = localStorage.getItem("participantUID");
-                }
-
-                if (data.payload.uid === isGuid) {
-                  dispatch(setAudioControlHost(data.payload.isMuted));
-                }
-              }
-
-              console.log(data.payload, "guestDataGuestData");
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
-            ) {
-              const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo"),
-              );
-              let isGuid = "";
-              if (meetingHost?.isHost) {
-                isGuid = localStorage.getItem("isGuid");
-              } else {
-                isGuid = localStorage.getItem("participantUID");
-              }
-              //  dispatch(hideUnHideVideoByHost(data.payload));
-              dispatch(participantHideUnhideVideo(data.payload));
-
-              if (data.payload.uid === isGuid) {
-                dispatch(setVideoControlHost(data.payload.isVideoHidden));
-              }
-
-              console.log(data.payload, "guestDataGuestDataVideo");
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_VIDEO_JOIN_REQUEST_REJECTED".toLowerCase()
-            ) {
-              dispatch(participantVideoButtonState(false));
-              let currentMeetingID = 0;
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled"),
-              );
-              if (isZoomEnabled) {
-                currentMeetingID = String(
-                  localStorage.getItem("currentMeetingID"),
-                );
-              } else {
-                currentMeetingID = Number(
-                  localStorage.getItem("currentMeetingID"),
-                );
-              }
-
-              let userIDCurrent = Number(localStorage.getItem("userID"));
-              let isMeetingVideo = localStorage.getItem("isMeetingVideo");
-              let flagForZoom1 = false;
-              if (isZoomEnabled) {
-                flagForZoom1 =
-                  String(currentMeetingID) === String(data.payload.meetingID);
-              } else {
-                flagForZoom1 =
-                  Number(currentMeetingID) === Number(data.payload.meetingID);
-              }
-              if (
-                isMeetingVideo &&
-                flagForZoom1 &&
-                Number(userIDCurrent) === Number(data.payload.userID)
-              ) {
-                sessionStorage.removeItem("isWaiting");
-
-                localStorage.setItem("isMeetingVideo", false);
-                dispatch(globalNavigatorVideoStream(1));
-                dispatch(globalStateForAudioStream(true));
-                dispatch(globalStateForVideoStream(true));
-                // dispatch(maxParticipantVideoCallPanel(false));
-                // dispatch(maxParticipantVideoDenied(true));
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_VIDEO_JOIN_REQUEST_APPROVED".toLowerCase()
-            ) {
-              // dispatch(maxParticipantVideoCallPanel(false));
-              // dispatch(maximizeVideoPanelFlag(true));
-              dispatch(globalNavigatorVideoStream(2));
-
-              dispatch(globalStateForAudioStream(true));
-              dispatch(globalStateForVideoStream(true));
-              // localStorage.setItem("CallType", 2);
-              localStorage.setItem("isMeeting", true);
-              sessionStorage.setItem("isMeeting", true);
-
-              // localStorage.setItem("activeCall", true);
-              //     sessionStorage.setItem("activeCallSessionforOtoandGroup", true)
-
-              console.log("iframeiframe", data.payload.screenShare);
-              console.log("iframeiframe", data.payload.userID);
-              localStorage.setItem("acceptedRecipientID", data.payload.userID);
-              localStorage.setItem("isMeetingVideo", true);
-              localStorage.setItem(
-                "currentMeetingVideoUrl",
-                data.payload.videoUrl,
-              );
-              console.log("iframeiframe", data.payload.userID);
-
-              // when Is screenShare is true
-              if (data?.payload?.screenShare) {
-                console.log("Check Datat");
-                let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled"),
-                );
-                if (isZoomEnabled) {
-                  console.log(data?.payload?.screenShare, "Check Datat");
-                  dispatch(screenShareTriggeredGlobally(true));
-                }
-              }
-              if (data?.payload?.videoUrl) {
-                // Fetch values from localStorage and Redux
-                console.log("iframeiframe", data.payload.userID);
-                console.log("isMeetingVideo", audioControlForParticipant);
-                console.log("isMeetingVideo", videoControlForParticipant);
-                let videoControlForParticipantLoacl = JSON.parse(
-                  localStorage.getItem("isWebCamEnabled"),
-                );
-                let audioControlForParticipantLocal = JSON.parse(
-                  localStorage.getItem("isMicEnabled"),
-                );
-                console.log("iframeiframe", data.payload.userID);
-                dispatch(setAudioControlHost(audioControlForParticipantLocal));
-                console.log("iframeiframe", data.payload.userID);
-                dispatch(setVideoControlHost(videoControlForParticipantLoacl));
-
-                const currentParticipantUser = localStorage.getItem("name");
-                // Refine the URL by replacing placeholders
-                let refinedUrl = "";
-                let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled"),
-                );
-                if (isZoomEnabled) {
-                  refinedUrl = data.payload.videoUrl;
-                } else {
-                  refinedUrl = data.payload.videoUrl
-                    .replace("$ParticipantFullName$", currentParticipantUser)
-                    .replace(
-                      "$IsMute$",
-                      audioControlForParticipantLocal.toString(),
-                    )
-                    .replace(
-                      "$IsHideCamera$",
-                      videoControlForParticipantLoacl.toString(),
-                    );
-                }
-
-                // Store the refined URL in localStorage
-                localStorage.setItem("refinedVideoUrl", refinedUrl);
-                localStorage.setItem("refinedVideoGiven", true);
-              } else {
-                console.error("Invalid data or missing videoUrl in payload");
-              }
-
-              console.log("iframeiframe", data.payload);
-              dispatch(getVideoUrlForParticipant(data.payload.videoUrl));
-              localStorage.setItem("participantRoomId", data.payload.roomID);
-              localStorage.setItem("participantUID", data.payload.uid);
-              localStorage.setItem("activeRoomID", data.payload.roomID);
-              // dispatch(participantVideoNavigationScreen(3));
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY".toLowerCase()
-            ) {
-              //Yeh mehdi ny bola thaa
-              try {
-                const isGuid = localStorage.getItem("isGuid");
-                console.log("HostTransferEvent");
-
-                const newHostGuid = data.payload.newHost?.guid;
-                console.log("HostTransferEvent");
-
-                const isHost = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck"),
-                );
-
-                // Check if the current user's guid matches the mqtt newHost guid
-                if (isGuid !== newHostGuid) {
-                  if (isHost) {
-                    const meetingHost = {
-                      isHost: false,
-                      isHostId: 0,
-                      isDashboardVideo: true,
-                    };
-                    console.log("makeHostOnClick", meetingHost);
-                    let newRoomId = localStorage.getItem("newRoomId");
-                    let isGuid = localStorage.getItem("isGuid");
-                    localStorage.setItem(
-                      "meetinHostInfo",
-                      JSON.stringify(meetingHost),
-                    );
-                    let refinedVideoUrl =
-                      localStorage.getItem("refinedVideoUrl");
-                    localStorage.setItem("hostUrl", refinedVideoUrl);
-                    localStorage.setItem("participantRoomId", newRoomId);
-                    localStorage.setItem("participantUID", isGuid);
-                    localStorage.setItem("isMeetingVideoHostCheck", false);
-                    localStorage.setItem("isHost", false);
-                    // localStorage.removeItem("isGuid");
-                    dispatch(participantWaitingListBox(false));
-                    dispatch(toggleParticipantsVisibility(false));
-
-                    let Data = {
-                      RoomID: String(newRoomId),
-                    };
-                    await dispatch(
-                      getVideoCallParticipantsMainApi(Data, navigate, t),
-                    );
-
-                    await dispatch(transferMeetingHostSuccess(true));
-                  }
-                  // Send HostTransferEvent to iframe
-                  const iframe = iframeRef.current;
-                  if (!iframe) return;
-                  const msg = `HostTransferEvent_#_${newHostGuid}`;
-                  setTimeout(() => {
-                    if (iframe.contentWindow) {
-                      iframe.contentWindow.postMessage(msg, "*");
-                    }
-                  }, 1000);
-                } else {
-                  console.log(
-                    "Current host guid does not match MQTT newHost guid",
-                  );
-                }
-              } catch (err) {
-                console.error(
-                  "Error handling AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY MQTT:",
-                  err,
-                );
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "TRANSFER_HOST_TO_PARTICIPANT".toLowerCase()
-            ) {
-              let userID = Number(localStorage.getItem("userID"));
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-
-              handRaisedWhileHostTransferFunc();
-
-              console.log(data.payload, "checkHostTransfer");
-
-              console.log("mqtt check 22", userID);
-              console.log("mqtt check 22", data.receiverID[0]);
-              if (userID === data.receiverID[0] && isMeetingVideo) {
-                console.log("mqtt check 22");
-
-                const meetingHost = {
-                  isHost: true,
-                  isHostId: Number(localStorage.getItem("userID")),
-                  isDashboardVideo: true,
-                };
-                localStorage.setItem(
-                  "meetinHostInfo",
-                  JSON.stringify(meetingHost),
-                );
-                console.log("mqtt check 22");
-                dispatch(videoIconOrButtonState(true));
-                dispatch(participantVideoButtonState(false));
-                localStorage.setItem("isMeetingVideoHostCheck", true);
-                localStorage.setItem("isHost", true);
-                // change room id for host
-                let participantRoomId =
-                  localStorage.getItem("participantRoomId");
-                console.log("mqtt check 22", participantRoomId);
-                localStorage.setItem("newRoomId", participantRoomId);
-                // remove room id of participant
-                localStorage.removeItem("participantRoomId");
-                // set host url
-                let refinedVideoUrl = localStorage.getItem("refinedVideoUrl");
-                localStorage.setItem("hostUrl", refinedVideoUrl);
-                // remove host url
-                localStorage.removeItem("refinedVideoUrl");
-                // change participant id to host id
-                let participantUID = localStorage.getItem("participantUID");
-                localStorage.setItem("isGuid", participantUID);
-                dispatch(participantWaitingListBox(false));
-                dispatch(toggleParticipantsVisibility(false));
-                dispatch(acceptHostTransferAccessGlobalFunc(true));
-                const wasRecordingPaused =
-                  localStorage.getItem("pauseRecordingState") === "true";
-                console.log(wasRecordingPaused, "Check is paused is true");
-
-                if (wasRecordingPaused) {
-                  console.log("Check is paused is true");
-                  setPauseRecordingState(true);
-                  setStartRecordingState(false);
-                  setResumeRecordingState(false);
-                  setStopRecordingState(false);
-                }
-                let newRoomId = localStorage.getItem("newRoomId");
-                console.log("mqtt check 22", newRoomId);
-                let Data = {
-                  RoomID: String(newRoomId),
-                };
-                await dispatch(
-                  participantListWaitingListMainApi(Data, navigate, t),
-                );
-              }
-            } else if (
-              data?.payload?.message?.toLowerCase() ===
-              "MeetingReminderNotification".toLowerCase()
-            ) {
-              try {
-                dispatch(meetingReminderNotifcation(data.payload));
-                if (data.viewable) {
-                  setNotification({
-                    ...notification,
-                    notificationShow: true,
-                    message: changeMQTTJSONOne(
-                      t("MeetingReminderNotification"),
-                      "[Meeting Title]",
-                      data.payload.calenderEvents.title.substring(0, 100),
-                    ),
-                  });
-                  setNotificationID(id);
-                }
-              } catch (error) {
-                console.log(
-                  error,
-                  "MeetingReminderNotificationMeetingReminderNotification",
-                );
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_PARTICIPANT_DELETED".toLowerCase()
-            ) {
-              dispatch(meetingParticipantRemoved(data.payload));
-
-              if (data.viewable) {
-                setNotificationID(id);
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "NEW_MEETING_PARTICIPANT_ADDED".toLowerCase()
-            ) {
-              if (
-                Number(data.payload.status) !== 11 &&
-                Number(data.payload.status) !== 12
-              ) {
-                dispatch(meetingParticipantAdded(data.payload));
-
-                if (data.viewable) {
-                  setNotification({
-                    ...notification,
-                    notificationShow: true,
-                    message: changeMQTTJSONOne(
-                      t("MeetingReminderNotification"),
-                      "[Meeting Title]",
-                      data.payload.title.substring(0, 100),
-                    ),
-                  });
-                  setNotificationID(id);
-                }
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_PRESENTATION_STARTED".toLowerCase()
-            ) {
-              startPresenterView(data.payload);
-              // Dispatch action with all UIDs
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "MEETING_PRESENTATION_STOPPED".toLowerCase()
-            ) {
-              stopPresenterView(data.payload);
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
-            ) {
-              dispatch(
-                presenterNewParticipantJoin(data.payload.newParticipant),
-              );
-              console.log(data.payload.newParticipant, "checkdatacheckdata");
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "VIDEO_SHARING_ENABLED".toLowerCase()
-            ) {
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled"),
-              );
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
-              let userID = String(localStorage.getItem("userID"));
-              let UID = isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? isGuid
-                  : participantUID
-                : userID;
-              if (isZoomEnabled) {
-                if (String(data.payload.shareScreenUID) !== String(UID)) {
-                  console.log("check Data Triggered");
-                  dispatch(screenShareTriggeredGlobally(true));
-                }
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "VIDEO_SHARING_DISABLED".toLowerCase()
-            ) {
-              let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled"),
-              );
-              let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo"),
-              );
-              let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
-              );
-              let participantUID = localStorage.getItem("participantUID");
-              let isGuid = localStorage.getItem("isGuid");
-              let userID = String(localStorage.getItem("userID"));
-              let UID = isMeetingVideo
-                ? isMeetingVideoHostCheck
-                  ? isGuid
-                  : participantUID
-                : userID;
-              if (isZoomEnabled) {
-                if (String(data.payload.shareScreenUID) !== String(UID)) {
-                  console.log("check Data Triggered");
-                  dispatch(screenShareTriggeredGlobally(false));
-                }
-              }
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "PRESENTATION_PARTICIPANT_LEFT".toLowerCase()
-            ) {
-              dispatch(presenterLeaveParticipant(data.payload));
-              console.log("Participant Left:", data.payload.uid);
-            } else if (
-              data.payload.message.toLowerCase() ===
-              "UPCOMING_EVENTS_REMOVE".toLowerCase()
-            ) {
-              dispatch(
-                removeUpComingEvent(
-                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID,
-                ),
-              );
+              break;
             }
-          } catch (error) {
-            console.log(error);
+
+            default: {
+              // Optional: log unhandled messages
+              console.warn("Unhandled MQTT Meeting message:", message);
+              break;
+            }
           }
+        } catch (error) {
+          console.log(error);
         }
       }
-      if (data.action.toLowerCase() === "TODO".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_TODO_CREATION".toLowerCase()
-        ) {
-          dispatch(setTodoListActivityData(data.payload));
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_TODO_CREATION"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "TDOD_STATUS_EDITED".toLowerCase()
-        ) {
-          dispatch(setTodoStatusDataFormSocket(data.payload));
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("TDOD_STATUS_EDITED"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-          }
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "TDOD_STATUS_DELETED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("TDOD_STATUS_DELETED"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
 
-          dispatch(setTodoStatusDataFormSocket(data.payload));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_TODO_DELETED".toLowerCase()
-        ) {
-        } else if (
-          data.payload.message.toLowerCase() === "NEW_TODO_COUNT".toLowerCase()
-        ) {
-          dispatch(getDashboardTaskCountMQTT(data.payload));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_COMMENT_DELETION".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQQTTJSONTwo(
-                t("NEW_COMMENT_DELETION"),
-                "[User]",
-                data.payload.comment.userName,
-                "[Task Title]",
-                data.payload.comment.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-          dispatch(deleteCommentsMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_ADVANCE_MEETING_TODO".toLowerCase())
-        ) {
-          dispatch(createTaskMeetingMQTT(data.payload));
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_TODO_CREATION"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_GROUP_TODO".toLowerCase())
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_TODO_CREATION"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-          dispatch(createTaskGroupMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_COMMITTEE_TODO".toLowerCase())
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_TODO_CREATION"),
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-            setNotificationID(id);
-          }
-          dispatch(createTaskCommitteeMQTT(data.payload));
-        }
-      }
-      if (data.action.toLowerCase() === "COMMENT".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_COMMENT_CREATION".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQQTTJSONTwo(
-                t("NEW_COMMENT_CREATION"),
-                "[User]",
-                data.payload.comment.userName,
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-          }
-          dispatch(postComments(data.payload.comment));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_COMMENT_DELETION".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQQTTJSONTwo(
-                t("NEW_COMMENT_DELETION"),
-                "[User]",
-                data.payload.userName,
-                "[Task Title]",
-                data.payload.todoTitle.substring(0, 100),
-              ),
-            });
-          }
-          dispatch(deleteCommentsMQTT(data.payload));
-          setNotificationID(id);
-        }
-      }
-      if (data.action.toLowerCase() === "Notification".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() === "USER_EDITED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_ROLE_EDITED"),
-              "[organizationName]",
-              data.payload.organizationName,
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            if (data.payload.isLoggedOut === true) {
-              //Apply Logout API here
-              dispatch(userLogOutApiFunc(navigate, t));
-            }
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() === "USER_DELETED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("USER_DELETED"),
-              "[organizationName]",
-              data.payload.organizationName,
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            if (data.payload.isLoggedOut === true) {
-              //Apply Logout API here
-              dispatch(userLogOutApiFunc(navigate, t));
-            }
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_SUBSCRIPTION_CANCELLED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
-              "[organizationName]",
-              data.payload.organizationName,
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            navigate("/");
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_DELETED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: changeMQTTJSONOne(
-              t("ORGANIZATION_DELETED"),
-              "[organizationName]",
-              data.payload.organizationName,
-            ),
-          });
-          setNotificationID(id);
-          setTimeout(() => {
-            navigate("/");
-          }, 4000);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_PROFILE_EDITED".toLowerCase()
-        ) {
-          setNotification({
-            notificationShow: true,
-            message: t("USER_PROFILE_EDITED"),
-          });
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_TODO_CREATION_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: changeMQTTJSONOne(
-                  t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
+      if (data?.action?.toLowerCase() === "todo" && data.payload) {
+        const message = data.payload.message?.toLowerCase();
+
+        switch (message) {
+          case "new_todo_creation": {
+            dispatch(setTodoListActivityData(data.payload));
+
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_TODO_CREATION"),
                   "[Task Title]",
-                  data.payload.taskTitle,
+                  data.payload.todoTitle.substring(0, 100)
                 ),
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
+              });
+              setNotificationID(id);
+            }
+            break;
           }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_MEETTING_CREATION_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: t("NEW_MEETTING_CREATION_RECENT_ACTIVITY"),
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_POLL_PUBLISHED_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: t("NEW_POLL_PUBLISHED_RECENT_ACTIVITY"),
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "POLL_EXPIRED_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: t("POLL_EXPIRED_RECENT_ACTIVITY"),
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "POLL_UPDATED_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: t("POLL_UPDATED_RECENT_ACTIVITY"),
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "POLL_DELETED_RECENT_ACTIVITY".toLowerCase()
-        ) {
-          if (data.payload) {
-            let data2 = {
-              creationDateTime: data.payload.creationDateTime,
-              notificationTypes: {
-                pK_NTID: data.payload.notificationStatusID,
-                description: "The Poll has been deleted",
-                icon: "",
-              },
-              key: 0,
-            };
-            dispatch(setRecentActivityDataNotification(data2));
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_SUBSCRIPTION_INACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: t("Your-subscription-status-has-been-set-to-in-active"),
-            });
-          }
-          setNotificationID(id);
 
-          if (data.payload.isLoggedOut) {
-            setTimeout(() => {
-              dispatch(userLogOutApiFunc(navigate, t));
-            }, 4000);
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_SUBSCRIPTION_SUSPENDED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: t("Your-subscription-has-been-suspended"),
-            });
-          }
-          setNotificationID(id);
+          case "tdod_status_edited": {
+            dispatch(setTodoStatusDataFormSocket(data.payload));
 
-          if (data.payload.isLoggedOut) {
-            setTimeout(() => {
-              dispatch(userLogOutApiFunc(navigate, t));
-            }, 4000);
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("TDOD_STATUS_EDITED"),
+                  "[Task Title]",
+                  data.payload.todoTitle.substring(0, 100)
+                ),
+              });
+              setNotificationID(id);
+            }
+            break;
           }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_STATUS_INACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: t("Your-organization-status-has-been-set-to-in-active"),
-            });
-          }
-          setNotificationID(id);
 
-          if (data.payload.isLoggedOut) {
-            setTimeout(() => {
-              dispatch(userLogOutApiFunc(navigate, t));
-            }, 4000);
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "ORGANIZATION_STATUS_SUSPENDED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: t("Your-organization-status-has-been-suspended"),
-            });
-          }
-          setNotificationID(id);
+          case "tdod_status_deleted": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("TDOD_STATUS_DELETED"),
+                  "[Task Title]",
+                  data.payload.todoTitle.substring(0, 100)
+                ),
+              });
+              setNotificationID(id);
+            }
 
-          if (data.payload.isLoggedOut) {
-            setTimeout(() => {
-              dispatch(userLogOutApiFunc(navigate, t));
-            }, 4000);
+            dispatch(setTodoStatusDataFormSocket(data.payload));
+            break;
           }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_GROUP_CREATION_RECENT_ACTIVITY".toLowerCase()
-        ) {
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "MEETING_STATUS_EDITED_STARTED".toLowerCase()
-        ) {
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_TODO_DELETED_RECENT_ACTIVITY".toLowerCase()
-        ) {
+
+          case "new_todo_deleted": {
+            // No action defined (intentionally left blank)
+            break;
+          }
+
+          case "new_todo_count": {
+            dispatch(getDashboardTaskCountMQTT(data.payload));
+            break;
+          }
+
+          case "new_comment_deletion": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQQTTJSONTwo(
+                  t("NEW_COMMENT_DELETION"),
+                  "[User]",
+                  data.payload.comment.userName,
+                  "[Task Title]",
+                  data.payload.comment.todoTitle.substring(0, 100)
+                ),
+              });
+              setNotificationID(id);
+            }
+
+            dispatch(deleteCommentsMQTT(data.payload));
+            break;
+          }
+
+          default: {
+            // Handle messages that require `includes`
+            if (message?.includes("new_advance_meeting_todo")) {
+              dispatch(createTaskMeetingMQTT(data.payload));
+
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_TODO_CREATION"),
+                    "[Task Title]",
+                    data.payload.todoTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+            } else if (message?.includes("new_group_todo")) {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_TODO_CREATION"),
+                    "[Task Title]",
+                    data.payload.todoTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(createTaskGroupMQTT(data.payload));
+            } else if (message?.includes("new_committee_todo")) {
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_TODO_CREATION"),
+                    "[Task Title]",
+                    data.payload.todoTitle.substring(0, 100)
+                  ),
+                });
+                setNotificationID(id);
+              }
+              dispatch(createTaskCommitteeMQTT(data.payload));
+            } else {
+              console.warn("Unhandled TODO MQTT message:", message);
+            }
+
+            break;
+          }
         }
       }
-      if (data.action.toLowerCase() === "Committee".toLowerCase()) {
+
+      if (data?.action?.toLowerCase() === "comment" && data.payload) {
+        const message = data.payload.message?.toLowerCase();
+
+        switch (message) {
+          case "new_comment_creation": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQQTTJSONTwo(
+                  t("NEW_COMMENT_CREATION"),
+                  "[User]",
+                  data.payload.comment.userName,
+                  "[Task Title]",
+                  data.payload.todoTitle.substring(0, 100)
+                ),
+              });
+              setNotificationID(id);
+            }
+
+            dispatch(postComments(data.payload.comment));
+            break;
+          }
+
+          case "new_comment_deletion": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQQTTJSONTwo(
+                  t("NEW_COMMENT_DELETION"),
+                  "[User]",
+                  data.payload.userName,
+                  "[Task Title]",
+                  data.payload.todoTitle.substring(0, 100)
+                ),
+              });
+              setNotificationID(id);
+            }
+
+            dispatch(deleteCommentsMQTT(data.payload));
+            break;
+          }
+
+          default: {
+            console.warn("Unhandled COMMENT MQTT message:", message);
+            break;
+          }
+        }
+      }
+
+      if (data?.action?.toLowerCase() === "notification" && data.payload) {
+        const message = data.payload.message?.toLowerCase();
+
+        const logoutWithDelay = () => {
+          setTimeout(() => {
+            if (data.payload.isLoggedOut) {
+              dispatch(userLogOutApiFunc(navigate, t));
+            }
+          }, 4000);
+        };
+
+        const navigateHomeWithDelay = () => {
+          setTimeout(() => {
+            navigate("/");
+          }, 4000);
+        };
+
+        const recentActivityDispatcher = (description) => {
+          const payload = data.payload;
+          if (!payload) return;
+
+          dispatch(
+            setRecentActivityDataNotification({
+              creationDateTime: payload.creationDateTime,
+              notificationTypes: {
+                pK_NTID: payload.notificationStatusID,
+                description,
+                icon: "",
+              },
+              key: 0,
+            })
+          );
+        };
+
+        switch (message) {
+          case "user_edited": {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("USER_ROLE_EDITED"),
+                "[organizationName]",
+                data.payload.organizationName
+              ),
+            });
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "user_deleted": {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("USER_DELETED"),
+                "[organizationName]",
+                data.payload.organizationName
+              ),
+            });
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "organization_subscription_cancelled": {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
+                "[organizationName]",
+                data.payload.organizationName
+              ),
+            });
+            setNotificationID(id);
+            navigateHomeWithDelay();
+            break;
+          }
+
+          case "organization_deleted": {
+            setNotification({
+              notificationShow: true,
+              message: changeMQTTJSONOne(
+                t("ORGANIZATION_DELETED"),
+                "[organizationName]",
+                data.payload.organizationName
+              ),
+            });
+            setNotificationID(id);
+            navigateHomeWithDelay();
+            break;
+          }
+
+          case "user_profile_edited": {
+            setNotification({
+              notificationShow: true,
+              message: t("USER_PROFILE_EDITED"),
+            });
+            setNotificationID(id);
+            break;
+          }
+
+          case "new_todo_creation_recent_activity": {
+            recentActivityDispatcher(
+              changeMQTTJSONOne(
+                t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
+                "[Task Title]",
+                data.payload.taskTitle
+              )
+            );
+            break;
+          }
+
+          case "new_meetting_creation_recent_activity": {
+            recentActivityDispatcher(
+              t("NEW_MEETTING_CREATION_RECENT_ACTIVITY")
+            );
+            break;
+          }
+
+          case "new_poll_published_recent_activity": {
+            recentActivityDispatcher(t("NEW_POLL_PUBLISHED_RECENT_ACTIVITY"));
+            break;
+          }
+
+          case "poll_expired_recent_activity": {
+            recentActivityDispatcher(t("POLL_EXPIRED_RECENT_ACTIVITY"));
+            break;
+          }
+
+          case "poll_updated_recent_activity": {
+            recentActivityDispatcher(t("POLL_UPDATED_RECENT_ACTIVITY"));
+            break;
+          }
+
+          case "poll_deleted_recent_activity": {
+            recentActivityDispatcher("The Poll has been deleted");
+            break;
+          }
+
+          case "organization_subscription_inactive": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  "Your-subscription-status-has-been-set-to-in-active"
+                ),
+              });
+            }
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "organization_subscription_suspended": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t("Your-subscription-has-been-suspended"),
+              });
+            }
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "organization_status_inactive": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t(
+                  "Your-organization-status-has-been-set-to-in-active"
+                ),
+              });
+            }
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "organization_status_suspended": {
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: t("Your-organization-status-has-been-suspended"),
+              });
+            }
+            setNotificationID(id);
+            logoutWithDelay();
+            break;
+          }
+
+          case "new_group_creation_recent_activity":
+          case "meeting_status_edited_started":
+          case "new_todo_deleted_recent_activity": {
+            // Intentionally left blank (future handling)
+            break;
+          }
+
+          default: {
+            console.warn("Unhandled NOTIFICATION MQTT message:", message);
+            break;
+          }
+        }
+      }
+
+      if (data.action.toLowerCase() === "committee" && data.payload) {
+        switch (data.payload.message.toLowerCase()) {
+          case "new_committee_creation":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_COMMITTEE_CREATION"),
+                  "[Committe Title]",
+                  data.payload.committees.committeesTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeCommitteeResponse(data.payload.committees));
+            setNotificationID(id);
+            break;
+
+          case "new_member_added_in_committee":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
+                  "[Committee Title]",
+                  data.payload.committees.committeesTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeCommitteeResponse(data.payload.committees));
+            setNotificationID(id);
+            break;
+
+          case "committtee_status_edited_in_active":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
+                  "[Committee Title]",
+                  data.payload.committeeTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeCommitteeStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "committtee_status_edited_archived":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("COMMITTTEE_STATUS_EDITED_ARCHIVED"),
+                  "[Committee Title]",
+                  data.payload.committeeTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeCommitteeStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "committtee_status_edited_active":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
+                  "[Committee Title]",
+                  data.payload.committeeTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeCommitteeStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "member_removed_from_committee":
+            dispatch(removeCommitteeMemberMQTT(data.payload));
+            setNotificationID(id);
+
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("MEMBER_REMOVED_FROM_COMMITTEE"),
+                  "[Committee Title]",
+                  data.payload.committees.committeesTitle.substring(0, 100)
+                ),
+              });
+            }
+            break;
+
+          default:
+            break;
+        }
+      }
+      if (data.action.toLowerCase() === "group") {
         console.log(data.action, "actionactionactionaction");
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_COMMITTEE_CREATION".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_COMMITTEE_CREATION"),
-                "[Committe Title]",
-                data.payload.committees.committeesTitle.substring(0, 100),
-              ),
-              // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
-            });
-          }
-          dispatch(realtimeCommitteeResponse(data.payload.committees));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_MEMBER_ADDED_IN_COMMITTEE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
-                "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100),
-              ),
-              // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
-            });
-          }
-          dispatch(realtimeCommitteeResponse(data.payload.committees));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "COMMITTTEE_STATUS_EDITED_IN_ACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
-                "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100),
-              ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
-            });
-          }
-          dispatch(realtimeCommitteeStatusResponse(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "COMMITTTEE_STATUS_EDITED_ARCHIVED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("COMMITTTEE_STATUS_EDITED_ARCHIVED"),
-                "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100),
-              ),
-            });
-          }
-          dispatch(realtimeCommitteeStatusResponse(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "COMMITTTEE_STATUS_EDITED_ACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
-                "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100),
-              ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
-            });
-          }
-          dispatch(realtimeCommitteeStatusResponse(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "MEMBER_REMOVED_FROM_COMMITTEE".toLowerCase()
-        ) {
-          dispatch(removeCommitteeMemberMQTT(data.payload));
-          setNotificationID(id);
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("MEMBER_REMOVED_FROM_COMMITTEE"),
-                "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100),
-              ),
-              // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
-            });
-          }
+
+        switch (data.payload.message.toLowerCase()) {
+          case "new_group_creation":
+            console.log(data.payload.message, "actionactionactionaction");
+            console.log(data.viewable, "actionactionactionaction");
+            console.log(data.payload, "actionactionactionaction");
+
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_GROUP_CREATION"),
+                  "[Group Title]",
+                  data.payload.groups.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeGroupResponse(data.payload.groups));
+            setNotificationID(id);
+            break;
+
+          case "new_group_member_added":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_GROUP_MEMBER_ADDED"),
+                  "[Group Title]",
+                  data.payload.groups.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeGroupResponse(data.payload.groups));
+            setNotificationID(id);
+            break;
+
+          case "group_status_edited_in-active":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("GROUP_STATUS_EDITED_IN-ACTIVE"),
+                  "[Group Title]",
+                  data.payload.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeGroupStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "group_status_edited_archived":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("GROUP_STATUS_EDITED_ARCHIVED"),
+                  "[Group Title]",
+                  data.payload.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeGroupStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "group_member_removed":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("GROUP_MEMBER_REMOVED"),
+                  "[Group Title]",
+                  data.payload.groups.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(removeGroupMemberMQTT(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "group_status_edited_active":
+            if (data.viewable) {
+              setNotification({
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("GROUP_STATUS_EDITED_ACTIVE"),
+                  "[Group Title]",
+                  data.payload.groupTitle.substring(0, 100)
+                ),
+              });
+            }
+            dispatch(realtimeGroupStatusResponse(data.payload));
+            setNotificationID(id);
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "Group".toLowerCase()) {
-        console.log(data.action, "actionactionactionaction");
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_GROUP_CREATION".toLowerCase()
-        ) {
-          console.log(data.payload.message, "actionactionactionaction");
-          console.log(data.viewable, "actionactionactionaction");
-          console.log(data.payload, "actionactionactionaction");
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_GROUP_CREATION"),
-                "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100),
-              ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
-            });
-          }
-          dispatch(realtimeGroupResponse(data.payload.groups));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_GROUP_MEMBER_ADDED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_GROUP_MEMBER_ADDED"),
-                "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100),
-              ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
-            });
-          }
-          dispatch(realtimeGroupResponse(data.payload.groups));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "GROUP_STATUS_EDITED_IN-ACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("GROUP_STATUS_EDITED_IN-ACTIVE"),
-                "[Group Title]",
-                data.payload.groupTitle.substring(0, 100),
-              ),
-              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
-            });
-          }
-          dispatch(realtimeGroupStatusResponse(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "GROUP_STATUS_EDITED_ARCHIVED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("GROUP_STATUS_EDITED_ARCHIVED"),
-                "[Group Title]",
-                data.payload.groupTitle.substring(0, 100),
-              ),
-            });
-          }
-          dispatch(realtimeGroupStatusResponse(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "GROUP_MEMBER_REMOVED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("GROUP_MEMBER_REMOVED"),
-                "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100),
-              ),
-              // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
-            });
-          }
-          dispatch(removeGroupMemberMQTT(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "GROUP_STATUS_EDITED_ACTIVE".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("GROUP_STATUS_EDITED_ACTIVE"),
-                "[Group Title]",
-                data.payload.groupTitle.substring(0, 100),
-              ),
-              // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
-            });
-          }
-          dispatch(realtimeGroupStatusResponse(data.payload));
-          setNotificationID(id);
-        }
-      }
+
       if (
-        data.action.toLowerCase() === "TALK".toLowerCase() &&
+        data.action.toLowerCase() === "talk" &&
         checkFeatureIDAvailability(3)
       ) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_ONE_TO_ONE_MESSAGE".toLowerCase()
-        ) {
-          let newMessageData = data.payload.data[0];
-          let activeOtoChatID = localStorage.getItem("activeOtoChatID");
-          if (data.payload.data[0].senderID !== parseInt(createrID)) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `You have received a new message from ${data.payload.data[0].senderName}`,
-            });
-          }
-          dispatch(mqttInsertOtoMessage(data.payload));
-          setNotificationID(id);
-          if (
-            data.payload.data[0].senderID !== parseInt(createrID) &&
-            (parseInt(activeOtoChatID) !== data.payload.data[0].senderID ||
-              parseInt(activeOtoChatID) === 0)
-          ) {
-            let apiAcknowledgementData = {
-              TalkRequest: {
-                ChannelID: newMessageData.channelID,
-                Chat: {
-                  ChatID: newMessageData.senderID,
-                  MyID: parseInt(createrID),
-                  MessageStatus: "Delivered",
-                  SenderID: newMessageData.senderID,
-                  MessageID: newMessageData.messageID,
-                  ChatType: "O",
-                },
-              },
-            };
-            dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
-            );
-          } else if (
-            data.payload.data[0].senderID !== parseInt(createrID) &&
-            (parseInt(activeOtoChatID) === data.payload.data[0].senderID ||
-              parseInt(activeOtoChatID) !== 0)
-          ) {
-            let apiAcknowledgementData = {
-              TalkRequest: {
-                ChannelID: newMessageData.channelID,
-                Chat: {
-                  ChatID: newMessageData.senderID,
-                  MyID: parseInt(createrID),
-                  MessageStatus: "Seen",
-                  SenderID: newMessageData.senderID,
-                  MessageID: newMessageData.messageID,
-                  ChatType: "O",
-                },
-              },
-            };
-            dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
-            );
-          }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_GROUP_MESSAGE".toLowerCase()
-        ) {
-          if (data.payload.data[0].senderID !== parseInt(createrID)) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `${data.payload.data[0].senderName} has sent a message in group ${data.payload.data[0].groupName}`,
-            });
-          }
-          dispatch(mqttInsertPrivateGroupMessage(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "USER_IS_BLOCKED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: "Selected user is blocked",
-          });
-          dispatch(mqttBlockUser(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_IS_UNBLOCKED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: "Selected user is Unblocked",
-          });
-          dispatch(mqttUnblockUser(data.payload));
-          setNotificationID(id);
-        }
-        //
-        else if (
-          data.payload.message.toLowerCase() === "MESSAGE_FLAGGED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: "Message Starred",
-          });
-          dispatch(mqttStarMessage(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "MESSAGE_UNFLAGGED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: "Message Unstarred",
-          });
-          dispatch(mqttUnstarMessage(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_GROUP_CREATED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
-          });
-          dispatch(mqttGroupCreated(data.payload));
+        switch (data.payload.message.toLowerCase()) {
+          case "new_one_to_one_message": {
+            let newMessageData = data.payload.data[0];
+            let activeOtoChatID = localStorage.getItem("activeOtoChatID");
 
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "GROUP_MODIFIED".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: `Group ${data.payload.data[0].fullName} has updated`,
-          });
-          dispatch(mqttGroupUpdated(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "UNREAD_MESSAGES_COUNT".toLowerCase()
-        ) {
-          dispatch(mqttUnreadMessageCount(data.payload));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "NEW_BROADCAST_MESSAGE".toLowerCase()
-        ) {
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
-          });
-          dispatch(mqttInsertBroadcastMessage(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "MESSAGE_DELIVERED".toLowerCase()
-        ) {
-          dispatch(mqttMessageStatusUpdate(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "MESSAGE_SEEN".toLowerCase()
-        ) {
-          dispatch(mqttMessageStatusUpdate(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "MESSAGE_DELETED".toLowerCase()
-        ) {
-          dispatch(mqttMessageDeleted(data.payload));
-          setNotification({
-            ...notification,
-            notificationShow: true,
-            message: `Message Deleted`,
-          });
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "USER_LEFT_THE_GROUP".toLowerCase()
-        ) {
-          if (data.senderID === Number(createrID)) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: "You have left the group",
-            });
+            if (data.payload.data[0].senderID !== parseInt(createrID)) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `You have received a new message from ${data.payload.data[0].senderName}`,
+              });
+            }
+
+            dispatch(mqttInsertOtoMessage(data.payload));
             setNotificationID(id);
-            dispatch(mqttGroupLeft(data.payload));
-          } else {
-            dispatch(mqttGroupLeft(data.payload));
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: data.payload.data[0].notiMsg,
-            });
-            setNotificationID(id);
+
+            if (
+              data.payload.data[0].senderID !== parseInt(createrID) &&
+              (parseInt(activeOtoChatID) !== data.payload.data[0].senderID ||
+                parseInt(activeOtoChatID) === 0)
+            ) {
+              let apiAcknowledgementData = {
+                TalkRequest: {
+                  ChannelID: newMessageData.channelID,
+                  Chat: {
+                    ChatID: newMessageData.senderID,
+                    MyID: parseInt(createrID),
+                    MessageStatus: "Delivered",
+                    SenderID: newMessageData.senderID,
+                    MessageID: newMessageData.messageID,
+                    ChatType: "O",
+                  },
+                },
+              };
+              dispatch(
+                UpdateMessageAcknowledgement(
+                  apiAcknowledgementData,
+                  t,
+                  navigate
+                )
+              );
+            } else if (
+              data.payload.data[0].senderID !== parseInt(createrID) &&
+              (parseInt(activeOtoChatID) === data.payload.data[0].senderID ||
+                parseInt(activeOtoChatID) !== 0)
+            ) {
+              let apiAcknowledgementData = {
+                TalkRequest: {
+                  ChannelID: newMessageData.channelID,
+                  Chat: {
+                    ChatID: newMessageData.senderID,
+                    MyID: parseInt(createrID),
+                    MessageStatus: "Seen",
+                    SenderID: newMessageData.senderID,
+                    MessageID: newMessageData.messageID,
+                    ChatType: "O",
+                  },
+                },
+              };
+              dispatch(
+                UpdateMessageAcknowledgement(
+                  apiAcknowledgementData,
+                  t,
+                  navigate
+                )
+              );
+            }
+            break;
           }
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "LAST_MESSAGE_AFTER_DELETION".toLowerCase()
-        ) {
-          dispatch(lastMessageDeletion(data.payload));
+
+          case "new_group_message":
+            if (data.payload.data[0].senderID !== parseInt(createrID)) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `${data.payload.data[0].senderName} has sent a message in group ${data.payload.data[0].groupName}`,
+              });
+            }
+            dispatch(mqttInsertPrivateGroupMessage(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "user_is_blocked":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: "Selected user is blocked",
+            });
+            dispatch(mqttBlockUser(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "user_is_unblocked":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: "Selected user is Unblocked",
+            });
+            dispatch(mqttUnblockUser(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "message_flagged":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: "Message Starred",
+            });
+            dispatch(mqttStarMessage(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "message_unflagged":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: "Message Unstarred",
+            });
+            dispatch(mqttUnstarMessage(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "new_group_created":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
+            });
+            dispatch(mqttGroupCreated(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "group_modified":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: `Group ${data.payload.data[0].fullName} has updated`,
+            });
+            dispatch(mqttGroupUpdated(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "unread_messages_count":
+            dispatch(mqttUnreadMessageCount(data.payload));
+            break;
+
+          case "new_broadcast_message":
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
+            });
+            dispatch(mqttInsertBroadcastMessage(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "message_delivered":
+          case "message_seen":
+            dispatch(mqttMessageStatusUpdate(data.payload));
+            setNotificationID(id);
+            break;
+
+          case "message_deleted":
+            dispatch(mqttMessageDeleted(data.payload));
+            setNotification({
+              ...notification,
+              notificationShow: true,
+              message: "Message Deleted",
+            });
+            setNotificationID(id);
+            break;
+
+          case "user_left_the_group":
+            if (data.senderID === Number(createrID)) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: "You have left the group",
+              });
+              setNotificationID(id);
+              dispatch(mqttGroupLeft(data.payload));
+            } else {
+              dispatch(mqttGroupLeft(data.payload));
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: data.payload.data[0].notiMsg,
+              });
+              setNotificationID(id);
+            }
+            break;
+
+          case "last_message_after_deletion":
+            dispatch(lastMessageDeletion(data.payload));
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "Polls".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_POLL_PUBLISHED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_POLL_PUBLISHED"),
-                "[Poll Title]",
-                data.payload.pollTitle.slice(0, 30),
-              ),
-            });
-          }
 
-          dispatch(notifyPollingSocket(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "POLL_UPDATED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("POLL_UPDATED"),
-                "[Poll Title]",
-                data.payload.pollTitle,
-              ),
-            });
-          }
-          dispatch(notifyPollingSocket(data.payload));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() === "POLL_EXPIRED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("POLL_EXPIRED"),
-                "[Poll Title]",
-                data.payload.pollTitle,
-              ),
-            });
-          }
-          dispatch(notifyPollingSocket(data.payload.polls));
-          setNotificationID(id);
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "PUBLISHED_POLL_DELETED".toLowerCase()
-        ) {
-          dispatch(deletePollsMQTT(data.payload.polls));
-          setNotificationID(id);
-          try {
+      if (data.action.toLowerCase() === "polls") {
+        switch (data.payload.message.toLowerCase()) {
+          case "new_poll_published":
             if (data.viewable) {
               setNotification({
                 ...notification,
                 notificationShow: true,
                 message: changeMQTTJSONOne(
-                  t("PUBLISHED_POLL_DELETED"),
+                  t("NEW_POLL_PUBLISHED"),
                   "[Poll Title]",
-                  data.payload.pollTitle,
+                  data.payload.pollTitle.slice(0, 30)
                 ),
               });
             }
-          } catch {}
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_POLL_PUBLISHED_GROUP".toLowerCase())
-        ) {
-          dispatch(createPollGroupsMQTT(data.payload));
-          setNotificationID(id);
+            dispatch(notifyPollingSocket(data.payload));
+            setNotificationID(id);
+            break;
 
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_POLL_PUBLISHED"),
-                "[Poll Title]",
-                data.payload.pollTitle,
-              ),
-            });
-          }
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_POLL_PUBLISHED_COMMITTEE".toLowerCase())
-        ) {
-          dispatch(createPollCommitteesMQTT(data.payload));
-          setNotificationID(id);
+          case "poll_updated":
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("POLL_UPDATED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle
+                ),
+              });
+            }
+            dispatch(notifyPollingSocket(data.payload));
+            setNotificationID(id);
+            break;
 
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_POLL_PUBLISHED"),
-                "[Poll Title]",
-                data.payload.pollTitle,
-              ),
-            });
-          }
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_POLL_PUBLISHED_MEETING".toLowerCase())
-        ) {
-          dispatch(createPollMeetingMQTT(data.payload));
-          setNotificationID(id);
-          let currentMeetingActive =
-            localStorage.getItem("currentMeetingID") !== null
-              ? Number(localStorage.getItem("currentMeetingID"))
-              : 0;
-          console.log(currentMeetingActive, "currentMeetingActive");
-          if (
-            Number(data?.payload?.meetingID) === Number(currentMeetingActive)
-          ) {
-            dispatch(castYourVotePollModal(true));
-          }
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_POLL_PUBLISHED"),
-                "[Poll Title]",
-                data.payload.pollTitle,
-              ),
-            });
-          }
+          case "poll_expired":
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("POLL_EXPIRED"),
+                  "[Poll Title]",
+                  data.payload.pollTitle
+                ),
+              });
+            }
+            dispatch(notifyPollingSocket(data.payload.polls));
+            setNotificationID(id);
+            break;
+
+          case "published_poll_deleted":
+            dispatch(deletePollsMQTT(data.payload.polls));
+            setNotificationID(id);
+            try {
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("PUBLISHED_POLL_DELETED"),
+                    "[Poll Title]",
+                    data.payload.pollTitle
+                  ),
+                });
+              }
+            } catch {}
+            break;
+
+          default:
+            if (
+              data.payload.message
+                .toLowerCase()
+                .includes("new_poll_published_group")
+            ) {
+              dispatch(createPollGroupsMQTT(data.payload));
+              setNotificationID(id);
+
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_POLL_PUBLISHED"),
+                    "[Poll Title]",
+                    data.payload.pollTitle
+                  ),
+                });
+              }
+            } else if (
+              data.payload.message
+                .toLowerCase()
+                .includes("new_poll_published_committee")
+            ) {
+              dispatch(createPollCommitteesMQTT(data.payload));
+              setNotificationID(id);
+
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_POLL_PUBLISHED"),
+                    "[Poll Title]",
+                    data.payload.pollTitle
+                  ),
+                });
+              }
+            } else if (
+              data.payload.message
+                .toLowerCase()
+                .includes("new_poll_published_meeting")
+            ) {
+              dispatch(createPollMeetingMQTT(data.payload));
+              setNotificationID(id);
+
+              let currentMeetingActive =
+                localStorage.getItem("currentMeetingID") !== null
+                  ? Number(localStorage.getItem("currentMeetingID"))
+                  : 0;
+
+              if (
+                Number(data?.payload?.meetingID) ===
+                Number(currentMeetingActive)
+              ) {
+                dispatch(castYourVotePollModal(true));
+              }
+
+              if (data.viewable) {
+                setNotification({
+                  ...notification,
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("NEW_POLL_PUBLISHED"),
+                    "[Poll Title]",
+                    data.payload.pollTitle
+                  ),
+                });
+              }
+            }
+            break;
         }
       }
-      if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_RESOLUTION_CREATION".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("NEW_RESOLUTION_CREATION"),
-                "[Resolution Title]",
-                data.payload.model.resolution.title,
-              ),
-            });
-          }
-          dispatch(resolutionMQTTCreate(data.payload.model));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "RESOLUTION_CANCELLED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("RESOLUTION_CANCELLED"),
-                "[Resolution Title]",
-                data.payload.model.resolution.title,
-              ),
-            });
-          }
-          dispatch(resolutionMQTTCancelled(data.payload.model));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "RESOLUTION_CLOSED".toLowerCase()
-        ) {
-          if (data.viewable) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: t("RESOLUTION_CLOSED"),
-              // message: changeMQTTJSONOne(
-              //   t("RESOLUTION_CLOSED"),
-              //   "[Resolution Title]",
-              //   data.payload.model.resolution.title
-              // ),
-            });
-          }
-          dispatch(resolutionMQTTClosed(data.payload.model));
-        } else if (
-          data.payload.message.toLowerCase() ===
-          "RESOULUTION_VOTE_COUNTER".toLowerCase()
-        ) {
-          dispatch(resolutionMQTTVoteCounter(data.payload.data));
+
+      if (data.action.toLowerCase() === "resolution") {
+        switch (data.payload.message.toLowerCase()) {
+          case "new_resolution_creation":
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("NEW_RESOLUTION_CREATION"),
+                  "[Resolution Title]",
+                  data.payload.model.resolution.title
+                ),
+              });
+            }
+            dispatch(resolutionMQTTCreate(data.payload.model));
+            break;
+
+          case "resolution_cancelled":
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: changeMQTTJSONOne(
+                  t("RESOLUTION_CANCELLED"),
+                  "[Resolution Title]",
+                  data.payload.model.resolution.title
+                ),
+              });
+            }
+            dispatch(resolutionMQTTCancelled(data.payload.model));
+            break;
+
+          case "resolution_closed":
+            if (data.viewable) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: t("RESOLUTION_CLOSED"),
+              });
+            }
+            dispatch(resolutionMQTTClosed(data.payload.model));
+            break;
+
+          case "resoulution_vote_counter":
+            dispatch(resolutionMQTTVoteCounter(data.payload.data));
+            break;
+
+          default:
+            break;
         }
       }
+
       if (
         data.action.toLowerCase() === "Video".toLowerCase() &&
         checkFeatureIDAvailability(4)
@@ -3160,7 +2283,7 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           // localStorage.setItem("RingerCallCheckFlag", true);
           // localStorage.setItem("callType", data.payload.callType);
@@ -3246,7 +2369,7 @@ const Dashboard = () => {
           let userID = localStorage.getItem("userID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -3270,8 +2393,7 @@ const Dashboard = () => {
               console.log("Filtering participant:", data.payload.recepientID);
 
               return prevList.filter(
-                (participant) =>
-                  participant.userID !== data.payload.recepientID,
+                (participant) => participant.userID !== data.payload.recepientID
               );
             });
           }
@@ -3281,7 +2403,7 @@ const Dashboard = () => {
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
-                (user) => user.recepientID === data.payload.recepientID,
+                (user) => user.recepientID === data.payload.recepientID
               );
               if (!userExists) {
                 return [...prevState, data.payload];
@@ -3322,7 +2444,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3364,19 +2486,19 @@ const Dashboard = () => {
             };
             if (RecipentIDsOninitiateVideoCall.length > 0) {
               const index = RecipentIDsOninitiateVideoCall.indexOf(
-                data.payload.recepientID,
+                data.payload.recepientID
               );
               if (index !== -1) {
                 // Remove the matching value
                 RecipentIDsOninitiateVideoCall.splice(index, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(RecipentIDsOninitiateVideoCall),
+                  JSON.stringify(RecipentIDsOninitiateVideoCall)
                 );
                 existingData.push(newData);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData),
+                  JSON.stringify(existingData)
                 );
                 dispatch(callRequestReceivedMQTT({}, ""));
               }
@@ -3395,7 +2517,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3418,7 +2540,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*",
+                  "*"
                 );
               }
             }
@@ -3427,8 +2549,8 @@ const Dashboard = () => {
           if (CallType === 2) {
             setGroupCallParticipantList((prevState) =>
               prevState.filter(
-                (user) => user.userID !== data.payload.recepientID,
-              ),
+                (user) => user.userID !== data.payload.recepientID
+              )
             );
           }
           let falgCheck1 = false;
@@ -3464,7 +2586,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3496,7 +2618,7 @@ const Dashboard = () => {
               existingData.push(newData);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(existingData),
+                JSON.stringify(existingData)
               );
               let RecipentIDsOninitiateVideoCallflag = false;
               let remainingCount = 0;
@@ -3505,14 +2627,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID,
+                  data.payload.recepientID
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall),
+                    JSON.stringify(RecipentIDsOninitiateVideoCall)
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -3525,13 +2647,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
+                      item.RoomID === newData.RoomID
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData),
+                      JSON.stringify(existingData)
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3567,13 +2689,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
+                      item.RoomID === newData.RoomID
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData),
+                      JSON.stringify(existingData)
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3622,15 +2744,15 @@ const Dashboard = () => {
             (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
-                ? localStorage.getItem("activeRoomID") != 0 &&
-                  localStorage.getItem("activeRoomID") != null
-                  ? localStorage.getItem("activeRoomID")
-                  : localStorage.getItem("initiateCallRoomID")
-                : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
-                  ? newRoomID
-                  : localStorage.getItem("participantRoomId");
+              ? localStorage.getItem("activeRoomID") != 0 &&
+                localStorage.getItem("activeRoomID") != null
+                ? localStorage.getItem("activeRoomID")
+                : localStorage.getItem("initiateCallRoomID")
+              : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+              ? newRoomID
+              : localStorage.getItem("participantRoomId");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
@@ -3665,7 +2787,7 @@ const Dashboard = () => {
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
               let initiateVideoCall = JSON.parse(
-                localStorage.getItem("initiateVideoCall"),
+                localStorage.getItem("initiateVideoCall")
               );
               let initiateCallRoomID =
                 localStorage.getItem("initiateCallRoomID");
@@ -3686,7 +2808,7 @@ const Dashboard = () => {
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message),
+                callRequestReceivedMQTT(data.payload, data.payload.message)
               );
               console.log(data.payload.message, "datapayloadmessage");
             } else {
@@ -3696,7 +2818,7 @@ const Dashboard = () => {
                 setUnansweredCallParticipant((prevState) => {
                   // Check if the user is already in the accepted list
                   const userExists = prevState.some(
-                    (user) => user.recepientID === data.payload.recepientID,
+                    (user) => user.recepientID === data.payload.recepientID
                   );
 
                   console.log(userExists, "userExists");
@@ -3711,11 +2833,11 @@ const Dashboard = () => {
               // Step 1: Update RecipentIDsOninitiateVideoCall
               let recipientIDsOnInitiate =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
                 ) || [];
 
               const recipientIndex = recipientIDsOnInitiate.indexOf(
-                participantWhoDidNotRespond,
+                participantWhoDidNotRespond
               );
               console.log("setLeaveOneToOne", recipientIndex);
               if (recipientIndex !== -1) {
@@ -3723,7 +2845,7 @@ const Dashboard = () => {
                 recipientIDsOnInitiate.splice(recipientIndex, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(recipientIDsOnInitiate),
+                  JSON.stringify(recipientIDsOnInitiate)
                 );
               }
 
@@ -3734,19 +2856,19 @@ const Dashboard = () => {
               callerStatusList = callerStatusList.filter(
                 (obj) =>
                   obj.participantId !== participantWhoDidNotRespond &&
-                  obj.CallStatus !== "Rejected", // Remove all Rejected
+                  obj.CallStatus !== "Rejected" // Remove all Rejected
               );
 
               console.log("setLeaveOneToOne", callerStatusList);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(callerStatusList),
+                JSON.stringify(callerStatusList)
               );
 
               // Step 3: Fetch updated arrays again
               const remainingRecipients =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
                 ) || [];
               console.log("setLeaveOneToOne", remainingRecipients);
 
@@ -3754,7 +2876,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               console.log(
                 "setLeaveOneToOne",
-                checkCallStatus(remainingCallerStatus),
+                checkCallStatus(remainingCallerStatus)
               );
 
               // Step 4: Final condition
@@ -3769,7 +2891,7 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
                 dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message),
+                  callRequestReceivedMQTT(data.payload, data.payload.message)
                 );
               }
             }
@@ -3784,7 +2906,7 @@ const Dashboard = () => {
             localStorage.setItem("ringerRoomId", data.payload.roomID);
             localStorage.setItem("initiateVideoCall", true);
             dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message),
+              callRequestReceivedMQTT(data.payload, data.payload.message)
             );
             let existingData =
               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3798,7 +2920,7 @@ const Dashboard = () => {
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID,
+                item.RoomID === newData.RoomID
             );
             if (existingObjectIndex !== -1) {
               existingData[existingObjectIndex] = newData;
@@ -3807,7 +2929,7 @@ const Dashboard = () => {
             }
             localStorage.setItem(
               "callerStatusObject",
-              JSON.stringify(existingData),
+              JSON.stringify(existingData)
             );
             let Dataa = {
               OrganizationID: Number(currentOrganization),
@@ -3822,7 +2944,7 @@ const Dashboard = () => {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
@@ -3889,7 +3011,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false,
+                  false
                 );
               }
               localStorage.setItem("newCallerID", callerID);
@@ -3939,7 +3061,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false,
+                  false
                 );
               }
               localStorage.setItem("newCallerID", callerID);
@@ -3960,7 +3082,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false,
+                  false
                 );
 
                 localStorage.removeItem("acceptedRoomID");
@@ -4011,7 +3133,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false,
+                  false
                 );
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
@@ -4019,11 +3141,11 @@ const Dashboard = () => {
                 let acceptedRoomID = "";
                 if (isZoomEnabled) {
                   acceptedRoomID = String(
-                    localStorage.getItem("acceptedRoomID"),
+                    localStorage.getItem("acceptedRoomID")
                   );
                 } else {
                   acceptedRoomID = Number(
-                    localStorage.getItem("acceptedRoomID"),
+                    localStorage.getItem("acceptedRoomID")
                   );
                 }
 
@@ -4041,7 +3163,7 @@ const Dashboard = () => {
                 localStorage.setItem("activeCall", false);
                 sessionStorage.setItem(
                   "activeCallSessionforOtoandGroup",
-                  false,
+                  false
                 );
               }
             } else {
@@ -4061,10 +3183,10 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           let isMeetingVideoHostCheck = JSON.parse(
-            localStorage.getItem("isMeetingVideoHostCheck"),
+            localStorage.getItem("isMeetingVideoHostCheck")
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -4082,7 +3204,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*",
+                  "*"
                 );
               }
             } else if (
@@ -4098,7 +3220,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop Call Type 2");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*",
+                  "*"
                 );
               }
             }
@@ -4109,12 +3231,12 @@ const Dashboard = () => {
                 presenterViewJoinFlagRef.current)
                 ? String(roomID)
                 : isMeetingVideo
-                  ? isMeetingVideoHostCheck
-                    ? String(newRoomID)
-                    : String(participantRoomId)
-                  : String(initiateCallRoomID)
-                    ? String(initiateCallRoomID)
-                    : String(activeRoomID);
+                ? isMeetingVideoHostCheck
+                  ? String(newRoomID)
+                  : String(participantRoomId)
+                : String(initiateCallRoomID)
+                ? String(initiateCallRoomID)
+                : String(activeRoomID);
           } else {
             RoomID =
               presenterViewFlagRef.current &&
@@ -4122,12 +3244,12 @@ const Dashboard = () => {
                 presenterViewJoinFlagRef.current)
                 ? Number(roomID)
                 : isMeetingVideo
-                  ? isMeetingVideoHostCheck
-                    ? Number(newRoomID)
-                    : Number(participantRoomId)
-                  : Number(initiateCallRoomID)
-                    ? Number(initiateCallRoomID)
-                    : Number(activeRoomID);
+                ? isMeetingVideoHostCheck
+                  ? Number(newRoomID)
+                  : Number(participantRoomId)
+                : Number(initiateCallRoomID)
+                ? Number(initiateCallRoomID)
+                : Number(activeRoomID);
           }
 
           console.log("mqtt");
@@ -4137,9 +3259,8 @@ const Dashboard = () => {
             // Also remove the user from groupCallParticipantList
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
-                (participant) =>
-                  participant.userID !== data.payload.recipientID,
-              ),
+                (participant) => participant.userID !== data.payload.recipientID
+              )
             );
           }
 
@@ -4166,7 +3287,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               let RecipentIDsOninitiateVideoCall =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
                 ) || [];
 
               let newData = {
@@ -4180,7 +3301,7 @@ const Dashboard = () => {
                 (item) =>
                   item.RecipientName === newData.RecipientName &&
                   item.RecipientID === newData.RecipientID &&
-                  item.RoomID === newData.RoomID,
+                  item.RoomID === newData.RoomID
               );
               // console.log("mqtt",RoomID)
 
@@ -4188,7 +3309,7 @@ const Dashboard = () => {
                 existingData.splice(existingObjectIndex, 1);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData),
+                  JSON.stringify(existingData)
                 );
                 if (
                   RecipentIDsOninitiateVideoCall.length === 0 &&
@@ -4261,7 +3382,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo"),
+            localStorage.getItem("isMeetingVideo")
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -4291,12 +3412,12 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
+              localStorage.getItem("RecipentIDsOninitiateVideoCall")
             ) || [];
           console.log(isMeetingVideo, "Check Is Mqtt");
           console.log(
             Number(data.payload.roomID) === Number(roomID),
-            "Check Is Mqtt",
+            "Check Is Mqtt"
           );
           console.log(data.payload.roomID, "Check Is Mqtt");
           console.log(roomID, "Check Is Mqtt");
@@ -4351,14 +3472,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID,
+                  data.payload.recepientID
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall),
+                    JSON.stringify(RecipentIDsOninitiateVideoCall)
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -4371,13 +3492,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
+                      item.RoomID === newData.RoomID
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData),
+                      JSON.stringify(existingData)
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4411,13 +3532,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID,
+                      item.RoomID === newData.RoomID
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData),
+                      JSON.stringify(existingData)
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4449,129 +3570,127 @@ const Dashboard = () => {
           }
         }
       }
-      if (data.action.toLowerCase() === "Notes".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "NEW_NOTES_CREATION".toLowerCase()
-        ) {
-          let data2 = {
-            creationDateTime: data.dateTime,
-            notificationTypes: {
-              pK_NTID: 10,
-              description: changeMQTTJSONOne(
-                t("NOTES-RECENT-ACTIVITY"),
-                "[Notes Title]",
-                data.payload.model.title,
-              ),
-              icon: "",
-            },
-            key: 0,
-          };
+      if (data.action.toLowerCase() === "notes") {
+        switch (data.payload.message.toLowerCase()) {
+          case "new_notes_creation":
+            const data2 = {
+              creationDateTime: data.dateTime,
+              notificationTypes: {
+                pK_NTID: 10,
+                description: changeMQTTJSONOne(
+                  t("NOTES-RECENT-ACTIVITY"),
+                  "[Notes Title]",
+                  data.payload.model.title
+                ),
+                icon: "",
+              },
+              key: 0,
+            };
 
-          dispatch(setRecentActivityDataNotification(data2));
+            dispatch(setRecentActivityDataNotification(data2));
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "Calendar".toLowerCase()) {
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("EVENT_CREATED_FROM_GOOGLE_CALENDAR".toLowerCase())
-        ) {
-          dispatch(createGoogleEventMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("EVENT_UPDATED_FROM_GOOGLE_CALENDAR".toLowerCase())
-        ) {
-          dispatch(updateGoogletEventMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("EVENT_DELETED_FROM_GOOGLE_CALENDAR".toLowerCase())
-        ) {
-          // deleteGoogleEventMQTT;
-          dispatch(deleteGoogleEventMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_MICROSOFT_EVENT_CREATION".toLowerCase())
-        ) {
-          dispatch(createMicrosftEventMQTT(data.payload));
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_MICROSOFT_EVENT_UPDATED".toLowerCase())
-        ) {
-          dispatch(updateMicrosftEventMQTT(data.payload));
-          // updateMicrosftEventMQTT,
-          //
-        } else if (
-          data.payload.message
-            .toLowerCase()
-            .includes("NEW_MICROSOFT_EVENT_DELETED".toLowerCase())
-        ) {
-          dispatch(deleteMicrosftEventMQTT(data.payload));
-          // deleteMicrosftEventMQTT;
+
+      if (data.action.toLowerCase() === "calendar") {
+        const message = data.payload.message.toLowerCase();
+
+        switch (true) {
+          case message.includes("event_created_from_google_calendar"):
+            dispatch(createGoogleEventMQTT(data.payload));
+            break;
+
+          case message.includes("event_updated_from_google_calendar"):
+            dispatch(updateGoogletEventMQTT(data.payload));
+            break;
+
+          case message.includes("event_deleted_from_google_calendar"):
+            dispatch(deleteGoogleEventMQTT(data.payload));
+            break;
+
+          case message.includes("new_microsoft_event_creation"):
+            dispatch(createMicrosftEventMQTT(data.payload));
+            break;
+
+          case message.includes("new_microsoft_event_updated"):
+            dispatch(updateMicrosftEventMQTT(data.payload));
+            break;
+
+          case message.includes("new_microsoft_event_deleted"):
+            dispatch(deleteMicrosftEventMQTT(data.payload));
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "LogOut".toLowerCase()) {
-        if (
-          data.payload
-            .toLowerCase()
-            .includes("USER_lOGOUT_DUE_TO_INACTIVITY".toLowerCase())
-        ) {
-          dispatch(userLogOutApiFunc(navigate, t));
+
+      if (data.action.toLowerCase() === "logout") {
+        const message = data.payload.toLowerCase();
+
+        switch (true) {
+          case message.includes("user_logout_due_to_inactivity"):
+            dispatch(userLogOutApiFunc(navigate, t));
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "Login".toLowerCase()) {
-        if (
-          data.message.toLowerCase() === "USER_LOGIN_ACTIVITY".toLowerCase()
-        ) {
-          leaveMeetingCall(data?.payload);
+
+      if (data.action.toLowerCase() === "login") {
+        const message = data.message.toLowerCase();
+
+        switch (message) {
+          case "user_login_activity":
+            leaveMeetingCall(data?.payload);
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "DATAROOM".toLowerCase()) {
+
+      if (data.action.toLowerCase() === "dataroom") {
+        const message = data.payload.message.toLowerCase();
+
         try {
-          if (
-            data.payload.message.toLowerCase() === "FILE_SHARED".toLowerCase()
-          ) {
-            try {
+          switch (message) {
+            case "file_shared":
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
                   message: changeMQTTJSONOne(
                     t("FILE_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFileName,
+                    data?.payload?.data?.displayFileName
                   ),
                 });
               }
               setNotificationID(id);
               dispatch(fileSharedMQTT(data.payload));
-            } catch (error) {}
-          } else if (
-            data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
-          ) {
-            try {
+              break;
+
+            case "folder_shared":
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
                   message: changeMQTTJSONOne(
                     t("FOLDER_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFolderName,
+                    data?.payload?.data?.displayFolderName
                   ),
                 });
               }
               setNotificationID(id);
               dispatch(folderSharedMQTT(data.payload));
-            } catch (error) {}
-          } else if (
-            data.payload.message.toLowerCase() ===
-              "FILE_SHARING_REMOVED".toLowerCase() ||
-            "FILE_DELETED".toLowerCase()
-          ) {
-            try {
+              break;
+
+            case "file_sharing_removed":
+            case "file_deleted":
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
@@ -4580,12 +3699,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "FOLDER_SHARING_REMOVED".toLowerCase()
-          ) {
-            try {
+              break;
+
+            case "folder_sharing_removed":
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
@@ -4594,12 +3710,9 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.fileID));
-            } catch (error) {}
-          } else if (
-            data.payload.message.toLowerCase() ===
-            "FOLDER_DELETED".toLowerCase()
-          ) {
-            try {
+              break;
+
+            case "folder_deleted":
               if (data.viewable) {
                 setNotification({
                   notificationShow: true,
@@ -4608,187 +3721,164 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.folderID));
-            } catch (error) {}
-          }
-          if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_TRANSCRIPT_DOWNLOADED".toLowerCase()
-          ) {
-            dispatch(meetingTranscriptDownloaded(data.payload));
-            console.log(data.payload, "datapayload");
-          }
-          if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_MINUTES_DOWNLOADED".toLowerCase()
-          ) {
-            dispatch(meetingMinutesDownloaded(data.payload));
-            console.log(data.payload, "datapayload");
-          }
-          if (
-            data.payload.message.toLowerCase() ===
-            "MEETING_VIDEO_RECORDING_RECEIVED".toLowerCase()
-          ) {
-            dispatch(meetingVideoRecording(data.payload));
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message: changeMQTTJSONOne(
-                  t("MEETING_VIDEO_RECORDING_RECEIVED"),
-                  "[Meeting Title]",
-                  data.payload.meetingTitle,
-                ),
-              });
-              setNotificationID(id);
-            }
-          }
-          if (
-            data.payload.message.toLowerCase() ===
-            "VIDEO_RECORDING_RECEIVED".toLowerCase()
-          ) {
-            dispatch(videoRecording(data.payload));
-            if (data.viewable) {
-              setNotification({
-                notificationShow: true,
-                message:
-                  data.payload.callTypeID === 1
-                    ? changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name,
-                      )
-                    : changeMQTTJSONOne(
-                        t("VIDEO_RECORDING_GROUP_RECEIVED"),
-                        "[Participant Name]",
-                        data.payload?.callReceipents[0]?.name,
-                      ),
-              });
-              setNotificationID(id);
-            }
+              break;
+
+            case "meeting_transcript_downloaded":
+              dispatch(meetingTranscriptDownloaded(data.payload));
+              console.log(data.payload, "datapayload");
+              break;
+
+            case "meeting_minutes_downloaded":
+              dispatch(meetingMinutesDownloaded(data.payload));
+              console.log(data.payload, "datapayload");
+              break;
+
+            case "meeting_video_recording_received":
+              dispatch(meetingVideoRecording(data.payload));
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message: changeMQTTJSONOne(
+                    t("MEETING_VIDEO_RECORDING_RECEIVED"),
+                    "[Meeting Title]",
+                    data.payload.meetingTitle
+                  ),
+                });
+                setNotificationID(id);
+              }
+              break;
+
+            case "video_recording_received":
+              dispatch(videoRecording(data.payload));
+              if (data.viewable) {
+                setNotification({
+                  notificationShow: true,
+                  message:
+                    data.payload.callTypeID === 1
+                      ? changeMQTTJSONOne(
+                          t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+                          "[Participant Name]",
+                          data.payload?.callReceipents[0]?.name
+                        )
+                      : changeMQTTJSONOne(
+                          t("VIDEO_RECORDING_GROUP_RECEIVED"),
+                          "[Participant Name]",
+                          data.payload?.callReceipents[0]?.name
+                        ),
+                });
+                setNotificationID(id);
+              }
+              break;
+
+            default:
+              break;
           }
         } catch (error) {
           console.log(error, "errorerrorerror");
         }
       }
+
       //Web Notification
-      if (data.action.toLowerCase() === "WEBNOTIFICATION".toLowerCase()) {
-        if (
-          data.payload.message.toLowerCase() ===
-          "Web_Notification".toLowerCase()
-        ) {
-          console.log(data.payload, "datapayload");
-          dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
-          setNotificationID(id);
+      if (data.action.toLowerCase() === "webnotification") {
+        const message = data.payload.message.toLowerCase();
+
+        switch (message) {
+          case "web_notification":
+            console.log(data.payload, "datapayload");
+            dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
+            setNotificationID(id);
+            break;
+
+          default:
+            break;
         }
       }
-      if (data.action.toLowerCase() === "WorkFlow".toLowerCase()) {
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_SENT_BY_ME".toLowerCase())
-        ) {
-          dispatch(SignatureDocumentReceivedMyMe(data.payload));
-        }
 
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
-        ) {
-          dispatch(SignatureDocumentReceived(data.payload));
-          setPendingApprovalTabCount((prev) => ({
-            ...prev,
-            pendingSignature: (prev.pendingSignature ?? 0) + 1,
-          }));
-        }
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_STATUS_CHANGE".toLowerCase())
-        ) {
-          dispatch(SignatureDocumentStatusChange(data.payload));
-          //here to decrease the signature count
-          // setPendingApprovalTabCount((prev) => ({
-          //   ...prev,
-          //   pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
-          // }));
-        }
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("SIGNATURE_DOCUMENT_ACTION_BY_ME".toLowerCase())
-        ) {
-          dispatch(SignatureDocumentActionByMe(data.payload));
-          setPendingApprovalTabCount((prev) => ({
-            ...prev,
-            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
-          }));
-          if (data.payload.data.status === "Signed") {
-            showMessage(
-              t("Document-has-been-signed-successfully"),
-              "success",
-              setOpen,
-            );
-          } else if (data.payload.data.status === "Declined") {
-            showMessage(
-              t("Document-has-been-declined-successfully"),
-              "success",
-              setOpen,
-            );
-          }
-        }
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes(
-              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase(),
-            )
-        ) {
-          dispatch(SignatureDocumentStatusChangeSignees(data.payload));
-        }
+      if (data.action.toLowerCase() === "workflow") {
+        const message = data.payload.message.toLowerCase();
 
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("MINUTE_REVIEWER_ADDED".toLowerCase())
-        ) {
-          dispatch(MinuteReviwerCount(data.payload));
-          setPendingApprovalTabCount((prev) => ({
-            ...prev,
-            pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
-          }));
-        }
-        //Count Decrease when the Minute is Reviewed
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("MINUTE_REVIEW_RECIEVED_COUNT".toLowerCase())
-        ) {
-          console.log(data.payload.pendingMinute, "IOS");
-          setPendingApprovalTabCount((prev) => {
-            if (prev.pendingMinutes !== data.payload.pendingMinute) {
-              return {
-                ...prev,
-                pendingMinutes: data.payload.pendingMinute,
-              };
+        switch (true) {
+          case message.includes("signature_document_sent_by_me"):
+            dispatch(SignatureDocumentReceivedMyMe(data.payload));
+            break;
+
+          case message.includes("signature_document_received"):
+            dispatch(SignatureDocumentReceived(data.payload));
+            if (data.payload?.workFlowStatusID === 3) return;
+            setPendingApprovalTabCount((prev) => ({
+              ...prev,
+              pendingSignature: (prev.pendingSignature ?? 0) + 1,
+            }));
+
+            break;
+
+          case message.includes("signature_document_status_change"):
+            dispatch(SignatureDocumentStatusChange(data.payload));
+            // If needed, decrease signature count here
+            break;
+
+          case message.includes("signature_document_action_by_me"):
+            dispatch(SignatureDocumentActionByMe(data.payload));
+            setPendingApprovalTabCount((prev) => ({
+              ...prev,
+              pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+            }));
+            if (data.payload.data.status === "Signed") {
+              showMessage(
+                t("Document-has-been-signed-successfully"),
+                "success",
+                setOpen
+              );
+            } else if (data.payload.data.status === "Declined") {
+              showMessage(
+                t("Document-has-been-declined-successfully"),
+                "success",
+                setOpen
+              );
             }
-            return prev;
-          });
-        }
-      }
-      if (data.action.toLowerCase() === "Settings".toLowerCase()) {
-        if (
-          data.payload.message
-            .toLowerCase()
-            .includes("Notification_Marked_As_Read".toLowerCase())
-        ) {
-          setUnReadCountNotification(0);
-        }
-      }
-      console.log("AUTHORITY_INACTIVE", data);
+            break;
 
-      // Authority
-      if (data.action.toLowerCase() === "Authority".toLowerCase()) {
-        console.log("AUTHORITY_INACTIVE", data);
+          case message.includes("signature_document_status_change_for_signees"):
+            dispatch(SignatureDocumentStatusChangeSignees(data.payload));
+            break;
+
+          case message.includes("minute_reviewer_added"):
+            dispatch(MinuteReviwerCount(data.payload));
+            setPendingApprovalTabCount((prev) => ({
+              ...prev,
+              pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
+            }));
+            break;
+
+          case message.includes("minute_review_recieved_count"):
+            console.log(data.payload.pendingMinute, "IOS");
+            setPendingApprovalTabCount((prev) => {
+              if (prev.pendingMinutes !== data.payload.pendingMinute) {
+                return {
+                  ...prev,
+                  pendingMinutes: data.payload.pendingMinute,
+                };
+              }
+              return prev;
+            });
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      if (data.action.toLowerCase() === "settings") {
+        const message = data.payload.message.toLowerCase();
+
+        switch (true) {
+          case message.includes("notification_marked_as_read"):
+            setUnReadCountNotification(0);
+            break;
+
+          default:
+            break;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -4924,7 +4014,7 @@ const Dashboard = () => {
     const session = sessionStorage.getItem("isMeeting");
     const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
     const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup",
+      "activeCallSessionforOtoandGroup"
     );
 
     setIsMeetingLocal(local ? JSON.parse(local) : false);
@@ -4971,12 +4061,11 @@ const Dashboard = () => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}
-      >
+        locale={currentLanguage === "ar" ? ar_EG : en_US}>
         {IncomingVideoCallFlagReducer === true && (
-          <div className="overlay-incoming-videocall" />
+          <div className='overlay-incoming-videocall' />
         )}
-        <Layout className="mainDashboardLayout">
+        <Layout className='mainDashboardLayout'>
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -4984,7 +4073,7 @@ const Dashboard = () => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className="sidebar_layout" width={60}>
+                <Sider className='sidebar_layout' width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -4995,8 +4084,7 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }
-              >
+                }>
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -5022,22 +4110,24 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className="talk_features_home">
+                <div className='talk_features_home'>
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
             </Content>
           </Layout>
-          <NotificationBar
-            iconName={
-              <img src={IconMetroAttachment} alt="" draggable="false" />
-            }
-            notificationMessage={notification.message}
-            notificationState={notification.notificationShow}
-            setNotification={setNotification}
-            handleClose={closeNotification}
-            id={notificationID}
-          />
+          {notificationID !== 0 && (
+            <NotificationBar
+              iconName={
+                <img src={IconMetroAttachment} alt='' draggable='false' />
+              }
+              notificationMessage={notification.message}
+              notificationState={notification.notificationShow}
+              setNotification={setNotification}
+              handleClose={closeNotification}
+              id={notificationID}
+            />
+          )}
 
           {ShowGuestPopup && (
             <div>
@@ -5047,8 +4137,8 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead="chat-messenger-head-video"
-              chatMessageClass="chat-messenger-head-video"
+              chatParentHead='chat-messenger-head-video'
+              chatMessageClass='chat-messenger-head-video'
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -5074,27 +4164,27 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName="d-none"
+              modalHeaderClassName='d-none'
               ModalBody={
                 <>
-                  <Row className="mb-1">
+                  <Row className='mb-1'>
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className="d-flex justify-content-center">
+                        <Col className='d-flex justify-content-center'>
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=""
-                            draggable="false"
+                            alt=''
+                            draggable='false'
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className="text-center mt-4">
+                        <Col className='text-center mt-4'>
                           <label className={"allow-limit-modal-p"}>
                             {t(
-                              "The-organization-subscription-is-not-active-please-contact-your-admin",
+                              "The-organization-subscription-is-not-active-please-contact-your-admin"
                             )}
                           </label>
                         </Col>
@@ -5104,13 +4194,12 @@ const Dashboard = () => {
                 </>
               }
               ModalFooter={
-                <Row className="mb-3">
+                <Row className='mb-3'>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}
