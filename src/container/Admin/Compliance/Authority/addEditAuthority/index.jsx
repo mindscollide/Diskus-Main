@@ -1009,7 +1009,7 @@ const AddEditViewAuthorityModal = () => {
                       </Col>
                     </Row>
                   ) : authorityViewState === 3 ? (
-                    <Row className="mt-2">
+                    <Row className="mt-3">
                       <Col sm={12} md={12} lg={12}>
                         <div className={styles["authorityViewLabel"]}>
                           {t("Status")}
