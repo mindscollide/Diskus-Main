@@ -85,3 +85,9 @@ body[dir="rtl"] .ResetButtonSearchBox {
   font-family: Montserrat;
   font-size: 12px;
 }
+
+/* Default */
+.selectBoxStyle {
+  color: #5a5a5a;
+  font-size: 12px solid !important;
+}

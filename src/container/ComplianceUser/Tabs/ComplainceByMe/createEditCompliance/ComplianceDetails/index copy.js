@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import {
   InputfieldwithCount,
   TextAreafieldwithCount,
@@ -27,10 +27,11 @@ import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
-import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunctions";
+import {
+  parseUTCDateString,
+  parseYYYYMMDDToEndOfDay,
+} from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
-import AsyncCreatableSelect from "react-select/async-creatable";
-
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ const ComplainceDetails = () => {
     complianceInfo,
   } = useComplianceContext();
 
+  console.log(complianceDetailsState, "complianceDetailsState");
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
 
@@ -55,7 +57,6 @@ const ComplainceDetails = () => {
     complianceTitle: "",
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
-  const [tagInputActive, setTagInputActive] = useState(false);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
@@ -68,11 +69,9 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
   );
 
-  console.log(tagsOptions, "GetAllTagsByOrganizationIDData");
-
   const criticalityOptions = [
     {
-      label: "Low",
+      label: "High",
       value: 1,
     },
     {
@@ -80,7 +79,7 @@ const ComplainceDetails = () => {
       value: 2,
     },
     {
-      label: "High",
+      label: "Low",
       value: 3,
     },
   ];
@@ -168,7 +167,6 @@ const ComplainceDetails = () => {
       try {
         setTagsOptions(GetAllTagsByOrganizationIDData.tags);
       } catch (error) {
-        setTagsOptions([]);
         console.log(error);
       }
     } else {
@@ -176,10 +174,81 @@ const ComplainceDetails = () => {
     }
   }, [GetAllTagsByOrganizationIDData]);
 
+  // useEffect(() => {
+  //   if (complianceAddEditViewState === 1) return;
+
+  //   console.log(
+  //     complianceAddEditViewState,
+  //     complianceDetailsState,
+  //     "complianceDetailsState"
+  //   );
+
+  //   // ✅ Set Authority (react-select needs full object)
+  //   if (
+  //     complianceDetailsState.authorityId !== 0 &&
+  //     authorityOptions.length > 0
+  //   ) {
+  //     const selectedAuthority = authorityOptions.find(
+  //       (item) => item.value === complianceDetailsState.authorityId
+  //     );
+  //     setSelectAuthority(selectedAuthority || "");
+  //   }
+
+  //   // ✅ Set Criticality
+  //   if (complianceDetailsState.criticality !== 0) {
+  //     const selectedCriticality = criticalityOptions.find(
+  //       (item) => item.value === complianceDetailsState.criticality
+  //     );
+  //     setSelectCriticality(selectedCriticality || "");
+  //   }
+  //   console.log(
+  //     viewComplianceByMeDetails,
+  //     "complianceDetailscomplianceDetails"
+  //   );
+  //   // ✅ Due Date FIX
+  //   if (complianceDetailsState.dueDate) {
+  //     const parsedDate = parseUTCDateString(complianceDetailsState.dueDate);
+  //     setComplianceDueDate(parsedDate);
+  //   }
+  //   console.log(
+  //     viewComplianceByMeDetails,
+  //     "complianceDetailscomplianceDetails"
+  //   );
+  //   // ✅ Set Title & Description
+  //   setComplianceDetails({
+  //     complianceTitle: complianceDetailsState.complianceTitle,
+  //     complianceDescription: complianceDetailsState.description,
+  //   });
+
+  //   // ✅ Set Tags (if coming from API/state)
+  //   if (Array.isArray(complianceDetailsState.tags)) {
+  //     const mappedTags = complianceDetailsState.tags.map((tag, index) => ({
+  //       tagTitle: tag,
+  //       tagID: index + 1,
+  //     }));
+  //     setSelectedTags(mappedTags);
+  //   }
+  // }, [complianceDetailsState, authorityOptions, complianceAddEditViewState]);
+
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
 
+    // switch (name) {
+    //   case "complianceTitle":
+    //     setIsChecklistTitleExist(null);
+    //     if (!value.trim()) {
+    //       error = "Compliance Title is required";
+    //     }
+    //     break;
+    //   case "complianceDescription":
+    //     if (!value.trim()) {
+    //       error = "Compliance Description is required";
+    //     }
+    //     break;
+    //   default:
+    //     break;
+    // }
     setComplianceDetailsState((prev) => ({
       ...prev,
       [name]: value,
@@ -194,45 +263,91 @@ const ComplainceDetails = () => {
   //   tags Selection
   const [tagsValue, setTagsValue] = useState("");
 
-  const MAX_TAG_LENGTH = 25;
-
-  const handleInputChange = (newValue, actionMeta) => {
-    if (actionMeta.action !== "input-change") return newValue;
-
-    // remove leading spaces
-    let trimmed = newValue.replace(/^\s+/, "");
-
-    // enforce max length
-    if (trimmed.length > MAX_TAG_LENGTH) {
-      trimmed = trimmed.slice(0, MAX_TAG_LENGTH);
+  const handleChangeTags = (event) => {
+    const { value } = event.target;
+    const trimVal = value.trimStart();
+    setTagsValue(trimVal);
+    if (trimVal <= 2) {
+      setTagsOptions([]);
     }
-
-    setTagsValue(trimmed);
-    return trimmed;
+    if (trimVal.length >= 3) {
+      console.log("Api Trigger");
+      dispatch(GetAllTagsByOrganizationIDAPI(navigate, trimVal, t));
+    }
   };
 
-  const CharacterCountIndicator = ({ selectProps }) => {
-    const length = selectProps.inputValue?.length || 0;
+  const handleAddTagsKeyDown = (event) => {
+    if (
+      event.key === "Enter" &&
+      tagsValue.length >= 3 &&
+      // tagsOptions.length === 0 &&
+      complianceDetailsState.tags.length < 5
+    ) {
+      const isSelected = complianceDetailsState.tags.some(
+        (selectedTag) => selectedTag.tagTitle === tagsValue
+      );
+      if (!isSelected) {
+        // setSelectedTags([
+        //   ... complianceDetailsState.tags,
+        //   { tagTitle: tagsValue, tagID: Math.random(Math.floor()) * 5 },
+        // ]);
+        setComplianceDetailsState((prev) => ({
+          ...prev,
+          // tags: { tagTitle: tagsValue, tagID: Math.random(Math.floor()) * 5 },
 
-    return (
-      <div
-        style={{
-          paddingRight: "8px",
-          paddingTop: "20px",
-          fontSize: "8px",
-          fontFamily: "Montserrat",
-          fontWeight: "600",
-          color: length >= MAX_TAG_LENGTH ? "#f16b6b" : "#5a5a5a",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {`${length} / ${MAX_TAG_LENGTH}`}
-      </div>
+          tags: [
+            ...prev.tags,
+            {
+              tagTitle: tagsValue,
+              tagID: Math.random(),
+            },
+          ],
+        }));
+        setTagsValue("");
+        setTagsOptions([]);
+      }
+    }
+  };
+
+  // const handleAddTags = (option) => {
+  //   // setSelectedTags((prev) => [...prev, option]);
+
+  //   const isSelected = complianceDetailsState.tags.some(
+  //     (selectedTag) => selectedTag.tagTitle === tagsValue
+  //   );
+  //   if (!isSelected) {
+  //     setComplianceDetailsState((prev) => ({
+  //       ...prev,
+  //       setSelectedTags: [...prev.tags, option],
+  //     }));
+  //     // setSelectedTags([... complianceDetailsState.tags, option]);
+  //     setTagsValue("");
+  //     setTagsOptions([]);
+  //   }
+  // };
+
+  const handleAddTags = (option) => {
+    const isSelected = complianceDetailsState.tags.some(
+      (selectedTag) => selectedTag.tagTitle === option.tagTitle
     );
-  };
 
+    if (!isSelected) {
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        tags: [...prev.tags, option],
+      }));
+
+      setTagsValue("");
+      setTagsOptions([]);
+    }
+  };
   const handleCloseButton = () => {
+    // if (complianceAddEditViewState === 3) {
+    //   setAddEditViewAuthoriyModal(false);
+    //   setAddViewAuthorityDetails(true);
+    // }
     setCloseConfirmationModal(true);
+    // setAddViewAuthorityDetails(false);
   };
 
   const handleClickNextBtn = () => {
@@ -268,6 +383,7 @@ const ComplainceDetails = () => {
       ...prev,
       dueDate: meetingDateValueFormat2,
     }));
+    // setComplianceDueDate(meetingDateValueFormat2);
   };
 
   const handleBlur = (event) => {
@@ -324,61 +440,6 @@ const ComplainceDetails = () => {
     }
   };
 
-  // Working for Tags
-  const loadOptions = async (inputValue) => {
-    if (inputValue.length < 3) return [];
-
-    const tags = await dispatch(
-      GetAllTagsByOrganizationIDAPI(navigate, inputValue, t)
-    );
-
-    return tags.map((tag) => ({
-      label: tag.tagTitle,
-      value: tag.tagID,
-    }));
-  };
-
-  const handleSelectTag = (option) => {
-    if (!option) return;
-    if (complianceDetailsState.tags.length >= 5) return;
-
-    const exists = complianceDetailsState.tags.some(
-      (tag) => tag.tagTitle.toLowerCase() === option.label.toLowerCase()
-    );
-
-    if (exists) return;
-
-    setComplianceDetailsState((prev) => ({
-      ...prev,
-      tags: [
-        ...prev.tags,
-        {
-          tagTitle: option.label,
-          tagID: option.value || crypto.randomUUID(),
-        },
-      ],
-    }));
-
-    setTagsValue(""); // clear input
-    setTagInputActive(false);
-  };
-  const selectStyles = {
-    control: (base, state) => ({
-      ...base,
-      borderColor:
-        tagsValue.length >= MAX_TAG_LENGTH ? "#f16b6b" : base.borderColor,
-      boxShadow:
-        tagsValue.length >= MAX_TAG_LENGTH
-          ? "#ff4d4f"
-          : state.isFocused
-          ? base.boxShadow
-          : "none",
-      "&:hover": {
-        borderColor:
-          tagsValue.length >= MAX_TAG_LENGTH ? "#f16b6b" : base.borderColor,
-      },
-    }),
-  };
   return (
     <>
       <Row className="mt-2">
@@ -606,45 +667,56 @@ const ComplainceDetails = () => {
               <>
                 <Row>
                   <Col sm={12} md={4} lg={4}>
-                    <div
-                      className={`${styles["labelStyle"]} ${styles["Select_label"]}`}
-                    >
-                      {t("Tags")}
-                    </div>
-                    <div className="w-100 position-relative mt-1">
-                      <AsyncCreatableSelect
-                        cacheOptions
-                        loadOptions={loadOptions}
-                        value={null}
-                        inputValue={tagsValue}
-                        onInputChange={handleInputChange}
-                        onChange={handleSelectTag}
-                        styles={selectStyles}
-                        classNamePrefix="tagInputBoxStyle"
-                        isDisabled={
-                          complianceDetailsState.tags.length >= 5 ||
+                    <div className="w-100 position-relative">
+                      <InputfieldwithCount
+                        disabled={
                           complianceDetailsState.authority.value === 0
+                            ? true
+                            : complianceDetailsState.tags.length === 5
+                            ? true
+                            : false
                         }
-                        maxMenuHeight={150}
-                        placeholder="Type at least 3 characters..."
-                        noOptionsMessage={({ inputValue }) =>
-                          inputValue.length < 3
-                            ? "No Tags"
-                            : "No results, press Enter to add"
+                        value={tagsValue}
+                        onChange={handleChangeTags}
+                        onKeyDown={handleAddTagsKeyDown}
+                        label={<>{t("Tags")}</>}
+                        labelClass={styles["labelStyle"]}
+                        maxLength={25}
+                        placeholder={
+                          complianceAddEditViewState !== 3 ? t("Add-tag") : ""
                         }
-                        onFocus={() => setTagInputActive(true)}
-                        onBlur={() => setTagInputActive(false)}
-                        formatCreateLabel={(input) => `Add "${input}"`}
-                        isOptionDisabled={(option) =>
-                          complianceDetailsState.tags.some(
-                            (tag) => tag.tagID === option.value
-                          )
+                        preFixClas={
+                          complianceAddEditViewState === 3
+                            ? "viewField_Name"
+                            : "AddEditAuthorityCounterInputField"
                         }
-                        components={{
-                          DropdownIndicator: CharacterCountIndicator,
-                          IndicatorSeparator: null,
-                        }}
                       />
+
+                      {/* Show dropdown only if there are matching options */}
+                      {tagsOptions.length > 0 && (
+                        <div className={styles["TagsOptionsBox"]}>
+                          {tagsOptions.map((tag) => {
+                            const isSelected = complianceDetailsState.tags.some(
+                              (selectedTag) =>
+                                selectedTag.tagTitle === tag.tagTitle
+                            );
+
+                            return (
+                              <p
+                                key={tag.tagID} // unique key
+                                className={`${styles["TagsOption_Value"]} ${
+                                  isSelected ? styles["tagDisabled"] : ""
+                                }`}
+                                onClick={() =>
+                                  !isSelected && handleAddTags(tag)
+                                }
+                              >
+                                {tag.tagTitle}
+                              </p>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   </Col>
                   <Col
@@ -680,7 +752,7 @@ const ComplainceDetails = () => {
         </Col>
       </Row>
       <Row>
-        {!tagInputActive && (
+        {tagsOptions.length === 0 && (
           <div className={styles["limitLabel"]}>{t("Add-upto-5-tags")}</div>
         )}
       </Row>

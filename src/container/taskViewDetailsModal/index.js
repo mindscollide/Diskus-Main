@@ -90,6 +90,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
     DeadLineDate: "",
     DeadLineTime: "",
     CreationDateTime: "",
+    Status: "",
   });
 
   //Current Date
@@ -130,13 +131,14 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         DeadLineDate: "",
         DeadLineTime: "",
         CreationDateTime: "",
+        Status: "",
       });
     };
   }, []);
   useEffect(() => {
     todoComments.current?.scrollIntoView({ behavior: "smooth" });
   }, [todoComments, taskAssigneeComments]);
-
+  console.log(TodoListReducerData, "TodoListReducerData");
   useEffect(() => {
     if (Object.keys(TodoListReducerData).length > 0) {
       dispatch(taskFromDashboardAction(0));
@@ -150,6 +152,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         DeadLineDate: viewData.deadlineDate,
         DeadLineTime: viewData.deadlineTime,
         CreationDateTime: viewData.creationDateTime,
+        Status: viewData.status.status,
       });
       let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
@@ -234,6 +237,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         DeadLineDate: "",
         DeadLineTime: "",
         CreationDateTime: "",
+        Status: "",
       });
       setAssgieeComments([]);
     }
@@ -328,6 +332,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
         DeadLineDate: "",
         DeadLineTime: "",
         CreationDateTime: "",
+        Status: "",
       });
       setTaskAssignedTo([]);
       setTasksAttachments({ TasksAttachments: [] });
@@ -358,6 +363,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
             DeadLineDate: "",
             DeadLineTime: "",
             CreationDateTime: "",
+            Status: "",
           });
         }
       }
@@ -725,7 +731,7 @@ const TaskViewDetailsModal = ({ viewFlagToDo = true, setViewFlagToDo }) => {
                 <Row className="mb-4">
                   <Col sm={12} md={12} lg={12}>
                     <p className={styles.label}>Status</p>
-                    <span>Completed</span>
+                    <span>{task.Status}</span>
                   </Col>
                 </Row>
 

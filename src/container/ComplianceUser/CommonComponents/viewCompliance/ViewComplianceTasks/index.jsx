@@ -499,8 +499,9 @@ const ViewComplianceTasks = () => {
       width: "15%",
       align: "left",
       ellipsis: true,
-      render: (assignedUsers) => {
-        const firstUser = assignedUsers?.[0];
+      render: (text, record) => {
+        console.log(text, record, "assignedUsers");
+        const firstUser = text?.[0];
         return (
           <span className="text-truncate">
             {firstUser ? firstUser.name : "-"}

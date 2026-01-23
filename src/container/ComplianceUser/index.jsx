@@ -135,7 +135,7 @@ const MainCompliance = () => {
               className="d-flex justify-content-end align-items-center gap-2"
             >
               <span className={styles["SwitchUserView_Text"]}>
-                Switch to User View
+                {t("Switch-to-user-view")}
               </span>{" "}
               <Switch />
             </Col>

@@ -43,7 +43,7 @@ const NavbarAdmin = () => {
                       <Nav className=" me-auto d-flex justify-content-evenly w-100 py-1">
                         <NavDropdown
                           active={true}
-                          title={t("Complaince-settings")}
+                          title={t("Compliance-settings")}
                           id="collasible-nav-dropdown"
                           className="DiskusAdminNavBar"
                         >
@@ -233,7 +233,7 @@ const NavbarAdmin = () => {
                             {process.env.REACT_APP_COMPLIANCE_MODULE ===
                               "TRUE" && (
                               <NavDropdown
-                                title={t("Complaince-settings")}
+                                title={t("Compliance-settings")}
                                 id="collasible-nav-dropdown"
                                 className="DiskusAdminNavBar"
                               >

@@ -8213,3 +8213,57 @@ td.ant-table-column-sort {
   height: 39px;
   width: 100%;
 }
+.tagInputBoxStyle__option {
+  position: relative;
+  height: 35px;
+  padding: 0 20px; /* content padding */
+  font-family: Montserrat;
+  font-weight: 500;
+  font-size: 12px;
+  text-indent: 3px;
+}
+
+.tagInputBoxStyle__option::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 15px; /* start 20px from left */
+  right: 15px; /* end 20px before right */
+  height: 1px;
+  background-color: #e1e1e1;
+}
+
+.tagInputBoxStyle__option:last-child {
+  border: none !important;
+}
+.Select_Tags_search_ant .ant-select-selector {
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  min-height: 36px;
+}
+
+/* Base */
+.Select_Tags_search_ant .ant-select-selector {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hover */
+.Select_Tags_search_ant:hover .ant-select-selector {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #e1e1e1 !important;
+}
+.Select_Tags_search_ant.ant-select:not(.ant-select-disabled):hover
+  .ant-select-selector {
+  border: 1px solid #e1e1e1 !important;
+}
+/* Focus (keyboard & mouse) */
+.Select_Tags_search_ant.ant-select-focused .ant-select-selector,
+.Select_Tags_search_ant .ant-select-selector:focus,
+.Select_Tags_search_ant .ant-select-selector:focus-visible,
+.Select_Tags_search_ant .ant-select-selector:active,
+.Select_Tags_search_ant .ant-select-selector:hover {
+  outline: none !important;
+  box-shadow: none !important;
+}

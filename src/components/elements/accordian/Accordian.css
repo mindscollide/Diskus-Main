@@ -102,7 +102,6 @@
   font-weight: 600;
   font-size: 16px !important;
   color: #2197d7;
-  cursor: pointer !important;
 }
 .dateTime {
   display: flex;
@@ -138,12 +137,14 @@
   height: auto;
   opacity: 0;
   padding: 12px 10px;
+  cursor: default !important;
 }
 .SecondRow.show {
   width: 100%;
   height: auto;
   opacity: 1;
   padding: 12px 10px;
+  cursor: default !important;
 }
 .SecondRowForChecklist {
   width: 100%;

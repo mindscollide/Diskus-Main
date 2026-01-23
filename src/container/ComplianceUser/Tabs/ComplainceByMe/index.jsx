@@ -33,9 +33,9 @@ const ComplianceByMe = () => {
   const [isScroll, setIsScroll] = useState(false);
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
   const criticalityOptions = [
-    { label: t("High"), value: 1 },
+    { label: t("Low"), value: 1 },
     { label: t("Medium"), value: 2 },
-    { label: t("Low"), value: 3 },
+    { label: t("High"), value: 3 },
   ];
   const getCompliancesForCreator = useSelector(
     (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
@@ -234,6 +234,8 @@ const ComplianceByMe = () => {
         setSelectedKeys(allComplianceStatusForFilter.map((s) => s.statusTitle));
       }
 
+      console.log(selectedKeys, "selectedKeys");
+
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
@@ -342,8 +344,8 @@ const ComplianceByMe = () => {
         ...getCriticalityColumnProps(),
 
         render: (text) => (
-          <span>
-            {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+          <span className="d-flex justify-content-center">
+            {text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High")}
           </span>
         ),
       },
@@ -351,7 +353,7 @@ const ComplianceByMe = () => {
         title: t("Status"),
         dataIndex: "complianceStatusTitle",
         key: "complianceStatusTitle",
-        width: "10%",
+        width: "13%",
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
@@ -402,7 +404,7 @@ const ComplianceByMe = () => {
         ),
         dataIndex: "authorityShortCode",
         key: "authorityShortCode",
-        width: "17%",
+        width: "14%",
         ellipsis: true,
         align: "center",
         sorter: (a, b) =>
