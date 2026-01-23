@@ -15,6 +15,7 @@ import { _justShowDateformatBilling } from "../../../../../../commen/functions/d
 import { UpdatedCastVoteAPI } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import { useMeetingContext } from "../../../../../../context/MeetingContext";
+import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -56,8 +57,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
           t,
           3,
           setvotePolls,
-          Number(advanceMeetingModalID)
-        )
+          Number(advanceMeetingModalID),
+        ),
       );
     } else {
       // open sncak bar for atleast select one option
@@ -66,7 +67,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   };
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value
+      (data, index) => data === value,
     );
     if (findID !== undefined) {
       return true;
@@ -107,7 +108,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       if (isAlreadySelected) {
         // Remove the answer if it was already selected
         const updatedAnswers = viewProgressPollsDetails.answer.filter(
-          (id) => id !== pollAnswerID
+          (id) => id !== pollAnswerID,
         );
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -223,26 +224,47 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                         <Checkbox
                                           name={data.pollAnswerID}
                                           checked={handleForCheck(
-                                            data.pollAnswerID
+                                            data.pollAnswerID,
                                           )}
                                           onChange={handleCheckBoxYes}
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
-                                        <Radio.Group
-                                          onChange={(e) =>
-                                            setViewProgressPollsDetails({
-                                              ...viewProgressPollsDetails,
-                                              answer: [e.target.value],
-                                            })
-                                          }
+                                        <CustomRadioGroup
+                                          className="AnotherRadioSelect"
                                           value={
                                             viewProgressPollsDetails.answer[0]
                                           }
-                                          className="AnotherRadioSelect"
-                                        >
-                                          <Radio value={data.pollAnswerID} />
-                                        </Radio.Group>
+                                          onChange={(e) =>
+                                            setViewProgressPollsDetails(
+                                              (prev) => ({
+                                                ...prev,
+                                                answer: [e.target.value],
+                                              }),
+                                            )
+                                          }
+                                          options={[
+                                            {
+                                              value: data.pollAnswerID,
+                                              label: data.answerText ?? null,
+                                            },
+                                          ]}
+                                        />
+
+                                        // <Radio.Group
+                                        //   onChange={(e) =>
+                                        //     setViewProgressPollsDetails({
+                                        //       ...viewProgressPollsDetails,
+                                        //       answer: [e.target.value],
+                                        //     })
+                                        //   }
+                                        //   value={
+                                        //     viewProgressPollsDetails.answer[0]
+                                        //   }
+                                        //   className="AnotherRadioSelect"
+                                        // >
+                                        //   <Radio value={data.pollAnswerID} />
+                                        // </Radio.Group>
                                       )}
                                       <Progress
                                         className="Progress_bar_Polls"
@@ -279,7 +301,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                       {viewProgressPollsDetails.Date !== "" && (
                         <>
                           {_justShowDateformatBilling(
-                            viewProgressPollsDetails?.Date
+                            viewProgressPollsDetails?.Date,
                           )}
                         </>
                       )}

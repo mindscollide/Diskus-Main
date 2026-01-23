@@ -10,11 +10,12 @@ import {
   Checkbox,
   Notification,
 } from "../../../../../../components/elements";
-import { Progress, Radio } from "antd";
+import { Progress, Tooltip } from "antd";
 import moment from "moment";
 import { EditmeetingDateFormat } from "../../../../../../commen/functions/date_formater";
 import { castVoteApi } from "../../../../../../store/actions/Polls_actions";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
 const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   const { t } = useTranslation();
@@ -54,7 +55,7 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
   };
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value
+      (data, index) => data === value,
     );
     if (findID !== undefined) {
       return true;
@@ -171,13 +172,13 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                           <Checkbox
                                             name={data.pollAnswerID}
                                             checked={handleForCheck(
-                                              data.pollAnswerIDW
+                                              data.pollAnswerIDW,
                                             )}
                                             onChange={handleCheckBoxYes}
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          <Radio.Group
+                                          <CustomRadioGroup
                                             onChange={(e) =>
                                               setViewProgressPollsDetails({
                                                 ...viewProgressPollsDetails,
@@ -188,9 +189,13 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                                               viewProgressPollsDetails.answer
                                             }
                                             className="AnotherRadioSelect"
-                                          >
-                                            <Radio value={data.pollAnswerID} />
-                                          </Radio.Group>
+                                            options={[
+                                              {
+                                                value: data.pollAnswerID,
+                                                label: "",
+                                              },
+                                            ]}
+                                          />
                                         )}
                                         <Progress
                                           className="Progress_bar_Polls"
@@ -226,8 +231,8 @@ const CastVotePollsMeeting = ({ setvotePolls, currentMeeting }) => {
                         <>
                           {moment(
                             EditmeetingDateFormat(
-                              viewProgressPollsDetails?.Date
-                            )
+                              viewProgressPollsDetails?.Date,
+                            ),
                           ).format("DD MMM YYYY")}
                         </>
                       )}

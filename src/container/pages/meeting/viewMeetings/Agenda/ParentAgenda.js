@@ -172,9 +172,11 @@ const ParentAgenda = ({
     };
     let pdfDataJson = JSON.stringify(Data);
     if (fileFormatforSignatureFlow.includes(ext)) {
-      if(Number(editorRole.status) === 10 ) {
+      if (Number(editorRole.status) === 10) {
         window.open(
-          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+          `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+            pdfDataJson
+          )}`,
           "_blank",
           "noopener noreferrer"
         );
@@ -185,7 +187,6 @@ const ParentAgenda = ({
           "noopener noreferrer"
         );
       }
-  
     }
     // if (fileFormatforSignatureFlow.includes(ext)) {
     //   window.open(
@@ -322,6 +323,7 @@ const ParentAgenda = ({
                                   />
                                 </>
                               ) : editorRole.role === "Organizer" &&
+                                Number(editorRole.status) === 10 &&
                                 (Number(data.agendaVotingID) !== 0 ||
                                   data.voteOwner?.currentVotingClosed) ? (
                                 <>
