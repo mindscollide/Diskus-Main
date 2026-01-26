@@ -15,15 +15,27 @@ const ViewComplianceDetails = () => {
     allowedComplianceStatusOptions,
     setComplianceDetailsState,
     complianceViewMode,
+    setSubmitForApprovalModal,
   } = useComplianceContext();
   const { t } = useTranslation();
   console.log(complianceDetailsState, "complianceDetailsState");
   // Functions
   const handleChangeComplianceStatus = (event) => {
-    setComplianceDetailsState((prev) => ({
-      ...prev,
-      status: event,
-    }));
+    console.log(event, "ComplianceStatusChangedTo");
+    const { statusId } = event;
+
+    // For On Hold
+    if (statusId === 7) {
+      // if status changed on hold
+      setSubmitForApprovalModal(true);
+
+      // Else if status changed in progress
+    } else if (statusId === 2) {
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        status: event,
+      }));
+    }
   };
 
   // styling for select:

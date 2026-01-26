@@ -5,6 +5,8 @@ import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
 import styles from "./submitForApproval.module.css";
 
+import alertIcon from "../../../../../assets/images/Alert Icon.png";
+
 const StatusSubmitForApprovalModal = () => {
   const { t } = useTranslation();
   const { submitForApprovalModal, setSubmitForApprovalModal } =
@@ -20,18 +22,27 @@ const StatusSubmitForApprovalModal = () => {
       setShow={setSubmitForApprovalModal}
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
-      size={"sm"}
+      size={"md"}
       ModalBody={
         <>
           <Row>
-            <Col lg={12} md={12} sm={12} xs={12}>
-              Image
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              xs={12}
+              className="d-flex justify-content-center align-items-start"
+            >
+              <img src={alertIcon} alt="AlertIcon" />
             </Col>
           </Row>
-          <Row>
+          <Row className="mt-4">
             <Col lg={12} md={12} sm={12} xs={12}>
-              Some checklist items are still pending. Do you want to continue
-              submitting for approval
+              <div className={styles.ConfirmationText}>
+                {t(
+                  "Some-checklist-items-are-still-pending.-Do-you-want-to-continue-submitting-for-approval?"
+                )}
+              </div>
             </Col>
           </Row>
         </>
@@ -47,13 +58,13 @@ const StatusSubmitForApprovalModal = () => {
               className="d-flex justify-content-center gap-2"
             >
               <Button
-                text={t("Yes")}
-                className={styles["CancelButton"]}
+                text={t("Close")}
+                className={styles["ProceedButtonStyles"]}
                 onClick={handleCloseButton}
               />
               <Button
-                text={t("No")}
-                className={styles["ProceedButtonStyles"]}
+                text={t("Proceed")}
+                className={styles["CancelButton"]}
                 onClick={handleProceedButton}
               />
             </Col>
