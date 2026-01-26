@@ -20,6 +20,17 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.mainHeading2 {
+  font-weight: 600;
+  font-size: 14px;
+  color: #6172d6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  justify-content: end;
+  align-items: end;
+}
 
 .createNewComplianceBtn {
   background-color: #fff !important;

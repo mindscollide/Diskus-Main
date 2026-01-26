@@ -21,7 +21,7 @@ export const MeetingProvider = ({ children }) => {
   const [isUnPublishedMeeting, setIsUnPublishedMeeting] = useState(false);
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
   const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
@@ -194,7 +194,7 @@ export const MeetingProvider = ({ children }) => {
   const [groupVideoCallAccepted, setGroupVideoCallAccepted] = useState([]);
   const [groupCallParticipantList, setGroupCallParticipantList] = useState([]);
   const [unansweredCallParticipant, setUnansweredCallParticipant] = useState(
-    []
+    [],
   );
   const [inCallParticipantsList, setInCallParticipantsList] = useState([]);
 
@@ -212,6 +212,10 @@ export const MeetingProvider = ({ children }) => {
 
   // state for Resume Recording
   const [stopRecordingState, setStopRecordingState] = useState(false);
+
+  const [stopApiCalled, setStopApiCalled] = useState(false);
+
+  const stopApiCalledRef = useRef(false);
 
   // Create a ref for the iframe element
   const iframeRef = useRef(null);
@@ -233,7 +237,7 @@ export const MeetingProvider = ({ children }) => {
       if (UserProfileData !== null && UserProfileData !== undefined) {
         // Set the agenda update state based on user profile data
         setIsAgendaUpdateWhenMeetingActive(
-          UserProfileData?.emailWhenActiveMeetingAgendaUpdated
+          UserProfileData?.emailWhenActiveMeetingAgendaUpdated,
         );
       } else {
         // Default to true if user profile data is not available
@@ -470,6 +474,9 @@ export const MeetingProvider = ({ children }) => {
     setIsDraftMeetings,
     isUnPublishedMeeting,
     setIsUnPublishedMeeting,
+    stopApiCalled,
+    setStopApiCalled,
+    stopApiCalledRef,
   };
 
   // Provide the state data to the context

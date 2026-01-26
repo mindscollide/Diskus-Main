@@ -33,14 +33,16 @@ import { showMessage } from "./components/elements/snack_bar/utill";
 import { useAuthContext } from "./context/AuthContext";
 
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 const POLLING_INTERVAL = 60000; // 1 minute
 
 const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
-    const syncSessionAndRedirect = () => {
+    const syncSessionAndRedirect = async () => {
       const localToken = localStorage.getItem("token");
       const localUser = localStorage.getItem("userID");
       const sessionToken = sessionStorage.getItem("token");
@@ -52,7 +54,7 @@ const App = () => {
         window.location.pathname.toLowerCase().includes("Admin".toLowerCase());
 
       // Step 1: Sync sessionStorage if different from localStorage
-      if (localToken && localUser) {
+      if (localToken && localUser && localUser !== "") {
         if (
           (sessionToken !== localToken || sessionUser !== localUser) &&
           isAlreadyInDashboard
@@ -71,7 +73,7 @@ const App = () => {
     };
 
     // Run on initial load
-    syncSessionAndRedirect();
+    // syncSessionAndRedirect();
 
     // Listen for tab visibility changes
     const handleVisibilityChange = () => {

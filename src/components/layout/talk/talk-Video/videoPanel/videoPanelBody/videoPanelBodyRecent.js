@@ -273,6 +273,8 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("isCaller", true);
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(getVideoRecipentData(data));
         dispatch(normalizeVideoPanelFlag(true));
@@ -312,6 +314,8 @@ const VideoPanelBodyRecent = () => {
         localStorage.setItem("callerID", currentUserID);
         localStorage.setItem("isCaller", true);
         localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
         dispatch(callRequestReceivedMQTT({}, ""));
         dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoChatPanel(false));
@@ -356,6 +360,8 @@ const VideoPanelBodyRecent = () => {
     dispatch(participantPopup(false));
     localStorage.setItem("CallType", Data2.CallTypeID);
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("callerID", currentUserID);
     localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
@@ -389,6 +395,8 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isCaller", true);
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("callerID", currentUserID);
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     localStorage.setItem("recipentCalledID", userCalledID);
@@ -465,6 +473,8 @@ const VideoPanelBodyRecent = () => {
     dispatch(participantPopup(false));
     localStorage.setItem("CallType", Data2.CallTypeID);
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("recipentCalledID", userCalledID);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
@@ -496,6 +506,8 @@ const VideoPanelBodyRecent = () => {
     localStorage.setItem("isCaller", true);
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("callerID", currentUserID);
     let userCalledID = Number(localStorage.getItem("recipentCalledID"));
     localStorage.setItem("recipentCalledID", userCalledID);
@@ -606,6 +618,8 @@ const VideoPanelBodyRecent = () => {
     dispatch(InitiateVideoCall(Data, navigate, t));
     localStorage.setItem("CallType", Data.CallTypeID);
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("isCaller", true);
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(normalizeVideoPanelFlag(true));

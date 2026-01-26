@@ -66,6 +66,7 @@ import {
   participantVideoButtonState,
   clearMessegesVideoFeature,
   getParticipantMeetingJoinMainApi,
+  disableZoomBeforeJoinSession,
 } from "../../../../../store/actions/VideoFeature_actions";
 import { convertToGMT } from "../../../../../commen/functions/time_formatter";
 import {
@@ -552,6 +553,8 @@ const ViewMeetingDetails = ({}) => {
     // localStorage.setItem("activeCall", true);
 
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("callerID", 0);
     localStorage.setItem("recipentCalledID", 0);
     dispatch(callRequestReceivedMQTT({}, ""));
@@ -597,6 +600,8 @@ const ViewMeetingDetails = ({}) => {
     // localStorage.setItem("activeCall", true);
 
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     dispatch(callRequestReceivedMQTT({}, ""));
     dispatch(videoChatPanel(false));
     localStorage.setItem("isMeetingVideo", true);
@@ -609,6 +614,7 @@ const ViewMeetingDetails = ({}) => {
     let nonMeetingCheck = JSON.parse(
       sessionStorage.getItem("NonMeetingVideoCall")
     );
+    dispatch(disableZoomBeforeJoinSession(true));
 
     // Orgainzer  = 10 ,Participant = 2 , Agenda Contributor = 3,
 

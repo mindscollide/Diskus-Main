@@ -1,16 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import styles from "./workingDays.module.css";
 import CustomSwitch from "../../../../../components/elements/switch_button/Switch";
+import { showMessage } from "../../../../../components/elements/snack_bar/utill";
+import { Notification } from "../../../../../components/elements";
 
 const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+
+  // const handleChangeSwitchValue = (checked, name) => {
+  //   setOrganizationSetting((organizationSettings) => {
+  //     return {
+  //       ...organizationSettings,
+  //       [name]: checked,
+  //     };
+  //   });
+  // };
+
+  const WORKING_DAY_KEYS = [
+    "isMondayWorkingDay",
+    "isTuesdayWorkingDay",
+    "isWednesdayWorkingDay",
+    "isThursdayWorkingDay",
+    "isFridayWorkingDay",
+    "isSaturdayWorkingDay",
+    "isSundayWorkingDay",
+  ];
 
   const handleChangeSwitchValue = (checked, name) => {
-    setOrganizationSetting((organizationSettings) => {
+    setOrganizationSetting((prev) => {
+      // If turning OFF a day
+      if (checked === false) {
+        const isAnyOtherDayTrue = WORKING_DAY_KEYS.some(
+          (key) => key !== name && prev[key] === true
+        );
+
+        // Prevent all days from becoming false
+        if (!isAnyOtherDayTrue) {
+          showMessage(
+            t("Please-select-atleast-a-single-day"),
+            "error",
+            setOpen
+          );
+          return prev;
+        }
+      }
+
       return {
-        ...organizationSettings,
+        ...prev,
         [name]: checked,
       };
     });
@@ -190,6 +233,7 @@ const WorkingDays = ({ setOrganizationSetting, organizationSettingData }) => {
           />
         </Col>
       </Row>
+      <Notification open={open} setOpen={setOpen} />
     </>
   );
 };

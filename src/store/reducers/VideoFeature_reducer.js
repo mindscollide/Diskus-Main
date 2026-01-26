@@ -114,9 +114,14 @@ const videoFeatureReducer = (state = initialState, action) => {
       const { payload } = action; // payload is expected to be an array of uids
       console.log(payload, state.waitingParticipantsList, "payloadpayload");
 
-      // Filter out participants whose UID is included in the payload array
+      // Filter out participants whose meetingID + userID is included in the payload
       const filteredParticipants = state.waitingParticipantsList.filter(
-        (participant) => !payload.includes(participant.guid)
+        (participant) =>
+          !payload.some(
+            (p) =>
+              Number(p.userID) === Number(participant.userID) &&
+              Number(p.meetingID) === Number(participant.meetingID)
+          )
       );
       console.log(filteredParticipants, "payloadpayloadfilteredParticipants");
 

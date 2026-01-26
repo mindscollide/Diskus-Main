@@ -50,6 +50,7 @@ const ComplianceCloseConfirmationModal = () => {
     //   complianceId: 0,
     //   complianceName: "",
     // });
+    setMainComplianceTabs(2);
     emptyComplianceState();
   };
 
@@ -70,7 +71,7 @@ const ComplianceCloseConfirmationModal = () => {
             <Col lg={12} md={12} sm={12} xs={12} className="text-center">
               <div className={styles["ConfirmationHeading"]}>
                 {t(
-                  "All your changes will be lost. Are you sure you want to discard them?"
+                  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes"
                 )}
               </div>
             </Col>

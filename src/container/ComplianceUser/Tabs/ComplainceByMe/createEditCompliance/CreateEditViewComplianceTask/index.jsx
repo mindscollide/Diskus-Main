@@ -27,7 +27,7 @@ const CreateEditViewComplianceTask = () => {
   const [show, setShow] = useState(false);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
-  console.log(ComplianceChecklistData, "ComplianceChecklistData");
+  console.log(expandedCheckListIds, "ComplianceChecklistData");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -57,6 +57,8 @@ const CreateEditViewComplianceTask = () => {
     setChecklistCount,
     setChecklistTabs,
     setTaskCount,
+    emptyComplianceState,
+    setCreateEditComplaince,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -137,7 +139,11 @@ const CreateEditViewComplianceTask = () => {
 
         const checklistList = getAllComplianceChecklistTask.checklistList;
 
-        setComplianceCheckListData(checklistList);
+        setExpandedCheckListIds(
+          getAllComplianceChecklistTask.checklistList.map(
+            (data, index) => data.checklistId
+          )
+        );
 
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
@@ -153,46 +159,30 @@ const CreateEditViewComplianceTask = () => {
     "GetComplianceChecklistsByComplianceId"
   );
   const handleDeleteTask = () => {};
+
   const handleCloseButton = () => {
-    // take user back to ComplianceByMe screen
+    emptyComplianceState();
+    setChecklistTabs(1);
+    setCreateEditComplaince(false);
+  };
+
+  const handleClickPrevBtn = () => {
     // setChecklistData({
     //   checklistTitle: "",
     //   checklistDescription: "",
     //   checklistDueDate: "",
     // });
-    // setCreateEditComplaince(false);
+    setChecklistTabs(2);
   };
 
-  const handleClickPrevBtn = () => {
-    setChecklistTabs(1);
-  };
+  const [checkListData, setCheckListData] = useState(0);
 
-  // const handleAddTaskInCheckList = (checkListId) => {
-  //   const updatedChecklistData = ComplianceChecklistData.map((item) => {
-  //     if (item.checklistId === checkListId) {
-  //       return {
-  //         ...item,
-  //         checkListTasks: [
-  //           ...(item.checkListTasks || []),
-  //           {
-  //             TaskTitle: "Hello",
-  //             taskId: Math.random().toString(36).slice(2),
-  //           },
-  //         ],
-  //       };
-  //     }
-  //     return item;
-  //   });
-
-  //   setComplianceCheckListData(updatedChecklistData);
-  // };
-
-  const [checkListId, setCheckListId] = useState(0);
-  const handleAddTaskInCheckList = (checklistId) => {
-    setCheckListId(checklistId);
-    console.log(checklistId, "checklistIdchecklistId");
+  const handleAddTaskInCheckList = (checkListData) => {
+    setCheckListData(checkListData);
+    console.log(checkListData, "checklistIdchecklistId");
     setShow(true);
   };
+
   return (
     <>
       <div className={styles["checklistAccordian"]}>
@@ -206,6 +196,7 @@ const CreateEditViewComplianceTask = () => {
                   <CustomAccordion
                     isExpand={isExpanded}
                     isCompliance={true}
+                    isComplianceTask={false}
                     notesID={data.checklistId}
                     StartField={
                       <div className={styles["checkListTitle"]}>
@@ -223,18 +214,22 @@ const CreateEditViewComplianceTask = () => {
                                   // onClick={handleOpenAddChecklist}
                                 >
                                   <Row>
-                                    <Col sm={12} md={8} lg={8}>
-                                      <span className={styles["TaskTitle"]}>
+                                    <Col sm={12} md={11} lg={11}>
+                                      <div className={styles["TaskTitle"]}>
                                         {data2.taskTitle}
-                                      </span>
+                                      </div>
                                     </Col>
                                     <Col
                                       sm={12}
-                                      md={4}
-                                      lg={4}
+                                      md={1}
+                                      lg={1}
                                       className="d-flex justify-content-end align-items-center "
                                     >
-                                      <img src={DeleteIcon} className="me-2" />
+                                      <img
+                                        src={DeleteIcon}
+                                        alt=""
+                                        className="me-2 cursor-pointer"
+                                      />
                                     </Col>
                                   </Row>
                                 </div>
@@ -245,9 +240,7 @@ const CreateEditViewComplianceTask = () => {
                           <Col sm={12} md={12} lg={12}>
                             <div
                               className={styles["createNewTaskBtnStyle"]}
-                              onClick={() =>
-                                handleAddTaskInCheckList(data.checklistId)
-                              }
+                              onClick={() => handleAddTaskInCheckList(data)}
                             >
                               {t("Add-task")}
                             </div>
@@ -278,8 +271,8 @@ const CreateEditViewComplianceTask = () => {
                               className={`cursor-pointer
                                 ${
                                   isExpanded
-                                    ? styles["AccordionArrowDown"]
-                                    : null
+                                    ? null
+                                    : styles["AccordionArrowDown"]
                                 }`}
                             />
                           </Col>
@@ -315,7 +308,7 @@ const CreateEditViewComplianceTask = () => {
       </div>
       {show && (
         <ModalToDoListChecklist
-          checkListId={checkListId}
+          checkListData={checkListData}
           show={show}
           setShow={setShow}
         />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./mainCompliance.module.css";
 import { Button, Switch } from "../../components/elements";
@@ -9,25 +9,100 @@ import ComplianceDashboard from "./Tabs/Dashboard";
 import ComplianceByMe from "./Tabs/ComplainceByMe";
 import CreateEditCompliance from "./Tabs/ComplainceByMe/createEditCompliance";
 import { useComplianceContext } from "../../context/ComplianceContext";
+import ViewCompliance from "./CommonComponents/viewCompliance";
+import ComplianceForMe from "./Tabs/ComplainceForMe";
+import SearchComplianceBoxModal from "./CommonComponents/searchComplianceBoxModal";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { GetComplianceAndTaskStatusesAPI } from "../../store/actions/ComplainSettingActions";
+import { useSelector } from "react-redux";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
-  // const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const AllComplianceStatus = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
+  );
   const {
     createEditCompliance,
     setCreateEditComplaince,
     mainComplianceTabs,
     setMainComplianceTabs,
     setComplianceAddEditViewState,
+    showViewCompliance,
+    setComplianceViewMode,
+    setSearchCompliancePayload,
+    setsearchbox,
+    setAllComplianceStatusForFilter,
+    setAllTasksStatusForFilter,
   } = useComplianceContext();
+
+  useEffect(() => {
+    dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (AllComplianceStatus && AllComplianceStatus !== null) {
+      const { complianceStatusesList, tasksStatusesList } = AllComplianceStatus;
+      if (complianceStatusesList.length > 0) {
+        setAllComplianceStatusForFilter(complianceStatusesList);
+        console.log(complianceStatusesList, "complianceStatusesList");
+      }
+      if (tasksStatusesList.length > 0) {
+        setAllTasksStatusForFilter(tasksStatusesList);
+      }
+    }
+  }, [AllComplianceStatus]);
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
     setComplianceAddEditViewState(1);
   };
+  const handleClickComplianceMode = (mode) => {
+    if (mode === 2) {
+      setSearchCompliancePayload({
+        complianceTitle: "",
+        complianceTitleOutside: "",
+        dueDateFrom: "",
+        dueDateTo: "",
+        authorityShortCode: "",
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      });
+      setMainComplianceTabs(2);
+      setComplianceViewMode("byMe");
+      setsearchbox(false);
+      return;
+    } else if (mode === 3) {
+      setSearchCompliancePayload({
+        complianceTitle: "",
+        complianceTitleOutside: "",
+        dueDateFrom: "",
+        dueDateTo: "",
+        authorityShortCode: "",
+        tagsCSV: "",
+        criticalityIds: [],
+        statusIds: [],
+        pageNumber: 0,
+        length: 10,
+      });
+      setMainComplianceTabs(3);
+      setComplianceViewMode("forMe");
+      setsearchbox(false);
+      return;
+    }
+  };
 
   if (createEditCompliance) {
     return <CreateEditCompliance />;
+  }
+  if (showViewCompliance) {
+    return <ViewCompliance />;
   }
   return (
     <>
@@ -52,7 +127,7 @@ const MainCompliance = () => {
               />
             )}
           </Col>
-          {mainComplianceTabs === 1 && (
+          {mainComplianceTabs === 1 ? (
             <Col
               sm={12}
               md={6}
@@ -60,11 +135,15 @@ const MainCompliance = () => {
               className="d-flex justify-content-end align-items-center gap-2"
             >
               <span className={styles["SwitchUserView_Text"]}>
-                Switch to User View
+                {t("Switch-to-user-view")}
               </span>{" "}
               <Switch />
             </Col>
-          )}
+          ) : mainComplianceTabs === 2 || mainComplianceTabs === 3 ? (
+            <Col sm={12} md={6} lg={6}>
+              <SearchComplianceBoxModal />
+            </Col>
+          ) : null}
         </Row>
         <Row>
           <Col
@@ -88,7 +167,7 @@ const MainCompliance = () => {
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setMainComplianceTabs(2)}
+              onClick={() => handleClickComplianceMode(2)}
               text={t("Compliances-by-me")}
             />
             <CustomButton
@@ -97,7 +176,7 @@ const MainCompliance = () => {
                   ? styles["DashboardBtn_active"]
                   : styles["DashboardBtn"]
               }
-              onClick={() => setMainComplianceTabs(3)}
+              onClick={() => handleClickComplianceMode(3)}
               text={t("Compliances-for-me")}
             />
             <CustomButton
@@ -126,6 +205,7 @@ const MainCompliance = () => {
         </Row>
         {mainComplianceTabs === 1 && <ComplianceDashboard />}
         {mainComplianceTabs === 2 && <ComplianceByMe />}
+        {mainComplianceTabs === 3 && <ComplianceForMe />}
       </section>
     </>
   );

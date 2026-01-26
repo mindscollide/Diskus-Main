@@ -3,11 +3,29 @@
   font-size: 12px;
   color: #6172d6;
 }
-.checklistAccordian {
+/* .checklistAccordian {
   max-height: 480px !important;
   overflow-y: auto;
   padding-right: 10px;
   margin: 20px 0;
+} */
+
+.checklistAccordian {
+  /* max-height: 220px !important; */
+  max-height: 60vh !important;
+  min-height: 60vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.checklistAccordian_closed {
+  /* max-height: 410px !important; */
+  max-height: 57vh !important;
+  min-height: 57vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
 }
 .AccordionArrowDown {
   transform: rotate(-180deg);
@@ -40,17 +58,17 @@
   margin-bottom: 10px;
   border: 1px solid #e1e1e1;
 
-  cursor: pointer;
+  cursor: default;
   font-weight: 600;
   font-size: 16px;
 }
 .TaskTitle {
   font-weight: 600;
   font-size: 16px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  vertical-align: middle;
   margin-left: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .mainButtonPosition {
   position: absolute;

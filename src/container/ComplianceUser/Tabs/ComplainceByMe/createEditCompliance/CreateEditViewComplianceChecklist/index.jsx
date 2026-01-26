@@ -21,6 +21,9 @@ import {
   AddComplianceChecklistAPI,
   CheckChecklistTitleExistsAPI,
   clearAuthorityMessage,
+  clearComplianceDetailsData,
+  EditComplianceChecklistAPI,
+  GetComplianceChecklistsByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import deleteIcon from "../../../../../../assets/images/Icon material-delete.png";
@@ -30,7 +33,6 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
-// import ChecklistAccordion from "../../../../CommonComponents/ChecklistAccordian/CustomAccordion";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,12 +53,14 @@ const CreateEditViewComplianceChecklist = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity
   );
-  const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
+  // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
     checklistTitle: "",
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
+
+  const [isEditTrue, setIsEditTrue] = useState(false);
   const {
     complianceAddEditViewState,
     complianceInfo,
@@ -66,13 +70,19 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState,
     setComplianceDetailsState,
     checkListData,
+    emptyComplianceState,
     setChecklistData,
   } = useComplianceContext();
+  console.log(complianceDetailsState, "complianceDetailsState");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId
+  );
+  console.log(
+    GetComplianceChecklistsByComplianceId,
+    "GetComplianceChecklistsByComplianceId"
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
   // const [checkListData, setChecklistData] = useState({
@@ -105,12 +115,6 @@ const CreateEditViewComplianceChecklist = () => {
           });
         }
         break;
-      // case "checklistDescription":
-      //   if (!value.trim()) {
-      //     setErrors({});
-      //     error = "Checklist Description is required";
-      //   }
-      //   break;
 
       default:
         break;
@@ -120,27 +124,52 @@ const CreateEditViewComplianceChecklist = () => {
       [name]: value.trimStart(),
     }));
   };
+
   const handleClickSaveBtn = () => {
     if (complianceInfo.complianceId !== 0) {
       setIsChecklistTitleExist(null);
-      const Data = {
-        checkListTitle: checkListData.checklistTitle,
-        description: checkListData.checklistDescription,
-        complianceId: complianceInfo.complianceId,
-        dueDate: multiDatePickerDateChangIntoUTC(
-          checkListData.checklistDueDate
-        ),
-      };
-      console.log(Data, "handleClickSaveBtn");
-      dispatch(
-        AddComplianceChecklistAPI(
-          navigate,
-          Data,
-          t,
-          complianceInfo,
-          setChecklistData
-        )
-      );
+      if (isEditTrue) {
+        // Update;
+        const Data = {
+          checklistId: isEditTrue ? checkListData.checklistId : 0,
+          checkListTitle: checkListData.checklistTitle,
+          description: checkListData.checklistDescription,
+          complianceId: complianceInfo.complianceId,
+          dueDate: multiDatePickerDateChangIntoUTC(
+            checkListData.checklistDueDate
+          ),
+        };
+        dispatch(
+          EditComplianceChecklistAPI(
+            navigate,
+            Data,
+            t,
+            complianceInfo,
+            setChecklistData,
+            setIsEditTrue
+          )
+        );
+      } else {
+        // Add
+        const Data = {
+          checkListTitle: checkListData.checklistTitle,
+          description: checkListData.checklistDescription,
+          complianceId: complianceInfo.complianceId,
+          dueDate: multiDatePickerDateChangIntoUTC(
+            checkListData.checklistDueDate
+          ),
+        };
+        console.log(Data, "handleClickSaveBtn");
+        dispatch(
+          AddComplianceChecklistAPI(
+            navigate,
+            Data,
+            t,
+            complianceInfo,
+            setChecklistData
+          )
+        );
+      }
     }
   };
 
@@ -149,7 +178,23 @@ const CreateEditViewComplianceChecklist = () => {
     // setAuthorityId(authorityID);
   };
 
-  const handleEditChecklist = (checklistID) => {};
+  const handleEditChecklist = (checklistData) => {
+    console.log(checklistData, "checklistData");
+    if (checklistData)
+      try {
+        setAddChecklistCloseState(false);
+        setIsEditTrue(true);
+        setChecklistData({
+          checklistId: checklistData.checklistId,
+          checklistTitle: checklistData.checklistTitle,
+          checklistDescription: checklistData.checklistDescription,
+          checklistDueDate: checklistData.dueDate
+            ? moment(checklistData.dueDate, "YYYYMMDD").toDate()
+            : null,
+        });
+      } catch (error) {}
+  };
+
   useEffect(() => {
     if (complianceAddEditViewState !== 3) {
       checklistTitleRef.current &&
@@ -157,7 +202,13 @@ const CreateEditViewComplianceChecklist = () => {
           cursor: "start",
         });
     }
+    // const complianceId = { complianceId: complianceInfo.complianceId };
+    // dispatch(
+    //   GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+    // );
   }, []);
+
+  const [getCheckListData, setGetCheckListData] = useState([]);
 
   useEffect(() => {
     if (
@@ -167,8 +218,11 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length
       );
+      setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
+    } else {
+      setChecklistCount(0);
     }
   }, [GetComplianceChecklistsByComplianceId]);
 
@@ -189,6 +243,11 @@ const CreateEditViewComplianceChecklist = () => {
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
   const handleClickPrevBtn = () => {
+    setChecklistData({
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "",
+    });
     setChecklistTabs(1);
     // if (complianceInfo.complianceId !== 0) {
     //   const Data = {
@@ -214,6 +273,7 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleCloseAddChecklistButton = () => {
+    setIsEditTrue(false);
     setErrors({
       checklistTitle: "",
     });
@@ -234,9 +294,38 @@ const CreateEditViewComplianceChecklist = () => {
     setErrors({
       checklistTitle: "",
     });
-    console.log(event, "eventevent");
-    if (complianceAddEditViewState === 3) return;
     const { name, value } = event.target;
+
+    if (complianceAddEditViewState === 3) return;
+    if (complianceAddEditViewState === 2 || isEditTrue) {
+      let getCheckObj = getCheckListData.find(
+        (data, index) => data.checklistId === checkListData.checklistId
+      );
+      if (getCheckObj !== undefined) {
+        if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
+          if (complianceInfo.complianceId !== 0) {
+            const Data = {
+              ComplianceID: complianceInfo.complianceId,
+              ChecklistTitle: checkListData.checklistTitle,
+            };
+            dispatch(
+              CheckChecklistTitleExistsAPI(
+                navigate,
+                Data,
+                t,
+                setErrors,
+                setIsChecklistTitleExist
+              )
+            );
+          }
+        }
+      }
+      console.log(
+        { getCheckObj, getCheckListData, checkListData },
+        "handleBlur"
+      );
+      return;
+    }
 
     // Checklist uniqueness (API placeholder)
     if (name === "checklistTitle" && value) {
@@ -267,24 +356,11 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleCloseButton = () => {
-    // take user back to ComplianceByMe screen
-    setChecklistData({
-      checklistTitle: "",
-      checklistDescription: "",
-      checklistDueDate: "",
-    });
-    setComplianceDetailsState({
-      complianceTitle: "",
-      description: "",
-      authorityId: 0,
-      criticality: 0,
-      dueDate: "",
-      complianceDueDateForChecklist: "",
-      tags: [],
-    });
+    emptyComplianceState();
     setChecklistTabs(1);
     setCreateEditComplaince(false);
   };
+  console.log(complianceDetailsState.dueDate, "complianceDueDateForChecklist");
   return (
     <>
       {!addChecklistCloseState ? (
@@ -349,7 +425,10 @@ const CreateEditViewComplianceChecklist = () => {
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
                 placeholder={t("Due-date")}
-                maxDate={complianceDetailsState.complianceDueDateForChecklist}
+                maxDate={moment(complianceDetailsState.dueDate)
+                  .subtract(1, "day")
+                  .endOf("day")
+                  .toDate()}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
@@ -407,7 +486,7 @@ const CreateEditViewComplianceChecklist = () => {
               onClick={handleCloseAddChecklistButton}
             />
             <Button
-              text={t("Add")}
+              text={isEditTrue ? t("Update") : t("Add")}
               className={styles["Compliance_NextButton"]}
               onClick={handleClickSaveBtn}
               disableBtn={
@@ -448,122 +527,119 @@ const CreateEditViewComplianceChecklist = () => {
             : styles["checklistAccordian"]
         }
       >
-        {GetComplianceChecklistsByComplianceId &&
-        GetComplianceChecklistsByComplianceId?.checklistList?.length > 0
-          ? GetComplianceChecklistsByComplianceId.checklistList.map(
-              (data, index) => {
-                const isExpanded = expandedCheckListIds.find(
-                  (data2, index) => data2 === data.checklistId
-                );
+        {getCheckListData?.length > 0 ? (
+          getCheckListData.map((data, index) => {
+            const isExpanded = expandedCheckListIds.find(
+              (data2, index) => data2 === data.checklistId
+            );
 
-                console.log(isExpanded, "isExpandedisExpanded");
-                return (
-                  <div key={index}>
-                    <CustomAccordion
-                      isExpand={isExpanded}
-                      notesID={data.checklistId}
-                      isCompliance={true}
-                      StartField={
-                        <>
-                          {!isExpanded ? (
-                            <div>
-                              <p className={styles["labelStyle"]}>
-                                {t("Checklist-title")}
-                              </p>
-                              <p
-                                className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
-                              >
-                                {data.checklistTitle}
-                              </p>
-                            </div>
-                          ) : (
-                            <p
-                              className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
-                            >
-                              {data.checklistTitle}
-                            </p>
-                          )}
-                        </>
-                      }
-                      centerField={
-                        <>
-                          {!isExpanded ? (
-                            <div>
-                              <p className={styles["labelStyle"]}>
-                                {t("Due-date")}
-                              </p>
-                              <p
-                                className={styles["ViewChecklistDetailStyles"]}
-                              >
-                                {formatDateToYMD(data.dueDate)}
-                              </p>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </>
-                      }
-                      attachmentsRow={
-                        <>
-                          <div>
-                            <p className={styles["labelStyle"]}>
-                              {t("Description")}
-                            </p>{" "}
-                            <p className={styles["ViewChecklistDetailStyles"]}>
-                              {data.checklistDescription}
-                            </p>
-                          </div>
-                        </>
-                      }
-                      endField={
-                        <>
-                          <Row>
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              className="d-flex justify-content-end gap-3 align-items-center"
-                            >
-                              <img
-                                className="cursor-pointer"
-                                draggable="false"
-                                alt=""
-                                src={deleteIcon}
-                                onClick={() =>
-                                  handleDeleteChecklist(data?.checklistId)
-                                }
-                              />
-                              {/* Edit Authority */}
-                              <img
-                                className="cursor-pointer"
-                                draggable="false"
-                                alt=""
-                                src={editIcon}
-                                onClick={() =>
-                                  handleEditChecklist(data?.checklistId)
-                                }
-                              />
-                              <img
-                                src={Accordion_Arrow}
-                                onClick={() => handleClickExpandCheckList(data)}
-                                alt=""
-                                className={`cursor-pointer
+            return (
+              <div key={index}>
+                <CustomAccordion
+                  isExpand={isExpanded}
+                  notesID={data.checklistId}
+                  isCompliance={true}
+                  isComplianceTask={false}
+                  StartField={
+                    <>
+                      {isExpanded ? (
+                        <div>
+                          <p className={styles["labelStyle"]}>
+                            {t("Checklist-title")}
+                          </p>
+                          <p
+                            className={`m-0 ${styles["ViewChecklistDetailStyles"]} ${styles["truncateTitle"]}`}
+                          >
+                            {data.checklistTitle}
+                          </p>
+                        </div>
+                      ) : (
+                        <p
+                          className={`m-0 ${styles["ViewChecklistDetailStyles_notexpanded"]} ${styles["truncateTitle"]}`}
+                        >
+                          {data.checklistTitle}
+                        </p>
+                      )}
+                    </>
+                  }
+                  centerField={
+                    <>
+                      {isExpanded ? (
+                        <div>
+                          <p className={styles["labelStyle"]}>
+                            {t("Due-date")}
+                          </p>
+                          <p className={styles["ViewChecklistDetailStyles"]}>
+                            {formatDateToYMD(data.dueDate)}
+                          </p>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                  }
+                  attachmentsRow={
+                    <>
+                      <div>
+                        <p className={styles["labelStyle"]}>
+                          {t("Description")}
+                        </p>{" "}
+                        <p className={styles["ViewChecklistDetailStyles"]}>
+                          {data.checklistDescription}
+                        </p>
+                      </div>
+                    </>
+                  }
+                  endField={
+                    <>
+                      <Row>
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-end gap-3 align-items-center"
+                        >
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={deleteIcon}
+                            onClick={() =>
+                              handleDeleteChecklist(data?.checklistId)
+                            }
+                          />
+                          {/* Edit Checklist */}
+                          <img
+                            className="cursor-pointer"
+                            draggable="false"
+                            alt=""
+                            src={editIcon}
+                            onClick={() => handleEditChecklist(data)}
+                          />
+                          <img
+                            src={Accordion_Arrow}
+                            onClick={() => handleClickExpandCheckList(data)}
+                            alt=""
+                            className={`cursor-pointer
                                   ${
                                     isExpanded
                                       ? null
                                       : styles["AccordionArrowDown"]
                                   }`}
-                              />
-                            </Col>
-                          </Row>
-                        </>
-                      }
-                    />
-                  </div>
-                );
-              }
-            )
-          : null}
+                          />
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                />
+              </div>
+            );
+          })
+        ) : (
+          <div className={styles["noChecklistMsg"]}>
+            {t("No-checklist-available")}
+          </div>
+        )}
       </div>
 
       {/* Main Button */}

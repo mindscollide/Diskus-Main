@@ -228,6 +228,8 @@ export async function handleLoginResponse(response, dispatch, navigate, t) {
       localStorage.setItem("activeOtoChatID", 0);
       console.log("busyCall");
       localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("initiateVideoCall", false);
       localStorage.setItem("activeRoomID", 0);
       console.log("mqtt");

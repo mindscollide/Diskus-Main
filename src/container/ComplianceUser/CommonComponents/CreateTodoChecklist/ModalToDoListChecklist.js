@@ -36,8 +36,15 @@ import { useNavigate } from "react-router-dom";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../commen/functions/utils";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
+import { parseYYYYMMDDToEndOfDay } from "../commonFunctions";
 
-const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
+const ModalToDoListChecklist = ({
+  checkListData,
+  ModalTitle,
+  setShow,
+  show,
+}) => {
+  console.log(checkListData, "checkListDatacheckListData");
   //For Localization
   const { t } = useTranslation();
   const [allAsigneeOption, setAllAsgneeOption] = useState([]);
@@ -124,10 +131,10 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
   useEffect(() => {
     try {
       setTaskCreatorID(parseInt(createrID));
-      setTask({
-        ...task,
-        creationDate: dateObject,
-      });
+      // setTask({
+      //   ...task,
+      //   creationDate: dateObject,
+      // });
       dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
       return () => {
         setCloseConfirmationBox(false);
@@ -366,7 +373,7 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
           t,
           7,
           setShow,
-          checkListId,
+          checkListData.checklistId,
           complianceInfo.complianceId
         )
       );
@@ -519,9 +526,11 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
   const onChangeSearch = (item) => {
     // console.log(item, "itemitemitem");
     // setPresenterValue(item);
-    // setTaskAssignedTo([item.value]);
+    setTaskAssignedTo([item.value]);
     setSelectedAsignee(item);
   };
+
+  console.log(`duedate: ${checkListData.dueDate}${checkListData.dueTime}`);
 
   return (
     <>
@@ -601,6 +610,13 @@ const ModalToDoListChecklist = ({ checkListId, ModalTitle, setShow, show }) => {
                       onFocusedDateChange={toDoDateHandler}
                       format={"DD/MM/YYYY"}
                       value={task.creationDate}
+                      maxDate={moment(
+                        parseYYYYMMDDToEndOfDay(checkListData.dueDate)
+                      )
+                        .subtract(1, "day")
+                        .endOf("day")
+                        .toDate()}
+                      // maxDate={parseYYYYMMDDToEndOfDay(checkListData.dueDate)}
                       minDate={moment().toDate()}
                       placeholder="DD/MM/YYYY"
                       render={

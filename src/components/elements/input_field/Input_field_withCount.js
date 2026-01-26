@@ -72,6 +72,7 @@ const InputfieldwithCount = forwardRef(
       onBlur,
       onKeyDown,
       disabled = false,
+      style,
       ...rest
     },
     ref
@@ -84,6 +85,7 @@ const InputfieldwithCount = forwardRef(
 
         <Input
           {...rest}
+          style={style}
           value={value}
           onChange={onChange}
           name={name}

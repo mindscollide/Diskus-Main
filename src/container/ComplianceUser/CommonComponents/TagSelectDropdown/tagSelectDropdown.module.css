@@ -1,0 +1,43 @@
+/* Hide dropdown arrow and separator (already done) */
+.Select_Tags__dropdown-indicator {
+  display: none;
+}
+
+.Select_Tags__indicator-separator {
+  display: none;
+}
+
+/* Base control style */
+.Select_Tags__control {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+/* Red border when max count reached */
+.Select_Tags__control.maxCountReached {
+  border-color: #f16b6b !important;
+}
+
+/* Input text padding to make room for char count */
+.Select_Tags__input {
+  padding-right: 50px;
+}
+
+/* Character count */
+.characterCountIndicator {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+  pointer-events: none;
+}
+
+.characterCountIndicator.maxCountReached {
+  color: #f16b6b;
+}

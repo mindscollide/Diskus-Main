@@ -1,4 +1,3 @@
-import { GetAllAuthoritiesDropdown } from "../../commen/apis/Api_config";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -12,6 +11,12 @@ const initialState = {
   AddAuthority: null,
   IsShortCodeExists: null,
   IsAuthorityNameExists: null,
+  listOfComplianceByCreator: null,
+  ViewComplianceByMeDetails: null,
+  SearchComplianceForMe: null,
+  ViewComplianceForMeById: null,
+  GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
+  GetComplianceAndTaskStatuses: null,
 
   // MQTT
   SocketAuthorityInactive: null,
@@ -30,6 +35,7 @@ const initialState = {
   CheckChecklistTitleExists: null,
   AddTaskMappingToChecklist: null,
   GetComplianceChecklistsWithTasksByComplianceId: null,
+  EditComplianceChecklist: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -482,6 +488,59 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // EditComplianceChecklist
+    case actions.EDIT_COMPLIANCE_CHECKLIST_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.EDIT_COMPLIANCE_CHECKLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        EditComplianceChecklist: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.EDIT_COMPLIANCE_CHECKLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        EditComplianceChecklist: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // GetComplianceChecklistsWithTasksByComplianceId
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceIdForMe: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
     //MQTT for Authority Work
     case actions.AUTHORITY_INACTIVE:
       return {
@@ -530,6 +589,139 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
         severity: null,
+      };
+
+    case actions.CLEAR_COMPLIANCEDETAILS_DATA:
+      return {
+        ...state,
+        GetComplianceChecklistsWithTasksByComplianceId: null,
+        GetComplianceChecklistsByComplianceId: null,
+        ViewComplianceByMeDetails: null,
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        listOfComplianceByCreator: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.LIST_OF_COMPLIANCE_BY_CREATOR_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        listOfComplianceByCreator: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceByMeDetails: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_BY_ME_DETAILS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceByMeDetails: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.SEARCH_COMPLIANCE_FOR_ME_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        SearchComplianceForMe: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.VIEW_COMPLIANCE_FOR_ME_BY_ID_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ViewComplianceForMeById: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.GET_COMPLIACE_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIACE_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceAndTaskStatuses: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIACE_STATUS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceAndTaskStatuses: null,
+        ResponseMessage: action.message,
+        severity: "error",
       };
 
     // ================= DEFAULT =================

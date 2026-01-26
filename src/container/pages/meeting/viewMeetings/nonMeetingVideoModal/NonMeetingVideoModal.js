@@ -187,6 +187,8 @@ const NonMeetingVideoModal = () => {
       dispatch(maximizeVideoPanelFlag(false));
       dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("initiateVideoCall", false);
       // localStorage.setItem("isCaller", false);
       // localStorage.setItem("isMeeting", true);
