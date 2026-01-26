@@ -191,6 +191,7 @@ const AddEditViewAuthorityModal = () => {
   }, [GetAuthorityByAuthorityId, countryNamesReducerCountryNamesData]);
 
   const handleSelect = (country) => {
+    console.log({ country }, "CountrySelect");
     setSelected(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary === country;
@@ -465,6 +466,23 @@ const AddEditViewAuthorityModal = () => {
         }
       } catch (error) {}
     }
+  };
+
+  const handleSelectCountry = (event) => {
+    console.log(event, "selected country");
+    setSelectCountry(event);
+
+    // Setting the country in Phone code aswell
+    const { shortCode } = event;
+    setSelected(shortCode);
+    let a = Object.values(countryNameforPhoneNumber).find((obj) => {
+      return obj.primary === shortCode;
+    });
+    setAuthorityDetails({
+      ...authorityDetails,
+      phoneCode: a.secondary,
+    });
+    console.log({ a, shortCode }, "CountryIDCountryID");
   };
 
   return (
@@ -811,7 +829,12 @@ const AddEditViewAuthorityModal = () => {
                                 isSearchable={true}
                                 options={countryNames}
                                 labelInValue={t("Country")}
-                                onChange={(event) => setSelectCountry(event)}
+                                // onChange={(event) => {
+
+                                //   console.log(event, "eventevent");
+                                //   setSelectCountry(event);
+                                // }}
+                                onChange={handleSelectCountry}
                                 value={selectCountry}
                                 placeholder={
                                   authorityViewState !== 3
@@ -964,6 +987,7 @@ const AddEditViewAuthorityModal = () => {
                               placeholder={"Select Co...."}
                               customLabels={countryNameforPhoneNumber}
                               className={styles["dropdown-countrylist"]}
+                              disabled
                             />
                           </Col>
                         )}
@@ -971,7 +995,9 @@ const AddEditViewAuthorityModal = () => {
                         <Col sm={8} md={8} lg={8} className=" me-0 pe-0">
                           {authorityViewState === 3 && (
                             <span className={styles["authorityViewValue"]}>
-                              {authorityDetails.phoneCode}
+                              {authorityDetails.phone !== ""
+                                ? authorityDetails.phoneCode
+                                : ""}
                               {authorityDetails.phone}
                             </span>
                           )}
