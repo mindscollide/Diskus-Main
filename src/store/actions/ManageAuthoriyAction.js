@@ -7,6 +7,7 @@ const showDeleteAuthorityModal = (response) => {
     response: response,
   };
 };
+
 const showAddEditViewAuthorityModal = (response) => {
   return {
     type: actions.ADD_EDIT_VIEW_AUTHORITY_MODAL,

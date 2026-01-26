@@ -83,6 +83,9 @@ export const ComlianceProvider = ({ children }) => {
     useState([]);
   const [allTasksStatusForFilter, setAllTasksStatusForFilter] = useState([]);
 
+  // Modals For Status
+  const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
+
   const emptyComplianceState = () => {
     console.log("cleared");
     dispatch(clearComplianceDetailsData());
@@ -144,6 +147,7 @@ export const ComlianceProvider = ({ children }) => {
     setIsViewDetailsOpen(false);
     setsearchbox(false);
     setComplianceForMeTotal(0);
+    setSubmitForApprovalModal(false);
   };
 
   // view compliance
@@ -210,6 +214,8 @@ export const ComlianceProvider = ({ children }) => {
         setAllComplianceStatusForFilter,
         allTasksStatusForFilter,
         setAllTasksStatusForFilter,
+        submitForApprovalModal,
+        setSubmitForApprovalModal,
       }}
     >
       {children}

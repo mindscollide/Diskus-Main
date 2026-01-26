@@ -7,6 +7,7 @@ import styles from "./viewComplianceDetails.module.css";
 import { Tag } from "antd";
 import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccordian/index.jsx.js";
 import { formatDateToYMD } from "../../commonFunctions.js";
+import StatusSubmitForApprovalModal from "../../StatusChaneModals/SubmitForApproval/index.jsx";
 
 const ViewComplianceDetails = () => {
   const {
@@ -158,8 +159,8 @@ const ViewComplianceDetails = () => {
           </Col>
         </Row>
       </>
-
       <ViewComplianceChecklistAccordian />
+      <StatusSubmitForApprovalModal />
     </>
   );
 };
