@@ -7,6 +7,8 @@ const toDoListApi = baseURL + process.env.REACT_APP_TODO_LIST_API;
 const settingApi = baseURL + process.env.REACT_APP_SETTING_API;
 const settingDownloadApi = baseURL + process.env.REACT_APP_SETTING_DOWNLOAD_API;
 const meetingApi = baseURL + process.env.REACT_APP_MEETING_API;
+const newMeetingApi = baseURL + ":11025/Meeting";
+
 //const meetingApi = "http://localhost:62520/Meeting";
 const getAdminURLs = baseURL + process.env.REACT_APP_ADMIN_API;
 //const getAdminURLs = "http://localhost:42406/Admin";
@@ -67,4 +69,5 @@ export {
   talkApiReport,
   AuditAPi,
   complainceApi,
+  newMeetingApi,
 };

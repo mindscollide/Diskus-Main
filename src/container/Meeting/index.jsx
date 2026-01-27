@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useMeetingContext } from "../../context/MeetingContext";
 import PublishedMeeting from "./PublishMeetings/index";
 import DraftMeeting from "./draftMeetings/index";
-import UnPublishedMeeting from "./unPublishMeetings/index";
+import UnPublishedMeeting from "./proposedMeeting/index";
 import { Col, Row } from "react-bootstrap";
 import ReactBootstrapDropdown from "react-bootstrap/Dropdown";
 import styles from "./Meeting.module.css";
@@ -14,19 +14,21 @@ import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import ClipIcon from "../../assets/images/ClipIcon.png";
 import VideoIcon from "../../assets/images/Video-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-
 import { useTranslation } from "react-i18next";
 import { checkFeatureIDAvailability } from "../../commen/functions/utils";
 import { Button, TextField } from "../../components/elements";
+import CustomButton from "../../components/elements/button/Button";
+import ProposedMeeting from "./proposedMeeting/index";
+import { useNewMeetingContext } from "../../context/NewMeetingContext";
 const MainMeeting = () => {
   const {
     isPublishedMeeting,
     setIsPublishedMeeting,
     isDraftMeetings,
     setIsDraftMeetings,
-    isUnPublishedMeeting,
-    setIsUnPublishedMeeting,
-  } = useMeetingContext();
+    isProposedMeeting,
+    setIsProposedMeeting,
+  } = useNewMeetingContext();
   const { t } = useTranslation();
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [searchFields, setSearchFeilds] = useState({
@@ -80,6 +82,22 @@ const MainMeeting = () => {
       DateView: "",
     });
     setentereventIcon(false);
+  };
+
+  const handleClickMeetingTab = (tab) => {
+    if (tab === "published") {
+      setIsPublishedMeeting(true);
+      setIsDraftMeetings(false);
+      setIsProposedMeeting(false);
+    } else if (tab === "draft") {
+      setIsPublishedMeeting(false);
+      setIsDraftMeetings(true);
+      setIsProposedMeeting(false);
+    } else {
+      setIsPublishedMeeting(false);
+      setIsDraftMeetings(false);
+      setIsProposedMeeting(true);
+    }
   };
 
   return (
@@ -267,12 +285,43 @@ const MainMeeting = () => {
             </div>
           </Col>
         </Row>
-        <Row>
-          <Col sm={12} md={12} lg={12}></Col>
-        </Row>
-        {isPublishedMeeting && <PublishedMeeting />}
-        {isDraftMeetings && <DraftMeeting />}
-        {isUnPublishedMeeting && <UnPublishedMeeting />}
+        <section className={styles.MeetingListContainer}>
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className="d-flex justify-content-start align-items-center gap-2"
+            >
+              <CustomButton
+                text="Published"
+                className={
+                  isPublishedMeeting
+                    ? styles.tabButton_Active
+                    : styles.tabButton
+                }
+                onClick={() => handleClickMeetingTab("published")}
+              />
+              <CustomButton
+                text="Draft"
+                className={
+                  isDraftMeetings ? styles.tabButton_Active : styles.tabButton
+                }
+                onClick={() => handleClickMeetingTab("draft")}
+              />
+              <CustomButton
+                text="Proposed"
+                className={
+                  isProposedMeeting ? styles.tabButton_Active : styles.tabButton
+                }
+                onClick={() => handleClickMeetingTab("proposed")}
+              />
+            </Col>
+          </Row>
+          {isPublishedMeeting && <PublishedMeeting />}
+          {isDraftMeetings && <DraftMeeting />}
+          {isProposedMeeting && <ProposedMeeting />}
+        </section>
       </section>
     </>
   );

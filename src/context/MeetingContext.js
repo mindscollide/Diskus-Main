@@ -16,9 +16,6 @@ export const MeetingContext = createContext();
 
 // Create a Provider component
 export const MeetingProvider = ({ children }) => {
-  const [isPublishedMeeting, setIsPublishedMeeting] = useState(true);
-  const [isDraftMeetings, setIsDraftMeetings] = useState(false);
-  const [isUnPublishedMeeting, setIsUnPublishedMeeting] = useState(false);
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
     (state) => state.settingReducer.UserProfileData,
@@ -468,12 +465,6 @@ export const MeetingProvider = ({ children }) => {
     viewMeetingAgendaViewerRowData,
     inCallParticipantsList,
     setInCallParticipantsList,
-    isPublishedMeeting,
-    setIsPublishedMeeting,
-    isDraftMeetings,
-    setIsDraftMeetings,
-    isUnPublishedMeeting,
-    setIsUnPublishedMeeting,
     stopApiCalled,
     setStopApiCalled,
     stopApiCalledRef,
