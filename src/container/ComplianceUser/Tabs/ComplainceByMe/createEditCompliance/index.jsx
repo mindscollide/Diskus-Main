@@ -40,6 +40,17 @@ const CreateEditCompliance = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (complianceDetailsState.complianceId !== 0) {
+      try {
+        const complianceId = { complianceId: complianceInfo.complianceId };
+        dispatch(
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+        );
+      } catch (error) {}
+    }
+  }, []);
+
   console.log(
     complianceDetailsState,
     "complianceDetailsStatecomplianceDetailsState"

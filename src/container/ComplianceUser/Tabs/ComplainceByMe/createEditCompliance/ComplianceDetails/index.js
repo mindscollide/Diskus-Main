@@ -17,8 +17,11 @@ import { useNavigate } from "react-router-dom";
 import {
   AddComplianceAPI,
   CheckComplianceTitleExistsAPI,
+  EditComplianceAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
+  GetComplianceChecklistsByComplianceIdAPI,
+  GetComplianceChecklistsWithTasksByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import { Button } from "../../../../../../components/elements";
@@ -43,6 +46,11 @@ const ComplainceDetails = () => {
     complianceDetailsState,
     setComplianceDetailsState,
     complianceInfo,
+    setChecklistCount,
+    setTaskCount,
+    setChecklistData,
+    setAllowedComplianceStatusOptions,
+    allowedComplianceStatusOptions,
   } = useComplianceContext();
 
   const { t } = useTranslation();
@@ -66,6 +74,18 @@ const ComplainceDetails = () => {
   );
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
+  );
+
+  const GetComplianceChecklistsByComplianceId = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsByComplianceId
+  );
+
+  const getAllComplianceChecklistTask = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsWithTasksByComplianceId
   );
 
   console.log(tagsOptions, "GetAllTagsByOrganizationIDData");
@@ -126,6 +146,7 @@ const ComplainceDetails = () => {
         setComplianceDetailsState((prev) => ({
           ...prev,
           complianceTitle: complianceTitle,
+          complianceId: complianceId,
           description: description,
           authority: {
             ...authority,
@@ -134,11 +155,71 @@ const ComplainceDetails = () => {
           },
           criticality: selectedCriticality,
           dueDate: parseYYYYMMDDToEndOfDay(dueDate),
-          tags: [],
+          tags: tags,
+          status: {
+            value: complianceStatus.statusId,
+            label: complianceStatus.statusName,
+          },
         }));
+        // setChecklistCount(checklists.length);
+        // setTaskCount(totalTasks);
+        if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
+          const allowedStatuses = allowedComplianceStatuses.map(
+            (data, index) => {
+              return {
+                ...data,
+                value: data.statusId,
+                label: data.statusName,
+              };
+            }
+          );
+          setAllowedComplianceStatusOptions(allowedStatuses);
+        }
+        if (complianceId !== 0) {
+          let Data = {
+            complianceId: complianceId,
+          };
+          dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
+          dispatch(
+            GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+          );
+        }
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
+
+  // setComplianceChecklistCount
+  useEffect(() => {
+    if (
+      GetComplianceChecklistsByComplianceId &&
+      GetComplianceChecklistsByComplianceId !== null
+    ) {
+      setChecklistCount(
+        GetComplianceChecklistsByComplianceId.checklistList.length
+      );
+      // setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
+      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
+      // setExpandedCheckListIds([]);
+    } else {
+      setChecklistCount(0);
+    }
+  }, [GetComplianceChecklistsByComplianceId]);
+
+  useEffect(() => {
+    if (
+      getAllComplianceChecklistTask &&
+      getAllComplianceChecklistTask !== null
+    ) {
+      try {
+        const checklistList = getAllComplianceChecklistTask.checklistList;
+        const totalTaskCount = checklistList.reduce(
+          (sum, checklist) => sum + (checklist.taskList?.length || 0),
+          0
+        );
+        setTaskCount(totalTaskCount);
+      } catch (error) {}
+    }
+  }, [getAllComplianceChecklistTask]);
 
   // GetAllAuthority
   useEffect(() => {
@@ -237,7 +318,25 @@ const ComplainceDetails = () => {
 
   const handleClickNextBtn = () => {
     if (complianceInfo.complianceId !== 0) {
-      setChecklistTabs(2);
+      const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
+
+      const Data = {
+        complianceId: complianceInfo.complianceId,
+        complianceTitle: complianceDetailsState.complianceTitle,
+        description: complianceDetailsState.description,
+        authorityId: complianceDetailsState.authority.value,
+        criticality: complianceDetailsState.criticality.value,
+        dueDate: multiDatePickerDateChangIntoUTC(
+          complianceDetailsState.dueDate
+        ),
+        newStatusId: complianceDetailsState.status.value,
+        tags: tagsArr,
+        ReasonToMakeComplianceOnHold: "", // On Hold Compliance
+        OnHoldAlongWithComplianceCheckListAndTask: 1, // On Hold Compliance Including Checklist and Task
+      };
+
+      console.log(Data, "updatedData");
+      dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
     } else {
       const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
       const Data = {
@@ -574,24 +673,27 @@ const ComplainceDetails = () => {
               {t("Status")}
             </div>
             <div className={styles["Select_Authoriy_div"]}>
-              {complianceAddEditViewState === 3 ? (
-                <span>{/* {selectCountry?.label} */}</span>
-              ) : (
-                <Select
-                  isSearchable={true}
-                  // options={criticalityOptions}
-                  labelInValue={t("Status")}
-                  // onChange={(event) => setSelectCriticality(event)}
-                  value={complianceDetailsState.status}
-                  placeholder={
-                    complianceAddEditViewState !== 3 ? t("Status") : ""
-                  }
-                  classNamePrefix="Select_country_Authoriy"
-                  isDisabled={
-                    complianceDetailsState.authority.value === 0 ? true : false
-                  }
-                />
-              )}
+              <Select
+                isSearchable={true}
+                options={allowedComplianceStatusOptions}
+                labelInValue={t("Status")}
+                // onChange={(event) => setSelectCriticality(event)}
+
+                onChange={(event) =>
+                  setComplianceDetailsState((prev) => ({
+                    ...prev,
+                    status: event,
+                  }))
+                }
+                value={complianceDetailsState.status}
+                placeholder={
+                  complianceAddEditViewState !== 3 ? t("Status") : ""
+                }
+                classNamePrefix="Select_country_Authoriy"
+                isDisabled={
+                  complianceDetailsState.authority.value === 0 ? true : false
+                }
+              />
             </div>
           </Col>
         </Row>
@@ -698,6 +800,7 @@ const ComplainceDetails = () => {
             complianceDetailsState.authority.value !== 0 &&
             complianceDetailsState.criticality.value !== 0 &&
             complianceDetailsState.dueDate !== "" &&
+            complianceDetailsState.complianceTitle !== "" &&
             errors.complianceTitle === ""
               ? false
               : true

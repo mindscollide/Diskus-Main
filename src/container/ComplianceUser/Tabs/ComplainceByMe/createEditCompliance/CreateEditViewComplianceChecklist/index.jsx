@@ -202,11 +202,16 @@ const CreateEditViewComplianceChecklist = () => {
           cursor: "start",
         });
     }
-    // const complianceId = { complianceId: complianceInfo.complianceId };
-    // dispatch(
-    //   GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
-    // );
   }, []);
+
+  useEffect(() => {
+    if (complianceInfo.complianceId !== 0) {
+      let Data = {
+        complianceId: complianceInfo.complianceId,
+      };
+      dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
+    }
+  }, [complianceInfo]);
 
   const [getCheckListData, setGetCheckListData] = useState([]);
 

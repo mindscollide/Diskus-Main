@@ -2113,3 +2113,7 @@ export const GetComplianceChecklistsWithTasksByComplianceIdForMe = {
 export const GetComplianceAndTaskStatuses = {
   RequestMethod: "ServiceManager.GetComplianceAndTaskStatuses",
 };
+
+export const EditCompliance = {
+  RequestMethod: "ServiceManager.EditCompliance",
+};
