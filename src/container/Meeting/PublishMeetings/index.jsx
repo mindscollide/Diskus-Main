@@ -4,12 +4,12 @@ import SortIconAscend from "../../../assets/images/sortingIcons/SorterIconAscend
 import SortIconDescend from "../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import ArrowDownIcon from "../../../assets/images/sortingIcons/Arrow-down.png";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
-import CancelMeetingIcon from "../../../assets/images/cancel_meeting_icon.svg";
-import ChatIcon from "../../../assets/images/Chat-Icon.png";
-import AgendaIcon from "../../../assets/images/AgendaIcon.svg";
-import ClipboardIcon from "../../../assets/images/Clipboard_Icon.png";
-import DownloadVideoIcon from "../../../assets/images/Download-Video.png";
+import EditIcon from "../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
+import CancelMeetingIcon from "../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
+import ChatIcon from "../../../assets/images/New Meeting Listing Icons/Talk.png";
+import AgendaIcon from "../../../assets/images/New Meeting Listing Icons/ViewAgenda.png";
+import ClipboardIcon from "../../../assets/images/New Meeting Listing Icons/Attendance.png";
+import DownloadVideoIcon from "../../../assets/images/New Meeting Listing Icons/VideoRecording.png";
 import { Popover, Menu, Checkbox } from "antd";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
@@ -279,17 +279,18 @@ const PublishedMeeting = () => {
         ),
         dataIndex: "title",
         key: "title",
-        width: 400,
+        width: 350,
         sorter: true,
         ellipsis: true,
         render: (text) => {
-          return <span className="ellipsis">{text}</span>;
+          return <span className={styles.tableRow}>{text}</span>;
         },
       },
       {
         title: "Status",
         dataIndex: "status",
         key: "status",
+        align: "center",
         width: 150,
         filters: statusFilters.map((filter) => ({
           text: filter.text,
@@ -311,7 +312,7 @@ const PublishedMeeting = () => {
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center justify-content-center gap-2">
               <span>Organizer</span>
               {organizerNameSort === "ascend" ? (
                 <img src={SortIconAscend} alt="SortIconAscend" />
@@ -324,11 +325,12 @@ const PublishedMeeting = () => {
         dataIndex: "host",
         key: "host",
         width: 150,
+        align: "center",
       },
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center justify-content-center gap-2">
               <span>Time</span>
               {meetingTimeSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt="ArrowUpIcon" />
@@ -341,6 +343,7 @@ const PublishedMeeting = () => {
         dataIndex: "time",
         key: "time",
         width: 150,
+        align: "center",
 
         render: (text, record) => {
           return <>{`${record.meetingStartTime} - ${record.meetingEndTime}`}</>;
@@ -349,7 +352,7 @@ const PublishedMeeting = () => {
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className="d-flex align-items-center justify-content-center gap-2">
               <span>Date</span>
               {meetingDateSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt="ArrowUpIcon" />
@@ -362,16 +365,22 @@ const PublishedMeeting = () => {
         dataIndex: "date",
         key: "date",
         width: 150,
+        align: "center",
 
         render: (text, record) => {
           return <>{record.dateOfMeeting}</>;
         },
       },
       {
-        title: "Meeting Type",
+        title: (
+          <span className="d-flex justify-content-center align-items-center">
+            Meeting Type
+          </span>
+        ),
         dataIndex: "meetingtype",
         key: "meetingtype",
         width: 150,
+        align: "center",
 
         filters: meetingTypeFilters.map((filter) => ({
           text: filter.text,
@@ -411,6 +420,7 @@ const PublishedMeeting = () => {
           </>
         ),
         dataIndex: "meetingAction",
+        width: 280,
         key: "meetingAction",
         render: (text, record) => {
           let meetingCurrentStatus = Number(record.status);
@@ -483,7 +493,6 @@ const PublishedMeeting = () => {
         pagination={false}
         scroll={{
           y: 450,
-          x: "max-content",
         }}
       />
     </div>
