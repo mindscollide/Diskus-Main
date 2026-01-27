@@ -1,0 +1,47 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+  text-align: left;
+}
+
+/* Layout Variants */
+.imageLeft {
+  flex-direction: row;
+}
+
+.imageRight {
+  flex-direction: row-reverse;
+}
+
+.imageTop {
+  flex-direction: column;
+}
+
+.imageBottom {
+  flex-direction: column-reverse;
+}
+
+.image {
+  max-width: 240px;
+  object-fit: contain;
+}
+
+.text {
+  max-width: 420px;
+}
+
+.title {
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #a2a2a2;
+}
+
+.description {
+  font-size: 14px;
+  color: #6b7280;
+}
