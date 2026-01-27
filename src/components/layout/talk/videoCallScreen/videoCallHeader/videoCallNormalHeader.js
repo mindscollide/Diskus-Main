@@ -125,28 +125,29 @@ const VideoCallNormalHeader = ({
     setStopRecordingState,
     inCallParticipantsList,
     setInCallParticipantsList,
+    stopApiCalledRef,
   } = useContext(MeetingContext);
 
   const leaveModalPopupRef = useRef(null);
 
   const MaximizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
 
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
 
   const LeaveCallModalFlag = useSelector(
-    (state) => state.videoFeatureReducer.LeaveCallModalFlag
+    (state) => state.videoFeatureReducer.LeaveCallModalFlag,
   );
 
   const waitingParticipantsList = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList
+    (state) => state.videoFeatureReducer.waitingParticipantsList,
   );
 
   console.log(waitingParticipantsList, "waitingParticipantsList");
@@ -154,63 +155,63 @@ const VideoCallNormalHeader = ({
   console.log(inCallParticipantsList, "inCallParticipantsList");
 
   const getAllParticipantMain = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
+    (state) => state.videoFeatureReducer.getAllParticipantMain,
   );
 
   //Audio Control For host
   const audioControl = useSelector(
-    (state) => state.videoFeatureReducer.audioControlHost
+    (state) => state.videoFeatureReducer.audioControlHost,
   );
   console.log(audioControl, "audioControlaudioControl");
   //Video Control For host
   const videoControl = useSelector(
-    (state) => state.videoFeatureReducer.videoControlHost
+    (state) => state.videoFeatureReducer.videoControlHost,
   );
 
   // For Participant Raise Un Raised Hand
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
   const leaveMeetingVideoOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnLogoutResponse,
   );
 
   const VideoChatMessagesFlag = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
 
   const ParticipantPopupFlag = useSelector(
-    (state) => state.videoFeatureReducer.ParticipantPopupFlag
+    (state) => state.videoFeatureReducer.ParticipantPopupFlag,
   );
 
   const VideoRecipentData = useSelector(
-    (state) => state.VideoMainReducer.VideoRecipentData
+    (state) => state.VideoMainReducer.VideoRecipentData,
   );
 
   const GroupCallRecipientsData = useSelector(
-    (state) => state.VideoMainReducer.GroupCallRecipientsData
+    (state) => state.VideoMainReducer.GroupCallRecipientsData,
   );
 
   const priticipantListModalFlagForHost = useSelector(
-    (state) => state.videoFeatureReducer.participantWaitinglistBox
+    (state) => state.videoFeatureReducer.participantWaitinglistBox,
   );
 
   const priticipantListModalFlagForNonHost = useSelector(
-    (state) => state.videoFeatureReducer.participantsVisible
+    (state) => state.videoFeatureReducer.participantsVisible,
   );
 
   const makeParticipantAsHost = useSelector(
-    (state) => state.videoFeatureReducer.makeParticipantAsHost
+    (state) => state.videoFeatureReducer.makeParticipantAsHost,
   );
 
   const closeQuickMeetingVideoReducer = useSelector(
     (state) =>
-      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingVideoFlag,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
   console.log(disableBeforeJoinZoom, "disableBeforeJoinZoom");
   console.log(LeaveCallModalFlag, "LeaveCallModalFlag");
@@ -221,55 +222,55 @@ const VideoCallNormalHeader = ({
       unansweredCallParticipant,
       ParticipantPopupFlag,
     },
-    "CheckParticipantsJoinIcon"
+    "CheckParticipantsJoinIcon",
   );
 
   const leaveMeetingVideoOnEndStatusMqttFlag = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag
+    (state) => state.videoFeatureReducer.leaveMeetingVideoOnEndStatusMqttFlag,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const presenterStartedFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterStartedFlag
+    (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
   const newJoinPresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+    (state) => state.videoFeatureReducer.newJoinPresenterParticipant,
   );
 
   const unansweredFlagForOneToOneCall = useSelector(
-    (state) => state.videoFeatureReducer.unansweredFlagForOneToOneCall
+    (state) => state.videoFeatureReducer.unansweredFlagForOneToOneCall,
   );
 
   const pendingCallParticipantList = useSelector(
-    (state) => state.videoFeatureReducer.pendingCallParticipantList
+    (state) => state.videoFeatureReducer.pendingCallParticipantList,
   );
 
   const inCallParticipantList = useSelector(
-    (state) => state.videoFeatureReducer.inCallParticipantList
+    (state) => state.videoFeatureReducer.inCallParticipantList,
   );
 
   const leavePresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterParticipant
+    (state) => state.videoFeatureReducer.leavePresenterParticipant,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
   // screenShareTriggeredGlobally
   const nonMeetingVideoCheckModal = useSelector(
-    (state) => state.videoFeatureReducer.nonMeetingVideo
+    (state) => state.videoFeatureReducer.nonMeetingVideo,
   );
 
   console.log(globallyScreenShare, "globallyScreenShare");
@@ -282,7 +283,7 @@ const VideoCallNormalHeader = ({
 
   console.log(
     { presenterViewJoinFlag, presenterViewHostFlag, presenterViewFlag },
-    "presenterViewJoinFlagpresenterViewHostFlag"
+    "presenterViewJoinFlagpresenterViewHostFlag",
   );
 
   let callerNameInitiate = localStorage.getItem("callerNameInitiate");
@@ -311,7 +312,7 @@ const VideoCallNormalHeader = ({
   let getMeetingHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
+    localStorage.getItem("isMeetingVideoHostCheck"),
   );
   console.log({ VideoRecipentData, callerNameInitiate }, "callerNameInitiate");
 
@@ -320,8 +321,8 @@ const VideoCallNormalHeader = ({
     presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
       ? roomID
       : isMeetingVideoHostCheck
-      ? newRoomID
-      : participantRoomId;
+        ? newRoomID
+        : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
   const {
@@ -372,7 +373,7 @@ const VideoCallNormalHeader = ({
           }
 
           return acc;
-        }, {})
+        }, {}),
       );
 
       setParticipantWaitingCounterList(uniqueParticipants);
@@ -430,7 +431,7 @@ const VideoCallNormalHeader = ({
     ) {
       // Filter out the current user
       const filteredList = inCallParticipantList.filter(
-        (participant) => participant.userID !== currentUserID
+        (participant) => participant.userID !== currentUserID,
       );
 
       setInCallParticipantsList(filteredList); // set filtered list
@@ -451,10 +452,10 @@ const VideoCallNormalHeader = ({
     // Only proceed if all flags are valid and leftUID is defined
     if (leftUID && presenterViewFlag && presenterViewHostFlag) {
       const updatedList = getAllParticipantMain.filter(
-        (participant) => participant.guid !== leftUID
+        (participant) => participant.guid !== leftUID,
       );
       const updatedRaisedHands = updatedList.filter(
-        (participant) => participant.raiseHand === true
+        (participant) => participant.raiseHand === true,
       );
       setHandRaiseCounter(updatedRaisedHands.length);
 
@@ -468,7 +469,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     let dublicateData = [...getAllParticipantMain];
     const raisedHandCounter = dublicateData.filter(
-      (participant) => participant.raiseHand === true
+      (participant) => participant.raiseHand === true,
     );
     setHandRaiseCounter(raisedHandCounter.length);
   }, [getAllParticipantMain]);
@@ -485,7 +486,7 @@ const VideoCallNormalHeader = ({
       const updatedParticipants = dublicateData.filter(
         (participant) =>
           participant.userID !== newJoinPresenterParticipant.userID &&
-          participant.guid !== newJoinPresenterParticipant.guid
+          participant.guid !== newJoinPresenterParticipant.guid,
       );
 
       // Add flag to distinguish presentation-only participant
@@ -506,7 +507,7 @@ const VideoCallNormalHeader = ({
   useEffect(() => {
     if (!presenterViewFlag || !presenterViewHostFlag) {
       const filteredParticipants = getAllParticipantMain.filter(
-        (participant) => !participant.joinedForPresentation
+        (participant) => !participant.joinedForPresentation,
       );
 
       dispatch(updatedParticipantListForPresenter(filteredParticipants));
@@ -568,12 +569,12 @@ const VideoCallNormalHeader = ({
 
   // after presenter view is true then this funct call
   async function handlePresenterViewFunc() {
-    console.log("busyCall");
+    // 🔒 LOCK
     let alreadyInMeetingVideo = JSON.parse(
-      sessionStorage.getItem("alreadyInMeetingVideo")
+      sessionStorage.getItem("alreadyInMeetingVideo"),
     );
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     if (presenterViewHostFlag) {
       if (!alreadyInMeetingVideo || leavePresenterViewToJoinOneToOne) {
@@ -594,7 +595,11 @@ const VideoCallNormalHeader = ({
         };
         sessionStorage.setItem("StopPresenterViewAwait", true);
         setLeavePresenterViewToJoinOneToOne(false);
+        console.log("stopPresenterViewMainApi");
 
+        if (stopApiCalledRef.current) return;
+
+        stopApiCalledRef.current = true; // 🔒 LOCK
         await dispatch(
           stopPresenterViewMainApi(
             navigate,
@@ -603,8 +608,9 @@ const VideoCallNormalHeader = ({
             leavePresenterViewToJoinOneToOne ? 3 : 0,
             setLeaveMeetingVideoForOneToOneOrGroup,
             setJoiningOneToOneAfterLeavingPresenterView,
-            setLeavePresenterViewToJoinOneToOne
-          )
+            setLeavePresenterViewToJoinOneToOne,
+            stopApiCalledRef,
+          ),
         );
       } else {
         console.log("busyCall");
@@ -621,8 +627,8 @@ const VideoCallNormalHeader = ({
             leavePresenterViewToJoinOneToOne ? 3 : 2,
             setLeaveMeetingVideoForOneToOneOrGroup,
             setJoiningOneToOneAfterLeavingPresenterView,
-            setLeavePresenterViewToJoinOneToOne
-          )
+            setLeavePresenterViewToJoinOneToOne,
+          ),
         );
       }
     } else {
@@ -647,8 +653,8 @@ const VideoCallNormalHeader = ({
             leavePresenterViewToJoinOneToOne ? 3 : 2,
             setLeaveMeetingVideoForOneToOneOrGroup,
             setJoiningOneToOneAfterLeavingPresenterView,
-            setLeavePresenterViewToJoinOneToOne
-          )
+            setLeavePresenterViewToJoinOneToOne,
+          ),
         );
         leaveSuccess();
       }
@@ -805,7 +811,7 @@ const VideoCallNormalHeader = ({
         localStorage.setItem("ActiveChatType", "O");
         localStorage.setItem(
           "activeOtoChatID",
-          callerID !== currentUserID ? callerID : recipentCalledID
+          callerID !== currentUserID ? callerID : recipentCalledID,
         );
       } else {
         dispatch(videoChatMessagesFlag(false));
@@ -874,13 +880,13 @@ const VideoCallNormalHeader = ({
       } else if (isMeetingVideo && isMeetingVideoHostCheck) {
         console.log("busyCall");
         let isSharedSceenEnable = JSON.parse(
-          localStorage.getItem("isSharedSceenEnable")
+          localStorage.getItem("isSharedSceenEnable"),
         );
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
             console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let isGuid = localStorage.getItem("isGuid");
             let RoomID =
@@ -918,7 +924,7 @@ const VideoCallNormalHeader = ({
         leaveSuccess();
       } else if (isMeetingVideo) {
         let isSharedSceenEnable = JSON.parse(
-          localStorage.getItem("isSharedSceenEnable")
+          localStorage.getItem("isSharedSceenEnable"),
         );
         console.log("busyCall");
         if (isZoomEnabled) {
@@ -926,7 +932,7 @@ const VideoCallNormalHeader = ({
             console.log("busyCall");
             let participantRoomId = localStorage.getItem("participantRoomId");
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let participantUID = String(localStorage.getItem("participantUID"));
             let RoomID =
@@ -1035,7 +1041,7 @@ const VideoCallNormalHeader = ({
     try {
       let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
       let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
       let acceptedRoomID = localStorage.getItem("acceptedRoomID");
@@ -1049,7 +1055,7 @@ const VideoCallNormalHeader = ({
       setGroupVideoCallAccepted([]);
       setUnansweredCallParticipant([]);
       let isSharedSceenEnable = JSON.parse(
-        localStorage.getItem("isSharedSceenEnable")
+        localStorage.getItem("isSharedSceenEnable"),
       );
 
       if (isZoomEnabled) {
@@ -1057,7 +1063,7 @@ const VideoCallNormalHeader = ({
           console.log("busyCall");
           let acceptedRoomID = localStorage.getItem("acceptedRoomID");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let userID = String(localStorage.getItem("userID"));
           let RoomID = !isMeetingVideo ? acceptedRoomID : null;
@@ -1163,7 +1169,7 @@ const VideoCallNormalHeader = ({
           };
 
           dispatch(
-            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+            openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
           );
         }
       } else {
@@ -1180,8 +1186,8 @@ const VideoCallNormalHeader = ({
           joinPresenterForOneToOneOrGroup
             ? 2
             : startPresenterViewOrLeaveOneToOne
-            ? 3
-            : 1
+              ? 3
+              : 1,
         );
       }
     } catch (error) {}
@@ -1217,7 +1223,7 @@ const VideoCallNormalHeader = ({
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
 
     if (isMeeting === true) {
@@ -1243,7 +1249,7 @@ const VideoCallNormalHeader = ({
 
         // when host share screen then leave meeting Video
         let isSharedSceenEnable = JSON.parse(
-          localStorage.getItem("isSharedSceenEnable")
+          localStorage.getItem("isSharedSceenEnable"),
         );
         console.log("busyCall");
         if (isZoomEnabled) {
@@ -1251,7 +1257,7 @@ const VideoCallNormalHeader = ({
             console.log("busyCall");
             console.log("busyCall");
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let isGuid = localStorage.getItem("isGuid");
             let RoomID =
@@ -1288,8 +1294,8 @@ const VideoCallNormalHeader = ({
               3,
               null,
               setJoiningOneToOneAfterLeavingPresenterView,
-              setLeaveMeetingVideoForOneToOneOrGroup
-            )
+              setLeaveMeetingVideoForOneToOneOrGroup,
+            ),
           );
         } else {
           await dispatch(LeaveMeetingVideo(Data, navigate, t));
@@ -1324,17 +1330,17 @@ const VideoCallNormalHeader = ({
         } catch (error) {}
         console.log("busyCall");
         let isSharedSceenEnable = JSON.parse(
-          localStorage.getItem("isSharedSceenEnable")
+          localStorage.getItem("isSharedSceenEnable"),
         );
         // when Participant share screen then leave meeting Video
         if (isZoomEnabled) {
           if (isSharedSceenEnable && !globallyScreenShare) {
             console.log("busyCall");
             let participantRoomId = String(
-              localStorage.getItem("participantRoomId")
+              localStorage.getItem("participantRoomId"),
             );
             let isMeetingVideoHostCheck = JSON.parse(
-              localStorage.getItem("isMeetingVideoHostCheck")
+              localStorage.getItem("isMeetingVideoHostCheck"),
             );
             let participantUID = String(localStorage.getItem("participantUID"));
             let RoomID =
@@ -1372,8 +1378,8 @@ const VideoCallNormalHeader = ({
             leaveMeetingVideoForOneToOneOrGroup ? 3 : 0,
             null,
             setJoiningOneToOneAfterLeavingPresenterView,
-            setLeaveMeetingVideoForOneToOneOrGroup
-          )
+            setLeaveMeetingVideoForOneToOneOrGroup,
+          ),
         );
         localStorage.setItem("isCaller", false);
         localStorage.setItem("isMeetingVideo", false);
@@ -1556,10 +1562,10 @@ const VideoCallNormalHeader = ({
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
                 : isMeetingVideoHostCheck &&
-                  !presenterViewJoinFlag &&
-                  !presenterViewHostFlag
-                ? "cursor-pointer meeting-Recording-State"
-                : "inactive-state"
+                    !presenterViewJoinFlag &&
+                    !presenterViewHostFlag
+                  ? "cursor-pointer meeting-Recording-State"
+                  : "inactive-state"
             }
           >
             {isZoomEnabled && (
@@ -1672,8 +1678,8 @@ const VideoCallNormalHeader = ({
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
                 : !isMicActive
-                ? "cursor-pointer active-state"
-                : "inactive-state"
+                  ? "cursor-pointer active-state"
+                  : "inactive-state"
             }
           >
             <Tooltip
@@ -1684,8 +1690,8 @@ const VideoCallNormalHeader = ({
                     ? t("Enable-mic")
                     : t("Disable-mic")
                   : isMicActive
-                  ? t("Disable-mic")
-                  : t("Enable-mic")
+                    ? t("Disable-mic")
+                    : t("Enable-mic")
               }
               overlayClassName={
                 presenterViewFlag ? "zindexing-for-presenter-tooltip" : ""
@@ -1698,15 +1704,15 @@ const VideoCallNormalHeader = ({
                       ? MicOff
                       : MicOn
                     : isMicActive
-                    ? MicOn
-                    : MicOff
+                      ? MicOn
+                      : MicOff
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
                     ? muteUnMuteForHost(audioControl ? false : true)
                     : disableBeforeJoinZoom
-                    ? null
-                    : disableMic()
+                      ? null
+                      : disableMic()
                 }
                 alt="Mic"
               />
@@ -1718,8 +1724,8 @@ const VideoCallNormalHeader = ({
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
                 : !isVideoActive
-                ? "cursor-pointer active-state"
-                : "inactive-state"
+                  ? "cursor-pointer active-state"
+                  : "inactive-state"
             }
           >
             <Tooltip
@@ -1733,8 +1739,8 @@ const VideoCallNormalHeader = ({
                     ? t("Enable-video")
                     : t("Disable-video")
                   : isVideoActive
-                  ? t("Disable-video")
-                  : t("Enable-video")
+                    ? t("Disable-video")
+                    : t("Enable-video")
               }
             >
               <img
@@ -1744,15 +1750,15 @@ const VideoCallNormalHeader = ({
                       ? VideoOff
                       : VideoOn
                     : isVideoActive
-                    ? VideoOn
-                    : VideoOff
+                      ? VideoOn
+                      : VideoOff
                 }
                 onClick={() =>
                   getMeetingHostInfo?.isDashboardVideo
                     ? videoHideUnHideForHost(videoControl ? false : true)
                     : disableBeforeJoinZoom
-                    ? null
-                    : disableVideo()
+                      ? null
+                      : disableVideo()
                 }
                 alt="Video"
               />
@@ -1764,12 +1770,12 @@ const VideoCallNormalHeader = ({
               (isZoomEnabled && disableBeforeJoinZoom)
                 ? "grayScaleImage"
                 : presenterViewFlag && presenterViewHostFlag
-                ? "presenterImage"
-                : presenterViewFlag && presenterViewJoinFlag
-                ? "presenterImage"
-                : globallyScreenShare
-                ? "presenterImage"
-                : "screenShare-Toggle inactive-state"
+                  ? "presenterImage"
+                  : presenterViewFlag && presenterViewJoinFlag
+                    ? "presenterImage"
+                    : globallyScreenShare
+                      ? "presenterImage"
+                      : "screenShare-Toggle inactive-state"
             }
           >
             <Tooltip
@@ -1822,17 +1828,17 @@ const VideoCallNormalHeader = ({
                 (isZoomEnabled && disableBeforeJoinZoom)
                   ? "grayScaleImage"
                   : presenterViewJoinFlag
-                  ? !raisedUnRaisedParticipant
-                    ? "inactive-state"
-                    : "cursor-pointer active-state"
-                  : getMeetingHostInfo?.isHost === false
-                  ? !raisedUnRaisedParticipant
-                    ? "inactive-state"
-                    : "cursor-pointer active-state"
-                  : getMeetingHostInfo?.isHost === true &&
-                    !raisedUnRaisedParticipant
-                  ? "inactive-state"
-                  : "cursor-pointer active-state"
+                    ? !raisedUnRaisedParticipant
+                      ? "inactive-state"
+                      : "cursor-pointer active-state"
+                    : getMeetingHostInfo?.isHost === false
+                      ? !raisedUnRaisedParticipant
+                        ? "inactive-state"
+                        : "cursor-pointer active-state"
+                      : getMeetingHostInfo?.isHost === true &&
+                          !raisedUnRaisedParticipant
+                        ? "inactive-state"
+                        : "cursor-pointer active-state"
               }
             >
               <Tooltip
@@ -1851,11 +1857,11 @@ const VideoCallNormalHeader = ({
                         ? t("Lower-hand")
                         : t("Raise-hand")
                       : raisedUnRaisedParticipant
+                        ? t("Lower-hand")
+                        : t("Raise-hand")
+                    : raisedUnRaisedParticipant
                       ? t("Lower-hand")
                       : t("Raise-hand")
-                    : raisedUnRaisedParticipant
-                    ? t("Lower-hand")
-                    : t("Raise-hand")
                 }
               >
                 <img
@@ -1863,13 +1869,13 @@ const VideoCallNormalHeader = ({
                     getMeetingHostInfo?.isHost
                       ? presenterViewJoinFlag && !presenterViewHostFlag
                         ? raiseUnRaiseForParticipant(
-                            raisedUnRaisedParticipant ? false : true
+                            raisedUnRaisedParticipant ? false : true,
                           )
                         : raiseUnRaiseForParticipant(
-                            raisedUnRaisedParticipant ? false : true
+                            raisedUnRaisedParticipant ? false : true,
                           )
                       : raiseUnRaiseForParticipant(
-                          raisedUnRaisedParticipant ? false : true
+                          raisedUnRaisedParticipant ? false : true,
                         )
                   }
                   src={
@@ -1879,11 +1885,11 @@ const VideoCallNormalHeader = ({
                           ? LowerHand
                           : RaiseHand
                         : raisedUnRaisedParticipant === true
+                          ? LowerHand
+                          : RaiseHand
+                      : raisedUnRaisedParticipant === true
                         ? LowerHand
                         : RaiseHand
-                      : raisedUnRaisedParticipant === true
-                      ? LowerHand
-                      : RaiseHand
                   }
                   alt="Raise Hand"
                 />
@@ -1925,8 +1931,8 @@ const VideoCallNormalHeader = ({
                     (isZoomEnabled && disableBeforeJoinZoom)
                       ? "grayScaleImage"
                       : presenterViewFlag && !presenterViewHostFlag
-                      ? "presenterImage"
-                      : "screenShare-Toggle"
+                        ? "presenterImage"
+                        : "screenShare-Toggle"
                   }
                 >
                   <Tooltip
@@ -2026,7 +2032,7 @@ const VideoCallNormalHeader = ({
                                           user.recepientID ===
                                             participantData.userID &&
                                           user.recepientName ===
-                                            participantData.name
+                                            participantData.name,
                                       );
 
                                     const isMatchingParticipantUnanswered =
@@ -2035,7 +2041,7 @@ const VideoCallNormalHeader = ({
                                           user.recepientID ===
                                             participantData.userID &&
                                           user.recepientName ===
-                                            participantData.name
+                                            participantData.name,
                                       );
 
                                     return (
@@ -2072,7 +2078,7 @@ const VideoCallNormalHeader = ({
                                         </Col>
                                       </Row>
                                     );
-                                  }
+                                  },
                                 )
                               : null}
                           </>
@@ -2107,14 +2113,14 @@ const VideoCallNormalHeader = ({
                         const role = getMeetingHostInfo.isHost
                           ? 1
                           : presenterViewHostFlag
-                          ? 1
-                          : 2;
+                            ? 1
+                            : 2;
 
                         const flag = getMeetingHostInfo.isHost
                           ? false
                           : presenterViewHostFlag
-                          ? false
-                          : true;
+                            ? false
+                            : true;
 
                         closeParticipantHandler(role, flag);
                       }}
@@ -2148,13 +2154,13 @@ const VideoCallNormalHeader = ({
                       {console.log(
                         "isDashboardVideoCounter",
                         participantCounterList,
-                        getMeetingHostInfo
+                        getMeetingHostInfo,
                       )}
                       {getMeetingHostInfo?.isDashboardVideo ? (
                         <>
                           {console.log(
                             "isFor Host or Participant",
-                            participantCounterList
+                            participantCounterList,
                           )}
 
                           {convertNumbersInString(participantCounterList, lan)}
@@ -2163,7 +2169,7 @@ const VideoCallNormalHeader = ({
                         <>
                           {console.log(
                             "isFor Host or Participant",
-                            groupCallParticipantList
+                            groupCallParticipantList,
                           )}
 
                           {convertNumbersInString(
@@ -2174,7 +2180,7 @@ const VideoCallNormalHeader = ({
                               ? inCallParticipantsList?.length
                               : Array.isArray(groupCallParticipantList) &&
                                   groupCallParticipantList?.length,
-                            lan
+                            lan,
                           )}
                         </>
                       )}
@@ -2183,7 +2189,7 @@ const VideoCallNormalHeader = ({
                       <span className="participants-counter-For-Host-waiting-counter">
                         {convertNumbersInString(
                           participantWaitingListCounter,
-                          lan
+                          lan,
                         )}
                       </span>
                     )}
@@ -2269,8 +2275,8 @@ const VideoCallNormalHeader = ({
                 NormalizeVideoFlag
                   ? t("Expand")
                   : MaximizeVideoFlag
-                  ? t("Collapse")
-                  : null
+                    ? t("Collapse")
+                    : null
               }
             >
               <div
@@ -2278,9 +2284,9 @@ const VideoCallNormalHeader = ({
                   LeaveCallModalFlag === true
                     ? "grayScaleImage"
                     : presenterViewFlag &&
-                      (presenterViewHostFlag || presenterViewJoinFlag)
-                    ? "presenterImage"
-                    : "inactive-state"
+                        (presenterViewHostFlag || presenterViewJoinFlag)
+                      ? "presenterImage"
+                      : "inactive-state"
                 }
               >
                 <img
@@ -2288,28 +2294,28 @@ const VideoCallNormalHeader = ({
                     NormalizeVideoFlag
                       ? ExpandIcon
                       : MaximizeVideoFlag ||
-                        (!presenterViewFlag &&
-                          (!presenterViewHostFlag || !presenterViewJoinFlag))
-                      ? NormalizeIcon
-                      : null
+                          (!presenterViewFlag &&
+                            (!presenterViewHostFlag || !presenterViewJoinFlag))
+                        ? NormalizeIcon
+                        : null
                   }
                   onClick={
                     NormalizeVideoFlag
                       ? otoMaximizeVideoPanel
                       : presenterViewFlag &&
-                        MaximizeVideoFlag &&
-                        (presenterViewHostFlag || presenterViewJoinFlag)
-                      ? null
-                      : MaximizeVideoFlag
-                      ? normalizeScreen
-                      : null
+                          MaximizeVideoFlag &&
+                          (presenterViewHostFlag || presenterViewJoinFlag)
+                        ? null
+                        : MaximizeVideoFlag
+                          ? normalizeScreen
+                          : null
                   }
                   alt={
                     NormalizeVideoFlag
                       ? "Expand"
                       : MaximizeVideoFlag
-                      ? "Maximize"
-                      : null
+                        ? "Maximize"
+                        : null
                   }
                 />
               </div>
@@ -2331,10 +2337,10 @@ const VideoCallNormalHeader = ({
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
                             : presenterViewFlag && presenterViewJoinFlag
-                            ? t("Leave-presentation")
-                            : isMeetingVideo
-                            ? t("Leave-meeting-video-call")
-                            : t("End-call")
+                              ? t("Leave-presentation")
+                              : isMeetingVideo
+                                ? t("Leave-meeting-video-call")
+                                : t("End-call")
                         }
                         onClick={() => leaveCall(false, false, false, false)}
                       />
@@ -2352,10 +2358,10 @@ const VideoCallNormalHeader = ({
                           presenterViewFlag && presenterViewHostFlag
                             ? t("Stop-presentation")
                             : presenterViewFlag && presenterViewJoinFlag
-                            ? t("Leave-presentation")
-                            : isMeetingVideo
-                            ? t("Leave-meeting-video-call")
-                            : t("End-call")
+                              ? t("Leave-presentation")
+                              : isMeetingVideo
+                                ? t("Leave-meeting-video-call")
+                                : t("End-call")
                         }
                         onClick={participantLeaveCall}
                       />
