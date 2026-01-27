@@ -8283,3 +8283,20 @@ td.ant-table-column-sort {
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   content: " ";
 }
+.complianceRadioButton .ant-radio-wrapper-checked {
+  box-shadow: 0px 0px 15px 0px #00000040;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+}
+.complianceRadioButton .ant-radio-wrapper-checked {
+  box-shadow: 0px 0px 15px 0px #00000040;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a !important;
+}
+.complianceRadioButton .ant-radio-wrapper {
+  font-weight: 600;
+  font-size: 16px;
+  color: #a2a2a2 !important;
+}

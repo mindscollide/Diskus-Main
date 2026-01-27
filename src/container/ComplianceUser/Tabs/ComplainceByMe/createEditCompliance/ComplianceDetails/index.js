@@ -33,6 +33,7 @@ import ComplianceCloseConfirmationModal from "../../../../CommonComponents/Compl
 import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
+import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
 
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,8 @@ const ComplainceDetails = () => {
     setChecklistData,
     setAllowedComplianceStatusOptions,
     allowedComplianceStatusOptions,
+    complianceOnHoldModal,
+    setComplianceOnHoldModal,
   } = useComplianceContext();
 
   const { t } = useTranslation();
@@ -478,6 +481,21 @@ const ComplainceDetails = () => {
       },
     }),
   };
+
+  // Status
+  const handleChangeComplianceStatus = (event) => {
+    console.log(event, "CompliaceStatusOnHoldModal");
+
+    // status change to On Hold
+    if (event.value === 7) setComplianceOnHoldModal(true);
+    // Status chnage to In Progress
+    else if (event.value === 2) {
+      setComplianceDetailsState((prev) => ({
+        ...prev,
+        status: event,
+      }));
+    }
+  };
   return (
     <>
       <Row className="mt-2">
@@ -679,12 +697,7 @@ const ComplainceDetails = () => {
                 labelInValue={t("Status")}
                 // onChange={(event) => setSelectCriticality(event)}
 
-                onChange={(event) =>
-                  setComplianceDetailsState((prev) => ({
-                    ...prev,
-                    status: event,
-                  }))
-                }
+                onChange={handleChangeComplianceStatus}
                 value={complianceDetailsState.status}
                 placeholder={
                   complianceAddEditViewState !== 3 ? t("Status") : ""
@@ -808,6 +821,7 @@ const ComplainceDetails = () => {
         />
       </div>
       <ComplianceCloseConfirmationModal />
+      <CompliaceStatusOnHoldModal />
     </>
   );
 };

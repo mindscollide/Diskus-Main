@@ -9,6 +9,7 @@ const CustomRadioGroup = ({
   disabled = false,
   className = "",
   is2FA = false,
+  radioButtonClass = "",
 }) => {
   return (
     <Radio.Group
@@ -37,10 +38,11 @@ const CustomRadioGroup = ({
             key={option.value}
             value={option.value}
             disabled={option.disabled}
+            className={radioButtonClass}
           >
             <span className="gradient-radio">{option.label}</span>
           </Radio>
-        ),
+        )
       )}
     </Radio.Group>
   );

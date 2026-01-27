@@ -85,6 +85,7 @@ export const ComlianceProvider = ({ children }) => {
 
   // Modals For Status
   const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
+  const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
 
   const emptyComplianceState = () => {
     console.log("cleared");
@@ -148,6 +149,7 @@ export const ComlianceProvider = ({ children }) => {
     setsearchbox(false);
     setComplianceForMeTotal(0);
     setSubmitForApprovalModal(false);
+    setComplianceOnHoldModal(false);
   };
 
   // view compliance
@@ -216,6 +218,8 @@ export const ComlianceProvider = ({ children }) => {
         setAllTasksStatusForFilter,
         submitForApprovalModal,
         setSubmitForApprovalModal,
+        complianceOnHoldModal,
+        setComplianceOnHoldModal,
       }}
     >
       {children}

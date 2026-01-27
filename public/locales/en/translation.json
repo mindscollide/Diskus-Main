@@ -2605,5 +2605,8 @@
   "No-Task-has-been-created-yet": "No task has been created yet",
   "Switch-to-user-view": "Switch to User View",
   "Some-checklist-items-are-still-pending.-Do-you-want-to-continue-submitting-for-approval?": "Some checklist items are still pending. Do you want to continue submitting for approval?",
-  "Compliance-updated-successfully": "Compliance updated successfully"
+  "Compliance-updated-successfully": "Compliance updated successfully",
+  "Mark-compliance-only": "Mark Compliance Only",
+  "Mark-compliance-with-associated-items": "Mark Checklist with Associated Items",
+  "Mark-on-hold": "Mark On Hold"
 }
