@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { mqttMeetingData } from "../hooks/meetingResponse/response";
 
 // Create the Context
 export const NewMeetingContext = createContext();
@@ -7,6 +8,12 @@ export const NewMeetingContext = createContext();
 // Create a Provider component
 export const NewMeetingProvider = ({ children }) => {
   // State for managing meeting data
+  const meetingReminderNotification = useSelector(
+    (state) => state.NewMeetingreducer.meetingReminderNotification,
+  );
+  const meetingStatusPublishedMqttData = useSelector(
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+  );
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings,
   );
@@ -20,11 +27,13 @@ export const NewMeetingProvider = ({ children }) => {
   const [isProposedMeeting, setIsProposedMeeting] = useState(false);
   const [meetingData, setMeetingData] = useState([]);
   const [duplicatedMeetingData, setDuplicatedMeetingData] = useState([]);
-
+  const [quickMeeting, setQuickMeeting] = useState(false);
+  const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
   const [publishMeetingTotalRecords, setPublishedMeetingTotalRecords] =
     useState(0);
   const [publishMeetingData, setPublishedMeetingData] = useState([]);
   const [minutesAgo, setMinutesAgo] = useState(0);
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
 
   // State for managing search filters
   const [searchFilters, setSearchFilters] = useState({
@@ -53,31 +62,88 @@ export const NewMeetingProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (meetingReminderNotification !== null) {
+      try {
+        const meetingData = meetingReminderNotification.meetingDetails;
+        console.log(meetingData, "meetingDetailsmeetingDetails");
+        setPublishedMeetingData((rowsData) => {
+          // Find the index of the row that matches the condition
+          const rowIndex = rowsData.findIndex(
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
+          );
+          console.log(rowIndex, "rowIndexrowIndex");
+          // If a matching row is found, create a new array with the updated row
+          if (rowIndex !== -1) {
+            const updatedRowsData = [...rowsData];
+
+            updatedRowsData[rowIndex] = {
+              ...updatedRowsData[rowIndex],
+              status: String(meetingData.statusID),
+            };
+            if (meetingData.statusID === 1) {
+              setStartMeetingButton([
+                ...startMeetingButton,
+                { meetingID: Number(meetingData.pK_MDID), showButton: true },
+              ]);
+              // setStartMeetingData({
+              //   ...startMeetingData,
+              //   meetingID: Number(meetingData.pK_MDID),
+              //   showButton: true,
+              // });
+            } else {
+              // setStartMeetingData({
+              //   ...startMeetingData,
+              //   meetingID: null,
+              //   showButton: false,
+              // });
+            }
+
+            return updatedRowsData;
+          }
+
+          // Return the original rowsData if no matching row is found
+          return rowsData;
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [meetingReminderNotification]);
+
+  useEffect(() => {
     try {
-      if (searchMeetings !== null && searchMeetings !== undefined) {
-        setPublishedMeetingTotalRecords(searchMeetings.totalRecords);
-        setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-        if (Object.keys(searchMeetings.meetings).length > 0) {
-          // Create a deep copy of the meetings array
-          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
-            ...meeting,
-            meetingAgenda: meeting.meetingAgenda.filter(
-              (agenda) => agenda.objMeetingAgenda.canView,
-            ),
-          }));
-          copyMeetingData.forEach((data) => {
-            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
-              return agenda.objMeetingAgenda.canView === true;
+      if (
+        searchMeetings !== null &&
+        searchMeetings !== undefined &&
+        getALlMeetingTypes?.meetingTypes
+      ) {
+        try {
+          setPublishedMeetingTotalRecords(searchMeetings.totalRecords);
+          setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
+          if (Object.keys(searchMeetings.meetings).length > 0) {
+            // Create a deep copy of the meetings array
+            let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
+              ...meeting,
+              meetingAgenda: meeting.meetingAgenda.filter(
+                (agenda) => agenda.objMeetingAgenda.canView,
+              ),
+            }));
+            copyMeetingData.forEach((data) => {
+              data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+                return agenda.objMeetingAgenda.canView === true;
+              });
             });
-          });
-          console.log("handleViewMeeting", copyMeetingData);
-          setPublishedMeetingData(copyMeetingData);
+            console.log("handleViewMeeting", copyMeetingData);
+            setPublishedMeetingData(copyMeetingData);
+          }
+        } catch (error) {
+          console.log(error);
         }
       } else {
         setPublishedMeetingData([]);
       }
     } catch {}
-  }, [searchMeetings]);
+  }, [searchMeetings, getALlMeetingTypes]);
 
   useEffect(() => {
     try {
@@ -109,7 +175,6 @@ export const NewMeetingProvider = ({ children }) => {
     setMeetingData,
     duplicatedMeetingData,
     setDuplicatedMeetingData,
-
     searchFilters,
     setSearchFilters,
     selectedStatusFilters,
@@ -129,7 +194,42 @@ export const NewMeetingProvider = ({ children }) => {
     publishMeetingData,
     setPublishedMeetingData,
     isMeetingTypeFilter,
+    minutesAgo,
+    startMeetingButton,
+    quickMeeting,
+    setQuickMeeting,
+    proposedNewMeeting,
+    setProposedNewMeeting,
   };
+
+  useEffect(() => {
+    if (
+      meetingStatusPublishedMqttData !== null &&
+      meetingStatusPublishedMqttData !== undefined
+    ) {
+      const callMQTT = async () => {
+        let meetingData = meetingStatusPublishedMqttData;
+        try {
+          const indexToUpdate = publishMeetingData.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+          );
+          let newMeetingData = await mqttMeetingData(meetingData, 1);
+
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...publishMeetingData];
+            updatedRows[indexToUpdate] = newMeetingData;
+            setPublishedMeetingData(updatedRows);
+          } else {
+            setPublishedMeetingData([newMeetingData, ...publishMeetingData]);
+          }
+        } catch (error) {
+          console.log(error, "Meeting Created and Published");
+        }
+      };
+
+      callMQTT();
+    }
+  }, [meetingStatusPublishedMqttData]);
 
   // Provide the state data to the context
   return (

@@ -81,6 +81,7 @@ import ArrowUpIcon from "../../../../../../assets/images/sortingIcons/Arrow-up.p
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import DeleteMeetingConfirmationModal from "../../../deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import EmptyTableComponent from "../../../EmptyTableComponent/EmptyTableComponent";
+const currentLanguage = localStorage.getItem("i18nextLng");
 
 const UnpublishedProposedMeeting = ({
   setViewProposeDatePoll,
@@ -113,34 +114,34 @@ const UnpublishedProposedMeeting = ({
     viewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+    (state) => state.NewMeetingreducer.searchMeetings,
   );
   const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting,
   );
   const deleteMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.deleteMeetingModal
+    (state) => state.NewMeetingreducer.deleteMeetingModal,
   );
   const allMeetingsSocketData = useSelector(
-    (state) => state.meetingIdReducer.allMeetingsSocketData
+    (state) => state.meetingIdReducer.allMeetingsSocketData,
   );
   const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
   );
 
   const [rows, setRow] = useState([]);
@@ -155,7 +156,7 @@ const UnpublishedProposedMeeting = ({
     isAgendaContributor,
     isOrganiser,
     id,
-    responseDeadLine
+    responseDeadLine,
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
@@ -216,8 +217,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          2
-        )
+          2,
+        ),
       );
       await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
@@ -237,8 +238,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          1
-        )
+          1,
+        ),
       );
       dispatch(scheduleMeetingPageFlag(true));
     }
@@ -277,13 +278,13 @@ const UnpublishedProposedMeeting = ({
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.status.toString())
+      selectedValues.includes(item.status.toString()),
     );
     console.log(filteredData, "filteredDatafilteredData");
 
@@ -379,12 +380,12 @@ const UnpublishedProposedMeeting = ({
                       setSceduleMeeting,
                       setDataroomMapFolderId,
                       0,
-                      2
-                    )
+                      2,
+                    ),
                   );
                   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
                   dispatch(
-                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true)
+                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
                   );
                 } catch (error) {
                   console.log(error, "apis call Error");
@@ -395,8 +396,8 @@ const UnpublishedProposedMeeting = ({
                   role: record.isParticipant
                     ? "Participant"
                     : record.isAgendaContributor
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                      ? "Agenda Contributor"
+                      : "Organizer",
                 });
                 setVideoTalk({
                   isChat: record.isChat,
@@ -411,8 +412,8 @@ const UnpublishedProposedMeeting = ({
                     navigate,
                     parseInt(currentUserId),
                     parseInt(currentOrganizationId),
-                    t
-                  )
+                    t,
+                  ),
                 );
                 let activeChatData = {
                   id: record.talkGroupID,
@@ -556,7 +557,7 @@ const UnpublishedProposedMeeting = ({
             <span className="text-truncate d-block ">
               {newTimeFormaterAsPerUTCFullDate(
                 record.dateOfMeeting + record.meetingStartTime,
-                currentLanguage
+                currentLanguage,
               )}
             </span>
           );
@@ -564,10 +565,10 @@ const UnpublishedProposedMeeting = ({
       },
       sorter: (a, b, sortOrder) => {
         const dateA = utcConvertintoGMT(
-          `${a?.dateOfMeeting}${a?.meetingStartTime}`
+          `${a?.dateOfMeeting}${a?.meetingStartTime}`,
         );
         const dateB = utcConvertintoGMT(
-          `${b?.dateOfMeeting}${b?.meetingStartTime}`
+          `${b?.dateOfMeeting}${b?.meetingStartTime}`,
         );
         return dateA - dateB;
       },
@@ -613,13 +614,13 @@ const UnpublishedProposedMeeting = ({
                             "d-flex justify-content-center flex-column"
                           }
                         >
-                          <span className={styles["RatioClass"]}>
+                          <span className={styles["PollRatioValue"]}>
                             {currentLanguage === "en"
                               ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                               : `${convertToArabicNumerals(
-                                  record.meetingPoll?.totalNoOfDirectorsVoted
+                                  record.meetingPoll?.totalNoOfDirectorsVoted,
                                 )} / ${convertToArabicNumerals(
-                                  record.meetingPoll?.totalNoOfDirectors
+                                  record.meetingPoll?.totalNoOfDirectors,
                                 )}`}
                           </span>
                           <ProgressBar
@@ -694,7 +695,7 @@ const UnpublishedProposedMeeting = ({
                         handleEditMeeting(
                           record.pK_MDID,
                           record.isAgendaContributor,
-                          record
+                          record,
                         );
                         setVideoTalk({
                           isChat: record.isChat,
@@ -703,7 +704,7 @@ const UnpublishedProposedMeeting = ({
                         });
                         localStorage.setItem(
                           "videoCallURL",
-                          record.videoCallURL
+                          record.videoCallURL,
                         );
                         setEditorRole({
                           status: record.status,
@@ -742,7 +743,7 @@ const UnpublishedProposedMeeting = ({
                           handleEditMeeting(
                             record.pK_MDID,
                             record.isAgendaContributor,
-                            record
+                            record,
                           );
                           setVideoTalk({
                             isChat: record.isChat,
@@ -751,7 +752,7 @@ const UnpublishedProposedMeeting = ({
                           });
                           localStorage.setItem(
                             "videoCallURL",
-                            record.videoCallURL
+                            record.videoCallURL,
                           );
                           setEditorRole({
                             status: record.status,
@@ -814,13 +815,13 @@ const UnpublishedProposedMeeting = ({
       align: "center",
       render: (text, record) => {
         const isResponseDateGone = forRecentActivity(
-          `${record.responseDeadLine}000000`
+          `${record.responseDeadLine}000000`,
         );
         const currentDateObj = new Date();
 
         const isViewPollShown = getDifferentisDateisPassed(
           currentDateObj,
-          isResponseDateGone
+          isResponseDateGone,
         );
 
         let apiData = {
@@ -849,8 +850,8 @@ const UnpublishedProposedMeeting = ({
                             navigate,
                             t,
                             5,
-                            apiData
-                          )
+                            apiData,
+                          ),
                         );
                       }}
                     />
@@ -867,7 +868,7 @@ const UnpublishedProposedMeeting = ({
                           false,
                           false,
                           record.pK_MDID,
-                          record.responseDeadLine
+                          record.responseDeadLine,
                         )
                       }
                     />
@@ -881,7 +882,7 @@ const UnpublishedProposedMeeting = ({
                           false,
                           false,
                           true,
-                          record.pK_MDID
+                          record.pK_MDID,
                         )
                       }
                     />
@@ -899,7 +900,7 @@ const UnpublishedProposedMeeting = ({
     if (allMeetingsSocketData !== null) {
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID
+        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID,
       );
       if (foundIndex !== -1) {
         const newState = tableRowsData.map((obj, index) => {
@@ -929,7 +930,7 @@ const UnpublishedProposedMeeting = ({
           console.log(
             searchMeetings.meetings,
             checkFeatureIDAvailability(12),
-            "searchMeetingssearchMeetings"
+            "searchMeetingssearchMeetings",
           );
 
           if (checkFeatureIDAvailability(12)) {
@@ -964,7 +965,7 @@ const UnpublishedProposedMeeting = ({
   useEffect(() => {
     if (publishState) {
       const filteredArray = rows.filter(
-        (item) => item.pK_MDID !== publishState
+        (item) => item.pK_MDID !== publishState,
       );
       setRow(filteredArray);
       setPublishState(null);
@@ -979,13 +980,13 @@ const UnpublishedProposedMeeting = ({
       const updateMeetingData = async () => {
         let meetingData = meetingStatusProposedMqttData;
         const indexToUpdate = rows.findIndex(
-          (obj) => obj.pK_MDID === meetingData.pK_MDID
+          (obj) => obj.pK_MDID === meetingData.pK_MDID,
         );
 
         // Fetching unpublished meeting data
         let getMeetingDataArray = await getAllUnpublishedMeetingData(
           [meetingData],
-          1
+          1,
         );
 
         // Assuming getMeetingDataArray is an array with a single object
@@ -1014,7 +1015,7 @@ const UnpublishedProposedMeeting = ({
       let meetingData = meetingStatusPublishedMqttData;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
         );
         setRow(updatedRows);
       } catch {}
@@ -1049,7 +1050,7 @@ const UnpublishedProposedMeeting = ({
       let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -1089,7 +1090,7 @@ const UnpublishedProposedMeeting = ({
       let meetingData = mqttMeetingOrgRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -1107,12 +1108,12 @@ const UnpublishedProposedMeeting = ({
           let getApiResponse = await validateStringParticipantProposedApi(
             MeetingProp,
             navigate,
-            t
+            t,
           )(dispatch); // Ensure you're passing dispatch here
           if (getApiResponse) {
             localStorage.setItem(
               "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID
+              getApiResponse.meetingID,
             );
             localStorage.removeItem("meetingprop");
             setResponseByDate(getApiResponse.deadline);
@@ -1150,13 +1151,13 @@ const UnpublishedProposedMeeting = ({
               await validateStringUserMeetingProposedDatesPollsApi(
                 UserMeetPropoDatPoll,
                 navigate,
-                t
+                t,
               )(dispatch); // Ensure you're passing dispatch here
 
             if (getApiResponse) {
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID
+                getApiResponse.meetingID,
               );
               localStorage.removeItem("UserMeetPropoDatPoll");
               dispatch(showSceduleProposedMeeting(true));

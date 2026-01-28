@@ -20,6 +20,10 @@ import { Button, TextField } from "../../components/elements";
 import CustomButton from "../../components/elements/button/Button";
 import ProposedMeeting from "./proposedMeeting/index";
 import { useNewMeetingContext } from "../../context/NewMeetingContext";
+import { useDispatch } from "react-redux";
+import { clearMeetingState } from "../../store/actions/NewMeetingActions";
+import CreateQuickMeeting from "../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
+
 const MainMeeting = () => {
   const {
     isPublishedMeeting,
@@ -28,8 +32,11 @@ const MainMeeting = () => {
     setIsDraftMeetings,
     isProposedMeeting,
     setIsProposedMeeting,
+    quickMeeting,
+    setQuickMeeting,
   } = useNewMeetingContext();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [searchMeeting, setSearchMeeting] = useState(false);
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
@@ -86,17 +93,26 @@ const MainMeeting = () => {
 
   const handleClickMeetingTab = (tab) => {
     if (tab === "published") {
+      dispatch(clearMeetingState());
       setIsPublishedMeeting(true);
       setIsDraftMeetings(false);
       setIsProposedMeeting(false);
     } else if (tab === "draft") {
+      dispatch(clearMeetingState());
       setIsPublishedMeeting(false);
       setIsDraftMeetings(true);
       setIsProposedMeeting(false);
     } else {
+      dispatch(clearMeetingState());
       setIsPublishedMeeting(false);
       setIsDraftMeetings(false);
       setIsProposedMeeting(true);
+    }
+  };
+
+  const handleClickCreateMeeting = (type) => {
+    if (type === "quick") {
+      setQuickMeeting(true);
     }
   };
 
@@ -120,7 +136,7 @@ const MainMeeting = () => {
                 <ReactBootstrapDropdown.Menu>
                   {checkFeatureIDAvailability(1) ? (
                     <ReactBootstrapDropdown.Item
-                    // onClick={CreateQuickMeetingFunc}
+                      onClick={() => handleClickCreateMeeting("quick")}
                     >
                       {t("Quick-meeting")}
                     </ReactBootstrapDropdown.Item>
@@ -128,7 +144,7 @@ const MainMeeting = () => {
 
                   {checkFeatureIDAvailability(9) ? (
                     <ReactBootstrapDropdown.Item
-                    // onClick={openSceduleMeetingPage}
+                      onClick={() => handleClickCreateMeeting("advance")}
                     >
                       {t("Advance-meeting")}
                     </ReactBootstrapDropdown.Item>
@@ -137,7 +153,7 @@ const MainMeeting = () => {
                   {checkFeatureIDAvailability(12) ? (
                     <>
                       <ReactBootstrapDropdown.Item
-                      //   onClick={openProposedNewMeetingPage}
+                        onClick={() => handleClickCreateMeeting("prpopsed")}
                       >
                         {t("Propose-new-meeting")}
                       </ReactBootstrapDropdown.Item>
@@ -321,6 +337,14 @@ const MainMeeting = () => {
           {isPublishedMeeting && <PublishedMeeting />}
           {isDraftMeetings && <DraftMeeting />}
           {isProposedMeeting && <ProposedMeeting />}
+          {quickMeeting && (
+            <CreateQuickMeeting
+              setShow={setQuickMeeting}
+              show={quickMeeting}
+              // this is check from where its called 4 is from Meeting
+              checkFlag={4}
+            />
+          )}
         </section>
       </section>
     </>

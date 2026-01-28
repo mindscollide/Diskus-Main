@@ -12,7 +12,7 @@
 .StartMeetingButton {
   min-width: 118px !important;
   height: 25px !important;
-  background: #55ce5c !important;
+  background: #f16b6b !important;
   border: none !important;
   display: flex;
   justify-content: center;
@@ -23,9 +23,8 @@
 .ContributeAgendaButton {
   min-width: 118px !important;
   height: 25px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  border: 1px solid #e1e1e1 !important;
+  background: #f16b6b !important;
+  border: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,9 +34,8 @@
 .ViewMeetingButton {
   min-width: 118px !important;
   height: 25px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  border: 1px solid #e1e1e1 !important;
+  background: #f16b6b !important;
+  border: none !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,10 +58,9 @@
 .EditMeetingButton {
   min-width: 118px !important;
   height: 25px !important;
-  background: #ecefff !important;
+  background: #f16b6b !important;
   border: none !important;
   display: flex;
-  color: #6172d6 !important;
   justify-content: center;
   align-items: center;
   font-size: 12px !important;
@@ -83,20 +80,7 @@
   font-size: 12px !important;
   border-radius: 4px !important;
 }
-.BoardDeckButton {
-  min-width: 118px !important;
-  height: 25px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  border: 1px solid #e1e1e1 !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  gap: 10px;
-  font-weight: 400;
-  font-size: 12px !important;
-  border-radius: 4px !important;
-}
+
 .morebuttons {
   display: flex;
   flex-direction: column;
@@ -132,4 +116,8 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.PollRatioValue {
+  font-weight: 600;
+  font-size: 16px;
 }

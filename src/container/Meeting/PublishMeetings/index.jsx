@@ -10,6 +10,7 @@ import ChatIcon from "../../../assets/images/New Meeting Listing Icons/Talk.png"
 import AgendaIcon from "../../../assets/images/New Meeting Listing Icons/ViewAgenda.png";
 import ClipboardIcon from "../../../assets/images/New Meeting Listing Icons/Attendance.png";
 import DownloadVideoIcon from "../../../assets/images/New Meeting Listing Icons/VideoRecording.png";
+import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
 import { Popover, Menu, Checkbox } from "antd";
 import { ChevronDown } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
@@ -25,11 +26,21 @@ import { StatusValue } from "../../pages/meeting/statusJson";
 import styles from "./PublishMeetings.module.css";
 import "./../Meetings.css";
 import CustomButton from "../../../components/elements/button/Button";
+import moment from "moment";
+import {
+  dateTime,
+  forRecentActivity,
+  getCurrentDateTimeUTC,
+} from "../../../commen/functions/date_formater";
 let userID = localStorage.getItem("userID");
-const PublishedMeeting = () => {
-  const { publishMeetingData, isMeetingTypeFilter } = useNewMeetingContext();
 
-  console.log(isMeetingTypeFilter, "searchMeetings");
+const PublishedMeeting = () => {
+  const {
+    publishMeetingData,
+    isMeetingTypeFilter,
+    minutesAgo,
+    startMeetingButton,
+  } = useNewMeetingContext();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -261,6 +272,26 @@ const PublishedMeeting = () => {
       </div>
     );
   };
+  const onMeetingAction = (actionType, record) => {
+    console.log(actionType, record);
+
+    switch (actionType) {
+      case "START_MEETING":
+        // startMeeting(record);
+        break;
+      case "EDIT_MEETING":
+        // editMeeting(record);
+        break;
+      case "JOIN_MEETING":
+        // joinMeeting(record);
+        break;
+      case "END_MEETING":
+        // endMeeting(record);
+        break;
+      default:
+        break;
+    }
+  };
 
   const columns = useMemo(() => {
     return [
@@ -342,11 +373,20 @@ const PublishedMeeting = () => {
         ),
         dataIndex: "time",
         key: "time",
-        width: 150,
+        width: 180,
         align: "center",
 
         render: (text, record) => {
-          return <>{`${record.meetingStartTime} - ${record.meetingEndTime}`}</>;
+          let meetingStartTime = forRecentActivity(
+            record.dateOfMeeting + record.meetingStartTime,
+          );
+          let meetingEndTime = forRecentActivity(
+            record.dateOfMeeting + record.meetingEndTime,
+          );
+          if (!meetingStartTime && !meetingEndTime) return;
+          return (
+            <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(meetingEndTime).format("hh:mm a")}`}</>
+          );
         },
       },
       {
@@ -368,7 +408,10 @@ const PublishedMeeting = () => {
         align: "center",
 
         render: (text, record) => {
-          return <>{record.dateOfMeeting}</>;
+          let meetingDate = forRecentActivity(
+            record.dateOfMeeting + record.meetingStartTime,
+          );
+          return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
       {
@@ -401,11 +444,6 @@ const PublishedMeeting = () => {
             (data) => meetingType === Number(data.value),
           );
 
-          console.log(
-            meetingType,
-            isMeetingTypeFilter,
-            "matchedFiltermatchedFilter",
-          );
           return record.isQuickMeeting && meetingType === 1
             ? t("Quick-meeting")
             : t(matchedFilter)
@@ -414,15 +452,171 @@ const PublishedMeeting = () => {
         },
       },
       {
+        title: "",
+        width: 140,
+        key: "action",
+        render: (_, record) => {
+          let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
+          let currentUTCDateTime = getCurrentDateTimeUTC();
+          const currentDateObj = new Date(
+            currentUTCDateTime.substring(0, 4), // Year
+            parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+            currentUTCDateTime.substring(6, 8), // Day
+            currentUTCDateTime.substring(8, 10), // Hours
+            currentUTCDateTime.substring(10, 12), // Minutes
+            currentUTCDateTime.substring(12, 14), // Seconds
+          );
+
+          const meetingDateObj = new Date(
+            meetingDateTime.substring(0, 4), // Year
+            parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+            meetingDateTime.substring(6, 8), // Day
+            meetingDateTime.substring(8, 10), // Hours
+            meetingDateTime.substring(10, 12), // Minutes
+            meetingDateTime.substring(12, 14), // Seconds
+          );
+
+          // Calculate the time difference in milliseconds
+          const timeDifference = meetingDateObj - currentDateObj;
+
+          // Convert milliseconds to minutes
+          const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+          const meetingCurrentStatus = Number(record.status);
+
+          const isOrganizer = record.isOrganizer;
+          const isParticipant = record.isParticipant;
+          const isAgendaContributor = record.isAgendaContributor;
+
+          const canStartMeeting =
+            meetingCurrentStatus === 1 &&
+            isOrganizer &&
+            minutesDifference <= 30;
+
+          const handleClick = (actionType) => {
+            onMeetingAction(actionType, record); // ⬅️ back to parent
+          };
+
+          // ===== UPCOMING =====
+          if (meetingCurrentStatus === 1) {
+            if (isOrganizer) {
+              return (
+                <CustomButton
+                  text={
+                    canStartMeeting ? t("Start-meeting") : t("Edit-meeting")
+                  }
+                  className={
+                    canStartMeeting
+                      ? styles.StartMeetingButton
+                      : styles.EditMeetingButton
+                  }
+                  onClick={() =>
+                    handleClick(
+                      canStartMeeting ? "START_MEETING" : "EDIT_MEETING",
+                    )
+                  }
+                />
+              );
+            }
+
+            if (isAgendaContributor) {
+              return (
+                <CustomButton
+                  text={t("Contribute-agenda")}
+                  className={styles.ContributeAgendaButton}
+                  onClick={() => handleClick("CONTRIBUTE_AGENDA")}
+                />
+              );
+            }
+
+            if (isParticipant) {
+              return (
+                <CustomButton
+                  text={t("View-meeting")}
+                  className={styles.ViewMeetingButton}
+                  onClick={() => handleClick("VIEW_MEETING")}
+                />
+              );
+            }
+          }
+
+          // ===== ACTIVE =====
+          if (meetingCurrentStatus === 10) {
+            return (
+              <CustomButton
+                text={t("Join-meeting")}
+                className={styles.JoinMeetingButton}
+                onClick={() => handleClick("JOIN_MEETING")}
+              />
+            );
+          }
+
+          // ===== ENDED =====
+          if (meetingCurrentStatus === 9 && isOrganizer) {
+            return (
+              <CustomButton
+                text={t("Board-deck")}
+                className={styles.BoardDeckButton}
+                onClick={() => handleClick("BOARD_DECK")}
+              />
+            );
+          }
+
+          // ===== NOT CONDUCTED =====
+          if (meetingCurrentStatus === 8 && isOrganizer) {
+            return (
+              <CustomButton
+                text={t("Edit-meeting")}
+                className={styles.EditMeetingButton}
+                onClick={() => handleClick("EDIT_MEETING")}
+              />
+            );
+          }
+
+          // ===== Cancelled or others =====
+          return null; // keep blank
+        },
+      },
+
+      {
         title: (
           <>
             <div></div>
           </>
         ),
         dataIndex: "meetingAction",
-        width: 280,
+        width: 140,
         key: "meetingAction",
         render: (text, record) => {
+          const startMeetingRequest = {
+            VideoCallURL: record.videoCallURL,
+            MeetingID: Number(record.pK_MDID),
+            StatusID: 10,
+          };
+          let currentUTCDateTime = getCurrentDateTimeUTC();
+          let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
+          const currentDateObj = new Date(
+            currentUTCDateTime.substring(0, 4), // Year
+            parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+            currentUTCDateTime.substring(6, 8), // Day
+            currentUTCDateTime.substring(8, 10), // Hours
+            currentUTCDateTime.substring(10, 12), // Minutes
+            currentUTCDateTime.substring(12, 14), // Seconds
+          );
+
+          const meetingDateObj = new Date(
+            meetingDateTime.substring(0, 4), // Year
+            parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+            meetingDateTime.substring(6, 8), // Day
+            meetingDateTime.substring(8, 10), // Hours
+            meetingDateTime.substring(10, 12), // Minutes
+            meetingDateTime.substring(12, 14), // Seconds
+          );
+
+          // Calculate the time difference in milliseconds
+          const timeDifference = meetingDateObj - currentDateObj;
+
+          // Convert milliseconds to minutes
+          const minutesDifference = Math.floor(timeDifference / (1000 * 60));
           let meetingCurrentStatus = Number(record.status);
           let isOrganizer = record.isOrganizer;
           let isParticipant = record.isParticipant;
@@ -430,41 +624,20 @@ const PublishedMeeting = () => {
           let isPrimaryOrganizer = record.isPrimaryOrganizer;
 
           return (
-            <div className="d-flex justify-content-center align-items-center gap-2">
-              <div>
-                {meetingCurrentStatus === 10 ? (
-                  <CustomButton
-                    text={"Join-meeting"}
-                    className={styles.JoinMeetingButton}
-                  />
-                ) : meetingCurrentStatus === 9 ? (
-                  <CustomButton
-                    text={"Board-deck"}
-                    className={styles.EndMeetingButton}
-                  />
-                ) : meetingCurrentStatus === 1 ? (
-                  isOrganizer && (
-                    <CustomButton
-                      text={"Start-meeting"}
-                      className={styles.startMeetingButton}
-                    />
-                  )
-                ) : null}
-              </div>
-              <div>
-                <Popover
-                  content={moreButtons(record)}
-                  trigger="click"
-                  overlayClassName="MoreButtons_overlay"
-                  showArrow={false}
-                  placement="bottomRight"
-                >
-                  <CustomButton
-                    className={styles.MoreMeetingButton}
-                    text="More"
-                  />
-                </Popover>
-              </div>
+            <div>
+              <Popover
+                content={moreButtons(record)}
+                trigger="click"
+                overlayClassName="MoreButtons_overlay"
+                showArrow={false}
+                placement="bottomRight"
+              >
+                <CustomButton
+                  className={styles.MoreMeetingButton}
+                  text="More"
+                  icon2={<img src={ChevronDownIcon} width={10} />}
+                />
+              </Popover>
             </div>
           );
         },
@@ -482,20 +655,22 @@ const PublishedMeeting = () => {
   ]);
 
   return (
-    <div>
-      <Table
-        onChange={handleChangeMeetingTable}
-        className="MeetingTable"
-        column={columns}
-        size={"small"}
-        rows={publishMeetingData}
-        sticky={true}
-        pagination={false}
-        scroll={{
-          y: 450,
-        }}
-      />
-    </div>
+    isMeetingTypeFilter.length > 0 && (
+      <div>
+        <Table
+          onChange={handleChangeMeetingTable}
+          className="MeetingTable"
+          column={columns}
+          size={"small"}
+          rows={publishMeetingData}
+          sticky={true}
+          pagination={false}
+          scroll={{
+            y: "60vh",
+          }}
+        />
+      </div>
+    )
   );
 };
 
