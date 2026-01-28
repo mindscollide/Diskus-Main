@@ -19,6 +19,7 @@ import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
 import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ const CreateEditViewComplianceTask = () => {
     setTaskCount,
     emptyComplianceState,
     setCreateEditComplaince,
+    setCloseConfirmationModal,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -161,9 +163,10 @@ const CreateEditViewComplianceTask = () => {
   const handleDeleteTask = () => {};
 
   const handleCloseButton = () => {
-    emptyComplianceState();
-    setChecklistTabs(1);
-    setCreateEditComplaince(false);
+    // emptyComplianceState();
+    // setChecklistTabs(1);
+    // setCreateEditComplaince(false);
+    setCloseConfirmationModal(true);
   };
 
   const handleClickPrevBtn = () => {
@@ -314,6 +317,7 @@ const CreateEditViewComplianceTask = () => {
         />
       )}
       <Notification open={open} setOpen={setOpen} />
+      <ComplianceCloseConfirmationModal />
     </>
   );
 };

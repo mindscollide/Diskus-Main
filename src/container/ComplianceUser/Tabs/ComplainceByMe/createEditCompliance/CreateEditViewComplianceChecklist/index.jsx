@@ -33,6 +33,7 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -72,6 +73,7 @@ const CreateEditViewComplianceChecklist = () => {
     checkListData,
     emptyComplianceState,
     setChecklistData,
+    setCloseConfirmationModal,
   } = useComplianceContext();
   console.log(complianceDetailsState, "complianceDetailsState");
 
@@ -361,9 +363,10 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleCloseButton = () => {
-    emptyComplianceState();
-    setChecklistTabs(1);
-    setCreateEditComplaince(false);
+    // emptyComplianceState();
+    // setChecklistTabs(1);
+    // setCreateEditComplaince(false);
+    setCloseConfirmationModal(true);
   };
   console.log(complianceDetailsState.dueDate, "complianceDueDateForChecklist");
   return (
@@ -670,6 +673,7 @@ const CreateEditViewComplianceChecklist = () => {
         />
       </div>
       <Notification open={open} setOpen={setOpen} />
+      <ComplianceCloseConfirmationModal />
     </>
   );
 };

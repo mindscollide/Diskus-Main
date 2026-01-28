@@ -8289,14 +8289,3 @@ td.ant-table-column-sort {
   font-size: 16px;
   color: #5a5a5a;
 }
-.complianceRadioButton .ant-radio-wrapper-checked {
-  box-shadow: 0px 0px 15px 0px #00000040;
-  font-weight: 600;
-  font-size: 16px;
-  color: #5a5a5a !important;
-}
-.complianceRadioButton .ant-radio-wrapper {
-  font-weight: 600;
-  font-size: 16px;
-  color: #a2a2a2 !important;
-}

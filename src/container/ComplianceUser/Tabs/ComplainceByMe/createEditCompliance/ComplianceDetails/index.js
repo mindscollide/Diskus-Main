@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import {
   AddComplianceAPI,
   CheckComplianceTitleExistsAPI,
+  clearAuthorityMessage,
   EditComplianceAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
@@ -24,7 +25,7 @@ import {
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
-import { Button } from "../../../../../../components/elements";
+import { Button, Notification } from "../../../../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -34,6 +35,7 @@ import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunc
 import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
+import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -54,7 +56,13 @@ const ComplainceDetails = () => {
     allowedComplianceStatusOptions,
     complianceOnHoldModal,
     setComplianceOnHoldModal,
+    tempSelectComplianceStatus,
+    setTempSelectedComplianceStatus,
+    resetModalStates,
+    complianceOnHoldReasonState,
+    complianceOnHoldSelectOption,
   } = useComplianceContext();
+  console.log(complianceDetailsState, "complianceDetailsState");
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -90,7 +98,18 @@ const ComplainceDetails = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsWithTasksByComplianceId
   );
+  const authorityRespnseMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+  );
+  const authorityseverityMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.severity
+  );
 
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   console.log(tagsOptions, "GetAllTagsByOrganizationIDData");
 
   const criticalityOptions = [
@@ -259,7 +278,21 @@ const ComplainceDetails = () => {
       setTagsOptions([]);
     }
   }, [GetAllTagsByOrganizationIDData]);
-
+  useEffect(() => {
+    if (
+      authorityRespnseMessage !== null &&
+      authorityRespnseMessage !== undefined &&
+      authorityRespnseMessage !== "" &&
+      authorityseverityMessage !== null
+    ) {
+      try {
+        showMessage(authorityRespnseMessage, authorityseverityMessage, setOpen);
+        setTimeout(() => {
+          dispatch(clearAuthorityMessage());
+        }, 4000);
+      } catch (error) {}
+    }
+  }, [authorityRespnseMessage, authorityseverityMessage]);
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
@@ -334,8 +367,11 @@ const ComplainceDetails = () => {
         ),
         newStatusId: complianceDetailsState.status.value,
         tags: tagsArr,
-        ReasonToMakeComplianceOnHold: "", // On Hold Compliance
-        OnHoldAlongWithComplianceCheckListAndTask: 1, // On Hold Compliance Including Checklist and Task
+        ReasonToMakeComplianceOnHold:
+          complianceDetailsState.status.value === 7
+            ? complianceOnHoldReasonState
+            : "", // On Hold Compliance
+        OnHoldAlongWithComplianceCheckListAndTask: complianceOnHoldSelectOption, // On Hold Compliance Including Checklist and Task
       };
 
       console.log(Data, "updatedData");
@@ -394,6 +430,47 @@ const ComplainceDetails = () => {
       );
     }
   };
+
+  // const handleBlur = (event) => {
+  //   if (complianceAddEditViewState === 3) return;
+
+  //   const { name, value } = event.target;
+  //   if (name !== "complianceTitle" || !value) return;
+
+  //   const isEdit = complianceAddEditViewState === 2;console.log(isEdit,"isEdit")
+
+  //   const authorityId = complianceDetailsState.authority.value;
+  //   if (!authorityId) return;
+
+  //   console.log(authorityId, "authorityIdauthorityId");
+
+  //   const title = complianceDetailsState.complianceTitle;
+
+  //   if (isEdit) {
+  //     const authorityChanged =
+  //       authorityId !== viewComplianceByMeDetails.authority.authorityId;
+
+  //     const titleChanged =
+  //       title !== "" && title !== viewComplianceByMeDetails.complianceTitle;
+
+  //     if (!authorityChanged || !titleChanged) return;
+  //   }
+
+  //   const Data = {
+  //     ComplianceTitle: title,
+  //     AuthorityID: authorityId,
+  //   };
+
+  //   dispatch(
+  //     CheckComplianceTitleExistsAPI(
+  //       navigate,
+  //       Data,
+  //       t,
+  //       setIsChecklistTitleExist,
+  //       setErrors
+  //     )
+  //   );
+  // };
 
   const handleSelectAuthority = (event) => {
     if (complianceDetailsState.complianceTitle === "") {
@@ -487,9 +564,19 @@ const ComplainceDetails = () => {
     console.log(event, "CompliaceStatusOnHoldModal");
 
     // status change to On Hold
-    if (event.value === 7) setComplianceOnHoldModal(true);
+    if (event.value === 7) {
+      if (complianceDetailsState.status.value === 7) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 7) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceOnHoldModal(true);
+      }
+    }
     // Status chnage to In Progress
     else if (event.value === 2) {
+      resetModalStates();
       setComplianceDetailsState((prev) => ({
         ...prev,
         status: event,
@@ -682,7 +769,7 @@ const ComplainceDetails = () => {
         </Col>
       </Row>
 
-      {complianceAddEditViewState === 2 && (
+      {complianceInfo.complianceId !== 0 && (
         <Row className="mt-2">
           <Col sm={12} md={4} lg={4}>
             <div
@@ -820,6 +907,7 @@ const ComplainceDetails = () => {
           }
         />
       </div>
+      <Notification open={open} setOpen={setOpen} />
       <ComplianceCloseConfirmationModal />
       <CompliaceStatusOnHoldModal />
     </>

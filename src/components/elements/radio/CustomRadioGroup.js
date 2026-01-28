@@ -10,6 +10,7 @@ const CustomRadioGroup = ({
   className = "",
   is2FA = false,
   radioButtonClass = "",
+  defaultValue,
 }) => {
   return (
     <Radio.Group
@@ -17,6 +18,7 @@ const CustomRadioGroup = ({
       buttonStyle="solid"
       value={value}
       onChange={onChange}
+      defaultValue={defaultValue}
       disabled={disabled}
     >
       {options.map((option) =>
