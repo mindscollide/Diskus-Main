@@ -2657,5 +2657,10 @@
   "Some-checklist-items-are-still-pending": "Some checklist items are still pending. Do you want to continue submitting for approval?",
   "Some-tasks-are-still-not-completed": "This compliance cannot be marked as Completed because some tasks are still not completed",
   "Compliance-update-failed-or-record-not-found": "Compliance update failed or record not found",
-  "Exception-occurred": "An exception occurred while updating compliance"
+  "Exception-occurred": "An exception occurred while updating compliance",
+  "Cancel-compliance?": "Cancel Compliance?",
+  "Confirm-action": "Confirm Action",
+  "Cancel-compliance-only": "Cancel Compliance Only",
+  "Cancel-compliance-with-associated-items": "Cancel Compliance with Associated items",
+  "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this compliance cannot be Re-opened or moved back to In Progress"
 }

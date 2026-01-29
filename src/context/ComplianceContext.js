@@ -88,11 +88,20 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
   const [complianceOnHoldReasonModal, setComplianceOnHoldReasonModal] =
     useState(false);
+  const [complianceCancelModal, setComplianceCancelModal] = useState(false);
+  const [complianceCanceleasonModal, setComplianceCancelReasonModal] =
+    useState(false);
   // Modals states
   const [complianceOnHoldSelectOption, setComplianceOnHoldSelectOption] =
     useState(0);
   const [complianceOnHoldReasonState, setComplianceOnHoldReasonState] =
     useState("");
+
+  const [complianceCancelSelectOption, setComplianceCancelSelectOption] =
+    useState(0);
+  const [complianceCancelReasonState, setComplianceCancelReasonState] =
+    useState("");
+
   const [tempSelectComplianceStatus, setTempSelectedComplianceStatus] =
     useState(0);
 
@@ -103,6 +112,10 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceOnHoldSelectOption(0);
     setComplianceOnHoldReasonState("");
     setTempSelectedComplianceStatus(0);
+    setComplianceCancelModal(false);
+    setComplianceCancelReasonModal(false);
+    setComplianceCancelSelectOption(0);
+    setComplianceCancelReasonState(0);
   };
 
   const emptyComplianceState = () => {
@@ -256,6 +269,14 @@ export const ComlianceProvider = ({ children }) => {
         tempSelectComplianceStatus,
         setTempSelectedComplianceStatus,
         resetModalStates,
+        complianceCancelModal,
+        setComplianceCancelModal,
+        complianceCanceleasonModal,
+        setComplianceCancelReasonModal,
+        complianceCancelSelectOption,
+        setComplianceCancelSelectOption,
+        complianceCancelReasonState,
+        setComplianceCancelReasonState,
       }}
     >
       {children}

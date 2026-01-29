@@ -376,6 +376,8 @@ const CreateEditViewComplianceChecklist = () => {
           <Row className="mt-2 d-flex flex-row">
             <div className={styles["checklistTitle"]}>
               <InputfieldwithCount
+                // disableBtn={complianceDetailsState.status.value === 7}
+                disabled={complianceDetailsState.status.value === 7}
                 ref={checklistTitleRef}
                 label={
                   <>
@@ -429,6 +431,7 @@ const CreateEditViewComplianceChecklist = () => {
                 </span>
               </div>
               <DatePicker
+                disabled={complianceDetailsState.status.value === 7}
                 value={checkListData.checklistDueDate}
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
@@ -440,7 +443,11 @@ const CreateEditViewComplianceChecklist = () => {
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
-                    className={styles["datepicker_input"]}
+                    className={`${styles["datepicker_input"]} ${
+                      complianceDetailsState.status.value === 7
+                        ? styles["disabledInput"]
+                        : ""
+                    }`}
                   />
                 }
                 editable={false}
@@ -459,6 +466,7 @@ const CreateEditViewComplianceChecklist = () => {
           <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <TextAreafieldwithCount
+                disabled={complianceDetailsState.status.value === 7}
                 label={
                   <>
                     {t("Checklist-description")}
@@ -492,6 +500,7 @@ const CreateEditViewComplianceChecklist = () => {
               text={t("Cancel")}
               className={styles["Compliance_CloseButton"]}
               onClick={handleCloseAddChecklistButton}
+              disableBtn={complianceDetailsState.status.value === 7}
             />
             <Button
               text={isEditTrue ? t("Update") : t("Add")}

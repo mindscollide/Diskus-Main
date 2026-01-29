@@ -61,6 +61,7 @@ const CreateEditViewComplianceTask = () => {
     emptyComplianceState,
     setCreateEditComplaince,
     setCloseConfirmationModal,
+    complianceDetailsState,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -239,16 +240,26 @@ const CreateEditViewComplianceTask = () => {
                               );
                             })}
                         </div>
+                        {/* {complianceDetailsState.status.value !== 7 && ( */}
                         <Row>
                           <Col sm={12} md={12} lg={12}>
                             <div
-                              className={styles["createNewTaskBtnStyle"]}
-                              onClick={() => handleAddTaskInCheckList(data)}
+                              className={
+                                complianceDetailsState.status.value !== 7
+                                  ? styles["createNewTaskBtnStyle"]
+                                  : styles["createNewTaskBtnStyleDisabled"]
+                              }
+                              onClick={
+                                complianceDetailsState.status.value !== 7
+                                  ? () => handleAddTaskInCheckList(data)
+                                  : undefined
+                              }
                             >
                               {t("Add-task")}
                             </div>
                           </Col>
                         </Row>
+                        {/* )} */}
                       </>
                     }
                     endField={

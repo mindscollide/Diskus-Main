@@ -3,21 +3,20 @@ import { Button, Modal, Radio } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
-import styles from "./complianceStatusOnHoldModal.module.css";
+import styles from "./complianceStatusCancel.module.css";
 
-import alertIcon from "../../../../../assets/images/Alert Icon.png";
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
-import { values } from "lodash";
 import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
+// import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
-const CompliaceStatusOnHoldModal = () => {
+const ComplianceStatusCancelModal = () => {
   const { t } = useTranslation();
   const [selectOptions, setSelectOption] = useState(0);
   const {
-    complianceOnHoldModal,
-    setComplianceOnHoldModal,
-    setComplianceOnHoldReasonModal,
-    setComplianceOnHoldSelectOption,
+    complianceCancelModal,
+    setComplianceCancelModal,
+    setComplianceCancelReasonModal,
+    setComplianceCancelSelectOption,
     resetModalStates,
     complianceDetailsState,
     complianceOnHoldSelectOption,
@@ -32,9 +31,9 @@ const CompliaceStatusOnHoldModal = () => {
   const handleProceedButton = () => {
     console.log(selectOptions, "selectOptionsvalue");
     setSelectOption(0);
-    setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(true);
-    setComplianceOnHoldSelectOption(selectOptions);
+    setComplianceCancelModal(false);
+    setComplianceCancelReasonModal(true);
+    setComplianceCancelSelectOption(selectOptions);
   };
 
   useEffect(() => {
@@ -46,34 +45,43 @@ const CompliaceStatusOnHoldModal = () => {
   return (
     <>
       <Modal
-        show={complianceOnHoldModal}
-        setShow={setComplianceOnHoldModal}
+        show={complianceCancelModal}
+        setShow={setComplianceCancelModal}
         modalFooterClassName={"d-block border-0"}
         // modalHeaderClassName={"d-block border-0"}
+        modalHeaderClassName={"cancelComplianceHeader"}
+        modalBodyClassName={"cancelCompliancebody"}
         modalTitleClassName={styles.StatusTitle}
         contentClassName={styles["StatusChangeModal"]}
         onHide={handleCloseButton}
-        ModalTitle={t("Select-option")}
+        ModalTitle={t("Cancel-compliance?")}
         closeButton={true}
         ModalBody={
           <>
-            <CustomRadioGroup
-              radioButtonClass={styles.radioBtnStyle}
-              defaultValue={selectOptions}
-              className="complianceRadioButton"
-              value={selectOptions}
-              onChange={(event) => setSelectOption(event.target.value)}
-              options={[
-                {
-                  label: t("Mark-compliance-only"),
-                  value: 0,
-                },
-                {
-                  label: t("Mark-compliance-with-associated-items"),
-                  value: 1,
-                },
-              ]}
-            />
+            <div className={styles.confirmationMessage}>
+              {t(
+                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress"
+              )}
+            </div>
+            <div className="mt-4">
+              <CustomRadioGroup
+                radioButtonClass={styles.radioBtnStyle}
+                defaultValue={selectOptions}
+                className="complianceRadioButton"
+                value={selectOptions}
+                onChange={(event) => setSelectOption(event.target.value)}
+                options={[
+                  {
+                    label: t("Cancel-compliance-only"),
+                    value: 0,
+                  },
+                  {
+                    label: t("Cancel-compliance-with-associated-items"),
+                    value: 1,
+                  },
+                ]}
+              />
+            </div>
           </>
         }
         ModalFooter={
@@ -87,12 +95,12 @@ const CompliaceStatusOnHoldModal = () => {
                 className="d-flex justify-content-center gap-2"
               >
                 <Button
-                  text={t("Close")}
+                  text={t("Cancel")}
                   className={styles["CancelButton"]}
                   onClick={handleCloseButton}
                 />
                 <Button
-                  text={t("Mark-on-hold")}
+                  text={t("Confirm-action")}
                   className={styles["ProceedButtonStyles"]}
                   onClick={handleProceedButton}
                 />
@@ -106,4 +114,4 @@ const CompliaceStatusOnHoldModal = () => {
   );
 };
 
-export default CompliaceStatusOnHoldModal;
+export default ComplianceStatusCancelModal;

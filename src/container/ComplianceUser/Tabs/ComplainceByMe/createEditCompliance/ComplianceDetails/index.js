@@ -36,6 +36,7 @@ import { Check2 } from "react-bootstrap-icons";
 import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import ComplianceStatusCancelModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCancel";
 
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const ComplainceDetails = () => {
     resetModalStates,
     complianceOnHoldReasonState,
     complianceOnHoldSelectOption,
+    setComplianceCancelModal,
   } = useComplianceContext();
   console.log(complianceDetailsState, "complianceDetailsState");
 
@@ -408,15 +410,74 @@ const ComplainceDetails = () => {
     }));
   };
 
+  // const handleBlur = (event) => {
+  //   if (complianceAddEditViewState === 3) return;
+
+  //   const { name, value } = event.target;
+
+  //   if (name === "complianceTitle" && value) {
+  //     const Data = {
+  //       ComplianceTitle: complianceDetailsState.complianceTitle,
+  //       AuthorityID: complianceDetailsState.authority.value,
+  //     };
+
+  //     dispatch(
+  //       CheckComplianceTitleExistsAPI(
+  //         navigate,
+  //         Data,
+  //         t,
+  //         setIsChecklistTitleExist,
+  //         setErrors
+  //       )
+  //     );
+  //   }
+  // };
+
   const handleBlur = (event) => {
     if (complianceAddEditViewState === 3) return;
 
     const { name, value } = event.target;
+    if (name !== "complianceTitle" || !value) return;
 
-    if (name === "complianceTitle" && value) {
+    const authorityId = complianceDetailsState.authority.value;
+    if (!authorityId) return;
+
+    const title = complianceDetailsState.complianceTitle;
+
+    // 🆕 CREATE MODE → always check
+    if (complianceAddEditViewState === 1) {
       const Data = {
-        ComplianceTitle: complianceDetailsState.complianceTitle,
-        AuthorityID: complianceDetailsState.authority.value,
+        ComplianceTitle: title,
+        AuthorityID: authorityId,
+      };
+
+      dispatch(
+        CheckComplianceTitleExistsAPI(
+          navigate,
+          Data,
+          t,
+          setIsChecklistTitleExist,
+          setErrors
+        )
+      );
+      return;
+    }
+
+    // ✏️ EDIT MODE
+    if (complianceAddEditViewState === 2 && viewComplianceByMeDetails) {
+      const originalAuthorityId =
+        viewComplianceByMeDetails.authority.authorityId;
+      const originalTitle = viewComplianceByMeDetails.complianceTitle;
+
+      const authorityChanged = authorityId !== originalAuthorityId;
+      const titleChanged = title !== originalTitle;
+
+      // ❌ nothing changed → don't hit API
+      if (!authorityChanged && !titleChanged) return;
+
+      const Data = {
+        ComplianceTitle: title,
+        AuthorityID: authorityId,
       };
 
       dispatch(
@@ -430,47 +491,6 @@ const ComplainceDetails = () => {
       );
     }
   };
-
-  // const handleBlur = (event) => {
-  //   if (complianceAddEditViewState === 3) return;
-
-  //   const { name, value } = event.target;
-  //   if (name !== "complianceTitle" || !value) return;
-
-  //   const isEdit = complianceAddEditViewState === 2;console.log(isEdit,"isEdit")
-
-  //   const authorityId = complianceDetailsState.authority.value;
-  //   if (!authorityId) return;
-
-  //   console.log(authorityId, "authorityIdauthorityId");
-
-  //   const title = complianceDetailsState.complianceTitle;
-
-  //   if (isEdit) {
-  //     const authorityChanged =
-  //       authorityId !== viewComplianceByMeDetails.authority.authorityId;
-
-  //     const titleChanged =
-  //       title !== "" && title !== viewComplianceByMeDetails.complianceTitle;
-
-  //     if (!authorityChanged || !titleChanged) return;
-  //   }
-
-  //   const Data = {
-  //     ComplianceTitle: title,
-  //     AuthorityID: authorityId,
-  //   };
-
-  //   dispatch(
-  //     CheckComplianceTitleExistsAPI(
-  //       navigate,
-  //       Data,
-  //       t,
-  //       setIsChecklistTitleExist,
-  //       setErrors
-  //     )
-  //   );
-  // };
 
   const handleSelectAuthority = (event) => {
     if (complianceDetailsState.complianceTitle === "") {
@@ -572,6 +592,18 @@ const ComplainceDetails = () => {
         resetModalStates();
         setTempSelectedComplianceStatus(event);
         setComplianceOnHoldModal(true);
+      }
+    }
+
+    // Status changed to Cancel
+    if (event.value === 9) {
+      if (complianceDetailsState.status.value === 9) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 9) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceCancelModal(true);
       }
     }
     // Status chnage to In Progress
@@ -910,6 +942,7 @@ const ComplainceDetails = () => {
       <Notification open={open} setOpen={setOpen} />
       <ComplianceCloseConfirmationModal />
       <CompliaceStatusOnHoldModal />
+      <ComplianceStatusCancelModal />
     </>
   );
 };
