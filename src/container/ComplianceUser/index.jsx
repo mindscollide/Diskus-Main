@@ -39,6 +39,9 @@ const MainCompliance = () => {
     setAllTasksStatusForFilter,
     viewTypeDashboard,
     setViewTypeDashboard,
+    resetComplianceDashboardFilter,
+    resetComplianceTaskDashboardFilter,
+    resetReopenComplianceDashboardFilter,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -72,8 +75,20 @@ const MainCompliance = () => {
   }, [AllComplianceStatus]);
 
   // Toggle switch handler
-  const handleSwitchToggle = () => {
-    setViewTypeDashboard((prev) => (prev === 1 ? 2 : 1));
+  const handleSwitchToggle = (checked) => {
+    const newViewType = checked ? 2 : 1;
+
+    setViewTypeDashboard(newViewType);
+    localStorage.setItem("viewType", newViewType);
+
+    // For Compliance By Dashboard Filter Reset State
+    resetComplianceDashboardFilter();
+
+    // For Compliance Task Dashboard Filter Reset State
+    resetComplianceTaskDashboardFilter();
+
+    // For Reopened Compliance Dashboard Filter Reset State
+    resetReopenComplianceDashboardFilter();
   };
 
   const handleOpenCreateEditCompliance = () => {

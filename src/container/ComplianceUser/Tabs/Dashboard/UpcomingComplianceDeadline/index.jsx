@@ -14,32 +14,59 @@ const UpcomingComplianceDeadline = () => {
     GetUpcomingDealineComplianceDashboard,
     "GetUpcomingDealineComplianceDashboard",
   );
+
+  // Check if data is null or undefined
+  const hasData =
+    GetUpcomingDealineComplianceDashboard &&
+    GetUpcomingDealineComplianceDashboard !== undefined &&
+    GetUpcomingDealineComplianceDashboard !== null;
+
   return (
-    <div className={styles.upcomingComplianceCard}>
-      <Row>
-        <Col xs={12}>
-          <h2 className={styles.cardHeading}>Upcoming Compliance Deadlines</h2>
-        </Col>
-      </Row>
+    <>
+      {/* Show empty state when no data */}
+      {!hasData && (
+        <div className={styles.NoUpcomingDeadlineCard}>
+          <h2 className={styles.NoDataCardHeading}>
+            Upcoming Compliance Deadlines
+          </h2>
+          <ComplianceEmptyState
+            type="noUpcomingCompliance"
+            title="No upcoming deadlines"
+            layout="imageRight"
+          />
+        </div>
+      )}
 
-      <Row>
-        <Col xs={12} className={styles.deadlineRow}>
-          <span className={styles.checkUpcomingCenter}>
-            <span className={styles.boldNumber}>
-              {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
-            </span>{" "}
-            <span className={styles.normalText}>Due this quarter</span>
-          </span>
+      {hasData && (
+        <div className={styles.upcomingComplianceCard}>
+          <Row>
+            <Col xs={12}>
+              <h2 className={styles.cardHeading}>
+                Upcoming Compliance Deadlines
+              </h2>
+            </Col>
+          </Row>
 
-          <span className={styles.checkUpcomingCenter}>
-            <span className={styles.boldNumber}>
-              {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
-            </span>{" "}
-            <span className={styles.normalText}>Due this Week</span>
-          </span>
-        </Col>
-      </Row>
-    </div>
+          <Row>
+            <Col xs={12} className={styles.deadlineRow}>
+              <span className={styles.checkUpcomingCenter}>
+                <span className={styles.boldNumber}>
+                  {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
+                </span>{" "}
+                <span className={styles.normalText}>Due this quarter</span>
+              </span>
+
+              <span className={styles.checkUpcomingCenter}>
+                <span className={styles.boldNumber}>
+                  {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
+                </span>{" "}
+                <span className={styles.normalText}>Due this Week</span>
+              </span>
+            </Col>
+          </Row>
+        </div>
+      )}
+    </>
   );
 };
 

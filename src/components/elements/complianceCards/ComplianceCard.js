@@ -1,6 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import { Row, Col, Tag, Progress } from "antd";
 import styles from "./ComplianceCard.module.css";
+import GoToIcon from "./../../../assets/images/GoToIcon.png";
 
 /* 🔹 Criticality Style Logic */
 const getCriticalityConfig = (id) => {
@@ -33,16 +34,43 @@ const ComplianceCard = ({
   progress,
   criticalityId,
   authority,
+  showHoverIcon = false,
+  onIconClick,
 }) => {
   const criticality = getCriticalityConfig(criticalityId);
   const showProgress = progress !== undefined;
+
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleIconClick = (e) => {
+    e.stopPropagation();
+    if (onIconClick) {
+      onIconClick();
+    }
+  };
+
   return (
     <>
-      <div className={styles.card}>
+      <div
+        className={styles.card}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         {/* Title */}
-        <Row>
+        <Row className={styles.titleRow}>
           <Col span={24}>
-            <h3 className={styles.title}>{title}</h3>
+            <div className={styles.titleContainer}>
+              <h3 className={styles.title}>{title}</h3>
+              {showHoverIcon && isHovered && (
+                <div className={styles.iconContainer} onClick={handleIconClick}>
+                  <img
+                    src={GoToIcon}
+                    alt="Go to"
+                    className={styles.hoverIcon}
+                  />
+                </div>
+              )}
+            </div>
           </Col>
         </Row>
 
@@ -75,7 +103,21 @@ const ComplianceCard = ({
         {/* Description */}
         <Row>
           <Col span={24}>
-            <p className={styles.description}>{description}</p>
+            {description && (
+              <span className={styles.boldLabel}>
+                Reopen date and reason:
+                <span className={styles.description}>
+                  {" "}
+                  {description}{" "}
+                  <span
+                    className={styles.seeMoreClass}
+                    onClick={handleIconClick}
+                  >
+                    See more
+                  </span>
+                </span>
+              </span>
+            )}
           </Col>
         </Row>
 

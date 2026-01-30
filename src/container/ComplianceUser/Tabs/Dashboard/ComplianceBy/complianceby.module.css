@@ -51,5 +51,5 @@
 }
 
 .CardInsideHeight {
-  max-height: 330px;
+  min-height: 330px;
 }

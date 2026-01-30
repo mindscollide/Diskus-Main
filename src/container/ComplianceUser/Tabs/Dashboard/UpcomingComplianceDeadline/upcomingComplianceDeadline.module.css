@@ -48,3 +48,32 @@
   margin-left: 5px;
   color: #5a5a5a;
 }
+
+
+.NoUpcomingDeadlineCard {
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  height: 100%;
+  text-align: left;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+}
+.NoUpcomingDeadlineCard:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.NoDataCardHeading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #6172d6;
+
+  max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+  width: 100%;
+  padding: 0px 20px;
+  margin-top: 12px;
+  text-align: left;
+}

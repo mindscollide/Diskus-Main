@@ -41,3 +41,32 @@
   color: #5a5a5a;
   font-family: "Montserrat";
 }
+
+
+.NoDataQuarterlySubmittedCard {
+  width: 100%;
+  min-height: 211px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+  height: 100%;
+}
+.NoDataQuarterlySubmittedCard:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.NoDataCardHeading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #6172d6;
+
+  max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+  width: 100%;
+  padding: 0px 20px;
+  margin-top: 12px;
+  text-align: left;
+}

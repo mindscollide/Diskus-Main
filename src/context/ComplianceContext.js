@@ -166,9 +166,29 @@ export const ComlianceProvider = ({ children }) => {
   // 1 = Progress (default) Compliance Dropdown Filter
   const [complianceDashboardFilter, setComplianceDashboardFilter] = useState(1);
 
-  //Reset Compliance Dashboard State
+  // 1 Overdue (default filter) Compliance task dropdown Filter
+  const [complianceTaskDashboardFilter, setComplianceTaskDashboardFilter] =
+    useState(1);
+
+  // 1 Duedate (default filter) Reopend Compliance dropdown Filter
+  const [
+    reopendComplianceDashboardFilter,
+    setReopendComplianceDashboardFilter,
+  ] = useState(1);
+
+  //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
     setComplianceDashboardFilter(1);
+  };
+
+  //Reset Compliance Dashboard Filter  State
+  const resetComplianceTaskDashboardFilter = () => {
+    setComplianceTaskDashboardFilter(1);
+  };
+
+  //Reset Reopend-Compliance Dashboard Filter State
+  const resetReopenComplianceDashboardFilter = () => {
+    setReopendComplianceDashboardFilter(1);
   };
 
   return (
@@ -232,6 +252,12 @@ export const ComlianceProvider = ({ children }) => {
         complianceDashboardFilter,
         setComplianceDashboardFilter,
         resetComplianceDashboardFilter,
+        complianceTaskDashboardFilter,
+        setComplianceTaskDashboardFilter,
+        resetComplianceTaskDashboardFilter,
+        reopendComplianceDashboardFilter,
+        setReopendComplianceDashboardFilter,
+        resetReopenComplianceDashboardFilter,
       }}
     >
       {children}

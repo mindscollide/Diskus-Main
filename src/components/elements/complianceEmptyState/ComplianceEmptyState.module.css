@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   gap: 24px;
-  padding: 20px;
+  padding: 0px 20px;
   text-align: left;
 }
 
@@ -35,7 +35,7 @@
 
 .title {
   margin-bottom: 8px;
-  font-size: 18px;
+  font-size: 1.5em;
   font-weight: 700;
   font-family: "Montserrat";
   color: #a2a2a2;

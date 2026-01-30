@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import UpcomingComplianceDeadline from "./UpcomingComplianceDeadline";
 import QuarterlyTask from "./QuarterlyTask";
@@ -24,17 +24,46 @@ const ComplianceDashboard = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { viewTypeDashboard, setViewTypeDashboard, complianceDashboardFilter } =
-    useComplianceContext();
+  const {
+    viewTypeDashboard,
+    setViewTypeDashboard,
+    complianceDashboardFilter,
+    complianceTaskDashboardFilter,
+    reopendComplianceDashboardFilter,
+    resetComplianceDashboardFilter,
+    resetComplianceTaskDashboardFilter,
+    resetReopenComplianceDashboardFilter,
+  } = useComplianceContext();
 
-  console.log({viewTypeDashboard,complianceDashboardFilter}, "viewTypeDashboardviewTypeDashboard");
+  const [isViewTypeReady, setIsViewTypeReady] = useState(false);
 
+  console.log(
+    {
+      viewTypeDashboard,
+      complianceDashboardFilter,
+      complianceTaskDashboardFilter,
+      reopendComplianceDashboardFilter,
+    },
+    "viewTypeDashboardviewTypeDashboard",
+  );
+
+  // Reset filters when component mounts (cleanup from previous visits)
   useEffect(() => {
+    resetComplianceDashboardFilter();
+    resetComplianceTaskDashboardFilter();
+    resetReopenComplianceDashboardFilter();
+
     // Get viewType from localStorage on mount
     const savedViewType = localStorage.getItem("viewType");
     if (savedViewType) {
       setViewTypeDashboard(Number(savedViewType));
     }
+    setIsViewTypeReady(true);
+
+    // Cleanup function (optional)
+    return () => {
+      // You can reset filters here too if needed
+    };
   }, []);
 
   /*  Fetch OTHER cards */
@@ -44,11 +73,7 @@ const ComplianceDashboard = () => {
 
       await dispatch(GetQuarterlySubmittedComplianceAPI(navigate, Data, t));
       await dispatch(GetComplianceUpcomingDeadlineAPI(navigate, Data, t));
-      await dispatch(
-        GetComplianceQuarterlyTasksDashboardAPI(navigate, Data, t),
-      );
-      await dispatch(GetComplianceTasksDashboardAPI(navigate, Data, t));
-      await dispatch(GetComplianceReopenDashboardAPI(navigate, Data, t));
+      await dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
     } catch (err) {
       console.error("Static dashboard APIs failed:", err);
     }
@@ -68,17 +93,58 @@ const ComplianceDashboard = () => {
     }
   }, [viewTypeDashboard, complianceDashboardFilter]);
 
+  /* Fetch Compliance Task Dashboard ONLY */
+  const fetchComplianceTaskDashboardData = useCallback(async () => {
+    try {
+      const data = {
+        viewType: viewTypeDashboard,
+        filterBy: complianceTaskDashboardFilter,
+      };
+
+      await dispatch(GetComplianceTasksDashboardAPI(navigate, data, t));
+    } catch (err) {
+      console.error("ComplianceBy API failed:", err);
+    }
+  }, [viewTypeDashboard, complianceTaskDashboardFilter]);
+
+  /* Fetch Reopened Compliance Dashboard ONLY */
+  const fetchReopenedComplianceDashboardData = useCallback(async () => {
+    try {
+      const data = {
+        viewType: viewTypeDashboard,
+        filterBy: reopendComplianceDashboardFilter,
+      };
+
+      await dispatch(GetComplianceReopenDashboardAPI(navigate, data, t));
+    } catch (err) {
+      console.error("ComplianceBy API failed:", err);
+    }
+  }, [viewTypeDashboard, reopendComplianceDashboardFilter]);
+
   /*  Load main dashboard cards */
   useEffect(() => {
+    if (!isViewTypeReady) return;
     fetchStaticDashboardData();
-  }, [fetchStaticDashboardData]);
+  }, [fetchStaticDashboardData, isViewTypeReady]);
 
   /*  Reload ONLY ComplianceBy when filter changes */
   useEffect(() => {
+    if (!isViewTypeReady) return;
     fetchComplianceByData();
-  }, [fetchComplianceByData]);
+  }, [fetchComplianceByData, isViewTypeReady]);
 
- 
+  /*  Reload ONLY Compliance Task Dashboard when filter changes */
+  useEffect(() => {
+    if (!isViewTypeReady) return;
+    fetchComplianceTaskDashboardData();
+  }, [fetchComplianceTaskDashboardData, isViewTypeReady]);
+
+  /*  Reload ONLY Reopened Compliance Dashboard when filter changes */
+  useEffect(() => {
+    if (!isViewTypeReady) return;
+    fetchReopenedComplianceDashboardData();
+  }, [fetchReopenedComplianceDashboardData, isViewTypeReady]);
+
   return (
     <>
       <Row className="mt-3">

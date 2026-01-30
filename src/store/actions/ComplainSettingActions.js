@@ -3149,7 +3149,7 @@ const GetComplianceQuarterlyTasksDashboardFail = (message) => {
   };
 };
 
-const GetComplianceQuarterlyTasksDashboardAPI = (navigate, Data, t) => {
+const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
   return (dispatch) => {
     dispatch(GetComplianceQuarterlyTasksDashboardInit());
     let form = new FormData();
@@ -3158,13 +3158,13 @@ const GetComplianceQuarterlyTasksDashboardAPI = (navigate, Data, t) => {
       GetComplianceQuarterlyTasksDashboard.RequestMethod,
     );
     // ✅ send complete payload as JSON string
-    form.append("RequestData", JSON.stringify(Data));
+    // form.append("RequestData", JSON.stringify(Data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, Data, t));
+          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
