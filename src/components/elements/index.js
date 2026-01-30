@@ -50,6 +50,7 @@ import ProgressLine from "./progressBarPending/ProgressBarPending";
 import SelectComment from "./select-comment/SelectComment";
 import GuestJoinRequest from "./guestJoinRequest/GuestJoinRequest";
 import DocumentViewer from "../elements/webviewer/DocumentViewer";
+import ComplianceEmptyState from "../elements/complianceEmptyState/ComplianceEmptyState";
 export {
   SelectComment,
   AttachmentViewer,
@@ -103,4 +104,5 @@ export {
   AddtionalUserCard,
   DocumentViewer,
   GuestJoinRequest,
+  ComplianceEmptyState,
 };

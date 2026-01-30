@@ -229,3 +229,15 @@
   align-items: center;
   justify-content: center;
 }
+.disabledInput {
+  background-color: #fafafa !important;
+  cursor: default;
+  color: #a2aec6;
+  pointer-events: none;
+}
+
+.disabledInput + svg,
+.disabledInput svg {
+  pointer-events: none;
+  cursor: default;
+}

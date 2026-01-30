@@ -83,6 +83,41 @@ export const ComlianceProvider = ({ children }) => {
     useState([]);
   const [allTasksStatusForFilter, setAllTasksStatusForFilter] = useState([]);
 
+  // Modals For Status
+  const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
+  const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
+  const [complianceOnHoldReasonModal, setComplianceOnHoldReasonModal] =
+    useState(false);
+  const [complianceCancelModal, setComplianceCancelModal] = useState(false);
+  const [complianceCanceleasonModal, setComplianceCancelReasonModal] =
+    useState(false);
+  // Modals states
+  const [complianceOnHoldSelectOption, setComplianceOnHoldSelectOption] =
+    useState(0);
+  const [complianceOnHoldReasonState, setComplianceOnHoldReasonState] =
+    useState("");
+
+  const [complianceCancelSelectOption, setComplianceCancelSelectOption] =
+    useState(0);
+  const [complianceCancelReasonState, setComplianceCancelReasonState] =
+    useState("");
+
+  const [tempSelectComplianceStatus, setTempSelectedComplianceStatus] =
+    useState(0);
+
+  const resetModalStates = () => {
+    setSubmitForApprovalModal(false);
+    setComplianceOnHoldModal(false);
+    setComplianceOnHoldReasonModal(false);
+    setComplianceOnHoldSelectOption(0);
+    setComplianceOnHoldReasonState("");
+    setTempSelectedComplianceStatus(0);
+    setComplianceCancelModal(false);
+    setComplianceCancelReasonModal(false);
+    setComplianceCancelSelectOption(0);
+    setComplianceCancelReasonState(0);
+  };
+
   const emptyComplianceState = () => {
     console.log("cleared");
     dispatch(clearComplianceDetailsData());
@@ -110,15 +145,20 @@ export const ComlianceProvider = ({ children }) => {
         value: 0,
         label: "",
       },
-      dueDate: "",
+      dueDate: null, // keep same as initial
       complianceDueDateForChecklist: "",
       tags: [],
+      status: {
+        value: 0,
+        label: "",
+      },
       progressPercent: 0,
       createdBy: "",
       totalComplianceTasks: 0,
       showProgressBar: false,
       complianceStatusChangeHistory: [],
     });
+
     setChecklistCount(0);
     setTaskCount(0);
     setViewComplianceDetailsTab(1);
@@ -144,6 +184,12 @@ export const ComlianceProvider = ({ children }) => {
     setIsViewDetailsOpen(false);
     setsearchbox(false);
     setComplianceForMeTotal(0);
+    setSubmitForApprovalModal(false);
+    setComplianceOnHoldModal(false);
+    setComplianceOnHoldReasonModal(false);
+    setComplianceOnHoldReasonState("");
+    setComplianceOnHoldSelectOption(0);
+    setTempSelectedComplianceStatus(0);
   };
 
   // view compliance
@@ -210,6 +256,27 @@ export const ComlianceProvider = ({ children }) => {
         setAllComplianceStatusForFilter,
         allTasksStatusForFilter,
         setAllTasksStatusForFilter,
+        submitForApprovalModal,
+        setSubmitForApprovalModal,
+        complianceOnHoldModal,
+        setComplianceOnHoldModal,
+        complianceOnHoldReasonModal,
+        setComplianceOnHoldReasonModal,
+        complianceOnHoldReasonState,
+        setComplianceOnHoldReasonState,
+        complianceOnHoldSelectOption,
+        setComplianceOnHoldSelectOption,
+        tempSelectComplianceStatus,
+        setTempSelectedComplianceStatus,
+        resetModalStates,
+        complianceCancelModal,
+        setComplianceCancelModal,
+        complianceCanceleasonModal,
+        setComplianceCancelReasonModal,
+        complianceCancelSelectOption,
+        setComplianceCancelSelectOption,
+        complianceCancelReasonState,
+        setComplianceCancelReasonState,
       }}
     >
       {children}

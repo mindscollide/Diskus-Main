@@ -29,6 +29,7 @@ import {
   ViewComplianceDetailsByViewTypeRM,
   GetComplianceChecklistsWithTasksByComplianceIdForMe,
   GetComplianceAndTaskStatuses,
+  EditCompliance,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 
@@ -1114,6 +1115,21 @@ const AddComplianceAPI = (
                 complianceId: response.data.responseResult.complianceId,
                 complianceName: response.data.responseResult.complianceTitle,
               });
+              const Data = {
+                complianceId: response.data.responseResult.complianceId,
+                viewType: 1,
+              };
+              dispatch(
+                ViewComplianceDetailsByViewTypeAPI(
+                  navigate,
+                  Data,
+                  t,
+                  0,
+                  null,
+                  null,
+                  null
+                )
+              );
               setChecklistTabs(2);
             } else if (
               response.data.responseResult.responseMessage
@@ -2664,6 +2680,539 @@ const GetComplianceAndTaskStatusesAPI = (navigate, t) => {
   };
 };
 
+//EditComplianceChecklist
+const EditComplianceInit = () => {
+  return {
+    type: actions.EDIT_COMPLIANCE_INIT,
+  };
+};
+
+const EditComplianceSuccess = (response, message) => {
+  return {
+    type: actions.EDIT_COMPLIANCE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const EditComplianceFail = (message) => {
+  return {
+    type: actions.EDIT_COMPLIANCE_FAIL,
+    message: message,
+  };
+};
+
+// const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
+//   return (dispatch) => {
+//     dispatch(AddComplianceInit());
+//     let form = new FormData();
+//     form.append("RequestMethod", EditCompliance.RequestMethod);
+//     form.append("RequestData", JSON.stringify(Data));
+//     axiosInstance
+//       .post(complainceApi, form)
+//       .then(async (response) => {
+//         if (response.data.responseCode === 417) {
+//           await dispatch(RefreshToken(navigate, t));
+//           dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+//         } else if (response.data.responseCode === 200) {
+//           if (response.data.responseResult.isExecuted === true) {
+//             if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Compliance_ComplianceServiceManager_EditCompliance_01".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(
+//                 EditComplianceSuccess(
+//                   response.data.responseResult,
+//                   ""
+//                   // t("Compliance-created-successfully")
+//                 )
+//               );
+
+//               setChecklistTabs(2);
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Compliance_ComplianceServiceManager_EditCompliance_02".toLowerCase()
+//                 )
+//             ) {
+//               // The Name is Unique
+//               await dispatch(EditComplianceFail(""));
+//             } else if (
+//               response.data.responseResult.responseMessage
+//                 .toLowerCase()
+//                 .includes(
+//                   "Compliance_ComplianceServiceManager_EditCompliance_49".toLowerCase()
+//                 )
+//             ) {
+//               await dispatch(EditComplianceFail(""));
+//             }
+//           } else {
+//             await dispatch(EditComplianceFail(t("Something-went-wrong")));
+//           }
+//         } else {
+//           await dispatch(EditComplianceFail(t("Something-went-wrong")));
+//         }
+//       })
+//       .catch((response) => {
+//         dispatch(EditComplianceFail(t("Something-went-wrong")));
+//       });
+//   };
+// };
+
+const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
+  return (dispatch) => {
+    dispatch(AddComplianceInit());
+
+    let form = new FormData();
+    form.append("RequestMethod", EditCompliance.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+        } else if (response.data.responseCode === 200) {
+          const message =
+            response.data.responseResult?.responseMessage?.toLowerCase() || "";
+
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_01"
+              )
+            ) {
+              await dispatch(
+                EditComplianceSuccess(response.data.responseResult, "")
+              );
+              setChecklistTabs(2);
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_02"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Compliance-ID-is-required"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_03"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Invalid-ModifiedBy")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_04"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Compliance-Title-is-required"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_05"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Compliance-Title-cannot-exceed-100-characters")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_06"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Description-is-required")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_07"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Description-cannot-exceed-500-characters")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_08"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Authority-is-required")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_09"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Organization-is-required")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_10"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Compliance-record-not-found"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_11"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Only-the-compliance-creator-can-edit"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_12"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Invalid-or-inactive-Authority"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_13"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Invalid-OrganizationID")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_14"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Invalid-Criticality")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_15"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Due-Date-is-required")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_16"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Due-Date-must-be-a-future-date"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_17"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Status-is-required")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_18"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Invalid-Compliance-Status"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_19"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Reason-required-to-move-On-Hold"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_20"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Compliance-Title-already-exists-for-this-Authority")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_21"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("You-can-add-up-to-5-tags-only"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_22"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Each-tag-cannot-exceed-25-characters"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_23"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Status-change-not-allowed"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_24"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Cancelled-compliance-cannot-be-changed"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_25"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Checklist-and-task-required-for-In-Progress")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_26"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Checklist-and-task-required-for-On-Hold"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_27"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Invalid-Not-Started-status-change"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_28"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("In-Progress-cannot-be-changed-to-Not-Started")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_29"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("In-Progress-cannot-be-changed-to-Reopened")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_30"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Invalid-In-Progress-status-change"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_31"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Reopened-cannot-be-changed-to-Not-Started")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_32"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Reopened-cannot-be-changed-to-In-Progress")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_33"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Reopened-cannot-be-changed-to-Completed"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_34"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Invalid-Reopened-status-change"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_35"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("On-Hold-cannot-be-changed-to-Not-Started")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_36"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("On-Hold-cannot-be-changed-to-Submitted-for-Approval")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_37"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("On-Hold-cannot-be-changed-to-Completed"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_38"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("On-Hold-cannot-be-changed-to-Reopened"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_39"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("On-Hold-can-only-be-changed-to-In-Progress-or-Cancelled")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_40"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Submitted-for-Approval-cannot-be-changed-to-Not-Started")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_41"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Submitted-for-Approval-cannot-be-changed-to-In-Progress")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_42"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Submitted-for-Approval-cannot-be-changed-to-Cancelled")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_43"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Invalid-Submitted-for-Approval-status-change")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_44"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Completed-can-only-be-changed-to-Reopened")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_45"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Checklist-and-task-required"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_46"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Some-checklist-items-are-still-pending"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_47"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(t("Some-tasks-are-still-not-completed"))
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_48"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Compliance-update-failed-or-record-not-found")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_49"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Exception-occurred")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_50"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("Something-went-wrong")));
+            } else {
+              await dispatch(EditComplianceFail(t("Something-went-wrong")));
+            }
+          } else {
+            await dispatch(EditComplianceFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(EditComplianceFail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(EditComplianceFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -2699,4 +3248,5 @@ export {
   ViewComplianceDetailsByViewTypeAPI,
   GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
   GetComplianceAndTaskStatusesAPI,
+  EditComplianceAPI,
 };
