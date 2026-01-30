@@ -1,26 +1,43 @@
 .quarterlySubmittedCard {
   width: 100%;
-  min-height: 25vh;
+  height: 211px; /* fixed height */
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #fff;
+  padding: 16px 20px;
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
+
 .quarterlySubmittedCard:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Make row take full height */
+.fullHeightRow {
+  height: 100%;
+}
+
+/* HEADING */
 .cardHeading {
   font-size: 24px;
   font-weight: 700;
+  font-family: "Montserrat";
   color: #6172d6;
+  margin: 20px 0px;
+}
 
-  max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
-  width: 100%;
-  padding: 0px 20px;
-  margin-top: 12px;
-  text-align: left;
+/* PERCENT TEXT */
+.quarterlyPercentageClass {
+  font-size: 30px;
+  font-weight: 600;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+}
+
+/* COMPLETED TEXT */
+.quarterlyCompletedClass {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5a5a5a;
+  font-family: "Montserrat";
 }

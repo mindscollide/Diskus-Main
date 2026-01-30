@@ -156,9 +156,15 @@ export const ComlianceProvider = ({ children }) => {
   const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
     useState([]);
   const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
-    []
+    [],
   );
   const [searchbox, setsearchbox] = useState(false);
+
+  // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
+  const [viewTypeDashboard, setViewTypeDashboard] = useState(1);
+
+  // 1 = Progress (default) Compliance Dropdown Filter
+  const [complianceDashboardFilter, setComplianceDashboardFilter] = useState(1);
 
   return (
     <ComplianceContext.Provider
@@ -216,6 +222,10 @@ export const ComlianceProvider = ({ children }) => {
         setAllTasksStatusForFilter,
         submitForApprovalModal,
         setSubmitForApprovalModal,
+        viewTypeDashboard,
+        setViewTypeDashboard,
+        complianceDashboardFilter,
+        setComplianceDashboardFilter,
       }}
     >
       {children}
@@ -228,7 +238,7 @@ export const useComplianceContext = () => {
 
   if (!context) {
     throw new Error(
-      "useComplianceContext must be used within a AuthorityProvider"
+      "useComplianceContext must be used within a AuthorityProvider",
     );
   }
   return context;

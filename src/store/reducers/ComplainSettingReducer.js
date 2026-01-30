@@ -36,6 +36,12 @@ const initialState = {
   AddTaskMappingToChecklist: null,
   GetComplianceChecklistsWithTasksByComplianceId: null,
   EditComplianceChecklist: null,
+  GetQuarterlySubmittedDashboard: null,
+  GetUpcomingDealineComplianceDashboard: null,
+  GetComplianceByDashboardData: null,
+  GetComplianceTasksDashboardData: null,
+  GetComplianceReopenDashboardData: null,
+  GetComlianceQuarterlyTasksDashboardData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -720,6 +726,165 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         GetComplianceAndTaskStatuses: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // Get Quarterly Submitted Compliance Dashboard
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterlySubmittedDashboard: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterlySubmittedDashboard: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Dashboard Upcoming Deadline API
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetUpcomingDealineComplianceDashboard: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetUpcomingDealineComplianceDashboard: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance By Dashboard API
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceByDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceByDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Tasks Dashboard API
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceTasksDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceTasksDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Reopen Dashboard API
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceReopenDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceReopenDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Quarterly Tasks Dashboard API
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComlianceQuarterlyTasksDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComlianceQuarterlyTasksDashboardData: null,
         ResponseMessage: action.message,
         severity: "error",
       };

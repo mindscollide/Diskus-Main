@@ -8283,3 +8283,12 @@ td.ant-table-column-sort {
   transition: all 0.3s cubic-bezier(0.78, 0.14, 0.15, 0.86);
   content: " ";
 }
+
+/* If you want to target specific progress bars with a class */
+.complianceProgressBarColor .ant-progress-bg {
+  background-color: #55ce5c !important;
+}
+
+.complianceProgressBarColor .ant-progress-circle-path {
+  stroke: #55ce5c !important;
+}
