@@ -110,7 +110,17 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 1
+              ? true
+              : false,
+          ProposedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 2
+              ? true
+              : false,
+        };
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
@@ -121,7 +131,17 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: 1,
             Length: 50,
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 1
+              ? true
+              : false,
+          ProposedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 2
+              ? true
+              : false,
+        };
           };
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
@@ -185,7 +205,16 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+              localStorage.getItem("MeetingCurrentView") !== null &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              localStorage.getItem("MeetingCurrentView") !== null &&
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
@@ -196,7 +225,17 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: 1,
             Length: 50,
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 1
+              ? true
+              : false,
+          ProposedMeetings:
+            localStorage.getItem("MeetingCurrentView") !== null &&
+            Number(localStorage.getItem("MeetingCurrentView")) === 2
+              ? true
+              : false,
+        };
           };
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
@@ -225,8 +264,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Any-unsaved-changes-will-be")}
                   </span>
@@ -237,8 +275,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center"
-                >
+                  className='d-flex justify-content-center'>
                   <span className={styles["UnsaveheadingFileUpload"]}>
                     {t("Lost-continue")}
                   </span>
@@ -253,8 +290,7 @@ const CancelButtonModal = () => {
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex justify-content-center gap-2"
-                >
+                  className='d-flex justify-content-center gap-2'>
                   <Button
                     text={t("No")}
                     className={styles["Yes_unsave_File_Upload"]}

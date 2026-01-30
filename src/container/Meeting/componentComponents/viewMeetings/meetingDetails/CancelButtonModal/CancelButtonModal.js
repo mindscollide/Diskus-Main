@@ -43,7 +43,15 @@ const CancelButtonModal = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     dispatch(cleareAllState());
     setEditorRole({ status: null, role: null });

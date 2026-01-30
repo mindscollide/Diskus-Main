@@ -29,3 +29,21 @@
   width: 100%;
   height: 3px;
 }
+.status-color-upcoming {
+  background-color: #f68732 !important;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.status-color-end {
+  background-color: #6172d6 !important;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.status-color-active {
+  background-color: #81DB86 !important;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}

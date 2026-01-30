@@ -18,12 +18,14 @@ export const MeetingContext = createContext();
 export const MeetingProvider = ({ children }) => {
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData,
+    (state) => state.settingReducer.UserProfileData
   );
   const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
+
+  const [editFlag, setEditFlag] = useState(false);
 
   // State for managing confirmation modals
   const [cancelConfirmationModal, setCancelConfirmationModal] = useState(false);
@@ -63,6 +65,7 @@ export const MeetingProvider = ({ children }) => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   // State for managing the edit advanced meeting modal
   const [isEditMeeting, setEditMeeting] = useState(false);
+  const [currentMeetingID, setCurrentMeetingID] = useState(0);
 
   // State for managing meeting tabs and their visibility
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -191,7 +194,7 @@ export const MeetingProvider = ({ children }) => {
   const [groupVideoCallAccepted, setGroupVideoCallAccepted] = useState([]);
   const [groupCallParticipantList, setGroupCallParticipantList] = useState([]);
   const [unansweredCallParticipant, setUnansweredCallParticipant] = useState(
-    [],
+    []
   );
   const [inCallParticipantsList, setInCallParticipantsList] = useState([]);
 
@@ -234,7 +237,7 @@ export const MeetingProvider = ({ children }) => {
       if (UserProfileData !== null && UserProfileData !== undefined) {
         // Set the agenda update state based on user profile data
         setIsAgendaUpdateWhenMeetingActive(
-          UserProfileData?.emailWhenActiveMeetingAgendaUpdated,
+          UserProfileData?.emailWhenActiveMeetingAgendaUpdated
         );
       } else {
         // Default to true if user profile data is not available
@@ -468,6 +471,10 @@ export const MeetingProvider = ({ children }) => {
     stopApiCalled,
     setStopApiCalled,
     stopApiCalledRef,
+    currentMeetingID,
+    setCurrentMeetingID,
+    editFlag,
+    setEditFlag,
   };
 
   // Provide the state data to the context

@@ -112,7 +112,15 @@ const AgendaContributers = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -167,9 +175,9 @@ const AgendaContributers = () => {
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               );
             } else if (record.attendeeAvailability === 2) {
@@ -177,9 +185,9 @@ const AgendaContributers = () => {
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               );
             } else if (record.attendeeAvailability === 3) {
@@ -187,9 +195,9 @@ const AgendaContributers = () => {
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               );
             } else if (record.attendeeAvailability === 4) {
@@ -197,9 +205,9 @@ const AgendaContributers = () => {
                 <img
                   draggable={false}
                   src={TentativelyAccepted}
-                  height='30px'
-                  width='30px'
-                  alt=''
+                  height="30px"
+                  width="30px"
+                  alt=""
                 />
               );
             }
@@ -219,13 +227,14 @@ const AgendaContributers = () => {
                     lg={7}
                     md={7}
                     sm={7}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -237,13 +246,14 @@ const AgendaContributers = () => {
                     lg={7}
                     md={7}
                     sm={7}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -289,13 +299,14 @@ const AgendaContributers = () => {
                     lg={7}
                     md={7}
                     sm={7}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <img
                       draggable={false}
                       src={greenMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -307,13 +318,14 @@ const AgendaContributers = () => {
                     lg={7}
                     md={7}
                     sm={7}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <img
                       draggable={false}
                       src={redMailIcon}
-                      height='30px'
-                      width='30px'
-                      alt=''
+                      height="30px"
+                      width="30px"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -346,7 +358,7 @@ const AgendaContributers = () => {
       <section>
         <Row>
           <Col lg={12} md={12} sm={12} className={styles["FixedHeight"]}>
-            <Row className='mt-2'>
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <Table
                   column={columnsData}
@@ -360,13 +372,14 @@ const AgendaContributers = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <img
                               draggable={false}
                               src={emptyContributorState}
-                              width='274.05px'
-                              alt=''
-                              height='230.96px'
+                              width="274.05px"
+                              alt=""
+                              height="230.96px"
                             />
                           </Col>
                         </Row>
@@ -375,7 +388,8 @@ const AgendaContributers = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <span className={styles["Empty_state_heading"]}>
                               {t("No-agenda-contributor")}
                             </span>
@@ -386,7 +400,8 @@ const AgendaContributers = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center'>
+                            className="d-flex justify-content-center"
+                          >
                             <span className={styles["Empty_state_Subheading"]}>
                               {t("There-are-no-agenda-contributors")}
                             </span>
@@ -395,7 +410,7 @@ const AgendaContributers = () => {
                       </>
                     ),
                   }}
-                  className='Polling_table'
+                  className="Polling_table"
                   rows={rowsData}
                 />
               </Col>

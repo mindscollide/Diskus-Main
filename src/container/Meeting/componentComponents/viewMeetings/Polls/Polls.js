@@ -83,37 +83,37 @@ const Polls = () => {
   const { viewVotes, setviewVotes } = usePollsContext();
 
   const getPollsMeetingID = useSelector(
-    (state) => state.NewMeetingreducer.getPollsMeetingID
+    (state) => state.NewMeetingreducer.getPollsMeetingID,
   );
   const setPollIdForCastVote = useSelector(
-    (state) => state.PollsReducer.setPollIdForCastVote
+    (state) => state.PollsReducer.setPollIdForCastVote,
   );
 
   console.log(setPollIdForCastVote, "setPollIdForCastVotesetPollIdForCastVote");
   const ResponseMessageMeeting = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
+    (state) => state.NewMeetingreducer.ResponseMessage,
   );
   const cancelPolls = useSelector(
-    (state) => state.NewMeetingreducer.cancelPolls
+    (state) => state.NewMeetingreducer.cancelPolls,
   );
   const deletPollsMeeting = useSelector(
-    (state) => state.NewMeetingreducer.deletPollsMeeting
+    (state) => state.NewMeetingreducer.deletPollsMeeting,
   );
   const newPollMeeting = useSelector(
-    (state) => state.PollsReducer.newPollMeeting
+    (state) => state.PollsReducer.newPollMeeting,
   );
   const pollingSocket = useSelector(
-    (state) => state.PollsReducer.pollingSocket
+    (state) => state.PollsReducer.pollingSocket,
   );
   const newPollDelete = useSelector(
-    (state) => state.PollsReducer.newPollDelete
+    (state) => state.PollsReducer.newPollDelete,
   );
   const ResponseMessagePoll = useSelector(
-    (state) => state.PollsReducer.ResponseMessage
+    (state) => state.PollsReducer.ResponseMessage,
   );
 
   const AccessDeniedGlobalState = useSelector(
-    (state) => state.PollsReducer.AccessDeniedPolls
+    (state) => state.PollsReducer.AccessDeniedPolls,
   );
   console.log(AccessDeniedGlobalState, "AccessDeniedGlobalState");
   const { setEditorRole } = useContext(MeetingContext);
@@ -239,8 +239,8 @@ const Polls = () => {
           setEditPolls,
           setvotePolls,
           setUnPublished,
-          setViewPublishedPoll
-        )
+          setViewPublishedPoll,
+        ),
       );
     } else if (record.pollStatus.pollStatusId === 2) {
       // Poll Published
@@ -253,8 +253,8 @@ const Polls = () => {
           setEditPolls,
           setvotePolls,
           setUnPublished,
-          setViewPublishedPoll
-        )
+          setViewPublishedPoll,
+        ),
       );
     } else if (record.pollStatus.pollStatusId === 3) {
       // Expired Poll
@@ -269,8 +269,8 @@ const Polls = () => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       } else {
         // If User is just a Participant then modal should open like Unpublished Poll
@@ -283,8 +283,8 @@ const Polls = () => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       }
     }
@@ -311,12 +311,12 @@ const Polls = () => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       }
       let NotificationClickMeetingID = localStorage.getItem(
-        "NotificationAdvanceMeetingID"
+        "NotificationAdvanceMeetingID",
       );
       console.log("Coming here");
       let Data = {
@@ -407,7 +407,7 @@ const Polls = () => {
         let updatedRows = [...pollsRows];
 
         const findIndex = updatedRows.findIndex(
-          (rowData) => rowData?.pollID === polls?.pollID
+          (rowData) => rowData?.pollID === polls?.pollID,
         );
 
         if (findIndex !== -1) {
@@ -434,7 +434,7 @@ const Polls = () => {
 
         setPollsRows((pollingDataDelete) => {
           return pollingDataDelete.filter(
-            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID)
+            (newData2) => Number(newData2.pollID) !== Number(polls?.pollID),
           );
         });
         dispatch(deletePollsMQTT(null));
@@ -458,8 +458,8 @@ const Polls = () => {
         setEditPolls,
         setvotePolls,
         setUnPublished,
-        setViewPublishedPoll
-      )
+        setViewPublishedPoll,
+      ),
     );
   };
 
@@ -477,8 +477,8 @@ const Polls = () => {
         setEditPolls,
         setvotePolls,
         setUnPublished,
-        setViewPublishedPoll
-      )
+        setViewPublishedPoll,
+      ),
     );
   };
 
@@ -488,7 +488,7 @@ const Polls = () => {
       PollID: record.pollID,
     };
     dispatch(
-      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll)
+      viewVotesApi(navigate, data, t, 1, setviewVotes, setViewPublishedPoll),
     );
   };
 
@@ -509,8 +509,8 @@ const Polls = () => {
             setEditPolls,
             setvotePolls,
             setUnPublished,
-            setViewPublishedPoll
-          )
+            setViewPublishedPoll,
+          ),
         );
       }
     } catch (error) {
@@ -539,7 +539,8 @@ const Polls = () => {
           return (
             <span
               className={`${styles["DateClass"]} ${"text-truncate"}`}
-              onClick={() => voteCastModalBeforeDueDateOnTitle(record)}>
+              onClick={() => voteCastModalBeforeDueDateOnTitle(record)}
+            >
               {text}
             </span>
           );
@@ -547,7 +548,8 @@ const Polls = () => {
           return (
             <span
               className={`${styles["DateClass"]} ${"text-truncate"}`}
-              onClick={() => handleClickTitle(record)}>
+              onClick={() => handleClickTitle(record)}
+            >
               {text}
             </span>
           );
@@ -576,18 +578,18 @@ const Polls = () => {
       ],
       defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
       filterIcon: (filtered) => (
-        <ChevronDown className='filter-chevron-icon-todolist' />
+        <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) =>
         record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
         console.log(record, "recordrecord");
         if (record.pollStatus?.pollStatusId === 2) {
-          return <span className='text-success'>{t("Published")}</span>;
+          return <span className="text-success">{t("Published")}</span>;
         } else if (record.pollStatus?.pollStatusId === 1) {
-          return <span className='text-success'>{t("Unpublished")}</span>;
+          return <span className="text-success">{t("Unpublished")}</span>;
         } else if (record.pollStatus?.pollStatusId === 3) {
-          return <span className='text-success'>{t("Expired")}</span>;
+          return <span className="text-success">{t("Expired")}</span>;
         }
       },
     },
@@ -600,12 +602,12 @@ const Polls = () => {
         new Date(
           a.dueDate.slice(0, 4),
           a.dueDate.slice(4, 6) - 1,
-          a.dueDate.slice(6, 8)
+          a.dueDate.slice(6, 8),
         ) -
         new Date(
           b.dueDate.slice(0, 4),
           b.dueDate.slice(4, 6) - 1,
-          b.dueDate.slice(6, 8)
+          b.dueDate.slice(6, 8),
         ),
       sortDirections: ["ascend", "descend"],
       render: (text, record) => {
@@ -620,7 +622,7 @@ const Polls = () => {
       width: "15%",
       sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
       render: (text, record) => (
-        <span className='text-truncate d-block'>{text}</span>
+        <span className="text-truncate d-block">{text}</span>
       ),
     },
     {
@@ -638,7 +640,7 @@ const Polls = () => {
         console.log(
           currentDate,
           convertIntoGmt,
-          "convertIntoGmtconvertIntoGmtconvertIntoGmt"
+          "convertIntoGmtconvertIntoGmtconvertIntoGmt",
         );
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
@@ -704,14 +706,14 @@ const Polls = () => {
                       {!record.wasPollPublished ? (
                         <>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topRight' title={t("Edit")}>
+                            <Tooltip placement="topRight" title={t("Edit")}>
                               <img
                                 src={EditIcon}
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                alt=''
-                                draggable='false'
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                alt=""
+                                draggable="false"
                                 onClick={() => handleEditMeetingPoll(record)}
                               />
                             </Tooltip>
@@ -722,14 +724,14 @@ const Polls = () => {
                         <>
                           <Col sm={12} md={5} lg={5}></Col>
                           <Col sm={12} md={5} lg={5}>
-                            <Tooltip placement='topLeft' title={t("Delete")}>
+                            <Tooltip placement="topLeft" title={t("Delete")}>
                               <img
                                 src={BinIcon}
-                                alt=''
-                                className='cursor-pointer'
-                                width='21.59px'
-                                height='21.59px'
-                                draggable='false'
+                                alt=""
+                                className="cursor-pointer"
+                                width="21.59px"
+                                height="21.59px"
+                                draggable="false"
                                 onClick={() => handleDeletePoll(record)}
                               />
                             </Tooltip>
@@ -740,27 +742,27 @@ const Polls = () => {
                   ) : (
                     <>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topRight' title={t("Edit")}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
                           <img
                             src={EditIcon}
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            alt=''
-                            draggable='false'
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            alt=""
+                            draggable="false"
                             onClick={() => handleEditMeetingPoll(record)}
                           />
                         </Tooltip>
                       </Col>
                       <Col sm={12} md={5} lg={5}>
-                        <Tooltip placement='topLeft' title={t("Delete")}>
+                        <Tooltip placement="topLeft" title={t("Delete")}>
                           <img
                             src={BinIcon}
-                            alt=''
-                            className='cursor-pointer'
-                            width='21.59px'
-                            height='21.59px'
-                            draggable='false'
+                            alt=""
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            draggable="false"
                             onClick={() => handleDeletePoll(record)}
                           />
                         </Tooltip>
@@ -793,7 +795,15 @@ const Polls = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -874,15 +884,16 @@ const Polls = () => {
             (editorRole.role === "Organizer" ||
               editorRole.role === "Agenda Contributor" ||
               editorRole?.role === "Participant") ? (
-              <Row className='mt-4'>
+              <Row className="mt-4">
                 <Col
                   lg={12}
                   md={12}
                   sm={12}
-                  className='d-flex justify-content-end '>
+                  className="d-flex justify-content-end "
+                >
                   <Button
                     text={t("Create-polls")}
-                    icon={<img draggable={false} src={addmore} alt='' />}
+                    icon={<img draggable={false} src={addmore} alt="" />}
                     className={styles["Create_polls_Button"]}
                     onClick={handleCreatepolls}
                   />
@@ -900,9 +911,9 @@ const Polls = () => {
                           <Table
                             column={PollsColoumn}
                             rows={pollsRows}
-                            scroll={{ y: "40vh", }}
+                            scroll={{ y: "40vh" }}
                             pagination={false}
-                            className='Polling_table'
+                            className="Polling_table"
                           />
                         </Col>
                       </Row>
@@ -910,27 +921,29 @@ const Polls = () => {
                   </>
                 ) : (
                   <>
-                    <Row className='mt-3'>
+                    <Row className="mt-3">
                       <Col
                         lg={12}
                         ms={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <img
                           draggable={false}
                           src={emtystate}
-                          height='230px'
-                          width='293.93px'
-                          alt=''
+                          height="230px"
+                          width="293.93px"
+                          alt=""
                         />
                       </Col>
                     </Row>
-                    <Row className='mt-2'>
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <span className={styles["EmptyState_heading"]}>
                           {t("No-polls")}
                         </span>
@@ -941,10 +954,11 @@ const Polls = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className='d-flex justify-content-center'>
+                        className="d-flex justify-content-center"
+                      >
                         <span className={styles["EmptyState_subHeading"]}>
                           {t(
-                            "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                            "Be-the-first-to-create-a-poll-and-spark-the-conversation",
                           )}
                         </span>
                       </Col>
@@ -959,7 +973,8 @@ const Polls = () => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className='pagination-groups-table d-flex justify-content-center my-3'>
+                  className="pagination-groups-table d-flex justify-content-center my-3"
+                >
                   <CustomPagination
                     pageSizeOptionsValues={["30", "50", "100", "200"]}
                     current={pageNumber}

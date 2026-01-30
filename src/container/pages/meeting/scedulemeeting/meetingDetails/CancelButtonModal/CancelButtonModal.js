@@ -104,6 +104,8 @@ const CancelButtonModal = ({
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 3 ? true : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));

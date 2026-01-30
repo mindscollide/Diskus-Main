@@ -646,7 +646,15 @@ const SaveMeetingDetialsNewApiFunction = (
                     Length:
                       meetingpageRow !== null ? Number(meetingpageRow) : 30,
                     PublishedMeetings:
-                      currentView && Number(currentView) === 1 ? true : false,
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 1
+                        ? true
+                        : false,
+                    ProposedMeetings:
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 2
+                        ? true
+                        : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -2861,7 +2869,16 @@ const setProposedMeetingDateApiFunc = (
                       ? Number(meetingPageCurrent)
                       : 1,
                   Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                  PublishedMeetings: false,
+                  PublishedMeetings:
+                    localStorage.getItem("MeetingCurrentView") &&
+                    Number(localStorage.getItem("MeetingCurrentView")) === 1
+                      ? true
+                      : false,
+                  ProposedMeetings:
+                    localStorage.getItem("MeetingCurrentView") &&
+                    Number(localStorage.getItem("MeetingCurrentView")) === 2
+                      ? true
+                      : false,
                 };
                 console.log("chek search meeting");
                 dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -2994,7 +3011,16 @@ const SetMeetingResponseApiFunc = (
                 PageNumber:
                   meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
                 Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-                PublishedMeetings: false,
+                PublishedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
               };
               console.log("chek search meeting");
               dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -6134,7 +6160,16 @@ const setMeetingByGroupIDApi = (navigate, t, Data) => {
                 UserID: Number(currentUserId),
                 PageNumber: 1,
                 Length: 50,
-                PublishedMeetings: true,
+                PublishedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
               };
               dispatch(getMeetingbyGroupApi(navigate, t, searchData));
             } else if (
@@ -6306,7 +6341,16 @@ const setMeetingbyCommitteeIDApi = (navigate, t, Data) => {
                 UserID: Number(currentUserId),
                 PageNumber: 1,
                 Length: 50,
-                PublishedMeetings: true,
+                PublishedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
               };
               dispatch(getMeetingByCommitteeIDApi(navigate, t, searchData));
             } else if (
@@ -7689,7 +7733,15 @@ const endMeetingStatusApi = (
                     Length:
                       meetingpageRow !== null ? Number(meetingpageRow) : 50,
                     PublishedMeetings:
-                      currentView && Number(currentView) === 1 ? true : false,
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 1
+                        ? true
+                        : false,
+                    ProposedMeetings:
+                      localStorage.getItem("MeetingCurrentView") &&
+                      Number(localStorage.getItem("MeetingCurrentView")) === 2
+                        ? true
+                        : false,
                   };
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
                 } else {
@@ -7797,7 +7849,15 @@ const endMeetingStatusApi = (
                   meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
                 Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
                 PublishedMeetings:
-                  currentView && Number(currentView) === 1 ? true : false,
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 1
+                    ? true
+                    : false,
+                ProposedMeetings:
+                  localStorage.getItem("MeetingCurrentView") &&
+                  Number(localStorage.getItem("MeetingCurrentView")) === 2
+                    ? true
+                    : false,
               };
               await dispatch(searchNewUserMeeting(navigate, searchData, t));
               // dispatch(
@@ -8191,7 +8251,15 @@ const LeaveCurrentMeeting = (
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
                       PublishedMeetings:
-                        currentView && Number(currentView) === 1 ? true : false,
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8258,7 +8326,15 @@ const LeaveCurrentMeeting = (
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
                       PublishedMeetings:
-                        currentView && Number(currentView) === 1 ? true : false,
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8455,7 +8531,15 @@ const newLeaveCurrentMeeting = (
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
                       PublishedMeetings:
-                        currentView && Number(currentView) === 1 ? true : false,
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(
@@ -8522,7 +8606,15 @@ const newLeaveCurrentMeeting = (
                       PageNumber: Number(meetingPageCurrent),
                       Length: Number(meetingpageRow),
                       PublishedMeetings:
-                        currentView && Number(currentView) === 1 ? true : false,
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 1
+                          ? true
+                          : false,
+                      ProposedMeetings:
+                        localStorage.getItem("MeetingCurrentView") &&
+                        Number(localStorage.getItem("MeetingCurrentView")) === 2
+                          ? true
+                          : false,
                     };
                     console.log("chek search meeting");
                     await dispatch(

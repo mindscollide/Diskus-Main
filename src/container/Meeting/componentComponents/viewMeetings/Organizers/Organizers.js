@@ -140,8 +140,9 @@ const Organizers = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex gap-3 justify-content-center align-items-center'>
-              <label className='column-boldness'>
+              className="d-flex gap-3 justify-content-center align-items-center"
+            >
+              <label className="column-boldness">
                 {text === true ? t("Primary") : t("Secondary")}
               </label>
             </Col>
@@ -160,9 +161,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={AwaitingResponse}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 2) {
@@ -170,9 +171,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={thumbsup}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 3) {
@@ -180,9 +181,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={thumbsdown}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           } else if (record.attendeeAvailability === 4) {
@@ -190,9 +191,9 @@ const Organizers = () => {
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height='30px'
-                width='30px'
-                alt=''
+                height="30px"
+                width="30px"
+                alt=""
               />
             );
           }
@@ -212,13 +213,14 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -230,13 +232,14 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -289,8 +292,9 @@ const Organizers = () => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex gap-3 align-items-center'>
-              <label className='column-boldness w-100'>
+              className="d-flex gap-3 align-items-center"
+            >
+              <label className="column-boldness w-100">
                 {text === true ? t("Primary") : t("Non-primary")}
               </label>
             </Col>
@@ -310,13 +314,14 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={greenMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -328,13 +333,14 @@ const Organizers = () => {
                   lg={7}
                   md={7}
                   sm={7}
-                  className='d-flex justify-content-center'>
+                  className="d-flex justify-content-center"
+                >
                   <img
                     draggable={false}
                     src={redMailIcon}
-                    height='30px'
-                    width='30px'
-                    alt=''
+                    height="30px"
+                    width="30px"
+                    alt=""
                   />
                 </Col>
               </Row>
@@ -361,7 +367,15 @@ const Organizers = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -394,7 +408,7 @@ const Organizers = () => {
           disabledRSVP: false,
           isDeletable: false,
           NotificationMessage: "",
-        })
+        }),
       );
 
       setRowsData(updatedMeetingOrganizers);
@@ -410,7 +424,7 @@ const Organizers = () => {
       const updatedRowsData = rowsData.map((organizer) => {
         const matchingOrganizer =
           MeetingOrganizersReducer.MeetingOrganizersData.find(
-            (user) => user.userID === organizer.userID
+            (user) => user.userID === organizer.userID,
           );
 
         if (matchingOrganizer) {
@@ -469,7 +483,7 @@ const Organizers = () => {
 
     MeetingOrganizersReducer.NotificationUpdateData.forEach((data) => {
       const index = updatedRowsData.findIndex(
-        (rowData) => rowData.userID === data.userID
+        (rowData) => rowData.userID === data.userID,
       );
 
       if (index !== -1) {
@@ -510,7 +524,7 @@ const Organizers = () => {
                 x: "hidden",
               }}
               pagination={false}
-              className='Polling_table'
+              className="Polling_table"
               rows={rowsData}
             />
           </Col>

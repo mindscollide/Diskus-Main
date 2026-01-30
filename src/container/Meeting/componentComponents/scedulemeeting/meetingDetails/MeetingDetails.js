@@ -55,27 +55,23 @@ import {
   incrementDateforPropsedMeeting,
 } from "../../../../../commen/functions/time_formatter";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useMeetingContext } from "../../../../../context/MeetingContext";
 
-const MeetingDetails = ({
-  setorganizers,
-  setmeetingDetails,
-  setSceduleMeeting,
-  setCurrentMeetingID,
-  currentMeeting,
-  setEditMeeting,
-  isEditMeeting,
-  setDataroomMapFolderId,
-}) => {
+const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
+    setSceduleMeeting,
     setGoBackCancelModal,
     setCurrentMeetingStatus,
     currentMeetingStatus,
     editorRole,
-  } = useContext(MeetingContext);
+    setCurrentMeetingID,
+    currentMeeting,
+    isEditMeeting,
+    setDataroomMapFolderId,
+  } = useMeetingContext();
 
   const nextConfirmModal = useSelector(
     (state) => state.NewMeetingreducer.nextConfirmModal
@@ -1922,12 +1918,7 @@ const MeetingDetails = ({
         </Col>
       </Row>
 
-      <CancelButtonModal
-        setSceduleMeeting={setSceduleMeeting}
-        setMeetingDetails={setMeetingDetails}
-        setRows={setRows}
-        flag={true}
-      />
+      <CancelButtonModal setmeetingDetails={setmeetingDetails} setRows={setRows} flag={true} />
       {nextConfirmModal && (
         <NextModal
           setmeetingDetails={setmeetingDetails}

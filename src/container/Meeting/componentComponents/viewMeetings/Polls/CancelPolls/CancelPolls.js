@@ -18,7 +18,7 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cancelPolls = useSelector(
-    (state) => state.NewMeetingreducer.cancelPolls
+    (state) => state.NewMeetingreducer.cancelPolls,
   );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -42,7 +42,15 @@ const CancelPolls = ({ setViewAdvanceMeetingModal }) => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));

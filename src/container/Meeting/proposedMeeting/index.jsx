@@ -26,7 +26,8 @@ import rspvGreenIcon from "../../../assets/images/rspvGreen.svg";
 
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 import { StatusValue } from "../../pages/meeting/statusJson";
-import styles from "./proposedMeeting.module.css";
+import styles from "../Meeting.module.css";
+
 import "./../Meetings.css";
 import CustomButton from "../../../components/elements/button/Button";
 import moment from "moment";
@@ -39,7 +40,12 @@ const userID = localStorage.getItem("userID");
 const currentLanguage = localStorage.getItem("i18nextLng");
 
 const ProposedMeeting = () => {
-  const { publishMeetingData, isMeetingTypeFilter } = useNewMeetingContext();
+  const {
+    meetingsRecords,
+    totalMeetingRecords,
+    setMeetingsRecords,
+    isMeetingTypeFilter,
+  } = useNewMeetingContext();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -105,13 +111,13 @@ const ProposedMeeting = () => {
     setSelectedStatusValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
+        : [...prevValues, String(filterValue)]
     );
   };
 
   const handleApplyStatusFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedStatusValues.includes(item.status?.toString()),
+      selectedStatusValues.includes(item.status?.toString())
     );
     setRows(filteredData);
     setStatusFilterVisible(false);
@@ -132,13 +138,13 @@ const ProposedMeeting = () => {
     setSelectedMeetingTypeValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
+        : [...prevValues, String(filterValue)]
     );
   };
 
   const handleApplyMeetingTypeFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
     );
     setRows(filteredData);
     setMeetingTypeFilterVisible(false);
@@ -160,15 +166,14 @@ const ProposedMeeting = () => {
       {statusFilters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleStatusMenuClick(filter.value)}
-        >
+          onClick={() => handleStatusMenuClick(filter.value)}>
           <Checkbox checked={selectedStatusValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-1">
+      <div className='d-flex align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -190,15 +195,14 @@ const ProposedMeeting = () => {
       {meetingTypeFilters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}
-        >
+          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
           <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-1">
+      <div className='d-flex align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -225,12 +229,12 @@ const ProposedMeeting = () => {
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt="" width="16" height="16" />
+          <img src={EditIcon} alt='' width='16' height='16' />
           <span>{t("Edit-meeting")}</span>
         </div>
 
         <div className={styles.morebtn} onClick={handleDelete}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Delete-meeting")}</span>
         </div>
       </div>
@@ -242,12 +246,12 @@ const ProposedMeeting = () => {
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className='d-flex align-items-center gap-2'>
               <span>Meeting Title</span>
               {meetingTitleSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
+                <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
+                <img src={SortIconDescend} alt='SortIconDescend' />
               )}
             </div>
           </>
@@ -265,12 +269,12 @@ const ProposedMeeting = () => {
       {
         title: (
           <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>Deadline</span>
               {meetingDateSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
               )}
             </div>
           </>
@@ -282,14 +286,14 @@ const ProposedMeeting = () => {
 
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             Meeting Type
           </span>
         ),
@@ -306,7 +310,7 @@ const ProposedMeeting = () => {
         filterResetToDefaultFilteredValue: true,
         filterIcon: (filtered) => (
           <ChevronDown
-            className="filter-chevron-icon-todolist"
+            className='filter-chevron-icon-todolist'
             onClick={handleClickMeetingTypeChevron}
           />
         ),
@@ -314,20 +318,20 @@ const ProposedMeeting = () => {
         render: (text, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter?.find(
-            (data) => meetingType === Number(data.value),
+            (data) => meetingType === Number(data.value)
           );
 
           return record.isQuickMeeting && meetingType === 1
             ? t("Quick-meeting")
             : t(matchedFilter)
-              ? t(matchedFilter.text)
-              : "";
+            ? t(matchedFilter.text)
+            : "";
         },
       },
       {
         title: (
           <>
-            <span className="d-flex justify-content-center align-items-center">
+            <span className='d-flex justify-content-center align-items-center'>
               Vote
             </span>
           </>
@@ -352,10 +356,10 @@ const ProposedMeeting = () => {
                   {" "}
                   <img
                     src={rspvGreenIcon}
-                    height="17.06px"
-                    width="17.06px"
-                    alt=""
-                    draggable="false"
+                    height='17.06px'
+                    width='17.06px'
+                    alt=''
+                    draggable='false'
                   />
                 </>
               )
@@ -367,7 +371,7 @@ const ProposedMeeting = () => {
       },
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             Poll
           </span>
         ),
@@ -389,10 +393,10 @@ const ProposedMeeting = () => {
                 {" "}
                 <img
                   src={rspvGreenIcon}
-                  height="17.06px"
-                  width="17.06px"
-                  alt=""
-                  draggable="false"
+                  height='17.06px'
+                  width='17.06px'
+                  alt=''
+                  draggable='false'
                 />
               </>
             ) : (
@@ -402,9 +406,9 @@ const ProposedMeeting = () => {
                   {currentLanguage === "en"
                     ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                     : `${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectorsVoted,
+                        record.meetingPoll?.totalNoOfDirectorsVoted
                       )} / ${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectors,
+                        record.meetingPoll?.totalNoOfDirectors
                       )}`}
                 </span>
               </>
@@ -427,11 +431,11 @@ const ProposedMeeting = () => {
           let isPrimaryOrganizer = record.isPrimaryOrganizer;
 
           return (
-            <div className="d-flex justify-content-center align-items-center gap-2">
+            <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <CustomButton
                   className={styles.MoreMeetingButton}
-                  text="View Poll"
+                  text='View Poll'
                 />
               </div>
             </div>
@@ -451,18 +455,17 @@ const ProposedMeeting = () => {
           let isPrimaryOrganizer = record.isPrimaryOrganizer;
 
           return (
-            <div className="d-flex justify-content-center align-items-center gap-2">
+            <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <Popover
                   content={moreButtons(record)}
-                  trigger="click"
-                  overlayClassName="MoreButtons_overlay"
+                  trigger='click'
+                  overlayClassName='MoreButtons_overlay'
                   showArrow={false}
-                  placement="bottomRight"
-                >
+                  placement='bottomRight'>
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text="More"
+                    text='More'
                     icon2={<img src={ChevronDownIcon} width={10} />}
                   />
                 </Popover>
@@ -487,10 +490,10 @@ const ProposedMeeting = () => {
     <div>
       <Table
         onChange={handleChangeMeetingTable}
-        className="MeetingTable"
+        className='MeetingTable'
         column={columns}
         size={"small"}
-        rows={publishMeetingData}
+        rows={meetingsRecords}
         sticky={true}
         pagination={false}
         scroll={{

@@ -56,23 +56,22 @@ const MeetingMaterial = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const {editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole } = useContext(MeetingContext);
   const meetingMaterialData = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialData
+    (state) => state.NewMeetingreducer.meetingMaterialData,
   );
   const isPublishedGlobal = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialIsPublished
+    (state) => state.NewMeetingreducer.meetingMaterialIsPublished,
   );
   const Loading = useSelector((state) => state.NewMeetingreducer.Loading);
   const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial,
   );
   const nextConfirmModal = useSelector(
-    (state) => state.NewMeetingreducer.nextConfirmModal
+    (state) => state.NewMeetingreducer.nextConfirmModal,
   );
   const ShowPreviousModal = useSelector(
-    (state) => state.NewMeetingreducer.ShowPreviousModal
+    (state) => state.NewMeetingreducer.ShowPreviousModal,
   );
 
   let currentView = localStorage.getItem("MeetingCurrentView");
@@ -112,10 +111,10 @@ const MeetingMaterial = ({
       const documentDataJson = JSON.stringify(documentData);
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-          documentDataJson
+          documentDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else if (
       editorRole.status === "9" &&
@@ -132,10 +131,10 @@ const MeetingMaterial = ({
       const documentDataJson = JSON.stringify(documentData);
       window.open(
         `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-          documentDataJson
+          documentDataJson,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -154,7 +153,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
       );
     } else if (
       editorRole.status === "9" &&
@@ -165,7 +164,7 @@ const MeetingMaterial = ({
         FileID: Number(record.originalFileName),
       };
       dispatch(
-        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+        DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName),
       );
     }
   };
@@ -192,17 +191,22 @@ const MeetingMaterial = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (
@@ -222,17 +226,22 @@ const MeetingMaterial = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     }
@@ -339,7 +348,15 @@ const MeetingMaterial = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -372,13 +389,13 @@ const MeetingMaterial = ({
         t,
         5,
         Data,
-      setEditorRole,
+        setEditorRole,
         setAdvanceMeetingModalID,
         setDataroomMapFolderId,
         setSceduleMeeting,
         setPublishState,
-        setCalendarViewModal
-      )
+        setCalendarViewModal,
+      ),
     );
   };
 

@@ -53,17 +53,17 @@ const SceduleMeeting = ({
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
   const { editorRole, setEditorRole } = useContext(MeetingContext);
   const [meetingDetails, setmeetingDetails] = useState(
-    editorRole.role === "Agenda Contributor" ? false : true
+    editorRole.role === "Agenda Contributor" ? false : true,
   );
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(
-    editorRole.role === "Agenda Contributor" ? true : false
+    editorRole.role === "Agenda Contributor" ? true : false,
   );
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
@@ -127,8 +127,8 @@ const SceduleMeeting = ({
           setDataroomMapFolderId,
           0,
           1,
-          false
-        )
+          false,
+        ),
       );
       setmeetingDetails(true);
       setorganizers(false);
@@ -420,7 +420,13 @@ const SceduleMeeting = ({
               meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
             Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
             PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
@@ -462,7 +468,13 @@ const SceduleMeeting = ({
               meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
             Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
             PublishedMeetings:
-              currentView && Number(currentView) === 1 ? true : false,
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           localStorage.removeItem("folderDataRoomMeeting");
 

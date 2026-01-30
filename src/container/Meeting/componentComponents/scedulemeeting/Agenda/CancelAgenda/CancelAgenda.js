@@ -16,7 +16,7 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cancelAgenda = useSelector(
-    (state) => state.NewMeetingreducer.cancelAgenda
+    (state) => state.NewMeetingreducer.cancelAgenda,
   );
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -37,7 +37,15 @@ const CancelAgenda = ({ setSceduleMeeting }) => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));

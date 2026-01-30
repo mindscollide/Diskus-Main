@@ -7,18 +7,24 @@ export const NewMeetingContext = createContext();
 
 // Create a Provider component
 export const NewMeetingProvider = ({ children }) => {
+  const [createdMeetingInfo, setCreatedMeetingInfo] = useState({
+    meetingId: 0,
+    meetingTitle: "",
+  });
+  const [meetingMapFolderId, setMeetingMapFolderId] = useState(0);
+
   // State for managing meeting data
   const meetingReminderNotification = useSelector(
-    (state) => state.NewMeetingreducer.meetingReminderNotification,
+    (state) => state.NewMeetingreducer.meetingReminderNotification
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
   );
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
+    (state) => state.NewMeetingreducer.searchMeetings
   );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
 
@@ -29,9 +35,10 @@ export const NewMeetingProvider = ({ children }) => {
   const [duplicatedMeetingData, setDuplicatedMeetingData] = useState([]);
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
-  const [publishMeetingTotalRecords, setPublishedMeetingTotalRecords] =
-    useState(0);
-  const [publishMeetingData, setPublishedMeetingData] = useState([]);
+  const [isAdvanceMeetingCreate, setIsAdvanceMeetingCreate] = useState(false);
+  const [isProposedMeetingCreate, setIsProposedMeetingCreate] = useState(false);
+  const [totalMeetingRecords, setTotalMeetingRecords] = useState(0);
+  const [meetingsRecords, setMeetingsRecords] = useState([]);
   const [minutesAgo, setMinutesAgo] = useState(0);
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
@@ -66,10 +73,10 @@ export const NewMeetingProvider = ({ children }) => {
       try {
         const meetingData = meetingReminderNotification.meetingDetails;
         console.log(meetingData, "meetingDetailsmeetingDetails");
-        setPublishedMeetingData((rowsData) => {
+        setMeetingsRecords((rowsData) => {
           // Find the index of the row that matches the condition
           const rowIndex = rowsData.findIndex(
-            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
           );
           console.log(rowIndex, "rowIndexrowIndex");
           // If a matching row is found, create a new array with the updated row
@@ -118,14 +125,14 @@ export const NewMeetingProvider = ({ children }) => {
         getALlMeetingTypes?.meetingTypes
       ) {
         try {
-          setPublishedMeetingTotalRecords(searchMeetings.totalRecords);
+          setTotalMeetingRecords(searchMeetings.totalRecords);
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
           if (Object.keys(searchMeetings.meetings).length > 0) {
             // Create a deep copy of the meetings array
             let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
               ...meeting,
               meetingAgenda: meeting.meetingAgenda.filter(
-                (agenda) => agenda.objMeetingAgenda.canView,
+                (agenda) => agenda.objMeetingAgenda.canView
               ),
             }));
             copyMeetingData.forEach((data) => {
@@ -134,13 +141,13 @@ export const NewMeetingProvider = ({ children }) => {
               });
             });
             console.log("handleViewMeeting", copyMeetingData);
-            setPublishedMeetingData(copyMeetingData);
+            setMeetingsRecords(copyMeetingData);
           }
         } catch (error) {
           console.log(error);
         }
       } else {
-        setPublishedMeetingData([]);
+        setMeetingsRecords([]);
       }
     } catch {}
   }, [searchMeetings, getALlMeetingTypes]);
@@ -189,10 +196,10 @@ export const NewMeetingProvider = ({ children }) => {
     setIsDraftMeetings,
     isProposedMeeting,
     setIsProposedMeeting,
-    publishMeetingTotalRecords,
-    setPublishedMeetingTotalRecords,
-    publishMeetingData,
-    setPublishedMeetingData,
+    totalMeetingRecords,
+    setTotalMeetingRecords,
+    meetingsRecords,
+    setMeetingsRecords,
     isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
@@ -200,6 +207,13 @@ export const NewMeetingProvider = ({ children }) => {
     setQuickMeeting,
     proposedNewMeeting,
     setProposedNewMeeting,
+    isAdvanceMeetingCreate,
+    setIsAdvanceMeetingCreate,
+    meetingMapFolderId,
+    setMeetingMapFolderId,
+    createdMeetingInfo,
+    setCreatedMeetingInfo,
+    isProposedMeetingCreate, setIsProposedMeetingCreate
   };
 
   useEffect(() => {
@@ -210,17 +224,20 @@ export const NewMeetingProvider = ({ children }) => {
       const callMQTT = async () => {
         let meetingData = meetingStatusPublishedMqttData;
         try {
-          const indexToUpdate = publishMeetingData.findIndex(
-            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID),
+          const indexToUpdate = meetingsRecords.findIndex(
+            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
           );
           let newMeetingData = await mqttMeetingData(meetingData, 1);
 
           if (indexToUpdate !== -1) {
-            let updatedRows = [...publishMeetingData];
+            let updatedRows = [...meetingsRecords];
             updatedRows[indexToUpdate] = newMeetingData;
-            setPublishedMeetingData(updatedRows);
+            setTotalMeetingRecords(updatedRows);
           } else {
-            setPublishedMeetingData([newMeetingData, ...publishMeetingData]);
+            setTotalMeetingRecords((prevRecord) => [
+              newMeetingData,
+              ...prevRecord,
+            ]);
           }
         } catch (error) {
           console.log(error, "Meeting Created and Published");
@@ -247,7 +264,7 @@ export const useNewMeetingContext = () => {
   // Throw an error if the hook is used outside of the NewMeetingProvider
   if (!context) {
     throw new Error(
-      "useNewMeetingContext must be used within a NewMeetingProvider",
+      "useNewMeetingContext must be used within a NewMeetingProvider"
     );
   }
 

@@ -1,23 +1,19 @@
-import React, { useContext } from "react";
+import React from "react";
 import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
 import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-import { MeetingContext } from "../../../../../../context/MeetingContext";
+import { useMeetingContext } from "../../../../../../context/MeetingContext";
 import { useNavigate } from "react-router-dom";
-const CancelButtonModal = ({
-  setSceduleMeeting,
-  setMeetingDetails,
-  setRows,
-  flag,
-}) => {
+const CancelButtonModal = ({ setRows, flag, setmeetingDetails }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { goBackCancelModal, setGoBackCancelModal } =
-    useContext(MeetingContext);
+
+  const { goBackCancelModal, setGoBackCancelModal, setSceduleMeeting } =
+    useMeetingContext();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -83,13 +79,19 @@ const CancelButtonModal = ({
           meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
+          Number(localStorage.getItem("MeetingCurrentView")) === 1
+            ? true
+            : false,
+        ProposedMeetings:
+          Number(localStorage.getItem("MeetingCurrentView")) === 2
+            ? true
+            : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
       setSceduleMeeting(false);
-      setMeetingDetails(true);
+      setmeetingDetails(true);
       setRows([]);
       setSceduleMeeting(false);
       localStorage.removeItem("navigateLocation");
@@ -103,13 +105,19 @@ const CancelButtonModal = ({
           meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
+          Number(localStorage.getItem("MeetingCurrentView")) === 1
+            ? true
+            : false,
+        ProposedMeetings:
+          Number(localStorage.getItem("MeetingCurrentView")) === 2
+            ? true
+            : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
       setSceduleMeeting(false);
-      setMeetingDetails(true);
+      setmeetingDetails(true);
       setRows([]);
     }
   };
@@ -131,10 +139,11 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
                   )}
                 </span>
               </Col>
@@ -148,7 +157,8 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center gap-2'>
+                className="d-flex justify-content-center gap-2"
+              >
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

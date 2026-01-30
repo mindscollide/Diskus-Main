@@ -38,15 +38,15 @@ const MeetingMaterialPrev = ({
   const { editorRole } = useMeetingContext();
 
   const meetingMaterialData = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialData
+    (state) => state.NewMeetingreducer.meetingMaterialData,
   );
   const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial,
   );
   // For cancel with no modal Open
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   // row state for meeting Material
@@ -86,17 +86,22 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (
@@ -116,17 +121,22 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (
@@ -143,17 +153,22 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     } else if (editorRole.role === "Participant" && editorRole.status === "9") {
@@ -168,17 +183,22 @@ const MeetingMaterialPrev = ({
         const documentDataJson = JSON.stringify(documentData);
         window.open(
           `/Diskus/documentViewer?pdfData=${encodeURIComponent(
-            documentDataJson
+            documentDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         let data = {
           FileID: Number(record.originalFileName),
         };
         dispatch(
-          DataRoomDownloadFileApiFunc(navigate, data, t, record.displayFileName)
+          DataRoomDownloadFileApiFunc(
+            navigate,
+            data,
+            t,
+            record.displayFileName,
+          ),
         );
       }
     }
@@ -266,10 +286,18 @@ const MeetingMaterialPrev = ({
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
-        console.log("chek search meeting")
-        dispatch(searchNewUserMeeting(navigate, searchData, t));
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
     localStorage.removeItem("folderDataRoomMeeting");
     setViewAdvanceMeetingModal(false);
     dispatch(viewAdvanceMeetingPublishPageFlag(false));

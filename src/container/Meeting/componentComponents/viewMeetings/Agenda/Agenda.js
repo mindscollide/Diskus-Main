@@ -52,32 +52,33 @@ const Agenda = ({}) => {
     setAdvanceMeetingModalID,
   } = useMeetingContext();
   const agendaItemRemoved = useSelector(
-    (state) => state.NewMeetingreducer.agendaItemRemoved
+    (state) => state.NewMeetingreducer.agendaItemRemoved,
   );
   const mainAgendaItemRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mainAgendaItemRemoved
+    (state) => state.NewMeetingreducer.mainAgendaItemRemoved,
   );
   const advancePermissionConfirmation = useSelector(
-    (state) => state.NewMeetingreducer.advancePermissionConfirmation
+    (state) => state.NewMeetingreducer.advancePermissionConfirmation,
   );
   const voteAgendaModal = useSelector(
-    (state) => state.NewMeetingreducer.voteAgendaModal
+    (state) => state.NewMeetingreducer.voteAgendaModal,
   );
   const voteConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.voteConfirmationModal
+    (state) => state.NewMeetingreducer.voteConfirmationModal,
   );
   const importPreviousAgendaModal = useSelector(
-    (state) => state.NewMeetingreducer.importPreviousAgendaModal
+    (state) => state.NewMeetingreducer.importPreviousAgendaModal,
   );
   const cancelAgenda = useSelector(
-    (state) => state.NewMeetingreducer.cancelAgenda
+    (state) => state.NewMeetingreducer.cancelAgenda,
   );
   const GetAdvanceMeetingAgendabyMeetingIDData = useSelector(
-    (state) => state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData
+    (state) =>
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
   );
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const [enableVotingPage, setenableVotingPage] = useState(false);
@@ -121,7 +122,15 @@ const Agenda = ({}) => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -181,7 +190,7 @@ const Agenda = ({}) => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID,
             )
           ) {
             return {
@@ -232,7 +241,7 @@ const Agenda = ({}) => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID,
             )
           ) {
             return {
@@ -302,13 +311,14 @@ const Agenda = ({}) => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-center mt-3'>
+              className="d-flex justify-content-center mt-3"
+            >
               <img
                 draggable={false}
                 src={emptyContributorState}
-                width='274.05px'
-                alt=''
-                height='230.96px'
+                width="274.05px"
+                alt=""
+                height="230.96px"
                 className={styles["Image-Add-Agenda"]}
               />
             </Col>
@@ -318,7 +328,8 @@ const Agenda = ({}) => {
               lg={12}
               md={12}
               sm={12}
-              className='d-flex justify-content-center mt-3'>
+              className="d-flex justify-content-center mt-3"
+            >
               <span className={styles["Empty_state_heading"]}>
                 {t("No-agenda-availabe-to-discuss").toUpperCase()}
               </span>
@@ -335,18 +346,21 @@ const Agenda = ({}) => {
             (editorRole.role === "Agenda Contributor" ||
               editorRole.role === "Participant") ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
                 <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_Agenda"]}>
-                    <Droppable droppableId='board' type='PARENT'>
+                    className={styles["Scroller_Agenda"]}
+                  >
+                    <Droppable droppableId="board" type="PARENT">
                       {(provided) => (
                         <div
                           ref={provided.innerRef}
-                          {...provided.droppableProps}>
+                          {...provided.droppableProps}
+                        >
                           {rows.length > 0 ? (
                             rows.map((data, index) => {
                               return (
@@ -381,13 +395,14 @@ const Agenda = ({}) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center mt-3'>
+                                  className="d-flex justify-content-center mt-3"
+                                >
                                   <img
                                     draggable={false}
                                     src={emptyContributorState}
-                                    width='274.05px'
-                                    alt=''
-                                    height='230.96px'
+                                    width="274.05px"
+                                    alt=""
+                                    height="230.96px"
                                   />
                                 </Col>
                               </Row>
@@ -396,9 +411,11 @@ const Agenda = ({}) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center mt-3'>
+                                  className="d-flex justify-content-center mt-3"
+                                >
                                   <span
-                                    className={styles["Empty_state_heading"]}>
+                                    className={styles["Empty_state_heading"]}
+                                  >
                                     {t("Add-agenda").toUpperCase()}
                                   </span>
                                 </Col>
@@ -408,13 +425,13 @@ const Agenda = ({}) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className='d-flex justify-content-center'>
+                                  className="d-flex justify-content-center"
+                                >
                                   <span
-                                    className={
-                                      styles["Empty_state_Subheading"]
-                                    }>
+                                    className={styles["Empty_state_Subheading"]}
+                                  >
                                     {t(
-                                      "Add-some-purpose-start-by-creating-your-agenda"
+                                      "Add-some-purpose-start-by-creating-your-agenda",
                                     )}
                                   </span>
                                 </Col>

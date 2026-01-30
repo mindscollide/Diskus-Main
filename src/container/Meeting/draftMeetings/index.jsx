@@ -25,7 +25,8 @@ import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
 
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 import { StatusValue } from "../../pages/meeting/statusJson";
-import styles from "./draftMeetings.module.css";
+import styles from "../Meeting.module.css";
+
 import "./../Meetings.css";
 import CustomButton from "../../../components/elements/button/Button";
 import moment from "moment";
@@ -38,7 +39,12 @@ const userID = localStorage.getItem("userID");
 const currentLanguage = localStorage.getItem("i18nextLng");
 
 const DraftMeeting = () => {
-  const { publishMeetingData, isMeetingTypeFilter } = useNewMeetingContext();
+  const {
+    meetingsRecords,
+    totalMeetingRecords,
+    setMeetingsRecords,
+    isMeetingTypeFilter,
+  } = useNewMeetingContext();
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -433,7 +439,7 @@ const DraftMeeting = () => {
         className="MeetingTable"
         column={columns}
         size={"small"}
-        rows={publishMeetingData}
+        rows={meetingsRecords}
         sticky={true}
         pagination={false}
         scroll={{
