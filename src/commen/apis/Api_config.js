@@ -2143,3 +2143,7 @@ export const GetComplianceReopenDashboard = {
 export const GetComplianceQuarterlyTasksDashboard = {
   RequestMethod: "ServiceManager.QuarterlyComplianceTasksSummary",
 };
+
+export const EditCompliance = {
+  RequestMethod: "ServiceManager.EditCompliance",
+};

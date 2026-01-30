@@ -19,6 +19,7 @@ import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
 import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
@@ -59,6 +60,8 @@ const CreateEditViewComplianceTask = () => {
     setTaskCount,
     emptyComplianceState,
     setCreateEditComplaince,
+    setCloseConfirmationModal,
+    complianceDetailsState,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -161,9 +164,10 @@ const CreateEditViewComplianceTask = () => {
   const handleDeleteTask = () => {};
 
   const handleCloseButton = () => {
-    emptyComplianceState();
-    setChecklistTabs(1);
-    setCreateEditComplaince(false);
+    // emptyComplianceState();
+    // setChecklistTabs(1);
+    // setCreateEditComplaince(false);
+    setCloseConfirmationModal(true);
   };
 
   const handleClickPrevBtn = () => {
@@ -236,16 +240,26 @@ const CreateEditViewComplianceTask = () => {
                               );
                             })}
                         </div>
+                        {/* {complianceDetailsState.status.value !== 7 && ( */}
                         <Row>
                           <Col sm={12} md={12} lg={12}>
                             <div
-                              className={styles["createNewTaskBtnStyle"]}
-                              onClick={() => handleAddTaskInCheckList(data)}
+                              className={
+                                complianceDetailsState.status.value !== 7
+                                  ? styles["createNewTaskBtnStyle"]
+                                  : styles["createNewTaskBtnStyleDisabled"]
+                              }
+                              onClick={
+                                complianceDetailsState.status.value !== 7
+                                  ? () => handleAddTaskInCheckList(data)
+                                  : undefined
+                              }
                             >
                               {t("Add-task")}
                             </div>
                           </Col>
                         </Row>
+                        {/* )} */}
                       </>
                     }
                     endField={
@@ -314,6 +328,7 @@ const CreateEditViewComplianceTask = () => {
         />
       )}
       <Notification open={open} setOpen={setOpen} />
+      <ComplianceCloseConfirmationModal />
     </>
   );
 };

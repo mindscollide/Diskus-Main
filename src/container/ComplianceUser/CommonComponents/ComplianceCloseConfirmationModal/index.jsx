@@ -11,45 +11,15 @@ const ComplianceCloseConfirmationModal = () => {
     closeConfirmationModal,
     setCloseConfirmationModal,
     setMainComplianceTabs,
-    // setChecklistTabs,
-    // setChecklistData,
-    // setComplianceDetailsState,
     setCreateEditComplaince,
-    // setChecklistCount,
-    // setTaskCount,
-    // setComplianceInfo,
     emptyComplianceState,
+    checkListTabs,
   } = useComplianceContext();
 
   const handleYesButton = () => {
     setMainComplianceTabs(2);
     setCloseConfirmationModal(false);
     setCreateEditComplaince(false);
-    // // setChecklistTabs(0);
-    // setChecklistCount(0);
-    // setTaskCount(0);
-    // setCloseConfirmationModal(false);
-    // // take user back to ComplianceByMe screen
-    // setChecklistData({
-    //   checklistTitle: "",
-    //   checklistDescription: "",
-    //   checklistDueDate: "",
-    // });
-    // setComplianceDetailsState({
-    //   complianceTitle: "",
-    //   description: "",
-    //   authorityId: 0,
-    //   criticality: 0,
-    //   dueDate: "",
-    //   complianceDueDateForChecklist: "",
-    //   tags: [],
-    // });
-    // setChecklistTabs(1);
-    // setCreateEditComplaince(false);
-    // setComplianceInfo({
-    //   complianceId: 0,
-    //   complianceName: "",
-    // });
     setMainComplianceTabs(2);
     emptyComplianceState();
   };
@@ -70,9 +40,11 @@ const ComplianceCloseConfirmationModal = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12} className="text-center">
               <div className={styles["ConfirmationHeading"]}>
-                {t(
-                  "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes"
-                )}
+                {checkListTabs === 1
+                  ? t(
+                      "All-your-changes-will-be-lost.-Are-you-sure-you-want-to-discard-your-changes"
+                    )
+                  : "You have unsaved changes. Do you want to save before leaving, or discard and lose your changes?"}
               </div>
             </Col>
           </Row>

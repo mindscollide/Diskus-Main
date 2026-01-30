@@ -166,6 +166,11 @@ export const ComlianceProvider = ({ children }) => {
   // 1 = Progress (default) Compliance Dropdown Filter
   const [complianceDashboardFilter, setComplianceDashboardFilter] = useState(1);
 
+  //Reset Compliance Dashboard State
+  const resetComplianceDashboardFilter = () => {
+    setComplianceDashboardFilter(1);
+  };
+
   return (
     <ComplianceContext.Provider
       value={{
@@ -226,6 +231,7 @@ export const ComlianceProvider = ({ children }) => {
         setViewTypeDashboard,
         complianceDashboardFilter,
         setComplianceDashboardFilter,
+        resetComplianceDashboardFilter,
       }}
     >
       {children}

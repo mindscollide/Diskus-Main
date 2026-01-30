@@ -7,7 +7,7 @@ import styles from "./viewComplianceDetails.module.css";
 import { Tag } from "antd";
 import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccordian/index.jsx.js";
 import { formatDateToYMD } from "../../commonFunctions.js";
-import StatusSubmitForApprovalModal from "../../StatusChaneModals/SubmitForApproval/index.jsx";
+import StatusSubmitForApprovalModal from "../../StatusChangeModals/SubmitForApproval/index.jsx";
 
 const ViewComplianceDetails = () => {
   const {
