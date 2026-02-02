@@ -2665,5 +2665,6 @@
   "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this compliance cannot be Re-opened or moved back to In Progress",
   "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed": "This Compliance cannot be marked as Completed because some tasks are still not completed",
   "Checklist-deleted-successfully": "Checklist deleted successfully",
-  "All-the-associated-tasks-within-this-checklist-will-also-be-deleted.-Are-you-sure-you-want-to-delete-this-checklist?": "All the associated tasks within this checklist will also be deleted. Are you sure you want to delete this checklist?"
+  "All-the-associated-tasks-within-this-checklist-will-also-be-deleted.-Are-you-sure-you-want-to-delete-this-checklist?": "All the associated tasks within this checklist will also be deleted. Are you sure you want to delete this checklist?",
+  "Current-due-date": "Current Due Date"
 }

@@ -52,6 +52,7 @@ const ViewComplianceChecklistAccordian = () => {
       }
     });
   };
+
   // const handleExpandBtn = () => {
   //   if (isExpandBtnClicked) {
   //     if (getCheckListData?.length > 0) {
@@ -181,11 +182,13 @@ const ViewComplianceChecklistAccordian = () => {
           lg={6}
           className="d-flex justify-content-end align-items-center"
         >
-          <Button
-            text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
-            className={styles["viewCompliance_ExapnAllBtn"]}
-            onClick={handleExpandBtn}
-          />
+          {getCheckListData?.length > 0 && (
+            <Button
+              text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
+              className={styles["viewCompliance_ExapnAllBtn"]}
+              onClick={handleExpandBtn}
+            />
+          )}
         </Col>
       </Row>
 

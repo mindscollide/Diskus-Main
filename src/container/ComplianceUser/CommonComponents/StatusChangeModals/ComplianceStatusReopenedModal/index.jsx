@@ -18,6 +18,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../../../../components/elements/upload/Upload";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
+import { formatDateToYMD, parseUTCDateString } from "../../commonFunctions";
 const ComplianceStatusReopenedModal = () => {
   const { t } = useTranslation();
 
@@ -140,7 +141,7 @@ const ComplianceStatusReopenedModal = () => {
       attachments: prev.attachments.filter((file) => file.name !== data.name),
     }));
   };
-
+  console.log(complianceDetailsState.dueDate, "Current DueDate");
   return (
     <Modal
       show={comlianceStatusReopenedModal}
@@ -183,9 +184,10 @@ const ComplianceStatusReopenedModal = () => {
                 <span className={styles["sterick"]}>{" *"}</span>
               </div>
               <DatePicker
-                value={complianceDetailsState.dueDate}
+                value={complianceReopenDetailsState.dueDate}
                 format={"DD/MM/YYYY"}
-                minDate={moment().toDate()}
+                // minDate={moment().toDate()}
+                minDate={complianceDetailsState.dueDate}
                 placeholder={t("Due-date")}
                 render={
                   <InputIcon
@@ -202,13 +204,23 @@ const ComplianceStatusReopenedModal = () => {
                 containerClassName={"Complaince_createEditDueDate"}
                 onOpenPickNewDate={true}
                 inputMode=""
-                // calendarPosition="bottom-center"
+                calendarPosition="bottom-center"
                 calendar={gregorian}
                 locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 ref={calendRef}
                 onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
               />
+            </Col>
+            <Col sm={12} md={6} lg={6}>
+              <div
+                className={`d-flex align-items-center justify-content-center ${styles["labelStyle"]} ${styles["Select_label"]}`}
+              >
+                {t("Current-due-date")}
+              </div>
+              <div className="d-flex align-items-center justify-content-center">
+                {formatDateToYMD(complianceDetailsState.dueDate)}
+              </div>
             </Col>
           </Row>
           <Row className="mt-4">

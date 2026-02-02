@@ -190,7 +190,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.IS_SHORT_CODE_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -215,7 +215,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.IS_AUTHORITY_NAME_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -241,7 +241,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_ALL_AUTHORITIES_DROPDOWN_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -267,7 +267,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -293,7 +293,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_COMPLIANCE_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -319,7 +319,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_COMPLIANCE_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -345,7 +345,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -371,7 +371,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CHECK_COMPLIANCE_TITLE_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -397,7 +397,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.VIEW_COMPLIANCE_BY_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -423,7 +423,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CHECK_CHECKLIST_TITLE_EXISTS_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -449,7 +449,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -475,7 +475,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_TASK_BY_COMPLIANCE_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -501,7 +501,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.EDIT_COMPLIANCE_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -527,7 +527,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -736,7 +736,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.EDIT_COMPLIANCE_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -747,6 +747,8 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditCompliance: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        ComplianceDataRoomMapFolderId: 0,
+        addReopenComplianceDetails: null,
       };
 
     case actions.EDIT_COMPLIANCE_FAIL:
@@ -756,6 +758,8 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditCompliance: null,
         ResponseMessage: action.message,
         severity: "error",
+        ComplianceDataRoomMapFolderId: 0,
+        addReopenComplianceDetails: null,
       };
 
     // Reopen Compliance Step 1
@@ -763,7 +767,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_REOPEN_COMPLIANCE_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -790,7 +794,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CREATE_COMPLIANCE_DATA_ROOM_MAP_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -822,7 +826,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.SAVE_COMPLIANCE_FILES_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -851,7 +855,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.SAVE_COMPLIANCE_DOCUMENTS_AND_MAPPING_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -879,7 +883,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.DELETE_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -905,7 +909,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CHANGE_TASK_STATUS_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 

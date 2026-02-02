@@ -83,7 +83,7 @@ const ViewCompliance = () => {
           //   criticality: criticalityLevel,
           authority: {
             value: authority.authorityId,
-            label: authority.authorityName,
+            label: `${authority.authorityShortCode} - ${authority.authorityName}`,
           },
           criticality: {
             value: 0,

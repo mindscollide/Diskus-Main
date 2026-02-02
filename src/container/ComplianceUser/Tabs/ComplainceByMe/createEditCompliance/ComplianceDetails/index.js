@@ -412,6 +412,7 @@ const ComplainceDetails = () => {
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
+
   const uploadReopenCompilanceDocuments = async (folderID) => {
     try {
       let saveFiles = [];
@@ -429,32 +430,36 @@ const ComplainceDetails = () => {
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID)
         );
+
+        // 3️⃣ Build payload AFTER data exists
+        const Data2 = {
+          complianceId: editComplianceData.complianceId,
+          complianceStatusChangeHistoryID: complianceReopenedDetail,
+          fileIds: uploadedFiles
+            ? uploadedFiles.map((file) => ({
+                PK_FileID: file.pK_FileID,
+              }))
+            : [],
+        };
+
+        // 4️⃣ Final mapping API
+        dispatch(
+          SaveComplianceDocumentsAndMappingsAPI(
+            navigate,
+            Data2,
+            t,
+            editComplianceData,
+            setEditComplianceData,
+            setChecklistTabs
+          )
+        );
+      } else {
+        dispatch(
+          EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs)
+        );
       }
 
       console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
-
-      // 3️⃣ Build payload AFTER data exists
-      const Data2 = {
-        complianceId: editComplianceData.complianceId,
-        complianceStatusChangeHistoryID: complianceReopenedDetail,
-        fileIds: uploadedFiles
-          ? uploadedFiles.map((file) => ({
-              PK_FileID: file.pK_FileID,
-            }))
-          : [],
-      };
-
-      // 4️⃣ Final mapping API
-      dispatch(
-        SaveComplianceDocumentsAndMappingsAPI(
-          navigate,
-          Data2,
-          t,
-          editComplianceData,
-          setEditComplianceData,
-          setChecklistTabs
-        )
-      );
     } catch (error) {
       console.error(error);
     }
@@ -1009,7 +1014,8 @@ const ComplainceDetails = () => {
               <InputIcon
                 placeholder={t("Due-date")}
                 className={`${styles["datepicker_input"]} ${
-                  complianceDetailsState.authority.value === 0
+                  complianceDetailsState.authority.value === 0 ||
+                  complianceDetailsState.status.value === 6
                     ? styles["disabledInput"]
                     : ""
                 }`}
@@ -1027,7 +1033,10 @@ const ComplainceDetails = () => {
             onFocusedDateChange={changeComplainceDueDate}
             onChange={changeComplainceDueDate}
             disabled={
-              complianceDetailsState.authority.value === 0 ? true : false
+              complianceDetailsState.authority.value === 0 ||
+              complianceDetailsState.status.value === 6
+                ? true
+                : false
             }
           />
         </Col>
