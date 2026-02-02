@@ -178,20 +178,15 @@ export const ComlianceProvider = ({ children }) => {
         value: 0,
         label: "",
       },
-      dueDate: null, // keep same as initial
+      dueDate: "",
       complianceDueDateForChecklist: "",
       tags: [],
-      status: {
-        value: 0,
-        label: "",
-      },
       progressPercent: 0,
       createdBy: "",
       totalComplianceTasks: 0,
       showProgressBar: false,
       complianceStatusChangeHistory: [],
     });
-
     setChecklistCount(0);
     setTaskCount(0);
     setViewComplianceDetailsTab(1);
@@ -235,6 +230,37 @@ export const ComlianceProvider = ({ children }) => {
     []
   );
   const [searchbox, setsearchbox] = useState(false);
+
+  // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
+  const [viewTypeDashboard, setViewTypeDashboard] = useState(1);
+
+  // 1 = Progress (default) Compliance Dropdown Filter
+  const [complianceDashboardFilter, setComplianceDashboardFilter] = useState(1);
+
+  // 1 Overdue (default filter) Compliance task dropdown Filter
+  const [complianceTaskDashboardFilter, setComplianceTaskDashboardFilter] =
+    useState(1);
+
+  // 1 Duedate (default filter) Reopend Compliance dropdown Filter
+  const [
+    reopendComplianceDashboardFilter,
+    setReopendComplianceDashboardFilter,
+  ] = useState(1);
+
+  //Reset Compliance Dashboard Filter  State
+  const resetComplianceDashboardFilter = () => {
+    setComplianceDashboardFilter(1);
+  };
+
+  //Reset Compliance Dashboard Filter  State
+  const resetComplianceTaskDashboardFilter = () => {
+    setComplianceTaskDashboardFilter(1);
+  };
+
+  //Reset Reopend-Compliance Dashboard Filter State
+  const resetReopenComplianceDashboardFilter = () => {
+    setReopendComplianceDashboardFilter(1);
+  };
 
   return (
     <ComplianceContext.Provider
@@ -321,6 +347,17 @@ export const ComlianceProvider = ({ children }) => {
         setDeleteChecklistConfirmationModalState,
         deleteChecklistId,
         setDeleteChecklistId,
+        viewTypeDashboard,
+        setViewTypeDashboard,
+        complianceDashboardFilter,
+        setComplianceDashboardFilter,
+        resetComplianceDashboardFilter,
+        complianceTaskDashboardFilter,
+        setComplianceTaskDashboardFilter,
+        resetComplianceTaskDashboardFilter,
+        reopendComplianceDashboardFilter,
+        setReopendComplianceDashboardFilter,
+        resetReopenComplianceDashboardFilter,
       }}
     >
       {children}

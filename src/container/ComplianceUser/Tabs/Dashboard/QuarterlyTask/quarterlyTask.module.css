@@ -1,15 +1,116 @@
-.quarterlyTaskCard {
+.upcomingComplianceCard {
+  width: 100%;
+  height: 211px; /* fixed height */
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 16px 20px;
+  transition: all 0.3s ease;
+}
+.upcomingComplianceCard:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.cardHeading {
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  margin: 15px 0px 0px 0px;
+}
+
+.itemSpacing {
+  margin-left: 30px; /* space between the two groups */
+}
+
+.checkUpcomingCenter {
+  display: flex;
+  align-items: center !important;
+  margin-top: 30px;
+}
+
+.deadlineRow {
+  display: flex;
+  flex-direction: row; /* stack */
+  gap: 20px;
+}
+
+.boldNumber {
+  font-weight: 700;
+  font-size: 40px;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+}
+
+.normalText {
+  font-weight: 600;
+  font-family: "Montserrat";
+  font-size: 16px;
+  margin-left: 5px;
+  color: #5a5a5a;
+}
+
+.progressWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.progressLabel {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Text sitting ON the bar */
+.progressText {
+  position: absolute;
+  left: 0px;
+  right: 5px;
+  transform: translateY(-20%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none; /* so hover still works on bar */
+  font-size: 12px;
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+/* Left side */
+.leftText {
+  color: #5a5a5a !important; /* sits on blue part */
+}
+
+/* Right side */
+.rightText {
+  color: #5a5a5a;
+}
+
+.NoDataQuarterlyTaskCard {
   width: 100%;
   text-align: center;
-  min-height: 25vh;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #fff;
   transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
+  height: 100%;
 }
-.quarterlyTaskCard:hover {
+.NoDataQuarterlyTaskCard:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.NoDataCardHeading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #6172d6;
+  max-width: 900px; /* 🔥 SAME WIDTH AS CONTENT */
+  width: 100%;
+  padding: 0px 20px;
+  margin-top: 12px;
+  text-align: left;
 }

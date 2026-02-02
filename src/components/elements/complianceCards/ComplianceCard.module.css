@@ -1,0 +1,133 @@
+.card {
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 10px 18px;
+  transition: 0.3s ease;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
+
+.card:hover {
+  box-shadow: 4px 4px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Montserrat";
+  color: #6172d6;
+}
+
+.metaRow {
+}
+
+.dueDate {
+  font-size: 12px;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+  font-weight: 500;
+}
+
+.tagWrapper {
+  text-align: left;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  flex-wrap: wrap;
+}
+.ReopenTextDescription {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+
+.description {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 500;
+  font-family: "Montserrat";
+}
+
+/* 📱 Responsive */
+@media (max-width: 576px) {
+  .tagWrapper {
+    justify-content: flex-start;
+    margin-top: 6px;
+  }
+}
+
+.bgColorStroke {
+  background-color: #55ce5c !important;
+}
+
+.ant-progress-bg,
+.ant-progress-success-bg .bgColorStroke {
+  background-color: #55ce5c !important;
+}
+
+.progressWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.progressLabel {
+  position: absolute;
+  top: -10px;
+  right: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.boldLabel {
+  font-size: 12px;
+  color: #5a5a5a;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+
+.titleRow {
+  position: relative;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+}
+
+.iconContainer {
+  cursor: pointer;
+  padding: 4px;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconContainer:hover {
+  transform: scale(1.1);
+}
+
+.hoverIcon {
+  object-fit: contain;
+}
+
+.seeMoreClass {
+  color: #6172d6;
+  text-decoration: underline;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  cursor: pointer;
+}
+
+.seeMoreClass:hover {
+  font-size: 13px;
+  color: #2235a3;
+}

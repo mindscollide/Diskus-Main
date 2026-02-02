@@ -29,6 +29,12 @@ import {
   ViewComplianceDetailsByViewTypeRM,
   GetComplianceChecklistsWithTasksByComplianceIdForMe,
   GetComplianceAndTaskStatuses,
+  GetComplianceQuarterlySubmitted,
+  GetUpcomingComplianceDeadline,
+  GetComplianceByDashboard,
+  GetComplianceTasksDashboard,
+  GetComplianceReopenDashboard,
+  GetComplianceQuarterlyTasksDashboard,
   EditCompliance,
   AddReopenCompliance,
   CreateComplianceDataRoomMap,
@@ -2686,6 +2692,534 @@ const GetComplianceAndTaskStatusesAPI = (navigate, t) => {
   };
 };
 
+//GET QUARTERLY SUBMITTED COMPLIANCE DASHBOARD API
+
+const GetQuarterlySubmittedComplianceInit = () => {
+  return {
+    type: actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_INIT,
+  };
+};
+
+const GetQuarterlySubmittedComplianceSuccess = (response, message) => {
+  return {
+    type: actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetQuarterlySubmittedComplianceFail = (message) => {
+  return {
+    type: actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_FAIL,
+    message: message,
+  };
+};
+
+const GetQuarterlySubmittedComplianceAPI = (navigate, Data, t) => {
+  return (dispatch) => {
+    dispatch(GetQuarterlySubmittedComplianceInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceQuarterlySubmitted.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetQuarterlySubmittedComplianceAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlySubmittedCompliances_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetQuarterlySubmittedComplianceSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlySubmittedCompliances_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetQuarterlySubmittedComplianceFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlySubmittedCompliances_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetQuarterlySubmittedComplianceFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetQuarterlySubmittedComplianceFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetQuarterlySubmittedComplianceFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetQuarterlySubmittedComplianceFail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+//GET Compliance Dashboard Upcoming Deadline API
+const GetComplianceUpcomingDeadlineInit = () => {
+  return {
+    type: actions.GET_UPCOMING_COMPLIANCES_DEADLINE_INIT,
+  };
+};
+
+const GetComplianceUpcomingDeadlineSuccess = (response, message) => {
+  return {
+    type: actions.GET_UPCOMING_COMPLIANCES_DEADLINE_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceUpcomingDeadlineFail = (message) => {
+  return {
+    type: actions.GET_UPCOMING_COMPLIANCES_DEADLINE_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceUpcomingDeadlineAPI = (navigate, Data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceUpcomingDeadlineInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetUpcomingComplianceDeadline.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceUpcomingDeadlineAPI(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_UpcomingCompliancesDeadline_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceUpcomingDeadlineSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_UpcomingCompliancesDeadline_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceUpcomingDeadlineFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_UpcomingCompliancesDeadline_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceUpcomingDeadlineFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceUpcomingDeadlineFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceUpcomingDeadlineFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceUpcomingDeadlineFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//GET Compliance BY Dashboard API
+const GetComplianceByDashboardInit = () => {
+  return {
+    type: actions.GET_COMPLIANCE_BY_DASHBOARD_INIT,
+  };
+};
+
+const GetComplianceByDashboardSuccess = (response, message) => {
+  return {
+    type: actions.GET_COMPLIANCE_BY_DASHBOARD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceByDashboardFail = (message) => {
+  return {
+    type: actions.GET_COMPLIANCE_BY_DASHBOARD_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceByDashboardAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceByDashboardInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceByDashboard.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceByDashboardAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ComplianceByForDashboard_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceByDashboardSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ComplianceByForDashboard_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceByDashboardFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ComplianceByForDashboard_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceByDashboardFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceByDashboardFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceByDashboardFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceByDashboardFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//GET Compliance Tasks Dashboard API
+const GetComplianceTasksDashboardInit = () => {
+  return {
+    type: actions.GET_COMPLIANCE_TASKS_DASHBOARD_INIT,
+  };
+};
+
+const GetComplianceTasksDashboardSuccess = (response, message) => {
+  return {
+    type: actions.GET_COMPLIANCE_TASKS_DASHBOARD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceTasksDashboardFail = (message) => {
+  return {
+    type: actions.GET_COMPLIANCE_TASKS_DASHBOARD_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceTasksDashboardAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceTasksDashboardInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceTasksDashboard.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceTasksDashboardAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_TasksDashboard_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceTasksDashboardSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_TasksDashboard_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceTasksDashboardFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_TasksDashboard_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceTasksDashboardFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceTasksDashboardFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceTasksDashboardFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceTasksDashboardFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//GET Compliance Reopen Dashboard API
+const GetComplianceReopenDashboardInit = () => {
+  return {
+    type: actions.GET_COMPLIANCE_REOPEN_DASHBOARD_INIT,
+  };
+};
+
+const GetComplianceReopenDashboardSuccess = (response, message) => {
+  return {
+    type: actions.GET_COMPLIANCE_REOPEN_DASHBOARD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceReopenDashboardFail = (message) => {
+  return {
+    type: actions.GET_COMPLIANCE_REOPEN_DASHBOARD_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceReopenDashboardAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceReopenDashboardInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceReopenDashboard.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceReopenDashboardAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ReopenedCompliancesForDashboard_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceReopenDashboardSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ReopenedCompliancesForDashboard_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceReopenDashboardFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_ReopenedCompliancesForDashboard_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceReopenDashboardFail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceReopenDashboardFail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceReopenDashboardFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetComplianceReopenDashboardFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//GET Compliance Quarterly Tasks Dashboard API
+const GetComplianceQuarterlyTasksDashboardInit = () => {
+  return {
+    type: actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_INIT,
+  };
+};
+
+const GetComplianceQuarterlyTasksDashboardSuccess = (response, message) => {
+  return {
+    type: actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceQuarterlyTasksDashboardFail = (message) => {
+  return {
+    type: actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceQuarterlyTasksDashboardInit());
+    let form = new FormData();
+    form.append(
+      "RequestMethod",
+      GetComplianceQuarterlyTasksDashboard.RequestMethod
+    );
+    // ✅ send complete payload as JSON string
+    // form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlyComplianceTasksSummary_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceQuarterlyTasksDashboardSuccess(
+                  response.data.responseResult,
+                  ""
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlyComplianceTasksSummary_02".toLowerCase()
+                )
+            ) {
+              await dispatch(GetComplianceQuarterlyTasksDashboardFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_QuarterlyComplianceTasksSummary_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                GetComplianceQuarterlyTasksDashboardFail(
+                  t("Something-went-wrong")
+                )
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceQuarterlyTasksDashboardFail(
+                t("Something-went-wrong")
+              )
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceQuarterlyTasksDashboardFail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          GetComplianceQuarterlyTasksDashboardFail(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
 //EditComplianceChecklist
 const EditComplianceInit = () => {
   return {
@@ -2753,6 +3287,12 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
             } else if (
               message.includes(
                 "compliance_complianceservicemanager_editcompliance_04"
+              )
+            ) {
+              await dispatch(EditComplianceFail(t("ModifiedBy-isrequired.")));
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_05"
               )
             ) {
               await dispatch(EditComplianceFail(t("Invalid-ModifiedBy")));
@@ -2954,7 +3494,7 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
             } else if (
               message.includes(
-                "compliance_complianceservicemanager_editcompliance_29"
+                "compliance_complianceservicemanager_editcompliance_28"
               )
             ) {
               await dispatch(
@@ -2986,7 +3526,7 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
             } else if (
               message.includes(
-                "compliance_complianceservicemanager_editcompliance_32"
+                "compliance_complianceservicemanager_editcompliance_30"
               )
             ) {
               await dispatch(
@@ -3028,7 +3568,7 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
             } else if (
               message.includes(
-                "compliance_complianceservicemanager_editcompliance_36"
+                "compliance_complianceservicemanager_editcompliance_32"
               )
             ) {
               await dispatch(
@@ -3064,7 +3604,7 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
             } else if (
               message.includes(
-                "compliance_complianceservicemanager_editcompliance_40"
+                "compliance_complianceservicemanager_editcompliance_34"
               )
             ) {
               await dispatch(
@@ -3074,12 +3614,100 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
             } else if (
               message.includes(
-                "compliance_complianceservicemanager_editcompliance_41"
+                "compliance_complianceservicemanager_editcompliance_35"
               )
             ) {
               await dispatch(
                 EditComplianceFail(
                   t("Submitted for Approval cannot be changed to Not Started.")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_36"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Submitted for Approval cannot be changed to In Progress.")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_37"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Submitted for Approval cannot be changed to Cancelled.")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_38"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t(
+                    "Submitted for Approval can only be changed to Completed, Reopened, or On Hold."
+                  )
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_39"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Completed can only be changed to Reopened.")
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_46"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t(
+                    "You cannot move from Not Started until at least one checklist and one task exist."
+                  )
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_47"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t(
+                    "Some checklist items are still pending. Do you want to continue submitting for approval?"
+                  )
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_48"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t(
+                    "This Compliance cannot be marked as Completed because some tasks are still not completed"
+                  )
+                )
+              );
+            } else if (
+              message.includes(
+                "compliance_complianceservicemanager_editcompliance_41"
+              )
+            ) {
+              await dispatch(
+                EditComplianceFail(
+                  t("Compliance update failed or record not found.")
                 )
               );
             } else if (
@@ -3944,6 +4572,12 @@ export {
   ViewComplianceDetailsByViewTypeAPI,
   GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
   GetComplianceAndTaskStatusesAPI,
+  GetQuarterlySubmittedComplianceAPI,
+  GetComplianceUpcomingDeadlineAPI,
+  GetComplianceByDashboardAPI,
+  GetComplianceTasksDashboardAPI,
+  GetComplianceReopenDashboardAPI,
+  GetComplianceQuarterlyTasksDashboardAPI,
   EditComplianceAPI,
   AddReopenComplianceAPI,
   CreateComplianceDataRoomMapAPI,

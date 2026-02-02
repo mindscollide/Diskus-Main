@@ -2114,6 +2114,36 @@ export const GetComplianceAndTaskStatuses = {
   RequestMethod: "ServiceManager.GetComplianceAndTaskStatuses",
 };
 
+//Api For Compliance Dashboard Quarterly Submitted
+export const GetComplianceQuarterlySubmitted = {
+  RequestMethod: "ServiceManager.QuarterlySubmittedCompliances",
+};
+
+//Api For Compliance Dashboard Upcoming Deadline
+export const GetUpcomingComplianceDeadline = {
+  RequestMethod: "ServiceManager.UpcomingCompliancesDeadline",
+};
+
+//Api For Compliance By Dashboard
+export const GetComplianceByDashboard = {
+  RequestMethod: "ServiceManager.ComplianceByForDashboard",
+};
+
+//Api For Compliance Tasks Dashboard
+export const GetComplianceTasksDashboard = {
+  RequestMethod: "ServiceManager.TasksDashboard",
+};
+
+//Api For Compliance Reopen Dashboard
+export const GetComplianceReopenDashboard = {
+  RequestMethod: "ServiceManager.ReopenedCompliancesForDashboard",
+};
+
+//Api For Compliance Quarterly Tasks Dashboard
+export const GetComplianceQuarterlyTasksDashboard = {
+  RequestMethod: "ServiceManager.QuarterlyComplianceTasksSummary",
+};
+
 export const EditCompliance = {
   RequestMethod: "ServiceManager.EditCompliance",
 };
