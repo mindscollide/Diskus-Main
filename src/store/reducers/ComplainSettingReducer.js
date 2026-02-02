@@ -18,7 +18,14 @@ const initialState = {
   GetComplianceChecklistsWithTasksByComplianceIdForMe: null,
   GetComplianceAndTaskStatuses: null,
   EditCompliance: null,
-
+  AddReopenCompliance: null,
+  CreateComplianceDataRoomMap: null,
+  SaveComplianceFiles: null,
+  SaveComplianceDocumentsAndMapping: null,
+  DeleteCheckList: null,
+  ChangeTaskStatus: null,
+  ComplianceDataRoomMapFolderId: 0,
+  addReopenComplianceDetails: null,
   // MQTT
   SocketAuthorityInactive: null,
   SocketAuthorityActive: null,
@@ -37,6 +44,12 @@ const initialState = {
   AddTaskMappingToChecklist: null,
   GetComplianceChecklistsWithTasksByComplianceId: null,
   EditComplianceChecklist: null,
+  GetQuarterlySubmittedDashboard: null,
+  GetUpcomingDealineComplianceDashboard: null,
+  GetComplianceByDashboardData: null,
+  GetComplianceTasksDashboardData: null,
+  GetComplianceReopenDashboardData: null,
+  GetComlianceQuarterlyTasksDashboardData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -183,7 +196,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.IS_SHORT_CODE_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -208,7 +221,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.IS_AUTHORITY_NAME_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -234,7 +247,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_ALL_AUTHORITIES_DROPDOWN_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -260,7 +273,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_ALL_TAGS_BY_ORGANIZATION_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -286,7 +299,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_COMPLIANCE_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -312,7 +325,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_COMPLIANCE_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -338,7 +351,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_COMPLIANCE_CHECKLIST_BY_COMPLIANCE_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -364,7 +377,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CHECK_COMPLIANCE_TITLE_EXIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -390,7 +403,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.VIEW_COMPLIANCE_BY_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -416,7 +429,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.CHECK_CHECKLIST_TITLE_EXISTS_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -442,7 +455,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.ADD_TASK_MAPPIING_TO_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -468,7 +481,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_TASK_BY_COMPLIANCE_ID_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -494,7 +507,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.EDIT_COMPLIANCE_CHECKLIST_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -520,7 +533,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.GET_COMPLIANCE_TASK_BY_COMPLIANCE_ID_FOR_ME_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -725,11 +738,171 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         severity: "error",
       };
 
+    // Get Quarterly Submitted Compliance Dashboard
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterlySubmittedDashboard: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_QUARTERLY_SUBMITTED_COMPLIANCES_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterlySubmittedDashboard: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Dashboard Upcoming Deadline API
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetUpcomingDealineComplianceDashboard: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_UPCOMING_COMPLIANCES_DEADLINE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetUpcomingDealineComplianceDashboard: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance By Dashboard API
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceByDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_BY_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceByDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Tasks Dashboard API
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceTasksDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_TASKS_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceTasksDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Reopen Dashboard API
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceReopenDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_REOPEN_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceReopenDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //GET Compliance Quarterly Tasks Dashboard API
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComlianceQuarterlyTasksDashboardData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_COMPLIANCE_QUARTERLY_TASK_DASHBOARD_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComlianceQuarterlyTasksDashboardData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //Reducer
     // EditCompliance
     case actions.EDIT_COMPLIANCE_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 
@@ -740,6 +913,8 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditCompliance: action.response,
         ResponseMessage: action.message,
         severity: "success",
+        ComplianceDataRoomMapFolderId: 0,
+        addReopenComplianceDetails: null,
       };
 
     case actions.EDIT_COMPLIANCE_FAIL:
@@ -749,8 +924,184 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         EditCompliance: null,
         ResponseMessage: action.message,
         severity: "error",
+        ComplianceDataRoomMapFolderId: 0,
+        addReopenComplianceDetails: null,
       };
 
+    // Reopen Compliance Step 1
+    // AddReopenCompliance
+    case actions.ADD_REOPEN_COMPLIANCE_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.ADD_REOPEN_COMPLIANCE_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        AddReopenCompliance: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.ADD_REOPEN_COMPLIANCE_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        AddReopenCompliance: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // Reopen Complaince Step 2
+    // CreateComplianceDataRoomMap
+    case actions.CREATE_COMPLIANCE_DATA_ROOM_MAP_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.CREATE_COMPLIANCE_DATA_ROOM_MAP_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        CreateComplianceDataRoomMap: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.CREATE_COMPLIANCE_DATA_ROOM_MAP_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        CreateComplianceDataRoomMap: null,
+        ResponseMessage: action.message,
+        ComplianceDataRoomMapFolderId: 0,
+
+        severity: "error",
+      };
+
+    // Reopen Complaince Step 3
+    // UploadDocuments already made
+
+    // Reopen Complaince Step 4
+    // SaveComplianceFiles
+    case actions.SAVE_COMPLIANCE_FILES_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.SAVE_COMPLIANCE_FILES_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        SaveComplianceFiles: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.SAVE_COMPLIANCE_FILES_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        SaveComplianceFiles: null,
+        ResponseMessage: action.message,
+        ComplianceDataRoomMapFolderId: 0,
+
+        severity: "error",
+      };
+
+    // Reopen Complaince Step 5 (After this Edit api will be hit in edit flow)
+    // SaveComplianceDocumentsAndMapping
+    case actions.SAVE_COMPLIANCE_DOCUMENTS_AND_MAPPING_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.SAVE_COMPLIANCE_DOCUMENTS_AND_MAPPING_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        SaveComplianceDocumentsAndMapping: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.SAVE_COMPLIANCE_DOCUMENTS_AND_MAPPING_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        SaveComplianceDocumentsAndMapping: null,
+        ComplianceDataRoomMapFolderId: 0,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //----------Reopen Flow ended-----------------
+    // DeleteCheckList
+    case actions.DELETE_CHECKLIST_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.DELETE_CHECKLIST_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        DeleteCheckList: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.DELETE_CHECKLIST_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        DeleteCheckList: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    // ChangeTaskStatus
+    case actions.CHANGE_TASK_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.CHANGE_TASK_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ChangeTaskStatus: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.CHANGE_TASK_STATUS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ChangeTaskStatus: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+    case actions.CREATE_COMPLAINCE_DATAROOM_MAP: {
+      return {
+        ComplianceDataRoomMapFolderId: action.response,
+        addReopenComplianceDetails: action.response2,
+      };
+    }
     // ================= DEFAULT =================
     default:
       return state;

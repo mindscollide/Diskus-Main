@@ -6,11 +6,11 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./complianceStatusOnHoldReasonModal.module.css";
 import { TextAreafieldwithCount } from "../../../../../components/elements/input_field/Input_field_withCount";
 
-const ComplianceStatusOnHoldReasonModal = () => {
+const ComplianceStatusChangeResonReasonModal = () => {
   const { t } = useTranslation();
   const {
-    complianceOnHoldReasonModal,
-    setComplianceOnHoldReasonModal,
+    complianceStatusChangeReasonModal,
+    setComplianceStatusChangeReasonModal,
     complianceOnHoldReasonState,
     setComplianceOnHoldReasonState,
     setComplianceDetailsState,
@@ -21,14 +21,14 @@ const ComplianceStatusOnHoldReasonModal = () => {
 
   const handleCloseButton = () => {
     if (complianceDetailsState.status.value === 7)
-      setComplianceOnHoldReasonModal(false);
+      setComplianceStatusChangeReasonModal(false);
     else {
       resetModalStates();
     }
   };
   const handleProceedButton = () => {
     console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
-    setComplianceOnHoldReasonModal(false);
+    setComplianceStatusChangeReasonModal(false);
     setComplianceDetailsState((prev) => ({
       ...prev,
       status: tempSelectComplianceStatus,
@@ -46,8 +46,8 @@ const ComplianceStatusOnHoldReasonModal = () => {
 
   return (
     <Modal
-      show={complianceOnHoldReasonModal}
-      setShow={setComplianceOnHoldReasonModal}
+      show={complianceStatusChangeReasonModal}
+      setShow={setComplianceStatusChangeReasonModal}
       modalFooterClassName={"d-block border-0"}
       // modalHeaderClassName={"d-block border-0"}
       modalTitleClassName={styles.StatusTitle}
@@ -108,4 +108,4 @@ const ComplianceStatusOnHoldReasonModal = () => {
   );
 };
 
-export default ComplianceStatusOnHoldReasonModal;
+export default ComplianceStatusChangeResonReasonModal;

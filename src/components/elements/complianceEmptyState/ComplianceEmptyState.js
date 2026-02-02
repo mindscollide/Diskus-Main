@@ -24,6 +24,7 @@ const ComplianceEmptyState = ({
   description = "",
   layout = "imageLeft", // imageLeft | imageRight | imageTop | imageBottom
   imgWidth = "",
+  imgMarginTop,
   className = "",
 }) => {
   const imageSrc = imageMap[type] || QuarterlySubmittedCompliances;
@@ -37,7 +38,7 @@ const ComplianceEmptyState = ({
         src={imageSrc}
         alt={title}
         className={styles.image}
-        style={{ width: imgWidth }}
+        style={{ marginTop: imgMarginTop, maxWidth: "100%" }}
         loading="lazy"
       />
 

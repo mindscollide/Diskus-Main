@@ -86,11 +86,20 @@ export const ComlianceProvider = ({ children }) => {
   // Modals For Status
   const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
   const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
-  const [complianceOnHoldReasonModal, setComplianceOnHoldReasonModal] =
-    useState(false);
+  const [
+    complianceStatusChangeReasonModal,
+    setComplianceStatusChangeReasonModal,
+  ] = useState(false);
   const [complianceCancelModal, setComplianceCancelModal] = useState(false);
   const [complianceCanceleasonModal, setComplianceCancelReasonModal] =
     useState(false);
+
+  const [comlianceCompleteExceptionModal, setComlianceCompleteExceptionModal] =
+    useState(false);
+
+  const [comlianceStatusReopenedModal, setComlianceStatusReopenedModal] =
+    useState(false);
+
   // Modals states
   const [complianceOnHoldSelectOption, setComplianceOnHoldSelectOption] =
     useState(0);
@@ -105,10 +114,25 @@ export const ComlianceProvider = ({ children }) => {
   const [tempSelectComplianceStatus, setTempSelectedComplianceStatus] =
     useState(0);
 
+  const [complianceReopenDetailsState, setComplianceReopenDetailsState] =
+    useState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+
+  // Delete Checklist Confirmation Modal
+  const [
+    deleteChecklistConfirmationModalState,
+    setDeleteChecklistConfirmationModalState,
+  ] = useState(false);
+
+  const [deleteChecklistId, setDeleteChecklistId] = useState(0);
+
   const resetModalStates = () => {
     setSubmitForApprovalModal(false);
     setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(false);
+    setComplianceStatusChangeReasonModal(false);
     setComplianceOnHoldSelectOption(0);
     setComplianceOnHoldReasonState("");
     setTempSelectedComplianceStatus(0);
@@ -116,6 +140,15 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceCancelReasonModal(false);
     setComplianceCancelSelectOption(0);
     setComplianceCancelReasonState(0);
+    setComlianceCompleteExceptionModal(false);
+    setComlianceStatusReopenedModal(false);
+    setComplianceReopenDetailsState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+    setDeleteChecklistConfirmationModalState(false);
+    setDeleteChecklistId(0);
   };
 
   const emptyComplianceState = () => {
@@ -145,20 +178,15 @@ export const ComlianceProvider = ({ children }) => {
         value: 0,
         label: "",
       },
-      dueDate: null, // keep same as initial
+      dueDate: "",
       complianceDueDateForChecklist: "",
       tags: [],
-      status: {
-        value: 0,
-        label: "",
-      },
       progressPercent: 0,
       createdBy: "",
       totalComplianceTasks: 0,
       showProgressBar: false,
       complianceStatusChangeHistory: [],
     });
-
     setChecklistCount(0);
     setTaskCount(0);
     setViewComplianceDetailsTab(1);
@@ -186,10 +214,11 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceForMeTotal(0);
     setSubmitForApprovalModal(false);
     setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(false);
+    setComplianceStatusChangeReasonModal(false);
     setComplianceOnHoldReasonState("");
     setComplianceOnHoldSelectOption(0);
     setTempSelectedComplianceStatus(0);
+    setDeleteChecklistId(0);
   };
 
   // view compliance
@@ -201,6 +230,37 @@ export const ComlianceProvider = ({ children }) => {
     []
   );
   const [searchbox, setsearchbox] = useState(false);
+
+  // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
+  const [viewTypeDashboard, setViewTypeDashboard] = useState(1);
+
+  // 1 = Progress (default) Compliance Dropdown Filter
+  const [complianceDashboardFilter, setComplianceDashboardFilter] = useState(1);
+
+  // 1 Overdue (default filter) Compliance task dropdown Filter
+  const [complianceTaskDashboardFilter, setComplianceTaskDashboardFilter] =
+    useState(1);
+
+  // 1 Duedate (default filter) Reopend Compliance dropdown Filter
+  const [
+    reopendComplianceDashboardFilter,
+    setReopendComplianceDashboardFilter,
+  ] = useState(1);
+
+  //Reset Compliance Dashboard Filter  State
+  const resetComplianceDashboardFilter = () => {
+    setComplianceDashboardFilter(1);
+  };
+
+  //Reset Compliance Dashboard Filter  State
+  const resetComplianceTaskDashboardFilter = () => {
+    setComplianceTaskDashboardFilter(1);
+  };
+
+  //Reset Reopend-Compliance Dashboard Filter State
+  const resetReopenComplianceDashboardFilter = () => {
+    setReopendComplianceDashboardFilter(1);
+  };
 
   return (
     <ComplianceContext.Provider
@@ -260,8 +320,8 @@ export const ComlianceProvider = ({ children }) => {
         setSubmitForApprovalModal,
         complianceOnHoldModal,
         setComplianceOnHoldModal,
-        complianceOnHoldReasonModal,
-        setComplianceOnHoldReasonModal,
+        complianceStatusChangeReasonModal,
+        setComplianceStatusChangeReasonModal,
         complianceOnHoldReasonState,
         setComplianceOnHoldReasonState,
         complianceOnHoldSelectOption,
@@ -277,6 +337,27 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceCancelSelectOption,
         complianceCancelReasonState,
         setComplianceCancelReasonState,
+        comlianceCompleteExceptionModal,
+        setComlianceCompleteExceptionModal,
+        comlianceStatusReopenedModal,
+        setComlianceStatusReopenedModal,
+        complianceReopenDetailsState,
+        setComplianceReopenDetailsState,
+        deleteChecklistConfirmationModalState,
+        setDeleteChecklistConfirmationModalState,
+        deleteChecklistId,
+        setDeleteChecklistId,
+        viewTypeDashboard,
+        setViewTypeDashboard,
+        complianceDashboardFilter,
+        setComplianceDashboardFilter,
+        resetComplianceDashboardFilter,
+        complianceTaskDashboardFilter,
+        setComplianceTaskDashboardFilter,
+        resetComplianceTaskDashboardFilter,
+        reopendComplianceDashboardFilter,
+        setReopendComplianceDashboardFilter,
+        resetReopenComplianceDashboardFilter,
       }}
     >
       {children}

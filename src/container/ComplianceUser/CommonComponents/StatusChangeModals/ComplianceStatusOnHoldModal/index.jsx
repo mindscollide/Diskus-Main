@@ -8,7 +8,7 @@ import styles from "./complianceStatusOnHoldModal.module.css";
 import alertIcon from "../../../../../assets/images/Alert Icon.png";
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
 import { values } from "lodash";
-import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
+import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
 const CompliaceStatusOnHoldModal = () => {
   const { t } = useTranslation();
@@ -16,7 +16,7 @@ const CompliaceStatusOnHoldModal = () => {
   const {
     complianceOnHoldModal,
     setComplianceOnHoldModal,
-    setComplianceOnHoldReasonModal,
+    setComplianceStatusChangeReasonModal,
     setComplianceOnHoldSelectOption,
     resetModalStates,
     complianceDetailsState,
@@ -33,7 +33,7 @@ const CompliaceStatusOnHoldModal = () => {
     console.log(selectOptions, "selectOptionsvalue");
     setSelectOption(0);
     setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(true);
+    setComplianceStatusChangeReasonModal(true);
     setComplianceOnHoldSelectOption(selectOptions);
   };
 
@@ -101,7 +101,7 @@ const CompliaceStatusOnHoldModal = () => {
           </>
         }
       />
-      <ComplianceStatusOnHoldReasonModal />
+      <ComplianceStatusChangeResonReasonModal />
     </>
   );
 };

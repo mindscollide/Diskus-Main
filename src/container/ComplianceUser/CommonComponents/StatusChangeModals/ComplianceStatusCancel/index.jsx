@@ -6,7 +6,7 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./complianceStatusCancel.module.css";
 
 import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
-import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
+import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 // import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
 const ComplianceStatusCancelModal = () => {
@@ -15,7 +15,7 @@ const ComplianceStatusCancelModal = () => {
   const {
     complianceCancelModal,
     setComplianceCancelModal,
-    setComplianceCancelReasonModal,
+    setComplianceStatusChangeReasonModal,
     setComplianceCancelSelectOption,
     resetModalStates,
     complianceDetailsState,
@@ -32,7 +32,7 @@ const ComplianceStatusCancelModal = () => {
     console.log(selectOptions, "selectOptionsvalue");
     setSelectOption(0);
     setComplianceCancelModal(false);
-    setComplianceCancelReasonModal(true);
+    setComplianceStatusChangeReasonModal(true);
     setComplianceCancelSelectOption(selectOptions);
   };
 
@@ -109,7 +109,7 @@ const ComplianceStatusCancelModal = () => {
           </>
         }
       />
-      <ComplianceStatusOnHoldReasonModal />
+      <ComplianceStatusChangeResonReasonModal />
     </>
   );
 };

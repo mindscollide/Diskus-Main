@@ -23,7 +23,7 @@ const MainCompliance = () => {
   const navigate = useNavigate();
   const AllComplianceStatus = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses,
   );
   const {
     createEditCompliance,
@@ -37,11 +37,29 @@ const MainCompliance = () => {
     setsearchbox,
     setAllComplianceStatusForFilter,
     setAllTasksStatusForFilter,
+    viewTypeDashboard,
+    setViewTypeDashboard,
+    resetComplianceDashboardFilter,
+    resetComplianceTaskDashboardFilter,
+    resetReopenComplianceDashboardFilter,
   } = useComplianceContext();
 
   useEffect(() => {
     dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
   }, []);
+
+  console.log(viewTypeDashboard, "viewTypeDashboardviewTypeDashboard");
+
+  // Restore from localStorage on mount
+  useEffect(() => {
+    const savedViewType = localStorage.getItem("viewType");
+    if (savedViewType) setViewTypeDashboard(Number(savedViewType));
+  }, []);
+
+  // Save to localStorage whenever viewTypeDashboard changes
+  useEffect(() => {
+    localStorage.setItem("viewType", viewTypeDashboard);
+  }, [viewTypeDashboard]);
 
   useEffect(() => {
     if (AllComplianceStatus && AllComplianceStatus !== null) {
@@ -55,6 +73,23 @@ const MainCompliance = () => {
       }
     }
   }, [AllComplianceStatus]);
+
+  // Toggle switch handler
+  const handleSwitchToggle = (checked) => {
+    const newViewType = checked ? 2 : 1;
+
+    setViewTypeDashboard(newViewType);
+    localStorage.setItem("viewType", newViewType);
+
+    // For Compliance By Dashboard Filter Reset State
+    resetComplianceDashboardFilter();
+
+    // For Compliance Task Dashboard Filter Reset State
+    resetComplianceTaskDashboardFilter();
+
+    // For Reopened Compliance Dashboard Filter Reset State
+    resetReopenComplianceDashboardFilter();
+  };
 
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
@@ -137,7 +172,10 @@ const MainCompliance = () => {
               <span className={styles["SwitchUserView_Text"]}>
                 {t("Switch-to-user-view")}
               </span>{" "}
-              <Switch />
+              <Switch
+                checkedValue={viewTypeDashboard === 2}
+                onChange={handleSwitchToggle}
+              />
             </Col>
           ) : mainComplianceTabs === 2 || mainComplianceTabs === 3 ? (
             <Col sm={12} md={6} lg={6}>
