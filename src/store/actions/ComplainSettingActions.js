@@ -44,6 +44,7 @@ import {
   ChangeTaskStatus,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
+import { taskReducerLoader } from "./ToDoList_action";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -4113,10 +4114,11 @@ const SaveComplianceFilesAPI = (navigate, Data, t, folderID) => {
           DisplayAttachmentName: file.displayFileName,
         }));
       }
-
+      dispatch(taskReducerLoader(false));
       dispatch(SaveComplianceFilesFail(t("Something-went-wrong")));
       return [];
     } catch (error) {
+      dispatch(taskReducerLoader(false));
       dispatch(SaveComplianceFilesFail(t("Something-went-wrong")));
       return [];
     }
@@ -4164,6 +4166,7 @@ const SaveComplianceDocumentsAndMappingsAPI = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+
           dispatch(
             SaveComplianceDocumentsAndMappingsAPI(
               navigate,
@@ -4183,6 +4186,7 @@ const SaveComplianceDocumentsAndMappingsAPI = (
                   "Compliance_ComplianceServiceManager_SaveComplianceDocumentsAndMapping_01".toLowerCase()
                 )
             ) {
+              dispatch(taskReducerLoader(false));
               await dispatch(
                 SaveComplianceDocumentsAndMappingSuccess(
                   response.data.responseResult,
@@ -4204,22 +4208,26 @@ const SaveComplianceDocumentsAndMappingsAPI = (
                   "Compliance_ComplianceServiceManager_SaveComplianceDocumentsAndMapping_02".toLowerCase()
                 )
             ) {
+              dispatch(taskReducerLoader(false));
               await dispatch(
                 SaveComplianceDocumentsAndMappingFail(t("Something-went-wrong"))
               );
             }
           } else {
+            dispatch(taskReducerLoader(false));
             await dispatch(
               SaveComplianceDocumentsAndMappingFail(t("Something-went-wrong"))
             );
           }
         } else {
+          dispatch(taskReducerLoader(false));
           await dispatch(
             SaveComplianceDocumentsAndMappingFail(t("Something-went-wrong"))
           );
         }
       })
       .catch((response) => {
+        dispatch(taskReducerLoader(false));
         dispatch(
           SaveComplianceDocumentsAndMappingFail(t("Something-went-wrong"))
         );
