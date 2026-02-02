@@ -18,7 +18,7 @@ export const MeetingContext = createContext();
 export const MeetingProvider = ({ children }) => {
   // Fetch user profile data from the Redux store
   const UserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
   const dispatch = useDispatch();
   // State to manage whether agenda updates are active during a meeting
@@ -194,7 +194,7 @@ export const MeetingProvider = ({ children }) => {
   const [groupVideoCallAccepted, setGroupVideoCallAccepted] = useState([]);
   const [groupCallParticipantList, setGroupCallParticipantList] = useState([]);
   const [unansweredCallParticipant, setUnansweredCallParticipant] = useState(
-    []
+    [],
   );
   const [inCallParticipantsList, setInCallParticipantsList] = useState([]);
 
@@ -228,6 +228,9 @@ export const MeetingProvider = ({ children }) => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [stepDownloadModal, setStepDownloadModal] = useState(1);
   const [downloadMeetinModal, setDownloadMeeting] = useState(false);
+
+  const [downloadVideoRecordingModal, setDownloadVideoRecordingModal] =
+    useState(false);
   //
   const [isLeaveMeetingModal, setIsLeaveMeetingModal] = useState(false);
 
@@ -237,7 +240,7 @@ export const MeetingProvider = ({ children }) => {
       if (UserProfileData !== null && UserProfileData !== undefined) {
         // Set the agenda update state based on user profile data
         setIsAgendaUpdateWhenMeetingActive(
-          UserProfileData?.emailWhenActiveMeetingAgendaUpdated
+          UserProfileData?.emailWhenActiveMeetingAgendaUpdated,
         );
       } else {
         // Default to true if user profile data is not available
@@ -475,6 +478,8 @@ export const MeetingProvider = ({ children }) => {
     setCurrentMeetingID,
     editFlag,
     setEditFlag,
+    downloadVideoRecordingModal,
+    setDownloadVideoRecordingModal,
   };
 
   // Provide the state data to the context

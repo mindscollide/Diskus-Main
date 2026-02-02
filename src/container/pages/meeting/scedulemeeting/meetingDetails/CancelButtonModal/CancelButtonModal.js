@@ -84,6 +84,8 @@ const CancelButtonModal = ({
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -133,10 +135,11 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center'>
+                className="d-flex justify-content-center"
+              >
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
                   )}
                 </span>
               </Col>
@@ -150,7 +153,8 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-center gap-2'>
+                className="d-flex justify-content-center gap-2"
+              >
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

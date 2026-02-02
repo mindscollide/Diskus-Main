@@ -39,17 +39,17 @@ const Attendence = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {  setEditorRole } = useContext(MeetingContext);
+  const { setEditorRole } = useContext(MeetingContext);
 
   //reducer call from Attendance_Reducers
   const ResponseMessage = useSelector(
-    (state) => state.attendanceMeetingReducer.ResponseMessage
+    (state) => state.attendanceMeetingReducer.ResponseMessage,
   );
   const attendanceMeetings = useSelector(
-    (state) => state.attendanceMeetingReducer.attendanceMeetings
+    (state) => state.attendanceMeetingReducer.attendanceMeetings,
   );
   const attendanceConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.attendanceConfirmationModal
+    (state) => state.NewMeetingreducer.attendanceConfirmationModal,
   );
   const [useCase, setUseCase] = useState(0);
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -301,7 +301,7 @@ const Attendence = ({
       };
 
       const response = await dispatch(
-        saveMeetingAttendanceApi(navigate, t, Data)
+        saveMeetingAttendanceApi(navigate, t, Data),
       );
 
       if (response && response.success) {
@@ -347,6 +347,8 @@ const Attendence = ({
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));

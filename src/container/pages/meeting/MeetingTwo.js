@@ -79,6 +79,8 @@ import {
   clearMeetingState,
   emailRouteID,
   ProposedMeetingViewFlagAction,
+  boardDeckModal,
+  getMeetingRecordingFilesApi,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -150,6 +152,7 @@ import AgendaIcon from "../../../assets/images/New Meeting Listing Icons/ViewAge
 import ClipboardIcon from "../../../assets/images/New Meeting Listing Icons/Attendance.png";
 import DownloadVideoIcon from "../../../assets/images/New Meeting Listing Icons/VideoRecording.png";
 import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
+import MeetingRecording from "./MeetingRecording/MeetingRecording";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -178,8 +181,10 @@ const NewMeeting = () => {
     setEditMeeting,
     setPolls,
     boardDeckMeetingID,
-    setmeetingDetails,
+    setBoardDeckMeetingID,
     boardDeckMeetingTitle,
+    setBoardDeckMeetingTitle,
+    setmeetingDetails,
     setDownloadMeeting,
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
@@ -188,14 +193,15 @@ const NewMeeting = () => {
     setViewAdvanceMeetingModalUnpublish,
     editFlag,
     setEditFlag,
+    setStepDownloadModal,
+    downloadVideoRecordingModal,
+    setDownloadVideoRecordingModal,
   } = useMeetingContext();
   const {
     meetingsRecords,
     totalMeetingRecords,
     setMeetingsRecords,
     isMeetingTypeFilter,
-    minutesAgo,
-    setMinutesAgo,
     startMeetingButton,
     setStartMeetingButton,
     createEditMeeting,
@@ -248,6 +254,8 @@ const NewMeeting = () => {
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings,
   );
+
+  console.log(searchMeetings, "searchMeetingssearchMeetings");
   const endForAllMeeting = useSelector(
     (state) => state.NewMeetingreducer.endForAllMeeting,
   );
@@ -336,6 +344,7 @@ const NewMeeting = () => {
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
   const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
   const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
+  const [minutesAgo, setMinutesAgo] = useState(0);
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -370,6 +379,8 @@ const NewMeeting = () => {
     severity: "error",
   });
   const [rows, setRow] = useState([]);
+
+  console.log(rows, "rows");
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
   const [searchFields, setSearchFeilds] = useState({
@@ -447,6 +458,7 @@ const NewMeeting = () => {
   );
 
   const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const [meetingTitle, setMeetingTitle] = useState("");
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -757,6 +769,7 @@ const NewMeeting = () => {
           PageNumber: 1,
           Length: 30,
           PublishedMeetings: false,
+          ProposedMeetings: true,
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.setItem("MeetingCurrentView", 2);
@@ -1580,6 +1593,7 @@ const NewMeeting = () => {
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -2211,13 +2225,17 @@ const NewMeeting = () => {
   );
 
   const handleClickDownloadBtn = (record) => {
-    console.log("recordrecordrecord", record);
-    if (record.isVideoCall && record.isRecordingAvailable) {
-      setIsDownloadAvailable(true);
-    }
-    // downloadMeetinModal,
-    setDownloadMeetingRecord(record);
-    setDownloadMeeting(true);
+    let Data = { MeetingID: record?.pK_MDID };
+    // setDownloadMeeting(true);
+    setMeetingTitle(record.meetingTitle);
+    dispatch(
+      getMeetingRecordingFilesApi(
+        navigate,
+        t,
+        Data,
+        setDownloadVideoRecordingModal,
+      ),
+    );
   };
   //Filteration Work Meeting Type Ends
 
@@ -3128,6 +3146,7 @@ const NewMeeting = () => {
       </div>
     </Menu>
   );
+
   const moreButtons = (record) => {
     const STATUS = {
       UPCOMING: 1,
@@ -3148,14 +3167,25 @@ const NewMeeting = () => {
 
       cancel: status === STATUS.UPCOMING && isOrganizer,
 
-      talk: status !== STATUS.NOT_CONDUCTED && status !== STATUS.CANCELLED,
+      talk:
+        status !== STATUS.NOT_CONDUCTED &&
+        status !== STATUS.CANCELLED &&
+        record.talkGroupID !== 0,
 
       viewAgenda:
-        status !== STATUS.NOT_CONDUCTED && status !== STATUS.CANCELLED,
+        (status !== STATUS.NOT_CONDUCTED &&
+          status !== STATUS.CANCELLED &&
+          isAgendaContributor) ||
+        (isParticipant && !record.isQuickMeeting),
 
       attendance: status === STATUS.ENDED && isOrganizer,
 
-      recording: status === STATUS.ENDED && isOrganizer,
+      recording:
+        status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
+      viewMinutes:
+        status === STATUS.ENDED &&
+        (isParticipant || isAgendaContributor) &&
+        !record.isQuickMeeting,
     };
 
     return (
@@ -3183,7 +3213,7 @@ const NewMeeting = () => {
         {canShow.talk && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Talk", record)}
+            onClick={() => groupChatInitiation(record)}
           >
             <img src={ChatIcon} alt="" width="16" height="16" />
             <span>{t("Talk")}</span>
@@ -3203,20 +3233,38 @@ const NewMeeting = () => {
         {canShow.attendance && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Attendance", record)}
+            onClick={() => onClickDownloadIcon(record.pK_MDID)}
           >
             <img src={ClipboardIcon} alt="" width="16" height="16" />
             <span>{t("Attendance-report")}</span>
           </div>
         )}
+        {/* const handleClickDownloadBtn = (record) => {
+    console.log("recordrecordrecord", record);
+    if (record.isVideoCall && record.isRecordingAvailable) {
+      setIsDownloadAvailable(true);
+    }
+    // downloadMeetinModal,
+    setDownloadMeetingRecord(record);
+    setDownloadMeeting(true);
+  }; */}
 
         {canShow.recording && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Recording", record)}
+            onClick={() => handleClickDownloadBtn(record)}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("Download-view-recording")}</span>
+          </div>
+        )}
+        {canShow.viewMinutes && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickDownloadBtn(record)}
+          >
+            <img src={DownloadVideoIcon} alt="" width="16" height="16" />
+            <span>{t("View-minutes")}</span>
           </div>
         )}
       </div>
@@ -3225,19 +3273,192 @@ const NewMeeting = () => {
 
   const onMeetingAction = (actionType, record) => {
     console.log(actionType, record);
-
+    const startMeetingRequest = {
+      VideoCallURL: record.videoCallURL,
+      MeetingID: Number(record.pK_MDID),
+      StatusID: 10,
+    };
     switch (actionType) {
+      case "BOARD_DECK":
+        setDownloadMeeting(false);
+        setBoardDeckMeetingID(record?.pK_MDID);
+        setBoardDeckMeetingTitle(record?.title);
+        dispatch(boardDeckModal(true));
+        localStorage.setItem("meetingTitle", record?.title);
+        break;
       case "START_MEETING":
+        if (record.isQuickMeeting === false) {
+          dispatch(
+            UpdateOrganizersMeeting(
+              record.isQuickMeeting,
+              navigate,
+              t,
+              3,
+              startMeetingRequest,
+              setEditorRole,
+              // setAdvanceMeetingModalID,
+              setDataroomMapFolderId,
+              setViewAdvanceMeetingModal,
+              setAdvanceMeetingModalID,
+              setViewAdvanceMeetingModal,
+              record.isPrimaryOrganizer,
+            ),
+          );
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+          localStorage.setItem("currentMeetingID", record.pK_MDID);
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+          localStorage.setItem("meetingTitle", record.title);
+          setAdvanceMeetingModalID(record.pK_MDID);
+          dispatch(viewMeetingFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+          setEditorRole({
+            status: record.status,
+            role: "Organizer",
+            isPrimaryOrganizer: record.isPrimaryOrganizer,
+          });
+          return;
+        } else {
+          dispatch(
+            UpdateOrganizersMeeting(
+              record.isQuickMeeting,
+              navigate,
+              t,
+              4,
+              startMeetingRequest,
+              setEditorRole,
+              setAdvanceMeetingModalID,
+              setDataroomMapFolderId,
+              setSceduleMeeting,
+              setViewFlag,
+              setEditFlag,
+            ),
+          );
+          setEditorRole({
+            status: record.status,
+            role: "Organizer",
+            isPrimaryOrganizer: record.isPrimaryOrganizer,
+          });
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+          localStorage.setItem("meetingTitle", record.title);
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        }
         // startMeeting(record);
         break;
       case "EDIT_MEETING":
+        if (record.isQuickMeeting === false) {
+          handleEditMeeting(
+            record.pK_MDID,
+            record.isQuickMeeting,
+            "Organizer",
+            record,
+          );
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+        } else {
+          if (record.isOrganizer || record.isAgendaContributor) {
+            handleEditMeeting(
+              record.pK_MDID,
+              record.isQuickMeeting,
+              record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
+              record,
+            );
+            setVideoTalk({
+              isChat: record.isChat,
+              isVideoCall: record.isVideoCall,
+              talkGroupID: record.talkGroupID,
+            });
+            localStorage.setItem("videoCallURL", record.videoCallURL);
+            setEditorRole({
+              status: record.status,
+              role: record.isAgendaContributor
+                ? "Agenda Contributor"
+                : "Organizer",
+              isPrimaryOrganizer: record.isPrimaryOrganizer,
+            });
+            setEditMeeting(true);
+            dispatch(viewMeetingFlag(true));
+            return;
+          }
+        }
         // editMeeting(record);
         break;
       case "JOIN_MEETING":
         // joinMeeting(record);
+        if (
+          record.isOrganizer ||
+          record.isAgendaContributor ||
+          record.isParticipant
+        ) {
+          handleViewMeeting(
+            record.videoCallURL,
+            record.pK_MDID,
+            record.isQuickMeeting,
+            record.status,
+          );
+          // setIsOrganisers(isOrganiser);
+          setEditorRole({
+            status: record.status,
+            role: record.isAgendaContributor
+              ? "Agenda Contributor"
+              : record.isParticipant
+                ? "Participant"
+                : "Organizer",
+            isPrimaryOrganizer: record.isPrimaryOrganizer,
+          });
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+
+          dispatch(viewMeetingFlag(true));
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+          localStorage.setItem("meetingTitle", record.title);
+        }
+
         break;
       case "END_MEETING":
         // endMeeting(record);
+        break;
+      case "VIEW_MEETING":
+        handleViewMeeting(
+          record.videoCallURL,
+          record.pK_MDID,
+          record.isQuickMeeting,
+          record.status,
+        );
+        localStorage.setItem("videoCallURL", record.videoCallURL);
+        setVideoTalk({
+          isChat: record.isChat,
+          isVideoCall: record.isVideoCall,
+          talkGroupID: record.talkGroupID,
+        });
+        setEditorRole({
+          status: record.status,
+          role: record.isParticipant
+            ? "Participant"
+            : record.isAgendaContributor
+              ? "Agenda Contributor"
+              : "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
+        localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        localStorage.setItem("meetingTitle", record.title);
         break;
       default:
         break;
@@ -3250,7 +3471,7 @@ const NewMeeting = () => {
         title: (
           <>
             <div className="d-flex align-items-center gap-2">
-              <span>Meeting Title</span>
+              <span>{t("Meeting-title")}</span>
               {meetingTitleSort === "ascend" ? (
                 <img src={SortIconAscend} alt="SortIconAscend" />
               ) : (
@@ -3269,7 +3490,7 @@ const NewMeeting = () => {
         },
       },
       {
-        title: "Status",
+        title: t("Status"),
         dataIndex: "status",
         key: "status",
         align: "center",
@@ -3295,7 +3516,7 @@ const NewMeeting = () => {
         title: (
           <>
             <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>Organizer</span>
+              <span>{t("Organizer")}</span>
               {organizerNameSort === "ascend" ? (
                 <img src={SortIconAscend} alt="SortIconAscend" />
               ) : (
@@ -3314,7 +3535,7 @@ const NewMeeting = () => {
         title: (
           <>
             <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>Time</span>
+              <span>{t("Time")}</span>
               {meetingTimeSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt="ArrowUpIcon" />
               ) : (
@@ -3348,7 +3569,7 @@ const NewMeeting = () => {
         title: (
           <>
             <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>Date</span>
+              <span>{t("Date")}</span>
               {meetingDateSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt="ArrowUpIcon" />
               ) : (
@@ -3373,7 +3594,7 @@ const NewMeeting = () => {
       {
         title: (
           <span className="d-flex justify-content-center align-items-center">
-            Meeting Type
+            {t("Meeting-type")}
           </span>
         ),
         dataIndex: "meetingtype",
@@ -3439,7 +3660,7 @@ const NewMeeting = () => {
           // Convert milliseconds to minutes
           const minutesDifference = Math.floor(timeDifference / (1000 * 60));
           const meetingCurrentStatus = Number(record.status);
-
+          const isQuickMeeting = record.isQuickMeeting;
           const isOrganizer = record.isOrganizer;
           const isParticipant = record.isParticipant;
           const isAgendaContributor = record.isAgendaContributor;
@@ -3516,7 +3737,7 @@ const NewMeeting = () => {
           }
 
           // ===== ENDED =====
-          if (meetingCurrentStatus === 9 && isOrganizer) {
+          if (meetingCurrentStatus === 9 && isOrganizer && !isQuickMeeting) {
             return (
               <div className="d-flex justify-content-center align-items-center">
                 <CustomButton
@@ -3871,7 +4092,7 @@ const NewMeeting = () => {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-        if (Object.keys(searchMeetings.meetings).length > 0) {
+        if (searchMeetings.meetings.length > 0) {
           // Create a deep copy of the meetings array
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
@@ -3892,7 +4113,9 @@ const NewMeeting = () => {
         setRow([]);
         setDublicatedrows([]);
       }
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [searchMeetings]);
 
   useEffect(() => {
@@ -4952,9 +5175,12 @@ const NewMeeting = () => {
                             className="MeetingTable"
                             column={columns}
                             size={"small"}
-                            rows={meetingsRecords}
+                            rows={rows}
                             sticky={true}
                             pagination={false}
+                            locale={{
+                              emptyText: <EmptyTableComponent />, // Set your custom empty text here
+                            }}
                             scroll={{
                               y: "60vh",
                             }}
@@ -4976,7 +5202,7 @@ const NewMeeting = () => {
                   ) : null}
                   {rows.length > 0 ? (
                     <>
-                      <Row className="mt-5">
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
@@ -5057,6 +5283,7 @@ const NewMeeting = () => {
           boardDeckMeetingTitle={boardDeckMeetingTitle}
         />
       )}
+      {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </>
   );

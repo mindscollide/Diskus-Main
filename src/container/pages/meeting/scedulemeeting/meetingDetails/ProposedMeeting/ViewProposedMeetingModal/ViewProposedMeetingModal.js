@@ -24,21 +24,21 @@ const ViewProposedMeetingModal = () => {
   let locale = localStorage.getItem("i18nextLng");
 
   const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket
+    (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
   //Getting all Proposed meeting Data
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
 
   //Getting all Proposed meeting Participants
   const getAllSavedparticipantsData = useSelector(
-    (state) => state.NewMeetingreducer.getAllSavedparticipants
+    (state) => state.NewMeetingreducer.getAllSavedparticipants,
   );
 
   //Getting all Proposed meeting Dates
   const getAllProposedDatesData = useSelector(
-    (state) => state.NewMeetingreducer.getAllProposedDates
+    (state) => state.NewMeetingreducer.getAllProposedDates,
   );
 
   //Local States
@@ -68,8 +68,10 @@ const ViewProposedMeetingModal = () => {
         getAllMeetingDetails.advanceMeetingDetails !== null &&
         getAllMeetingDetails.advanceMeetingDetails !== undefined
       ) {
-
-        console.log(getAllMeetingDetails, "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails")
+        console.log(
+          getAllMeetingDetails,
+          "getAllMeetingDetailsgetAllMeetingDetailsgetAllMeetingDetails",
+        );
         //For Meeting Title
         setBasicMeetingTitle({
           Title: getAllMeetingDetails.advanceMeetingDetails.meetingTitle,
@@ -128,6 +130,7 @@ const ViewProposedMeetingModal = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings: false,
+      ProposedMeetings: true,
     };
     localStorage.removeItem("folderDataRoomMeeting");
 
@@ -140,12 +143,15 @@ const ViewProposedMeetingModal = () => {
         let meetingStatusID = MeetingStatusSocket?.meetingStatusID;
         let meetingID = MeetingStatusSocket?.meetingID;
 
-        console.log(MeetingStatusSocket, meetingStatusID, meetingID, "MeetingStatusSocketMeetingStatusSocket")
-      } catch (error) {
-
-      }
+        console.log(
+          MeetingStatusSocket,
+          meetingStatusID,
+          meetingID,
+          "MeetingStatusSocketMeetingStatusSocket",
+        );
+      } catch (error) {}
     }
-  }, [MeetingStatusSocket])
+  }, [MeetingStatusSocket]);
 
   return (
     <>
@@ -184,12 +190,12 @@ const ViewProposedMeetingModal = () => {
               </span>
               <Row>
                 {Array.isArray(meetingProposedDates) &&
-                  meetingProposedDates.length > 0 ? (
+                meetingProposedDates.length > 0 ? (
                   meetingProposedDates.map((dateData, index) => {
                     console.log(dateData, "dateData");
                     const formattedDate = ProposedMeetingViewDateFormatWithTime(
                       dateData,
-                      locale
+                      locale,
                     );
                     return (
                       <Col lg={6} md={6} sm={6} className="mt-2" key={index}>
@@ -232,31 +238,31 @@ const ViewProposedMeetingModal = () => {
                       <Row>
                         {partcipatns.length > 0 && partcipatns !== null
                           ? partcipatns.map((data, index) => {
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  key={index}
-                                  className="mt-3"
-                                >
-                                  <span
-                                    className={styles["BoxCardParticipant"]}
+                              return (
+                                <>
+                                  <Col
+                                    lg={6}
+                                    md={6}
+                                    sm={6}
+                                    key={index}
+                                    className="mt-3"
                                   >
-                                    <img
-                                      src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
-                                      alt=""
-                                      width={25}
-                                    />
-                                    <span className={styles["UserName"]}>
-                                      {data.userName}
+                                    <span
+                                      className={styles["BoxCardParticipant"]}
+                                    >
+                                      <img
+                                        src={`data:image/jpeg;base64,${data?.userProfilePicture?.displayProfilePictureName}`}
+                                        alt=""
+                                        width={25}
+                                      />
+                                      <span className={styles["UserName"]}>
+                                        {data.userName}
+                                      </span>
                                     </span>
-                                  </span>
-                                </Col>
-                              </>
-                            );
-                          })
+                                  </Col>
+                                </>
+                              );
+                            })
                           : null}
                       </Row>
                     </Col>

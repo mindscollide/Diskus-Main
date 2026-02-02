@@ -10468,7 +10468,7 @@ const getMeetingRecordingFilesApi = (
   navigate,
   t,
   Data,
-  setStepDownloadModal,
+  setDownloadVideoRecordingModal,
 ) => {
   return async (dispatch) => {
     dispatch(getMeetingRecordingFiles_init());
@@ -10487,7 +10487,7 @@ const getMeetingRecordingFilesApi = (
               navigate,
               t,
               Data,
-              setStepDownloadModal,
+              setDownloadVideoRecordingModal,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -10508,7 +10508,7 @@ const getMeetingRecordingFilesApi = (
               dispatch(
                 getMeetingRecordingFiles_success(apiResonse, t("Successful")),
               );
-              isFunction(setStepDownloadModal) && setStepDownloadModal(2);
+              setDownloadVideoRecordingModal(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -10525,7 +10525,7 @@ const getMeetingRecordingFilesApi = (
               dispatch(
                 getMeetingRecordingFiles_success(apiResonse, t("Successful")),
               );
-              isFunction(setStepDownloadModal) && setStepDownloadModal(2);
+              setDownloadVideoRecordingModal(true);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

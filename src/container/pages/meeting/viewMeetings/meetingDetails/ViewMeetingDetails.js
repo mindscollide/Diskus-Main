@@ -105,67 +105,67 @@ const ViewMeetingDetails = ({}) => {
   } = useMeetingContext();
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
 
   const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage
+    (state) => state.NewMeetingreducer.ResponseMessage,
   );
 
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
 
   const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag,
   );
 
   const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const normalParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag,
   );
 
   const maxParticipantVideoDeniedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
 
   const enableDisableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.enableDisableVideoState
+    (state) => state.videoFeatureReducer.enableDisableVideoState,
   );
 
   const AgendaVideoResponseMessage = useSelector(
-    (state) => state.videoFeatureReducer.ResponseMessage
+    (state) => state.videoFeatureReducer.ResponseMessage,
   );
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.participantEnableVideoState
+    (state) => state.videoFeatureReducer.participantEnableVideoState,
   );
 
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
-    (state) => state.videoFeatureReducer.nonMeetingVideo
+    (state) => state.videoFeatureReducer.nonMeetingVideo,
   );
 
   // For cancel with no modal Open
@@ -245,7 +245,7 @@ const ViewMeetingDetails = ({}) => {
     //Notification if Published Advance meeting is Triggered
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       let AdvanceNotificationClickMeetingID = localStorage.getItem(
-        "NotificationAdvanceMeetingID"
+        "NotificationAdvanceMeetingID",
       );
       let Data = {
         MeetingID:
@@ -264,16 +264,16 @@ const ViewMeetingDetails = ({}) => {
           true,
           setAdvanceMeetingModalID,
           setViewAdvanceMeetingModal,
-          setDataroomMapFolderId
-        )
+          setDataroomMapFolderId,
+        ),
       );
       dispatch(
         GetAllUserChats(
           navigate,
           parseInt(currentUserID),
           parseInt(currentOrganization),
-          t
-        )
+          t,
+        ),
       );
     } else {
       console.log("Notes to be handled");
@@ -294,16 +294,16 @@ const ViewMeetingDetails = ({}) => {
           true,
           setAdvanceMeetingModalID,
           setViewAdvanceMeetingModal,
-          setDataroomMapFolderId
-        )
+          setDataroomMapFolderId,
+        ),
       );
       dispatch(
         GetAllUserChats(
           navigate,
           parseInt(currentUserID),
           parseInt(currentOrganization),
-          t
-        )
+          t,
+        ),
       );
     }
   };
@@ -372,6 +372,8 @@ const ViewMeetingDetails = ({}) => {
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       localStorage.removeItem("folderDataRoomMeeting");
@@ -397,8 +399,8 @@ const ViewMeetingDetails = ({}) => {
             setViewFlag,
             setEditorRole,
             setAdvanceMeetingModalID,
-            setViewAdvanceMeetingModal
-          )
+            setViewAdvanceMeetingModal,
+          ),
         );
       } else {
         let searchData = {
@@ -411,6 +413,8 @@ const ViewMeetingDetails = ({}) => {
           Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
+          ProposedMeetings:
+            currentView && Number(currentView) === 2 ? true : false,
         };
         console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -432,7 +436,7 @@ const ViewMeetingDetails = ({}) => {
         localStorage.setItem("meetingTitle", MeetingData.meetingTitle);
         localStorage.setItem(
           "isMinutePublished",
-          MeetingData.isMinutePublished
+          MeetingData.isMinutePublished,
         );
         let getmeetingDates = MeetingData.meetingDates;
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
@@ -504,10 +508,10 @@ const ViewMeetingDetails = ({}) => {
               endDate: data.endTime,
               endTime: resolutionResultTable(data.meetingDate + data.endTime),
               startTime: resolutionResultTable(
-                data.meetingDate + data.startTime
+                data.meetingDate + data.startTime,
               ),
               dateForView: resolutionResultTable(
-                data.meetingDate + data.startTime
+                data.meetingDate + data.startTime,
               ),
             });
           });
@@ -538,8 +542,8 @@ const ViewMeetingDetails = ({}) => {
         currentOrganization,
         0,
         meetingDetails.MeetingTitle,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
     const emptyArray = [];
@@ -584,8 +588,8 @@ const ViewMeetingDetails = ({}) => {
         currentOrganization,
         0,
         meetingDetails.MeetingTitle,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
     localStorage.setItem("meetingTitle", meetingDetails.MeetingTitle);
     const emptyArray = [];
@@ -609,10 +613,10 @@ const ViewMeetingDetails = ({}) => {
 
   const joinMeetingCall = () => {
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let nonMeetingCheck = JSON.parse(
-      sessionStorage.getItem("NonMeetingVideoCall")
+      sessionStorage.getItem("NonMeetingVideoCall"),
     );
     dispatch(disableZoomBeforeJoinSession(true));
 
@@ -720,8 +724,8 @@ const ViewMeetingDetails = ({}) => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(GetGroupMessages(navigate, chatGroupData, t));
       await dispatch(
@@ -729,16 +733,16 @@ const ViewMeetingDetails = ({}) => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
     }
   };
@@ -752,7 +756,7 @@ const ViewMeetingDetails = ({}) => {
     ) {
       let allChatMessages = AllUserChats?.AllUserChatsData;
       const foundRecord = allChatMessages.allMessages.find(
-        (item) => item.id === talkGroupID
+        (item) => item.id === talkGroupID,
       );
       if (foundRecord) {
         dispatch(chatBoxActiveFlag(true));
@@ -806,8 +810,8 @@ const ViewMeetingDetails = ({}) => {
         "",
         "",
         "",
-        setEndMeetingConfirmationModal
-      )
+        setEndMeetingConfirmationModal,
+      ),
     );
 
     localStorage.removeItem("NotificationAdvanceMeetingID");
@@ -911,7 +915,7 @@ const ViewMeetingDetails = ({}) => {
                           data,
                           rows,
                         },
-                        "formattedDate"
+                        "formattedDate",
                       );
                       if (
                         !data?.selectedOption ||
@@ -932,7 +936,7 @@ const ViewMeetingDetails = ({}) => {
                           formattedEndDate,
                           formattedStartDate,
                         },
-                        "formattedDate"
+                        "formattedDate",
                       );
                       if (!formattedStartDate || !formattedEndDate) {
                         return null;
@@ -952,7 +956,7 @@ const ViewMeetingDetails = ({}) => {
                           formattedEndedDate,
                           formattedDate,
                         },
-                        "formattedDate"
+                        "formattedDate",
                       );
                       return (
                         <Col key={index} lg={12} md={12} sm={12}>
@@ -1174,16 +1178,16 @@ const ViewMeetingDetails = ({}) => {
                       callerID === currentUserID || callerID === 0
                         ? t("End Host")
                         : callerID !== currentUserID
-                        ? t("End Participant")
-                        : null
+                          ? t("End Participant")
+                          : null
                     }
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
                         : callerID !== currentUserID
-                        ? leaveCallParticipant
-                        : null
+                          ? leaveCallParticipant
+                          : null
                     }
                   />
 

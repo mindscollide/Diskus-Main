@@ -22,18 +22,22 @@ import {
 } from "../../../DataRoom/SearchFunctionality/option";
 
 const MeetingRecording = ({ title }) => {
-  const { setStepDownloadModal } = useMeetingContext();
+  const {
+    setStepDownloadModal,
+    downloadVideoRecordingModal,
+    setDownloadVideoRecordingModal,
+  } = useMeetingContext();
   const meetingRecordingFiles = useSelector(
-    (state) => state.NewMeetingreducer.meetingRecordingFiles
+    (state) => state.NewMeetingreducer.meetingRecordingFiles,
   );
   const meetingtranscribeResponse = useSelector(
-    (state) => state.NewMeetingreducer.meetingTranscriptResponse
+    (state) => state.NewMeetingreducer.meetingTranscriptResponse,
   );
   const meetingTranscriptDownload = useSelector(
-    (state) => state.NewMeetingreducer.meetingTranscriptDownloaded
+    (state) => state.NewMeetingreducer.meetingTranscriptDownloaded,
   );
   const meetingMinutesDownloaded = useSelector(
-    (state) => state.NewMeetingreducer.meetingMinutesDownload
+    (state) => state.NewMeetingreducer.meetingMinutesDownload,
   );
   console.log(meetingtranscribeResponse, "meetingtranscribeResponse");
   const dispatch = useDispatch();
@@ -138,7 +142,7 @@ const MeetingRecording = ({ title }) => {
         dispatch(meetingTranscriptDownloaded(null));
         console.log(
           { meetingTranscriptDownload, copyData },
-          "meetingTranscriptDownloaded"
+          "meetingTranscriptDownloaded",
         );
       } catch (error) {
         console.log(error);
@@ -164,7 +168,7 @@ const MeetingRecording = ({ title }) => {
         dispatch(meetingMinutesDownloaded(null));
         console.log(
           { meetingMinutesDownloaded, copyData },
-          "meetingTranscriptDownloaded"
+          "meetingTranscriptDownloaded",
         );
       } catch (error) {
         console.log(error);
@@ -214,7 +218,7 @@ const MeetingRecording = ({ title }) => {
             <span className={styles["RecordingTable___size"]}>
               {`${convertToArabicNumerals(
                 text,
-                localStorage.getItem("i18nextLng")
+                localStorage.getItem("i18nextLng"),
               )} MB`}
             </span>
           </>
@@ -303,7 +307,8 @@ const MeetingRecording = ({ title }) => {
 
   return (
     <CustomModal
-      show={true}
+      show={downloadVideoRecordingModal}
+      onHide={() => setDownloadVideoRecordingModal(false)}
       size={"md"}
       modalFooterClassName={"d-block"}
       modalHeaderClassName={"d-none"}
@@ -345,7 +350,7 @@ const MeetingRecording = ({ title }) => {
               <Button
                 className={styles["Download___cancelBtn"]}
                 text={t("Cancel")}
-                onClick={() => setStepDownloadModal(1)}
+                onClick={() => setDownloadVideoRecordingModal(false)}
               />
             </Col>
           </Row>

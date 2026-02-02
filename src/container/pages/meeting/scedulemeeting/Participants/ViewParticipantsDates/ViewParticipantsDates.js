@@ -38,7 +38,7 @@ const ViewParticipantsDates = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const MeetingStatusSocket = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusSocket
+    (state) => state.meetingIdReducer.MeetingStatusSocket,
   );
   const currentUserId = localStorage.getItem("userID");
   let userID = localStorage.getItem("userID");
@@ -50,11 +50,11 @@ const ViewParticipantsDates = ({
   });
 
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
 
   const userWiseMeetingProposed = useSelector(
-    (state) => state.NewMeetingreducer.userWiseMeetingProposed
+    (state) => state.NewMeetingreducer.userWiseMeetingProposed,
   );
 
   const [prposedData, setPrposedData] = useState([]);
@@ -69,7 +69,7 @@ const ViewParticipantsDates = ({
   });
   const [selectAll, setSelectAll] = useState(false);
   let currentMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID")
+    localStorage.getItem("viewProposeDatePollMeetingID"),
   );
 
   // const changeDateStartHandler2 = (date, value) => {
@@ -100,10 +100,10 @@ const ViewParticipantsDates = ({
 
   const callApis = async () => {
     let NotificationClickProposedMeetingFlag = JSON.parse(
-      localStorage.getItem("ProposedMeetingOperations")
+      localStorage.getItem("ProposedMeetingOperations"),
     );
     let NotificationClickMeetingID = localStorage.getItem(
-      "NotificationClickMeetingID"
+      "NotificationClickMeetingID",
     );
 
     if (NotificationClickProposedMeetingFlag) {
@@ -120,8 +120,8 @@ const ViewParticipantsDates = ({
           false,
           setCurrentMeetingID,
           setSceduleMeeting,
-          setDataroomMapFolderId
-        )
+          setDataroomMapFolderId,
+        ),
       );
     } else {
       let Data = {
@@ -137,8 +137,8 @@ const ViewParticipantsDates = ({
           false,
           setCurrentMeetingID,
           setSceduleMeeting,
-          setDataroomMapFolderId
-        )
+          setDataroomMapFolderId,
+        ),
       );
     }
   };
@@ -157,7 +157,7 @@ const ViewParticipantsDates = ({
       localStorage.removeItem("ProposedMeetOperationsDateSelected");
       localStorage.removeItem("ProposedMeetOperationsDateSelectedMeetID");
       localStorage.removeItem(
-        "ProposedMeetOperationsDateSelectedSendResponseByDate"
+        "ProposedMeetOperationsDateSelectedSendResponseByDate",
       );
       localStorage.removeItem("BeforeProposedDateSelectedCheck");
       localStorage.removeItem("NotificationClickSendResponseByDate");
@@ -202,14 +202,14 @@ const ViewParticipantsDates = ({
                   datesarry.push({
                     userID: datesData.userID,
                     endTime: resolutionResultTable(
-                      data.proposedDate + data.endTime
+                      data.proposedDate + data.endTime,
                     ),
                     proposedDate: resolutionResultTable(
-                      data.proposedDate + data.startTime
+                      data.proposedDate + data.startTime,
                     ),
                     proposedDateID: data.proposedDateID,
                     startTime: resolutionResultTable(
-                      data.proposedDate + data.startTime
+                      data.proposedDate + data.startTime,
                     ),
                     EndtimeSend: data.endTime,
                     ProposedDateSend: data.proposedDate,
@@ -286,7 +286,7 @@ const ViewParticipantsDates = ({
 
     // Find the index of the clicked data object in the array
     const dataIndex = updatedData.findIndex(
-      (data) => data.proposedDateID === clickedData.proposedDateID
+      (data) => data.proposedDateID === clickedData.proposedDateID,
     );
 
     // If the dataIndex is valid
@@ -329,13 +329,13 @@ const ViewParticipantsDates = ({
 
   const handleSave = () => {
     let NotificationClickProposedMeetingFlag = JSON.parse(
-      localStorage.getItem("ProposedMeetingOperations")
+      localStorage.getItem("ProposedMeetingOperations"),
     );
     let NotificationClickMeetingID = localStorage.getItem(
-      "NotificationClickMeetingID"
+      "NotificationClickMeetingID",
     );
     let findIsanySelected = prposedData.some(
-      (data, index) => data.isSelected === true
+      (data, index) => data.isSelected === true,
     );
     if (selectAll && findIsanySelected === false) {
       let defaultarr = [];
@@ -355,7 +355,7 @@ const ViewParticipantsDates = ({
         ProposedDates: defaultarr,
       };
       dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
       );
     } else if (findIsanySelected) {
       let newarr = [];
@@ -378,13 +378,13 @@ const ViewParticipantsDates = ({
       };
 
       dispatch(
-        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll)
+        SetMeetingResponseApiFunc(Data, navigate, t, setViewProposeDatePoll),
       );
     } else if (!selectAll) {
       showMessage(
         t("Please-select-any-of-the-given-options"),
         "error",
-        setOpen
+        setOpen,
       );
     }
   };
@@ -398,6 +398,7 @@ const ViewParticipantsDates = ({
       PageNumber: 1,
       Length: 50,
       PublishedMeetings: false,
+      ProposedMeetings: true,
     };
     console.log("chek search meeting");
     dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -426,6 +427,7 @@ const ViewParticipantsDates = ({
             PageNumber: 1,
             Length: 50,
             PublishedMeetings: false,
+            ProposedMeetings: true,
           };
           console.log("chek search meeting");
           dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -435,7 +437,7 @@ const ViewParticipantsDates = ({
           meetingStatusID,
           meetingID,
           meetingDeatils.MeetingID,
-          "MeetingStatusSocketMeetingStatusSocket"
+          "MeetingStatusSocketMeetingStatusSocket",
         );
       } catch (error) {}
     }
@@ -524,7 +526,7 @@ const ViewParticipantsDates = ({
                                       - {moment(data.endTime).format("hh:mm A")}
                                       ,{" "}
                                       {changeDateStartHandler2(
-                                        data.proposedDate
+                                        data.proposedDate,
                                       )}
                                     </span>
                                   </Col>
@@ -565,16 +567,16 @@ const ViewParticipantsDates = ({
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Date"]}>
                       {JSON.parse(
-                        localStorage.getItem("ProposedMeetingOperations")
+                        localStorage.getItem("ProposedMeetingOperations"),
                       ) === true
                         ? changeDateStartHandler2(
                             localStorage.getItem(
-                              "NotificationClickSendResponseByDate"
-                            )
+                              "NotificationClickSendResponseByDate",
+                            ),
                           )
                         : responseByDate !== undefined
-                        ? changeDateStartHandler2(responseByDate)
-                        : null}
+                          ? changeDateStartHandler2(responseByDate)
+                          : null}
                     </span>
                   </Col>
                 </Row>
