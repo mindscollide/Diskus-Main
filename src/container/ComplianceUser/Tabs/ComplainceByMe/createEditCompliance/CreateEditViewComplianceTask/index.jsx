@@ -4,6 +4,7 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
+  ChangeTaskStatusAPI,
   clearAuthorityMessage,
   GetComplianceChecklistsByComplianceIdAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
@@ -161,7 +162,14 @@ const CreateEditViewComplianceTask = () => {
     GetComplianceChecklistsByComplianceId,
     "GetComplianceChecklistsByComplianceId"
   );
-  const handleDeleteTask = () => {};
+  const handleDeleteTask = (TaskId) => {
+    console.log(TaskId, "TaskId");
+    const Data = {
+      TaskID: TaskId,
+      NewStatusID: 6,
+    };
+    dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+  };
 
   const handleCloseButton = () => {
     // emptyComplianceState();
@@ -233,6 +241,9 @@ const CreateEditViewComplianceTask = () => {
                                         src={DeleteIcon}
                                         alt=""
                                         className="me-2 cursor-pointer"
+                                        onClick={() =>
+                                          handleDeleteTask(data2.taskId)
+                                        }
                                       />
                                     </Col>
                                   </Row>
@@ -240,26 +251,29 @@ const CreateEditViewComplianceTask = () => {
                               );
                             })}
                         </div>
-                        {/* {complianceDetailsState.status.value !== 7 && ( */}
+
                         <Row>
                           <Col sm={12} md={12} lg={12}>
                             <div
                               className={
-                                complianceDetailsState.status.value !== 7
-                                  ? styles["createNewTaskBtnStyle"]
-                                  : styles["createNewTaskBtnStyleDisabled"]
+                                complianceDetailsState.status.value === 7 ||
+                                complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 5
+                                  ? styles["createNewTaskBtnStyleDisabled"]
+                                  : styles["createNewTaskBtnStyle"]
                               }
                               onClick={
-                                complianceDetailsState.status.value !== 7
-                                  ? () => handleAddTaskInCheckList(data)
-                                  : undefined
+                                complianceDetailsState.status.value === 7 ||
+                                complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 5
+                                  ? undefined
+                                  : () => handleAddTaskInCheckList(data)
                               }
                             >
                               {t("Add-task")}
                             </div>
                           </Col>
                         </Row>
-                        {/* )} */}
                       </>
                     }
                     endField={

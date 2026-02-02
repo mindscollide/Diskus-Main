@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   AddComplianceAPI,
+  AddReopenComplianceAPI,
   CheckComplianceTitleExistsAPI,
   clearAuthorityMessage,
   EditComplianceAPI,
@@ -23,13 +24,19 @@ import {
   GetAllTagsByOrganizationIDAPI,
   GetComplianceChecklistsByComplianceIdAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
+  SaveComplianceDocumentsAndMappingsAPI,
+  SaveComplianceFilesAPI,
+  ViewComplianceDetailsByViewTypeAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
 import { Button, Notification } from "../../../../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  createConvert,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 import { parseYYYYMMDDToEndOfDay } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
@@ -37,6 +44,10 @@ import AsyncCreatableSelect from "react-select/async-creatable";
 import CompliaceStatusOnHoldModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusOnHoldModal";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceStatusCancelModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCancel";
+import StatusSubmitForApprovalModal from "../../../../CommonComponents/StatusChangeModals/SubmitForApproval";
+import ComplianceStatusCompleteExceptionModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusCompleteModal";
+import ComplianceStatusReopenedModal from "../../../../CommonComponents/StatusChangeModals/ComplianceStatusReopenedModal";
+import { uploadDocumentsTaskApi } from "../../../../../../store/actions/ToDoList_action";
 
 const ComplainceDetails = () => {
   const dispatch = useDispatch();
@@ -63,8 +74,30 @@ const ComplainceDetails = () => {
     complianceOnHoldReasonState,
     complianceOnHoldSelectOption,
     setComplianceCancelModal,
+    complianceCancelSelectOption,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
+    submitForApprovalModal,
+    setSubmitForApprovalModal,
+    setComlianceCompleteExceptionModal,
+    setComlianceStatusReopenedModal,
+    complianceReopenDetailsState,
   } = useComplianceContext();
   console.log(complianceDetailsState, "complianceDetailsState");
+  const complianceDataroomFolderId = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId
+  );
+  const complianceReopenedDetail = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails
+  );
+
+  console.log(
+    complianceDataroomFolderId,
+    complianceReopenedDetail,
+    "complianceReopenedDetail"
+  );
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -112,6 +145,7 @@ const ComplainceDetails = () => {
     message: "",
     severity: "error",
   });
+  const [editComplianceData, setEditComplianceData] = useState(null);
   console.log(tagsOptions, "GetAllTagsByOrganizationIDData");
 
   const criticalityOptions = [
@@ -128,9 +162,36 @@ const ComplainceDetails = () => {
       value: 3,
     },
   ];
+  const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
+    useState(false);
+  const [checkAnyTaskOnPendingState, setCheckAnyTaskOnPendingState] =
+    useState(false);
+  // const [
+  //   checkAnyChecklistOrTaskInProgress,
+  //   setCheckAnyChecklistOrTaskInProgress,
+  // ] = useState(false);
+
+  const [checkAnyTaskInProgress, setCheckAnyTaskInProgress] = useState(false);
 
   useEffect(() => {
     dispatch(GetAllAuthoritiesWithoutPaginationAPI(navigate, t));
+    if (complianceInfo.complianceId !== 0) {
+      const Data = {
+        complianceId: complianceInfo.complianceId,
+        viewType: 1,
+      };
+      dispatch(
+        ViewComplianceDetailsByViewTypeAPI(
+          navigate,
+          Data,
+          t,
+          1,
+          setComplianceAddEditViewState,
+          setCreateEditComplaince,
+          setShowViewCompliance
+        )
+      );
+    }
   }, []);
 
   useEffect(() => {
@@ -160,10 +221,6 @@ const ComplainceDetails = () => {
           complianceName: complianceTitle,
         });
 
-        console.log(
-          viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails"
-        );
         const selectedCriticality = criticalityOptions.find(
           (item) => item.label === criticalityLevel
         );
@@ -185,8 +242,7 @@ const ComplainceDetails = () => {
             label: complianceStatus.statusName,
           },
         }));
-        // setChecklistCount(checklists.length);
-        // setTaskCount(totalTasks);
+
         if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
           const allowedStatuses = allowedComplianceStatuses.map(
             (data, index) => {
@@ -207,6 +263,67 @@ const ComplainceDetails = () => {
           dispatch(
             GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
           );
+        }
+
+        // check if any status is Pending to show confirmation modal on submit for approval & Complete
+        if (Array.isArray(checklists) && checklists.length > 0) {
+          const hasPendingChecklist = checklists.some(
+            (checklist) => checklist?.status?.statusName === "Pending"
+          );
+
+          setCheckAnyChecklistOnPendingState(hasPendingChecklist);
+        } else {
+          setCheckAnyChecklistOnPendingState(false);
+        }
+
+        // Check if any task status in pending the show confirmation modal on Complete
+        if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
+          const hasPendingTask = checklistTasks.some(
+            (task) => task?.taskStatus?.statusName === "Pending"
+          );
+
+          setCheckAnyTaskOnPendingState(hasPendingTask);
+        } else {
+          setCheckAnyTaskOnPendingState(false);
+        }
+
+        // // Check if any checklist or any task status is In Progress
+        // if (
+        //   (Array.isArray(checklists) && checklists.length > 0) ||
+        //   (Array.isArray(checklistTasks) && checklistTasks.length > 0)
+        // ) {
+        //   const hasChecklistInProgress =
+        //     Array.isArray(checklists) &&
+        //     checklists.some(
+        //       (checklist) => checklist?.status?.statusName === "In Progress"
+        //     );
+
+        //   const hasTaskInProgress =
+        //     Array.isArray(checklistTasks) &&
+        //     checklistTasks.some(
+        //       (task) => task?.taskStatus?.statusName === "In Progress"
+        //     );
+
+        //   setCheckAnyChecklistOrTaskInProgress(
+        //     hasChecklistInProgress ||
+
+        //     hasTaskInProgress
+        //   );
+        // } else {
+        //   setCheckAnyChecklistOrTaskInProgress(false);
+        // }
+
+        // Check if any checklist or any task status is In Progress
+        if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
+          const hasTaskInProgress =
+            Array.isArray(checklistTasks) &&
+            checklistTasks.some(
+              (task) => task?.taskStatus?.statusName === "In Progress"
+            );
+
+          setCheckAnyTaskInProgress(hasTaskInProgress);
+        } else {
+          setCheckAnyTaskInProgress(false);
         }
       } catch (error) {}
     }
@@ -295,6 +412,59 @@ const ComplainceDetails = () => {
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
+  const uploadReopenCompilanceDocuments = async (folderID) => {
+    try {
+      let saveFiles = [];
+      let uploadedFiles;
+      // 1️⃣ Upload individual documents
+      if (complianceReopenDetailsState.attachments.length > 0) {
+        await Promise.all(
+          complianceReopenDetailsState.attachments.map((newData) =>
+            dispatch(
+              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles)
+            )
+          )
+        );
+        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        uploadedFiles = await dispatch(
+          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID)
+        );
+      }
+
+      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+
+      // 3️⃣ Build payload AFTER data exists
+      const Data2 = {
+        complianceId: editComplianceData.complianceId,
+        complianceStatusChangeHistoryID: complianceReopenedDetail,
+        fileIds: uploadedFiles
+          ? uploadedFiles.map((file) => ({
+              PK_FileID: file.pK_FileID,
+            }))
+          : [],
+      };
+
+      // 4️⃣ Final mapping API
+      dispatch(
+        SaveComplianceDocumentsAndMappingsAPI(
+          navigate,
+          Data2,
+          t,
+          editComplianceData,
+          setEditComplianceData,
+          setChecklistTabs
+        )
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (complianceDataroomFolderId !== 0 && complianceReopenedDetail !== null) {
+      uploadReopenCompilanceDocuments(complianceDataroomFolderId);
+    }
+  }, [complianceDataroomFolderId, complianceReopenedDetail]);
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
@@ -370,14 +540,50 @@ const ComplainceDetails = () => {
         newStatusId: complianceDetailsState.status.value,
         tags: tagsArr,
         ReasonToMakeComplianceOnHold:
-          complianceDetailsState.status.value === 7
+          complianceDetailsState.status.value === 7 ||
+          complianceDetailsState.status.value === 9
             ? complianceOnHoldReasonState
             : "", // On Hold Compliance
-        OnHoldAlongWithComplianceCheckListAndTask: complianceOnHoldSelectOption, // On Hold Compliance Including Checklist and Task
+        OnHoldAlongWithComplianceCheckListAndTask:
+          complianceDetailsState.status.value === 7
+            ? complianceOnHoldSelectOption
+            : complianceDetailsState.status.value === 9
+            ? complianceCancelSelectOption
+            : 0, // On Hold Compliance Including Checklist and Task
       };
+      if (complianceDetailsState.status.value === 6) {
+        // There should we use update with repopend compliancere
 
-      console.log(Data, "updatedData");
+        let DataReOpenCompliance = {
+          complianceId: Data.complianceId,
+          updatedDueDate: createConvert(complianceReopenDetailsState.dueDate),
+          reason: complianceReopenDetailsState.reason,
+        };
+        let reopenDataroomMap = {
+          complianceId: complianceInfo.complianceId,
+          complianceTitle: complianceDetailsState.complianceTitle,
+        };
+        console.log(
+          "DataReOpenCompliance",
+          reopenDataroomMap,
+          complianceReopenDetailsState,
+          DataReOpenCompliance
+        );
+        setEditComplianceData(Data);
+        dispatch(
+          AddReopenComplianceAPI(
+            navigate,
+            DataReOpenCompliance,
+            t,
+            reopenDataroomMap
+          )
+        );
+        return;
+      }
       dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+      console.log("complianceReopenDetailsState", complianceReopenDetailsState);
+      console.log(Data, "complianceReopenDetailsState");
+      // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
     } else {
       const tagsArr = complianceDetailsState.tags.map((data) => data.tagTitle);
       const Data = {
@@ -409,29 +615,6 @@ const ComplainceDetails = () => {
       dueDate: meetingDateValueFormat2,
     }));
   };
-
-  // const handleBlur = (event) => {
-  //   if (complianceAddEditViewState === 3) return;
-
-  //   const { name, value } = event.target;
-
-  //   if (name === "complianceTitle" && value) {
-  //     const Data = {
-  //       ComplianceTitle: complianceDetailsState.complianceTitle,
-  //       AuthorityID: complianceDetailsState.authority.value,
-  //     };
-
-  //     dispatch(
-  //       CheckComplianceTitleExistsAPI(
-  //         navigate,
-  //         Data,
-  //         t,
-  //         setIsChecklistTitleExist,
-  //         setErrors
-  //       )
-  //     );
-  //   }
-  // };
 
   const handleBlur = (event) => {
     if (complianceAddEditViewState === 3) return;
@@ -583,6 +766,55 @@ const ComplainceDetails = () => {
   const handleChangeComplianceStatus = (event) => {
     console.log(event, "CompliaceStatusOnHoldModal");
 
+    // if compliance status is changed to Complete check any task still in In Progress or Pending status
+    if (event.value === 3) {
+      if (complianceDetailsState.status.value === 3) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 3) {
+        if (
+          // checkAnyChecklistOnPendingState ||
+          checkAnyTaskOnPendingState ||
+          checkAnyTaskInProgress
+        ) {
+          resetModalStates();
+          setComlianceCompleteExceptionModal(true);
+        } else {
+          setComplianceDetailsState((prev) => ({
+            ...prev,
+            status: event,
+          }));
+        }
+      }
+    }
+
+    // status change to Submit for Approval
+    if (event.value === 5) {
+      if (complianceDetailsState.status.value === 5) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 5) {
+        if (checkAnyChecklistOnPendingState) {
+          resetModalStates();
+          setTempSelectedComplianceStatus(event);
+          setSubmitForApprovalModal(true);
+        } else {
+          setComplianceDetailsState((prev) => ({
+            ...prev,
+            status: event,
+          }));
+        }
+      }
+    }
+
+    // status change to Reopen
+    if (event.value === 6) {
+      if (complianceDetailsState.status.value === 6) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 6) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComlianceStatusReopenedModal(true);
+      }
+    }
     // status change to On Hold
     if (event.value === 7) {
       if (complianceDetailsState.status.value === 7) {
@@ -943,6 +1175,9 @@ const ComplainceDetails = () => {
       <ComplianceCloseConfirmationModal />
       <CompliaceStatusOnHoldModal />
       <ComplianceStatusCancelModal />
+      <StatusSubmitForApprovalModal />
+      <ComplianceStatusCompleteExceptionModal />
+      <ComplianceStatusReopenedModal />
     </>
   );
 };

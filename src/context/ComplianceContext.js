@@ -86,11 +86,20 @@ export const ComlianceProvider = ({ children }) => {
   // Modals For Status
   const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
   const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
-  const [complianceOnHoldReasonModal, setComplianceOnHoldReasonModal] =
-    useState(false);
+  const [
+    complianceStatusChangeReasonModal,
+    setComplianceStatusChangeReasonModal,
+  ] = useState(false);
   const [complianceCancelModal, setComplianceCancelModal] = useState(false);
   const [complianceCanceleasonModal, setComplianceCancelReasonModal] =
     useState(false);
+
+  const [comlianceCompleteExceptionModal, setComlianceCompleteExceptionModal] =
+    useState(false);
+
+  const [comlianceStatusReopenedModal, setComlianceStatusReopenedModal] =
+    useState(false);
+
   // Modals states
   const [complianceOnHoldSelectOption, setComplianceOnHoldSelectOption] =
     useState(0);
@@ -105,10 +114,25 @@ export const ComlianceProvider = ({ children }) => {
   const [tempSelectComplianceStatus, setTempSelectedComplianceStatus] =
     useState(0);
 
+  const [complianceReopenDetailsState, setComplianceReopenDetailsState] =
+    useState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+
+  // Delete Checklist Confirmation Modal
+  const [
+    deleteChecklistConfirmationModalState,
+    setDeleteChecklistConfirmationModalState,
+  ] = useState(false);
+
+  const [deleteChecklistId, setDeleteChecklistId] = useState(0);
+
   const resetModalStates = () => {
     setSubmitForApprovalModal(false);
     setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(false);
+    setComplianceStatusChangeReasonModal(false);
     setComplianceOnHoldSelectOption(0);
     setComplianceOnHoldReasonState("");
     setTempSelectedComplianceStatus(0);
@@ -116,6 +140,15 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceCancelReasonModal(false);
     setComplianceCancelSelectOption(0);
     setComplianceCancelReasonState(0);
+    setComlianceCompleteExceptionModal(false);
+    setComlianceStatusReopenedModal(false);
+    setComplianceReopenDetailsState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+    setDeleteChecklistConfirmationModalState(false);
+    setDeleteChecklistId(0);
   };
 
   const emptyComplianceState = () => {
@@ -186,10 +219,11 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceForMeTotal(0);
     setSubmitForApprovalModal(false);
     setComplianceOnHoldModal(false);
-    setComplianceOnHoldReasonModal(false);
+    setComplianceStatusChangeReasonModal(false);
     setComplianceOnHoldReasonState("");
     setComplianceOnHoldSelectOption(0);
     setTempSelectedComplianceStatus(0);
+    setDeleteChecklistId(0);
   };
 
   // view compliance
@@ -260,8 +294,8 @@ export const ComlianceProvider = ({ children }) => {
         setSubmitForApprovalModal,
         complianceOnHoldModal,
         setComplianceOnHoldModal,
-        complianceOnHoldReasonModal,
-        setComplianceOnHoldReasonModal,
+        complianceStatusChangeReasonModal,
+        setComplianceStatusChangeReasonModal,
         complianceOnHoldReasonState,
         setComplianceOnHoldReasonState,
         complianceOnHoldSelectOption,
@@ -277,6 +311,16 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceCancelSelectOption,
         complianceCancelReasonState,
         setComplianceCancelReasonState,
+        comlianceCompleteExceptionModal,
+        setComlianceCompleteExceptionModal,
+        comlianceStatusReopenedModal,
+        setComlianceStatusReopenedModal,
+        complianceReopenDetailsState,
+        setComplianceReopenDetailsState,
+        deleteChecklistConfirmationModalState,
+        setDeleteChecklistConfirmationModalState,
+        deleteChecklistId,
+        setDeleteChecklistId,
       }}
     >
       {children}
