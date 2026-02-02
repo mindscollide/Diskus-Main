@@ -198,12 +198,9 @@ const NewMeeting = () => {
     setDownloadVideoRecordingModal,
   } = useMeetingContext();
   const {
-    meetingsRecords,
     totalMeetingRecords,
-    setMeetingsRecords,
     isMeetingTypeFilter,
-    startMeetingButton,
-    setStartMeetingButton,
+
     createEditMeeting,
     setCreateEditMeeting,
     setMeetingTypeFilter,
@@ -345,6 +342,7 @@ const NewMeeting = () => {
   const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
   const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
   const [minutesAgo, setMinutesAgo] = useState(0);
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -2237,6 +2235,31 @@ const NewMeeting = () => {
       ),
     );
   };
+
+  const handleClickViewMinutes = (record) => {
+    console.log(record, "recordrecord");
+    setEditorRole({
+      status: String(record?.status),
+      role: record.isParticipant
+        ? "Participant"
+        : record.isAgendaContributor
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    dispatch(emailRouteID(5));
+    setAdvanceMeetingModalID(record.pK_MDID);
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+    localStorage.setItem("currentMeetingID", record.pK_MDID);
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
+  };
   //Filteration Work Meeting Type Ends
 
   const handleClickDeleteMeeting = async (record) => {
@@ -3046,13 +3069,11 @@ const NewMeeting = () => {
     const filteredData = duplicatedRows.filter((item) =>
       selectedStatusValues.includes(item.status?.toString()),
     );
-    // setMeetingsRecords(filteredData);
     setStatusFilterVisible(false);
   };
 
   const resetStatusFilter = () => {
     setSelectedStatusValues(["10", "1", "9", "8", "4"]);
-    // setMeetingsRecords(duplicatedRows);
     setStatusFilterVisible(false);
   };
 
@@ -3073,13 +3094,13 @@ const NewMeeting = () => {
     const filteredData = duplicatedRows.filter((item) =>
       selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
     );
-    setMeetingsRecords(filteredData);
+    // setMeetingsRecords(filteredData);
     setMeetingTypeFilterVisible(false);
   };
 
   const resetMeetingTypeFilter = () => {
     setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setMeetingsRecords(duplicatedRows);
+    // setMeetingsRecords(duplicatedRows);
     setMeetingTypeFilterVisible(false);
   };
 
@@ -3163,7 +3184,10 @@ const NewMeeting = () => {
 
     const canShow = {
       edit:
-        (status === STATUS.UPCOMING || status === STATUS.ACTIVE) && isOrganizer,
+        (status === STATUS.UPCOMING ||
+          status === STATUS.ACTIVE ||
+          status === STATUS.NOT_CONDUCTED) &&
+        isOrganizer,
 
       cancel: status === STATUS.UPCOMING && isOrganizer,
 
@@ -3173,9 +3197,7 @@ const NewMeeting = () => {
         record.talkGroupID !== 0,
 
       viewAgenda:
-        (status !== STATUS.NOT_CONDUCTED &&
-          status !== STATUS.CANCELLED &&
-          isAgendaContributor) ||
+        (status !== STATUS.CANCELLED && isAgendaContributor) ||
         (isParticipant && !record.isQuickMeeting),
 
       attendance: status === STATUS.ENDED && isOrganizer,
@@ -3183,9 +3205,14 @@ const NewMeeting = () => {
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
       viewMinutes:
-        status === STATUS.ENDED &&
-        (isParticipant || isAgendaContributor) &&
-        !record.isQuickMeeting,
+        (status === STATUS.ENDED &&
+          !record.isQuickMeeting &&
+          isParticipant &&
+          record.isMinutePublished) ||
+        (isAgendaContributor &&
+          !record.isQuickMeeting &&
+          status === STATUS.ENDED &&
+          record.isMinutePublished),
     };
 
     return (
@@ -3193,7 +3220,33 @@ const NewMeeting = () => {
         {canShow.edit && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Edit", record)}
+            onClick={() => {
+              if (record.isOrganizer || record.isAgendaContributor) {
+                handleEditMeeting(
+                  record.pK_MDID,
+                  record.isQuickMeeting,
+                  record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                  record,
+                );
+                setVideoTalk({
+                  isChat: record.isChat,
+                  isVideoCall: record.isVideoCall,
+                  talkGroupID: record.talkGroupID,
+                });
+                localStorage.setItem("videoCallURL", record.videoCallURL);
+                setEditorRole({
+                  status: record.status,
+                  role: record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                  isPrimaryOrganizer: record.isPrimaryOrganizer,
+                });
+                setEditMeeting(true);
+                dispatch(viewMeetingFlag(true));
+              }
+            }}
           >
             <img src={EditIcon} alt="" width="16" height="16" />
             <span>{t("Edit-meeting")}</span>
@@ -3239,15 +3292,6 @@ const NewMeeting = () => {
             <span>{t("Attendance-report")}</span>
           </div>
         )}
-        {/* const handleClickDownloadBtn = (record) => {
-    console.log("recordrecordrecord", record);
-    if (record.isVideoCall && record.isRecordingAvailable) {
-      setIsDownloadAvailable(true);
-    }
-    // downloadMeetinModal,
-    setDownloadMeetingRecord(record);
-    setDownloadMeeting(true);
-  }; */}
 
         {canShow.recording && (
           <div
@@ -3261,7 +3305,7 @@ const NewMeeting = () => {
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
-            onClick={() => handleClickDownloadBtn(record)}
+            onClick={() => handleClickViewMinutes(record)}
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("View-minutes")}</span>
@@ -3495,6 +3539,8 @@ const NewMeeting = () => {
         key: "status",
         align: "center",
         width: 100,
+        ellipsis: true,
+
         filters: statusFilters.map((filter) => ({
           text: filter.text,
           value: filter.value,
@@ -3664,11 +3710,16 @@ const NewMeeting = () => {
           const isOrganizer = record.isOrganizer;
           const isParticipant = record.isParticipant;
           const isAgendaContributor = record.isAgendaContributor;
-
+          const isButtonShown = startMeetingButton.find(
+            (btnData, index) =>
+              Number(btnData.meetingID) === Number(record.pK_MDID),
+          );
           const canStartMeeting =
-            meetingCurrentStatus === 1 &&
-            isOrganizer &&
-            minutesDifference <= 30;
+            (meetingCurrentStatus === 1 &&
+              isOrganizer &&
+              minutesDifference <= minutesAgo) ||
+            (record.pK_MDID === isButtonShown?.meetingID &&
+              isButtonShown?.showButton);
 
           const handleClick = (actionType) => {
             onMeetingAction(actionType, record); // ⬅️ back to parent
