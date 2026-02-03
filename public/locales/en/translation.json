@@ -2662,5 +2662,8 @@
   "Confirm-action": "Confirm Action",
   "Cancel-compliance-only": "Cancel Compliance Only",
   "Cancel-compliance-with-associated-items": "Cancel Compliance with Associated items",
-  "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this compliance cannot be Re-opened or moved back to In Progress"
+  "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this compliance cannot be Re-opened or moved back to In Progress",
+  "End-of-Compliance-Reports": "End of Compliance Reports",
+  "Quarterly-reports": "Quarterly reports",
+  "Accumulative-reports": "Accumulative reports"
 }

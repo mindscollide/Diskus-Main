@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ComplianceStandingReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -8,13 +8,14 @@ import ComplianceCalendar from "./../../../../../assets/images/ComplianceCalenda
 import { DatePicker, Collapse, Progress } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined } from "@ant-design/icons";
+import generatePDF, { Resolution, Margin } from "react-to-pdf";
 
 const { Panel } = Collapse;
 
 const ComplianceStandingReport = () => {
   const { complianceStatndingReport, setComplianceStandingReport } =
     useComplianceContext();
-
+  const [isHidden, setIsHidden] = useState(true);
   const complianceData = [
     {
       id: 1,
@@ -84,9 +85,55 @@ const ComplianceStandingReport = () => {
     },
   ];
 
+  const options = {
+    // default is `save`
+    method: "save",
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    resolution: Resolution.HIGH,
+    page: {
+      // margin is in MM, default is Margin.NONE = 0
+      margin: Margin.SMALL,
+      // default is 'A4'
+      format: "A4",
+      // default is 'portrait'
+      orientation: "landscape",
+    },
+    canvas: {
+      // default is 'image/jpeg' for better size performance
+      mimeType: "image/png",
+      qualityRatio: 1,
+    },
+    // Customize any value passed to the jsPDF instance and html2canvas
+    // function. You probably will not need this and things can break,
+    // so use with caution.
+    overrides: {
+      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+      pdf: {
+        compress: true,
+      },
+      // see https://html2canvas.hertzen.com/configuration for more options
+      canvas: {
+        useCORS: true,
+      },
+    },
+  };
+  const getTargetElement = () => document.getElementById("content-id");
+
+  const handleClickGenerateODF = async () => {
+    setIsHidden(false);
+    await document.fonts.ready; // ensures fonts render
+    await generatePDF(getTargetElement, options);
+    setTimeout(() => {
+      setIsHidden(true);
+    }, 300);
+  };
+
   return (
     <>
-      <div className={styles.mainDivComplianceStanding}>
+      <div id="content-id" className={styles.mainDivComplianceStanding}>
         <Row className="align-items-center">
           {/* Back Button */}
           <Col xs="auto">
@@ -135,11 +182,12 @@ const ComplianceStandingReport = () => {
           <Col lg={1} xs="auto">
             <CustomButton
               text="Download"
+              onClick={() => handleClickGenerateODF()}
               className={styles.complianceDownloadBtn}
             />
           </Col>
         </Row>
-
+        <div hidden={isHidden}>Content to be generated to PDF</div>
         <Row>
           <Col
             lg={12}

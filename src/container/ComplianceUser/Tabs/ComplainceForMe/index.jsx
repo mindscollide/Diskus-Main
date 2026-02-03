@@ -38,7 +38,7 @@ const ComplianceForMe = () => {
   ];
 
   const SearchComplianceForMe = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
+    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe,
   );
   // const [totalRecords, setTotalRecords] = useState(0);
 
@@ -62,7 +62,7 @@ const ComplianceForMe = () => {
   } = useComplianceContext();
   console.log(
     { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "statusFilter"
+    "statusFilter",
   );
 
   useEffect(() => {
@@ -129,8 +129,8 @@ const ComplianceForMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance
-      )
+        setShowViewCompliance,
+      ),
     );
   };
 
@@ -164,6 +164,7 @@ const ComplianceForMe = () => {
       setStatusFilter(filters.complianceStatusTitle);
     }
   };
+
   const getCriticalityColumnProps = () => ({
     filteredValue: criticalityFilter, // controlled filter
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
@@ -243,7 +244,7 @@ const ComplianceForMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle
+                  (s) => s.statusTitle,
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -298,12 +299,12 @@ const ComplianceForMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.complianceTitle?.toLowerCase())
             : complianceTitleSort === "ascend"
-            ? a.complianceTitle
-                ?.toLowerCase()
-                .localeCompare(b.complianceTitle?.toLowerCase())
-            : a.complianceTitle
-                ?.toLowerCase()
-                .localeCompare(b.complianceTitle?.toLowerCase()),
+              ? a.complianceTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.complianceTitle?.toLowerCase())
+              : a.complianceTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.complianceTitle?.toLowerCase()),
       },
       {
         title: t("Criticality"),
@@ -385,12 +386,12 @@ const ComplianceForMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.authorityShortCode?.toLowerCase())
             : authoritySort === "ascend"
-            ? a.authorityShortCode
-                ?.toLowerCase()
-                .localeCompare(b.authorityShortCode?.toLowerCase())
-            : a.authorityShortCode
-                ?.toLowerCase()
-                .localeCompare(b.authorityShortCode?.toLowerCase()),
+              ? a.authorityShortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityShortCode?.toLowerCase())
+              : a.authorityShortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityShortCode?.toLowerCase()),
       },
       {
         title: "",
@@ -426,7 +427,7 @@ const ComplianceForMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ]
+    ],
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceForMeList.length < complianceForMeTotal) {

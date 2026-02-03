@@ -2471,5 +2471,8 @@
   "Compliances-by-me": "Compliances by Me",
   "Compliances-for-me": "Compliances for Me",
   "File-successfully-uploaded": "File successfully uploaded",
-  "RESOLUTION_CLOSED": "Resolution Closed"
+  "RESOLUTION_CLOSED": "Resolution Closed",
+  "End-of-Compliance-Reports": "End of Compliance Reports",
+  "Quarterly-reports": "Quarterly reports",
+  "Accumulative-reports": "Accumulative reports"
 }

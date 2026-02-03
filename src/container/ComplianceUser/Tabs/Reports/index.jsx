@@ -10,6 +10,7 @@ import { Col, Row } from "react-bootstrap";
 import NoReportImg from "../../../../assets/images/NoReportsImg.png";
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
+import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import ComplianceReportLiting from "../../../../assets/images/compliance-report-listing.png";
 import ComplianceStatusReportCheckedIcon from "../../../../assets/images/ComplianceStatusReportCheckedIcon.png";
 import { ChevronDown } from "react-bootstrap-icons";
@@ -20,6 +21,7 @@ import {
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 import { ComplianceReportListingAPI } from "../../../../store/actions/ComplainSettingActions";
+import { useSelector } from "react-redux";
 
 const reportsData = [
   {
@@ -91,6 +93,11 @@ const Reports = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const GetReportListingData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.GetReportListingData,
+  );
+
   const [reportTypeFilter, setReportTypeFilter] = useState([1, 2, 3]);
   const reportTypeOptions = [
     { label: t("End-of-Compliance-Reports"), value: 1 },
@@ -99,6 +106,7 @@ const Reports = () => {
   ];
 
   const [reportTitleSort, setReportTitleSort] = useState(null);
+  const [generatedOnSort, setGeneratedOnSort] = useState(null);
   // const [startDateSort, setStartDateSort] = useState("ascend");
   // const [endDateSort, setEndDateSort] = useState("ascend");
   const {
@@ -114,31 +122,48 @@ const Reports = () => {
     let data = {
       reportTitle: "",
       reportTypeIds: "",
-      generatedOnStartDate: "2026-01-01",
-      generatedOnEndDate: "2026-01-31",
+      generatedOnStartDate: "",
+      generatedOnEndDate: "",
     };
     dispatch(ComplianceReportListingAPI(navigate, data, t));
   }, []);
+
+  // Function
+  const resetAllSorts = () => {
+    setReportTitleSort(null);
+    setGeneratedOnSort(null);
+  };
+
+  const handleChangeComplianceSorter = (pagination, filters, sorter) => {
+    resetAllSorts();
+
+    if (sorter.columnKey === "reportTitle") {
+      setReportTitleSort(sorter.order);
+    } else if (sorter.columnKey === "generatedOn") {
+      setGeneratedOnSort(sorter.order);
+    }
+  };
 
   const columns = useMemo(
     () => [
       {
         title: t("Type"),
-        dataIndex: "type",
-        key: "type",
-        width: "12%",
+        dataIndex: "reportType",
+        key: "reportType",
+        width: "20%",
         ellipsis: true,
         align: "left",
-        // ...getReportTypeColumnProps(),
-        render: (text) => (
-          <span>
-            {text === 1
-              ? t("End-of-Compliance-Reports")
-              : text === 2
-                ? t("Quarterly-reports")
-                : t("Accumulative-reports")}
-          </span>
-        ),
+        render: (_, record) => {
+          return (
+            <span>
+              {record.reportTypeId === 1
+                ? t("End-of-Compliance-Reports")
+                : record.reportTypeId === 2
+                  ? t("Quarterly-reports")
+                  : t("Accumulative-reports")}
+            </span>
+          );
+        },
       },
       {
         title: (
@@ -149,7 +174,7 @@ const Reports = () => {
             ) : reportTitleSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -157,19 +182,33 @@ const Reports = () => {
         key: "reportTitle",
         width: "35%",
         ellipsis: true,
+        sorter: (a, b) =>
+          reportTitleSort === "descend"
+            ? b.reportTitle
+                ?.toLowerCase()
+                .localeCompare(a.reportTitle?.toLowerCase())
+            : reportTitleSort === "ascend"
+              ? a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase())
+              : a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
+        render: (text) => {
+          return <span>{text}</span>;
+        },
       },
-
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Generated-on")}
-            {reportTitleSort === "descend" ? (
+            {generatedOnSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : reportTitleSort === "ascend" ? (
+            ) : generatedOnSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -178,6 +217,18 @@ const Reports = () => {
         width: "13%",
         ellipsis: true,
         align: "left",
+        sorter: (a, b) =>
+          generatedOnSort === "descend"
+            ? b.generatedOn
+                ?.toLowerCase()
+                .localeCompare(a.generatedOn?.toLowerCase())
+            : generatedOnSort === "ascend"
+              ? a.generatedOn
+                  ?.toLowerCase()
+                  .localeCompare(b.generatedOn?.toLowerCase())
+              : a.generatedOn
+                  ?.toLowerCase()
+                  .localeCompare(b.generatedOn?.toLowerCase()),
       },
       {
         title: (
@@ -225,13 +276,23 @@ const Reports = () => {
         ellipsis: true,
         align: "center",
 
-        render: () => {
+        render: (_, record) => {
           return (
             <div className="d-flex align-item-center justify-content-center">
               <CustomButton
                 className={styles["actionButtons_complianceList"]}
                 text={"View Report"}
-                onClick={() => setViewDetailComponent(true)}
+                onClick={() =>
+                  record.reportTypeId === 1
+                    ? setEndOfComplianceReport(true)
+                    : record.reportTypeId === 2
+                      ? setEndOfQuarterReport(true)
+                      : record.reportTypeId === 3
+                        ? setAccumulativeReport(true)
+                        : record.reportTypeId === 3
+                          ? setComplianceStandingReport(true)
+                          : null
+                }
               />
             </div>
           );
@@ -258,7 +319,7 @@ const Reports = () => {
         },
       },
     ],
-    [reportList, t],
+    [reportTitleSort, generatedOnSort, t],
   );
 
   return (
@@ -268,7 +329,7 @@ const Reports = () => {
           <Col lg={2} ms={2} sm={2}>
             <img className="" src={ComplianceReportLiting} alt="" />
           </Col>
-          <Col lg={6} ms={6} sm={6}>
+          <Col lg={7} ms={6} sm={6}>
             <h4 className={styles["ComplianceStatusReport_heading"]}>
               Organization’s compliance status report as of today.{" "}
               <span
@@ -278,25 +339,26 @@ const Reports = () => {
               </span>
             </h4>
           </Col>
-          <Col lg={4} ms={4} sm={4}>
+          <Col lg={3} ms={4} sm={4}>
             <div className="d-flex align-items-center justify-content-center mt-3">
               <CustomButton
                 className={styles["actionButtons_complianceStatusReport"]}
                 text={"View Report"}
+                onClick={() => setComplianceStandingReport(true)}
               />
             </div>
           </Col>
         </Row>
       </section>
 
-      {reportsData.length > 0 ? (
+      {GetReportListingData?.reportsList.length > 0 ? (
         <CustomTable
-          rows={reportsData}
+          rows={GetReportListingData?.reportsList}
           column={columns}
           className={"Compliance_Table Report_Table  mt-3"}
           // scroll={{ x: "scroll", y: 550 }}
           pagination={false}
-          // onChange={handleChangeReportSorter}
+          onChange={handleChangeComplianceSorter}
         />
       ) : (
         <>
@@ -346,23 +408,6 @@ const Reports = () => {
           </section>
         </>
       )}
-
-      <CustomButton
-        onClick={() => setComplianceStandingReport(true)}
-        text={"Open Compliance Report"}
-      />
-      <CustomButton
-        onClick={() => setEndOfComplianceReport(true)}
-        text={"Open End of Compliance Report"}
-      />
-      <CustomButton
-        onClick={() => setEndOfQuarterReport(true)}
-        text={"Open End of Quarter Report"}
-      />
-      <CustomButton
-        onClick={() => setAccumulativeReport(true)}
-        text={"Open Accumulative Report"}
-      />
     </>
   );
 };
