@@ -140,6 +140,7 @@ const ReopenedCompliance = () => {
                 authority={item.authorityShortCode}
                 showHoverIcon={false}
                 onIconClick={() => handleCardClick(item.complianceId)}
+                showAttachement={item.isAttachmentAttached}
               />
             ))}
           </div>

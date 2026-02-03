@@ -43,6 +43,7 @@ const initialState = {
   GetComplianceTasksDashboardData: null,
   GetComplianceReopenDashboardData: null,
   GetComlianceQuarterlyTasksDashboardData: null,
+  GetReportListingData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -913,6 +914,32 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         EditCompliance: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //API For Report Compliance Listing
+    case actions.COMPLIANCE_REPORT_LISTING_INIT:
+      return {
+        ...state,
+        Loading: false,
+        severity: null,
+      };
+
+    case actions.COMPLIANCE_REPORT_LISTING_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetReportListingData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.COMPLIANCE_REPORT_LISTING_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetReportListingData: null,
         ResponseMessage: action.message,
         severity: "error",
       };

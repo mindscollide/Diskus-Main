@@ -2147,3 +2147,8 @@ export const GetComplianceQuarterlyTasksDashboard = {
 export const EditCompliance = {
   RequestMethod: "ServiceManager.EditCompliance",
 };
+
+//API For Report Compliance Listing
+export const GetReportComplianceListing = {
+  RequestMethod: "ServiceManager.GetReportsListing",
+};

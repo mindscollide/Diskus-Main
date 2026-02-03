@@ -2,6 +2,7 @@ import React, { memo, useState } from "react";
 import { Row, Col, Tag, Progress } from "antd";
 import styles from "./ComplianceCard.module.css";
 import GoToIcon from "./../../../assets/images/GoToIcon.png";
+import AttachmentIcon from "./../../../assets/images/AttachmentIcon.png";
 
 /* 🔹 Criticality Style Logic */
 const getCriticalityConfig = (id) => {
@@ -36,11 +37,16 @@ const ComplianceCard = ({
   authority,
   showHoverIcon = false,
   onIconClick,
+  showAttachement = false,
 }) => {
   const criticality = getCriticalityConfig(criticalityId);
   const showProgress = progress !== undefined;
 
+  // For Hovered Card Tile goTo Icon
   const [isHovered, setIsHovered] = useState(false);
+
+  // For Attachment Icon show
+  const [isAttachmentIcon, setIsAttachmentIcon] = useState(false);
 
   const handleIconClick = (e) => {
     e.stopPropagation();
@@ -67,6 +73,16 @@ const ComplianceCard = ({
                     src={GoToIcon}
                     alt="Go to"
                     className={styles.hoverIcon}
+                  />
+                </div>
+              )}
+
+              {showAttachement && (
+                <div>
+                  <img
+                    src={AttachmentIcon}
+                    alt="Attachment"
+                    draggable="false"
                   />
                 </div>
               )}

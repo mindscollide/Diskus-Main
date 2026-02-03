@@ -176,6 +176,19 @@ export const ComlianceProvider = ({ children }) => {
     setReopendComplianceDashboardFilter,
   ] = useState(1);
 
+  // Compliance Standing Report Open
+  const [complianceStatndingReport, setComplianceStandingReport] =
+    useState(false);
+
+  // End Of Compliance Report Open
+  const [endOfComplianceReport, setEndOfComplianceReport] = useState(false);
+
+  // End Of Quarter Report Open
+  const [endOfQuarterReport, setEndOfQuarterReport] = useState(false);
+
+  // Accumulative Report Open
+  const [accumulativeReport, setAccumulativeReport] = useState(false);
+
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
     setComplianceDashboardFilter(1);
@@ -258,6 +271,14 @@ export const ComlianceProvider = ({ children }) => {
         reopendComplianceDashboardFilter,
         setReopendComplianceDashboardFilter,
         resetReopenComplianceDashboardFilter,
+        complianceStatndingReport,
+        setComplianceStandingReport,
+        endOfComplianceReport,
+        setEndOfComplianceReport,
+        endOfQuarterReport,
+        setEndOfQuarterReport,
+        accumulativeReport,
+        setAccumulativeReport,
       }}
     >
       {children}

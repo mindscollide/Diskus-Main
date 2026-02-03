@@ -36,8 +36,10 @@ import {
   GetComplianceReopenDashboard,
   GetComplianceQuarterlyTasksDashboard,
   EditCompliance,
+  GetReportComplianceListing,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
+import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -3730,6 +3732,92 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
   };
 };
 
+//API For Report Compliance Listing
+const ComplianceReportListingInit = () => {
+  return {
+    type: actions.COMPLIANCE_REPORT_LISTING_INIT,
+  };
+};
+
+const ComplianceReportListingSuccess = (response, message) => {
+  return {
+    type: actions.COMPLIANCE_REPORT_LISTING_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const ComplianceReportListingFail = (message) => {
+  return {
+    type: actions.COMPLIANCE_REPORT_LISTING_FAIL,
+    message: message,
+  };
+};
+
+const ComplianceReportListingAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(ComplianceReportListingInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetReportComplianceListing.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ComplianceReportListingAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetReportsListing_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                ComplianceReportListingSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetReportsListing_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(ComplianceReportListingFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetReportsListing_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                ComplianceReportListingFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              ComplianceReportListingFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            ComplianceReportListingFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(ComplianceReportListingFail(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -3772,4 +3860,5 @@ export {
   GetComplianceReopenDashboardAPI,
   GetComplianceQuarterlyTasksDashboardAPI,
   EditComplianceAPI,
+  ComplianceReportListingAPI,
 };

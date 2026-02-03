@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./complianceTasks.module.css";
 import {
   ComplianceCard,
@@ -12,13 +12,19 @@ import { useSelector } from "react-redux";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useNavigate } from "react-router-dom";
+import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
+import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
+import { useDispatch } from "react-redux";
 
 const ComplianceTasks = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { complianceTaskDashboardFilter, setComplianceTaskDashboardFilter } =
     useComplianceContext();
+
+  const [openTaskViewModal, setOpenTaskViewModal] = useState(false);
 
   const GetComplianceTasksDashboardData = useSelector(
     (state) =>
@@ -43,6 +49,11 @@ const ComplianceTasks = () => {
   };
 
   const hasDataComplianceTask = GetComplianceTasksDashboardData !== null;
+
+  const onClickTaskId = (taskId) => {
+    let Data = { ToDoListID: taskId };
+    dispatch(ViewToDoList(navigate, Data, t, setOpenTaskViewModal));
+  };
 
   return (
     <>
@@ -116,6 +127,7 @@ const ComplianceTasks = () => {
                 criticalityId={item.criticality} // 1=High, 2=Medium, 3=Low
                 authority={item.authorityShortCode}
                 showHoverIcon={true}
+                onIconClick={() => onClickTaskId(item.taskId)}
               />
             ))}
           </div>
@@ -126,6 +138,13 @@ const ComplianceTasks = () => {
             onClick={onClickToTask}
           />
         </div>
+      )}
+
+      {openTaskViewModal && (
+        <TaskDetailsViewModal
+          viewFlagToDo={openTaskViewModal}
+          setViewFlagToDo={setOpenTaskViewModal}
+        />
       )}
     </>
   );
