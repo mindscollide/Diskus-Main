@@ -217,7 +217,7 @@ const EndOfComplianceReport = () => {
                 {/* EXPANDED CONTENT */}
                 <div className={styles.panelContent}>
                   <div className={styles.insideAccordianTable}>
-                    <Row>
+                    {/* <Row>
                       <Col lg={12} xs="auto">
                         <div className={styles.insideAccordianMainHeading}>
                           <label>Task Title:</label>
@@ -259,7 +259,7 @@ const EndOfComplianceReport = () => {
                           <p>On Time</p>
                         </div>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </div>
                 </div>
               </Panel>

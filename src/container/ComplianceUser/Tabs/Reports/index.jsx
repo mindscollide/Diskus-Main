@@ -101,7 +101,14 @@ const Reports = () => {
   const [reportTitleSort, setReportTitleSort] = useState(null);
   // const [startDateSort, setStartDateSort] = useState("ascend");
   // const [endDateSort, setEndDateSort] = useState("ascend");
-  const { reportList, setViewDetailComponent } = useComplianceContext();
+  const {
+    reportList,
+    setViewDetailComponent,
+    setComplianceStandingReport,
+    setEndOfComplianceReport,
+    setEndOfQuarterReport,
+    setAccumulativeReport,
+  } = useComplianceContext();
 
   useEffect(() => {
     let data = {
@@ -339,6 +346,23 @@ const Reports = () => {
           </section>
         </>
       )}
+
+      <CustomButton
+        onClick={() => setComplianceStandingReport(true)}
+        text={"Open Compliance Report"}
+      />
+      <CustomButton
+        onClick={() => setEndOfComplianceReport(true)}
+        text={"Open End of Compliance Report"}
+      />
+      <CustomButton
+        onClick={() => setEndOfQuarterReport(true)}
+        text={"Open End of Quarter Report"}
+      />
+      <CustomButton
+        onClick={() => setAccumulativeReport(true)}
+        text={"Open Accumulative Report"}
+      />
     </>
   );
 };
