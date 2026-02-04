@@ -83,7 +83,7 @@ const ViewCompliance = () => {
           //   criticality: criticalityLevel,
           authority: {
             value: authority.authorityId,
-            label: authority.authorityName,
+            label: `${authority.authorityShortCode} - ${authority.authorityName}`,
           },
           criticality: {
             value: 0,
@@ -92,8 +92,8 @@ const ViewCompliance = () => {
           dueDate: dueDate,
           tags: Array.isArray(tags)
             ? tags.map((tag, index) => ({
-                tagID: index + 1,
-                tagTitle: tag,
+                tagID: tag.tagID,
+                tagTitle: tag.tagTitle,
               }))
             : [],
           progressPercent: progressPercent,

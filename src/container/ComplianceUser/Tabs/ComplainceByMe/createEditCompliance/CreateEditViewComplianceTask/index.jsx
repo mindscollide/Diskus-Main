@@ -4,6 +4,7 @@ import CustomAccordion from "../../../../../../components/elements/accordian/Cus
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {
+  ChangeTaskStatusAPI,
   clearAuthorityMessage,
   GetComplianceChecklistsByComplianceIdAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
@@ -19,6 +20,7 @@ import { Button, Notification } from "../../../../../../components/elements";
 import DeleteIcon from "../../../../../../assets/images/del.png";
 import ModalToDoListChecklist from "../../../../CommonComponents/CreateTodoChecklist/ModalToDoListChecklist";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
+import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
 
 const CreateEditViewComplianceTask = () => {
   const dispatch = useDispatch();
@@ -59,6 +61,8 @@ const CreateEditViewComplianceTask = () => {
     setTaskCount,
     emptyComplianceState,
     setCreateEditComplaince,
+    setCloseConfirmationModal,
+    complianceDetailsState,
   } = useComplianceContext();
 
   useEffect(() => {
@@ -158,12 +162,20 @@ const CreateEditViewComplianceTask = () => {
     GetComplianceChecklistsByComplianceId,
     "GetComplianceChecklistsByComplianceId"
   );
-  const handleDeleteTask = () => {};
+  const handleDeleteTask = (TaskId) => {
+    console.log(TaskId, "TaskId");
+    const Data = {
+      TaskID: TaskId,
+      NewStatusID: 6,
+    };
+    dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+  };
 
   const handleCloseButton = () => {
-    emptyComplianceState();
-    setChecklistTabs(1);
-    setCreateEditComplaince(false);
+    // emptyComplianceState();
+    // setChecklistTabs(1);
+    // setCreateEditComplaince(false);
+    setCloseConfirmationModal(true);
   };
 
   const handleClickPrevBtn = () => {
@@ -229,6 +241,9 @@ const CreateEditViewComplianceTask = () => {
                                         src={DeleteIcon}
                                         alt=""
                                         className="me-2 cursor-pointer"
+                                        onClick={() =>
+                                          handleDeleteTask(data2.taskId)
+                                        }
                                       />
                                     </Col>
                                   </Row>
@@ -236,11 +251,24 @@ const CreateEditViewComplianceTask = () => {
                               );
                             })}
                         </div>
+
                         <Row>
                           <Col sm={12} md={12} lg={12}>
                             <div
-                              className={styles["createNewTaskBtnStyle"]}
-                              onClick={() => handleAddTaskInCheckList(data)}
+                              className={
+                                complianceDetailsState.status.value === 7 ||
+                                complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 5
+                                  ? styles["createNewTaskBtnStyleDisabled"]
+                                  : styles["createNewTaskBtnStyle"]
+                              }
+                              onClick={
+                                complianceDetailsState.status.value === 7 ||
+                                complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 5
+                                  ? undefined
+                                  : () => handleAddTaskInCheckList(data)
+                              }
                             >
                               {t("Add-task")}
                             </div>
@@ -314,6 +342,7 @@ const CreateEditViewComplianceTask = () => {
         />
       )}
       <Notification open={open} setOpen={setOpen} />
+      <ComplianceCloseConfirmationModal />
     </>
   );
 };

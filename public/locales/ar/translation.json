@@ -2473,5 +2473,14 @@
   "File-successfully-uploaded": "File successfully uploaded",
   "RESOLUTION_CLOSED": "Resolution Closed",
   "Attendance-report": "Attendance report",
-  "View-agenda": "View agenda"
+  "View-agenda": "View agenda",
+  "End-of-Compliance-Reports": "End of Compliance Reports",
+  "Quarterly-reports": "Quarterly reports",
+  "Accumulative-reports": "Accumulative reports",
+  "Report-title": "Report Title",
+  "Report-type": "Report Type",
+  "Generated-on": "Generated on",
+  "Due-date-from": "Start Date",
+  "Due-date-to": "End Date",
+  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options"
 }

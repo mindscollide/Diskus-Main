@@ -2113,3 +2113,78 @@ export const GetComplianceChecklistsWithTasksByComplianceIdForMe = {
 export const GetComplianceAndTaskStatuses = {
   RequestMethod: "ServiceManager.GetComplianceAndTaskStatuses",
 };
+
+//Api For Compliance Dashboard Quarterly Submitted
+export const GetComplianceQuarterlySubmitted = {
+  RequestMethod: "ServiceManager.QuarterlySubmittedCompliances",
+};
+
+//Api For Compliance Dashboard Upcoming Deadline
+export const GetUpcomingComplianceDeadline = {
+  RequestMethod: "ServiceManager.UpcomingCompliancesDeadline",
+};
+
+//Api For Compliance By Dashboard
+export const GetComplianceByDashboard = {
+  RequestMethod: "ServiceManager.ComplianceByForDashboard",
+};
+
+//Api For Compliance Tasks Dashboard
+export const GetComplianceTasksDashboard = {
+  RequestMethod: "ServiceManager.TasksDashboard",
+};
+
+//Api For Compliance Reopen Dashboard
+export const GetComplianceReopenDashboard = {
+  RequestMethod: "ServiceManager.ReopenedCompliancesForDashboard",
+};
+
+//Api For Compliance Quarterly Tasks Dashboard
+export const GetComplianceQuarterlyTasksDashboard = {
+  RequestMethod: "ServiceManager.QuarterlyComplianceTasksSummary",
+};
+
+export const EditCompliance = {
+  RequestMethod: "ServiceManager.EditCompliance",
+};
+
+//API For Report Compliance Listing
+export const GetReportComplianceListing = {
+  RequestMethod: "ServiceManager.GetReportsListing",
+};
+// Reopen Complaince Step 1
+// Add Reopen Compliance
+export const AddReopenCompliance = {
+  RequestMethod: "ServiceManager.AddReopenCompliance",
+};
+
+// Reopen Complaince Step 2
+// CreateComplianceDataRoomMap
+export const CreateComplianceDataRoomMap = {
+  RequestMethod: "ServiceManager.CreateComplianceDataRoomMap",
+};
+
+// Reopen Complaince Step 3
+// UploadDocuments already made
+
+// Reopen Complaince Step 4
+// SaveComplianceFiles
+export const SaveComplianceFiles = {
+  RequestMethod: "ServiceManager.SaveComplianceFiles",
+};
+
+// Reopen Complaince Step 5 (After this Edit api will be hit in edit flow)
+// SaveComplianceDocumentsAndMapping
+export const SaveComplianceDocumentsAndMapping = {
+  RequestMethod: "ServiceManager.SaveComplianceDocumentsAndMapping",
+};
+
+//----------Reopen Flow ended-----------------
+
+export const DeleteCheckList = {
+  RequestMethod: "ServiceManager.DeleteCheckList",
+};
+
+export const ChangeTaskStatus = {
+  RequestMethod: "ServiceManager.ChangeTaskStatus",
+};

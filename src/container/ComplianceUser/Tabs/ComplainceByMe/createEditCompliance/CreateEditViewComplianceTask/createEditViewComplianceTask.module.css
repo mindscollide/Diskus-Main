@@ -100,3 +100,17 @@
   padding-right: 10px;
   overflow-x: hidden;
 }
+.createNewTaskBtnStyleDisabled {
+  border-radius: 4px;
+  border-width: 1px;
+  padding: 4px 0;
+  border: 1px dashed #6172d6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  color: #6172d6;
+  font-weight: 600;
+  font-size: 16px;
+  filter: grayscale(1);
+}

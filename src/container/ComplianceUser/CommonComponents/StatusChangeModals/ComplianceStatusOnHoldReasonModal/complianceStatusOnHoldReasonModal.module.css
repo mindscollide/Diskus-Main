@@ -1,0 +1,54 @@
+.StatusTitle {
+  font-weight: 600;
+  font-size: 30px;
+  color: #6172d6;
+}
+.CancelButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.CancelButton:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+.ProceedButtonStyles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+
+.ProceedButtonStyles:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.sterick {
+  color: #f16b6b;
+}
