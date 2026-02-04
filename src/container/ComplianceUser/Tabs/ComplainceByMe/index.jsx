@@ -38,7 +38,7 @@ const ComplianceByMe = () => {
     { label: t("High"), value: 3 },
   ];
   const getCompliancesForCreator = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
+    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator,
   );
 
   // const [complianceList, setComplianceList] = useState([]);
@@ -67,7 +67,7 @@ const ComplianceByMe = () => {
 
   useEffect(() => {
     dispatch(
-      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
+      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t),
     );
     dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
   }, []);
@@ -82,8 +82,8 @@ const ComplianceByMe = () => {
       return;
     }
 
-    const list = getCompliancesForCreator.complianceList || [];
-    const total = getCompliancesForCreator.totalCount || 0;
+    const list = getCompliancesForCreator?.complianceList || [];
+    const total = getCompliancesForCreator?.totalCount || 0;
 
     setComplianceByMeTotal(total);
 
@@ -118,8 +118,8 @@ const ComplianceByMe = () => {
         1,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance
-      )
+        setShowViewCompliance,
+      ),
     );
   };
 
@@ -137,8 +137,8 @@ const ComplianceByMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance
-      )
+        setShowViewCompliance,
+      ),
     );
   };
 
@@ -255,7 +255,7 @@ const ComplianceByMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle
+                  (s) => s.statusTitle,
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -310,12 +310,12 @@ const ComplianceByMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.complianceTitle?.toLowerCase())
             : complianceTitleSort === "ascend"
-            ? a.complianceTitle
-                ?.toLowerCase()
-                .localeCompare(b.complianceTitle?.toLowerCase())
-            : a.complianceTitle
-                ?.toLowerCase()
-                .localeCompare(b.complianceTitle?.toLowerCase()),
+              ? a.complianceTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.complianceTitle?.toLowerCase())
+              : a.complianceTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.complianceTitle?.toLowerCase()),
       },
       // {
       //   title: "Criticality",
@@ -413,12 +413,12 @@ const ComplianceByMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.authorityShortCode?.toLowerCase())
             : authoritySort === "ascend"
-            ? a.authorityShortCode
-                ?.toLowerCase()
-                .localeCompare(b.authorityShortCode?.toLowerCase())
-            : a.authorityShortCode
-                ?.toLowerCase()
-                .localeCompare(b.authorityShortCode?.toLowerCase()),
+              ? a.authorityShortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityShortCode?.toLowerCase())
+              : a.authorityShortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityShortCode?.toLowerCase()),
       },
       {
         title: "",
@@ -454,7 +454,7 @@ const ComplianceByMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ]
+    ],
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceByMeList.length < complianceByMeTotal) {
