@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./meetingTwo.module.css";
+import "./Meeting.css";
 import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
@@ -205,6 +206,8 @@ const NewMeeting = () => {
     setCreateEditMeeting,
     setMeetingTypeFilter,
   } = useNewMeetingContext();
+
+  console.log(isMeetingTypeFilter, "isMeetingTypeFilter");
 
   const { setResultresolution } = useResolutionContext();
 
@@ -481,6 +484,22 @@ const NewMeeting = () => {
 
         console.log(meetingVideoRecording, "meetingIDmeetingID");
         setRow((prevRows) => {
+          return prevRows.map((meetingRecord) => {
+            if (
+              Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
+              meetingRecord?.isPrimaryOrganizer === true
+            ) {
+              console.log(meetingRecord, "meetingIDmeetingID");
+
+              return {
+                ...meetingRecord,
+                isRecordingAvailable: true,
+              };
+            }
+            return meetingRecord;
+          });
+        });
+        setDublicatedrows((prevRows) => {
           return prevRows.map((meetingRecord) => {
             if (
               Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
@@ -3069,12 +3088,14 @@ const NewMeeting = () => {
     const filteredData = duplicatedRows.filter((item) =>
       selectedStatusValues.includes(item.status?.toString()),
     );
+    setRow(filteredData);
     setStatusFilterVisible(false);
   };
 
   const resetStatusFilter = () => {
     setSelectedStatusValues(["10", "1", "9", "8", "4"]);
     setStatusFilterVisible(false);
+    setRow(duplicatedRows);
   };
 
   const handleClickStatusChevron = () => {
@@ -3094,13 +3115,13 @@ const NewMeeting = () => {
     const filteredData = duplicatedRows.filter((item) =>
       selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
     );
-    // setMeetingsRecords(filteredData);
+    setRow(filteredData);
     setMeetingTypeFilterVisible(false);
   };
 
   const resetMeetingTypeFilter = () => {
     setSelectedMeetingTypeValues(["1", "2", "3"]);
-    // setMeetingsRecords(duplicatedRows);
+    setRow(duplicatedRows);
     setMeetingTypeFilterVisible(false);
   };
 
@@ -3168,6 +3189,35 @@ const NewMeeting = () => {
     </Menu>
   );
 
+  const handleClickViewAgenda = (record) => {
+    console.log("Agenda", record);
+    handleViewMeeting(
+      record.videoCallURL,
+      record.pK_MDID,
+      record.isQuickMeeting,
+      record.status,
+    );
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    setEditorRole({
+      status: record.status,
+      role: record.isParticipant
+        ? "Participant"
+        : record.isAgendaContributor
+          ? "Agenda Contributor"
+          : "Organizer",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    dispatch(emailRouteID(3));
+
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
+    localStorage.setItem("meetingTitle", record.title);
+  };
+
   const moreButtons = (record) => {
     const STATUS = {
       UPCOMING: 1,
@@ -3197,8 +3247,8 @@ const NewMeeting = () => {
         record.talkGroupID !== 0,
 
       viewAgenda:
-        (status !== STATUS.CANCELLED && isAgendaContributor) ||
-        (isParticipant && !record.isQuickMeeting),
+        (status === STATUS.ENDED || status === STATUS.ACTIVE) &&
+        (isOrganizer || isAgendaContributor || isParticipant),
 
       attendance: status === STATUS.ENDED && isOrganizer,
 
@@ -3214,6 +3264,11 @@ const NewMeeting = () => {
           status === STATUS.ENDED &&
           record.isMinutePublished),
     };
+    const hasAnyAction = Object.values(canShow).some(Boolean);
+
+    if (!hasAnyAction) {
+      return null;
+    }
 
     return (
       <div className={styles.morebuttons}>
@@ -3253,15 +3308,14 @@ const NewMeeting = () => {
           </div>
         )}
 
-        {canShow.cancel && (
+        {/* {canShow.cancel && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Cancel", record)}
-          >
-            <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+            onClick={() => console.log("Cancel", record)}>
+            <img src={CancelMeetingIcon} alt='' width='16' height='16' />
             <span>{t("Cancel-meeting")}</span>
           </div>
-        )}
+        )} */}
 
         {canShow.talk && (
           <div
@@ -3276,7 +3330,7 @@ const NewMeeting = () => {
         {canShow.viewAgenda && (
           <div
             className={styles.morebtn}
-            onClick={() => console.log("Agenda", record)}
+            onClick={() => handleClickViewAgenda(record)}
           >
             <img src={AgendaIcon} alt="" width="16" height="16" />
             <span>{t("View-agenda")}</span>
@@ -3504,6 +3558,9 @@ const NewMeeting = () => {
         localStorage.setItem("isMinutePublished", record.isMinutePublished);
         localStorage.setItem("meetingTitle", record.title);
         break;
+      case "CONTRIBUTE_AGENDA":
+        handleClickViewAgenda(record);
+        break;
       default:
         break;
     }
@@ -3511,28 +3568,67 @@ const NewMeeting = () => {
 
   const columns = useMemo(() => {
     return [
+      // ===== Meeting Title =====
       {
         title: (
-          <>
-            <div className="d-flex align-items-center gap-2">
-              <span>{t("Meeting-title")}</span>
-              {meetingTitleSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
-              ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
-              )}
-            </div>
-          </>
+          <div className="d-flex align-items-center gap-2">
+            <span>{t("Meeting-title")}</span>
+            {meetingTitleSort && (
+              <img
+                src={
+                  meetingTitleSort === "ascend"
+                    ? SortIconAscend
+                    : SortIconDescend
+                }
+                alt="Sort Icon"
+              />
+            )}
+          </div>
         ),
         dataIndex: "title",
         key: "title",
         width: 180,
-        sorter: true,
         ellipsis: true,
-        render: (text) => {
-          return <span className={styles.tableRow}>{text}</span>;
-        },
+        sorter: (a, b) => a.title.localeCompare(b.title),
+        sortOrder: meetingTitleSort,
+        render: (text, record) => (
+          <span
+            onClick={() => {
+              handleViewMeeting(
+                record.videoCallURL,
+                record.pK_MDID,
+                record.isQuickMeeting,
+                record.status,
+              );
+              localStorage.setItem("videoCallURL", record.videoCallURL);
+              setVideoTalk({
+                isChat: record.isChat,
+                isVideoCall: record.isVideoCall,
+                talkGroupID: record.talkGroupID,
+              });
+              setEditorRole({
+                status: record.status,
+                role: record.isParticipant
+                  ? "Participant"
+                  : record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                isPrimaryOrganizer: record.isPrimaryOrganizer,
+              });
+              localStorage.setItem(
+                "isMinutePublished",
+                record.isMinutePublished,
+              );
+              localStorage.setItem("meetingTitle", record.title);
+            }}
+            className={styles.tableRow}
+          >
+            {text}
+          </span>
+        ),
       },
+
+      // ===== Status =====
       {
         title: t("Status"),
         dataIndex: "status",
@@ -3540,190 +3636,228 @@ const NewMeeting = () => {
         align: "center",
         width: 100,
         ellipsis: true,
-
-        filters: statusFilters.map((filter) => ({
-          text: filter.text,
-          value: filter.value,
-        })),
-        defaultFilteredValue: ["10", "1", "9", "8", "4"],
-        filterResetToDefaultFilteredValue: true,
+        filters: statusFilters,
         filterIcon: (filtered) => (
           <ChevronDown
-            className="filter-chevron-icon-todolist"
-            onClick={handleClickStatusChevron}
+            className={`status-filter-chevron ${filtered ? "active" : ""}`}
           />
         ),
-        filterDropdown: () => statusMenu,
-        render: (text, record) => {
-          return StatusValue(t, text);
-        },
+        defaultFilteredValue: ["10", "1", "9", "8", "4"],
+        filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) => record.status === value,
+        render: (text) => StatusValue(t, text),
+        sorter: (a, b) => a.status - b.status,
       },
+
+      // ===== Organizer =====
       {
         title: (
-          <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>{t("Organizer")}</span>
-              {organizerNameSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
-              ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
-              )}
-            </div>
-          </>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <span>{t("Organizer")}</span>
+            {organizerNameSort && (
+              <img
+                src={
+                  organizerNameSort === "ascend"
+                    ? SortIconAscend
+                    : SortIconDescend
+                }
+                alt="Sort Icon"
+              />
+            )}
+          </div>
         ),
         dataIndex: "host",
         key: "host",
         width: 105,
         align: "center",
         ellipsis: true,
+        sorter: (a, b) =>
+          a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
+        sortOrder: organizerNameSort,
       },
+
+      // ===== Meeting Time =====
       {
         title: (
-          <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>{t("Time")}</span>
-              {meetingTimeSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
-              ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
-              )}
-            </div>
-          </>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <span>{t("Time")}</span>
+            {meetingTimeSort && (
+              <img
+                src={meetingTimeSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+                alt="Sort Icon"
+              />
+            )}
+          </div>
         ),
         dataIndex: "time",
         key: "time",
         width: 120,
         align: "center",
         ellipsis: true,
-
+        sorter: (a, b) => {
+          const dateA = utcConvertintoGMT(
+            `${a.dateOfMeeting}${a.meetingStartTime}`,
+          );
+          const dateB = utcConvertintoGMT(
+            `${b.dateOfMeeting}${b.meetingStartTime}`,
+          );
+          return dateA - dateB;
+        },
+        sortOrder: meetingTimeSort,
         render: (text, record) => {
-          let meetingStartTime = forRecentActivity(
+          const start = forRecentActivity(
             record.dateOfMeeting + record.meetingStartTime,
           );
-          let meetingEndTime = forRecentActivity(
+          const end = forRecentActivity(
             record.dateOfMeeting + record.meetingEndTime,
           );
-          if (!meetingStartTime && !meetingEndTime) return;
-          return (
-            <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime,
-            ).format("hh:mm a")}`}</>
-          );
+          if (!start || !end) return null;
+          return `${moment(start).format("hh:mm a")} - ${moment(end).format("hh:mm a")}`;
         },
       },
+
+      // ===== Meeting Date =====
       {
         title: (
-          <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
-              <span>{t("Date")}</span>
-              {meetingDateSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
-              ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
-              )}
-            </div>
-          </>
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <span>{t("Date")}</span>
+            {meetingDateSort && (
+              <img
+                src={meetingDateSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+                alt="Sort Icon"
+              />
+            )}
+          </div>
         ),
         dataIndex: "date",
         key: "date",
         width: 95,
         align: "center",
         ellipsis: true,
-
-        render: (text, record) => {
-          let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+        sorter: (a, b) => {
+          // Combine date + startTime into ISO-like format for comparison
+          const dateA = new Date(
+            a.dateOfMeeting.substring(0, 4), // Year
+            parseInt(a.dateOfMeeting.substring(4, 6)) - 1, // Month (0-based)
+            a.dateOfMeeting.substring(6, 8), // Day
+            a.meetingStartTime.substring(0, 2), // Hours
+            a.meetingStartTime.substring(2, 4), // Minutes
+            a.meetingStartTime.substring(4, 6), // Seconds
           );
-          return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
+
+          const dateB = new Date(
+            b.dateOfMeeting.substring(0, 4),
+            parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
+            b.dateOfMeeting.substring(6, 8),
+            b.meetingStartTime.substring(0, 2),
+            b.meetingStartTime.substring(2, 4),
+            b.meetingStartTime.substring(4, 6),
+          );
+
+          return dateA - dateB; // returns number for Ant Design sorter
+        },
+        sortOrder: meetingDateSort,
+        render: (text, record) => {
+          const meetingDate = new Date(
+            record.dateOfMeeting.substring(0, 4),
+            parseInt(record.dateOfMeeting.substring(4, 6)) - 1,
+            record.dateOfMeeting.substring(6, 8),
+            record.meetingStartTime.substring(0, 2),
+            record.meetingStartTime.substring(2, 4),
+            record.meetingStartTime.substring(4, 6),
+          );
+
+          return <>{moment(meetingDate).format("Do MMM, YYYY")}</>;
         },
       },
+
+      // ===== Meeting Type =====
       {
         title: (
           <span className="d-flex justify-content-center align-items-center">
             {t("Meeting-type")}
           </span>
         ),
-        dataIndex: "meetingtype",
-        key: "meetingtype",
+        dataIndex: "meetingType",
+        key: "meetingType",
         width: 140,
         align: "center",
-
-        filters: meetingTypeFilters.map((filter) => ({
+        filters: isMeetingTypeFilter.map((filter) => ({
           text: filter.text,
           value: filter.value,
         })),
-        defaultFilteredValue: ["1", "2", "3"],
+        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
         filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) =>
+          Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
-            className="filter-chevron-icon-todolist"
-            onClick={handleClickMeetingTypeChevron}
+            className={`filter-chevron-icon-todolist ${filtered ? "active" : ""}`}
           />
         ),
-        filterDropdown: () => meetingTypeMenu,
-        render: (text, record) => {
+        render: (_, record) => {
           const meetingType = Number(record.meetingType);
-          const matchedFilter = isMeetingTypeFilter?.find(
-            (data) => meetingType === Number(data.value),
+          const matchedFilter = isMeetingTypeFilter.find(
+            (f) => Number(f.value) === meetingType,
           );
-
-          return record.isQuickMeeting && meetingType === 1
-            ? t("Quick-meeting")
-            : t(matchedFilter)
-              ? t(matchedFilter.text)
-              : "";
+          if (record.isQuickMeeting && meetingType === 1)
+            return t("Quick-meeting");
+          return matchedFilter ? t(matchedFilter.text) : "";
         },
       },
+
+      // ===== Action Column =====
       {
         title: "",
         width: 110,
         key: "action",
         align: "center",
         render: (_, record) => {
-          let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
-          let currentUTCDateTime = getCurrentDateTimeUTC();
-          const currentDateObj = new Date(
-            currentUTCDateTime.substring(0, 4), // Year
-            parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
-            currentUTCDateTime.substring(6, 8), // Day
-            currentUTCDateTime.substring(8, 10), // Hours
-            currentUTCDateTime.substring(10, 12), // Minutes
-            currentUTCDateTime.substring(12, 14), // Seconds
+          const {
+            dateOfMeeting,
+            meetingStartTime,
+            status,
+            isQuickMeeting,
+            isOrganizer,
+            isParticipant,
+            isAgendaContributor,
+            pK_MDID,
+          } = record;
+
+          const meetingDateTime = dateOfMeeting + meetingStartTime;
+          const currentUTCDateTime = getCurrentDateTimeUTC();
+
+          // Convert string datetime to Date objects
+          const parseDateTime = (dateTimeStr) =>
+            new Date(
+              dateTimeStr.substring(0, 4), // Year
+              parseInt(dateTimeStr.substring(4, 6), 10) - 1, // Month
+              dateTimeStr.substring(6, 8), // Day
+              dateTimeStr.substring(8, 10), // Hours
+              dateTimeStr.substring(10, 12), // Minutes
+              dateTimeStr.substring(12, 14), // Seconds
+            );
+
+          const currentDateObj = parseDateTime(currentUTCDateTime);
+          const meetingDateObj = parseDateTime(meetingDateTime);
+
+          const minutesDifference = Math.floor(
+            (meetingDateObj - currentDateObj) / (1000 * 60),
           );
+          const meetingCurrentStatus = Number(status);
 
-          const meetingDateObj = new Date(
-            meetingDateTime.substring(0, 4), // Year
-            parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
-            meetingDateTime.substring(6, 8), // Day
-            meetingDateTime.substring(8, 10), // Hours
-            meetingDateTime.substring(10, 12), // Minutes
-            meetingDateTime.substring(12, 14), // Seconds
-          );
-
-          // Calculate the time difference in milliseconds
-          const timeDifference = meetingDateObj - currentDateObj;
-
-          // Convert milliseconds to minutes
-          const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-          const meetingCurrentStatus = Number(record.status);
-          const isQuickMeeting = record.isQuickMeeting;
-          const isOrganizer = record.isOrganizer;
-          const isParticipant = record.isParticipant;
-          const isAgendaContributor = record.isAgendaContributor;
           const isButtonShown = startMeetingButton.find(
-            (btnData, index) =>
-              Number(btnData.meetingID) === Number(record.pK_MDID),
+            (btnData) => Number(btnData.meetingID) === Number(pK_MDID),
           );
+
           const canStartMeeting =
             (meetingCurrentStatus === 1 &&
               isOrganizer &&
               minutesDifference <= minutesAgo) ||
-            (record.pK_MDID === isButtonShown?.meetingID &&
-              isButtonShown?.showButton);
+            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
-          const handleClick = (actionType) => {
-            onMeetingAction(actionType, record); // ⬅️ back to parent
-          };
+          const handleClick = (actionType) =>
+            onMeetingAction(actionType, record);
 
           // ===== UPCOMING =====
           if (meetingCurrentStatus === 1) {
@@ -3748,7 +3882,6 @@ const NewMeeting = () => {
                 </div>
               );
             }
-
             if (isAgendaContributor) {
               return (
                 <div className="d-flex justify-content-center align-items-center">
@@ -3760,7 +3893,6 @@ const NewMeeting = () => {
                 </div>
               );
             }
-
             if (isParticipant) {
               return (
                 <div className="d-flex justify-content-center align-items-center">
@@ -3814,39 +3946,34 @@ const NewMeeting = () => {
           }
 
           // ===== Cancelled or others =====
-          return null; // keep blank
+          return null;
         },
       },
 
+      // ===== More Popover =====
       {
-        title: (
-          <>
-            <div></div>
-          </>
-        ),
+        title: "",
         dataIndex: "meetingAction",
+        key: "meetingAction",
         width: 110,
         align: "center",
-        key: "meetingAction",
-        render: (text, record) => {
-          return (
-            <div className="d-flex justify-content-center align-items-center">
-              <Popover
-                content={moreButtons(record)}
-                trigger="click"
-                overlayClassName="MoreButtons_overlay"
-                showArrow={false}
-                placement="bottomRight"
-              >
-                <CustomButton
-                  className={styles.MoreMeetingButton}
-                  text="More"
-                  icon2={<img src={ChevronDownIcon} width={10} alt="" />}
-                />
-              </Popover>
-            </div>
-          );
-        },
+        render: (_, record) => (
+          <div className="d-flex justify-content-center align-items-center">
+            <Popover
+              content={moreButtons(record)}
+              trigger="click"
+              overlayClassName="MoreButtons_overlay"
+              showArrow={false}
+              placement="bottomRight"
+            >
+              <CustomButton
+                className={styles.MoreMeetingButton}
+                text="More"
+                icon2={<img src={ChevronDownIcon} width={10} alt="" />}
+              />
+            </Popover>
+          </div>
+        ),
       },
     ];
   }, [
@@ -3860,6 +3987,37 @@ const NewMeeting = () => {
     selectedMeetingTypeValues,
     isMeetingTypeFilter,
   ]);
+
+  // Handle table sorting and filtering changes
+  const handleTableChange = (pagination, filters, sorter) => {
+    console.log("Table change:", { pagination, filters, sorter });
+
+    // Reset all sort states first
+    setMeetingTitleSort(null);
+    setOrganizerNameSort(null);
+    setMeetingTimeSort(null);
+    setMeetingDateSort(null);
+
+    // Set the active sort based on which column is sorted
+    if (sorter.order) {
+      switch (sorter.columnKey) {
+        case "title":
+          setMeetingTitleSort(sorter.order);
+          break;
+        case "host":
+          setOrganizerNameSort(sorter.order);
+          break;
+        case "time":
+          setMeetingTimeSort(sorter.order);
+          break;
+        case "date":
+          setMeetingDateSort(sorter.order);
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
   //For searching Filed Only
   const handleSearchChange = (event) => {
@@ -4162,7 +4320,7 @@ const NewMeeting = () => {
         }
       } else {
         setRow([]);
-        setDublicatedrows([]);
+        setDuplicatedRows([]);
       }
     } catch (error) {
       console.log(error);
@@ -4216,12 +4374,18 @@ const NewMeeting = () => {
         userDetails: null,
       };
       setRow([newData, ...rows]);
+      setDublicatedrows([newData, ...rows]);
       dispatch(meetingParticipantAdded(null));
     }
     if (mqtMeetingPrRemoved !== null) {
       try {
         let meetingID = mqtMeetingPrRemoved.meetingID;
         setRow((isRowData) => {
+          return isRowData.filter((newData, index) => {
+            return Number(newData.pK_MDID) !== Number(meetingID);
+          });
+        });
+        setDublicatedrows((isRowData) => {
           return isRowData.filter((newData, index) => {
             return Number(newData.pK_MDID) !== Number(meetingID);
           });
@@ -4242,6 +4406,7 @@ const NewMeeting = () => {
         );
 
         setRow(updatedRows);
+        setDublicatedrows(updatedRows);
       } catch {}
     }
   }, [mqttMeetingAcRemoved]);
@@ -4305,8 +4470,10 @@ const NewMeeting = () => {
             let updatedRows = [...rows];
             updatedRows[indexToUpdate] = newMeetingData;
             setRow(updatedRows);
+            setDublicatedrows(updatedRows);
           } else {
             setRow([newMeetingData, ...rows]);
+            setDublicatedrows([newMeetingData, ...rows]);
           }
         } catch (error) {
           console.log(error, "Meeting Created and Published");
@@ -4359,6 +4526,18 @@ const NewMeeting = () => {
                 }
               });
             });
+            setDublicatedrows((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
             setStartMeetingButton((prevStateStartBtn) => {
               return prevStateStartBtn.filter(
                 (newBtn, index) =>
@@ -4380,6 +4559,18 @@ const NewMeeting = () => {
           let meetingID = MeetingStatusSocket?.meetingID;
           try {
             setRow((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
+            setDublicatedrows((rowsData) => {
               return rowsData.map((item) => {
                 if (item.pK_MDID === meetingID) {
                   return {
@@ -4431,6 +4622,7 @@ const NewMeeting = () => {
           let updatedRows = [...rows];
           updatedRows[indexToUpdate] = endMeetingData;
           setRow(updatedRows);
+          setDublicatedrows(updatedRows);
           if (
             advanceMeetingModalID === endMeetingData.pK_MDID &&
             endMeetingData.status === "9"
@@ -4482,8 +4674,18 @@ const NewMeeting = () => {
                 }
               });
             });
+            setDublicatedrows((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return newMeetingData;
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
           } else {
             setRow([newMeetingData, ...rows]);
+            setDublicatedrows([newMeetingData, ...rows]);
           }
         };
         updateMeeting();
@@ -4506,6 +4708,15 @@ const NewMeeting = () => {
           }
         });
       });
+      setDublicatedrows((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
     }
   }, [CommitteeMeetingMQTT]);
 
@@ -4515,6 +4726,15 @@ const NewMeeting = () => {
         let meetingID = GroupMeetingMQTT.meeting.pK_MDID;
         let meetingData = GroupMeetingMQTT.meeting;
         setRow((rowsData) => {
+          return rowsData.map((item) => {
+            if (item.pK_MDID === meetingID) {
+              return meetingData;
+            } else {
+              return item; // Return the original item if the condition is not met
+            }
+          });
+        });
+        setDublicatedrows((rowsData) => {
           return rowsData.map((item) => {
             if (item.pK_MDID === meetingID) {
               return meetingData;
@@ -4851,14 +5071,6 @@ const NewMeeting = () => {
 
     return () => {};
   }, [globalFunctionWebnotificationFlag]);
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    console.log({ pagination, filters, sorter }, "handleTableChange");
-    if (sorter.columnKey === "title") {
-      setMeetingTitleSort(sorter.order);
-      console.log("handleTableChange title", sorter.order);
-    }
-  };
 
   return (
     <>
@@ -5222,6 +5434,9 @@ const NewMeeting = () => {
                       <Col lg={12} md={12} sm={12}>
                         <>
                           <Table
+                            getPopupContainer={(node) =>
+                              node.closest(".ant-table")
+                            }
                             onChange={handleTableChange}
                             className="MeetingTable"
                             column={columns}

@@ -28,8 +28,12 @@ import {
   agendaContributorsGlobalFlag,
   agendaGlobalFlag,
   attendanceGlobalFlag,
+  meetingAgendaContributorAdded,
+  meetingAgendaContributorRemoved,
   meetingDetailsGlobalFlag,
   meetingMaterialGlobalFlag,
+  meetingOrganizerAdded,
+  meetingOrganizerRemoved,
   minutesGlobalFlag,
   organizersGlobalFlag,
   participantsGlobalFlag,
@@ -39,26 +43,30 @@ import {
   uploadGlobalFlag,
   viewMeetingFlag,
 } from "../../../../store/actions/NewMeetingActions";
-const userID = localStorage.getItem("userID");
+import { useSelector } from "react-redux";
+import { mqttMeetingData } from "../../../../hooks/meetingResponse/response";
 
 const DraftMeeting = () => {
   const { t } = useTranslation();
+  const { isMeetingTypeFilter } = useNewMeetingContext();
+
+  const searchMeetings = useSelector(
+    (state) => state.NewMeetingreducer.searchMeetings,
+  );
+
+  const mqttMeetingAcAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
+  );
+  const mqttMeetingAcRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+  );
+  const mqttMeetingOrgAdded = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
+  );
+  const mqttMeetingOrgRemoved = useSelector(
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+  );
   const {
-    meetingsRecords,
-    totalMeetingRecords,
-    setMeetingsRecords,
-    isMeetingTypeFilter,
-  } = useNewMeetingContext();
-  const {
-    editorRole,
-    setEditorRole,
-    setVideoTalk,
-    videoTalk,
-    viewAdvanceMeetingModal,
-    setViewAdvanceMeetingModal,
-    viewProposeDatePoll,
-    setViewProposeDatePoll,
-    viewFlag,
     setViewFlag,
     setAdvanceMeetingModalID,
     advanceMeetingModalID,
@@ -90,7 +98,72 @@ const DraftMeeting = () => {
   const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
   const [meetingDateSort, setMeetingDateSort] = useState("ascend");
   const [duplicatedRows, setDuplicatedRows] = useState([]);
-  const handleChangeMeetingTable = () => {};
+  const [rows, setRow] = useState([]);
+
+  console.log(rows, "rows");
+  const [dublicatedrows, setDublicatedrows] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+
+  useEffect(() => {
+    try {
+      if (searchMeetings !== null && searchMeetings !== undefined) {
+        setTotalRecords(searchMeetings.totalRecords);
+        if (searchMeetings.meetings.length > 0) {
+          // Create a deep copy of the meetings array
+          let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
+            ...meeting,
+            meetingAgenda: meeting.meetingAgenda.filter(
+              (agenda) => agenda.objMeetingAgenda.canView,
+            ),
+          }));
+          copyMeetingData.forEach((data) => {
+            data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+              return agenda.objMeetingAgenda.canView === true;
+            });
+          });
+          console.log("handleViewMeeting", copyMeetingData);
+          setRow(copyMeetingData);
+          // setDublicatedrows(copyMeetingData);
+        }
+      } else {
+        setRow([]);
+        setDublicatedrows([]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [searchMeetings]);
+
+  // Handle table sorting and filtering changes
+  const handleChangeMeetingTable = (pagination, filters, sorter) => {
+    console.log("Table change:", { pagination, filters, sorter });
+
+    // Reset all sort states first
+    setMeetingTitleSort(null);
+    setOrganizerNameSort(null);
+    setMeetingTimeSort(null);
+    setMeetingDateSort(null);
+
+    // Set the active sort based on which column is sorted
+    if (sorter.order) {
+      switch (sorter.columnKey) {
+        case "title":
+          setMeetingTitleSort(sorter.order);
+          break;
+        case "host":
+          setOrganizerNameSort(sorter.order);
+          break;
+        case "time":
+          setMeetingTimeSort(sorter.order);
+          break;
+        case "date":
+          setMeetingDateSort(sorter.order);
+          break;
+        default:
+          break;
+      }
+    }
+  };
   // Meeting Type Filter Options
   const meetingTypeFilters = [
     { value: "1", text: "Board Meeting" },
@@ -106,17 +179,96 @@ const DraftMeeting = () => {
     "3",
   ]);
 
+  useEffect(() => {
+    try {
+      const callAddAgendaContributor = async () => {
+        if (mqttMeetingAcAdded !== null && mqttMeetingAcAdded !== undefined) {
+          let newObj = mqttMeetingAcAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddAgendaContributor();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [mqttMeetingAcAdded]);
+
+  useEffect(() => {
+    if (mqttMeetingAcRemoved !== null && mqttMeetingAcRemoved !== undefined) {
+      let meetingData = mqttMeetingAcRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+        );
+        setRow(updatedRows);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [mqttMeetingAcRemoved]);
+
+  useEffect(() => {
+    try {
+      const callAddOrganizer = async () => {
+        if (mqttMeetingOrgAdded !== null && mqttMeetingOrgAdded !== undefined) {
+          let newObj = mqttMeetingOrgAdded;
+          try {
+            let getData = await mqttMeetingData(newObj, 2);
+            setRow([getData, ...rows]);
+            console.log(getData, "getDatagetDatagetData");
+          } catch (error) {
+            console.log(error, "getDatagetDatagetData");
+          }
+          dispatch(meetingAgendaContributorAdded(null));
+          dispatch(meetingAgendaContributorRemoved(null));
+          dispatch(meetingOrganizerAdded(null));
+          dispatch(meetingOrganizerRemoved(null));
+        }
+      };
+      callAddOrganizer();
+    } catch (error) {
+      console.error(error);
+    }
+  }, [mqttMeetingOrgAdded]);
+
+  useEffect(() => {
+    if (mqttMeetingOrgRemoved !== null && mqttMeetingOrgRemoved !== undefined) {
+      let meetingData = mqttMeetingOrgRemoved;
+      try {
+        const updatedRows = rows.filter(
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+        );
+        setRow(updatedRows);
+        dispatch(meetingAgendaContributorAdded(null));
+        dispatch(meetingAgendaContributorRemoved(null));
+        dispatch(meetingOrganizerAdded(null));
+        dispatch(meetingOrganizerRemoved(null));
+      } catch {}
+    }
+  }, [mqttMeetingOrgRemoved]);
+
   const handleApplyMeetingTypeFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
     );
-    setMeetingsRecords(filteredData);
+    setRow(filteredData);
     setMeetingTypeFilterVisible(false);
   };
 
   const resetMeetingTypeFilter = () => {
     setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setMeetingsRecords(duplicatedRows);
+    setRow(duplicatedRows);
     setMeetingTypeFilterVisible(false);
   };
 
@@ -127,7 +279,7 @@ const DraftMeeting = () => {
     setSelectedMeetingTypeValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
   const moreButtons = (record) => {
@@ -144,8 +296,8 @@ const DraftMeeting = () => {
             setViewFlag,
             setEditFlag,
             setSceduleMeeting,
-            2
-          )
+            2,
+          ),
         );
       } else if (record.isQuickMeeting === false) {
         if (record.isAgendaContributor) {
@@ -177,8 +329,8 @@ const DraftMeeting = () => {
               setDataroomMapFolderId,
               0,
               1,
-              "Agenda Contributor"
-            )
+              "Agenda Contributor",
+            ),
           );
         } else {
           let Data = {
@@ -195,8 +347,8 @@ const DraftMeeting = () => {
               setDataroomMapFolderId,
               0,
               1,
-              "Organizer"
-            )
+              "Organizer",
+            ),
           );
           dispatch(scheduleMeetingPageFlag(true));
           dispatch(viewMeetingFlag(false));
@@ -227,16 +379,16 @@ const DraftMeeting = () => {
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt='' width='16' height='16' />
+          <img src={EditIcon} alt="" width="16" height="16" />
           <span>{t("Edit-meeting")}</span>
         </div>
 
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
           <span>{t("Delete-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
@@ -247,14 +399,15 @@ const DraftMeeting = () => {
       {meetingTypeFilters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
+          onClick={() => handleMeetingTypeMenuClick(filter.value)}
+        >
           <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className='d-flex align-items-center justify-content-between p-1'>
+      <div className="d-flex align-items-center justify-content-between p-1">
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -274,12 +427,12 @@ const DraftMeeting = () => {
       {
         title: (
           <>
-            <div className='d-flex align-items-center gap-2'>
-              <span>Meeting Title</span>
+            <div className="d-flex align-items-center gap-2">
+              <span>{t("Meeting-title")}</span>
               {meetingTitleSort === "ascend" ? (
-                <img src={SortIconAscend} alt='SortIconAscend' />
+                <img src={SortIconAscend} alt="SortIconAscend" />
               ) : (
-                <img src={SortIconDescend} alt='SortIconDescend' />
+                <img src={SortIconDescend} alt="SortIconDescend" />
               )}
             </div>
           </>
@@ -287,8 +440,9 @@ const DraftMeeting = () => {
         dataIndex: "title",
         key: "title",
         width: 350,
-        sorter: true,
         ellipsis: true,
+        sorter: (a, b) => a.title.localeCompare(b.title),
+        sortOrder: meetingTitleSort,
         render: (text) => {
           return <span className={styles.tableRow}>{text}</span>;
         },
@@ -296,12 +450,12 @@ const DraftMeeting = () => {
       {
         title: (
           <>
-            <div className='d-flex align-items-center justify-content-center gap-2'>
-              <span>Organizer</span>
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <span>{t("Organizer")}</span>
               {organizerNameSort === "ascend" ? (
-                <img src={SortIconAscend} alt='SortIconAscend' />
+                <img src={SortIconAscend} alt="SortIconAscend" />
               ) : (
-                <img src={SortIconDescend} alt='SortIconDescend' />
+                <img src={SortIconDescend} alt="SortIconDescend" />
               )}
             </div>
           </>
@@ -310,16 +464,19 @@ const DraftMeeting = () => {
         key: "host",
         width: 150,
         align: "center",
+        sorter: (a, b) =>
+          a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
+        sortOrder: organizerNameSort,
       },
       {
         title: (
           <>
-            <div className='d-flex align-items-center justify-content-center gap-2'>
-              <span>Time</span>
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <span>{t("Time")}</span>
               {meetingTimeSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
+                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
               ) : (
-                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
+                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
               )}
             </div>
           </>
@@ -328,18 +485,23 @@ const DraftMeeting = () => {
         key: "time",
         width: 180,
         align: "center",
-
+        sorter: (a, b) => {
+          const dateA = new Date(a.dateOfMeeting + a.meetingStartTime);
+          const dateB = new Date(b.dateOfMeeting + b.meetingStartTime);
+          return dateA - dateB;
+        },
+        sortOrder: meetingTimeSort,
         render: (text, record) => {
           let meetingStartTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           let meetingEndTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingEndTime
+            record.dateOfMeeting + record.meetingEndTime,
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
             <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime
+              meetingEndTime,
             ).format("hh:mm a")}`}</>
           );
         },
@@ -347,12 +509,12 @@ const DraftMeeting = () => {
       {
         title: (
           <>
-            <div className='d-flex align-items-center justify-content-center gap-2'>
-              <span>Date</span>
+            <div className="d-flex align-items-center justify-content-center gap-2">
+              <span>{t("Date")}</span>
               {meetingDateSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
+                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
               ) : (
-                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
+                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
               )}
             </div>
           </>
@@ -361,49 +523,76 @@ const DraftMeeting = () => {
         key: "date",
         width: 150,
         align: "center",
-
+        sorter: (a, b) => {
+          const dateA = new Date(
+            a.dateOfMeeting.substring(0, 4),
+            parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
+            a.dateOfMeeting.substring(6, 8),
+          );
+          const dateB = new Date(
+            b.dateOfMeeting.substring(0, 4),
+            parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
+            b.dateOfMeeting.substring(6, 8),
+          );
+          return dateA - dateB;
+        },
+        sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime
+            record.dateOfMeeting + record.meetingStartTime,
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
       {
         title: (
-          <span className='d-flex justify-content-center align-items-center'>
-            Meeting Type
+          <span className="d-flex justify-content-center align-items-center">
+            {t("Meeting-type")}
           </span>
         ),
-        dataIndex: "meetingtype",
-        key: "meetingtype",
-        width: 150,
+        dataIndex: "meetingType",
+        key: "meetingType",
+        width: 140,
         align: "center",
 
-        filters: meetingTypeFilters.map((filter) => ({
+        filters: isMeetingTypeFilter.map((filter) => ({
           text: filter.text,
           value: filter.value,
         })),
-        defaultFilteredValue: ["1", "2", "3"],
+
+        // ⭐ default selected values
+        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
+
         filterResetToDefaultFilteredValue: true,
+
+        // ⭐ REQUIRED: actual filtering logic
+        onFilter: (value, record) => {
+          console.log(value, record, "onFilteronFilter");
+          return Number(record.meetingType) === Number(value);
+        },
+
         filterIcon: (filtered) => (
           <ChevronDown
-            className='filter-chevron-icon-todolist'
-            onClick={handleClickMeetingTypeChevron}
+            className={`filter-chevron-icon-todolist ${
+              filtered ? "active" : ""
+            }`}
           />
         ),
-        filterDropdown: () => meetingTypeMenu,
-        render: (text, record) => {
+
+        // ⭐ custom dropdown UI
+        // filterDropdown: () => meetingTypeMenu,
+
+        render: (_, record) => {
           const meetingType = Number(record.meetingType);
-          const matchedFilter = isMeetingTypeFilter?.find(
-            (data) => meetingType === Number(data.value)
+          const matchedFilter = isMeetingTypeFilter.find(
+            (f) => Number(f.value) === meetingType,
           );
 
-          return record.isQuickMeeting && meetingType === 1
-            ? t("Quick-meeting")
-            : t(matchedFilter)
-            ? t(matchedFilter.text)
-            : "";
+          if (record.isQuickMeeting && meetingType === 1) {
+            return t("Quick-meeting");
+          }
+
+          return matchedFilter ? t(matchedFilter.text) : "";
         },
       },
 
@@ -413,24 +602,19 @@ const DraftMeeting = () => {
         width: 140,
         key: "meetingAction",
         render: (text, record) => {
-          let meetingCurrentStatus = Number(record.status);
-          let isOrganizer = record.isOrganizer;
-          let isParticipant = record.isParticipant;
-          let isAgendaContributor = record.isAgendaContributor;
-          let isPrimaryOrganizer = record.isPrimaryOrganizer;
-
           return (
-            <div className='d-flex justify-content-center align-items-center gap-2'>
+            <div className="d-flex justify-content-center align-items-center gap-2">
               <div>
                 <Popover
                   content={moreButtons(record)}
-                  trigger='click'
-                  overlayClassName='MoreButtons_overlay'
+                  trigger="click"
+                  overlayClassName="MoreButtons_overlay"
                   showArrow={false}
-                  placement='bottomRight'>
+                  placement="bottomRight"
+                >
                   <CustomButton
                     className={styles.MoreMeetingButton}
-                    text='More'
+                    text="More"
                     icon2={<img src={ChevronDownIcon} width={10} />}
                   />
                 </Popover>
@@ -446,6 +630,7 @@ const DraftMeeting = () => {
     meetingTimeSort,
     meetingDateSort,
     meetingTypeFilterVisible,
+    isMeetingTypeFilter,
     selectedMeetingTypeValues,
   ]);
 
@@ -454,10 +639,10 @@ const DraftMeeting = () => {
       <Col sm={12} md={12} lg={12}>
         <Table
           onChange={handleChangeMeetingTable}
-          className='MeetingTable'
+          className="MeetingTable"
           column={columns}
           size={"small"}
-          rows={meetingsRecords}
+          rows={rows}
           sticky={true}
           pagination={false}
           scroll={{

@@ -523,7 +523,6 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   border: none !important;
 }
 
-
 .MoreButtons_overlay .ant-popover-inner .ant-popover-inner-content {
   padding: 0 15px !important;
 }
@@ -568,8 +567,24 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   border-radius: 50%;
 }
 .status-color-active {
-  background-color: #81DB86 !important;
+  background-color: #81db86 !important;
   width: 14px;
   height: 14px;
   border-radius: 50%;
+}
+
+/* main dropdown container */
+.ant-table-filter-dropdown .ant-dropdown-menu-item.ant-dropdown-menu-item {
+  background-color: #fff !important;
+}
+
+.ant-table-filter-dropdown-btns button:nth-child(1) {
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+.ant-table-filter-dropdown-btns button:nth-child(2) {
+  background-color: #6172d6 !important;
+  border: none !important;
+  color: #fff !important;
 }

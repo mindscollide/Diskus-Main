@@ -216,37 +216,7 @@ export const NewMeetingProvider = ({ children }) => {
     isProposedMeetingCreate, setIsProposedMeetingCreate
   };
 
-  useEffect(() => {
-    if (
-      meetingStatusPublishedMqttData !== null &&
-      meetingStatusPublishedMqttData !== undefined
-    ) {
-      const callMQTT = async () => {
-        let meetingData = meetingStatusPublishedMqttData;
-        try {
-          const indexToUpdate = meetingsRecords.findIndex(
-            (obj) => Number(obj.pK_MDID) === Number(meetingData.pK_MDID)
-          );
-          let newMeetingData = await mqttMeetingData(meetingData, 1);
 
-          if (indexToUpdate !== -1) {
-            let updatedRows = [...meetingsRecords];
-            updatedRows[indexToUpdate] = newMeetingData;
-            setTotalMeetingRecords(updatedRows);
-          } else {
-            setTotalMeetingRecords((prevRecord) => [
-              newMeetingData,
-              ...prevRecord,
-            ]);
-          }
-        } catch (error) {
-          console.log(error, "Meeting Created and Published");
-        }
-      };
-
-      callMQTT();
-    }
-  }, [meetingStatusPublishedMqttData]);
 
   // Provide the state data to the context
   return (

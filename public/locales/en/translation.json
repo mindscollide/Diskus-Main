@@ -2603,5 +2603,7 @@
   "RESOLUTION_CLOSED": "Resolution Closed",
   "No-task-found": "No task found",
   "No-Task-has-been-created-yet": "No task has been created yet",
-  "Switch-to-user-view": "Switch to User View"
+  "Switch-to-user-view": "Switch to User View",
+  "Attendance-report": "Attendance report",
+  "View-agenda": "View agenda"
 }
