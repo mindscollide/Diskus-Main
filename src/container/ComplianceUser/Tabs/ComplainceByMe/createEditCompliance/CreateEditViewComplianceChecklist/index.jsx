@@ -22,6 +22,7 @@ import {
   CheckChecklistTitleExistsAPI,
   clearAuthorityMessage,
   clearComplianceDetailsData,
+  DeleteCheckListAPI,
   EditComplianceChecklistAPI,
   GetComplianceChecklistsByComplianceIdAPI,
 } from "../../../../../../store/actions/ComplainSettingActions";
@@ -34,6 +35,7 @@ import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
+import DeleteChecklistConfirmationModal from "../../../../CommonComponents/DeleteChecklistConfirmationModal";
 const CreateEditViewComplianceChecklist = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -74,6 +76,8 @@ const CreateEditViewComplianceChecklist = () => {
     emptyComplianceState,
     setChecklistData,
     setCloseConfirmationModal,
+    setDeleteChecklistConfirmationModalState,
+    setDeleteChecklistId,
   } = useComplianceContext();
   console.log(complianceDetailsState, "complianceDetailsState");
 
@@ -176,8 +180,11 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const handleDeleteChecklist = (checklistID) => {
-    // dispatch(showDeleteAuthorityModal(true));
-    // setAuthorityId(authorityID);
+    console.log(checklistID, "checklistID");
+    if (checklistID) {
+      setDeleteChecklistId(checklistID);
+      setDeleteChecklistConfirmationModalState(true);
+    }
   };
 
   const handleEditChecklist = (checklistData) => {
@@ -191,7 +198,7 @@ const CreateEditViewComplianceChecklist = () => {
           checklistTitle: checklistData.checklistTitle,
           checklistDescription: checklistData.checklistDescription,
           checklistDueDate: checklistData.dueDate
-            ? moment(checklistData.dueDate, "YYYYMMDD").toDate()
+            ? moment(checklistData.dueDate, "YYYYMMDD").endOf("day").toDate()
             : null,
         });
       } catch (error) {}
@@ -204,6 +211,14 @@ const CreateEditViewComplianceChecklist = () => {
           cursor: "start",
         });
     }
+    return () => {
+      setChecklistData({
+        checklistId: 0,
+        checklistTitle: "",
+        checklistDescription: "",
+        checklistDueDate: "",
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -368,7 +383,13 @@ const CreateEditViewComplianceChecklist = () => {
     // setCreateEditComplaince(false);
     setCloseConfirmationModal(true);
   };
-  console.log(complianceDetailsState.dueDate, "complianceDueDateForChecklist");
+
+  const isLockedStatus =
+    complianceDetailsState.status.value === 7 ||
+    complianceDetailsState.status.value === 9 ||
+    complianceDetailsState.status.value === 5 ||
+    complianceDetailsState.status.value === 2;
+
   return (
     <>
       {!addChecklistCloseState ? (
@@ -376,8 +397,7 @@ const CreateEditViewComplianceChecklist = () => {
           <Row className="mt-2 d-flex flex-row">
             <div className={styles["checklistTitle"]}>
               <InputfieldwithCount
-                // disableBtn={complianceDetailsState.status.value === 7}
-                disabled={complianceDetailsState.status.value === 7}
+                disabled={isLockedStatus && !isEditTrue}
                 ref={checklistTitleRef}
                 label={
                   <>
@@ -431,7 +451,7 @@ const CreateEditViewComplianceChecklist = () => {
                 </span>
               </div>
               <DatePicker
-                disabled={complianceDetailsState.status.value === 7}
+                disabled={isLockedStatus && !isEditTrue}
                 value={checkListData.checklistDueDate}
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
@@ -444,7 +464,7 @@ const CreateEditViewComplianceChecklist = () => {
                   <InputIcon
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
-                      complianceDetailsState.status.value === 7
+                      isLockedStatus && !isEditTrue
                         ? styles["disabledInput"]
                         : ""
                     }`}
@@ -466,7 +486,7 @@ const CreateEditViewComplianceChecklist = () => {
           <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <TextAreafieldwithCount
-                disabled={complianceDetailsState.status.value === 7}
+                disabled={isLockedStatus && !isEditTrue}
                 label={
                   <>
                     {t("Checklist-description")}
@@ -500,7 +520,7 @@ const CreateEditViewComplianceChecklist = () => {
               text={t("Cancel")}
               className={styles["Compliance_CloseButton"]}
               onClick={handleCloseAddChecklistButton}
-              disableBtn={complianceDetailsState.status.value === 7}
+              disableBtn={isLockedStatus && !isEditTrue}
             />
             <Button
               text={isEditTrue ? t("Update") : t("Add")}
@@ -683,6 +703,7 @@ const CreateEditViewComplianceChecklist = () => {
       </div>
       <Notification open={open} setOpen={setOpen} />
       <ComplianceCloseConfirmationModal />
+      <DeleteChecklistConfirmationModal />
     </>
   );
 };

@@ -101,6 +101,71 @@ export const ComlianceProvider = ({ children }) => {
 
   // Modals For Status
   const [submitForApprovalModal, setSubmitForApprovalModal] = useState(false);
+  const [complianceOnHoldModal, setComplianceOnHoldModal] = useState(false);
+  const [
+    complianceStatusChangeReasonModal,
+    setComplianceStatusChangeReasonModal,
+  ] = useState(false);
+  const [complianceCancelModal, setComplianceCancelModal] = useState(false);
+  const [complianceCanceleasonModal, setComplianceCancelReasonModal] =
+    useState(false);
+
+  const [comlianceCompleteExceptionModal, setComlianceCompleteExceptionModal] =
+    useState(false);
+
+  const [comlianceStatusReopenedModal, setComlianceStatusReopenedModal] =
+    useState(false);
+
+  // Modals states
+  const [complianceOnHoldSelectOption, setComplianceOnHoldSelectOption] =
+    useState(0);
+  const [complianceOnHoldReasonState, setComplianceOnHoldReasonState] =
+    useState("");
+
+  const [complianceCancelSelectOption, setComplianceCancelSelectOption] =
+    useState(0);
+  const [complianceCancelReasonState, setComplianceCancelReasonState] =
+    useState("");
+
+  const [tempSelectComplianceStatus, setTempSelectedComplianceStatus] =
+    useState(0);
+
+  const [complianceReopenDetailsState, setComplianceReopenDetailsState] =
+    useState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+
+  // Delete Checklist Confirmation Modal
+  const [
+    deleteChecklistConfirmationModalState,
+    setDeleteChecklistConfirmationModalState,
+  ] = useState(false);
+
+  const [deleteChecklistId, setDeleteChecklistId] = useState(0);
+
+  const resetModalStates = () => {
+    setSubmitForApprovalModal(false);
+    setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(false);
+    setComplianceOnHoldSelectOption(0);
+    setComplianceOnHoldReasonState("");
+    setTempSelectedComplianceStatus(0);
+    setComplianceCancelModal(false);
+    setComplianceCancelReasonModal(false);
+    setComplianceCancelSelectOption(0);
+    setComplianceCancelReasonState(0);
+    setComlianceCompleteExceptionModal(false);
+    setComlianceStatusReopenedModal(false);
+    setComplianceReopenDetailsState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+    setDeleteChecklistConfirmationModalState(false);
+    setDeleteChecklistId(0);
+  };
 
   const emptyComplianceState = () => {
     console.log("cleared");
@@ -175,6 +240,12 @@ export const ComlianceProvider = ({ children }) => {
     setsearchbox(false);
     setComplianceForMeTotal(0);
     setSubmitForApprovalModal(false);
+    setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(false);
+    setComplianceOnHoldReasonState("");
+    setComplianceOnHoldSelectOption(0);
+    setTempSelectedComplianceStatus(0);
+    setDeleteChecklistId(0);
   };
 
   // view compliance
@@ -183,7 +254,7 @@ export const ComlianceProvider = ({ children }) => {
   const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
     useState([]);
   const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
-    [],
+    []
   );
   const [searchbox, setsearchbox] = useState(false);
 
@@ -287,6 +358,35 @@ export const ComlianceProvider = ({ children }) => {
         setAllTasksStatusForFilter,
         submitForApprovalModal,
         setSubmitForApprovalModal,
+        complianceOnHoldModal,
+        setComplianceOnHoldModal,
+        complianceStatusChangeReasonModal,
+        setComplianceStatusChangeReasonModal,
+        complianceOnHoldReasonState,
+        setComplianceOnHoldReasonState,
+        complianceOnHoldSelectOption,
+        setComplianceOnHoldSelectOption,
+        tempSelectComplianceStatus,
+        setTempSelectedComplianceStatus,
+        resetModalStates,
+        complianceCancelModal,
+        setComplianceCancelModal,
+        complianceCanceleasonModal,
+        setComplianceCancelReasonModal,
+        complianceCancelSelectOption,
+        setComplianceCancelSelectOption,
+        complianceCancelReasonState,
+        setComplianceCancelReasonState,
+        comlianceCompleteExceptionModal,
+        setComlianceCompleteExceptionModal,
+        comlianceStatusReopenedModal,
+        setComlianceStatusReopenedModal,
+        complianceReopenDetailsState,
+        setComplianceReopenDetailsState,
+        deleteChecklistConfirmationModalState,
+        setDeleteChecklistConfirmationModalState,
+        deleteChecklistId,
+        setDeleteChecklistId,
         viewTypeDashboard,
         setViewTypeDashboard,
         complianceDashboardFilter,
@@ -324,7 +424,7 @@ export const useComplianceContext = () => {
 
   if (!context) {
     throw new Error(
-      "useComplianceContext must be used within a AuthorityProvider",
+      "useComplianceContext must be used within a AuthorityProvider"
     );
   }
   return context;

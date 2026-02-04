@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ReopenOrOnHoldDetailsModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
@@ -14,127 +14,28 @@ const ReopenOrOnHoldDetailsModal = () => {
   // ReopenOrOnHoldDetailsModal
   const { t } = useTranslation();
 
-  const { isViewDetailsOpen, setIsViewDetailsOpen } = useComplianceContext();
+  const { isViewDetailsOpen, setIsViewDetailsOpen, complianceDetailsState } =
+    useComplianceContext();
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);
   };
   const [complianceStatusChangeHistory, setComplianceStatusChangeHistory] =
-    useState([
-      {
-        historyId: 3,
-        fromStatus: {
-          statusId: 6,
-          statusName: "Reopened",
-        },
-        toStatus: {
-          statusId: 7,
-          statusName: "On Hold",
-        },
-        statusChangeReason: "Testing",
-        currentDueDate: "20251231",
-        currentDueTime: "235959",
-        updatedDueDate: "20260131",
-        updatedDueTime: "185958",
-        statusChangeBy: 1353,
-        statusChangeByName: "Saif Professional ",
-        statusChangeByEmail: "SaifProfessional@yopmail.com",
-        statusChangeDate: "20260114",
-        statusChangeTime: "102424",
-        attachments: [],
-      },
-      {
-        historyId: 1,
-        fromStatus: {
-          statusId: 5,
-          statusName: "Submitted for Approval",
-        },
-        toStatus: {
-          statusId: 6,
-          statusName: "Reopened",
-        },
-        statusChangeReason:
-          "Hi, How are you? . I hope you are doing well. This reason is for testing purposes, so dont worry about it ,we are just testing not more than that .The Actual reason to reopen this to test the api end to end. thanks for corporation",
-        currentDueDate: "20251231",
-        currentDueTime: "235959",
-        updatedDueDate: "20260131",
-        updatedDueTime: "185958",
-        statusChangeBy: 1353,
-        statusChangeByName: "Saif Professional ",
-        statusChangeByEmail: "SaifProfessional@yopmail.com",
-        statusChangeDate: "20260108",
-        statusChangeTime: "102424",
-        attachments: [
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-          {
-            fileId: 4840,
-            displayFileName: "SRS - Axi Compliance 4.0.docx",
-            diskusFileName: "2026010810530166352",
-            shareAbleLink: "2026010810530166352",
-          },
-        ],
-      },
-    ]);
-
+    useState([]);
+  useEffect(() => {
+    if (
+      complianceDetailsState &&
+      complianceDetailsState.complianceStatusChangeHistory.length > 0
+    ) {
+      try {
+        setComplianceStatusChangeHistory(
+          complianceDetailsState.complianceStatusChangeHistory
+        );
+      } catch (error) {}
+    } else {
+      setComplianceStatusChangeHistory([]);
+    }
+  }, [complianceDetailsState]);
   // styling for select:
   const getStatusColor = (status) => {
     switch (status) {

@@ -2152,3 +2152,39 @@ export const EditCompliance = {
 export const GetReportComplianceListing = {
   RequestMethod: "ServiceManager.GetReportsListing",
 };
+// Reopen Complaince Step 1
+// Add Reopen Compliance
+export const AddReopenCompliance = {
+  RequestMethod: "ServiceManager.AddReopenCompliance",
+};
+
+// Reopen Complaince Step 2
+// CreateComplianceDataRoomMap
+export const CreateComplianceDataRoomMap = {
+  RequestMethod: "ServiceManager.CreateComplianceDataRoomMap",
+};
+
+// Reopen Complaince Step 3
+// UploadDocuments already made
+
+// Reopen Complaince Step 4
+// SaveComplianceFiles
+export const SaveComplianceFiles = {
+  RequestMethod: "ServiceManager.SaveComplianceFiles",
+};
+
+// Reopen Complaince Step 5 (After this Edit api will be hit in edit flow)
+// SaveComplianceDocumentsAndMapping
+export const SaveComplianceDocumentsAndMapping = {
+  RequestMethod: "ServiceManager.SaveComplianceDocumentsAndMapping",
+};
+
+//----------Reopen Flow ended-----------------
+
+export const DeleteCheckList = {
+  RequestMethod: "ServiceManager.DeleteCheckList",
+};
+
+export const ChangeTaskStatus = {
+  RequestMethod: "ServiceManager.ChangeTaskStatus",
+};

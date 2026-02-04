@@ -2609,7 +2609,7 @@
   "Some-checklist-items-are-still-pending.-Do-you-want-to-continue-submitting-for-approval?": "Some checklist items are still pending. Do you want to continue submitting for approval?",
   "Compliance-updated-successfully": "Compliance updated successfully",
   "Mark-compliance-only": "Mark Compliance Only",
-  "Mark-compliance-with-associated-items": "Mark Checklist with Associated Items",
+  "Mark-compliance-with-associated-items": "Mark Compliance with Associated Items",
   "Mark-on-hold": "Mark On Hold",
   "Compliance-ID-is-required": "Compliance ID is required",
   "Invalid-ModifiedBy": "Invalid Modified By",
@@ -2671,5 +2671,9 @@
   "Report-type": "Report Type",
   "Due-date-from": "Start Date",
   "Due-date-to": "End Date",
-  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options"
+  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options",
+  "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed": "This Compliance cannot be marked as Completed because some tasks are still not completed",
+  "Checklist-deleted-successfully": "Checklist deleted successfully",
+  "All-the-associated-tasks-within-this-checklist-will-also-be-deleted.-Are-you-sure-you-want-to-delete-this-checklist?": "All the associated tasks within this checklist will also be deleted. Are you sure you want to delete this checklist?",
+  "Current-due-date": "Current Due Date"
 }

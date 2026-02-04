@@ -2145,6 +2145,12 @@ const taskFromDashboardAction = (payload) => {
     payload,
   };
 };
+const taskReducerLoader = (payload) => {
+  return {
+    type: actions.TASK_REDUCER_LOADER,
+    payload,
+  };
+};
 
 export {
   taskFromDashboardAction,
@@ -2179,4 +2185,5 @@ export {
   uploadDocumentsTaskApi,
   saveFilesTaskApi,
   getDashboardTaskCountMQTT,
+  taskReducerLoader,
 };
