@@ -22,6 +22,7 @@ import {
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 import { ComplianceReportListingAPI } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
+import { formatDateToYYYYMMDD } from "../../../../commen/functions/date_formater";
 
 const reportsData = [
   {
@@ -141,18 +142,65 @@ const Reports = () => {
       setReportTitleSort(sorter.order);
     } else if (sorter.columnKey === "generatedOn") {
       setGeneratedOnSort(sorter.order);
+    } else if (filters?.type) {
+      setReportTypeFilter(filters.type || [1, 2, 3]);
     }
   };
+
+  const getReportTypeColumnProps = () => ({
+    filteredValue: reportTypeFilter,
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+      <div style={{ padding: 8 }}>
+        <Checkbox.Group
+          options={reportTypeOptions}
+          value={selectedKeys}
+          onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            marginBottom: 8,
+          }}
+        />
+
+        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          {/* Reset */}
+          <CustomButton
+            text={t("Reset")}
+            className={styles["ResetButtonFilter"]}
+            onClick={() => {
+              const all = reportTypeOptions.map((c) => c.value);
+              setSelectedKeys(all);
+              setReportTypeFilter(all);
+              confirm();
+            }}
+          />
+
+          {/* OK */}
+          <CustomButton
+            text={t("Ok")}
+            className={styles["ResetButtonFilter"]}
+            onClick={() => {
+              setReportTypeFilter(selectedKeys);
+              confirm();
+            }}
+          />
+        </div>
+      </div>
+    ),
+    onFilter: (value, record) => value === record.reportTypeId,
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
 
   const columns = useMemo(
     () => [
       {
         title: t("Type"),
-        dataIndex: "reportType",
-        key: "reportType",
+        dataIndex: "reportTypeId",
+        key: "reportTypeId",
         width: "20%",
         ellipsis: true,
         align: "left",
+        ...getReportTypeColumnProps(),
         render: (_, record) => {
           return (
             <span>
@@ -168,7 +216,7 @@ const Reports = () => {
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Report-Title")}
+            {t("Report-title")}
             {reportTitleSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
             ) : reportTitleSort === "ascend" ? (
@@ -217,23 +265,23 @@ const Reports = () => {
         width: "13%",
         ellipsis: true,
         align: "left",
-        sorter: (a, b) =>
-          generatedOnSort === "descend"
-            ? b.generatedOn
-                ?.toLowerCase()
-                .localeCompare(a.generatedOn?.toLowerCase())
-            : generatedOnSort === "ascend"
-              ? a.generatedOn
-                  ?.toLowerCase()
-                  .localeCompare(b.generatedOn?.toLowerCase())
-              : a.generatedOn
-                  ?.toLowerCase()
-                  .localeCompare(b.generatedOn?.toLowerCase()),
+        render: (_, record) => {
+          return <span>{`${formatDateToYMD(record.generatedOn)}`}</span>;
+        },
+        sorter: (a, b) => {
+          const aTime = getDueDateTimeNumber(a.generatedOn, a.generatedOnTime);
+          const bTime = getDueDateTimeNumber(b.generatedOn, b.generatedOnTime);
+
+          if (generatedOnSort === "descend") return bTime - aTime;
+          if (generatedOnSort === "ascend") return aTime - bTime;
+
+          return aTime - bTime;
+        },
       },
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("due-Date-From")}
+            {t("Due-date-from")}
             {reportTitleSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
             ) : reportTitleSort === "ascend" ? (
@@ -252,7 +300,7 @@ const Reports = () => {
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("due-Date-To")}
+            {t("Due-date-to")}
             {reportTitleSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
             ) : reportTitleSort === "ascend" ? (
@@ -319,7 +367,7 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, generatedOnSort, t],
+    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t],
   );
 
   return (

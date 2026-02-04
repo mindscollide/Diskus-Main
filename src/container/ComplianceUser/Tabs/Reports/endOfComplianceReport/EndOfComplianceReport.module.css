@@ -126,12 +126,13 @@
 }
 
 .insideAccordianTable {
-  height: 140px;
-  padding: 10px 20px;
-  border: 1px solid #e1e1e1;
+  max-height: 160px;
+  padding: 0px 20px;
   border-radius: 8px;
   background-color: #fff;
   margin-top: 10px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .insideAccordianMainHeading label {

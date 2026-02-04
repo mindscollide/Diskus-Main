@@ -56,6 +56,22 @@ export const ComlianceProvider = ({ children }) => {
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
+  //For Compliance Report Title State
+  const [searchComplianceReportPayload, setSearchComplianceReportPayload] =
+    useState({
+      reportTitle: "",
+      reportTitleOutside: "",
+      reportType: "",
+      dueDateFrom: "",
+      dueDateTo: "",
+      pageNumber: 0,
+      length: 10,
+    });
+
+  //For Compliance Report Title State
+  const [complianceReportList, setComplianceReportList] = useState([]);
+  const [complianceReportTotal, setComplianceReportTotal] = useState(0);
+
   // Search Context for compliance By me
 
   const [searchCompliancePayload, setSearchCompliancePayload] = useState({
@@ -141,6 +157,17 @@ export const ComlianceProvider = ({ children }) => {
       pageNumber: 0,
       length: 10,
     });
+    setSearchComplianceReportPayload({
+      reportTitle: "",
+      reportTitleOutside: "",
+      reportType: "",
+      dueDateFrom: "",
+      dueDateTo: "",
+      pageNumber: 0,
+      length: 10,
+    });
+    setComplianceReportList([]);
+    setComplianceReportTotal(0);
     setComplianceByMeList([]);
     setComplianceByMeTotal(0);
     setComplianceForMeList([]);
@@ -279,6 +306,12 @@ export const ComlianceProvider = ({ children }) => {
         setEndOfQuarterReport,
         accumulativeReport,
         setAccumulativeReport,
+        searchComplianceReportPayload,
+        setSearchComplianceReportPayload,
+        complianceReportList,
+        setComplianceReportList,
+        complianceReportTotal,
+        setComplianceReportTotal,
       }}
     >
       {children}

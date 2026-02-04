@@ -21,6 +21,7 @@ import ComplianceStandingReport from "./Tabs/Reports/complianceStandingReport/Co
 import EndOfComplianceReport from "./Tabs/Reports/endOfComplianceReport/EndOfComplianceReport";
 import EndOfQuarterReport from "./Tabs/Reports/endOfQuarterReport/EndOfQuarterReport";
 import AccumulativeReport from "./Tabs/Reports/accumulativeReport/AccumulativeReport";
+import SearchComplianceReportModal from "./CommonComponents/searchComplianceReportModal";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -177,7 +178,9 @@ const MainCompliance = () => {
               <span className={styles["Compliance_dashboard_heading"]}>
                 {mainComplianceTabs === 2
                   ? t("Compliances-by-me")
-                  : "Compliance Dashboard"}
+                  : mainComplianceTabs === 4
+                    ? t("Reports")
+                    : "Compliance Dashboard"}
               </span>
               {mainComplianceTabs === 2 && (
                 <Button
@@ -205,6 +208,10 @@ const MainCompliance = () => {
             ) : mainComplianceTabs === 2 || mainComplianceTabs === 3 ? (
               <Col sm={12} md={6} lg={6}>
                 <SearchComplianceBoxModal />
+              </Col>
+            ) : mainComplianceTabs === 4 ? (
+              <Col sm={12} md={6} lg={6}>
+                <SearchComplianceReportModal />
               </Col>
             ) : null}
           </Row>

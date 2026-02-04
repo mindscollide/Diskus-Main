@@ -922,7 +922,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
     case actions.COMPLIANCE_REPORT_LISTING_INIT:
       return {
         ...state,
-        Loading: false,
+        Loading: true,
         severity: null,
       };
 

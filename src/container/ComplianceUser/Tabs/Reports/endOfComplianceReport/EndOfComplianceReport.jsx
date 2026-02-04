@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "./EndOfComplianceReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -9,11 +9,13 @@ import { DatePicker, Collapse, Progress } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
+import { t } from "i18next";
+import CustomTable from "../../../../../components/elements/table/Table";
 
 const { Panel } = Collapse;
 
 const EndOfComplianceReport = () => {
-  const { endOfComplianceReport, setEndOfComplianceReport } =
+  const { endOfComplianceReport, setEndOfComplianceReport, reportList } =
     useComplianceContext();
 
   const donutData = [
@@ -50,8 +52,103 @@ const EndOfComplianceReport = () => {
       totalTasks: 10,
       overdueTasks: 10,
     },
+    {
+      id: 3,
+      checklistName: "Incident Response Plan",
+      dueDate: "15 March 2025",
+      totalTasks: 20,
+      overdueTasks: 10,
+    },
   ];
 
+  const reportsData = [
+    {
+      taskName: "Draft Policy Update",
+      assignee: "Ali Khan",
+      dueDate: "05 December 2025",
+      completedOn: "05 December 2025",
+      completed: "On Time",
+    },
+    {
+      taskName: "Stakeholder Sign-Off",
+      assignee: "Sara Ahmed",
+      dueDate: "05 December 2025",
+      completedOn: "05 December 2025",
+      completed: "Overdue",
+    },
+    {
+      taskName: "Stakeholder Sign-Off",
+      assignee: "Sara Ahmed",
+      dueDate: "05 December 2025",
+      completedOn: "05 December 2025",
+      completed: "Overdue",
+    },
+    {
+      taskName: "Stakeholder Sign-Off",
+      assignee: "Sara Ahmed",
+      dueDate: "05 December 2025",
+      completedOn: "05 December 2025",
+      completed: "Overdue",
+    },
+    {
+      taskName: "Stakeholder Sign-Off",
+      assignee: "Sara Ahmed",
+      dueDate: "05 December 2025",
+      completedOn: "05 December 2025",
+      completed: "Overdue",
+    },
+  ];
+  const columns = useMemo(
+    () => [
+      {
+        title: t("Task-Name"),
+        dataIndex: "taskName",
+        key: "taskName",
+        width: "12%",
+        ellipsis: true,
+        align: "left",
+        render: (text) => <span>{text}</span>,
+      },
+      {
+        title: t("assignee"),
+        dataIndex: "assignee",
+        key: "assignee",
+        width: "35%",
+        ellipsis: true,
+        align: "start",
+        render: (text) => <span>{text}</span>,
+      },
+
+      {
+        title: t("Due-date"),
+        dataIndex: "dueDate",
+        key: "dueDate",
+        width: "13%",
+        ellipsis: true,
+        align: "left",
+        render: (text) => <span>{text}</span>,
+      },
+      {
+        title: t("completed-on"),
+        dataIndex: "completedOn",
+        key: "completedOn",
+        width: "13%",
+        ellipsis: true,
+        align: "left",
+        render: (text) => <span>{text}</span>,
+      },
+      {
+        title: t("completed"),
+        dataIndex: "completed",
+        key: "completed",
+        width: "13%",
+        ellipsis: true,
+        align: "left",
+        render: (text) => <span>{text}</span>,
+      },
+    ],
+    [reportList, t],
+  );
   return (
     <>
       <div className={styles.mainDivComplianceStanding}>
@@ -217,49 +314,13 @@ const EndOfComplianceReport = () => {
                 {/* EXPANDED CONTENT */}
                 <div className={styles.panelContent}>
                   <div className={styles.insideAccordianTable}>
-                    {/* <Row>
-                      <Col lg={12} xs="auto">
-                        <div className={styles.insideAccordianMainHeading}>
-                          <label>Task Title:</label>
-                          <p>
-                            Implementation of End-to-End Data Encryption Across
-                            All Internal Systems
-                          </p>
-                        </div>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col lg={4} xs="auto">
-                        <div className={styles.insideAccordianSubHeading}>
-                          <label>Assignee:</label>
-                          <p>Ali Khan</p>
-                        </div>
-                      </Col>{" "}
-                      <Col lg={2} xs="auto">
-                        <div className={styles.insideAccordianSubHeading}>
-                          <label>Due Date:</label>
-                          <p>10 June 2025</p>
-                        </div>
-                      </Col>
-                      <Col lg={2} xs="auto">
-                        <div className={styles.insideAccordianSubHeading}>
-                          <label>Completed on:</label>
-                          <p>10 June 2025</p>
-                        </div>
-                      </Col>
-                      <Col lg={2} xs="auto">
-                        <div className={styles.insideAccordianSubHeading}>
-                          <label>Status:</label>
-                          <p>Completed</p>
-                        </div>
-                      </Col>
-                      <Col lg={2} xs="auto">
-                        <div className={styles.insideAccordianSubHeading}>
-                          <label>Completed:</label>
-                          <p>On Time</p>
-                        </div>
-                      </Col>
-                    </Row> */}
+                    <CustomTable
+                      rows={reportsData}
+                      column={columns}
+                      // scroll={{ x: "scroll", y: 550 }}
+                      pagination={false}
+                      // onChange={handleChangeReportSorter}
+                    />
                   </div>
                 </div>
               </Panel>

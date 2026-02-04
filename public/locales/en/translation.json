@@ -2665,5 +2665,11 @@
   "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this compliance cannot be Re-opened or moved back to In Progress",
   "End-of-Compliance-Reports": "End of Compliance Reports",
   "Quarterly-reports": "Quarterly reports",
-  "Accumulative-reports": "Accumulative reports"
+  "Accumulative-reports": "Accumulative reports",
+  "Report-title": "Report Title",
+  "Generated-on": "Generated on",
+  "Report-type": "Report Type",
+  "Due-date-from": "Start Date",
+  "Due-date-to": "End Date",
+  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options"
 }
