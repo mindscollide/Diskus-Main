@@ -17,7 +17,11 @@ const ViewComplianceChecklistAccordian = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
-  const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
+  // const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
+
+  const allExpanded =
+    getCheckListData.length > 0 &&
+    expandedCheckListIds.length === getCheckListData.length;
 
   // context
   const {
@@ -64,24 +68,40 @@ const ViewComplianceChecklistAccordian = () => {
   //     }
   //   }
   // };
-  const handleExpandBtn = () => {
-    if (getCheckListData?.length === 0) return;
+  // const handleExpandBtn = () => {
+  //   if (getCheckListData?.length === 0) return;
 
-    if (!isExpandBtnClicked) {
+  //   if (!isExpandBtnClicked) {
+  //     // 👉 EXPAND ALL
+  //     const allIds = getCheckListData.map((item) => item.checklistId);
+
+  //     setExpandedCheckListIds(allIds);
+  //     setAddChecklistCloseState(true);
+  //   } else {
+  //     // 👉 COLLAPSE ALL
+  //     setExpandedCheckListIds([]);
+  //     setAddChecklistCloseState(false);
+  //   }
+
+  //   // 🔄 toggle button state
+  //   setIsExpandBtnClicked((prev) => !prev);
+  // };
+  const handleExpandBtn = () => {
+    if (getCheckListData.length === 0) return;
+
+    if (allExpanded) {
+      // 👉 COLLAPSE ALL
+      setExpandedCheckListIds([]);
+      setAddChecklistCloseState(false);
+    } else {
       // 👉 EXPAND ALL
       const allIds = getCheckListData.map((item) => item.checklistId);
 
       setExpandedCheckListIds(allIds);
       setAddChecklistCloseState(true);
-    } else {
-      // 👉 COLLAPSE ALL
-      setExpandedCheckListIds([]);
-      setAddChecklistCloseState(false);
     }
-
-    // 🔄 toggle button state
-    setIsExpandBtnClicked((prev) => !prev);
   };
+
   const handleChecklistStatusChange = (checklistId, selectedStatus) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
@@ -183,8 +203,13 @@ const ViewComplianceChecklistAccordian = () => {
           className="d-flex justify-content-end align-items-center"
         >
           {getCheckListData?.length > 0 && (
+            // <Button
+            //   text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
+            //   className={styles["viewCompliance_ExapnAllBtn"]}
+            //   onClick={handleExpandBtn}
+            // />
             <Button
-              text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
+              text={allExpanded ? t("Collapse-all") : t("Expand-all")}
               className={styles["viewCompliance_ExapnAllBtn"]}
               onClick={handleExpandBtn}
             />

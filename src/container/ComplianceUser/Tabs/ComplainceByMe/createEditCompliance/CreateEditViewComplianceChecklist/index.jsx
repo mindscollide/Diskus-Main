@@ -385,10 +385,10 @@ const CreateEditViewComplianceChecklist = () => {
   };
 
   const isLockedStatus =
-    complianceDetailsState.status.value === 7 ||
-    complianceDetailsState.status.value === 9 ||
-    complianceDetailsState.status.value === 5 ||
-    complianceDetailsState.status.value === 2;
+    complianceDetailsState?.status?.value === 7 ||
+    complianceDetailsState?.status?.value === 9 ||
+    complianceDetailsState?.status?.value === 5 ||
+    complianceDetailsState?.status?.value === 2;
 
   return (
     <>

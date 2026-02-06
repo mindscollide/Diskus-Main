@@ -1006,7 +1006,7 @@ const ComplainceDetails = () => {
             </span>
           </div>
           <DatePicker
-            value={complianceDetailsState.dueDate}
+            value={complianceDetailsState?.dueDate}
             format={"DD/MM/YYYY"}
             minDate={moment().toDate()}
             placeholder={t("Due-date")}
@@ -1014,8 +1014,8 @@ const ComplainceDetails = () => {
               <InputIcon
                 placeholder={t("Due-date")}
                 className={`${styles["datepicker_input"]} ${
-                  complianceDetailsState.authority.value === 0 ||
-                  complianceDetailsState.status.value === 6
+                  complianceDetailsState?.authority?.value === 0 ||
+                  complianceDetailsState?.status?.value === 6
                     ? styles["disabledInput"]
                     : ""
                 }`}
@@ -1034,7 +1034,7 @@ const ComplainceDetails = () => {
             onChange={changeComplainceDueDate}
             disabled={
               complianceDetailsState.authority.value === 0 ||
-              complianceDetailsState.status.value === 6
+              complianceDetailsState?.status?.value === 6
                 ? true
                 : false
             }

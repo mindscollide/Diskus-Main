@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import styles from "./viewComplianceTasks.module.css";
 import { Button } from "../../../../../components/elements";
@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 // import Accordion_Arrow from "../../../../assets/images/Accordion_Arrow.png";
 import Accordion_Arrow from "../../../../../assets/images/Accordion_Arrow.png";
 import NoChecklistImg from "../../../../../assets/images/NoChecklistImg.png";
+import NoTaskImg from "../../../../../assets/images/NoTaskImg.png";
+
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -654,136 +656,218 @@ const ViewComplianceTasks = () => {
   // Row
   return (
     <>
-      <Row className="mt-3">
-        <div
-          ref={accordionContainerRef}
-          className={
-            addChecklistCloseState
-              ? styles["taskAccordian_closed"]
-              : styles["taskAccordian"]
-          }
-        >
-          {viewComplianceTasksData?.length > 0 ? (
-            viewComplianceTasksData.map((data, index) => {
-              const isExpanded = expandedCheckListIds.find(
-                (data2, index) => data2 === data.checklistId
-              );
+      {viewComplianceTasksData?.length > 0 ? (
+        <Row className="mt-3">
+          <div
+            ref={accordionContainerRef}
+            className={
+              addChecklistCloseState
+                ? styles["taskAccordian_closed"]
+                : styles["taskAccordian"]
+            }
+          >
+            {
+              viewComplianceTasksData?.length > 0
+                ? viewComplianceTasksData.map((data, index) => {
+                    const isExpanded = expandedCheckListIds.find(
+                      (data2, index) => data2 === data.checklistId
+                    );
 
-              // const taskData = data.taskList;
-              const taskData = (data.taskList || []).map((task, index) => ({
-                ...task,
-                key: task.taskId || `${data.checklistId}-${index}`,
-              }));
-              console.log(taskData, "isExpandedisExpanded");
+                    // const taskData = data.taskList;
+                    const taskData = (data.taskList || []).map(
+                      (task, index) => ({
+                        ...task,
+                        key: task.taskId || `${data.checklistId}-${index}`,
+                      })
+                    );
 
-              return (
-                <div key={data.checklistId}>
-                  <CustomAccordion
-                    isExpand={isExpanded}
-                    notesID={data.checklistId}
-                    isCompliance={false}
-                    isComplianceTask={true}
-                    StartField={
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className={styles.checklistTitleLabel}
-                        >
-                          {t("Checklist-title")}
-                        </Col>
+                    return (
+                      <div key={data.checklistId}>
+                        <CustomAccordion
+                          isExpand={isExpanded}
+                          notesID={data.checklistId}
+                          isCompliance={false}
+                          isComplianceTask={true}
+                          StartField={
+                            <Row>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles.checklistTitleLabel}
+                              >
+                                {t("Checklist-title")}
+                              </Col>
 
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className={`m-0 ${styles.checklistTitleValue}`}
-                        >
-                          {data.checklistTitle}
-                        </Col>
-                      </Row>
-                    }
-                    attachmentsRow={
-                      taskData.length > 0 && (
-                        <>
-                          <CustomTable
-                            column={getColumnsTasks(data.checklistId)}
-                            rows={taskData}
-                            pagination={false}
-                            onChange={(pagination, filters, sorter) =>
-                              handleChangeAuthorityFilerSorter(
-                                data.checklistId,
-                                pagination,
-                                filters,
-                                sorter
-                              )
-                            }
-                          />
-                        </>
-                      )
-                    }
-                    endField={
-                      <>
-                        <Row>
-                          <Col
-                            sm={11}
-                            md={11}
-                            lg={11}
-                            className="d-flex justify-content-end align-items-center"
-                          >
-                            <img
-                              src={Accordion_Arrow}
-                              onClick={() => handleClickExpandCheckList(data)}
-                              alt=""
-                              className={`cursor-pointer ${
-                                isExpanded ? "" : styles["AccordionArrowDown"]
-                              }`}
-                            />
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
-                </div>
-              );
-            })
-          ) : (
-            <>
-              <Row className="mt-3 ">
-                <Col
-                  lg={12}
-                  ms={12}
-                  sm={12}
-                  className="d-flex justify-content-center align-items-center"
-                >
-                  <img draggable={false} src={NoChecklistImg} alt="" />
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  ms={12}
-                  sm={12}
-                  className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
-                >
-                  {t("No-task-found")}
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
-                >
-                  {t("No-Task-has-been-created-yet")}
-                </Col>
-              </Row>
-            </>
-          )}
-        </div>
-      </Row>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={`m-0 ${styles.checklistTitleValue}`}
+                              >
+                                {data.checklistTitle}
+                              </Col>
+                            </Row>
+                          }
+                          attachmentsRow={
+                            taskData.length > 0 ? (
+                              <>
+                                <CustomTable
+                                  column={getColumnsTasks(data.checklistId)}
+                                  rows={taskData}
+                                  pagination={false}
+                                  onChange={(pagination, filters, sorter) =>
+                                    handleChangeAuthorityFilerSorter(
+                                      data.checklistId,
+                                      pagination,
+                                      filters,
+                                      sorter
+                                    )
+                                  }
+                                />
+                              </>
+                            ) : (
+                              <Row className="d-flex align-items-center justify-content-center">
+                                <Row className="">
+                                  <Col
+                                    lg={12}
+                                    ms={12}
+                                    sm={12}
+                                    className="d-flex justify-content-center align-items-center"
+                                  >
+                                    <img
+                                      draggable={false}
+                                      src={NoTaskImg}
+                                      alt=""
+                                    />
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    ms={12}
+                                    sm={12}
+                                    className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+                                  >
+                                    {t("No-tasks-available")}
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+                                  >
+                                    {t("You-dont-have-any-tasks-at-the-moment")}
+                                  </Col>
+                                </Row>
+                              </Row>
+                            )
+                          }
+                          endField={
+                            <>
+                              <Row>
+                                <Col
+                                  sm={11}
+                                  md={11}
+                                  lg={11}
+                                  className="d-flex justify-content-end align-items-center"
+                                >
+                                  <img
+                                    src={Accordion_Arrow}
+                                    onClick={() =>
+                                      handleClickExpandCheckList(data)
+                                    }
+                                    alt=""
+                                    className={`cursor-pointer ${
+                                      isExpanded
+                                        ? ""
+                                        : styles["AccordionArrowDown"]
+                                    }`}
+                                  />
+                                </Col>
+                              </Row>
+                            </>
+                          }
+                        />
+                      </div>
+                    );
+                  })
+                : ""
+
+              // (
+              //   <>
+              //     <Row className="mt-5 ">
+              //       <Col
+              //         lg={12}
+              //         ms={12}
+              //         sm={12}
+              //         className="d-flex justify-content-center align-items-center"
+              //       >
+              //         <img draggable={false} src={NoTaskImg} alt="" />
+              //       </Col>
+              //     </Row>
+              //     <Row>
+              //       <Col
+              //         lg={12}
+              //         ms={12}
+              //         sm={12}
+              //         className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+              //       >
+              //         {t("No-tasks-available")}
+              //       </Col>
+              //     </Row>
+              //     <Row>
+              //       <Col
+              //         lg={12}
+              //         md={12}
+              //         sm={12}
+              //         className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+              //       >
+              //         {t("You-dont-have-any-tasks-at-the-moment")}
+              //       </Col>
+              //     </Row>
+              //   </>
+              // )
+            }
+          </div>
+        </Row>
+      ) : (
+        <Row className="d-flex align-items-center justify-content-center mt-5">
+          <Row className="mt-5 ">
+            <Col
+              lg={12}
+              ms={12}
+              sm={12}
+              className="d-flex justify-content-center align-items-center"
+            >
+              <img draggable={false} src={NoTaskImg} alt="" />
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              lg={12}
+              ms={12}
+              sm={12}
+              className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+            >
+              {t("No-tasks-available")}
+            </Col>
+          </Row>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+            >
+              {t("You-dont-have-any-tasks-at-the-moment")}
+            </Col>
+          </Row>
+        </Row>
+      )}
+
       {taskView && (
         <TaskDetailsViewModal
           viewFlagToDo={taskView}
