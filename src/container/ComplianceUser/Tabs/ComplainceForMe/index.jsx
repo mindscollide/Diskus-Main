@@ -23,7 +23,7 @@ import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown } from "react-bootstrap-icons";
-import { Checkbox } from "antd";
+import { Checkbox, Tooltip } from "antd";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 
 const ComplianceForMe = () => {
@@ -38,7 +38,7 @@ const ComplianceForMe = () => {
   ];
 
   const SearchComplianceForMe = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe,
+    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
   );
   // const [totalRecords, setTotalRecords] = useState(0);
 
@@ -62,7 +62,7 @@ const ComplianceForMe = () => {
   } = useComplianceContext();
   console.log(
     { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "statusFilter",
+    "statusFilter"
   );
 
   useEffect(() => {
@@ -129,8 +129,8 @@ const ComplianceForMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -244,7 +244,7 @@ const ComplianceForMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle,
+                  (s) => s.statusTitle
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -291,7 +291,11 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "left",
         render: (text) => {
-          return <span>{text}</span>;
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
         },
         sorter: (a, b) =>
           complianceTitleSort === "descend"
@@ -299,12 +303,12 @@ const ComplianceForMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.complianceTitle?.toLowerCase())
             : complianceTitleSort === "ascend"
-              ? a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase())
-              : a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase()),
+            ? a.complianceTitle
+                ?.toLowerCase()
+                .localeCompare(b.complianceTitle?.toLowerCase())
+            : a.complianceTitle
+                ?.toLowerCase()
+                .localeCompare(b.complianceTitle?.toLowerCase()),
       },
       {
         title: t("Criticality"),
@@ -316,8 +320,14 @@ const ComplianceForMe = () => {
         ...getCriticalityColumnProps(),
 
         render: (text) => (
-          <span>
-            {text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High")}
+          <span className="d-flex justify-content-center">
+            {text === 1 ? (
+              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
+            ) : text === 2 ? (
+              <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
+            ) : (
+              <Tooltip title={t("High")}>{t("High")}</Tooltip>
+            )}
           </span>
         ),
       },
@@ -330,6 +340,13 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
+        render: (text) => {
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
+        },
       },
       {
         title: (
@@ -350,7 +367,13 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "center",
         render: (_, record) => {
-          return <span>{`${formatDateToYMD(record.dueDate)}`}</span>;
+          return (
+            <span>
+              <Tooltip
+                title={`${formatDateToYMD(record.dueDate)}`}
+              >{`${formatDateToYMD(record.dueDate)}`}</Tooltip>
+            </span>
+          );
         },
         sorter: (a, b) => {
           const aTime = getDueDateTimeNumber(a.dueDate, a.dueTime);
@@ -380,18 +403,25 @@ const ComplianceForMe = () => {
         width: "14%",
         ellipsis: true,
         align: "center",
+        render: (text) => {
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
+        },
         sorter: (a, b) =>
           authoritySort === "descend"
             ? b.authorityShortCode
                 ?.toLowerCase()
                 .localeCompare(a.authorityShortCode?.toLowerCase())
             : authoritySort === "ascend"
-              ? a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase())
-              : a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase()),
+            ? a.authorityShortCode
+                ?.toLowerCase()
+                .localeCompare(b.authorityShortCode?.toLowerCase())
+            : a.authorityShortCode
+                ?.toLowerCase()
+                .localeCompare(b.authorityShortCode?.toLowerCase()),
       },
       {
         title: "",
@@ -427,7 +457,7 @@ const ComplianceForMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ],
+    ]
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceForMeList.length < complianceForMeTotal) {
