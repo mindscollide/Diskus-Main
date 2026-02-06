@@ -167,6 +167,11 @@ const initialState = {
   meetingTranscriptResponse: null,
   meetingTranscriptDownloaded: null,
   meetingMinutesDownload: null,
+  currentMeetingInfo: {
+    meetingID: 0,
+    meetingTitle: "",
+    mapFolderId: 0,
+  },
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -2736,6 +2741,27 @@ const NewMeetingreducer = (state = initialState, action) => {
           meetingTranscriptResponse: null,
           responseMessage: "",
         };
+
+        case actions.CURRENT_MEETING_INFO: 
+        return {
+          ...state,
+          currentMeetingInfo: {
+            ...state.currentMeetingInfo,
+            meetingID: action.response.meetingId,
+            meetingTitle: action.response.meetingTitle,
+            mapFolderId: action.response.mapFolderId,
+          },
+        }
+        case actions.CLEAR_CURRENT_MEETING_INFO:
+          return {
+            ...state,
+            currentMeetingInfo: {
+              ...state.currentMeetingInfo,
+              meetingID: 0,
+              meetingTitle: "",
+              mapFolderId: 0,
+            },
+          }
 
       default:
         return {

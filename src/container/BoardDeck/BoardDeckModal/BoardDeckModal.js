@@ -439,6 +439,7 @@ const BoardDeckModal = ({
                     <CustomRadioGroup
                       value={radioValue}
                       onChange={(e) => handleRadioChange(e.target.value)}
+                      disabled={true}
                       options={[
                         {
                           value: 1,

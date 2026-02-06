@@ -85,8 +85,8 @@ const allAssignessList = (navigate, t, loader) => {
     let form = new FormData();
     form.append("RequestMethod", getAllAssigneesToDoList.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    await     axiosInstance
-    .post(meetingApi, form)
+    await axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -97,21 +97,21 @@ const allAssignessList = (navigate, t, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllAssignees_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllAssignees_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 allassignesslistsuccess(
                   response.data.responseResult.user,
                   "",
-                  loader
-                )
+                  loader,
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllAssignees_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllAssignees_02".toLowerCase(),
                 )
             ) {
               await dispatch(allassignesslistfail(t("No-records-found")));
@@ -119,7 +119,7 @@ const allAssignessList = (navigate, t, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllAssignees_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllAssignees_03".toLowerCase(),
                 )
             ) {
               await dispatch(allassignesslistfail(t("Something-went-wrong")));
@@ -168,7 +168,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
     form.append("RequestMethod", scheduleNewMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -179,7 +179,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_01".toLowerCase(),
                 )
             ) {
               dispatch(SetLoaderFalse());
@@ -199,7 +199,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                       const mainMatch =
                         response.data.responseResult.agendaMappings.find(
                           (item) =>
-                            item.oldPK_MAID === doc.ObjMeetingAgenda.PK_MAID
+                            item.oldPK_MAID === doc.ObjMeetingAgenda.PK_MAID,
                         );
                       // Only include agendas with attachments
                       if (doc.MeetingAgendaAttachments.length > 0) {
@@ -207,7 +207,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                         const FileIds = doc.MeetingAgendaAttachments.map(
                           (file) => ({
                             PK_FileID: Number(file.OriginalAttachmentName),
-                          })
+                          }),
                         );
 
                         return { AgendaID, FileIds };
@@ -221,8 +221,8 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                   const attachmentIds = object.MeetingAgendas.flatMap(
                     (agenda) =>
                       agenda.MeetingAgendaAttachments.map((attachment) =>
-                        Number(attachment.OriginalAttachmentName)
-                      )
+                        Number(attachment.OriginalAttachmentName),
+                      ),
                   );
                   dispatch(
                     CreateUpdateMeetingDataRoomMap(
@@ -232,8 +232,8 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
                       attachmentIds,
                       newAgendas,
                       checkFlag,
-                      setShow
-                    )
+                      setShow,
+                    ),
                   );
                 }
                 // dispatch(meetingLoaderDashboard(false));
@@ -245,7 +245,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t("No-record-save")));
@@ -254,7 +254,7 @@ const ScheduleNewMeeting = (navigate, t, checkFlag, object, setShow) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_ScheduleNewMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
@@ -287,12 +287,12 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
     form.append("RequestMethod", updateMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag)
+            ScheduleNewMeeting(navigate, t, checkFlag, object, setEditFlag),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -300,7 +300,7 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateMeeting_01".toLowerCase(),
                 )
             ) {
               await dispatch(SetLoaderFalse());
@@ -316,12 +316,12 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                   UpdateFileList: object.MeetingAgendas.map((doc) => {
                     const mainMatch =
                       Array.isArray(
-                        response.data.responseResult.agendaIdMappings
+                        response.data.responseResult.agendaIdMappings,
                       ) &&
                       response.data.responseResult.agendaIdMappings.length > 0
                         ? response.data.responseResult.agendaIdMappings.find(
                             (item) =>
-                              item.oldId === doc.ObjMeetingAgenda.PK_MAID
+                              item.oldId === doc.ObjMeetingAgenda.PK_MAID,
                           )
                         : null;
 
@@ -329,21 +329,21 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                     if (doc.MeetingAgendaAttachments.length > 0) {
                       let checkIsNewFileExist =
                         doc.MeetingAgendaAttachments.filter(
-                          (fileData, index) => fileData.isNew === true
+                          (fileData, index) => fileData.isNew === true,
                         );
                       console.log(
                         checkIsNewFileExist.length,
-                        "checkIsNewFileExistcheckIsNewFileExistF"
+                        "checkIsNewFileExistcheckIsNewFileExistF",
                       );
                       const AgendaID = String(
                         mainMatch
                           ? mainMatch.newId
-                          : doc.ObjMeetingAgenda.PK_MAID
+                          : doc.ObjMeetingAgenda.PK_MAID,
                       );
                       const FileIds = doc.MeetingAgendaAttachments.map(
                         (file) => ({
                           PK_FileID: Number(file.OriginalAttachmentName),
-                        })
+                        }),
                       );
 
                       return { AgendaID, FileIds };
@@ -355,10 +355,10 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
 
                 const attachmentIds = object.MeetingAgendas.flatMap((agenda) =>
                   agenda.MeetingAgendaAttachments.filter(
-                    (attachment) => attachment.isNew === true
+                    (attachment) => attachment.isNew === true,
                   ).map((attachment) =>
-                    Number(attachment.OriginalAttachmentName)
-                  )
+                    Number(attachment.OriginalAttachmentName),
+                  ),
                 );
 
                 // Dispatch the updated data
@@ -370,13 +370,13 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
                     attachmentIds,
                     newAgendas,
                     checkFlag,
-                    setEditFlag
-                  )
+                    setEditFlag,
+                  ),
                 );
               } catch (error) {
                 console.log(
                   error,
-                  "Meeting_MeetingServiceManager_UpdateMeeting_01"
+                  "Meeting_MeetingServiceManager_UpdateMeeting_01",
                 );
               }
 
@@ -437,17 +437,17 @@ const UpdateMeeting = (navigate, t, checkFlag, object, setEditFlag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                ScheduleMeetingFail(t("No-record-has-been-updated"))
+                ScheduleMeetingFail(t("No-record-has-been-updated")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_UpdateMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_UpdateMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t("Something-went-wrong")));
@@ -496,7 +496,7 @@ const ViewMeeting = (
   setCalendarViewModal,
   no,
   setViewMeetingModal,
-  setEditMeetingModal
+  setEditMeetingModal,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -505,7 +505,7 @@ const ViewMeeting = (
     form.append("RequestMethod", getMeetingByMeetingID.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -519,8 +519,8 @@ const ViewMeeting = (
               setCalendarViewModal,
               no,
               setViewMeetingModal,
-              setEditMeetingModal
-            )
+              setEditMeetingModal,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -528,11 +528,11 @@ const ViewMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                ViewMeetingSuccess(response.data.responseResult, "")
+                ViewMeetingSuccess(response.data.responseResult, ""),
               );
               try {
                 if (Number(no) === 1) {
@@ -563,7 +563,7 @@ const ViewMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_02".toLowerCase(),
                 )
             ) {
               await dispatch(ViewMeetingFail(t("No-records-found")));
@@ -572,7 +572,7 @@ const ViewMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingsByMeetingID_03".toLowerCase(),
                 )
             ) {
               await dispatch(ViewMeetingFail(t("Something-went-wrong")));
@@ -629,7 +629,7 @@ const CancelMeeting = (navigate, object, t, value) => {
     form.append("RequestMethod", cancelMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -640,14 +640,14 @@ const CancelMeeting = (navigate, object, t, value) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_CancelMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_CancelMeeting_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 CancelMeetingSuccess(
                   response.data.responseResult,
-                  t("The-meeting-has-been-cancelled")
-                )
+                  t("The-meeting-has-been-cancelled"),
+                ),
               );
               console.log("valuevaluevalue", value);
               if (value === 6) {
@@ -690,6 +690,8 @@ const CancelMeeting = (navigate, object, t, value) => {
                   Length: meetingpageRow ? Number(meetingpageRow) : 50,
                   PublishedMeetings:
                     currentView && Number(currentView) === 1 ? true : false,
+                  ProposedMeetings:
+                    currentView && Number(currentView) === 2 ? true : false,
                 };
                 console.log("chek search meeting");
                 await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -698,19 +700,19 @@ const CancelMeeting = (navigate, object, t, value) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_CancelMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_CancelMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 CancelMeetingFail(
-                  t("The-meeting-has-not-been-cancelled-successfully")
-                )
+                  t("The-meeting-has-not-been-cancelled-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_CancelMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_CancelMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(CancelMeetingFail(t("Something-went-wrong")));
@@ -761,7 +763,7 @@ const StartMeeting = (navigate, object, t, searchData) => {
     form.append("RequestMethod", startMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -772,33 +774,33 @@ const StartMeeting = (navigate, object, t, searchData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartMeeting_01".toLowerCase(),
                 )
             ) {
               localStorage.setItem("MeetingId", object.MeetingID);
               await dispatch(
                 StartMeetingSuccess(
                   response.data.responseResult,
-                  t("The-meeting-has-been-started")
-                )
+                  t("The-meeting-has-been-started"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(
                 StartMeetingFail(
-                  t("The-Meeting-Has-not-Been-Started-Successfully")
-                )
+                  t("The-Meeting-Has-not-Been-Started-Successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(StartMeetingFail(t("Something-went-wrong")));
@@ -806,13 +808,13 @@ const StartMeeting = (navigate, object, t, searchData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartMeeting_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartMeeting_04".toLowerCase(),
                 )
             ) {
               await dispatch(
                 StartMeetingFail(
-                  t("You-cannot-start-the-meeting-5-minute-before")
-                )
+                  t("You-cannot-start-the-meeting-5-minute-before"),
+                ),
               );
             } else {
               dispatch(StartMeetingFail(t("Something-went-wrong")));
@@ -863,7 +865,7 @@ const EndMeeting = (navigate, object, t, searchData) => {
     form.append("RequestMethod", endMeeting.RequestMethod);
     form.append("RequestData", JSON.stringify(object));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -874,14 +876,14 @@ const EndMeeting = (navigate, object, t, searchData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_EndMeeting_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_EndMeeting_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 EndMeetingSuccess(
                   response.data.responseResult,
-                  t("The-meeting-has-been-ended")
-                )
+                  t("The-meeting-has-been-ended"),
+                ),
               );
 
               console.log("chek search meeting");
@@ -890,17 +892,17 @@ const EndMeeting = (navigate, object, t, searchData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_EndMeeting_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_EndMeeting_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                EndMeetingFail(t("The-meeting-has-not-been-ended"))
+                EndMeetingFail(t("The-meeting-has-not-been-ended")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_EndMeeting_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_EndMeeting_03".toLowerCase(),
                 )
             ) {
               await dispatch(EndMeetingFail(t("Something-went-wrong")));
@@ -956,17 +958,17 @@ const GetAllReminders = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getAllRemindersSuccess(response.data.responseResult, "")
+                getAllRemindersSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_02".toLowerCase(),
                 )
             ) {
               await dispatch(getAllRemindersFail(t("No-records-found")));
@@ -974,7 +976,7 @@ const GetAllReminders = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingReminders_03".toLowerCase(),
                 )
             ) {
               await dispatch(getAllRemindersFail(t("Something-went-wrong")));

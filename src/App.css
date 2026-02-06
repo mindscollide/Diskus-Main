@@ -8301,3 +8301,33 @@ td.ant-table-column-sort {
 .complianceProgressBarColor .ant-progress-bg {
   background-color: #55ce5c !important;
 }
+/* main dropdown container */
+.status-filter-dropdown {
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* checkbox item */
+.status-filter-dropdown .ant-dropdown-menu-item {
+  padding: 10px 16px;
+  font-size: 14px;
+}
+
+/* selected item */
+.status-filter-dropdown .ant-dropdown-menu-item-selected {
+  background-color: #e6f4ff;
+  font-weight: 500;
+}
+
+/* hover */
+.status-filter-dropdown .ant-dropdown-menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Reset & OK buttons */
+.status-filter-dropdown .ant-table-filter-dropdown-btns {
+  border-top: 1px solid #f0f0f0;
+  padding: 8px;
+}

@@ -25,6 +25,8 @@ export const MeetingProvider = ({ children }) => {
   const [isAgendaUpdateWhenMeetingActive, setIsAgendaUpdateWhenMeetingActive] =
     useState(true);
 
+  const [editFlag, setEditFlag] = useState(false);
+
   // State for managing confirmation modals
   const [cancelConfirmationModal, setCancelConfirmationModal] = useState(false);
   const [endMeetingConfirmationModal, setEndMeetingConfirmationModal] =
@@ -63,6 +65,7 @@ export const MeetingProvider = ({ children }) => {
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   // State for managing the edit advanced meeting modal
   const [isEditMeeting, setEditMeeting] = useState(false);
+  const [currentMeetingID, setCurrentMeetingID] = useState(0);
 
   // State for managing meeting tabs and their visibility
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -225,6 +228,9 @@ export const MeetingProvider = ({ children }) => {
   const [boardDeckMeetingTitle, setBoardDeckMeetingTitle] = useState("");
   const [stepDownloadModal, setStepDownloadModal] = useState(1);
   const [downloadMeetinModal, setDownloadMeeting] = useState(false);
+
+  const [downloadVideoRecordingModal, setDownloadVideoRecordingModal] =
+    useState(false);
   //
   const [isLeaveMeetingModal, setIsLeaveMeetingModal] = useState(false);
 
@@ -468,6 +474,12 @@ export const MeetingProvider = ({ children }) => {
     stopApiCalled,
     setStopApiCalled,
     stopApiCalledRef,
+    currentMeetingID,
+    setCurrentMeetingID,
+    editFlag,
+    setEditFlag,
+    downloadVideoRecordingModal,
+    setDownloadVideoRecordingModal,
   };
 
   // Provide the state data to the context

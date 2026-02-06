@@ -37,10 +37,10 @@ const CancelButtonModal = () => {
   const navigate = useNavigate();
   let navigateLocation = localStorage.getItem("navigateLocation");
   const UploadGlobalFlags = useSelector(
-    (state) => state.NewMeetingreducer.uploadGlobalFlag
+    (state) => state.NewMeetingreducer.uploadGlobalFlag,
   );
   const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
   );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -110,7 +110,14 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
@@ -121,7 +128,14 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: 1,
             Length: 50,
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
@@ -185,7 +199,14 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         } else {
@@ -196,7 +217,14 @@ const CancelButtonModal = () => {
             UserID: Number(userID),
             PageNumber: 1,
             Length: 50,
-            PublishedMeetings: Number(currentView) === 1 ? true : false,
+            PublishedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 1
+                ? true
+                : false,
+            ProposedMeetings:
+              Number(localStorage.getItem("MeetingCurrentView")) === 2
+                ? true
+                : false,
           };
           localStorage.setItem("MeetingPageRows", 30);
           localStorage.setItem("MeetingPageCurrent", 1);
