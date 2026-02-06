@@ -19,6 +19,7 @@ const CustomTable = ({
   ref,
   sticky = true,
   getPopupContainer,
+  showSorterTooltip = false,
 }) => {
   return (
     <>
@@ -38,7 +39,7 @@ const CustomTable = ({
         scroll={scroll}
         ref={ref}
         size={size}
-        showSorterTooltip={false}
+        showSorterTooltip={showSorterTooltip}
         sticky={sticky}
         tableLayout="fixed"
         getPopupContainer={getPopupContainer}

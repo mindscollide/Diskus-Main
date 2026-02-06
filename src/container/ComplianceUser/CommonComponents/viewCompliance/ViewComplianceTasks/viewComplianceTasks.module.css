@@ -40,3 +40,13 @@
   background: #fff !important;
   color: #5a5a5a !important;
 }
+.noChecklistMsg {
+  font-weight: 600;
+  font-size: 30px;
+  color: #5a5a5a;
+}
+.noChecklistMsg_subMsg {
+  font-weight: 700;
+  font-size: 12px;
+  color: #5a5a5a;
+}

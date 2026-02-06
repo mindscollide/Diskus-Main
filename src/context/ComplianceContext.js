@@ -202,6 +202,10 @@ export const ComlianceProvider = ({ children }) => {
       totalComplianceTasks: 0,
       showProgressBar: false,
       complianceStatusChangeHistory: [],
+      status: {
+        value: 0,
+        label: "",
+      },
     });
     setChecklistCount(0);
     setTaskCount(0);

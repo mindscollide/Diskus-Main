@@ -29,7 +29,7 @@ const MainCompliance = () => {
   const navigate = useNavigate();
   const AllComplianceStatus = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses,
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
   );
   const {
     createEditCompliance,
@@ -179,8 +179,8 @@ const MainCompliance = () => {
                 {mainComplianceTabs === 2
                   ? t("Compliances-by-me")
                   : mainComplianceTabs === 4
-                    ? t("Reports")
-                    : "Compliance Dashboard"}
+                  ? t("Reports")
+                  : "Compliance Dashboard"}
               </span>
               {mainComplianceTabs === 2 && (
                 <Button

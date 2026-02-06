@@ -37,7 +37,7 @@ const ViewCompliance = () => {
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
   );
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const ViewCompliance = () => {
         // });
         console.log(
           viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails",
+          "complianceDetailscomplianceDetails"
         );
         setComplianceDetailsState({
           complianceTitle: complianceTitle,
@@ -115,7 +115,7 @@ const ViewCompliance = () => {
                 value: data.statusId,
                 label: data.statusName,
               };
-            },
+            }
           );
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
@@ -208,7 +208,7 @@ const ViewCompliance = () => {
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
-                          "The-status-of-this-compliance-was-changed-multiple-times.",
+                          "The-status-of-this-compliance-was-changed-multiple-times."
                         )}
                       </span>
                       <Button
