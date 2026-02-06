@@ -372,42 +372,46 @@ const Reports = () => {
 
   return (
     <>
-      <section className={styles["ComplianceStatusReport_Section"]}>
-        <Row className={styles["ComplianceReport"]}>
-          <Col lg={2} ms={2} sm={2}>
-            <img className="" src={ComplianceReportLiting} alt="" />
-          </Col>
-          <Col lg={7} ms={6} sm={6}>
-            <h4 className={styles["ComplianceStatusReport_heading"]}>
-              Organization’s compliance status report as of today.{" "}
-              <span
-                className={styles["ComplianceStatusReportGenerated_heading"]}
-              >
-                Generated <img src={ComplianceStatusReportCheckedIcon} alt="" />
-              </span>
-            </h4>
-          </Col>
-          <Col lg={3} ms={4} sm={4}>
-            <div className="d-flex align-items-center justify-content-center mt-3">
-              <CustomButton
-                className={styles["actionButtons_complianceStatusReport"]}
-                text={"View Report"}
-                onClick={() => setComplianceStandingReport(true)}
-              />
-            </div>
-          </Col>
-        </Row>
-      </section>
-
       {GetReportListingData?.reportsList.length > 0 ? (
-        <CustomTable
-          rows={GetReportListingData?.reportsList}
-          column={columns}
-          className={"Compliance_Table Report_Table  mt-3"}
-          // scroll={{ x: "scroll", y: 550 }}
-          pagination={false}
-          onChange={handleChangeComplianceSorter}
-        />
+        <>
+          <section className={styles["ComplianceStatusReport_Section"]}>
+            <Row className={styles["ComplianceReport"]}>
+              <Col lg={2} ms={2} sm={2}>
+                <img className="" src={ComplianceReportLiting} alt="" />
+              </Col>
+              <Col lg={7} ms={6} sm={6}>
+                <h4 className={styles["ComplianceStatusReport_heading"]}>
+                  Organization’s compliance status report as of today.{" "}
+                  <span
+                    className={
+                      styles["ComplianceStatusReportGenerated_heading"]
+                    }
+                  >
+                    Generated{" "}
+                    <img src={ComplianceStatusReportCheckedIcon} alt="" />
+                  </span>
+                </h4>
+              </Col>
+              <Col lg={3} ms={4} sm={4}>
+                <div className="d-flex align-items-center justify-content-center mt-3">
+                  <CustomButton
+                    className={styles["actionButtons_complianceStatusReport"]}
+                    text={"View Report"}
+                    onClick={() => setComplianceStandingReport(true)}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </section>
+          <CustomTable
+            rows={GetReportListingData?.reportsList}
+            column={columns}
+            className={"Compliance_Table Report_Table  mt-3"}
+            // scroll={{ x: "scroll", y: 550 }}
+            pagination={false}
+            onChange={handleChangeComplianceSorter}
+          />
+        </>
       ) : (
         <>
           <section

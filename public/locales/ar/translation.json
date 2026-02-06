@@ -2482,5 +2482,7 @@
   "Generated-on": "Generated on",
   "Due-date-from": "Start Date",
   "Due-date-to": "End Date",
-  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options"
+  "Report-title.click-the-icon-to-view-more-options": "Report title. Click the icon to view more options",
+  "No-reports-available": "No reports available",
+  "You-don't-have-any-report-at-the-moment": "You don't have any report at the moment"
 }
