@@ -24,7 +24,7 @@ import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow
 import { Col, Row } from "react-bootstrap";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
 import { ChevronDown } from "react-bootstrap-icons";
-import { Checkbox } from "antd";
+import { Checkbox, Tooltip } from "antd";
 
 const ComplianceByMe = () => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const ComplianceByMe = () => {
     { label: t("High"), value: 3 },
   ];
   const getCompliancesForCreator = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator,
+    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
   );
 
   // const [complianceList, setComplianceList] = useState([]);
@@ -67,7 +67,7 @@ const ComplianceByMe = () => {
 
   useEffect(() => {
     dispatch(
-      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t),
+      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
     );
     dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
   }, []);
@@ -118,8 +118,8 @@ const ComplianceByMe = () => {
         1,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -137,8 +137,8 @@ const ComplianceByMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -255,7 +255,7 @@ const ComplianceByMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle,
+                  (s) => s.statusTitle
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -302,7 +302,11 @@ const ComplianceByMe = () => {
         ellipsis: true,
         align: "left",
         render: (text) => {
-          return <span>{text}</span>;
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
         },
         sorter: (a, b) =>
           complianceTitleSort === "descend"
@@ -310,29 +314,13 @@ const ComplianceByMe = () => {
                 ?.toLowerCase()
                 .localeCompare(a.complianceTitle?.toLowerCase())
             : complianceTitleSort === "ascend"
-              ? a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase())
-              : a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase()),
+            ? a.complianceTitle
+                ?.toLowerCase()
+                .localeCompare(b.complianceTitle?.toLowerCase())
+            : a.complianceTitle
+                ?.toLowerCase()
+                .localeCompare(b.complianceTitle?.toLowerCase()),
       },
-      // {
-      //   title: "Criticality",
-      //   dataIndex: "criticality",
-      //   key: "criticality",
-      //   width: "10%",
-      //   ellipsis: true,
-      //   align: "center",
-
-      //   render: (text, record) => {
-      //     return (
-      //       <span>
-      //         {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
-      //       </span>
-      //     );
-      //   },
-      // },
 
       {
         title: t("Criticality"),
@@ -345,7 +333,13 @@ const ComplianceByMe = () => {
 
         render: (text) => (
           <span className="d-flex justify-content-center">
-            {text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High")}
+            {text === 1 ? (
+              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
+            ) : text === 2 ? (
+              <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
+            ) : (
+              <Tooltip title={t("High")}>{t("High")}</Tooltip>
+            )}
           </span>
         ),
       },
@@ -357,6 +351,13 @@ const ComplianceByMe = () => {
         ellipsis: true,
         align: "center",
         ...getStatusColumnProps(),
+        render: (text) => {
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
+        },
       },
       {
         title: (
@@ -377,7 +378,13 @@ const ComplianceByMe = () => {
         ellipsis: true,
         align: "center",
         render: (_, record) => {
-          return <span>{`${formatDateToYMD(record.dueDate)}`}</span>;
+          return (
+            <span>
+              <Tooltip
+                title={`${formatDateToYMD(record.dueDate)}`}
+              >{`${formatDateToYMD(record.dueDate)}`}</Tooltip>
+            </span>
+          );
         },
         sorter: (a, b) => {
           const aTime = getDueDateTimeNumber(a.dueDate, a.dueTime);
@@ -407,18 +414,25 @@ const ComplianceByMe = () => {
         width: "14%",
         ellipsis: true,
         align: "center",
+        render: (text) => {
+          return (
+            <span>
+              <Tooltip title={text}>{text}</Tooltip>
+            </span>
+          );
+        },
         sorter: (a, b) =>
           authoritySort === "descend"
             ? b.authorityShortCode
                 ?.toLowerCase()
                 .localeCompare(a.authorityShortCode?.toLowerCase())
             : authoritySort === "ascend"
-              ? a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase())
-              : a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase()),
+            ? a.authorityShortCode
+                ?.toLowerCase()
+                .localeCompare(b.authorityShortCode?.toLowerCase())
+            : a.authorityShortCode
+                ?.toLowerCase()
+                .localeCompare(b.authorityShortCode?.toLowerCase()),
       },
       {
         title: "",
@@ -454,7 +468,7 @@ const ComplianceByMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ],
+    ]
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceByMeList.length < complianceByMeTotal) {

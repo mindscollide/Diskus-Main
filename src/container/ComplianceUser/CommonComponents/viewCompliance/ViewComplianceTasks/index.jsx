@@ -26,10 +26,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
 import { formatDateToYMD } from "../../commonFunctions";
 import Select from "react-select";
-import {
-  cleareMessage,
-  getTodoStatus,
-} from "../../../../../store/actions/GetTodos";
+
 import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 import { Checkbox } from "antd";
@@ -45,9 +42,9 @@ const ViewComplianceTasks = () => {
   const [taskView, setTaskView] = useState(false);
 
   // Sort States
-  const [taskTitleSort, setTaskTitleSort] = useState("ascend");
+  const [taskTitleSort, setTaskTitleSort] = useState(null);
   const [assignedToSort, setAssignedToSort] = useState(null);
-  const [dueDateSort, setDueDateSort] = useState(null);
+  const [dueDateSort, setDueDateSort] = useState("descend");
   const [statusFilter, setStatusFilter] = useState([
     "In Progress",
     "Pending",
@@ -281,6 +278,7 @@ const ViewComplianceTasks = () => {
 
     resetAllSorts();
 
+    console.log(sorter.order, "taskTitletaskTitle");
     if (sorter.columnKey === "taskTitle") {
       setTaskTitleSort(sorter.order);
     }
