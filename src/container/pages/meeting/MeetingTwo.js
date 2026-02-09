@@ -3385,71 +3385,42 @@ const NewMeeting = () => {
         localStorage.setItem("meetingTitle", record?.title);
         break;
       case "START_MEETING":
-        if (record.isQuickMeeting === false) {
-          dispatch(
-            UpdateOrganizersMeeting(
-              record.isQuickMeeting,
-              navigate,
-              t,
-              3,
-              startMeetingRequest,
-              setEditorRole,
-              // setAdvanceMeetingModalID,
-              setDataroomMapFolderId,
-              setViewAdvanceMeetingModal,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
-              record.isPrimaryOrganizer,
-            ),
-          );
-          setVideoTalk({
-            isChat: record.isChat,
-            isVideoCall: record.isVideoCall,
-            talkGroupID: record.talkGroupID,
-          });
-          localStorage.setItem("videoCallURL", record.videoCallURL);
-          localStorage.setItem("currentMeetingID", record.pK_MDID);
-          localStorage.setItem("isMinutePublished", record.isMinutePublished);
-          localStorage.setItem("meetingTitle", record.title);
+        if (!record.isQuickMeeting) {
           setAdvanceMeetingModalID(record.pK_MDID);
           dispatch(viewMeetingFlag(true));
           dispatch(scheduleMeetingPageFlag(false));
-          setEditorRole({
-            status: record.status,
-            role: "Organizer",
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          });
-          return;
-        } else {
-          dispatch(
-            UpdateOrganizersMeeting(
-              record.isQuickMeeting,
-              navigate,
-              t,
-              4,
-              startMeetingRequest,
-              setEditorRole,
-              setAdvanceMeetingModalID,
-              setDataroomMapFolderId,
-              setSceduleMeeting,
-              setViewFlag,
-              setEditFlag,
-            ),
-          );
-          setEditorRole({
-            status: record.status,
-            role: "Organizer",
-            isPrimaryOrganizer: record.isPrimaryOrganizer,
-          });
-          setVideoTalk({
-            isChat: record.isChat,
-            isVideoCall: record.isVideoCall,
-            talkGroupID: record.talkGroupID,
-          });
-          localStorage.setItem("videoCallURL", record.videoCallURL);
-          localStorage.setItem("meetingTitle", record.title);
-          localStorage.setItem("isMinutePublished", record.isMinutePublished);
         }
+        dispatch(
+          UpdateOrganizersMeeting(
+            record.isQuickMeeting,
+            navigate,
+            t,
+            3,
+            startMeetingRequest,
+            setEditorRole,
+            // setAdvanceMeetingModalID,
+            setDataroomMapFolderId,
+            setViewAdvanceMeetingModal,
+            setAdvanceMeetingModalID,
+            setViewAdvanceMeetingModal,
+            record.isPrimaryOrganizer,
+          ),
+        );
+        setVideoTalk({
+          isChat: record.isChat,
+          isVideoCall: record.isVideoCall,
+          talkGroupID: record.talkGroupID,
+        });
+        localStorage.setItem("videoCallURL", record.videoCallURL);
+        localStorage.setItem("currentMeetingID", record.pK_MDID);
+        localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        localStorage.setItem("meetingTitle", record.title);
+        setEditorRole({
+          status: "10",
+          role: "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
+
         // startMeeting(record);
         break;
       case "EDIT_MEETING":
@@ -3855,6 +3826,18 @@ const NewMeeting = () => {
               isOrganizer &&
               minutesDifference <= minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+
+          console.log(
+            {
+              canStartMeeting,
+              meetingCurrentStatus,
+              minutesDifference,
+              minutesAgo,
+              pK_MDID,
+              isButtonShown,
+            },
+            "canStartMeetingcanStartMeeting",
+          );
 
           const handleClick = (actionType) =>
             onMeetingAction(actionType, record);
