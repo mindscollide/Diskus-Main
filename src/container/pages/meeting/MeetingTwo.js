@@ -5148,7 +5148,7 @@ const NewMeeting = () => {
           </>
         ) : (
           <>
-            <Row className="mt-2">
+            <Row>
               <Col
                 sm={12}
                 md={12}
@@ -5354,7 +5354,7 @@ const NewMeeting = () => {
                 </div>
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
