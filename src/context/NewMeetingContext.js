@@ -2,30 +2,105 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
 
-// Create the Context
+/**
+ * Context for managing meeting-related states across the application.
+ * This context handles meeting creation, editing, viewing, and status synchronization.
+ */
 export const NewMeetingContext = createContext();
 
-// Create a Provider component
+// Provider component that wraps the parts of the app that need access to meeting states
 export const NewMeetingProvider = ({ children }) => {
+  let userID = localStorage.getItem("userID");
+  const [requestData, setRequestData] = useState({
+    Date: "",
+    Title: "",
+    HostName: "",
+    UserID: Number(userID),
+    PageNumber: 1,
+    Length: 30,
+    PublishedMeetings:
+      localStorage.getItem("MeetingCurrentView") &&
+      Number(localStorage.getItem("MeetingCurrentView")) === 1
+        ? true
+        : false,
+    ProposedMeetings:
+      localStorage.getItem("MeetingCurrentView") &&
+      Number(localStorage.getItem("MeetingCurrentView")) === 2
+        ? true
+        : false,
+  });
+  // --- Basic Meeting Information ---
   const [createdMeetingInfo, setCreatedMeetingInfo] = useState({
     meetingId: 0,
+    meetingMapFolderId: 0,
     meetingTitle: "",
   });
   const [meetingMapFolderId, setMeetingMapFolderId] = useState(0);
+  const [isMeetingCreation, setIsMeetingCreation] = useState({
+    isQuickMeeting: false,
+    isAdvanceMeeting: false,
+    isProposedMeeting: false,
+  });
+  const [currentTab, setCurrentTab] = useState("1");
 
-  // State for managing meeting data
+  // --- UI Visibility States ---
+  const [isCreateEditMeeting, setIsCreateEditMeeting] = useState(false);
+  const [isViewMeeting, setIsViewMeeting] = useState(false);
+
+  // --- Tab Visibility States for Create/Edit Mode ---
+  const [isCreateEditMeetingTabs, setIsCreateEditMettingTabs] = useState({
+    isDetailsTab: false,
+    isOrganizerTab: false,
+    isParticipantTab: false,
+    isAgendaContributorTab: false,
+    isAgendaTab: false,
+    isAgendaViewerTab: false,
+    isMinutesTab: false,
+    isTasksTab: false,
+    isPollsTab: false,
+  });
+
+  // --- Tab Visibility States for View Mode ---
+  const [isViewMeetingTabs, setIsViewMeetingTabs] = useState({
+    isDetailsTab: false,
+    isOrganizerTab: false,
+    isParticipantTab: false,
+    isAgendaContributorTab: false,
+    isAgendaTab: false,
+    isAgendaViewerTab: false,
+    isMinutesTab: false,
+    isTasksTab: false,
+    isPollsTab: false,
+    isRecordingTab: false,
+  });
+
+  // --- Published Meeting Tracking ---
+  const [publishedMeetingData, setPublishedMeetingData] = useState([]);
+  const [publishedMeetingDataRecord, setPublishedMeetingDataRecord] =
+    useState(0);
+
+  // --- Categorized Meeting Data ---
+  const [proposedMeetingData, setProposedMeetingData] = useState([]);
+  const [proposedMeetingDataRecord, setProposedMeetingDataRecord] = useState(0);
+
+  const [draftMeetingData, setDraftMeetingData] = useState([]);
+  const [draftMeetingDataRecord, setDraftMeetingDataRecord] = useState(0);
+
+  // --- Redux Selectors for Global State ---
   const meetingReminderNotification = useSelector(
-    (state) => state.NewMeetingreducer.meetingReminderNotification
+    (state) => state.NewMeetingreducer.meetingReminderNotification,
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+    (state) => state.NewMeetingreducer.searchMeetings,
   );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
+
+  // --- Local Filtering and Data Management ---
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
 
   const [isPublishedMeeting, setIsPublishedMeeting] = useState(true);
@@ -42,7 +117,7 @@ export const NewMeetingProvider = ({ children }) => {
   const [minutesAgo, setMinutesAgo] = useState(0);
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
-  // State for managing search filters
+  // --- Search Filters ---
   const [searchFilters, setSearchFilters] = useState({
     Date: "",
     Title: "",
@@ -51,7 +126,7 @@ export const NewMeetingProvider = ({ children }) => {
     Length: 30,
   });
 
-  // State for filter options
+  // --- Active Filter Selections ---
   const [selectedStatusFilters, setSelectedStatusFilters] = useState([
     "10",
     "1",
@@ -65,28 +140,34 @@ export const NewMeetingProvider = ({ children }) => {
     "3",
   ]);
 
-  // State for modals and UI
+  // --- UI State ---
   const [isLoading, setIsLoading] = useState(false);
 
+  /**
+   * Effect to handle real-time meeting status updates coming from Redux (notifications).
+   * It finds the meeting in the current list and updates its status.
+   */
   useEffect(() => {
     if (meetingReminderNotification !== null) {
       try {
         const meetingData = meetingReminderNotification.meetingDetails;
         console.log(meetingData, "meetingDetailsmeetingDetails");
         setMeetingsRecords((rowsData) => {
-          // Find the index of the row that matches the condition
+          // Find the index of the row that matches the ID
           const rowIndex = rowsData.findIndex(
-            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
           );
           console.log(rowIndex, "rowIndexrowIndex");
           // If a matching row is found, create a new array with the updated row
           if (rowIndex !== -1) {
             const updatedRowsData = [...rowsData];
 
+            // Update status string
             updatedRowsData[rowIndex] = {
               ...updatedRowsData[rowIndex],
               status: String(meetingData.statusID),
             };
+            // If meeting has started (status 1), track it for showing the 'Start Meeting' button
             if (meetingData.statusID === 1) {
               setStartMeetingButton([
                 ...startMeetingButton,
@@ -117,6 +198,10 @@ export const NewMeetingProvider = ({ children }) => {
     }
   }, [meetingReminderNotification]);
 
+  /**
+   * Effect to synchronize meeting searches and types from Redux.
+   * Also handles filtering of agenda items based on user visibility permissions.
+   */
   useEffect(() => {
     try {
       if (
@@ -128,13 +213,14 @@ export const NewMeetingProvider = ({ children }) => {
           setTotalMeetingRecords(searchMeetings.totalRecords);
           setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
           if (Object.keys(searchMeetings.meetings).length > 0) {
-            // Create a deep copy of the meetings array
+            // Filter agendas based on canView permission
             let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
               ...meeting,
               meetingAgenda: meeting.meetingAgenda.filter(
-                (agenda) => agenda.objMeetingAgenda.canView
+                (agenda) => agenda.objMeetingAgenda.canView,
               ),
             }));
+            // Redundant check for canView to ensure deep filtering
             copyMeetingData.forEach((data) => {
               data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
                 return agenda.objMeetingAgenda.canView === true;
@@ -152,6 +238,10 @@ export const NewMeetingProvider = ({ children }) => {
     } catch {}
   }, [searchMeetings, getALlMeetingTypes]);
 
+  /**
+   * Effect to transform meeting type data from Redux into a format suitable for UI filters/dropdowns.
+   * Adds a default 'Quick-meeting' option.
+   */
   useEffect(() => {
     try {
       if (
@@ -176,7 +266,44 @@ export const NewMeetingProvider = ({ children }) => {
     } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes]);
 
-  // Consolidate all states into a single object for easier passing to the context
+  const joinMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+  const leaveMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+
+  const startMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+
+  const publishMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+
+  const deleteMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+
+  const cancelMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+  const viewMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+
+  const editMeetingAction = () => {
+    try {
+    } catch (error) {}
+  };
+  // Object containing all states and setters to be passed through context value
   const statesData = {
     meetingData,
     setMeetingData,
@@ -213,10 +340,9 @@ export const NewMeetingProvider = ({ children }) => {
     setMeetingMapFolderId,
     createdMeetingInfo,
     setCreatedMeetingInfo,
-    isProposedMeetingCreate, setIsProposedMeetingCreate
+    isProposedMeetingCreate,
+    setIsProposedMeetingCreate,
   };
-
-
 
   // Provide the state data to the context
   return (
@@ -226,7 +352,10 @@ export const NewMeetingProvider = ({ children }) => {
   );
 };
 
-// Custom Hook to consume the context
+/**
+ * Custom hook to easily consume the NewMeetingContext.
+ * Throws an error if used outside of a provider.
+ */
 export const useNewMeetingContext = () => {
   // Access the context
   const context = useContext(NewMeetingContext);
@@ -234,7 +363,7 @@ export const useNewMeetingContext = () => {
   // Throw an error if the hook is used outside of the NewMeetingProvider
   if (!context) {
     throw new Error(
-      "useNewMeetingContext must be used within a NewMeetingProvider"
+      "useNewMeetingContext must be used within a NewMeetingProvider",
     );
   }
 

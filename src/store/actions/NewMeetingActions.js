@@ -1019,7 +1019,7 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
     form.append("RequestMethod", searchUserMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-      .post(newMeetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -7983,7 +7983,6 @@ const JoinCurrentMeeting = (
               dispatch(videoIconOrButtonState(false));
               localStorage.setItem("isMeeting", true);
               sessionStorage.setItem("isMeeting", true);
-              sessionStorage.setItem("isMeeting", true);
               localStorage.setItem("videoCallURL", Data.VideoCallURL);
               localStorage.setItem(
                 "AdvanceMeetingOpen",
@@ -10682,160 +10681,9 @@ const meetingMinutesDownloaded = (response) => {
   };
 };
 
-const NewJoinCurrentMeeting = (
-  isQuickMeeting,
-  navigate,
-  t,
-  Data,
-  setViewFlag,
-  setEditFlag,
-  setSceduleMeeting,
-  no,
-  setAdvanceMeetingModalID,
-  setViewAdvanceMeetingModal,
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
 
-  return async (dispatch) => {
-    await dispatch(joinMeetingInit());
-    let form = new FormData();
-    form.append("RequestMethod", joinMeeting.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axiosInstance
-      .post(meetingApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            JoinCurrentMeeting(
-              isQuickMeeting,
-              navigate,
-              t,
-              Data,
-              setViewFlag,
-              setEditFlag,
-              setSceduleMeeting,
-              no,
-              setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
-            ),
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase(),
-                )
-            ) {
-              dispatch(videoIconOrButtonState(false));
-              localStorage.setItem("isMeeting", true);
-              sessionStorage.setItem("isMeeting", true);
-              localStorage.setItem("videoCallURL", Data.VideoCallURL);
-              localStorage.setItem(
-                "AdvanceMeetingOpen",
-                isQuickMeeting ? false : true,
-              );
-              localStorage.setItem(
-                "typeOfMeeting",
-                isQuickMeeting ? "isQuickMeeting" : "isAdvanceMeeting",
-              );
-              localStorage.setItem(
-                "isMeetingVideoHostCheck",
-                response.data.responseResult.isMeetingVideoHost,
-              );
-
-              await dispatch(
-                joinMeetingSuccess(
-                  response.data.responseResult,
-                  t("Successful"),
-                ),
-              );
-              if (isQuickMeeting === true) {
-                let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
-                await dispatch(
-                  ViewMeeting(
-                    navigate,
-                    viewMeetingData,
-                    t,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    no,
-                  ),
-                );
-              } else {
-                isFunction(setAdvanceMeetingModalID) &&
-                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
-                isFunction(setViewAdvanceMeetingModal) &&
-                  setViewAdvanceMeetingModal(true);
-                await dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                await dispatch(scheduleMeetingPageFlag(false));
-              }
-              localStorage.setItem("currentMeetingID", Data.FK_MDID);
-              await dispatch(currentMeetingStatus(10));
-              let activeStatusOneToOne = JSON.parse(
-                localStorage.getItem("activeCall"),
-              );
-
-              let presenterViewStatus =
-                response.data.responseResult.isPresenterViewStarted;
-              if (presenterViewStatus && !activeStatusOneToOne) {
-                console.log("busyCall 21");
-
-                let data = {
-                  VideoCallURL: String(Data.VideoCallURL),
-                  WasInVideo: false,
-                };
-                console.log("onClickStopPresenter", data);
-                dispatch(joinPresenterViewMainApi(navigate, t, data));
-              } else if (presenterViewStatus && activeStatusOneToOne) {
-                console.log("busyCall 21");
-                localStorage.setItem("JoinpresenterForonetoone", true);
-                dispatch(nonMeetingVideoGlobalModal(true));
-                dispatch(presenterViewGlobalState(0, true, false, false));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_02".toLowerCase(),
-                )
-            ) {
-              dispatch(joinMeetingFail(t("Unsuccessful")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase(),
-                )
-            ) {
-              dispatch(
-                joinMeetingFail(
-                  t(
-                    "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time",
-                  ),
-                ),
-              );
-            } else {
-              dispatch(joinMeetingFail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(joinMeetingFail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(joinMeetingFail(t("Something-went-wrong")));
-        }
-      })
-      .catch((response) => {
-        dispatch(joinMeetingFail(t("Something-went-wrong")));
-      });
-  };
-};
 
 export {
-  NewJoinCurrentMeeting,
   meetingMinutesDownloaded,
   requestMeetingRecordingTranscriptApi,
   getMeetingRecordingFilesApi,
