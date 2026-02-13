@@ -1,11 +1,46 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { clearComplianceDetailsData } from "../store/actions/ComplainSettingActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { parseYYYYMMDDToEndOfDay } from "../container/ComplianceUser/CommonComponents/commonFunctions";
 
 const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
+  );
+  const complianceCreatedMqttData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.complianceCreatedMqttData,
+  );
+
+  const complianceCheckListMqttData = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.complianceCheckListMqttData,
+  );
+
+  const complianceCheckListUpdatedMqttData = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.complianceCheckListUpdatedMqttData,
+  );
+
+  const complianceCheckListDeletedMqttData = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.complianceCheckListDeletedMqttData,
+  );
+
+  const complianceUpdateMqttData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.complianceUpdateMqttData,
+  );
+
+  console.log(
+    complianceCreatedMqttData,
+    "complianceCreatedMqttDatacomplianceCreatedMqttData",
+  );
+
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
   const [complianceInfo, setComplianceInfo] = useState({
     complianceId: 0,
@@ -19,6 +54,11 @@ export const ComlianceProvider = ({ children }) => {
   });
   const [complianceAddEditViewState, setComplianceAddEditViewState] =
     useState(0);
+
+  console.log(
+    complianceAddEditViewState,
+    "complianceAddEditViewStatecomplianceAddEditViewState",
+  );
 
   const [closeConfirmationModal, setCloseConfirmationModal] = useState(false);
   const [mainComplianceTabs, setMainComplianceTabs] = useState(1);
@@ -53,6 +93,35 @@ export const ComlianceProvider = ({ children }) => {
     showProgressBar: false,
     complianceStatusChangeHistory: [],
   });
+  const [complianceDetailsViewState, setComplianceDetailsViewState] = useState({
+    complianceTitle: "",
+    complianceId: 0,
+    description: "",
+    authority: {
+      value: 0,
+      label: "",
+    },
+    criticality: {
+      value: 0,
+      label: "",
+    },
+    dueDate: null,
+    complianceDueDateForChecklist: "",
+    tags: [],
+    status: {
+      value: 0,
+      label: "",
+    },
+
+    progressPercent: 0,
+    createdBy: "",
+    totalComplianceTasks: 0,
+    showProgressBar: false,
+    complianceStatusChangeHistory: [],
+  });
+
+  const [checkAnyTaskInProgress, setCheckAnyTaskInProgress] = useState(false);
+
   const [checklistCount, setChecklistCount] = useState(0);
   const [taskCount, setTaskCount] = useState(0);
 
@@ -144,6 +213,12 @@ export const ComlianceProvider = ({ children }) => {
   ] = useState(false);
 
   const [deleteChecklistId, setDeleteChecklistId] = useState(0);
+
+  console.log(
+    complianceCreatedMqttData,
+    complianceByMeList,
+    "complianceCreatedMqttDatacomplianceCreatedMqttData",
+  );
 
   const resetModalStates = () => {
     setSubmitForApprovalModal(false);
@@ -251,15 +326,38 @@ export const ComlianceProvider = ({ children }) => {
     setTempSelectedComplianceStatus(0);
     setDeleteChecklistId(0);
   };
-
+  const criticalityOptions = [
+    {
+      label: "Low",
+      value: 1,
+    },
+    {
+      label: "Medium",
+      value: 2,
+    },
+    {
+      label: "High",
+      value: 3,
+    },
+  ];
+  const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
+    useState(false);
+  const [checkAnyTaskOnPendingState, setCheckAnyTaskOnPendingState] =
+    useState(false);
   // view compliance
   const [showViewCompliance, setShowViewCompliance] = useState(false);
   const [viewComplianceDetailsTab, setViewComplianceDetailsTab] = useState(1);
   const [allowedComplianceStatusOptions, setAllowedComplianceStatusOptions] =
     useState([]);
   const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
-    []
+    [],
   );
+  console.log(
+    allCheckListByComplianceId,
+    "allCheckListByComplianceIdallCheckListByComplianceId",
+  );
+
+  console.log(complianceForMeList, "complianceForMeListcomplianceForMeList");
   const [searchbox, setsearchbox] = useState(false);
 
   // View Type for Compliance Dashboard Manager View Type is 1 which is by default User View is 2
@@ -305,6 +403,289 @@ export const ComlianceProvider = ({ children }) => {
   const resetReopenComplianceDashboardFilter = () => {
     setReopendComplianceDashboardFilter(1);
   };
+
+  useEffect(() => {
+    if (
+      viewComplianceByMeDetails !== null &&
+      complianceAddEditViewState === 3
+    ) {
+      try {
+        const {
+          allowedComplianceStatuses,
+          authority,
+          checklistTasks,
+          checklists,
+          completedTasks,
+          complianceId,
+          complianceStatus,
+          complianceTitle,
+          createdBy,
+          criticalityLevel,
+          description,
+          dueDate,
+          isExecuted,
+          progressPercent,
+          showProgressBar,
+          tags,
+          totalTasks,
+        } = viewComplianceByMeDetails;
+        setComplianceInfo({
+          complianceId: complianceId,
+          complianceName: complianceTitle,
+        });
+
+        const selectedCriticality = criticalityOptions.find(
+          (item) => item.label === criticalityLevel,
+        );
+        setComplianceDetailsViewState((prev) => ({
+          ...prev,
+          complianceTitle: complianceTitle,
+          complianceId: complianceId,
+          description: description,
+          authority: {
+            ...authority,
+            value: authority.authorityId,
+            label: `${authority.authorityName} (${authority.authorityShortCode})`,
+          },
+          criticality: selectedCriticality,
+          dueDate: `${dueDate}235958`,
+          tags: tags,
+          status: {
+            value: complianceStatus.statusId,
+            label: complianceStatus.statusName,
+          },
+        }));
+
+        if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
+          const allowedStatuses = allowedComplianceStatuses.map(
+            (data, index) => {
+              return {
+                ...data,
+                value: data.statusId,
+                label: data.statusName,
+              };
+            },
+          );
+          setAllowedComplianceStatusOptions(allowedStatuses);
+        }
+        if (complianceId !== 0) {
+          let Data = {
+            complianceId: complianceId,
+          };
+          // dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
+          // dispatch(
+          //   GetComplianceChecklistsWithTasksByComplianceIdAPI(
+          //     navigate,
+          //     Data,
+          //     t,
+          //   ),
+          // );
+        }
+
+        // check if any status is Pending to show confirmation modal on submit for approval & Complete
+        if (Array.isArray(checklists) && checklists.length > 0) {
+          const hasPendingChecklist = checklists.some(
+            (checklist) => checklist?.status?.statusName === "Pending",
+          );
+
+          setCheckAnyChecklistOnPendingState(hasPendingChecklist);
+        } else {
+          setCheckAnyChecklistOnPendingState(false);
+        }
+
+        // Check if any task status in pending the show confirmation modal on Complete
+        if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
+          const hasPendingTask = checklistTasks.some(
+            (task) => task?.taskStatus?.statusName === "Pending",
+          );
+
+          setCheckAnyTaskOnPendingState(hasPendingTask);
+        } else {
+          setCheckAnyTaskOnPendingState(false);
+        }
+      } catch (error) {}
+    }
+  }, [viewComplianceByMeDetails, complianceAddEditViewState]);
+
+  //When COmpliance Created Then "Compliance-created" mqtt come and update this context state
+  useEffect(() => {
+    if (complianceCreatedMqttData !== null) {
+      try {
+        const { complianceID, complianceTitle, requestData } =
+          complianceCreatedMqttData;
+
+        const {
+          authorityId,
+          criticality,
+          description,
+          dueDate,
+          tags,
+          tagsCSV,
+        } = requestData;
+        let findIsExist = complianceByMeList.find(
+          (data, index) => data.complianceId === complianceID,
+        );
+
+        if (findIsExist === undefined) {
+          // Your logic here
+          let complianceObj = {
+            complianceId: complianceID,
+            complianceTitle: complianceTitle,
+            authorityId: authorityId,
+            organizationId: localStorage.getItem("organizationID"),
+            description: description,
+            criticality: criticality,
+            complianceStatusId: 1,
+            complianceStatusTitle: "Not Started",
+            dueDate: dueDate,
+            dueTime: "185958",
+            createdBy: localStorage.getItem("userID"),
+            createdDate: "",
+            createdTime: "",
+            authorityShortCode: "",
+          };
+          setComplianceByMeList((prev) => [complianceObj, ...prev]);
+          setComplianceByMeTotal((prev) => prev + 1);
+        }
+      } catch (error) {
+        console.error("Error processing complianceCreatedMqttData:", error);
+      }
+    }
+  }, [complianceCreatedMqttData]);
+
+  // WHen CheckList Data Added Mqtt Coming
+  useEffect(() => {
+    if (!complianceCheckListMqttData) return;
+
+    try {
+      // handle both structures safely
+      const data = complianceCheckListMqttData;
+      const { checklistID, checklistTitle, requestData } = data || {};
+      if (!checklistID) return;
+      const { description, dueDate } = requestData || {};
+      const alreadyExists = allCheckListByComplianceId?.some(
+        (item) => item.checklistId === checklistID,
+      );
+
+      if (!alreadyExists) {
+        const newChecklistObj = {
+          checklistId: checklistID,
+          checklistTitle,
+          description,
+          dueDate,
+          status: {
+            statusId: 1,
+            statusName: "In Progress",
+          },
+          tasksCount: 0,
+          completedTasks: 0,
+          checklistProgress: 0,
+          showViewTasksLink: false,
+          noTasksMessage: "No tasks created",
+          complianceCheckListAllowed: [
+            { statusId: 5, statusName: "Cancelled" },
+            { statusId: 4, statusName: "Completed" },
+            { statusId: 3, statusName: "On Hold" },
+          ],
+        };
+
+        setAllCheckListByComplianceId((prev) => [
+          newChecklistObj,
+          ...(prev || []),
+        ]);
+      }
+    } catch (error) {
+      console.error("MQTT Checklist Error:", error);
+    }
+  }, [complianceCheckListMqttData]);
+
+  // WHen CheckList Data Update Mqtt Coming
+  useEffect(() => {
+    if (!complianceCheckListUpdatedMqttData) return;
+
+    try {
+      const data = complianceCheckListUpdatedMqttData;
+
+      const { checklistID, requestData } = data || {};
+      if (!checklistID) return;
+
+      const { description, dueDate, checkListTitle } = requestData || {};
+
+      setAllCheckListByComplianceId((prev) =>
+        prev.map((item) =>
+          item.checklistId === checklistID
+            ? {
+                ...item,
+                checklistTitle: checkListTitle || item.checklistTitle,
+                description: description || item.description,
+                dueDate: dueDate || item.dueDate,
+              }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.error("Checklist Update MQTT Error:", error);
+    }
+  }, [complianceCheckListUpdatedMqttData]);
+
+  // WHen CheckList Data Delete Mqtt Coming
+  useEffect(() => {
+    if (!complianceCheckListDeletedMqttData) return;
+
+    try {
+      const data = complianceCheckListDeletedMqttData;
+      console.log(data, "datadatadatadata");
+
+      const { checklistId } = data || {};
+      if (!checklistId) return;
+      console.log(checklistId, "datadatadatadata");
+
+      // 🔥 Remove checklist from state
+      setAllCheckListByComplianceId((prev) =>
+        prev.filter((item) => Number(item.checklistId) !== Number(checklistId)),
+      );
+    } catch (error) {
+      console.error("Checklist Delete MQTT Error:", error);
+    }
+  }, [complianceCheckListDeletedMqttData]);
+
+  // WHen COMPLIANCE_UPDATED Mqtt Coming
+  useEffect(() => {
+    if (!complianceUpdateMqttData) return;
+    try {
+      const data = complianceUpdateMqttData.payload || complianceUpdateMqttData;
+      const { complianceID, requestData } = data || {};
+      if (!complianceID) return;
+      const {
+        authorityId,
+        criticality,
+        description,
+        dueDate,
+        newStatusId,
+        complianceTitle,
+      } = requestData || {};
+
+      setComplianceByMeList((prev) =>
+        prev.map((item) =>
+          item.complianceId === complianceID
+            ? {
+                ...item,
+                complianceTitle: complianceTitle || item.complianceTitle,
+                authorityId: authorityId ?? item.authorityId,
+                criticality: criticality ?? item.criticality,
+                description: description ?? item.description,
+                dueDate: dueDate
+                  ? dueDate.substring(0, 8) // if coming as YYYYMMDDHHMMSS
+                  : item.dueDate,
+                complianceStatusId: newStatusId ?? item.complianceStatusId,
+              }
+            : item,
+        ),
+      );
+    } catch (error) {
+      console.error("Error processing complianceUpdateMqttData:", error);
+    }
+  }, [complianceUpdateMqttData]);
 
   return (
     <ComplianceContext.Provider
@@ -416,6 +797,8 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceReportList,
         complianceReportTotal,
         setComplianceReportTotal,
+        complianceDetailsViewState,
+        setComplianceDetailsViewState,
       }}
     >
       {children}
@@ -428,7 +811,7 @@ export const useComplianceContext = () => {
 
   if (!context) {
     throw new Error(
-      "useComplianceContext must be used within a AuthorityProvider"
+      "useComplianceContext must be used within a AuthorityProvider",
     );
   }
   return context;

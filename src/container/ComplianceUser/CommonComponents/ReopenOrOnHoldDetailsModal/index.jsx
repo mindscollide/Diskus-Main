@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./ReopenOrOnHoldDetailsModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
@@ -22,6 +22,7 @@ const ReopenOrOnHoldDetailsModal = () => {
   };
   const [complianceStatusChangeHistory, setComplianceStatusChangeHistory] =
     useState([]);
+
   useEffect(() => {
     if (
       complianceDetailsState &&
@@ -29,7 +30,7 @@ const ReopenOrOnHoldDetailsModal = () => {
     ) {
       try {
         setComplianceStatusChangeHistory(
-          complianceDetailsState.complianceStatusChangeHistory
+          complianceDetailsState.complianceStatusChangeHistory,
         );
       } catch (error) {}
     } else {
@@ -60,14 +61,25 @@ const ReopenOrOnHoldDetailsModal = () => {
     }
   };
 
+  const truncateByWords = (text, wordLimit = 70) => {
+    if (!text) return "-";
+
+    const words = text.trim().split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + "...";
+  };
+
   return (
     <Modal
       show={isViewDetailsOpen}
       setShow={isViewDetailsOpen}
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
-      size={"xl"}
-      ModalTitle={<span className={styles.mainHeading}>{t("Details")}</span>}
+      dialogClassName={styles.customModalWidth}
+      size={undefined}
+      ModalTitle={
+        <span className={styles.mainHeading}>{t("Reopen-or-onHold")}</span>
+      }
       ModalBody={
         <div className={styles.mainBody}>
           {complianceStatusChangeHistory?.map((item) => (
@@ -77,7 +89,8 @@ const ReopenOrOnHoldDetailsModal = () => {
                   <Row>
                     <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
                     <div className={styles.textValue}>
-                      {item.statusChangeReason || "-"}
+                      {truncateByWords(item.statusChangeReason) || "-"}
+                      <p></p>
                     </div>
                   </Row>
                   <Row className="mt-3">
@@ -99,9 +112,7 @@ const ReopenOrOnHoldDetailsModal = () => {
                 </Col>
                 <Col sm={12} md={2} lg={2}>
                   <Row>
-                    <div className={styles.textLabel}>{`${t(
-                      "Status-updated"
-                    )}:`}</div>
+                    <div className={styles.textLabel}>{`${t("Action")}:`}</div>
                     <div
                       className={styles.textValue}
                       style={{
@@ -113,10 +124,10 @@ const ReopenOrOnHoldDetailsModal = () => {
                   </Row>
                   <Row className="mt-3">
                     <div className={styles.textLabel}>{`${t(
-                      "Action-date"
+                      "Action-date",
                     )}:`}</div>
                     <div className={styles.textValue}>
-                      {formatDateToYMD(item.updatedDueDate) || "-"}
+                      {formatDateToYMD(item.statusChangeDate) || "-"}
                     </div>
                   </Row>
                 </Col>

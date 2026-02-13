@@ -1,3 +1,4 @@
+import { formatDateToYMD } from "../../container/ComplianceUser/CommonComponents/commonFunctions";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -51,6 +52,10 @@ const initialState = {
   GetComplianceReopenDashboardData: null,
   GetComlianceQuarterlyTasksDashboardData: null,
   GetReportListingData: null,
+  complianceCreatedMqttData: null,
+  complianceCheckListMqttData: null,
+  complianceCheckListUpdatedMqttData: null,
+  complianceUpdateMqttData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1128,6 +1133,45 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ComplianceDataRoomMapFolderId: action.response,
         addReopenComplianceDetails: action.response2,
+      };
+    }
+
+    case actions.COMPLIANCE_CREATED_MQTT: {
+      return {
+        ...state,
+        complianceCreatedMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist Added Mqtt
+    case actions.COMPLIANCE_CHECKLIST_ADDED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist UPDATED Mqtt
+    case actions.COMPLIANCE_CHECKLIST_UPDATED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListUpdatedMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist DELETED Mqtt
+    case actions.COMPLIANCE_CHECKLIST_DELETED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListDeletedMqttData: action.payload,
+      };
+    }
+
+    // For COMPLIANCE UPDATED MQTT
+    case actions.COMPLIANCE_UPDATED_MQTT: {
+      return {
+        ...state,
+        complianceUpdateMqttData: action.payload,
       };
     }
 

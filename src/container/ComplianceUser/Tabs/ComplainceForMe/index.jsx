@@ -62,7 +62,7 @@ const ComplianceForMe = () => {
   } = useComplianceContext();
   console.log(
     { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "statusFilter"
+    "setComplianceForMeList"
   );
 
   useEffect(() => {

@@ -20,6 +20,7 @@ const CreateEditCompliance = () => {
   const {
     complianceInfo,
     checkListTabs,
+    checkListData,
     setChecklistTabs,
     checklistCount,
     taskCount,
@@ -29,12 +30,17 @@ const CreateEditCompliance = () => {
     setShowViewCompliance,
   } = useComplianceContext();
 
+  console.log(
+    { checkListData, complianceDetailsState },
+    "checkListTabscheckListTabs",
+  );
+
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
         );
       } catch (error) {}
     }
@@ -45,7 +51,7 @@ const CreateEditCompliance = () => {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
         );
       } catch (error) {}
     }
@@ -53,7 +59,7 @@ const CreateEditCompliance = () => {
 
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState"
+    "complianceDetailsStatecomplianceDetailsState",
   );
 
   return (
@@ -70,8 +76,8 @@ const CreateEditCompliance = () => {
             {complianceAddEditViewState === 2
               ? `Edit: ${complianceInfo.complianceName}`
               : complianceInfo.complianceId !== 0
-              ? complianceInfo.complianceName
-              : t("Create-new-compliance")}
+                ? complianceInfo.complianceName
+                : t("Create-new-compliance")}
           </Col>
 
           {}
@@ -131,8 +137,8 @@ const CreateEditCompliance = () => {
                   complianceInfo.complianceId !== 0
                     ? false
                     : complianceAddEditViewState === 2
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
@@ -149,10 +155,10 @@ const CreateEditCompliance = () => {
                   complianceAddEditViewState === 2
                     ? false
                     : complianceInfo.complianceId === 0
-                    ? true
-                    : checklistCount === 0
-                    ? true
-                    : false
+                      ? true
+                      : checklistCount === 0
+                        ? true
+                        : false
                 }
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {

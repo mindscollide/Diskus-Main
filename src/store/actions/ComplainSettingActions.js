@@ -46,6 +46,7 @@ import {
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 import { taskReducerLoader } from "./ToDoList_action";
+import { isFunction } from "../../commen/functions/utils";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -3279,7 +3280,8 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               await dispatch(
                 EditComplianceSuccess(response.data.responseResult, ""),
               );
-              setChecklistTabs(2);
+
+              isFunction(setChecklistTabs) && setChecklistTabs(2);
             } else if (
               message.includes(
                 "compliance_complianceservicemanager_editcompliance_02",
@@ -4654,6 +4656,45 @@ const createCompilanceDataRoomMapFolderId = (payload, payload2) => {
   };
 };
 
+const complianceCreatedFromMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CREATED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist Added Mqtt
+const complianceChecklistAddedMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_ADDED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist UPDATED Mqtt
+const complianceChecklistUpdateMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_UPDATED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist DELETED Mqtt
+const complianceChecklistDeletedMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_DELETED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For COMPLIANCE UPDATED MQTT
+const complianceUpdateMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_UPDATED_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -4704,4 +4745,9 @@ export {
   DeleteCheckListAPI,
   ChangeTaskStatusAPI,
   createCompilanceDataRoomMapFolderId,
+  complianceCreatedFromMQTT,
+  complianceChecklistAddedMQTT,
+  complianceChecklistUpdateMQTT,
+  complianceChecklistDeletedMQTT,
+  complianceUpdateMQTT,
 };
