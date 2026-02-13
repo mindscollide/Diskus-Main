@@ -1,13 +1,12 @@
-.MainViewCompliance_Container {
+/* .MainViewCompliance_Container {
   padding-left: 15px;
   padding-right: 15px;
   padding-top: 10px;
   padding-bottom: 5px;
-}
+} */
 .ComplianceNameHeading {
   display: flex;
   gap: 10px;
-
   justify-content: flex-start;
   align-items: center;
   font-weight: 600;

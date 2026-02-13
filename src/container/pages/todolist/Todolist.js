@@ -69,13 +69,13 @@ const TodoList = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   const SearchTodolist = useSelector(
-    (state) => state.toDoListReducer.SearchTodolist
+    (state) => state.toDoListReducer.SearchTodolist,
   );
   const SocketTodoActivityData = useSelector(
-    (state) => state.toDoListReducer.SocketTodoActivityData
+    (state) => state.toDoListReducer.SocketTodoActivityData,
   );
   const socketTodoStatusData = useSelector(
-    (state) => state.toDoListReducer.socketTodoStatusData
+    (state) => state.toDoListReducer.socketTodoStatusData,
   );
   const ToDoDetails = useSelector((state) => state.toDoListReducer.ToDoDetails);
 
@@ -87,19 +87,19 @@ const TodoList = () => {
   let createrID = localStorage.getItem("userID");
 
   const ResponseStatusReducer = useSelector(
-    (state) => state.todoStatus.Response
+    (state) => state.todoStatus.Response,
   );
 
   const UpdateTodoStatusMessage = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatusMessage
+    (state) => state.getTodosStatus.UpdateTodoStatusMessage,
   );
 
   const ResponseMessageTodoStatusReducer = useSelector(
-    (state) => state.getTodosStatus.ResponseMessage
+    (state) => state.getTodosStatus.ResponseMessage,
   );
 
   const UpdateTodoStatus = useSelector(
-    (state) => state.getTodosStatus.UpdateTodoStatus
+    (state) => state.getTodosStatus.UpdateTodoStatus,
   );
 
   const [isExpand, setExpand] = useState(false);
@@ -183,8 +183,8 @@ const TodoList = () => {
             searchData,
             todoListCurrentPage,
             todoListPageSize,
-            t
-          )
+            t,
+          ),
         );
       } else {
         localStorage.setItem("todoListPage", 1);
@@ -198,10 +198,9 @@ const TodoList = () => {
             validateEncryptedStringViewTaskDetailLinkApi(
               taskViewValue,
               navigate,
-              t
-            )
+              t,
+            ),
           );
-
 
           if (
             getResponse.isExecuted === true &&
@@ -221,10 +220,9 @@ const TodoList = () => {
             validateEncryptedStringViewTaskListLinkApi(
               taskListValue,
               navigate,
-              t
-            )
+              t,
+            ),
           );
-
 
           localStorage.removeItem("taskListView"); // Cleanup the localStorage key
         };
@@ -234,9 +232,7 @@ const TodoList = () => {
         localStorage.removeItem("todoListPage");
         localStorage.removeItem("todoListRow");
       };
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, []);
 
   //get todolist reducer
@@ -262,12 +258,8 @@ const TodoList = () => {
       } else {
         setRowToDo([]);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, [SearchTodolist]);
-
-
 
   useEffect(() => {
     try {
@@ -289,12 +281,8 @@ const TodoList = () => {
           setRowToDo(sortedTasks);
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, [SocketTodoActivityData]);
-
-
 
   useEffect(() => {
     try {
@@ -324,7 +312,7 @@ const TodoList = () => {
           });
         }
       }
-    } catch { }
+    } catch {}
   }, [socketTodoStatusData]);
 
   useEffect(() => {
@@ -356,9 +344,7 @@ const TodoList = () => {
 
       setStatusValues(newArrStatus);
       setStatusOptions(optionsArr);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, [ResponseStatusReducer]);
 
   // for modal create  handler
@@ -395,13 +381,13 @@ const TodoList = () => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.pK_TSID.toString())
+      selectedValues.includes(item.status.pK_TSID.toString()),
     );
     setRowToDo(filteredData);
     setVisible(false);
@@ -642,7 +628,7 @@ const TodoList = () => {
           <span className="text-nowrap text-center">
             {newTimeFormaterAsPerUTCFullDate(
               record.deadlineDateTime,
-              currentLanguage
+              currentLanguage,
             )}
           </span>
         );
@@ -761,9 +747,7 @@ const TodoList = () => {
           setModalsflag(false);
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, [ToDoDetails]);
 
   // for search Date handler
@@ -776,8 +760,6 @@ const TodoList = () => {
       UserID: parseInt(createrID),
     });
   };
-
-
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
@@ -872,15 +854,13 @@ const TodoList = () => {
         ) {
           let copyData = [...rowsToDo];
           let removeDeleteTodo = copyData.filter(
-            (todoData, index) => todoData.pK_TID !== removeTodo
+            (todoData, index) => todoData.pK_TID !== removeTodo,
           );
           setRowToDo(removeDeleteTodo);
           setRemoveTodo(0);
         }
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   }, [UpdateTodoStatusMessage, removeTodo]);
 
   useEffect(() => {
@@ -949,7 +929,7 @@ const TodoList = () => {
   return (
     <>
       <div className="todolistContainer">
-        <Row className="d-flex justify-content-start align-items-center   mt-3">
+        <Row className="d-flex justify-content-start align-items-center ">
           <Col md={2} sm={4} lg={2} className="todolist-heading-size">
             {t("Tasks")}
           </Col>
@@ -1082,7 +1062,7 @@ const TodoList = () => {
                         onChange={paginationChangeHandlerTodo}
                         current={
                           todoListCurrentPage !== null &&
-                            todoListCurrentPage !== undefined
+                          todoListCurrentPage !== undefined
                             ? todoListCurrentPage
                             : 1
                         }
@@ -1091,7 +1071,7 @@ const TodoList = () => {
                         pageSizeOptionsValues={["15", "30", "50", "100"]}
                         pageSize={
                           todoListPageSize !== null &&
-                            todoListPageSize !== undefined
+                          todoListPageSize !== undefined
                             ? todoListPageSize
                             : 15
                         }

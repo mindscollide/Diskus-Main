@@ -1,5 +1,5 @@
 .pendingApprovalContainer {
-  width: 98% !important;
+  width: 100% !important;
   height: 91vh !important;
   margin: 0 auto !important;
   overflow: hidden !important;
@@ -22,8 +22,9 @@ section.emptyScreen-height {
   border-radius: 8px !important;
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  --Paper-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;

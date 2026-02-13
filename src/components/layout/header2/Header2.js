@@ -68,7 +68,7 @@ const Header2 = ({ isVideo }) => {
 
   console.log(remainingDays, "remainingDaysremainingDays");
   const scheduleMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
   );
   const { createNotesModal, setCreateNotesModal } = useNotesContext();
   const {
@@ -86,56 +86,68 @@ const Header2 = ({ isVideo }) => {
     setUnReadCountNotification,
   } = useMeetingContext();
   const viewProposeDateMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag,
   );
   const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag,
   );
   const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag,
   );
   const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag,
   );
   const proposeNewMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag,
   );
   const viewMeetingFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
+    (state) => state.NewMeetingreducer.viewMeetingFlag,
   );
   const UserProfileData = useSelector(
-    (state) => state.settingReducer.UserProfileData
+    (state) => state.settingReducer.UserProfileData,
   );
   const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
+    (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
 
   const UpgradeNowModalReducer = useSelector(
-    (state) => state.UserManagementModals.UpgradeNowModal
+    (state) => state.UserManagementModals.UpgradeNowModal,
   );
   const requestExtentionModal = useSelector(
-    (state) => state.UserManagementModals.requestExtentionModal
+    (state) => state.UserManagementModals.requestExtentionModal,
   );
 
   const NotesReponseMessege = useSelector(
-    (state) => state.NotesReducer.ResponseMessage
+    (state) => state.NotesReducer.ResponseMessage,
   );
 
   const ResponseMessageTodoReducer = useSelector(
-    (state) => state.toDoListReducer.ResponseMessage
+    (state) => state.toDoListReducer.ResponseMessage,
   );
 
   const ResponseMessageAssigneesReducer = useSelector(
-    (state) => state.assignees.ResponseMessage
+    (state) => state.assignees.ResponseMessage,
   );
 
   const getAllNotificationData = useSelector(
-    (state) => state.settingReducer.diskusWebNotificationData
+    (state) => state.settingReducer.diskusWebNotificationData,
   );
 
   //Getting Global unRead  Count Notification From MQTT
   const GlobalUnreadCountNotificaitonFromMqtt = useSelector(
-    (state) => state.settingReducer.realTimeNotificationCountGlobalData
+    (state) => state.settingReducer.realTimeNotificationCountGlobalData,
+  );
+
+  const presenterViewFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewFlag,
+  );
+
+  const presenterViewHostFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
+  );
+
+  const presenterViewJoinFlag = useSelector(
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const presenterViewFlag = useSelector(
@@ -192,7 +204,7 @@ const Header2 = ({ isVideo }) => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
   console.log(roleRoute, "roleRouteroleRoute");
   const TrialExpireSelectPac = getLocalStorageItemNonActiveCheck(
-    "TrialExpireSelectPac"
+    "TrialExpireSelectPac",
   );
   const hasAdminRights = JSON.parse(localStorage.getItem("hasAdminRights"));
   const cancelSub = getLocalStorageItemNonActiveCheck("cancelSub");
@@ -238,7 +250,7 @@ const Header2 = ({ isVideo }) => {
   //Web Notfication Real Time Data
   console.log(
     GlobalUnreadCountNotificaitonFromMqtt,
-    "GlobalUnreadCountNotificaitonFromMqtt"
+    "GlobalUnreadCountNotificaitonFromMqtt",
   );
   //Real Time data For Notification
   useEffect(() => {
@@ -308,7 +320,7 @@ const Header2 = ({ isVideo }) => {
     if (UserProfileData !== undefined && UserProfileData !== null) {
       setCurrentUserName(UserProfileData?.userName);
       setCurrentUserProfilePic(
-        UserProfileData?.userProfilePicture?.displayProfilePictureName
+        UserProfileData?.userProfilePicture?.displayProfilePictureName,
       );
     }
   }, [UserProfileData]);
@@ -375,7 +387,7 @@ const Header2 = ({ isVideo }) => {
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     dispatch(
-      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal),
     );
   };
 
@@ -562,7 +574,7 @@ const Header2 = ({ isVideo }) => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -684,7 +696,7 @@ const Header2 = ({ isVideo }) => {
           // Handle any errors that occur during parsing or function calls
           console.error(
             "Error processing activeCall from localStorage:",
-            error
+            error,
           );
         }
       }
@@ -708,10 +720,10 @@ const Header2 = ({ isVideo }) => {
                   ? roleRoute
                     ? "Admin/PayOutstanding"
                     : TrialExpireSelectPac
-                    ? "/Admin/PakageDetailsUserManagement"
-                    : cancelSub
-                    ? "/Admin/ManageUsers"
-                    : "/Admin/ManageUsers"
+                      ? "/Admin/PakageDetailsUserManagement"
+                      : cancelSub
+                        ? "/Admin/ManageUsers"
+                        : "/Admin/ManageUsers"
                   : "/Diskus"
               }
             >
@@ -782,7 +794,7 @@ const Header2 = ({ isVideo }) => {
                             // Prevent default behavior
                             e.preventDefault();
                             const activeCall = JSON.parse(
-                              localStorage.getItem("activeCall")
+                              localStorage.getItem("activeCall"),
                             );
                             // Explicitly evaluate activeCall
                             if (
@@ -909,7 +921,7 @@ const Header2 = ({ isVideo }) => {
                           // Prevent default behavior
                           e.preventDefault();
                           const activeCall = JSON.parse(
-                            localStorage.getItem("activeCall")
+                            localStorage.getItem("activeCall"),
                           );
                           // Explicitly evaluate activeCall
                           if (
@@ -951,7 +963,7 @@ const Header2 = ({ isVideo }) => {
                           // Prevent default behavior
                           e.preventDefault();
                           const activeCall = JSON.parse(
-                            localStorage.getItem("activeCall")
+                            localStorage.getItem("activeCall"),
                           );
                           // Explicitly evaluate activeCall
                           if (
@@ -1001,20 +1013,20 @@ const Header2 = ({ isVideo }) => {
                   location.pathname.includes("/Admin")
                     ? "/Admin/faq's"
                     : (scheduleMeetingPageFlagReducer === true ||
-                        viewProposeDateMeetingPageFlagReducer === true ||
-                        viewAdvanceMeetingPublishPageFlagReducer === true ||
-                        viewAdvanceMeetingUnpublishPageFlagReducer === true ||
-                        viewProposeOrganizerMeetingPageFlagReducer === true ||
-                        proposeNewMeetingPageFlagReducer === true) &&
-                      viewMeetingFlagReducer === false
-                    ? "/Diskus/Meeting"
-                    : "/Diskus/faq's"
+                          viewProposeDateMeetingPageFlagReducer === true ||
+                          viewAdvanceMeetingPublishPageFlagReducer === true ||
+                          viewAdvanceMeetingUnpublishPageFlagReducer === true ||
+                          viewProposeOrganizerMeetingPageFlagReducer === true ||
+                          proposeNewMeetingPageFlagReducer === true) &&
+                        viewMeetingFlagReducer === false
+                      ? "/Diskus/Meeting"
+                      : "/Diskus/faq's"
                 }
                 onClick={(e) => {
                   // Prevent default behavior
                   e.preventDefault();
                   const activeCall = JSON.parse(
-                    localStorage.getItem("activeCall")
+                    localStorage.getItem("activeCall"),
                   );
                   // Explicitly evaluate activeCall
                   if (
@@ -1050,14 +1062,14 @@ const Header2 = ({ isVideo }) => {
                 isVideo
                   ? "/Diskus/video"
                   : location.pathname.includes("/Admin")
-                  ? roleRoute
-                    ? "/Admin/PayOutstanding"
-                    : TrialExpireSelectPac
-                    ? "/Admin/PakageDetailsUserManagement"
-                    : cancelSub
-                    ? "/Admin/ManageUsers"
-                    : "/Admin/ManageUsers"
-                  : "/Diskus"
+                    ? roleRoute
+                      ? "/Admin/PayOutstanding"
+                      : TrialExpireSelectPac
+                        ? "/Admin/PakageDetailsUserManagement"
+                        : cancelSub
+                          ? "/Admin/ManageUsers"
+                          : "/Admin/ManageUsers"
+                    : "/Diskus"
               }
               onClick={handleClickLogo}
               // onClick={(e) => {
@@ -1139,9 +1151,9 @@ const Header2 = ({ isVideo }) => {
                                         currentLanguage === "ar"
                                           ? convertToArabicNumber(remainingDays)
                                           : localStorage.getItem(
-                                              "remainingDays"
+                                              "remainingDays",
                                             ),
-                                    }
+                                    },
                                   )}
                                 </span>
                               </span>
@@ -1155,10 +1167,10 @@ const Header2 = ({ isVideo }) => {
                             </>
                           )}
                           {(JSON.parse(
-                            localStorage.getItem("remainingDays")
+                            localStorage.getItem("remainingDays"),
                           ) === 1 ||
                             JSON.parse(
-                              localStorage.getItem("remainingDays")
+                              localStorage.getItem("remainingDays"),
                             ) === 0) && (
                             <>
                               {" "}
@@ -1168,7 +1180,7 @@ const Header2 = ({ isVideo }) => {
                                 onClick={handleShowUpgradedNowModal}
                               />
                               {JSON.parse(
-                                localStorage.getItem("isExtensionAvailable")
+                                localStorage.getItem("isExtensionAvailable"),
                               ) && (
                                 <Button
                                   text={t("Request-an-extention")}
@@ -1191,7 +1203,7 @@ const Header2 = ({ isVideo }) => {
                       <div className="dropdown-btn_dotted">
                         {location.pathname.includes("/Admin") ||
                         location.pathname.includes(
-                          "/Admin"
+                          "/Admin",
                         ) ? null : roleRoute || TrialExpireSelectPac ? null : (
                           <DropdownButton
                             id="dropdown-btn_dotted"
@@ -1209,7 +1221,11 @@ const Header2 = ({ isVideo }) => {
                                 />
                               </Tooltip>
                             }
-                            onClick={dropDownMenuFunction}
+                            onClick={
+                              checkifMeetingOngoing
+                                ? null
+                                : dropDownMenuFunction
+                            }
                           >
                             {checkFeatureIDAvailability(1) ? (
                               <>
@@ -1244,7 +1260,7 @@ const Header2 = ({ isVideo }) => {
                                       className="New_folder_shortcutkeys"
                                       onClick={() => {
                                         dispatch(
-                                          showCancelModalmeetingDeitals(true)
+                                          showCancelModalmeetingDeitals(true),
                                         );
                                         dispatch(uploadGlobalFlag(true));
                                       }}
@@ -1269,7 +1285,7 @@ const Header2 = ({ isVideo }) => {
                                     // Prevent default behavior
                                     e.preventDefault();
                                     const activeCall = JSON.parse(
-                                      localStorage.getItem("activeCall")
+                                      localStorage.getItem("activeCall"),
                                     );
                                     // Explicitly evaluate activeCall
                                     if (
@@ -1312,7 +1328,7 @@ const Header2 = ({ isVideo }) => {
                                   // Prevent default behavior
                                   e.preventDefault();
                                   const activeCall = JSON.parse(
-                                    localStorage.getItem("activeCall")
+                                    localStorage.getItem("activeCall"),
                                   );
                                   // Explicitly evaluate activeCall
                                   if (
@@ -1424,6 +1440,7 @@ const Header2 = ({ isVideo }) => {
                               </Nav.Link>
                             </Dropdown.Item>
                             <Dropdown.Item
+                              disabled={checkifMeetingOngoing}
                               className={" text-black" + " " + currentLanguage}
                             >
                               <Nav.Link
@@ -1515,7 +1532,7 @@ const Header2 = ({ isVideo }) => {
                                   // Prevent default behavior
                                   e.preventDefault();
                                   const activeCall = JSON.parse(
-                                    localStorage.getItem("activeCall")
+                                    localStorage.getItem("activeCall"),
                                   );
                                   // Explicitly evaluate activeCall
                                   if (
@@ -1538,6 +1555,7 @@ const Header2 = ({ isVideo }) => {
                               onClick={() => forgotPasswordCheck()}
                             >
                               <Nav.Link
+                                disabled={checkifMeetingOngoing}
                                 as={Link}
                                 to={
                                   (scheduleMeetingPageFlagReducer === true ||
@@ -1559,7 +1577,7 @@ const Header2 = ({ isVideo }) => {
                                   // Prevent default behavior
                                   e.preventDefault();
                                   const activeCall = JSON.parse(
-                                    localStorage.getItem("activeCall")
+                                    localStorage.getItem("activeCall"),
                                   );
                                   // Explicitly evaluate activeCall
                                   if (
@@ -1645,24 +1663,25 @@ const Header2 = ({ isVideo }) => {
                         location.pathname.includes("/Admin")
                           ? "/Admin/faq's"
                           : (scheduleMeetingPageFlagReducer === true ||
-                              viewProposeDateMeetingPageFlagReducer === true ||
-                              viewAdvanceMeetingPublishPageFlagReducer ===
-                                true ||
-                              viewAdvanceMeetingUnpublishPageFlagReducer ===
-                                true ||
-                              viewProposeOrganizerMeetingPageFlagReducer ===
-                                true ||
-                              proposeNewMeetingPageFlagReducer === true) &&
-                            viewMeetingFlagReducer === false
-                          ? "/Diskus/Meeting"
-                          : "/Diskus/faq's"
+                                viewProposeDateMeetingPageFlagReducer ===
+                                  true ||
+                                viewAdvanceMeetingPublishPageFlagReducer ===
+                                  true ||
+                                viewAdvanceMeetingUnpublishPageFlagReducer ===
+                                  true ||
+                                viewProposeOrganizerMeetingPageFlagReducer ===
+                                  true ||
+                                proposeNewMeetingPageFlagReducer === true) &&
+                              viewMeetingFlagReducer === false
+                            ? "/Diskus/Meeting"
+                            : "/Diskus/faq's"
                       }
                       className="mx-3"
                       onClick={(e) => {
                         // Prevent default behavior
                         e.preventDefault();
                         const activeCall = JSON.parse(
-                          localStorage.getItem("activeCall")
+                          localStorage.getItem("activeCall"),
                         );
                         // Explicitly evaluate activeCall
                         if (

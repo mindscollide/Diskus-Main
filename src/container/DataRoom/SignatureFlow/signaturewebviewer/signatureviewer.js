@@ -193,11 +193,11 @@ const SignatureViewer = () => {
                 actorEmail: fieldsData.actorEmail,
                 actorColor: fieldsData.actorColor,
               });
-            }
+            },
           );
           console.log(
             "userAnnotations",
-            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields
+            getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails.listOfFields,
           );
 
           // function revert(data) {
@@ -217,18 +217,18 @@ const SignatureViewer = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                  try {
-                    return JSON.parse(str);
-                  } catch (error) {
-                    console.error(
-                      "Error parsing JSON:",
-                      error,
-                      "Input:",
-                      str
-                    );
-                    return null; // or handle the error as needed
-                  }
-                })
+                    try {
+                      return JSON.parse(str);
+                    } catch (error) {
+                      console.error(
+                        "Error parsing JSON:",
+                        error,
+                        "Input:",
+                        str,
+                      );
+                      return null; // or handle the error as needed
+                    }
+                  })
                 : [];
               return {
                 actorID: item.actorID,
@@ -242,7 +242,7 @@ const SignatureViewer = () => {
           if (
             containsNull(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             )
           ) {
             let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -264,7 +264,7 @@ const SignatureViewer = () => {
           } else {
             revertedData = revert(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             );
             setUserAnnotations(revertedData);
           }
@@ -286,7 +286,7 @@ const SignatureViewer = () => {
           let listOfUsers = [];
           let signersData = [];
           let isOrderChecked = bundleModels.some(
-            (bundleData, index) => bundleData.dependencies.length > 0
+            (bundleData, index) => bundleData.dependencies.length > 0,
           );
           console.log(isOrderChecked, "isOrderCheckedisOrderChecked");
           setOrderCheckbox(isOrderChecked);
@@ -319,7 +319,7 @@ const SignatureViewer = () => {
             if (
               containsNull(
                 getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                  .listOfFields
+                  .listOfFields,
               )
             ) {
               let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -361,7 +361,7 @@ const SignatureViewer = () => {
           creatorID: getWorkfFlowByFileId?.workFlow?.workFlow.creatorID,
           isCreator: getWorkfFlowByFileId?.workFlow?.workFlow.isCreator,
         }));
-      } catch (error) { }
+      } catch (error) {}
     }
   }, [getWorkfFlowByFileId, FieldsData]);
   // === End === //
@@ -392,7 +392,7 @@ const SignatureViewer = () => {
 
     // Update annotationsColorRecord state with new names (remove duplicates)
     const uniqueNames = Array.from(
-      new Set([...annotationsColorRecord, ...names])
+      new Set([...annotationsColorRecord, ...names]),
     );
     setAnnotationsColorRecord(uniqueNames);
   };
@@ -406,12 +406,12 @@ const SignatureViewer = () => {
       }));
       if (getDataroomAnnotation.annotationString) {
         updateAnnotationsColorRecordFromXml(
-          getDataroomAnnotation.annotationString
+          getDataroomAnnotation.annotationString,
         );
       }
       console.log(
         "userAnnotations userAnnotations",
-        getDataroomAnnotation.annotationString
+        getDataroomAnnotation.annotationString,
       );
     }
   }, [getDataroomAnnotation]);
@@ -455,7 +455,7 @@ const SignatureViewer = () => {
 
         const extractXML = (ID) => {
           const xmlData = userAnnotations.find(
-            (userAnnotData) => Number(userAnnotData?.userID) === Number(ID)
+            (userAnnotData) => Number(userAnnotData?.userID) === Number(ID),
           );
 
           if (xmlData) {
@@ -495,7 +495,7 @@ const SignatureViewer = () => {
         setUserAnnotations(selectedUserList);
       } else {
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [saveWorkFlowResponse]);
   // === End === //
   console.log(saveWorkFlowResponse, "saveWorkFlowResponsesaveWorkFlowResponse");
@@ -521,7 +521,7 @@ const SignatureViewer = () => {
       action,
       xmlString,
       userSelectID,
-      userAnnotations
+      userAnnotations,
     );
     try {
       let userSelect = parseInt(userSelectID);
@@ -539,7 +539,7 @@ const SignatureViewer = () => {
             if (xml.widget.includes(widgetName)) {
               // Replace the ffield and widget with new values from the main XML
               const ffieldElement = xmlDoc.querySelector(
-                `ffield[name="${ffieldName}"]`
+                `ffield[name="${ffieldName}"]`,
               );
               const widgetElement = widget;
               if (ffieldElement && widgetElement) {
@@ -584,17 +584,16 @@ const SignatureViewer = () => {
           path: "/webviewer/lib",
           showLocalFilePicker: true,
           fullAPI: true,
-          licenseKey:
-            process.env.REACT_APP_APRYSEKEY,// sign up to get a free trial key at https://dev.apryse.com
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // sign up to get a free trial key at https://dev.apryse.com
         },
-        viewer.current
+        viewer.current,
       ).then(async (instance) => {
         setInstance(instance);
         instance.UI.loadDocument(
           handleBlobFiles(pdfResponceData.attachmentBlob),
           {
             filename: pdfResponceData.title,
-          }
+          },
         );
 
         const { documentViewer, annotationManager, Annotations, Tools } =
@@ -660,7 +659,7 @@ const SignatureViewer = () => {
           try {
             const letsGet = getActorColorByUserID(
               selectedUserRef.current,
-              userAnnotationsRef
+              userAnnotationsRef,
             );
             const { r, g, b } = letsGet;
 
@@ -694,7 +693,7 @@ const SignatureViewer = () => {
           try {
             const letsGet = getActorColorByUserID(
               selectedUserRef.current,
-              userAnnotationsRef
+              userAnnotationsRef,
             );
             const { r, g, b } = letsGet;
 
@@ -728,7 +727,7 @@ const SignatureViewer = () => {
           try {
             const letsGet = getActorColorByUserID(
               selectedUserRef.current,
-              userAnnotationsRef
+              userAnnotationsRef,
             );
             const { r, g, b } = letsGet;
 
@@ -785,7 +784,7 @@ const SignatureViewer = () => {
           const mainXmlDoc = parser.parseFromString(xfdfString, "text/xml");
           function existsInMainXML(name, type, mainXmlDoc) {
             const elements = mainXmlDoc.querySelectorAll(
-              `${type}[name="${name}"]`
+              `${type}[name="${name}"]`,
             );
             return elements.length > 0;
           }
@@ -836,14 +835,14 @@ const SignatureViewer = () => {
                 }
 
                 return bundle;
-              }
+              },
             ),
           };
 
           let convertData = [];
           covert.forEach((data) => {
             const xmlListStrings = data.xml.map((xmlObj) =>
-              JSON.stringify(xmlObj)
+              JSON.stringify(xmlObj),
             );
             convertData.push({
               ActorID: data.actorID,
@@ -872,8 +871,8 @@ const SignatureViewer = () => {
               newData,
               addAnnoatationofFilesAttachment,
               saveSignatureDocument,
-              1
-            )
+              1,
+            ),
           );
         };
 
@@ -886,16 +885,17 @@ const SignatureViewer = () => {
           return (
             <div>
               <div>
-                <label htmlFor='participantDropdown'>{t("Participant")}</label>
+                <label htmlFor="participantDropdown">{t("Participant")}</label>
               </div>
-              <div className='w-100 d-flex justify-content-center'>
+              <div className="w-100 d-flex justify-content-center">
                 <select
                   style={{
                     width: "100%",
                     padding: "12px 5px",
                     margin: "8px 0",
                   }}
-                  onChange={handleChangeUser}>
+                  onChange={handleChangeUser}
+                >
                   {participantsRef.current.map((userData, index) => {
                     return (
                       <option value={userData.pk_UID}>{userData.name}</option>
@@ -903,7 +903,7 @@ const SignatureViewer = () => {
                   })}
                 </select>
               </div>
-              <div className='w-100'>
+              <div className="w-100">
                 <button
                   style={{
                     width: "100%",
@@ -914,7 +914,8 @@ const SignatureViewer = () => {
                     color: "#fff",
                     cursor: "pointer",
                   }}
-                  onClick={openCustomModal}>
+                  onClick={openCustomModal}
+                >
                   {t("Add-Signaturies")}
                 </button>
               </div>
@@ -924,7 +925,8 @@ const SignatureViewer = () => {
                   justifyContent: "center",
                   gap: "10px",
                   alignItems: "center",
-                }}>
+                }}
+              >
                 <button
                   style={{
                     width: "100%",
@@ -933,7 +935,8 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickTItle}>
+                  onClick={handleClickTItle}
+                >
                   {t("Title")}
                 </button>
                 <button
@@ -943,7 +946,8 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickName}>
+                  onClick={handleClickName}
+                >
                   {t("Name")}
                 </button>
                 <button
@@ -954,7 +958,8 @@ const SignatureViewer = () => {
                     background: "#ffffff",
                     border: "1px solid #e1e1e1",
                   }}
-                  onClick={handleClickEmail}>
+                  onClick={handleClickEmail}
+                >
                   {t("Email")}
                 </button>
               </div>
@@ -1057,9 +1062,9 @@ const SignatureViewer = () => {
           if (pdfResponceData.xfdfData !== "" && annotationManager) {
             try {
               await annotationManager.importAnnotations(
-                pdfResponceDataRef.current
+                pdfResponceDataRef.current,
               );
-            } catch (error) { }
+            } catch (error) {}
           }
         });
         //======================================== for documentLoaded =====================================//
@@ -1124,7 +1129,7 @@ const SignatureViewer = () => {
   const handleOpenModal = () => {
     console.log(
       copySignersData,
-      "copySignersDatacopySignersDatacopySignersData"
+      "copySignersDatacopySignersDatacopySignersData",
     );
     console.log(copyOfSigners, "copyOfSignerscopyOfSigners");
     if (copySignersData.current.length > 0) {
@@ -1146,7 +1151,7 @@ const SignatureViewer = () => {
 
           // Remove <ffield> element from main XML
           const ffieldElements = xmlDoc.querySelectorAll(
-            `ffield[name="${fieldName}"]`
+            `ffield[name="${fieldName}"]`,
           );
           ffieldElements.forEach((ffieldElement) => {
             ffieldElement.parentNode.removeChild(ffieldElement);
@@ -1154,7 +1159,7 @@ const SignatureViewer = () => {
 
           // Remove corresponding <widget> elements
           const widgetElements = xmlDoc.querySelectorAll(
-            `widget[field="${fieldName}"]`
+            `widget[field="${fieldName}"]`,
           );
           widgetElements.forEach((widgetElement) => {
             widgetElement.parentNode.removeChild(widgetElement);
@@ -1162,7 +1167,7 @@ const SignatureViewer = () => {
 
           // Remove corresponding <field> elements from <fields>
           const fieldElements = xmlDoc.querySelectorAll(
-            `fields field[name="${fieldName}"]`
+            `fields field[name="${fieldName}"]`,
           );
           fieldElements.forEach((fieldElement) => {
             fieldElement.parentNode.removeChild(fieldElement);
@@ -1170,7 +1175,7 @@ const SignatureViewer = () => {
 
           // Remove corresponding annotations with the subject matching the userID
           const annotationElements = xmlDoc.querySelectorAll(
-            `annots [subject*="-${userID}"]`
+            `annots [subject*="-${userID}"]`,
           );
           annotationElements.forEach((annotationElement) => {
             annotationElement.parentNode.removeChild(annotationElement);
@@ -1180,7 +1185,7 @@ const SignatureViewer = () => {
 
       // Remove <freetext> elements associated with the userID
       const freetextElements = xmlDoc.querySelectorAll(
-        `freetext[subject*="-${userID}"]`
+        `freetext[subject*="-${userID}"]`,
       );
       freetextElements.forEach((freetextElement) => {
         freetextElement.parentNode.removeChild(freetextElement);
@@ -1204,7 +1209,7 @@ const SignatureViewer = () => {
 
       const modifiedXFDF = removeSignatureAnnotationsFromXFDF(
         annotations,
-        usersNotInParticipants
+        usersNotInParticipants,
       );
       console.log("removeHandlerForPrticipantDelete", modifiedXFDF);
 
@@ -1219,7 +1224,7 @@ const SignatureViewer = () => {
 
       // Redraw the viewer to reflect the changes
       annotationManager.redrawAnnotation();
-    } catch (error) { }
+    } catch (error) {}
   };
   // ==== End ====//
 
@@ -1233,8 +1238,8 @@ const SignatureViewer = () => {
       let usersNotInParticipants = lastParticipants.filter(
         (lastParticipant) =>
           !participants.some(
-            (participant) => participant.pk_UID === lastParticipant.pk_UID
-          )
+            (participant) => participant.pk_UID === lastParticipant.pk_UID,
+          ),
       );
       if (usersNotInParticipants.length > 0) {
         setLastParticipants(participants);
@@ -1270,7 +1275,7 @@ const SignatureViewer = () => {
             try {
               const letsGet = getActorColorByUserID(
                 selectedUserRef.current,
-                userAnnotationsRef
+                userAnnotationsRef,
               );
               const { r, g, b } = letsGet;
               annotations.forEach((annotation, index) => {
@@ -1300,10 +1305,10 @@ const SignatureViewer = () => {
               action,
               xfdfString,
               selectedUserRef.current,
-              userAnnotationsRef.current
+              userAnnotationsRef.current,
             );
           }
-        }
+        },
       );
     }
   }, [Instance]);
@@ -1325,13 +1330,14 @@ const SignatureViewer = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex gap-2 align-items-center'>
+                    className="d-flex gap-2 align-items-center"
+                  >
                     <img
                       src={`data:image/jpeg;base64,${allData?.displayProfilePictureName}`}
-                      height='16.45px'
-                      width='18.32px'
-                      draggable='false'
-                      alt=''
+                      height="16.45px"
+                      width="18.32px"
+                      draggable="false"
+                      alt=""
                     />
                     <span>{allData.name}</span>
                   </Col>
@@ -1345,7 +1351,7 @@ const SignatureViewer = () => {
         });
         setUserList(usersDataArr);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   // this is for searching in dropdown
@@ -1380,7 +1386,8 @@ const SignatureViewer = () => {
     if (signers.EmailAddress !== "" && signers.Name !== "") {
       let isExist = signerData.find(
         (data, index) =>
-          data.EmailAddress.toLowerCase() === signers.EmailAddress.toLowerCase()
+          data.EmailAddress.toLowerCase() ===
+          signers.EmailAddress.toLowerCase(),
       );
 
       if (isExist === undefined) {
@@ -1619,8 +1626,8 @@ const SignatureViewer = () => {
         addAnnoatationofFilesAttachment,
         saveSignatureDocument,
         2,
-        sendDocumentData
-      )
+        sendDocumentData,
+      ),
     );
   };
 
@@ -1649,8 +1656,8 @@ const SignatureViewer = () => {
 
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
       <Modal
         show={openAddParticipentModal}
@@ -1662,23 +1669,23 @@ const SignatureViewer = () => {
         size={"md"}
         modalFooterClassName={"d-block"}
         modalBodyClassName={"Signers_modal_body"}
-        modalHeaderClassName='Signers_modal_header'
+        modalHeaderClassName="Signers_modal_header"
         ModalBody={
           <>
             <>
-              <Row className='mb-1'>
+              <Row className="mb-1">
                 <Col lg={12} md={12} xs={12} sm={12}>
-                  <span className='Signers_heading'>{t("Signers")}</span>
+                  <span className="Signers_heading">{t("Signers")}</span>
                 </Col>
-                <Col lg={12} md={12} xs={12} sm={12} className='mt-4 mb-3'>
-                  <span className='Signers_tagLine'>
+                <Col lg={12} md={12} xs={12} sm={12} className="mt-4 mb-3">
+                  <span className="Signers_tagLine">
                     {t("Add-the-people-who-need-to-sign-this-document")}
                   </span>
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Row>
                     <Col sm={6} md={6} lg={6}>
-                      <p className='pb-1 m-0 inputlabel_style'>{t("Name")}</p>
+                      <p className="pb-1 m-0 inputlabel_style">{t("Name")}</p>
                       <Select
                         placeholder={t("Name")}
                         onChange={handleChangeFllName}
@@ -1693,7 +1700,7 @@ const SignatureViewer = () => {
                       <TextField
                         width={"100%"}
                         name={"EmailAddress"}
-                        type='email'
+                        type="email"
                         disable={true}
                         // disable={index !== 0 ? true : false}
                         labelclass={"inputlabel_style"}
@@ -1704,30 +1711,33 @@ const SignatureViewer = () => {
                       />
                     </Col>
                   </Row>
-                  <Row className='d-flex align-items-center'>
-                    <Col sm={12} md={12} lg={12} className='signersList'>
+                  <Row className="d-flex align-items-center">
+                    <Col sm={12} md={12} lg={12} className="signersList">
                       <DragDropContext onDragEnd={handleOnDragEnd}>
-                        <Droppable droppableId='signers'>
+                        <Droppable droppableId="signers">
                           {(provided) => (
                             <Row
                               {...provided.droppableProps}
-                              ref={provided.innerRef}>
+                              ref={provided.innerRef}
+                            >
                               {signerData.length > 0 &&
                                 signerData.map((fieldsData, index) => {
                                   return (
                                     <Draggable
                                       key={index}
                                       draggableId={index.toString()}
-                                      index={index}>
+                                      index={index}
+                                    >
                                       {(provided) => (
                                         <>
                                           <Col
                                             sm={1}
                                             md={1}
                                             lg={1}
-                                            className='my-1 d-flex align-items-end mb-2'>
+                                            className="my-1 d-flex align-items-end mb-2"
+                                          >
                                             <img
-                                              alt=''
+                                              alt=""
                                               src={DragIcon}
                                               width={20}
                                               ref={provided.innerRef}
@@ -1739,10 +1749,10 @@ const SignatureViewer = () => {
                                             sm={10}
                                             md={10}
                                             lg={10}
-                                            className='my-1'
-                                          // ref={provided.innerRef}
-                                          // {...provided.draggableProps}
-                                          // {...provided.dragHandleProps}
+                                            className="my-1"
+                                            // ref={provided.innerRef}
+                                            // {...provided.draggableProps}
+                                            // {...provided.dragHandleProps}
                                           >
                                             <Row>
                                               <Col sm={6} md={6} lg={6}>
@@ -1756,7 +1766,7 @@ const SignatureViewer = () => {
                                                     "signatureflow_input"
                                                   }
                                                   name={"Name"}
-                                                  type='text'
+                                                  type="text"
                                                   disable={true}
                                                   value={fieldsData.Name}
                                                   label={"Name"}
@@ -1766,7 +1776,7 @@ const SignatureViewer = () => {
                                                 <TextField
                                                   width={"100%"}
                                                   name={"EmailAddress"}
-                                                  type='email'
+                                                  type="email"
                                                   disable={true}
                                                   labelclass={
                                                     "inputlabel_style"
@@ -1787,11 +1797,12 @@ const SignatureViewer = () => {
                                             sm={1}
                                             md={1}
                                             lg={1}
-                                            className='my-1 d-flex align-items-end mb-3'>
+                                            className="my-1 d-flex align-items-end mb-3"
+                                          >
                                             <img
-                                              alt=''
+                                              alt=""
                                               src={DeleteIcon}
-                                              className='cursor-pointer'
+                                              className="cursor-pointer"
                                               onClick={() =>
                                                 handleRemoveSigner(index)
                                               }
@@ -1813,10 +1824,10 @@ const SignatureViewer = () => {
                 </Col>
                 <Col lg={12} md={12} xs={12} sm={12}>
                   <Button
-                    className='addOther_field'
+                    className="addOther_field"
                     text={t("Add-another-signer")}
                     onClick={handleClickAdd}
-                    icon={<img src={PlusSignSignatureFlow} alt='' />}
+                    icon={<img src={PlusSignSignatureFlow} alt="" />}
                   />
                 </Col>
               </Row>
@@ -1830,7 +1841,8 @@ const SignatureViewer = () => {
                 sm={6}
                 md={6}
                 lg={6}
-                className='d-flex justify-content-start px-0'>
+                className="d-flex justify-content-start px-0"
+              >
                 <Checkbox
                   label2={t("Set-signer-order")}
                   checked={orderCheckBox}
@@ -1842,7 +1854,8 @@ const SignatureViewer = () => {
                 sm={6}
                 md={6}
                 lg={6}
-                className='d-flex justify-content-end gap-2 px-0'>
+                className="d-flex justify-content-end gap-2 px-0"
+              >
                 <Button
                   className={"CancelBtn"}
                   text={
