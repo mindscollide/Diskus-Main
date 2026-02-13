@@ -233,3 +233,7 @@
   font-weight: 600;
   margin-top: 16px;
 }
+
+.goBackButton {
+  cursor: pointer;
+}

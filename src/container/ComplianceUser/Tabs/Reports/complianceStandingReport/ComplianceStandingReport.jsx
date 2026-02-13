@@ -26,12 +26,15 @@ const ComplianceStandingReport = () => {
     useComplianceContext();
 
   const GetComplianceStandingReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetComplianceStandingReport
+    (state) =>
+      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
   );
   console.log(GetComplianceStandingReport, "GetComplianceStandingReport");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
+
+  const [dateRange, setDateRange] = useState(null);
 
   const compliancesReport = [
     {
@@ -61,75 +64,6 @@ const ComplianceStandingReport = () => {
     {
       id: 7,
       list: "Embedding Ethical Responsibility and Regulatory Compliance Across Operations",
-    },
-  ];
-
-  const complianceData = [
-    {
-      id: 1,
-      name: "Detailed Data Handling Audit for Security",
-      authority: "PCI DSS",
-      criticality: "Medium",
-      dueDate: "30 November 2024",
-      totalChecklist: 7,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "85%",
-    },
-    {
-      id: 2,
-      name: "User Access Review",
-      authority: "SOX",
-      criticality: "Medium",
-      dueDate: "20 December 2024",
-      totalChecklist: 5,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "65%",
-    },
-    {
-      id: 3,
-      name: "User Access Review",
-      authority: "SOX",
-      criticality: "Medium",
-      dueDate: "20 December 2024",
-      totalChecklist: 5,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "45%",
-    },
-    {
-      id: 4,
-      name: "User Access Review",
-      authority: "SOX",
-      criticality: "Medium",
-      dueDate: "20 December 2024",
-      totalChecklist: 5,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "35%",
-    },
-    {
-      id: 5,
-      name: "User Access Review",
-      authority: "SOX",
-      criticality: "Medium",
-      dueDate: "20 December 2024",
-      totalChecklist: 5,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "25%",
-    },
-    {
-      id: 6,
-      name: "User Access Review",
-      authority: "SOX",
-      criticality: "Medium",
-      dueDate: "20 December 2024",
-      totalChecklist: 5,
-      totalTasks: 10,
-      overdueTasks: 10,
-      progress: "25%",
     },
   ];
 
@@ -187,6 +121,31 @@ const ComplianceStandingReport = () => {
     }
   };
 
+  const handleDateRangeChange = (dates) => {
+    if (!dates) {
+      // 🔹 Clear clicked
+      setDateRange(null);
+
+      dispatch(
+        GetComplianceStandingReportAPI(
+          navigate,
+          { startDate: "", endDate: "" },
+          t,
+        ),
+      );
+      return;
+    }
+
+    const startDate = dates[0].format("YYYYMMDD");
+    const endDate = dates[1].format("YYYYMMDD");
+
+    setDateRange(dates);
+
+    dispatch(
+      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t),
+    );
+  };
+
   return (
     <>
       <div className={styles.mainDivComplianceStanding}>
@@ -204,6 +163,7 @@ const ComplianceStandingReport = () => {
                   <img
                     src={BackButton}
                     alt="BackButton"
+                    className={styles.goBackButton}
                     onClick={() => setComplianceStandingReport(false)}
                   />
                 </Col>
@@ -230,7 +190,7 @@ const ComplianceStandingReport = () => {
                       {" "}
                       {formatDateToYMD(
                         GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate
+                          ?.generatedDate,
                       )}
                     </p>
                   </div>
@@ -245,6 +205,9 @@ const ComplianceStandingReport = () => {
                     className="custom-range-picker"
                     separator="-"
                     inputReadOnly
+                    allowClear
+                    value={dateRange}
+                    onChange={handleDateRangeChange}
                   />
                 </Col>
 
@@ -393,7 +356,7 @@ const ComplianceStandingReport = () => {
                                           <label>{t("Due-date")}:</label>
                                           <p>
                                             {formatDateToYMD(
-                                              checklisttask.dueDate
+                                              checklisttask.dueDate,
                                             )}
                                           </p>
                                         </div>
@@ -435,13 +398,13 @@ const ComplianceStandingReport = () => {
                                       </Col>
                                     </Row>
                                   </div>
-                                )
+                                ),
                               )}
                             </div>
                           </div>
                         ))}
                       </Panel>
-                    )
+                    ),
                   )}
                 </Collapse>
               </div>
@@ -485,7 +448,7 @@ const ComplianceStandingReport = () => {
                       {" "}
                       {formatDateToYMD(
                         GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate
+                          ?.generatedDate,
                       )}
                     </p>
                   </div>

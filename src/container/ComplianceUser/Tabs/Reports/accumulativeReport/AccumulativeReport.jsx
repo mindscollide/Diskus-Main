@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AccumulativeReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -17,17 +17,29 @@ const { Panel } = Collapse;
 
 const AccumulativeReport = () => {
   const { t } = useTranslation();
-  const { accumulativeReport, setAccumulativeReport } = useComplianceContext();
+  const {
+    accumulativeReport,
+    setAccumulativeReport,
+    autoPdfDownload,
+    setAutoPdfDownload,
+  } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
   );
 
   console.log(
     GetAccumulativeReport,
-    "GetAccumulativeReportGetAccumulativeReport"
+    "GetAccumulativeReportGetAccumulativeReport",
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
+
+  useEffect(() => {
+    if (autoPdfDownload && GetAccumulativeReport) {
+      handleAutoDownload();
+    }
+  }, [autoPdfDownload, GetAccumulativeReport]);
+
   const donutData = [
     ["Task Status", "Count"],
     ["Tasks Completed On Time", 45],
@@ -86,6 +98,27 @@ const AccumulativeReport = () => {
 
   const getTargetElement = () => document.getElementById("content-id");
 
+  const handleAutoDownload = async () => {
+    try {
+      setIsGenerating(true);
+      setShowPdfLayout(true);
+
+      await new Promise((r) => setTimeout(r, 300));
+      await document.fonts.ready;
+
+      await generatePDF(getTargetElement, options);
+
+      // 👇 After Download Close Report
+      setAccumulativeReport(false);
+      setAutoPdfDownload(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowPdfLayout(false);
+      setIsGenerating(false);
+    }
+  };
+
   const handleClickGenerateODF = async () => {
     try {
       setIsGenerating(true); // spinner ON
@@ -119,6 +152,7 @@ const AccumulativeReport = () => {
                   <img
                     src={BackButton}
                     alt="BackButton"
+                    className={styles.goBackButton}
                     onClick={() => setAccumulativeReport(false)}
                   />
                 </Col>
@@ -143,7 +177,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn
+                        GetAccumulativeReport?.header?.generatedOn,
                       )}
                     </p>
                   </div>
@@ -173,7 +207,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate
+                            GetAccumulativeReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -181,7 +215,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate
+                            GetAccumulativeReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -424,7 +458,7 @@ const AccumulativeReport = () => {
                         <label>{t("Generated-date")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.generatedOn
+                            GetAccumulativeReport?.header?.generatedOn,
                           )}
                         </p>
                       </div>
@@ -443,7 +477,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate
+                            GetAccumulativeReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -453,7 +487,7 @@ const AccumulativeReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate
+                            GetAccumulativeReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -528,7 +562,7 @@ const AccumulativeReport = () => {
                         {checklist.checklistDescription}
                       </Tooltip>
                     </Col>
-                  ))
+                  )),
                 )}
               </Row>
             </div>

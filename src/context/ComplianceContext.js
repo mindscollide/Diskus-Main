@@ -133,7 +133,7 @@ export const ComlianceProvider = ({ children }) => {
       reportType: "",
       dueDateFrom: "",
       dueDateTo: "",
-      pageNumber: 0,
+      sRow: 0,
       length: 10,
     });
 
@@ -307,7 +307,7 @@ export const ComlianceProvider = ({ children }) => {
       reportType: "",
       dueDateFrom: "",
       dueDateTo: "",
-      pageNumber: 0,
+      sRow: 0,
       length: 10,
     });
     setComplianceReportList([]);
@@ -388,6 +388,9 @@ export const ComlianceProvider = ({ children }) => {
 
   // Accumulative Report Open
   const [accumulativeReport, setAccumulativeReport] = useState(false);
+
+  // To Download automatically Report State
+  const [autoPdfDownload, setAutoPdfDownload] = useState(false);
 
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
@@ -799,6 +802,8 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceReportTotal,
         complianceDetailsViewState,
         setComplianceDetailsViewState,
+        autoPdfDownload,
+        setAutoPdfDownload,
       }}
     >
       {children}

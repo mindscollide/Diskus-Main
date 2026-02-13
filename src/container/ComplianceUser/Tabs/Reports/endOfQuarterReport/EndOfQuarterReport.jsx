@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./EndOfQuarterReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -18,14 +18,26 @@ const { Panel } = Collapse;
 
 const EndOfQuarterReport = () => {
   const { t } = useTranslation();
-  const { endOfQuarterReport, setEndOfQuarterReport } = useComplianceContext();
+  const {
+    endOfQuarterReport,
+    setEndOfQuarterReport,
+    autoPdfDownload,
+    setAutoPdfDownload,
+  } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
+
+  useEffect(() => {
+    if (autoPdfDownload && GetQuarterReport) {
+      handleAutoDownload();
+    }
+  }, [autoPdfDownload, GetQuarterReport]);
+
   const donutData = [
     ["Task Status", "Count"],
     ["Tasks Completed On Time", 45],
@@ -45,6 +57,7 @@ const EndOfQuarterReport = () => {
     colors: ["#6172D6", "#FFC300", "#f16b6b"],
     tooltip: { text: "percentage" },
   };
+
   const options = {
     // default is `save`
     method: "save",
@@ -84,6 +97,27 @@ const EndOfQuarterReport = () => {
 
   const getTargetElement = () => document.getElementById("content-id");
 
+  const handleAutoDownload = async () => {
+    try {
+      setIsGenerating(false);
+      setShowPdfLayout(true);
+
+      await new Promise((r) => setTimeout(r, 300));
+      await document.fonts.ready;
+
+      await generatePDF(getTargetElement, options);
+
+      // 👇 After Download Close Report
+      setEndOfQuarterReport(false);
+      setAutoPdfDownload(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowPdfLayout(false);
+      setIsGenerating(false);
+    }
+  };
+
   const handleClickGenerateODF = async () => {
     try {
       setIsGenerating(true); // spinner ON
@@ -117,6 +151,7 @@ const EndOfQuarterReport = () => {
                   <img
                     src={BackButton}
                     alt="BackButton"
+                    className={styles.goBackButton}
                     onClick={() => setEndOfQuarterReport(false)}
                   />
                 </Col>
@@ -170,7 +205,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -178,7 +213,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -421,7 +456,7 @@ const EndOfQuarterReport = () => {
                         <p>
                           {" "}
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn
+                            GetQuarterReport?.header?.generatedOn,
                           )}
                         </p>
                       </div>
@@ -440,7 +475,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -450,7 +485,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -521,7 +556,7 @@ const EndOfQuarterReport = () => {
                         {checklist.checklistDescription}
                       </Tooltip>
                     </Col>
-                  ))
+                  )),
                 )}
               </Row>
             </div>

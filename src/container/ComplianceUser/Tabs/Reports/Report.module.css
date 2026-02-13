@@ -129,3 +129,7 @@
     border: 3px solid black;
   }
 }
+
+.actionButtons_complianceList {
+  white-space: nowrap;
+}

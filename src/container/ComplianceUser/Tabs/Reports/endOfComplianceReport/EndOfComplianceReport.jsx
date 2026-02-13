@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./EndOfComplianceReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -20,20 +20,32 @@ const { Panel } = Collapse;
 
 const EndOfComplianceReport = () => {
   const { t } = useTranslation();
-  const { endOfComplianceReport, setEndOfComplianceReport, reportList } =
-    useComplianceContext();
+  const {
+    endOfComplianceReport,
+    setEndOfComplianceReport,
+    reportList,
+    autoPdfDownload,
+    setAutoPdfDownload,
+  } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
+  console.log("Check Check Report");
 
   console.log(
     GetEndOfComplianceReport,
-    "GetEndOfComplianceReportGetEndOfComplianceReport"
+    "GetEndOfComplianceReportGetEndOfComplianceReport",
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
+
+  useEffect(() => {
+    if (autoPdfDownload && GetEndOfComplianceReport) {
+      handleAutoDownload();
+    }
+  }, [autoPdfDownload, GetEndOfComplianceReport]);
 
   const donutData = [
     ["Task Status", "Count"],
@@ -103,7 +115,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [reportList, t]
+    [reportList, t],
   );
 
   const mapTasksToRows = (tasks = []) => {
@@ -155,6 +167,27 @@ const EndOfComplianceReport = () => {
 
   const getTargetElement = () => document.getElementById("content-id");
 
+  const handleAutoDownload = async () => {
+    try {
+      setIsGenerating(true);
+      setShowPdfLayout(true);
+
+      await new Promise((r) => setTimeout(r, 300));
+      await document.fonts.ready;
+
+      await generatePDF(getTargetElement, options);
+
+      // 👇 After Download Close Report
+      setEndOfComplianceReport(false);
+      setAutoPdfDownload(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowPdfLayout(false);
+      setIsGenerating(false);
+    }
+  };
+
   const handleClickGenerateODF = async () => {
     try {
       setIsGenerating(true); // spinner ON
@@ -177,7 +210,7 @@ const EndOfComplianceReport = () => {
         <Spin
           spinning={isGenerating}
           size="large"
-          tip="Generating PDF..."
+          tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
           {!showPdfLayout && (
@@ -187,6 +220,7 @@ const EndOfComplianceReport = () => {
                 <Col xs="auto">
                   <img
                     src={BackButton}
+                    className={styles.goBackButton}
                     alt="BackButton"
                     onClick={() => setEndOfComplianceReport(false)}
                   />
@@ -212,7 +246,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn
+                        GetEndOfComplianceReport?.header?.generatedOn,
                       )}
                     </p>
                   </div>
@@ -261,7 +295,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate
+                              ?.complianceCreatedDate,
                           )}
                         </p>
                       </div>
@@ -270,7 +304,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate
+                              ?.complianceCompletionDate,
                           )}
                         </p>
                       </div>
@@ -279,7 +313,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate
+                              ?.complianceDueDate,
                           )}
                         </p>
                       </div>
@@ -470,7 +504,7 @@ const EndOfComplianceReport = () => {
                           <label>{t("Generated-date")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetEndOfComplianceReport?.header?.generatedOn
+                              GetEndOfComplianceReport?.header?.generatedOn,
                             )}
                           </p>
                         </div>
@@ -525,7 +559,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate
+                              ?.complianceCreatedDate,
                           )}
                         </p>
                       </div>
@@ -535,7 +569,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate
+                            ?.complianceCompletionDate,
                         )}
                       </p>
                     </Col>
@@ -545,7 +579,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate
+                            ?.complianceDueDate,
                         )}
                       </p>
                     </Col>
