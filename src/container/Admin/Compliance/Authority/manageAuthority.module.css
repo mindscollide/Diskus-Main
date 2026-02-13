@@ -58,7 +58,7 @@ body[dir="rtl"] .SearchIconClass {
   background: #fff !important;
   right: 0 !important;
   min-height: 242px !important;
-  z-index: 1 !important;
+  z-index: 99 !important;
   top: 43px;
   padding: 10px 16px 13px 16px;
 }
@@ -66,7 +66,8 @@ body[dir="rtl"] .SearchIconClass {
 .ResetButtonSearchBox {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1 !important;
+  /* border: 1px solid #e1e1e1 !important; */
+  border: none;
   border-radius: 4px !important;
   font-weight: 600 !important;
   background: #fff !important;
@@ -75,6 +76,16 @@ body[dir="rtl"] .SearchIconClass {
 
 .ResetButtonSearchBox:is(:hover, :active, :focus, :focus-visible) {
   padding: 12px 30px !important;
+  font-size: 12px !important;
+  /* border: 1px solid #e1e1e1 !important; */
+  border: none;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+.ResetButtonFilter {
+  padding: 2px 15px !important;
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
@@ -110,7 +121,7 @@ body[dir="rtl"] .SearchButtonSearchBox {
   font-weight: 600 !important;
 }
 .viewAuthorityBtn {
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   border-radius: 4px !important;
   font-size: 12px;
   line-height: 100%;

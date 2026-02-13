@@ -1,36 +1,70 @@
+/* Accordion Container */
 .accordion-custom {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  height: auto;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
   padding: 15px 10px;
   margin-bottom: 10px;
-  overflow: hidden;
-  max-height: 200px;
   background: #fff;
-  transition: max-height 0.2s ease-in-out;
+  overflow: hidden;
+
+  /* animation */
+  max-height: 50px; /* collapsed height */
+  transition: max-height 0.35s ease;
 }
-.accordion-custom-extended {
+/* Expanded state */
+.accordion-custom.expanded {
+  max-height: 500px; /* must be greater than content */
+}
+/* Accordion Container */
+.accordion-customForChecklist {
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 100%;
-  height: auto;
-  border: 1px solid #e1e1e1 !important;
+  border: 1px solid #e1e1e1;
   border-radius: 4px;
-  padding: 15px 10px;
-  margin-bottom: 10px;
-  overflow: hidden;
+  padding: 10px 10px;
   background: #fff;
-  transition: height 0.2s ease-in-out;
+  overflow: hidden;
+  margin-bottom: 10px;
+
+  /* animation */
+  max-height: 44px; /* collapsed height */
+  transition: max-height 0.35s ease;
+}
+.accordion-customForChecklist.expanded {
+  max-height: 500px; /* must be greater than content */
+}
+
+.accordion-customForTasks {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  padding: 10px 10px;
+  background: #fff;
+  overflow: hidden;
+  margin-bottom: 10px;
+  /* animation */
+  max-height: 60px; /* collapsed height */
+  transition: max-height 0.35s ease;
+}
+.accordion-customForTasks.expanded {
+  max-height: 500px; /* must be greater than content */
 }
 .FirstRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+}
+.FirstRow_Checklist {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -46,11 +80,41 @@
   color: #2197d7;
   cursor: pointer !important;
 }
+.titleForTask {
+  width: 95%;
+  justify-content: flex-start;
+  display: flex;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #2197d7;
+  cursor: pointer !important;
+}
+.title-cont_Checklist {
+  width: 65%;
+  justify-content: flex-start;
+  display: flex;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #2197d7;
+}
 .dateTime {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 33.33%;
+  gap: 20px;
+}
+.dateTime_Checklist {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 15%;
   gap: 20px;
 }
 .icons {
@@ -60,8 +124,40 @@
   width: 33.33%;
   gap: 20px;
 }
+.icons_Checklist {
+  display: inline-block;
+  width: 20%;
+}
+.icons_Task {
+  display: inline-block;
+  width: 5%;
+}
 .SecondRow {
   width: 100%;
   height: auto;
+  opacity: 0;
   padding: 12px 10px;
+  cursor: default !important;
+}
+.SecondRow.show {
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  padding: 12px 10px;
+  cursor: default !important;
+}
+.SecondRowForChecklist {
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  padding-top: 12px;
+}
+.SecondRowForChecklist.show {
+  width: 100%;
+  height: auto;
+  opacity: 1;
+  padding-top: 12px;
+}
+.NodateTime_Task {
+  width: 0%;
 }

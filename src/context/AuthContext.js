@@ -25,6 +25,8 @@ export const AuthProvider = ({ children }) => {
       );
 
       localStorage.clear();
+      sessionStorage.clear()
+
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -36,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
       localStorage.clear();
+      sessionStorage.clear()
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
@@ -47,6 +50,7 @@ export const AuthProvider = ({ children }) => {
       );
 
       localStorage.clear();
+      sessionStorage.clear()
       if (reLang !== undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }

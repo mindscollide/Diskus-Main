@@ -56,6 +56,7 @@ import {
   closeWaitingParticipantVideoStream,
   participantWaitingListBox,
   toggleParticipantsVisibility,
+  disableZoomBeforeJoinSession,
 } from "../../../../../store/actions/VideoFeature_actions";
 import emptyContributorState from "../../../../../assets/images/Empty_Agenda_Meeting_view.svg";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -268,7 +269,11 @@ const AgendaViewer = () => {
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom
   );
+  const UpgradeNowModalReducer = useSelector(
+    (state) => state.UserManagementModals.UpgradeNowModal
+  );
 
+  console.log("UpgradeNowModalReducer", UpgradeNowModalReducer);
   console.log("Video Feature Debug Data:", {
     editorRole,
     presenterViewFlag,
@@ -810,6 +815,7 @@ const AgendaViewer = () => {
     setPauseRecordingState(false);
     setResumeRecordingState(false);
     setStopRecordingState(false);
+    dispatch(disableZoomBeforeJoinSession(true));
 
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(

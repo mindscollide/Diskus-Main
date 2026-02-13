@@ -24,9 +24,8 @@ const LeaveMeetingModalSideBar = () => {
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
-  let currentView = localStorage.getItem("MeetingCurrentView");
   const LeaveMeetingSideBarModalTrigger = useSelector(
-    (state) => state.NewMeetingreducer.LeaveMeetingSidebarModal
+    (state) => state.NewMeetingreducer.LeaveMeetingSidebarModal,
   );
 
   const handleNOFunctionality = () => {
@@ -42,7 +41,15 @@ const LeaveMeetingModalSideBar = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
     dispatch(LeaveMeetingSideBarModalAction(false));
@@ -75,7 +82,6 @@ const LeaveMeetingModalSideBar = () => {
               >
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t("Any-unsaved-changes-will-be")}
-
                 </span>
               </Col>
             </Row>

@@ -85,6 +85,8 @@ import ManageAuthority from "../container/Admin/Compliance/Authority/index.jsx";
 import GeneralSetting from "../container/Admin/Compliance/GeneralSettings/index.jsx";
 import { AuthorityProvider } from "../context/AuthorityContext.js";
 import MainCompliance from "../container/ComplianceUser/index.jsx";
+import { ComlianceProvider } from "../context/ComplianceContext.js";
+import { NewMeetingProvider } from "../context/NewMeetingContext.js";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -348,7 +350,9 @@ export const router = createBrowserRouter(
                   FallbackComponent={ErrorFallback}
                   onError={logErrors}
                 >
-                  <NewMeeting />
+                  <NewMeetingProvider>
+                    <NewMeeting />
+                  </NewMeetingProvider>
                 </ErrorBoundary>
               </RouteWrapperUser>
             }
@@ -496,7 +500,7 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
-            <Route
+          <Route
             path="compliance"
             element={
               <RouteWrapperUser name="polling">
@@ -989,6 +993,6 @@ export const router = createBrowserRouter(
           />
         </Route>
       </Route>
-    </>
-  )
+    </>,
+  ),
 );

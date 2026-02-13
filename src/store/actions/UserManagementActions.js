@@ -107,7 +107,7 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
     form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
-      SaveOrganizationAndPakageSelection.RequestMethod
+      SaveOrganizationAndPakageSelection.RequestMethod,
     );
     axiosInstance
       .post(authenticationApi, form)
@@ -119,30 +119,30 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_01".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_01".toLowerCase(),
                   )
               ) {
                 localStorage.setItem(
                   "organizatioName",
-                  data.Organization.OrganizationName
+                  data.Organization.OrganizationName,
                 );
                 localStorage.setItem(
                   "userID",
-                  response.data.responseResult.userID
+                  response.data.responseResult.userID,
                 );
                 localStorage.setItem(
                   "OrganizationID",
-                  response.data.responseResult.organizationID
+                  response.data.responseResult.organizationID,
                 );
                 localStorage.setItem(
                   "userEmail",
-                  data.Organization.ContactPersonEmail
+                  data.Organization.ContactPersonEmail,
                 );
                 dispatch(
                   createOrganizationAndPakageSelectionSuccess(
                     response.data.responseResult,
-                    t("Organization-and-admin-created-successfully")
-                  )
+                    t("Organization-and-admin-created-successfully"),
+                  ),
                 );
                 localStorage.removeItem("PackageID");
                 localStorage.setItem("minutes", 4);
@@ -154,32 +154,32 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_02".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_02".toLowerCase(),
                   )
               ) {
                 localStorage.setItem(
                   "userID",
-                  response.data.responseResult.userID
+                  response.data.responseResult.userID,
                 );
                 localStorage.setItem(
                   "OrganizationID",
-                  response.data.responseResult.organizationID
+                  response.data.responseResult.organizationID,
                 );
                 localStorage.setItem(
                   "userEmail",
-                  data.Organization.ContactPersonEmail
+                  data.Organization.ContactPersonEmail,
                 );
                 localStorage.setItem(
                   "organizatioName",
-                  data.Organization.OrganizationName
+                  data.Organization.OrganizationName,
                 );
                 dispatch(
                   createOrganizationAndPakageSelectionSuccess(
                     response.data.responseResult,
                     t(
-                      "Organization-and-admin-created-successfully-but-failed-to-send-OTP"
-                    )
-                  )
+                      "Organization-and-admin-created-successfully-but-failed-to-send-OTP",
+                    ),
+                  ),
                 );
                 localStorage.setItem("minutes", 0);
                 localStorage.setItem("seconds", 0);
@@ -191,155 +191,155 @@ const signUpOrganizationAndPakageSelection = (data, navigate, t) => {
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_03".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_03".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Email-already-exists")
-                  )
+                    t("Email-already-exists"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_04".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_04".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Organization-name-already-taken")
-                  )
+                    t("Organization-name-already-taken"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_05".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_05".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-save-organization")
-                  )
+                    t("Failed-to-save-organization"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_06".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_06".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-save-subscriptions")
-                  )
+                    t("Failed-to-save-subscriptions"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_07".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_07".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-create-admin-user")
-                  )
+                    t("Failed-to-create-admin-user"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_08".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_08".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-add-organization-user-mapping")
-                  )
+                    t("Failed-to-add-organization-user-mapping"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_09".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_09".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-save-admin-user-alloted-package")
-                  )
+                    t("Failed-to-save-admin-user-alloted-package"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_10".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_10".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Failed-to-save-organization-settings")
-                  )
+                    t("Failed-to-save-organization-settings"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage
                   .toLowerCase()
                   .includes(
-                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_11".toLowerCase()
+                    "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_11".toLowerCase(),
                   )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Something-went-wrong")
-                  )
+                    t("Something-went-wrong"),
+                  ),
                 );
               } else if (
                 response.data.responseResult.responseMessage.toLowerCase(
-                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_12".toLowerCase()
+                  "ERM_AuthService_SignUpManager_SaveOrganizationsAndSelectedPackage_12".toLowerCase(),
                 )
               ) {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
                     t(
-                      "Organization-registeration-limit-exceeded-please-try-again-after-sometime"
-                    )
-                  )
+                      "Organization-registeration-limit-exceeded-please-try-again-after-sometime",
+                    ),
+                  ),
                 );
               } else {
                 dispatch(
                   createOrganizationAndPakageSelectionFailed(
-                    t("Something-went-wrong")
-                  )
+                    t("Something-went-wrong"),
+                  ),
                 );
               }
             } else {
               dispatch(
                 createOrganizationAndPakageSelectionFailed(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               createOrganizationAndPakageSelectionFailed(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } catch (error) {
           dispatch(
             createOrganizationAndPakageSelectionFailed(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
           console.log(error, "errorerrorerrorerrorerror");
         }
       })
       .catch((response) => {
         dispatch(
-          createOrganizationAndPakageSelectionFailed(t("Something-went-wrong"))
+          createOrganizationAndPakageSelectionFailed(t("Something-went-wrong")),
         );
       });
   };
@@ -386,14 +386,14 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 organizationTrialExtendedSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               dispatch(showUpgradeNowModal(false));
               localStorage.removeItem("packageFeatureIDs");
@@ -406,35 +406,35 @@ const ExtendOrganizationTrialApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(t("Invalid-data-provided"))
+                organizationTrialExtendedFail(t("Invalid-data-provided")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(t("Subscription-not-found"))
+                organizationTrialExtendedFail(t("Subscription-not-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_04".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSubscriptionExpiryDetails_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                organizationTrialExtendedFail(t("Something-went-wrong"))
+                organizationTrialExtendedFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                organizationTrialExtendedFail(t("Something-went-wrong"))
+                organizationTrialExtendedFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -492,40 +492,40 @@ const AddOrganizationsUserApi = (navigate, t, data, loader) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUsers_01".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 addOrganizationUsersSuccess(
                   response.data.responseResult,
                   t("Users-added-successfully"),
-                  loader
-                )
+                  loader,
+                ),
               );
               navigate("/Admin/ManageUsers");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUsers_02".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 addOrganizationUsersSuccess(
-                  t("Error-occurred-while-adding-users")
-                )
+                  t("Error-occurred-while-adding-users"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase()
+                  "Admin_AdminServiceManager_AddOrganizationsUsers_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 addOrganizationUsersFailed(
-                  t("Unable-to-add-user-due-to-some-error")
-                )
+                  t("Unable-to-add-user-due-to-some-error"),
+                ),
               );
             } else {
               dispatch(addOrganizationUsersFailed(t("Something-went-wrong")));
@@ -586,14 +586,14 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_01".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 editOrganizationUsersSuccess(
                   response.data.responseResult,
-                  t("The-user-has-been-edited-successfully")
-                )
+                  t("The-user-has-been-edited-successfully"),
+                ),
               );
               dispatch(showEditUserModal(false));
               dispatch(showSucessfullyUpdatedModal(true));
@@ -608,7 +608,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_02".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_02".toLowerCase(),
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Failed-to-update-user")));
@@ -616,22 +616,22 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_03".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 editOrganizationUsersFail(
                   t(
-                    "The-user-has-been-edited-but-selected-package-limit-exceeded"
-                  )
-                )
+                    "The-user-has-been-edited-but-selected-package-limit-exceeded",
+                  ),
+                ),
               );
               dispatch(showEditUserModal(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_04".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_04".toLowerCase(),
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Failed-to-update-user")));
@@ -640,7 +640,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_05".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_05".toLowerCase(),
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("Something-went-wrong")));
@@ -649,7 +649,7 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_06".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_06".toLowerCase(),
                 )
             ) {
               dispatch(editOrganizationUsersFail(t("User-deletion-failed")));
@@ -658,11 +658,11 @@ const EditOrganizationsUserApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_EditOrganizationsUser_07".toLowerCase()
+                  "Admin_AdminServiceManager_EditOrganizationsUser_07".toLowerCase(),
                 )
             ) {
               dispatch(
-                editOrganizationUsersFail(t("User-deleted-succesfully"))
+                editOrganizationUsersFail(t("User-deleted-succesfully")),
               );
               dispatch(showEditUserModal(true));
             } else {
@@ -725,27 +725,27 @@ const AllOrganizationsUsersApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ManageUserScreen_01".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                allOrganizationUsersSuccess(response.data.responseResult, "")
+                allOrganizationUsersSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                allOrganizationUsersSuccess(response.data.responseResult, "")
+                allOrganizationUsersSuccess(response.data.responseResult, ""),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ManageUserScreen_03".toLowerCase()
+                  "Admin_AdminServiceManager_ManageUserScreen_03".toLowerCase(),
                 )
             ) {
               dispatch(allOrganizationUsersFail(t("Something-went-wrong")));
@@ -801,7 +801,7 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            OrganizationPackageDetailsAndUserStatsApi(navigate, t, data)
+            OrganizationPackageDetailsAndUserStatsApi(navigate, t, data),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -809,62 +809,62 @@ const OrganizationPackageDetailsAndUserStatsApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 organzationPakageDetailsAnduserStatsSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                organzationPakageDetailsAnduserStatsFailed(t("No-data-found"))
+                organzationPakageDetailsAnduserStatsFailed(t("No-data-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 organzationPakageDetailsAnduserStatsFailed(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 organzationPakageDetailsAnduserStatsFailed(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               organzationPakageDetailsAnduserStatsFailed(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             organzationPakageDetailsAnduserStatsFailed(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          organzationPakageDetailsAnduserStatsFailed(t("Something-went-wrong"))
+          organzationPakageDetailsAnduserStatsFailed(t("Something-went-wrong")),
         );
       });
   };
@@ -879,7 +879,7 @@ const organizationSelectedPakagebyOrganzationidInit = () => {
 
 const organizationSelectedPakagebyOrganzationidSuccess = (
   response,
-  message
+  message,
 ) => {
   return {
     type: actions.GET_ORGANZIATION_SELECTEDPAKAGE_BY_ORGANZATIONID_SUCCESS,
@@ -904,7 +904,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
     // form.append("RequestData", JSON.stringify(data));
     form.append(
       "RequestMethod",
-      GetOrganizationSelectedPackagesByOrganizationID.RequestMethod
+      GetOrganizationSelectedPackagesByOrganizationID.RequestMethod,
     );
     axiosInstance
       .post(getAdminURLs, form)
@@ -912,7 +912,7 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t)
+            GetOrganizationSelectedPackagesByOrganizationIDApi(navigate, t),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -920,66 +920,66 @@ const GetOrganizationSelectedPackagesByOrganizationIDApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 organizationSelectedPakagebyOrganzationidSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 organizationSelectedPakagebyOrganzationidFail(
-                  t("No-data-found")
-                )
+                  t("No-data-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationSelectedPackages_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 organizationSelectedPakagebyOrganzationidFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             } else {
               dispatch(
                 organizationSelectedPakagebyOrganzationidFail(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               organizationSelectedPakagebyOrganzationidFail(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             organizationSelectedPakagebyOrganzationidFail(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
           organizationSelectedPakagebyOrganzationidFail(
-            t("Something-went-wrong")
-          )
+            t("Something-went-wrong"),
+          ),
         );
       });
   };
@@ -1025,54 +1025,54 @@ const getOrganizationSelectedPakagesAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getOrganizationSelectedPakagesSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                getOrganizationSelectedPakagesFailed(t("No-data-found"))
+                getOrganizationSelectedPakagesFailed(t("No-data-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetOrganizationSelectedPackages_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+                getOrganizationSelectedPakagesFailed(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+              getOrganizationSelectedPakagesFailed(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+            getOrganizationSelectedPakagesFailed(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getOrganizationSelectedPakagesFailed(t("Something-went-wrong"))
+          getOrganizationSelectedPakagesFailed(t("Something-went-wrong")),
         );
       });
   };
@@ -1108,7 +1108,7 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      OrganizationPackageDetailsAndUserStats.RequestMethod
+      OrganizationPackageDetailsAndUserStats.RequestMethod,
     );
     axiosInstance
       .post(getAdminURLs, form)
@@ -1122,20 +1122,20 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getOrganizationPackageUserStatsSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_02".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationPackageUserStatsFail(t("No-data-found")));
@@ -1143,31 +1143,31 @@ const getOrganizationPackageUserStatsAPI = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase()
+                  "Admin_AdminServiceManager_OrganizationPackageDetailsAndUserStats_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+                getOrganizationPackageUserStatsFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+              getOrganizationPackageUserStatsFail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+            getOrganizationPackageUserStatsFail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getOrganizationPackageUserStatsFail(t("Something-went-wrong"))
+          getOrganizationPackageUserStatsFail(t("Something-went-wrong")),
         );
       });
   };
@@ -1213,20 +1213,20 @@ const getAllUserTypePackagesApi = (navigate, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getAllUserTypePackagesSuccess(
                   response.data.responseResult,
                   "",
-                  flag
-                )
+                  flag,
+                ),
               );
               if (flag) {
                 let OrganizationName = localStorage.getItem("organizatioName");
                 let OrganiationSubscriptionID = localStorage.getItem(
-                  "organizationSubscriptionID"
+                  "organizationSubscriptionID",
                 );
                 let Data = {
                   OrganizationName: OrganizationName,
@@ -1239,7 +1239,7 @@ const getAllUserTypePackagesApi = (navigate, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_02".toLowerCase(),
                 )
             ) {
               dispatch(getAllUserTypePackagesFail(t("No-data-found")));
@@ -1247,7 +1247,7 @@ const getAllUserTypePackagesApi = (navigate, t, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_GetAllUserTypePackages_03".toLowerCase(),
                 )
             ) {
               dispatch(getAllUserTypePackagesFail(t("Something-went-wrong")));
@@ -1293,7 +1293,7 @@ const ResendForgotPasswordCodeApi = (
   t,
   verificationData,
   setSeconds,
-  setMinutes
+  setMinutes,
 ) => {
   return (dispatch) => {
     dispatch(ResendForgotPasswordCodeInit());
@@ -1312,8 +1312,8 @@ const ResendForgotPasswordCodeApi = (
             dispatch(
               ResendForgotPasswordCodeSuccess(
                 response.data.responseResult,
-                newMessage
-              )
+                newMessage,
+              ),
             );
             setSeconds(60);
             setMinutes(4);
@@ -1340,7 +1340,7 @@ const ResendForgotPasswordCodeApi = (
             let nextAttemptDate = response.data.responseResult.nextAttemptDate;
             let nextAttemptTime = response.data.responseResult.nextAttemptTime;
             let dateTimeValue = newDateTimeFormatterForOTPResend(
-              `${nextAttemptDate}${nextAttemptTime}`
+              `${nextAttemptDate}${nextAttemptTime}`,
             );
             let newMessage = `${t("Please-try-again-after")} ${dateTimeValue};`;
             dispatch(ResendForgotPasswordCodefail(newMessage));
@@ -1409,14 +1409,14 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DeleteOrganizationsUser_01".toLowerCase()
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 deleteOrganizationUserSuccess(
                   response.data.responseResult,
-                  t("User-deleted-successfully")
-                )
+                  t("User-deleted-successfully"),
+                ),
               );
               let data = {
                 OrganizationID: Number(organizationID),
@@ -1428,7 +1428,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase()
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_02".toLowerCase(),
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("Error-while-deleting")));
@@ -1437,7 +1437,7 @@ const deleteOrganizationUserAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DeleteOrganizationsUser_03".toLowerCase()
+                  "Admin_AdminServiceManager_DeleteOrganizationsUser_03".toLowerCase(),
                 )
             ) {
               dispatch(deleteOrganizationUserFail(t("Something-went-wrong")));
@@ -1502,14 +1502,14 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 paymentInitiateSuccessApi(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               // setPaymentModal(true);
               dispatch(openPaymentProcessModal(true));
@@ -1517,7 +1517,7 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_02".toLowerCase(),
                 )
             ) {
               dispatch(paymentInitiateFailApi(t("Invalid-request-data")));
@@ -1525,27 +1525,27 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                paymentInitiateFailApi(t("Invoice-details-does-not-exist"))
+                paymentInitiateFailApi(t("Invoice-details-does-not-exist")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_04".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                paymentInitiateFailApi(t("Failed-to-save-billing-information"))
+                paymentInitiateFailApi(t("Failed-to-save-billing-information")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_05".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_05".toLowerCase(),
                 )
             ) {
               dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
@@ -1553,11 +1553,13 @@ const paymentInitiateMainApi = (navigate, t, newData) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentInitiate_06".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentInitiate_06".toLowerCase(),
                 )
             ) {
               dispatch(
-                paymentInitiateFailApi(t("Payment-gateway-api-response-failed"))
+                paymentInitiateFailApi(
+                  t("Payment-gateway-api-response-failed"),
+                ),
               );
             } else {
               dispatch(paymentInitiateFailApi(t("Something-went-wrong")));
@@ -1615,20 +1617,20 @@ const getCancelSubscriptionReasonApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelSubscriptionReasonSuccess(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_02".toLowerCase(),
                 )
             ) {
               dispatch(cancelSubscriptionReasonFail(t("No-data-found")));
@@ -1636,7 +1638,7 @@ const getCancelSubscriptionReasonApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetCancelSubscriptionReasons_03".toLowerCase(),
                 )
             ) {
               dispatch(cancelSubscriptionReasonFail(t("Something-went-wrong")));
@@ -1685,7 +1687,7 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      CancelOrganizationsSubscriptions.RequestMethod
+      CancelOrganizationsSubscriptions.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
@@ -1700,54 +1702,54 @@ const cancelOrganizationSubApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_01".toLowerCase()
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelOrganizationSubReasonSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
               dispatch(showReasonForLeavingModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_02".toLowerCase()
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelOrganizationSubReasonFail(
-                  t("organization-subscription-not-cancelled")
-                )
+                  t("organization-subscription-not-cancelled"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_03".toLowerCase()
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelOrganizationSubReasonFail(
-                  t("invalid-subscription-status-id-provided")
-                )
+                  t("invalid-subscription-status-id-provided"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_04".toLowerCase()
+                  "Admin_AdminServiceManager_CancelOrganizationsSubscription_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                cancelOrganizationSubReasonFail(t("Something-went-wrong"))
+                cancelOrganizationSubReasonFail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              cancelOrganizationSubReasonFail(t("Something-went-wrong"))
+              cancelOrganizationSubReasonFail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -1850,14 +1852,14 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_01".toLowerCase()
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 requestOrganizationExtendSuccess(
                   response.data.responseResult,
-                  t("Trial-requested-successfully")
-                )
+                  t("Trial-requested-successfully"),
+                ),
               );
               dispatch(showRequestExtentionModal(true));
               dispatch(userLogOutApiFunc(navigate, t));
@@ -1865,68 +1867,68 @@ const requestOrganizationExtendApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_02".toLowerCase()
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                requestOrganizationExtendFail(t("User-is-not-an-admin-user"))
+                requestOrganizationExtendFail(t("User-is-not-an-admin-user")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_03".toLowerCase()
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 requestOrganizationExtendFail(
-                  t("Error-inserting-trial-request")
-                )
+                  t("Error-inserting-trial-request"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_04".toLowerCase()
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 requestOrganizationExtendSuccess(
-                  t("Trial-requested-successfully-and-auto-extended")
-                )
+                  t("Trial-requested-successfully-and-auto-extended"),
+                ),
               );
               dispatch(userLogOutApiFunc(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_05".toLowerCase()
+                  "Admin_AdminServiceManager_RequestOrganizationTrialExtend_05".toLowerCase(),
                 )
             ) {
               dispatch(
-                requestOrganizationExtendFail(t("Something-went-wrong"))
+                requestOrganizationExtendFail(t("Something-went-wrong")),
               );
             }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_06".toLowerCase()
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_06".toLowerCase(),
               )
           ) {
             dispatch(
-              requestOrganizationExtendSuccess(t("Request-already-exists"))
+              requestOrganizationExtendFail(t("Request-already-exists")),
             );
             dispatch(userLogOutApiFunc(navigate, t));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_07".toLowerCase()
+                "Admin_AdminServiceManager_RequestOrganizationTrialExtend_07".toLowerCase(),
               )
           ) {
             dispatch(
-              requestOrganizationExtendFail(t("Trial-extension-already-given"))
+              requestOrganizationExtendFail(t("Trial-extension-already-given")),
             );
           } else {
             dispatch(requestOrganizationExtendFail(t("Something-went-wrong")));
@@ -1981,18 +1983,18 @@ const paymentStatusApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentStatus_01".toLowerCase(),
                 )
             ) {
               await handleLoginResponse(
                 response.data.responseResult.userAuthData,
-                dispatch
+                dispatch,
               );
               await dispatch(
                 paymentStatusSuccess(
                   response.data.responseResult,
-                  t("Successful-organization-subscription-is-activated")
-                )
+                  t("Successful-organization-subscription-is-activated"),
+                ),
               );
               navigate("/Admin/ManageUsers");
               clearLocalStorageAtloginresponce(dispatch, 1, navigate);
@@ -2000,11 +2002,11 @@ const paymentStatusApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentStatus_02".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentStatus_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay"))
+                paymentStatusFailed(t("UnSuccessful-response-from-edfa-pay")),
               );
               clearPaymentActionFromUrl();
               navigate("/");
@@ -2012,13 +2014,13 @@ const paymentStatusApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentStatus_03".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentStatus_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 paymentStatusFailed(
-                  t("UnSuccessful-response-code-from-edfa-pay")
-                )
+                  t("UnSuccessful-response-code-from-edfa-pay"),
+                ),
               );
               clearPaymentActionFromUrl();
               navigate("/");
@@ -2026,7 +2028,7 @@ const paymentStatusApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentStatus_04".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentStatus_04".toLowerCase(),
                 )
             ) {
               dispatch(paymentStatusFailed(t("Invalid-request-data")));
@@ -2036,7 +2038,7 @@ const paymentStatusApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_SignUpManager_PaymentStatus_05".toLowerCase()
+                  "ERM_AuthService_SignUpManager_PaymentStatus_05".toLowerCase(),
                 )
             ) {
               dispatch(paymentStatusFailed(t("Not-an-authentic-user")));
@@ -2047,7 +2049,7 @@ const paymentStatusApi = (navigate, t, data) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_SignUpManager_PaymentStatus_06".toLowerCase()
+                "ERM_AuthService_SignUpManager_PaymentStatus_06".toLowerCase(),
               )
           ) {
             dispatch(paymentStatusFailed(t("Payment-not-settled")));
@@ -2057,13 +2059,13 @@ const paymentStatusApi = (navigate, t, data) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_SignUpManager_PaymentStatus_07".toLowerCase()
+                "ERM_AuthService_SignUpManager_PaymentStatus_07".toLowerCase(),
               )
           ) {
             dispatch(
               paymentStatusFailed(
-                t("Error-activating-organization-subscription-and-creator")
-              )
+                t("Error-activating-organization-subscription-and-creator"),
+              ),
             );
             clearPaymentActionFromUrl();
             navigate("/");
@@ -2071,7 +2073,7 @@ const paymentStatusApi = (navigate, t, data) => {
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes(
-                "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase()
+                "ERM_AuthService_SignUpManager_PaymentStatus_08".toLowerCase(),
               )
           ) {
             console.log(dispatch, "dispatchdispatch");
@@ -2129,7 +2131,7 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            changeSelectPacakgeApi(navigate, t, data, changePacakgeFlag)
+            changeSelectPacakgeApi(navigate, t, data, changePacakgeFlag),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2137,13 +2139,13 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_01".toLowerCase()
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_01".toLowerCase(),
                 )
             ) {
               dispatch(changeSelectPacakge_Success(t("Successfully"), ""));
               localStorage.setItem(
                 "organizationSubscriptionID",
-                Number(response.data.responseResult.subscriptionID)
+                Number(response.data.responseResult.subscriptionID),
               );
               if (changePacakgeFlag) {
                 localStorage.setItem("SignupFlowPageRoute", 5);
@@ -2155,31 +2157,31 @@ const changeSelectPacakgeApi = (navigate, t, data, changePacakgeFlag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_02".toLowerCase()
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 changeSelectPacakge_Failed(
-                  t("Failed-to-delete-current-Inactive-ubscription")
-                )
+                  t("Failed-to-delete-current-Inactive-ubscription"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_03".toLowerCase()
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 changeSelectPacakge_Failed(
-                  t("Failed-to-save-organization-subscription")
-                )
+                  t("Failed-to-save-organization-subscription"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_04".toLowerCase()
+                  "Admin_AdminServiceManager_ChangeSelectedSubscriptionDetails_04".toLowerCase(),
                 )
             ) {
               dispatch(changeSelectPacakge_Failed(t("Something-went-wrong")));
@@ -2227,7 +2229,7 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      CancelTrailandUpdageOrganiztionRM.RequestMethod
+      CancelTrailandUpdageOrganiztionRM.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
@@ -2242,66 +2244,66 @@ const cancelisTrailandSubscriptionApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_01".toLowerCase()
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_01".toLowerCase(),
                 )
             ) {
               dispatch(
-                cancelisTrailandSubscription_Success(t("Successfully"), "")
+                cancelisTrailandSubscription_Success(t("Successfully"), ""),
               );
               localStorage.setItem(
                 "organizationSubscriptionID",
-                Number(response.data.responseResult.subscriptionID)
+                Number(response.data.responseResult.subscriptionID),
               );
               navigate("/Admin/PaymentFormUserManagement");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_02".toLowerCase()
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelisTrailandSubscription_Failed(
-                  t("Failed-to-cancel-trial-subscription")
-                )
+                  t("Failed-to-cancel-trial-subscription"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_03".toLowerCase()
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 cancelisTrailandSubscription_Failed(
-                  t("Failed-to-save-organization-subscription")
-                )
+                  t("Failed-to-save-organization-subscription"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_04".toLowerCase()
+                  "Admin_AdminServiceManager_CancelTrialAndUpgradeOrganizationSubscription_04".toLowerCase(),
                 )
             ) {
               dispatch(
-                cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+                cancelisTrailandSubscription_Failed(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+              cancelisTrailandSubscription_Failed(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+            cancelisTrailandSubscription_Failed(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          cancelisTrailandSubscription_Failed(t("Something-went-wrong"))
+          cancelisTrailandSubscription_Failed(t("Something-went-wrong")),
         );
       });
   };
@@ -2336,7 +2338,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      downgradeOrganizationSubscription.RequestMethod
+      downgradeOrganizationSubscription.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
@@ -2351,7 +2353,7 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase()
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_01".toLowerCase(),
                 )
             ) {
               dispatch(downgradeOrganizationSubscriptionSuccess(""));
@@ -2360,51 +2362,53 @@ const downgradeOrganizationSubscriptionApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_02".toLowerCase()
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 downgradeOrganizationSubscriptionFailed(
-                  t("Invalid-request-data")
-                )
+                  t("Invalid-request-data"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_03".toLowerCase()
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                downgradeOrganizationSubscriptionFailed(t("No-packages-found"))
+                downgradeOrganizationSubscriptionFailed(t("No-packages-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_04".toLowerCase()
+                  "Admin_AdminServiceManager_DowngradeOrganizationSubscription_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 downgradeOrganizationSubscriptionFailed(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
-              downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+              downgradeOrganizationSubscriptionFailed(
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
-            downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+            downgradeOrganizationSubscriptionFailed(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          downgradeOrganizationSubscriptionFailed(t("Something-went-wrong"))
+          downgradeOrganizationSubscriptionFailed(t("Something-went-wrong")),
         );
       });
   };
@@ -2451,7 +2455,7 @@ const getOrganizationWalletApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationWallet_01".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationWalletSuccess(t("Records-available")));
@@ -2459,7 +2463,7 @@ const getOrganizationWalletApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationWallet_02".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationWallet_02".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationWalletFailed(t("No-record-found")));
@@ -2467,7 +2471,7 @@ const getOrganizationWalletApi = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_GetOrganizationWallet_03".toLowerCase()
+                  "Admin_AdminServiceManager_GetOrganizationWallet_03".toLowerCase(),
                 )
             ) {
               dispatch(getOrganizationWalletFailed(t("Something-went-wrong")));
@@ -2512,7 +2516,7 @@ const BoardDeckSendEmailApi = (
   t,
   data,
   setBoarddeckOptions,
-  radioValue
+  radioValue,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -2531,8 +2535,8 @@ const BoardDeckSendEmailApi = (
               t,
               data,
               setBoarddeckOptions,
-              radioValue
-            )
+              radioValue,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2540,7 +2544,7 @@ const BoardDeckSendEmailApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_01".toLowerCase()
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_01".toLowerCase(),
                 )
             ) {
               dispatch(BoardDeckSendEmail_success(t("Successfully")));
@@ -2561,14 +2565,14 @@ const BoardDeckSendEmailApi = (
                 dispatch(showShareViaDataRoomPathConfirmation(true));
                 localStorage.setItem(
                   "BoardDeckFolderID",
-                  response.data.responseResult.boardDeckFolderID
+                  response.data.responseResult.boardDeckFolderID,
                 );
               }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_02".toLowerCase()
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_02".toLowerCase(),
                 )
             ) {
               dispatch(BoardDeckSendEmail_failed(t("Failed sending email")));
@@ -2576,7 +2580,7 @@ const BoardDeckSendEmailApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_03".toLowerCase()
+                  "DataRoom_DataRoomManager_SendBoardDeckPDFAsEmail_03".toLowerCase(),
                 )
             ) {
               dispatch(BoardDeckSendEmail_failed(t("Something-went-wrong")));
@@ -2602,9 +2606,10 @@ const BoardDeckDownloadPDF_init = () => {
   };
 };
 
-const BoardDeckDownloadPDF_failed = () => {
+const BoardDeckDownloadPDF_failed = (message) => {
   return {
     type: actions.DOWNLOAD_BOARDDECKPDF_FAILED,
+    message: message,
   };
 };
 
@@ -2628,9 +2633,25 @@ const BoardDeckPDFDownloadApi = (navigate, t, data, setBoarddeckOptions) => {
       })
 
       .then(async (response) => {
+        console.log(response, "response");
+        // Handle ArrayBuffer case (optional)
+
         if (response.status === 200) {
+          if (response.data instanceof ArrayBuffer) {
+            try {
+              response.data = JSON.parse(
+                new TextDecoder().decode(new Uint8Array(response.data)),
+              );
+            } catch {}
+          }
+          console.log(response, "response");
+
           console.log(response.status, "responsestatus");
           console.log("Response data:", response.data);
+          if (response.data.responseCode === 400) {
+            dispatch(BoardDeckDownloadPDF_failed(t("Something-went-wrong")));
+            return;
+          }
 
           const blob = new Blob([response.data], { type: "application/pdf" });
           const url = window.URL.createObjectURL(blob);
@@ -2712,21 +2733,21 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_01".toLowerCase(),
                 )
             ) {
               console.log("i am success");
               dispatch(
                 BoardDeckValidateURL_success(
                   response.data.responseResult,
-                  t("Record-available")
-                )
+                  t("Record-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringVideoURlBoardDeck_02".toLowerCase(),
                 )
             ) {
               dispatch(BoardDeckValidateURL_failed(t("No-record-found")));
@@ -2734,7 +2755,7 @@ const BoardDeckValidateURLAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_ValidateEncryptedStringMeetingRelatedEmailData_03".toLowerCase(),
                 )
             ) {
               dispatch(BoardDeckValidateURL_failed(t("Something-went-wrong")));
@@ -2781,7 +2802,7 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      GetMeetingBoardDeckCredentialsStatus.RequestMethod
+      GetMeetingBoardDeckCredentialsStatus.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(data));
     axiosInstance
@@ -2796,59 +2817,59 @@ const BoardDeckValidateIsMinutesPublishedAPI = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 BoardDeckValidateIsMinutesPublished_success(
                   response.data.responseResult,
-                  t("Record-available")
-                )
+                  t("Record-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingBoardDeckCredentialsStatus_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 BoardDeckValidateIsMinutesPublished_success(
                   response.data.responseResult,
-                  t("Record-available")
-                )
+                  t("Record-available"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetMeetingMinutesStatus_03".toLowerCase(),
                 )
             ) {
               dispatch(
                 BoardDeckValidateIsMinutesPublished_failed(
-                  t("Something-went-wrong")
-                )
+                  t("Something-went-wrong"),
+                ),
               );
             }
           } else {
             dispatch(
               BoardDeckValidateIsMinutesPublished_failed(
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             BoardDeckValidateIsMinutesPublished_failed(
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          BoardDeckValidateIsMinutesPublished_failed(t("Something-went-wrong"))
+          BoardDeckValidateIsMinutesPublished_failed(t("Something-went-wrong")),
         );
       });
   };

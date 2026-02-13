@@ -277,7 +277,7 @@ const participanMuteUnMuteMeeting = (
   isforAll,
   presenterViewHostFlag,
   presenterViewFlag,
-  check
+  check,
 ) => {
   console.log(response, "responseresponseresponsedatat");
   return {
@@ -347,11 +347,14 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                muteUnmuteSuccess(response.data.responseResult, t("Successful"))
+                muteUnmuteSuccess(
+                  response.data.responseResult,
+                  t("Successful"),
+                ),
               );
               // setNewParticipants((prevState) =>
               //   prevState.map((stateData) => {
@@ -378,7 +381,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_02".toLowerCase(),
                 )
             ) {
               await dispatch(muteUnmuteFail(t("Invalid-request-data-2")));
@@ -386,7 +389,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_03".toLowerCase(),
                 )
             ) {
               await dispatch(muteUnmuteFail(t("Something-went-wrong")));
@@ -394,7 +397,7 @@ const muteUnMuteParticipantMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_MuteUnMuteParticpant_04".toLowerCase(),
                 )
             ) {
               await dispatch(muteUnmuteFail(t("UnSuccessful")));
@@ -454,14 +457,14 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 hideUnHideParticipantGuestSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
 
               // setNewParticipants((prevState) =>
@@ -480,39 +483,39 @@ const hideUnHideParticipantGuestMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                hideUnHideParticipantGuestFail(t("Invalid-request-data-2"))
+                hideUnHideParticipantGuestFail(t("Invalid-request-data-2")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                hideUnHideParticipantGuestFail(t("Something-went-wrong"))
+                hideUnHideParticipantGuestFail(t("Something-went-wrong")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_HideUnHideParticpantVideo_04".toLowerCase(),
                 )
             ) {
               await dispatch(hideUnHideParticipantGuestFail(t("UnSuccessful")));
             }
           } else {
             await dispatch(
-              hideUnHideParticipantGuestFail(t("Something-went-wrong"))
+              hideUnHideParticipantGuestFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            hideUnHideParticipantGuestFail(t("Something-went-wrong"))
+            hideUnHideParticipantGuestFail(t("Something-went-wrong")),
           );
         }
       })
@@ -584,7 +587,7 @@ const getParticipantMeetingJoinMainApi = (
   data,
   setIsWaiting,
   setGetReady,
-  setJoinButton
+  setJoinButton,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -605,8 +608,8 @@ const getParticipantMeetingJoinMainApi = (
               data,
               setIsWaiting,
               setGetReady,
-              setJoinButton
-            )
+              setJoinButton,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -614,7 +617,7 @@ const getParticipantMeetingJoinMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_01".toLowerCase(),
                 )
             ) {
               const meetingHost = {
@@ -625,22 +628,22 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
 
               localStorage.setItem(
                 "isHost",
-                response.data.responseResult.isHost
+                response.data.responseResult.isHost,
               );
 
               if (!response.data.responseResult.isHost) {
                 localStorage.setItem(
                   "participantRoomId",
-                  response.data.responseResult.roomID
+                  response.data.responseResult.roomID,
                 );
                 localStorage.setItem(
                   "participantUID",
-                  response.data.responseResult.guid
+                  response.data.responseResult.guid,
                 );
                 sessionStorage.setItem("isWaiting", true);
               }
@@ -655,14 +658,14 @@ const getParticipantMeetingJoinMainApi = (
               await dispatch(
                 getParticipantMeetingJoinSuccess(
                   response.data.responseResult,
-                  t("Join-request-sent-to-host")
-                )
+                  t("Join-request-sent-to-host"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_02".toLowerCase(),
                 )
             ) {
               await dispatch(maxHostVideoCallPanel(false));
@@ -674,16 +677,16 @@ const getParticipantMeetingJoinMainApi = (
               sessionStorage.setItem("alreadyInMeetingVideo", true);
               let Data = { RoomID: response.data.responseResult.roomID };
               await dispatch(
-                participantListWaitingListMainApi(Data, navigate, t)
+                participantListWaitingListMainApi(Data, navigate, t),
               );
               dispatch(maximizeVideoPanelFlag(true));
               localStorage.setItem(
                 "newRoomId",
-                response.data.responseResult.roomID
+                response.data.responseResult.roomID,
               );
               localStorage.setItem(
                 "isHost",
-                response.data.responseResult.isHost
+                response.data.responseResult.isHost,
               );
               const meetingHost = {
                 isHost: response.data.responseResult.isHost,
@@ -693,21 +696,21 @@ const getParticipantMeetingJoinMainApi = (
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               localStorage.setItem("isGuid", response.data.responseResult.guid);
               localStorage.setItem(
                 "isEmail",
-                response.data.responseResult.email
+                response.data.responseResult.email,
               );
               localStorage.setItem(
                 "hostUrl",
-                response.data.responseResult.videoURL
+                response.data.responseResult.videoURL,
               );
               await dispatch(
                 getParticipantMeetingJoinSuccess(
-                  t("ScheduleCall-joined-and-is-host")
-                )
+                  t("ScheduleCall-joined-and-is-host"),
+                ),
               );
               try {
                 setJoinButton(false);
@@ -716,7 +719,7 @@ const getParticipantMeetingJoinMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_03".toLowerCase(),
                 )
             ) {
               await dispatch(participantVideoButtonState(false));
@@ -726,14 +729,14 @@ const getParticipantMeetingJoinMainApi = (
               } catch {}
               await dispatch(
                 getParticipantMeetingJoinFail(
-                  t("invalid-video-call-url-provided")
-                )
+                  t("invalid-video-call-url-provided"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_04".toLowerCase(),
                 )
             ) {
               await dispatch(participantVideoButtonState(false));
@@ -742,13 +745,13 @@ const getParticipantMeetingJoinMainApi = (
                 setJoinButton(false);
               } catch {}
               await dispatch(
-                getParticipantMeetingJoinFail(t("Could-not-join-call"))
+                getParticipantMeetingJoinFail(t("Could-not-join-call")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_05".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_05".toLowerCase(),
                 )
             ) {
               try {
@@ -757,13 +760,13 @@ const getParticipantMeetingJoinMainApi = (
                 dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
-                getParticipantMeetingJoinFail(t("Something-went-wrong"))
+                getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_06".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinMeetingVideoRequest_06".toLowerCase(),
                 )
             ) {
               try {
@@ -783,6 +786,11 @@ const getParticipantMeetingJoinMainApi = (
                 localStorage.setItem("isWebCamEnabled", false);
                 localStorage.setItem("isMicEnabled", false);
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
+
                 localStorage.setItem("isMeetingVideoHostCheck", false);
                 await dispatch(setAudioControlHost(false));
                 console.log("videoHideUnHideForHost");
@@ -792,7 +800,7 @@ const getParticipantMeetingJoinMainApi = (
                 dispatch(videoIconOrButtonState(false));
               } catch {}
               await dispatch(
-                getParticipantMeetingJoinFail(t("Something-went-wrong"))
+                getParticipantMeetingJoinFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -802,7 +810,7 @@ const getParticipantMeetingJoinMainApi = (
               dispatch(videoIconOrButtonState(false));
             } catch {}
             await dispatch(
-              getParticipantMeetingJoinFail(t("Something-went-wrong"))
+              getParticipantMeetingJoinFail(t("Something-went-wrong")),
             );
           }
         } else {
@@ -812,7 +820,7 @@ const getParticipantMeetingJoinMainApi = (
             dispatch(videoIconOrButtonState(false));
           } catch {}
           await dispatch(
-            getParticipantMeetingJoinFail(t("Something-went-wrong"))
+            getParticipantMeetingJoinFail(t("Something-went-wrong")),
           );
         }
       })
@@ -887,7 +895,7 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getVideoCallParticipantsAndWaitingList.RequestMethod
+      getVideoCallParticipantsAndWaitingList.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -902,44 +910,44 @@ const participantListWaitingListMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_01".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 participantListAndWaitingListSuccess(
                   response.data.responseResult,
-                  t("Record-found")
-                )
+                  t("Record-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_02".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                participantListAndWaitingListFail(t("UnSuccessful"))
+                participantListAndWaitingListFail(t("UnSuccessful")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_03".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipantsAndWaitingList_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                participantListAndWaitingListFail(t("Something-went-wrong"))
+                participantListAndWaitingListFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              participantListAndWaitingListFail(t("Something-went-wrong"))
+              participantListAndWaitingListFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            participantListAndWaitingListFail(t("Something-went-wrong"))
+            participantListAndWaitingListFail(t("Something-went-wrong")),
           );
         }
       })
@@ -1061,7 +1069,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      getVideoCallParticipantsForGuest.RequestMethod
+      getVideoCallParticipantsForGuest.RequestMethod,
     );
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
@@ -1076,7 +1084,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_01".toLowerCase(),
                 )
             ) {
               // function saveCurrentMeetingHost(data) {
@@ -1097,14 +1105,14 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               await dispatch(
                 getVideoCallParticipantSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_02".toLowerCase(),
                 )
             ) {
               await dispatch(getVideoCallParticipantFail(t("No-record-found")));
@@ -1112,7 +1120,7 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_03".toLowerCase(),
                 )
             ) {
               await dispatch(getVideoCallParticipantFail(t("UnSuccessful")));
@@ -1120,21 +1128,21 @@ const getVideoCallParticipantsMainApi = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase()
+                  "Video_VideoServiceManager_GetVideoCallParticipants_04".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getVideoCallParticipantFail(t("Something-went-wrong"))
+                getVideoCallParticipantFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              getVideoCallParticipantFail(t("Something-went-wrong"))
+              getVideoCallParticipantFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            getVideoCallParticipantFail(t("Something-went-wrong"))
+            getVideoCallParticipantFail(t("Something-went-wrong")),
           );
         }
       })
@@ -1278,12 +1286,12 @@ const presenterViewGlobalState = (
   presenterMeetingId,
   presenterViewFlag,
   presenterViewHostFlag,
-  presenterViewJoinFlag
+  presenterViewJoinFlag,
 ) => {
   console.log(
     presenterMeetingId,
     presenterViewFlag,
-    "responseresponseresponsedatat"
+    "responseresponseresponsedatat",
   );
 
   return {
@@ -1324,7 +1332,7 @@ const openPresenterViewMainApi = (
   navigate,
   data,
   currentMeeting,
-  actiontype
+  actiontype,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let videoCallURL = String(localStorage.getItem("videoCallURL"));
@@ -1350,8 +1358,8 @@ const openPresenterViewMainApi = (
               navigate,
               data,
               currentMeeting,
-              actiontype
-            )
+              actiontype,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1359,26 +1367,26 @@ const openPresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_OpenPresenterView_01".toLowerCase(),
                 )
             ) {
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isWaiting = JSON.parse(sessionStorage.getItem("isWaiting"));
               if (isZoomEnabled) {
                 localStorage.setItem(
                   "presenterViewvideoURL",
-                  response.data.responseResult.videoURL
+                  response.data.responseResult.videoURL,
                 );
               }
 
               if (actiontype === 4) {
                 let isMeetingVideo = JSON.parse(
-                  localStorage.getItem("isMeetingVideo")
+                  localStorage.getItem("isMeetingVideo"),
                 );
                 if (isMeetingVideo) {
                   if (isWaiting) {
@@ -1390,22 +1398,22 @@ const openPresenterViewMainApi = (
                     dispatch(makeHostNow(meetingHost));
                     localStorage.setItem(
                       "meetinHostInfo",
-                      JSON.stringify(meetingHost)
+                      JSON.stringify(meetingHost),
                     );
                     if (isMeetingVideoHostCheck) {
                       localStorage.setItem(
                         "isGuid",
-                        response.data.responseResult.guid
+                        response.data.responseResult.guid,
                       );
                     } else {
                       localStorage.setItem(
                         "participantUID",
-                        response.data.responseResult.guid
+                        response.data.responseResult.guid,
                       );
                     }
                     localStorage.setItem(
                       "acceptedRoomID",
-                      response.data.responseResult.roomID
+                      response.data.responseResult.roomID,
                     );
                     sessionStorage.removeItem("alreadyInMeetingVideo");
                   } else {
@@ -1421,27 +1429,27 @@ const openPresenterViewMainApi = (
                   dispatch(makeHostNow(meetingHost));
                   localStorage.setItem(
                     "meetinHostInfo",
-                    JSON.stringify(meetingHost)
+                    JSON.stringify(meetingHost),
                   );
                   if (isMeetingVideoHostCheck) {
                     localStorage.setItem(
                       "isGuid",
-                      response.data.responseResult.guid
+                      response.data.responseResult.guid,
                     );
                   } else {
                     localStorage.setItem(
                       "participantUID",
-                      response.data.responseResult.guid
+                      response.data.responseResult.guid,
                     );
                   }
                   localStorage.setItem(
                     "acceptedRoomID",
-                    response.data.responseResult.roomID
+                    response.data.responseResult.roomID,
                   );
                   sessionStorage.removeItem("alreadyInMeetingVideo");
                 }
                 await dispatch(
-                  presenterViewGlobalState(currentMeeting, true, true, true)
+                  presenterViewGlobalState(currentMeeting, true, true, true),
                 );
                 await dispatch(maximizeVideoPanelFlag(true));
                 await dispatch(normalizeVideoPanelFlag(false));
@@ -1450,14 +1458,14 @@ const openPresenterViewMainApi = (
               await dispatch(
                 openPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_OpenPresenterView_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_OpenPresenterView_02".toLowerCase(),
                 )
             ) {
               await dispatch(openPresenterFail(t("UnSuccessful")));
@@ -1465,7 +1473,7 @@ const openPresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_OpenPresenterView_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_OpenPresenterView_03".toLowerCase(),
                 )
             ) {
               await dispatch(openPresenterFail(t("Something-went-wrong")));
@@ -1525,7 +1533,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartPresenterView_01".toLowerCase(),
                 )
             ) {
               try {
@@ -1534,7 +1542,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
                   localStorage.removeItem("CallType");
                   let currentMeeting = localStorage.getItem("currentMeetingID");
                   await dispatch(
-                    presenterViewGlobalState(currentMeeting, true, true, true)
+                    presenterViewGlobalState(currentMeeting, true, true, true),
                   );
                   dispatch(maximizeVideoPanelFlag(true));
                   dispatch(normalizeVideoPanelFlag(false));
@@ -1546,22 +1554,22 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               await dispatch(
                 startPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartPresenterView_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartPresenterView_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                startPresenterFail(t("Presentation-is-already-underway"))
+                startPresenterFail(t("Presentation-is-already-underway")),
               );
               let currentMeetingVideoURL = localStorage.getItem("videoCallURL");
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let data = {
                 VideoCallURL: String(currentMeetingVideoURL),
@@ -1572,7 +1580,7 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartPresenterView_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartPresenterView_03".toLowerCase(),
                 )
             ) {
               await dispatch(presenterViewGlobalState(0, false, false, false));
@@ -1580,13 +1588,13 @@ const startPresenterViewMainApi = (navigate, t, data, flag) => {
               dispatch(normalizeVideoPanelFlag(false));
               dispatch(minimizeVideoPanelFlag(false));
               await dispatch(
-                startPresenterFail(t("Error-while-starting-presentation"))
+                startPresenterFail(t("Error-while-starting-presentation")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StartPresenterView_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_StartPresenterView_04".toLowerCase(),
                 )
             ) {
               await dispatch(startPresenterFail(t("Something-went-wrong")));
@@ -1633,7 +1641,8 @@ const stopPresenterViewMainApi = (
   flag,
   setLeaveMeetingVideoForOneToOneOrGroup,
   setJoiningOneToOneAfterLeavingPresenterView,
-  setLeavePresenterViewToJoinOneToOne
+  setLeavePresenterViewToJoinOneToOne,
+  stopApiCalledRef,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log(data, "presenterViewJoinFlag");
@@ -1662,8 +1671,8 @@ const stopPresenterViewMainApi = (
               flag,
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
-              setLeavePresenterViewToJoinOneToOne
-            )
+              setLeavePresenterViewToJoinOneToOne,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -1671,13 +1680,14 @@ const stopPresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_StopPresenterView_01".toLowerCase(),
                 )
             ) {
+              stopApiCalledRef.current = false; // 🔓 UNLOCK
               let alreadyInMeetingVideo = JSON.parse(
                 sessionStorage.getItem("alreadyInMeetingVideo")
                   ? sessionStorage.getItem("alreadyInMeetingVideo")
-                  : false
+                  : false,
               );
 
               if (flag === 1) {
@@ -1709,7 +1719,7 @@ const stopPresenterViewMainApi = (
                 console.log("videoHideUnHideForHost");
                 dispatch(setVideoControlHost(false));
                 await dispatch(
-                  presenterViewGlobalState(0, false, false, false)
+                  presenterViewGlobalState(0, false, false, false),
                 );
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(normalizeVideoPanelFlag(false));
@@ -1722,13 +1732,13 @@ const stopPresenterViewMainApi = (
                 dispatch(setAudioControlHost(false));
                 dispatch(leaveCallModal(false));
                 dispatch(
-                  presenterFlagForAlreadyInParticipantMeetingVideo(false)
+                  presenterFlagForAlreadyInParticipantMeetingVideo(false),
                 );
                 await dispatch(
-                  presenterViewGlobalState(0, false, false, false)
+                  presenterViewGlobalState(0, false, false, false),
                 );
                 let isMeetingVideoHostCheck = localStorage.getItem(
-                  "isMeetingVideoHostCheck"
+                  "isMeetingVideoHostCheck",
                 )
                   ? JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
                   : false;
@@ -1742,19 +1752,19 @@ const stopPresenterViewMainApi = (
                     .leavePresenterOrJoinOtherCalls;
                 console.log(
                   leavePresenterOrJoinOtherCallData,
-                  "leavePresenterOrJoinOtherCallData"
+                  "leavePresenterOrJoinOtherCallData",
                 );
 
                 if (!leavePresenterOrJoinOtherCallData) {
                   console.log(
                     leavePresenterOrJoinOtherCallData,
-                    "leavePresenterOrJoinOtherCallData"
+                    "leavePresenterOrJoinOtherCallData",
                   );
                   let dataAudio = {
                     RoomID: String(data.RoomID),
                     IsMuted: false, // Ensuring it's a boolean
                     UID: String(
-                      isMeetingVideoHostCheck ? isGuid : participantUID
+                      isMeetingVideoHostCheck ? isGuid : participantUID,
                     ),
                     MeetingID: data.MeetingID,
                   };
@@ -1764,7 +1774,7 @@ const stopPresenterViewMainApi = (
                     RoomID: String(data.RoomID),
                     HideVideo: true, // Ensuring it's a boolean
                     UID: String(
-                      isMeetingVideoHostCheck ? isGuid : participantUID
+                      isMeetingVideoHostCheck ? isGuid : participantUID,
                     ),
                     MeetingID: Number(data.MeetingID),
                   };
@@ -1780,32 +1790,34 @@ const stopPresenterViewMainApi = (
               await dispatch(
                 stopPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_StopPresenterView_02".toLowerCase(),
                 )
             ) {
+              stopApiCalledRef.current = false; // 🔓 UNLOCK
               await dispatch(stopPresenterFail(t("UnSuccessful")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_StopPresenterView_03".toLowerCase(),
                 )
             ) {
+              stopApiCalledRef.current = false; // 🔓 UNLOCK
               await dispatch(
-                stopPresenterFail(t("Error-while-stop-presentation"))
+                stopPresenterFail(t("Error-while-stop-presentation")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_StopPresenterView_04".toLowerCase(),
                 )
             ) {
               await dispatch(stopPresenterFail(t("Something-went-wrong")));
@@ -1829,7 +1841,7 @@ const stopPresenterViewMainApiTest = (
   flag,
   setLeaveMeetingVideoForOneToOneOrGroup,
   setJoiningOneToOneAfterLeavingPresenterView,
-  setLeavePresenterViewToJoinOneToOne
+  setLeavePresenterViewToJoinOneToOne,
 ) => {
   return async (dispatch) => {
     return new Promise(async (resolve, reject) => {
@@ -1854,6 +1866,7 @@ const stopPresenterViewMainApiTest = (
 
         if (res.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
+          console.log("stopPresenterViewMainApi");
           await dispatch(
             stopPresenterViewMainApi(
               navigate,
@@ -1862,8 +1875,8 @@ const stopPresenterViewMainApiTest = (
               flag,
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
-              setLeavePresenterViewToJoinOneToOne
-            )
+              setLeavePresenterViewToJoinOneToOne,
+            ),
           );
           return resolve(); // resolve after retry
         }
@@ -1875,7 +1888,7 @@ const stopPresenterViewMainApiTest = (
             msg.includes("meeting_meetingservicemanager_stoppresenterview_01")
           ) {
             let alreadyInMeetingVideo = JSON.parse(
-              sessionStorage.getItem("alreadyInMeetingVideo") || false
+              sessionStorage.getItem("alreadyInMeetingVideo") || false,
             );
 
             if (flag === 1) {
@@ -1913,7 +1926,7 @@ const stopPresenterViewMainApiTest = (
               await dispatch(presenterViewGlobalState(0, false, false, false));
 
               const isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck") || false
+                localStorage.getItem("isMeetingVideoHostCheck") || false,
               );
               const isGuid = localStorage.getItem("isGuid");
               const participantUID = localStorage.getItem("participantUID");
@@ -1944,14 +1957,14 @@ const stopPresenterViewMainApiTest = (
             }
 
             await dispatch(
-              stopPresenterSuccess(res.responseResult, t("Successful"))
+              stopPresenterSuccess(res.responseResult, t("Successful")),
             );
             return resolve(); // 🎯 Everything done, resolve the promise
           } else if (msg.includes("stoppresenterview_02")) {
             await dispatch(stopPresenterFail(t("UnSuccessful")));
           } else if (msg.includes("stoppresenterview_03")) {
             await dispatch(
-              stopPresenterFail(t("Error-while-stop-presentation"))
+              stopPresenterFail(t("Error-while-stop-presentation")),
             );
           } else if (msg.includes("stoppresenterview_04")) {
             await dispatch(stopPresenterFail(t("Something-went-wrong")));
@@ -2012,17 +2025,17 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinPresenterView_01".toLowerCase(),
                 )
             ) {
               let currentMeetingID = Number(
-                localStorage.getItem("currentMeetingID")
+                localStorage.getItem("currentMeetingID"),
               );
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               console.log("Check 12");
               if (isMeetingVideo) {
@@ -2040,38 +2053,38 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
                 dispatch(makeHostNow(meetingHost));
                 localStorage.setItem(
                   "meetinHostInfo",
-                  JSON.stringify(meetingHost)
+                  JSON.stringify(meetingHost),
                 );
                 if (isMeetingVideoHostCheck) {
                   console.log("Check 12");
                   localStorage.setItem(
                     "isGuid",
-                    response.data.responseResult.guid
+                    response.data.responseResult.guid,
                   );
                 } else {
                   console.log("Check 12");
                   localStorage.setItem(
                     "participantUID",
-                    response.data.responseResult.guid
+                    response.data.responseResult.guid,
                   );
                 }
                 localStorage.setItem(
                   "acceptedRoomID",
-                  response.data.responseResult.roomID
+                  response.data.responseResult.roomID,
                 );
                 localStorage.setItem(
                   "acceptedRoomID",
-                  response.data.responseResult.roomID
+                  response.data.responseResult.roomID,
                 );
                 localStorage.setItem(
                   "presenterViewvideoURL",
-                  response.data.responseResult.videoURL
+                  response.data.responseResult.videoURL,
                 );
               }
               localStorage.removeItem("activeCall");
 
               await dispatch(
-                presenterViewGlobalState(currentMeetingID, true, false, true)
+                presenterViewGlobalState(currentMeetingID, true, false, true),
               );
               dispatch(maximizeVideoPanelFlag(true));
               dispatch(normalizeVideoPanelFlag(false));
@@ -2079,44 +2092,44 @@ const joinPresenterViewMainApi = (navigate, t, data) => {
               await dispatch(
                 joinPresenterSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinPresenterView_02".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                joinPresenterFail(t("could-not-join-schedule-call"))
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_JoinPresenterView_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinPresenterView_02".toLowerCase(),
                 )
             ) {
               await dispatch(
-                joinPresenterFail(t("invalid-video-call-url-provided"))
+                joinPresenterFail(t("could-not-join-schedule-call")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinPresenterView_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinPresenterView_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                joinPresenterFail(t("Could-not-join-presentation"))
+                joinPresenterFail(t("invalid-video-call-url-provided")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinPresenterView_05".toLowerCase()
+                  "Meeting_MeetingServiceManager_JoinPresenterView_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                joinPresenterFail(t("Could-not-join-presentation")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_JoinPresenterView_05".toLowerCase(),
                 )
             ) {
               await dispatch(joinPresenterFail(t("Something-went-wrong")));
@@ -2163,7 +2176,7 @@ const leavePresenterViewMainApi = (
   flag,
   setLeaveMeetingVideoForOneToOneOrGroup,
   setJoiningOneToOneAfterLeavingPresenterView,
-  setLeavePresenterViewToJoinOneToOne
+  setLeavePresenterViewToJoinOneToOne,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -2185,8 +2198,8 @@ const leavePresenterViewMainApi = (
               flag,
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
-              setLeavePresenterViewToJoinOneToOne
-            )
+              setLeavePresenterViewToJoinOneToOne,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2194,11 +2207,11 @@ const leavePresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeavePresenterView_01".toLowerCase(),
                 )
             ) {
               let alreadyInMeetingVideo = JSON.parse(
-                sessionStorage.getItem("alreadyInMeetingVideo")
+                sessionStorage.getItem("alreadyInMeetingVideo"),
               );
               dispatch(setRaisedUnRaisedParticiant(false));
               console.log(flag, "Check is participant Uid Removed?");
@@ -2210,7 +2223,12 @@ const leavePresenterViewMainApi = (
               if (flag === 1) {
                 console.log("Check is participant Uid Removed?");
                 dispatch(
-                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                  presenterViewGlobalState(
+                    currentMeetingID,
+                    true,
+                    false,
+                    false,
+                  ),
                 );
                 if (!alreadyInMeetingVideo) {
                   console.log("Check is participant Uid Removed?");
@@ -2231,7 +2249,12 @@ const leavePresenterViewMainApi = (
                 dispatch(participantVideoButtonState(false));
                 console.log("Check is participant Uid Removed?");
                 dispatch(
-                  presenterViewGlobalState(currentMeetingID, true, false, false)
+                  presenterViewGlobalState(
+                    currentMeetingID,
+                    true,
+                    false,
+                    false,
+                  ),
                 );
                 if (alreadyInMeetingVideo) {
                   // dispatch(participantVideoButtonState(true));
@@ -2295,13 +2318,13 @@ const leavePresenterViewMainApi = (
                   let participantUID = localStorage.getItem("participantUID");
                   let isGuid = localStorage.getItem("isGuid");
                   let currentMeetingID = Number(
-                    localStorage.getItem("currentMeetingID")
+                    localStorage.getItem("currentMeetingID"),
                   );
                   const meetHostFlag = JSON.parse(
-                    localStorage.getItem("meetinHostInfo")
+                    localStorage.getItem("meetinHostInfo"),
                   );
                   let isMeetingVideoHostCheck = JSON.parse(
-                    localStorage.getItem("isMeetingVideoHostCheck")
+                    localStorage.getItem("isMeetingVideoHostCheck"),
                   );
                   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
                   let Data = {
@@ -2317,8 +2340,8 @@ const leavePresenterViewMainApi = (
                 await dispatch(
                   leavePresenterSuccess(
                     response.data.responseResult,
-                    t("Successful")
-                  )
+                    t("Successful"),
+                  ),
                 );
                 await setLeavePresenterViewToJoinOneToOne(false);
                 dispatch(maximizeVideoPanelFlag(false));
@@ -2365,7 +2388,7 @@ const leavePresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_LeavePresenterView_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeavePresenterView_02".toLowerCase(),
                 )
             ) {
               await dispatch(leavePresenterFail(t("UnSuccessful")));
@@ -2373,7 +2396,7 @@ const leavePresenterViewMainApi = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_LeavePresenterView_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_LeavePresenterView_03".toLowerCase(),
                 )
             ) {
               await dispatch(leavePresenterFail(t("Something-went-wrong")));
@@ -2397,7 +2420,7 @@ const leavePresenterViewMainApiTest = (
   flag,
   setLeaveMeetingVideoForOneToOneOrGroup,
   setJoiningOneToOneAfterLeavingPresenterView,
-  setLeavePresenterViewToJoinOneToOne
+  setLeavePresenterViewToJoinOneToOne,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
@@ -2423,8 +2446,8 @@ const leavePresenterViewMainApiTest = (
               flag,
               setLeaveMeetingVideoForOneToOneOrGroup,
               setJoiningOneToOneAfterLeavingPresenterView,
-              setLeavePresenterViewToJoinOneToOne
-            )
+              setLeavePresenterViewToJoinOneToOne,
+            ),
           );
           return resolve(); // Resolve after retry
         }
@@ -2433,7 +2456,7 @@ const leavePresenterViewMainApiTest = (
           const msg = resData.responseResult.responseMessage.toLowerCase();
 
           let alreadyInMeetingVideo = JSON.parse(
-            sessionStorage.getItem("alreadyInMeetingVideo")
+            sessionStorage.getItem("alreadyInMeetingVideo"),
           );
           await dispatch(setRaisedUnRaisedParticiant(false));
           await dispatch(presenterStartedMainFlag(false));
@@ -2451,7 +2474,7 @@ const leavePresenterViewMainApiTest = (
           if (msg.includes("leavepresenterview_01")) {
             if (flag === 1) {
               dispatch(
-                presenterViewGlobalState(currentMeetingID, true, false, false)
+                presenterViewGlobalState(currentMeetingID, true, false, false),
               );
               if (!alreadyInMeetingVideo) cleanUpLocalStorage();
               dispatch(maximizeVideoPanelFlag(false));
@@ -2463,7 +2486,7 @@ const leavePresenterViewMainApiTest = (
             } else if (flag === 2) {
               dispatch(participantVideoButtonState(false));
               dispatch(
-                presenterViewGlobalState(currentMeetingID, true, false, false)
+                presenterViewGlobalState(currentMeetingID, true, false, false),
               );
               if (alreadyInMeetingVideo) {
                 dispatch(participantVideoButtonState(true));
@@ -2485,7 +2508,7 @@ const leavePresenterViewMainApiTest = (
             } else if (flag === 3) {
               if (!alreadyInMeetingVideo) cleanUpLocalStorage();
               await dispatch(
-                leavePresenterSuccess(resData.responseResult, t("Successful"))
+                leavePresenterSuccess(resData.responseResult, t("Successful")),
               );
               await setLeavePresenterViewToJoinOneToOne(false);
               dispatch(maximizeVideoPanelFlag(false));
@@ -2662,20 +2685,20 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetGroupCallParticipants_01".toLowerCase()
+                  "Video_VideoServiceManager_GetGroupCallParticipants_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getGroupCallParticipantsSuccess(
                   response.data.responseResult,
-                  t("Record-found")
-                )
+                  t("Record-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetGroupCallParticipants_02".toLowerCase()
+                  "Video_VideoServiceManager_GetGroupCallParticipants_02".toLowerCase(),
                 )
             ) {
               await dispatch(getGroupCallParticipantsFail(t("UnSuccessful")));
@@ -2683,21 +2706,21 @@ const getGroupCallParticipantsMainApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Video_VideoServiceManager_GetGroupCallParticipants_03".toLowerCase()
+                  "Video_VideoServiceManager_GetGroupCallParticipants_03".toLowerCase(),
                 )
             ) {
               await dispatch(
-                getGroupCallParticipantsFail(t("Something-went-wrong"))
+                getGroupCallParticipantsFail(t("Something-went-wrong")),
               );
             }
           } else {
             await dispatch(
-              getGroupCallParticipantsFail(t("Something-went-wrong"))
+              getGroupCallParticipantsFail(t("Something-went-wrong")),
             );
           }
         } else {
           await dispatch(
-            getGroupCallParticipantsFail(t("Something-went-wrong"))
+            getGroupCallParticipantsFail(t("Something-went-wrong")),
           );
         }
       })
@@ -2774,7 +2797,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_IsSharedScreen_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_IsSharedScreen_01".toLowerCase(),
                 )
             ) {
               if (data.ShareScreen === true) {
@@ -2787,14 +2810,14 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               await dispatch(
                 isSharedScreenSuccess(
                   response.data.responseResult,
-                  t("Successful")
-                )
+                  t("Successful"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_IsSharedScreen_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_IsSharedScreen_02".toLowerCase(),
                 )
             ) {
               await dispatch(isSharedScreenFail(t("Invalid-request-data-2")));
@@ -2802,7 +2825,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_IsSharedScreen_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_IsSharedScreen_03".toLowerCase(),
                 )
             ) {
               await dispatch(isSharedScreenFail(t("Something-went-wrong")));
@@ -2810,7 +2833,7 @@ const isSharedScreenTriggeredApi = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_IsSharedScreen_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_IsSharedScreen_04".toLowerCase(),
                 )
             ) {
               await dispatch(isSharedScreenFail(t("UnSuccessful")));

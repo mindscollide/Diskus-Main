@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Modal, Button } from "../../../../../../components/elements";
-import { Radio } from "antd";
+import { Tooltip } from "antd";
 import styles from "./SelectAgendaModal.module.css";
 import {
   agendaViewFlag,
@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
 import CrossIcon from "./../AV-Images/Cross_Icon.png";
+import CustomRadioGroup from "../../../../../../components/elements/radio/CustomRadioGroup";
 
 const SelectAgendaModal = ({
   setAgendaSelectOptionView,
@@ -28,11 +29,11 @@ const SelectAgendaModal = ({
   };
 
   const printFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.PrintAgendaFlag
+    (state) => state.MeetingAgendaReducer.PrintAgendaFlag,
   );
 
   const exportFlag = useSelector(
-    (state) => state.MeetingAgendaReducer.ExportAgendaFlag
+    (state) => state.MeetingAgendaReducer.ExportAgendaFlag,
   );
 
   const selectAgendaFunction = () => {
@@ -73,18 +74,15 @@ const SelectAgendaModal = ({
           <>
             <Row>
               <Col lg={12} md={12} sm={12}>
-                <Radio.Group
+                <CustomRadioGroup
                   onChange={(e) => handleRadioChange(e.target.value)}
                   value={radioValue}
                   className="AgendaSelectGroup"
-                >
-                  <Radio value={1}>
-                    <span>{t("Main-agenda-items")}</span>
-                  </Radio>
-                  <Radio value={2}>
-                    <span>{t("Agenda-with-sub-agenda")}</span>
-                  </Radio>
-                </Radio.Group>
+                  options={[
+                    { value: 1, label: t("Main-agenda-items") },
+                    { value: 2, label: t("Agenda-with-sub-agenda") },
+                  ]}
+                />
               </Col>
             </Row>
           </>

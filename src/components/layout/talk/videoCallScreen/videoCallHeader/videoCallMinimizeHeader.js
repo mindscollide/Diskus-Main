@@ -374,6 +374,8 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     setParticipantStatus([]);
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("isCaller", false);
     localStorage.setItem("acceptedRoomID", 0);
     localStorage.setItem("activeRoomID", 0);
@@ -700,7 +702,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
     localStorage.setItem("isCaller", false);
     localStorage.setItem("activeCall", false);
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
-    localStorage.setItem("activeCall", false);
     localStorage.setItem("isMeetingVideo", false);
     localStorage.setItem("MicOff", true);
     localStorage.setItem("VidOff", true);
@@ -1369,8 +1370,6 @@ const VideoCallMinimizeHeader = ({ screenShareButton, isScreenActive }) => {
                   </Tooltip>
                 </div>
               )}
-
-
 
               {presenterViewFlag &&
                 presenterViewJoinFlag &&

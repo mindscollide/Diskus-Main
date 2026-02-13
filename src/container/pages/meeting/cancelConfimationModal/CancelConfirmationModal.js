@@ -73,7 +73,13 @@ const CancelConfirmationModal = () => {
         PageNumber: Number(meetingPageCurrent),
         Length: Number(meetingpageRow),
         PublishedMeetings:
-          currentView && Number(currentView) === 1 ? true : false,
+          Number(localStorage.getItem("MeetingCurrentView")) === 1
+            ? true
+            : false,
+        ProposedMeetings:
+          Number(localStorage.getItem("MeetingCurrentView")) === 2
+            ? true
+            : false,
       };
       console.log("chek search meeting");
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -114,7 +120,7 @@ const CancelConfirmationModal = () => {
             <Col sm={12} md={12} lg={12}>
               <span className={styles["modalBodyText"]}>
                 {t(
-                  "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
+                  "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
                 )}
               </span>
             </Col>

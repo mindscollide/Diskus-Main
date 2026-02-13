@@ -201,7 +201,9 @@ const ParentAgenda = ({
 
     if (Number(editorRole.status) === 10) {
       window.open(
-        `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(pdfDataJson)}`,
+        `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
+          pdfDataJson
+        )}`,
         "_blank",
         "noopener noreferrer"
       );
@@ -212,7 +214,6 @@ const ParentAgenda = ({
         "noopener noreferrer"
       );
     }
-
   };
 
   return (
@@ -220,8 +221,8 @@ const ParentAgenda = ({
       <div
         className={
           data.canView === false &&
-            (editorRole.role === "Agenda Contributor" ||
-              editorRole.role === "Participant")
+          (editorRole.role === "Agenda Contributor" ||
+            editorRole.role === "Participant")
             ? "d-none"
             : ""
         }>
@@ -305,73 +306,82 @@ const ParentAgenda = ({
                               "hh:mm a"
                             )}
                           </p> */}
-                          {printFlag === true || exportFlag === true ? null : (
-                            <>
-                              {Number(data.agendaVotingID) !== 0 &&
-                                Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) ===
-                                Number(currentUserID) &&
-                                !data.voteOwner?.currentVotingClosed ? (
+                          {printFlag === true || exportFlag === true
+                            ? null
+                            : Number(editorRole.status) === 10 && (
                                 <>
-                                  <Button
-                                    text={t("Start-voting")}
-                                    className={styles["startVotingButton"]}
-                                    onClick={() => startVoting(data)}
-                                  />
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : Number(data.agendaVotingID) !== 0 &&
-                                Number(editorRole.status) === 10 &&
-                                Number(data.voteOwner.userid) ===
-                                Number(currentUserID) &&
-                                data.voteOwner?.currentVotingClosed ? (
-                                <>
-                                  <Button
-                                    text={t("End-voting")}
-                                    className={styles["startVotingButton"]}
-                                    onClick={() => endVoting(data)}
-                                  />
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : editorRole.role === "Organizer" &&
-                                (data.voteOwner?.currentVotingClosed ||
-                                  Number(data.agendaVotingID) !== 0) ? (
-                                <>
-                                  <Button
-                                    text={t("View-votes")}
-                                    className={styles["ViewVoteButton"]}
-                                    onClick={() => EnableViewVoteModal(data)}
-                                  />
-                                </>
-                              ) : null}
+                                  {Number(data.agendaVotingID) !== 0 &&
+                                  Number(editorRole.status) === 10 &&
+                                  Number(data.voteOwner.userid) ===
+                                    Number(currentUserID) &&
+                                  !data.voteOwner?.currentVotingClosed ? (
+                                    <>
+                                      <Button
+                                        text={t("Start-voting")}
+                                        className={styles["startVotingButton"]}
+                                        onClick={() => startVoting(data)}
+                                      />
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : Number(data.agendaVotingID) !== 0 &&
+                                    Number(editorRole.status) === 10 &&
+                                    Number(data.voteOwner.userid) ===
+                                      Number(currentUserID) &&
+                                    data.voteOwner?.currentVotingClosed ? (
+                                    <>
+                                      <Button
+                                        text={t("End-voting")}
+                                        className={styles["startVotingButton"]}
+                                        onClick={() => endVoting(data)}
+                                      />
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : editorRole.role === "Organizer" &&
+                                    Number(editorRole.status) === 10 &&
+                                    (data.voteOwner?.currentVotingClosed ||
+                                      Number(data.agendaVotingID) !== 0) ? (
+                                    <>
+                                      <Button
+                                        text={t("View-votes")}
+                                        className={styles["ViewVoteButton"]}
+                                        onClick={() =>
+                                          EnableViewVoteModal(data)
+                                        }
+                                      />
+                                    </>
+                                  ) : null}
 
-                              {Number(data.agendaVotingID) ===
-                                0 ? null : Number(editorRole.status) === 10 &&
-                                  Number(data.voteOwner.userid) !==
-                                  Number(currentUserID) &&
-                                  data.voteOwner?.currentVotingClosed &&
-                                  editorRole.role !== "Organizer" &&
-                                  checkUserAuthentication(data) ? (
-                                <Button
-                                  text={
-                                    data?.hasAlreadyVoted
-                                      ? t("Voted")
-                                      : t("Cast-your-vote")
-                                  }
-                                  className={styles["CastYourVoteButton"]}
-                                  onClick={() => EnableCastVoteModal(data)}
-                                />
-                              ) : null}
-                            </>
-                          )}
+                                  {Number(data.agendaVotingID) ===
+                                  0 ? null : Number(editorRole.status) === 10 &&
+                                    Number(data.voteOwner.userid) !==
+                                      Number(currentUserID) &&
+                                    data.voteOwner?.currentVotingClosed &&
+                                    editorRole.role !== "Organizer" &&
+                                    checkUserAuthentication(data) ? (
+                                    <Button
+                                      text={
+                                        data?.hasAlreadyVoted
+                                          ? t("Voted")
+                                          : t("Cast-your-vote")
+                                      }
+                                      className={styles["CastYourVoteButton"]}
+                                      onClick={() => EnableCastVoteModal(data)}
+                                    />
+                                  ) : null}
+                                </>
+                              )}
                         </Col>
                       </Row>
                     </Col>
@@ -381,7 +391,7 @@ const ParentAgenda = ({
                     <>
                       {
                         data.selectedRadio === 1 &&
-                          Object.keys(data.files).length > 0 ? (
+                        Object.keys(data.files).length > 0 ? (
                           <div className={styles["filesParentClass"]}>
                             {data.files
                               .slice(0, 3)

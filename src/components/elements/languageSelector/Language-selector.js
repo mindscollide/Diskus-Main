@@ -21,10 +21,10 @@ const LanguageSelector = () => {
   const [open, setOpen] = useState(false);
 
   const AllLanguagesData = useSelector(
-    (state) => state.LanguageReducer.AllLanguagesData
+    (state) => state.LanguageReducer.AllLanguagesData,
   );
   const SetLanguageData = useSelector(
-    (state) => state.LanguageReducer.SetLanguageData
+    (state) => state.LanguageReducer.SetLanguageData,
   );
   const navigate = useNavigate();
 
@@ -55,7 +55,6 @@ const LanguageSelector = () => {
       ) {
         dispatch(getAllLanguages(navigate, t));
       }
-
     } catch {}
   }, []);
 
@@ -70,15 +69,15 @@ const LanguageSelector = () => {
           langValues.systemSupportedLanguageID === 1
             ? t("English")
             : langValues.systemSupportedLanguageID === 2
-            ? t("Arabic")
-            : "",
+              ? t("Arabic")
+              : "",
         systemSupportedLanguageID: langValues.systemSupportedLanguageID,
         code:
           langValues.systemSupportedLanguageID === 1
             ? "en"
             : langValues.systemSupportedLanguageID === 2
-            ? "ar"
-            : "",
+              ? "ar"
+              : "",
       })).filter((langValues) => langValues.systemSupportedLanguageID !== 3);
 
       setLanguages(newValues);
@@ -99,8 +98,8 @@ const LanguageSelector = () => {
           SetLanguageData.systemSupportedLanguageID === 1
             ? "en"
             : SetLanguageData.systemSupportedLanguageID === 2
-            ? "ar"
-            : "",
+              ? "ar"
+              : "",
       });
     }
   }, [SetLanguageData]);
@@ -161,9 +160,11 @@ const LanguageSelector = () => {
     if (currentLanguage === "ar") {
       document.body.dir = "rtl";
       i18n.changeLanguage("ar");
+      moment.locale("ar");
     } else {
       document.body.dir = "ltr";
       i18n.changeLanguage("en");
+      moment.locale("en");
     }
   }, [currentLanguage]);
   const languageContent = (
@@ -179,7 +180,8 @@ const LanguageSelector = () => {
             onClick={() => {
               handleChangeLocale(lang.systemSupportedLanguageID);
               setOpen(false);
-            }}>
+            }}
+          >
             <span>{lang.languageTitle}</span>
           </div>
         );
@@ -191,14 +193,14 @@ const LanguageSelector = () => {
   return (
     <Popover
       content={languageContent}
-      trigger='click'
+      trigger="click"
       open={open}
       showArrow={false}
       // openClassName=""
       zIndex={999999}
       onOpenChange={setOpen}
-      placement='bottomRight'>
-
+      placement="bottomRight"
+    >
       <span
         className={
           location.pathname.toLowerCase().includes("/Diskus/".toLowerCase()) ||
@@ -213,13 +215,14 @@ const LanguageSelector = () => {
           location.pathname.toLowerCase().includes("/Admin".toLowerCase())
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
-        }>
+        }
+      >
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
           ? t("EN")
           : currentLanguage === "ar"
-          ? t("Arabic")
-          : t("EN")}
+            ? t("Arabic")
+            : t("EN")}
         {open ? (
           <img
             src={
@@ -242,8 +245,8 @@ const LanguageSelector = () => {
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
-            alt=''
-            draggable='false'
+            alt=""
+            draggable="false"
           />
         ) : (
           <img
@@ -267,8 +270,8 @@ const LanguageSelector = () => {
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }
-            alt=''
-            draggable='false'
+            alt=""
+            draggable="false"
           />
         )}
       </span>

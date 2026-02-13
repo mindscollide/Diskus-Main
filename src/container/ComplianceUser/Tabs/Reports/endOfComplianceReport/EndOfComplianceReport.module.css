@@ -1,0 +1,413 @@
+.mainDivComplianceStanding {
+  width: 100%;
+  padding: 10px 20px;
+  overflow-x: auto; /* prevents breaking on smaller screens */
+}
+
+.iconTextWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.iconTextWrapper label {
+  font-size: 10px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+.iconTextWrapper p,
+.ComplianceReportHeadings {
+  font-size: 20px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  margin: 0;
+  font-weight: 600;
+}
+
+.dueDateRange {
+  font-size: 10px;
+  color: #6172d6;
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+.complianceDownloadBtn {
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #5a5a5a;
+  margin-top: 20px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  padding: 10px 30px;
+}
+
+.complianceDownloadBtn:hover {
+  color: #5a5a5a;
+  background-color: transparent;
+  border: 1px solid #e1e1e1;
+}
+
+.tableWrapper {
+  margin-top: 30px;
+  background: transparent;
+  border-radius: 8px;
+  padding: 10px 0;
+}
+
+/* HEADER LIKE TABLE */
+.tableHeader {
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 2fr;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5e5;
+  color: #6172d6;
+  font-family: "Montserrat";
+}
+
+/* EACH COLLAPSE ROW HEADER */
+.tableRow {
+  display: grid;
+  grid-template-columns: 4fr 2fr 2fr 2fr;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+}
+
+.nameCol {
+  font-weight: 500;
+}
+
+.badge {
+  background: #ecefff;
+  color: #6172d6;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.criticality {
+  background: #fff8e1;
+  color: #d8a709;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.collapseWrapper :global(.ant-collapse-item) {
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.collapseWrapper :global(.ant-collapse-header) {
+  padding: 12px 16px !important;
+}
+
+/* Whole collapse container */
+.collapseWrapper :global(.ant-collapse) {
+  background: #fff; /* your normal bg */
+  border: none;
+}
+
+.panelContent {
+  padding: 16px;
+  background: #f6f9fc !important;
+}
+
+.insideAccordianTable {
+  max-height: 160px;
+  padding: 0px 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 10px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.insideAccordianMainHeading label {
+  color: #5a67d8;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+
+.insideAccordianMainHeading p {
+  color: #5a5a5a;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.insideAccordianSubHeading label {
+  color: #5a67d8;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+
+.insideAccordianSubHeading p {
+  color: #5a5a5a;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.reportDetailsBar {
+  background-color: #ecefff;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  color: #6172d6;
+  gap: 5px;
+}
+
+.reportDetailsBar span {
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.reportDetailButton {
+  font-size: 12px;
+  font-weight: 400;
+  font-family: "Montserrat";
+  padding: 2px 10px;
+  margin-left: 10px;
+  background-color: #6172d6;
+  border: none;
+  color: #fff;
+}
+
+.reportDetailButton:hover {
+  background-color: #6172d6;
+  border: none;
+  color: #fff;
+}
+
+.reportTitleRow {
+  align-items: center;
+  padding: 0px 20px;
+}
+
+.titleSection label {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+}
+
+.longTitle {
+  font-size: 30px;
+  font-weight: 500;
+  color: #6172d6;
+  font-family: "Montserrat";
+  line-height: 1.4;
+  margin-bottom: 15px;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+}
+
+.metaRow {
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.metaRow span {
+  font-size: 10px;
+  font-weight: 700;
+  color: #6172d6;
+  font-family: "Montserrat";
+}
+
+.metaRow p {
+  font-size: 20px;
+  font-weight: 600;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  margin: 0;
+}
+
+.chartCol {
+  display: flex;
+  justify-content: end;
+}
+
+.chartWrapper {
+  width: 100%;
+  height: 200px;
+  position: relative;
+  background: transparent;
+}
+
+.centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 32%;
+  transform: translate(-50%, -50%);
+  text-align: center; /* 🔥 prevents full width stretch */
+  pointer-events: none;
+}
+
+.centerLabel h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+}
+
+.centerLabel p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.chartWrapper {
+  width: 100%;
+}
+
+.chartFlex {
+  display: flex;
+  align-items: center; /* 🔥 vertical center */
+  justify-content: center;
+  gap: 20px;
+}
+
+.chartBox {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.centerLabel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.customLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.legendDotBlue,
+.legendDotYellow {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.legendDotBlue {
+  background: #5b6bff;
+}
+.legendDotYellow {
+  background: #f2c94c;
+}
+
+.ComplianceSection {
+  padding: 0px 16px;
+}
+
+.iconTextWrapperPDFDownload {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 20px 18px;
+  justify-content: center; /*  */
+}
+
+.iconTextWrapperPDFDownload label {
+  font-size: 10px;
+  color: #6172d6;
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+.iconTextWrapperPDFDownload p,
+.ComplianceReportHeadings {
+  font-size: 20px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  margin: 0;
+  font-weight: 600;
+}
+
+.ComplianceMainHeading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  padding: 0px 30px;
+}
+
+.ComplianceMainHeading label {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+}
+
+.ComplianceMainHeading p {
+  font-size: 24px;
+  color: #6172d6;
+  font-family: "Montserrat";
+  line-height: 100%;
+  letter-spacing: 0%;
+  margin: 0;
+  font-weight: 600;
+}
+
+.chartFlexDownloadedPdf {
+  display: flex;
+  align-items: center; /* 🔥 vertical center */
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 10px;
+  background: #ecefff;
+  border-radius: 6.21px;
+}
+
+.chartBoxDownloadedPdf {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.checklist_report {
+  padding: 0px 30px;
+  font-size: 12px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  line-height: 100%;
+  letter-spacing: 2%;
+  font-weight: 600;
+  margin-top: 16px;
+}

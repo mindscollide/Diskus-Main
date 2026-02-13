@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import DikusGIF from "../../../assets/images/Loader.gif";
 import { useSelector } from "react-redux";
-import ProgressLoader from "../ProgressLoader/ProgressLoader";
 import { Spin } from "antd";
 import SpinComponent from "../mainLoader/loader";
 
@@ -36,7 +35,7 @@ const Loader = ({ progress }) => {
   ];
 
   return (
-    <Container className={styles["main-container"]} data-tut='welcomescreen'>
+    <Container className={styles["main-container"]} data-tut="welcomescreen">
       <Row className={styles["overlay-box"]}>
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
@@ -50,7 +49,6 @@ const Loader = ({ progress }) => {
               </Row>
             </>
           ) : null}
-          <ProgressLoader progress={progress} />
           {/* <Row>
             <Col lg={12} md={12} sm={12}>
               <p className={styles["Messeges_Styles"]}>{randomIndex}</p>

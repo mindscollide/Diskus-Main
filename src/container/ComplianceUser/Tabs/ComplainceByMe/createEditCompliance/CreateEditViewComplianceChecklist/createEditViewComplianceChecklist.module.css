@@ -1,0 +1,243 @@
+.labelStyle {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  color: #6172d6;
+  margin: 0;
+}
+.labelStyleActive {
+  font-weight: 700 !important;
+  /* font-style: Bold; */
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  padding-right: 20px;
+}
+.checklistInputStyle {
+  height: 177px !important;
+  overflow-y: auto;
+}
+.datepicker_input {
+  margin-top: 2px;
+  padding: 0px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ced4da;
+  max-width: 100% !important;
+  min-width: 100% !important;
+
+  height: 39px !important;
+  font-weight: 500;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  cursor: pointer;
+  outline: none !important;
+}
+.labelStyle {
+  font-weight: 700 !important;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+}
+.sterick {
+  color: #f16b6b;
+}
+.Select_label {
+  margin-top: 8.2px;
+}
+.Compliance_CloseButton {
+  border-radius: 4px;
+  color: #5a5a5a;
+  font-weight: 600;
+  font-size: 12px;
+  background: #ffff;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.Compliance_CloseButton:is(:hover, :active, :focus, :focus-visible) {
+  background: #ffff;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+  padding: 12px 30px;
+}
+.Compliance_NextButton {
+  border-radius: 4px;
+  background: #6172d6;
+  font-weight: 600;
+  border: 1px solid #6172d6;
+  font-size: 12px;
+  padding: 12px 30px;
+}
+
+.Compliance_NextButton:is(:hover, :active, :focus, :focus-visible) {
+  border: 1px solid #6172d6;
+  background: #6172d6;
+  padding: 12px 30px;
+}
+.ChecklistButtonPosition {
+  margin: 15px 0;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  align-items: center;
+  bottom: 20px;
+  right: 20px;
+}
+
+.mainButtonPosition {
+  /* position: absolute; */
+  display: flex;
+  gap: 10px;
+  align-items: end;
+  justify-content: end;
+  /* bottom: 20px;
+  right: 20px; */
+  /* position: sticky;
+  display: flex;
+  bottom: 0;
+  background: #fff;
+  padding-top: 10px;
+  right: 20px;
+  gap: 10px; */
+}
+
+.accordianChecklistTitle {
+  font-weight: 600;
+  font-size: 16px;
+}
+.truncateTitle {
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+.ViewChecklistDetailStyles {
+  font-weight: 500;
+  font-style: Medium;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin: 0;
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow-wrap: anywhere;
+}
+.ViewChecklistDetailStyles_notexpanded {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  color: #6172d6;
+  overflow-wrap: anywhere !important ;
+}
+.AccordionArrowDown {
+  transform: rotate(-180deg);
+}
+
+.checklistAccordian {
+  /* max-height: 220px !important; */
+  max-height: 29vh !important;
+  min-height: 29vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+.checklistAccordian_closed {
+  /* max-height: 410px !important; */
+  max-height: 57vh !important;
+  min-height: 57vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+}
+.createNewChecklistStyle {
+  font-weight: 600;
+  font-size: 12px;
+  color: #6172d6;
+  border: 1px dashed #6172d6;
+  border-radius: 4px;
+  height: 39px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.SpinnerClass {
+  font-size: 2px !important;
+}
+.CheckIcon {
+  font-size: 2rem;
+}
+.errorMessage-inLogin {
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-weight: 500 !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  display: none;
+  margin: 0px;
+  height: 13px;
+  color: #f16b6b;
+  font-weight: 500 !important;
+}
+.checklistTitle {
+  width: 65%;
+}
+.checklistTitle_Loader {
+  width: 5%;
+  margin-top: 24px;
+  padding: 0 !important;
+}
+.checklistDueDate {
+  width: 30%;
+}
+.createNewChecklistStyle {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+
+  font-weight: 600;
+  font-size: 12px;
+  color: #6172d6;
+  border: 1px dashed #6172d6;
+  border-radius: 4px;
+  height: 39px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+.noChecklistMsg {
+  min-height: 29vh !important;
+  overflow-y: auto;
+  /* padding-right: 10px; */
+  margin-top: 4px;
+  margin-bottom: 4px;
+  font-weight: 600;
+  font-size: 20px;
+  color: #5a5a5a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.disabledInput {
+  background-color: #fafafa !important;
+  cursor: default;
+  color: #a2aec6;
+  pointer-events: none;
+}
+
+.disabledInput + svg,
+.disabledInput svg {
+  pointer-events: none;
+  cursor: default;
+}

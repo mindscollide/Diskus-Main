@@ -19,6 +19,7 @@ import { ResolutionProvider } from "./context/ResolutionContext";
 import { AuthProvider } from "./context/AuthContext";
 import SpinComponent from "./components/elements/mainLoader/loader";
 import { TalkProvider } from "./context/TalkContext";
+import { ComlianceProvider } from "./context/ComplianceContext";
 
 // Root container
 const container = document.getElementById("root");
@@ -34,12 +35,12 @@ const root = ReactDOM.createRoot(container, {
 });
 
 // Disable console methods in production for better security and performance
-if (process.env.REACT_APP_ENV === "prod") {
-  console.log = () => {};
-  console.error = () => {};
-  console.debug = () => {};
-  console.warn = () => {};
-}
+// if (process.env.REACT_APP_ENV === "prod") {
+//   console.log = () => {};
+//   console.error = () => {};
+//   console.debug = () => {};
+//   console.warn = () => {};
+// }
 
 // Render the app with all providers
 // Root for Spinner or secondary element
@@ -64,7 +65,9 @@ root.render(
                   <PollsProvider>
                     <NotesProvider>
                       <ResolutionProvider>
-                        <App />
+                        <ComlianceProvider>
+                          <App />
+                        </ComlianceProvider>
                       </ResolutionProvider>
                     </NotesProvider>
                   </PollsProvider>

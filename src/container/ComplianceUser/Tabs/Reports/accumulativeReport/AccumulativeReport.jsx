@@ -1,0 +1,544 @@
+import React, { useState } from "react";
+import styles from "./AccumulativeReport.module.css";
+import { Col, Row } from "react-bootstrap";
+import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import BackButton from "./../../../../../assets/images/backbutton.svg";
+import Verification from "./../../../../../assets/images/Verification.png";
+import ComplianceCalendar from "./../../../../../assets/images/ComplianceCalendar.png";
+import { DatePicker, Collapse, Progress, Tooltip, Spin } from "antd";
+import CustomButton from "../../../../../components/elements/button/Button";
+import { DownOutlined } from "@ant-design/icons";
+import { Chart } from "react-google-charts";
+import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import generatePDF, { Margin, Resolution } from "react-to-pdf";
+const { Panel } = Collapse;
+
+const AccumulativeReport = () => {
+  const { t } = useTranslation();
+  const { accumulativeReport, setAccumulativeReport } = useComplianceContext();
+  const GetAccumulativeReport = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
+  );
+
+  console.log(
+    GetAccumulativeReport,
+    "GetAccumulativeReportGetAccumulativeReport"
+  );
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showPdfLayout, setShowPdfLayout] = useState(false);
+  const donutData = [
+    ["Task Status", "Count"],
+    ["Tasks Completed On Time", 45],
+    ["Tasks Completed Late", 33],
+    ["Pending or Overdue Tasks", 22],
+  ];
+
+  const donutOptions = {
+    pieHole: 0.7,
+    legend: {
+      position: "right",
+      textStyle: { fontSize: 12 },
+    },
+    pieSliceText: "none",
+    backgroundColor: "transparent",
+    chartArea: { width: "100%", height: "100%" },
+    colors: ["#6172D6", "#FFC300", "#f16b6b"],
+    tooltip: { text: "percentage" },
+  };
+  const options = {
+    // default is `save`
+    method: "save",
+    filename: "Accumulative Report.pdf",
+    // default is Resolution.MEDIUM = 3, which should be enough, higher values
+    // increases the image quality but also the size of the PDF, so be careful
+    // using values higher than 10 when having multiple pages generated, it
+    // might cause the page to crash or hang.
+    resolution: Resolution.HIGH,
+    page: {
+      // margin is in MM, default is Margin.NONE = 0
+      margin: Margin.SMALL,
+      // default is 'A4'
+      format: "A4",
+      // default is 'portrait'
+      orientation: "landscape",
+    },
+    canvas: {
+      // default is 'image/jpeg' for better size performance
+      mimeType: "image/png",
+      qualityRatio: 1,
+    },
+    // Customize any value passed to the jsPDF instance and html2canvas
+    // function. You probably will not need this and things can break,
+    // so use with caution.
+    overrides: {
+      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
+      pdf: {
+        compress: true,
+      },
+      // see https://html2canvas.hertzen.com/configuration for more options
+      canvas: {
+        useCORS: true,
+      },
+    },
+  };
+
+  const getTargetElement = () => document.getElementById("content-id");
+
+  const handleClickGenerateODF = async () => {
+    try {
+      setIsGenerating(true); // spinner ON
+      setShowPdfLayout(true); // show PDF layout
+      await new Promise((r) => setTimeout(r, 100)); // allow DOM render
+
+      await document.fonts.ready;
+      await generatePDF(getTargetElement, options);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+    } finally {
+      setShowPdfLayout(false); // hide PDF layout
+      setIsGenerating(false); // spinner OFF
+    }
+  };
+
+  return (
+    <>
+      <div className={styles.mainDivComplianceStanding}>
+        <Spin
+          spinning={isGenerating}
+          size="large"
+          tip="Generating PDF..."
+          className="d-flex justify-content-center align-items-center"
+        >
+          {!showPdfLayout && (
+            <div>
+              <Row className="align-items-center">
+                {/* Back Button */}
+                <Col xs="auto">
+                  <img
+                    src={BackButton}
+                    alt="BackButton"
+                    onClick={() => setAccumulativeReport(false)}
+                  />
+                </Col>
+
+                {/* Report Type */}
+                <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
+                  <img src={Verification} alt="Verification" />
+                  <div>
+                    <label>{t("Report-type ")}:</label>
+                    <p>{GetAccumulativeReport?.header?.reportTypeName}</p>
+                  </div>
+                </Col>
+
+                {/* Generated Date */}
+                <Col
+                  lg={8}
+                  xs="auto"
+                  className={`${styles.iconTextWrapper} d-flex justify-content-center`}
+                >
+                  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                  <div>
+                    <label>{t("Generated-date")}:</label>
+                    <p>
+                      {formatDateToYMD(
+                        GetAccumulativeReport?.header?.generatedOn
+                      )}
+                    </p>
+                  </div>
+                </Col>
+
+                {/* Download Button */}
+                <Col lg={1} xs="auto">
+                  <CustomButton
+                    text="Download"
+                    loading={isGenerating}
+                    onClick={handleClickGenerateODF}
+                    className={styles.complianceDownloadBtn}
+                  />
+                </Col>
+              </Row>
+
+              <Row className={`${styles.reportTitleRow} mt-4`}>
+                {/* LEFT SIDE — TITLE + META */}
+                <Col lg={8} md={7} sm={12}>
+                  <div className={styles.titleSection}>
+                    <label>{t("Quarter")}:</label>
+                    <p className={styles.longTitle}>
+                      {GetAccumulativeReport?.header?.reportTitle}
+                    </p>
+                    <div className={styles.metaRow}>
+                      <div>
+                        <span>{t("Start-dates")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetAccumulativeReport?.header?.quarterStartDate
+                          )}
+                        </p>
+                      </div>
+                      <div>
+                        <span>{t("End-dates")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetAccumulativeReport?.header?.quarterEndDate
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+
+                {/* RIGHT SIDE — DONUT CHART */}
+                <Col lg={4} md={5} sm={12} className={styles.chartCol}>
+                  <div className={styles.chartFlex}>
+                    {/* Donut */}
+                    <div className={styles.chartBox}>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="200px"
+                        data={donutData}
+                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                      />
+
+                      {/* Center Label */}
+                      <div className={styles.centerLabel}>
+                        <h2>
+                          {
+                            GetAccumulativeReport?.header
+                              ?.overallCompletionPercent
+                          }
+                          %
+                        </h2>
+                        <p>{t("Complete ")}</p>
+                      </div>
+                    </div>
+
+                    {/* Custom Legend (VERTICALLY CENTERED) */}
+                    <div className={styles.customLegend}>
+                      <div>
+                        <span className={styles.legendDotBlue}></span>
+                        {t("Tasks-completed-on-time")} (
+                        {GetAccumulativeReport?.header?.tasksCompletedOnTime})
+                      </div>
+                      <div>
+                        <span className={styles.legendDotYellow}></span>
+                        {t("Tasks-completed-late")} (
+                        {GetAccumulativeReport?.header?.tasksCompletedLate})
+                      </div>
+                      <div>
+                        <span className={styles.legendOrange}></span>
+                        {t("Pending-or-overdue-tasks")} (
+                        {GetAccumulativeReport?.header?.tasksPending})
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              {/* Compliance Table */}
+              <div className={styles.tableWrapper}>
+                {/* 🔹 STATIC HEADER */}
+                <div className={styles.tableHeader}>
+                  <div>{t("Compliance-name")}↓</div>
+                  <div>{t("Authority")} ↓</div>
+                  <div>{t("Criticalityy")} </div>
+                  <div>{t("Due-date")} ↓</div>
+                  <div>{t("Total-checklists")} ↓</div>
+                  <div>{t("No-of-tasks")} ↓</div>
+                  <div>{t("Overdue-tasks")} ↓</div>
+                  <div>{t("Progress")} % ↓</div>
+                </div>
+
+                {/* 🔹 COLLAPSE ROWS */}
+                <Collapse
+                  bordered={false}
+                  expandIconPosition="end"
+                  expandIcon={({ isActive }) => (
+                    <DownOutlined rotate={isActive ? 180 : 0} />
+                  )}
+                  className={styles.collapseWrapper}
+                >
+                  {GetAccumulativeReport?.compliances?.map((item) => (
+                    <Panel
+                      key={item.complianceID}
+                      header={
+                        <div className={styles.tableRow}>
+                          <div className={styles.nameCol}>
+                            <Tooltip title={item.complianceTitle}>
+                              {item.complianceTitle}
+                            </Tooltip>
+                          </div>
+                          <div className={styles.nameCol}>
+                            <span className={styles.badge}>
+                              <Tooltip title={item.authorityName}>
+                                {item.authorityName}
+                              </Tooltip>
+                            </span>
+                          </div>
+                          <div>
+                            <span className={styles.criticality}>
+                              {item.criticality}
+                            </span>
+                          </div>
+                          <div>{item.complianceDueDate}</div>
+                          <div>{item.totalChecklists}</div>
+                          <div>{item.totalTasks}</div>
+                          <div>{item.tasksOverdue}</div>
+                          <div>{item.progressPercent}</div>
+                        </div>
+                      }
+                    >
+                      {/* EXPANDED CONTENT */}
+                      <div className={styles.MainAccordianTable}>
+                        {item?.checklists?.map((checklistItem) => (
+                          <div
+                            key={checklistItem.checklistID}
+                            className={styles.panelContent}
+                          >
+                            {checklistItem?.tasks?.map((taskItem) => (
+                              <div
+                                key={taskItem.taskID}
+                                className={styles.insideAccordianTable}
+                              >
+                                <Row>
+                                  <Col lg={12} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianMainHeading
+                                      }
+                                    >
+                                      {" "}
+                                      <label>{t("Task-title")}:</label>
+                                      <Tooltip title={taskItem.taskTitle}>
+                                        <p>{taskItem.taskTitle}</p>
+                                      </Tooltip>
+                                    </div>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={4} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Assignee")}:</label>
+                                      <p> {taskItem.assigneeName}</p>
+                                    </div>
+                                  </Col>{" "}
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Due-date")}:</label>
+                                      <p> {taskItem.taskDueDate}</p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Completed-on")}:</label>
+                                      <p> {taskItem.taskCompletedOn}</p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Status")}:</label>
+                                      <p> {taskItem.taskStatus}</p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Completed")}:</label>
+                                      <p> {taskItem.completedTasks}</p>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </Panel>
+                  ))}
+                </Collapse>
+              </div>
+            </div>
+          )}
+
+          {/*Accumulative Report Download     */}
+          {showPdfLayout && (
+            <div id="content-id">
+              <Row>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-4`}
+                >
+                  <div>
+                    <label>{t("Quarter")}:</label>
+                    <p className={styles.longTitle}>
+                      {GetAccumulativeReport?.header?.reportTitle}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row className={`${styles.ComplianceSection} mt-4 `}>
+                <Col lg={8}>
+                  <Row className="align-items-center justify-content-between mx-2 ">
+                    <Col
+                      lg={6}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload}   `}
+                    >
+                      <img src={Verification} alt="Verification" />
+                      <div>
+                        <label>{t("Report-type ")}:</label>
+                        <p>{GetAccumulativeReport?.header?.reportTypeName}</p>
+                      </div>
+                    </Col>
+
+                    <Col
+                      lg={5}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload}  `}
+                    >
+                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                      <div>
+                        <label>{t("Generated-date")}:</label>
+                        <p>
+                          {formatDateToYMD(
+                            GetAccumulativeReport?.header?.generatedOn
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row
+                    className={`${styles.iconTextWrapperDownload}   mx-2 mt-4`}
+                  >
+                    <Col
+                      lg={5}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload} d-flex gap-2  `}
+                    >
+                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                      <div>
+                        <span>{t("Start-dates")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetAccumulativeReport?.header?.quarterStartDate
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                    <Col lg={5} xs="auto">
+                      <div>
+                        <label>{t("End-dates")}</label>
+                        <p>
+                          {formatDateToYMD(
+                            GetAccumulativeReport?.header?.quarterEndDate
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col lg={4} className={styles.chartCol}>
+                  <div className={styles.chartFlex}>
+                    {/* Donut */}
+                    <div className={styles.chartBox}>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="200px"
+                        data={donutData}
+                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                      />
+
+                      {/* Center Label */}
+                      <div className={styles.centerLabel}>
+                        <h2>
+                          {
+                            GetAccumulativeReport?.header
+                              ?.overallCompletionPercent
+                          }
+                          %
+                        </h2>
+                        <p>{t("Complete ")}</p>
+                      </div>
+                    </div>
+
+                    {/* Custom Legend (VERTICALLY CENTERED) */}
+                    <div className={styles.customLegend}>
+                      <div>
+                        <span className={styles.legendDotBlue}></span>
+                        {t("Tasks-completed-on-time")} (
+                        {GetAccumulativeReport?.header?.tasksCompletedOnTime})
+                      </div>
+                      <div>
+                        <span className={styles.legendDotYellow}></span>
+                        {t("Tasks-completed-late")} (
+                        {GetAccumulativeReport?.header?.tasksCompletedLate})
+                      </div>
+                      <div>
+                        <span className={styles.legendOrange}></span>
+                        {t("Pending-or-overdue-tasks")} (
+                        {GetAccumulativeReport?.header?.tasksPending})
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-4`}
+                >
+                  <p>{t("Compliances-in-this-report")}:</p>
+                </Col>
+
+                {GetAccumulativeReport?.compliances?.map((compliance) =>
+                  compliance?.checklists?.map((checklist, index) => (
+                    <Col
+                      key={checklist.checklistID}
+                      lg={12}
+                      xs="auto"
+                      className={styles.checklist_report}
+                    >
+                      <Tooltip title={checklist.checklistDescription}>
+                        {checklist.checklistDescription}
+                      </Tooltip>
+                    </Col>
+                  ))
+                )}
+              </Row>
+            </div>
+          )}
+
+          {/*Accumulative Report Download     */}
+        </Spin>
+      </div>
+    </>
+  );
+};
+
+export default AccumulativeReport;

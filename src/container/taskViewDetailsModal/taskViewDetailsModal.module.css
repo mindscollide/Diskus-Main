@@ -1,0 +1,70 @@
+.taskHeading {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.label {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 20px;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.labelBig {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.taskTitle {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 30px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+  word-wrap: break-word;
+}
+.TaskDescriptionHeading {
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #6172d6;
+  margin: 0;
+}
+.TaskDescription {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #5a5a5a;
+  min-height: 100px;
+  max-height: 100px;
+  overflow-y: auto;
+  padding-right: 10px;
+  word-wrap: break-word;
+}
+.AssigneAndDeadling {
+  display: flex;
+  justify-content: space-between;
+}
+.taskCommentList {
+  max-height: 345px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+}
+.taskAttachmentsList {
+  max-height: 145px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 10px;
+}

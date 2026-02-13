@@ -48,10 +48,10 @@ const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append(
       "RequestMethod",
-      getAllGroupsUsersAndCommitteesByOrganizaitonID.RequestMethod
+      getAllGroupsUsersAndCommitteesByOrganizaitonID.RequestMethod,
     );
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -62,54 +62,54 @@ const GetAllCommitteesUsersandGroups = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getAllCommitteesUsersandGroups_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t("No-records-found"))
+                getAllCommitteesUsersandGroups_fail(t("No-records-found")),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong")),
               );
             } else {
               dispatch(
-                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+                getAllCommitteesUsersandGroups_fail(t("Something-went-wrong")),
               );
             }
           } else {
             dispatch(
-              getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+              getAllCommitteesUsersandGroups_fail(t("Something-went-wrong")),
             );
           }
         } else {
           dispatch(
-            getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+            getAllCommitteesUsersandGroups_fail(t("Something-went-wrong")),
           );
         }
       })
       .catch((response) => {
         dispatch(
-          getAllCommitteesUsersandGroups_fail(t("Something-went-wrong"))
+          getAllCommitteesUsersandGroups_fail(t("Something-went-wrong")),
         );
       });
   };
@@ -163,8 +163,8 @@ const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", saveMeetingOrganizers.RequestMethod);
-   await axiosInstance
-    .post(meetingApi, form)
+    await axiosInstance
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -175,33 +175,33 @@ const SaveMeetingOrganizers = (navigate, Data, t, currentMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 saveMeetingOrganizers_success(
                   response.data.responseResult,
-                  t("Organizers-saved-successfully")
-                )
+                  t("Organizers-saved-successfully"),
+                ),
               );
               dispatch(GetAllMeetingOrganizers(Data2, navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 saveMeetingOrganizers_fail(
-                  t("Organizers-not-saved-successfully")
-                )
+                  t("Organizers-not-saved-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_SaveMeetingOrganizers_03".toLowerCase(),
                 )
             ) {
               dispatch(saveMeetingOrganizers_fail(t("Something-went-wrong")));
@@ -263,7 +263,7 @@ const UpdateOrganizersMeeting = (
   setCalendarViewModal,
   dashboardFlag,
   setViewAdvanceMeetingModal,
-  setEndMeetingConfirmationModal
+  setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -278,7 +278,7 @@ const UpdateOrganizersMeeting = (
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", meetingStatusUpdate.RequestMethod);
     await axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -300,8 +300,8 @@ const UpdateOrganizersMeeting = (
               setCalendarViewModal,
               dashboardFlag,
               setViewAdvanceMeetingModal,
-              setEndMeetingConfirmationModal
-            )
+              setEndMeetingConfirmationModal,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -309,7 +309,7 @@ const UpdateOrganizersMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
                 )
             ) {
               console.log("end meeting chaek");
@@ -323,19 +323,19 @@ const UpdateOrganizersMeeting = (
                     route === 5
                       ? t("Meeting-published-successfully")
                       : (route === 4 ||
-                          route === 6 ||
-                          route === 7 ||
-                          route === 11) &&
-                        Data.StatusID === 10
-                      ? t("Meeting-started-successfully")
-                      : (route === 4 ||
-                          route === 6 ||
-                          route === 7 ||
-                          route === 12) &&
-                        Data.StatusID === 9
-                      ? t("Meeting-ended-successfully")
-                      : ""
-                  )
+                            route === 6 ||
+                            route === 7 ||
+                            route === 11) &&
+                          Data.StatusID === 10
+                        ? t("Meeting-started-successfully")
+                        : (route === 4 ||
+                              route === 6 ||
+                              route === 7 ||
+                              route === 12) &&
+                            Data.StatusID === 9
+                          ? t("Meeting-ended-successfully")
+                          : "",
+                  ),
                 );
                 if (route !== 4 && Data.StatusID !== 9) {
                   console.log("end meeting chaek");
@@ -354,8 +354,8 @@ const UpdateOrganizersMeeting = (
                       true,
                       // setAdvanceMeetingModalID,
                       setSceduleMeeting,
-                      setDataroomMapFolderId
-                    )
+                      setDataroomMapFolderId,
+                    ),
                   );
                   // setSceduleMeeting(false);
                   // setEdiorRole({
@@ -374,8 +374,8 @@ const UpdateOrganizersMeeting = (
                       setSceduleMeeting,
                       1,
                       setAdvanceMeetingModalID,
-                      setViewAdvanceMeetingModal
-                    )
+                      setViewAdvanceMeetingModal,
+                    ),
                   );
                 } else if (route === 4) {
                   console.log("end meeting chaek", leaveMeetingData);
@@ -419,8 +419,8 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   }
                 } else if (route === 5) {
@@ -445,6 +445,8 @@ const UpdateOrganizersMeeting = (
                       meetingpageRow !== null ? Number(meetingpageRow) : 30,
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
+                    ProposedMeetings:
+                      currentView && Number(currentView) === 2 ? true : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -465,8 +467,8 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   } else {
                     let ViewCommitteeID =
@@ -485,7 +487,7 @@ const UpdateOrganizersMeeting = (
                       PublishedMeetings: true,
                     };
                     dispatch(
-                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                      getMeetingByCommitteeIDApi(navigate, t, searchData),
                     );
                   }
 
@@ -505,8 +507,8 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   } else {
                     let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -524,7 +526,7 @@ const UpdateOrganizersMeeting = (
                     console.log("end meeting chaek", leaveMeetingData);
                     dispatch(getMeetingbyGroupApi(navigate, t, searchData));
                   }
-                } else if(route === 11) {
+                } else if (route === 11) {
                   if (Data.StatusID === 10) {
                     console.log("end meeting chaek", leaveMeetingData);
                     dispatch(
@@ -538,8 +540,8 @@ const UpdateOrganizersMeeting = (
                         setSceduleMeeting,
                         route,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   }
                 }
@@ -550,91 +552,91 @@ const UpdateOrganizersMeeting = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Record-not-updated"))
+                updateOrganizerMeetingStatus_fail(t("Record-not-updated")),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-agenda-to-publish")
-                )
+                  t("Add-meeting-agenda-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-organizers-to-publish")
-                )
+                  t("Add-meeting-organizers-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-participants-to-publish")
-                )
+                  t("Add-meeting-participants-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Meeting-cannot-be-published-after-time-has-elapsed")
-                )
+                  t("Meeting-cannot-be-published-after-time-has-elapsed"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
               );
               dispatch(setLoaderFalse(false));
             }
           } else {
             dispatch(
-              updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+              updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
             );
             dispatch(setLoaderFalse(false));
           }
         } else {
           dispatch(
-            updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+            updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
           );
           dispatch(setLoaderFalse(false));
         }
@@ -679,7 +681,7 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getAllMeetingOrganizers.RequestMethod);
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -690,20 +692,20 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 getAllMeetingOrganizers_success(
                   response.data.responseResult,
-                  ""
-                )
+                  "",
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_02".toLowerCase(),
                 )
             ) {
               dispatch(getAllMeetingOrganizers_fail(t("No-records-found")));
@@ -711,7 +713,7 @@ const GetAllMeetingOrganizers = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_GetAllMeetingOrganizers_03".toLowerCase(),
                 )
             ) {
               dispatch(getAllMeetingOrganizers_fail(t("Something-went-wrong")));
@@ -789,7 +791,7 @@ const sendNotificationOrganizer = (Data, navigate, t) => {
     form.append("RequestMethod", sendNotification.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -800,29 +802,29 @@ const sendNotificationOrganizer = (Data, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SendRecentNotifications_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_SendRecentNotifications_01".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendNotificationOrganizerSuccess(
-                  t("Notification-sent-successfully")
-                )
+                  t("Notification-sent-successfully"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_SendRecentNotifications_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_SendRecentNotifications_02".toLowerCase(),
                 )
             ) {
               dispatch(
                 sendNotificationOrganizerFail(
-                  t("Notification-not-sent-successfully")
-                )
+                  t("Notification-not-sent-successfully"),
+                ),
               );
             } else {
               dispatch(
-                sendNotificationOrganizerFail(t("Something-went-wrong"))
+                sendNotificationOrganizerFail(t("Something-went-wrong")),
               );
             }
           } else {
@@ -856,7 +858,7 @@ const UpdateMeetingStatus = (
   setCalendarViewModal,
   dashboardFlag,
   setViewAdvanceMeetingModal,
-  setEndMeetingConfirmationModal
+  setEndMeetingConfirmationModal,
 ) => {
   console.log("end meeting chaek");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -871,7 +873,7 @@ const UpdateMeetingStatus = (
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", meetingStatusUpdate.RequestMethod);
     await axiosInstance
-    .post(meetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -893,8 +895,8 @@ const UpdateMeetingStatus = (
               setCalendarViewModal,
               dashboardFlag,
               setViewAdvanceMeetingModal,
-              setEndMeetingConfirmationModal
-            )
+              setEndMeetingConfirmationModal,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -902,7 +904,7 @@ const UpdateMeetingStatus = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
                 )
             ) {
               console.log("end meeting chaek");
@@ -914,13 +916,13 @@ const UpdateMeetingStatus = (
                     route === 5
                       ? t("Meeting-published-successfully")
                       : (route === 4 || route === 6 || route === 7) &&
-                        Data.StatusID === 10
-                      ? t("Meeting-started-successfully")
-                      : (route === 4 || route === 6 || route === 7) &&
-                        Data.StatusID === 9
-                      ? t("Meeting-ended-successfully")
-                      : ""
-                  )
+                          Data.StatusID === 10
+                        ? t("Meeting-started-successfully")
+                        : (route === 4 || route === 6 || route === 7) &&
+                            Data.StatusID === 9
+                          ? t("Meeting-ended-successfully")
+                          : "",
+                  ),
                 );
                 if (route !== 4 && Data.StatusID !== 9) {
                   console.log("end meeting chaek");
@@ -939,8 +941,8 @@ const UpdateMeetingStatus = (
                       true,
                       // setAdvanceMeetingModalID,
                       setSceduleMeeting,
-                      setDataroomMapFolderId
-                    )
+                      setDataroomMapFolderId,
+                    ),
                   );
                   // setSceduleMeeting(false);
                   // setEdiorRole({
@@ -959,8 +961,8 @@ const UpdateMeetingStatus = (
                       setSceduleMeeting,
                       1,
                       setAdvanceMeetingModalID,
-                      setViewAdvanceMeetingModal
-                    )
+                      setViewAdvanceMeetingModal,
+                    ),
                   );
                 } else if (route === 4) {
                   console.log("end meeting chaek", leaveMeetingData);
@@ -1004,8 +1006,8 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   }
                 } else if (route === 5) {
@@ -1030,6 +1032,8 @@ const UpdateMeetingStatus = (
                       meetingpageRow !== null ? Number(meetingpageRow) : 30,
                     PublishedMeetings:
                       currentView && Number(currentView) === 1 ? true : false,
+                    ProposedMeetings:
+                      currentView && Number(currentView) === 2 ? true : false,
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -1050,8 +1054,8 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   } else {
                     let ViewCommitteeID =
@@ -1070,7 +1074,7 @@ const UpdateMeetingStatus = (
                       PublishedMeetings: true,
                     };
                     dispatch(
-                      getMeetingByCommitteeIDApi(navigate, t, searchData)
+                      getMeetingByCommitteeIDApi(navigate, t, searchData),
                     );
                   }
 
@@ -1090,8 +1094,8 @@ const UpdateMeetingStatus = (
                         setSceduleMeeting,
                         1,
                         setAdvanceMeetingModalID,
-                        setViewAdvanceMeetingModal
-                      )
+                        setViewAdvanceMeetingModal,
+                      ),
                     );
                   } else {
                     let ViewGroupID = localStorage.getItem("ViewGroupID");
@@ -1117,11 +1121,11 @@ const UpdateMeetingStatus = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_02".toLowerCase(),
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Record-not-updated"))
+                updateOrganizerMeetingStatus_fail(t("Record-not-updated")),
               );
               dispatch(setLoaderFalse(false));
               setEditorRole({
@@ -1133,80 +1137,80 @@ const UpdateMeetingStatus = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_03".toLowerCase(),
                 )
             ) {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_04".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-agenda-to-publish")
-                )
+                  t("Add-meeting-agenda-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_05".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-organizers-to-publish")
-                )
+                  t("Add-meeting-organizers-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_06".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Add-meeting-participants-to-publish")
-                )
+                  t("Add-meeting-participants-to-publish"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase()
+                  "Meeting_MeetingServiceManager_MeetingStatusUpdate_07".toLowerCase(),
                 )
             ) {
               dispatch(
                 updateOrganizerMeetingStatus_fail(
-                  t("Meeting-cannot-be-published-after-time-has-elapsed")
-                )
+                  t("Meeting-cannot-be-published-after-time-has-elapsed"),
+                ),
               );
               dispatch(setLoaderFalse(false));
             } else {
               dispatch(
-                updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+                updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
               );
               dispatch(setLoaderFalse(false));
             }
           } else {
             dispatch(
-              updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+              updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
             );
             dispatch(setLoaderFalse(false));
           }
         } else {
           dispatch(
-            updateOrganizerMeetingStatus_fail(t("Something-went-wrong"))
+            updateOrganizerMeetingStatus_fail(t("Something-went-wrong")),
           );
           dispatch(setLoaderFalse(false));
         }

@@ -225,7 +225,14 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
-import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
+import {
+  complianceChecklistAddedMQTT,
+  complianceChecklistDeletedMQTT,
+  complianceChecklistUpdateMQTT,
+  complianceCreatedFromMQTT,
+  complianceUpdateMQTT,
+  setInactiveStatusData,
+} from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -273,100 +280,100 @@ const Dashboard = () => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
   );
   const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
+    (state) => state.UserManagementModals.internetDisconnectModal,
   );
   const mobileAppPopUp = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
+    (state) => state.UserManagementModals.mobileAppPopUp,
   );
   const IncomingVideoCallFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
 
   const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage
+    (state) => state.VideoMainReducer.ResponseMessage,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
 
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const MaximizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
 
   const ShowGuestPopup = useSelector(
-    (state) => state.videoFeatureReducer.ShowGuestPopup
+    (state) => state.videoFeatureReducer.ShowGuestPopup,
   );
 
   const VideoChatMessagesFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
 
   const MeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
   );
 
   const waitingParticipantsList = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList
+    (state) => state.videoFeatureReducer.waitingParticipantsList,
   );
 
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
-    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState,
   );
 
   const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
+    (state) => state.videoFeatureReducer.videoControlForParticipant,
   );
 
   const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
+    (state) => state.videoFeatureReducer.audioControlForParticipant,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const leavePresenterOrJoinOtherCalls = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
 
   console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
@@ -378,7 +385,7 @@ const Dashboard = () => {
       resumeRecordingState,
       stopRecordingState,
     },
-    "CheckisPausedOccurOrNot"
+    "CheckisPausedOccurOrNot",
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -412,10 +419,10 @@ const Dashboard = () => {
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
   const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
 
   // Update ref whenever presenterViewJoinFlag changes
@@ -478,7 +485,7 @@ const Dashboard = () => {
 
   function checkCallStatus(data) {
     return !data.some(
-      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing"
+      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing",
     );
   }
 
@@ -497,9 +504,10 @@ const Dashboard = () => {
       dispatch(InsternetDisconnectModal(true));
     }
   }, [checkInternet.onLine]);
-  const activeCallsessionStorage = sessionStorage.getItem(
-    "activeCallSessionforOtoandGroup"
-  );
+  const activeCallsessionStorage =
+    sessionStorage.getItem("activeCallSessionforOtoandGroup") !== null
+      ? sessionStorage.getItem("activeCallSessionforOtoandGroup")
+      : null;
   const activeCallLocalStorage =
     localStorage.getItem("activeCall") !== null &&
     JSON.parse(localStorage.getItem("activeCall"));
@@ -539,6 +547,7 @@ const Dashboard = () => {
           if (isMeetingVideo) {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(leaveMeetingVideoOnEndStatusMqtt(true));
+            dispatch(leaveMeetingOnEndStatusMqtt(true));
           } else {
             console.log("mqtt mqmqmqmqmqmq");
             dispatch(leaveMeetingOnEndStatusMqtt(true));
@@ -554,7 +563,7 @@ const Dashboard = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
+      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck"),
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -565,7 +574,7 @@ const Dashboard = () => {
     let newRoomId = localStorage.getItem("newRoomId");
     let participantRoomId = localStorage.getItem("participantRoomId");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -586,7 +595,7 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             let data = {
               RoomID: String(
-                isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                isMeetingVideoHostCheck ? newRoomId : participantRoomId,
               ),
               UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
               IsHandRaised: false,
@@ -706,7 +715,7 @@ const Dashboard = () => {
   const stopPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq");
     let StopPresenterViewAwait = JSON.parse(
-      sessionStorage.getItem("StopPresenterViewAwait")
+      sessionStorage.getItem("StopPresenterViewAwait"),
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -721,16 +730,16 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false
+        : false,
     );
     console.log(
       String(meetingVideoID) === String(payload?.meetingID),
-      "mqtt mqmqmqmqmqmq"
+      "mqtt mqmqmqmqmqmq",
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
@@ -745,7 +754,7 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         console.log(
           "typeof StopPresenterViewAwait:",
-          typeof StopPresenterViewAwait
+          typeof StopPresenterViewAwait,
         );
         console.log("value:", StopPresenterViewAwait);
         if (
@@ -766,7 +775,7 @@ const Dashboard = () => {
 
               let dataAudio = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 IsMuted: false, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -777,7 +786,7 @@ const Dashboard = () => {
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               let dataVideo = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 HideVideo: true, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -789,7 +798,7 @@ const Dashboard = () => {
 
               let data = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
@@ -843,7 +852,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -860,7 +869,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  getVideoCallParticipantsMainApi(Data, navigate, t)
+                  getVideoCallParticipantsMainApi(Data, navigate, t),
                 );
               }
               await dispatch(transferMeetingHostSuccess(true));
@@ -874,7 +883,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("refinedVideoUrl", hostUrl);
@@ -928,42 +937,37 @@ const Dashboard = () => {
 
   async function joinRequestForMeetingVideo(mqttData) {
     try {
-      const currentMeetingID = localStorage.getItem("currentMeetingID");
+      const currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       const { meetingID, userID } = mqttData.payload;
-      console.log("Check PresenterIssue Once");
 
-      if (Number(meetingID) === Number(currentMeetingID)) {
-        // ✅ DEDUPE CHECK (meetingID + userID)
-        const alreadyRequested = waitingParticipantsList?.some(
-          (p) =>
-            Number(p.userID) === Number(userID) &&
-            Number(p.meetingID) === Number(meetingID)
-        );
+      if (Number(meetingID) !== currentMeetingID) return;
 
-        if (alreadyRequested) {
-          console.log("Duplicate join request ignored:", userID);
-          return;
+      // ✅ Check for duplicates in the Redux array
+      const alreadyRequested = waitingParticipantsList?.some(
+        (p) =>
+          Number(p.userID) === Number(userID) &&
+          Number(p.meetingID) === Number(meetingID),
+      );
+      console.log(alreadyRequested, "Filtered unique participants");
+
+      if (alreadyRequested) {
+        console.log("Duplicate join request ignored for user:", userID);
+        return;
+      }
+
+      // ✅ Dispatch to Redux ONLY if not duplicate
+      if (isMeetingVideo && isMeetingVideoHostCheck) {
+        if (mqttData.payload.isGuest) {
+          dispatch(admitGuestUserRequest(mqttData.payload));
+        } else {
+          dispatch(participantWaitingList(mqttData.payload));
         }
-
-        if (isMeetingVideo) {
-          if (presenterViewJoinFlagRef.current) {
-            console.log("Check PresenterIssue Once");
-          } else {
-            if (isMeetingVideoHostCheck) {
-              if (mqttData.payload.isGuest) {
-                dispatch(admitGuestUserRequest(mqttData.payload));
-              } else {
-                dispatch(participantWaitingList(mqttData.payload));
-              }
-              dispatch(guestJoinPopup(true));
-            }
-          }
-        }
+        dispatch(guestJoinPopup(true));
       }
     } catch (e) {
       console.error(e);
@@ -1017,6 +1021,25 @@ const Dashboard = () => {
     });
   };
 
+  const onHandleClickForStopRecording = () => {
+    return new Promise((resolve) => {
+      const iframe = iframeRef.current;
+
+      if (iframe && iframe.contentWindow) {
+        console.log("Does Check Recording Start");
+        iframe.contentWindow.postMessage("RecordingStopMsgFromIframe", "*");
+
+        // Optional delay if iframe needs time to handle the message
+        setTimeout(() => {
+          resolve();
+        }, 1000);
+      } else {
+        // Immediately resolve if iframe is not ready or Zoom isn't enabled
+        resolve();
+      }
+    });
+  };
+
   const handRaisedWhileHostTransferFunc = async () => {
     let participantRoomId = localStorage.getItem("participantRoomId");
     let participantUID = localStorage.getItem("participantUID");
@@ -1026,7 +1049,7 @@ const Dashboard = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let handStatus = JSON.parse(localStorage.getItem("handStatus"));
 
@@ -1039,7 +1062,7 @@ const Dashboard = () => {
 
           let data = {
             RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
             ),
             UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             IsHandRaised: false,
@@ -1049,7 +1072,6 @@ const Dashboard = () => {
       }
     }
   };
-
   const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
@@ -1071,7 +1093,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1088,7 +1110,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_EDITED_HOST"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1105,7 +1127,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_STARTED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1126,7 +1148,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_END"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1134,7 +1156,7 @@ const Dashboard = () => {
                 console.log("mqtt mqmqmqmqmqmq", meetingVideoID);
                 console.log(
                   "mqtt mqmqmqmqmqmq",
-                  data?.payload?.meeting?.pK_MDID
+                  data?.payload?.meeting?.pK_MDID,
                 );
                 meetingEnded(data.payload);
                 dispatch(mqttCurrentMeetingEnded(data.payload));
@@ -1152,7 +1174,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_CANCELLED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1170,7 +1192,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_ADMIN"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1181,7 +1203,7 @@ const Dashboard = () => {
               "NEW_UPCOMING_EVENTS".toLowerCase()
             ) {
               dispatch(
-                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
+                setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0]),
               );
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1195,7 +1217,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PROPOSED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
               }
@@ -1210,7 +1232,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1235,7 +1257,7 @@ const Dashboard = () => {
               }
               console.log(
                 data.payload,
-                "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
+                "AgendaVotingModalStartedDataAgendaVotingModalStartedData",
               );
               dispatch(meetingAgendaStartedMQTT(data.payload));
             } else if (
@@ -1281,7 +1303,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_PUBLISHED"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1301,7 +1323,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("MEETING_STATUS_EDITED_PUBLISHED"),
                     "[Meeting Title]",
-                    data.payload.meetingTitle.substring(0, 100)
+                    data.payload.meetingTitle.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1316,7 +1338,7 @@ const Dashboard = () => {
               data.payload.message
                 ?.toLowerCase()
                 .includes(
-                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase()
+                  "NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED".toLowerCase(),
                 )
             ) {
               if (data.viewable) {
@@ -1326,7 +1348,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_AGENDA_CONTRIBUTOR_DELETED"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1345,7 +1367,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1363,7 +1385,7 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("NEW_MEETING_CREATION"),
                     "[Place holder]",
-                    data.payload.title.substring(0, 100)
+                    data.payload.title.substring(0, 100),
                   ),
                 });
                 setNotificationID(id);
@@ -1381,7 +1403,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MEETING_STATUS_EDITED_NOTCONDUCTED"),
                       "[Meeting Title]",
-                      data.payload.meetingTitle.substring(0, 100)
+                      data.payload.meetingTitle.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1390,7 +1412,7 @@ const Dashboard = () => {
               } catch (error) {
                 console.log(
                   error,
-                  "MeetingReminderNotificationMeetingReminderNotification"
+                  "MeetingReminderNotificationMeetingReminderNotification",
                 );
               }
             } else if (
@@ -1398,7 +1420,7 @@ const Dashboard = () => {
               "MEETING_GUEST_JOIN_REQUEST".toLowerCase()
             ) {
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               dispatch(participantWaitingList(data.payload));
               dispatch(admitGuestUserRequest(data.payload));
@@ -1425,7 +1447,7 @@ const Dashboard = () => {
                 console.log("Is Guest True");
                 // dispatch(guestLeaveVideoMeeting(data.payload.uid));
                 const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
+                  localStorage.getItem("meetinHostInfo"),
                 );
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1440,7 +1462,7 @@ const Dashboard = () => {
                 console.log("Is Guest True");
 
                 const meetingHost = JSON.parse(
-                  localStorage.getItem("meetinHostInfo")
+                  localStorage.getItem("meetinHostInfo"),
                 );
                 let isGuid = "";
                 if (meetingHost?.isHost) {
@@ -1461,8 +1483,8 @@ const Dashboard = () => {
                   data.payload,
                   false,
                   presenterViewHostFlag,
-                  presenterViewFlag
-                )
+                  presenterViewFlag,
+                ),
               );
             } else if (
               data.payload.message.toLowerCase() ===
@@ -1472,7 +1494,7 @@ const Dashboard = () => {
               let isParticipantGuid = localStorage.getItem("participantUID");
               console.log(
                 data.payload.participantGuid === isParticipantGuid,
-                "checkchekc"
+                "checkchekc",
               );
               // if (
               //   data.payload.isHandRaised &&
@@ -1506,26 +1528,26 @@ const Dashboard = () => {
             ) {
               dispatch(screenShareTriggeredGlobally(false));
               let isMeetingVideoCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isSharedSceenEnable = JSON.parse(
-                localStorage.getItem("isSharedSceenEnable")
+                localStorage.getItem("isSharedSceenEnable"),
               );
               console.log("leavecallMeetingVideo", isMeetingVideoCheck);
               if (isMeetingVideoCheck) {
                 if (isZoomEnabled) {
                   if (isSharedSceenEnable && !globallyScreenShare) {
                     let isMeetingVideoHostCheck = JSON.parse(
-                      localStorage.getItem("isMeetingVideoHostCheck")
+                      localStorage.getItem("isMeetingVideoHostCheck"),
                     );
                     let participantRoomId = String(
-                      localStorage.getItem("participantRoomId")
+                      localStorage.getItem("participantRoomId"),
                     );
                     let participantUID = String(
-                      localStorage.getItem("participantUID")
+                      localStorage.getItem("participantUID"),
                     );
                     let RoomID =
                       isMeetingVideoCheck && !isMeetingVideoHostCheck
@@ -1543,12 +1565,14 @@ const Dashboard = () => {
                     };
                     dispatch(screenShareTriggeredGlobally(false));
                     await dispatch(
-                      isSharedScreenTriggeredApi(navigate, t, data)
+                      isSharedScreenTriggeredApi(navigate, t, data),
                     );
                   }
                   dispatch(setAudioControlHost(false));
                   console.log("videoHideUnHideForHost");
                   dispatch(setVideoControlHost(false));
+                  dispatch(toggleParticipantsVisibility(false));
+
                   await dispatch(setParticipantRemovedFromVideobyHost(true));
                 } else {
                   const meetingHost = {
@@ -1570,7 +1594,7 @@ const Dashboard = () => {
 
                   localStorage.setItem(
                     "meetinHostInfo",
-                    JSON.stringify(meetingHost)
+                    JSON.stringify(meetingHost),
                   );
 
                   dispatch(maximizeVideoPanelFlag(false));
@@ -1598,7 +1622,7 @@ const Dashboard = () => {
               "MUTE_UNMUTE_PARTICIPANT".toLowerCase()
             ) {
               const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("meetinHostInfo"),
               );
 
               if (data.payload.isForAll) {
@@ -1615,8 +1639,8 @@ const Dashboard = () => {
                     data.payload.isMuted,
                     true,
                     presenterViewHostFlag,
-                    presenterViewFlag
-                  )
+                    presenterViewFlag,
+                  ),
                 );
               } else {
                 // Handle individual mute/unmute
@@ -1625,8 +1649,8 @@ const Dashboard = () => {
                     data.payload,
                     false,
                     presenterViewHostFlag,
-                    presenterViewFlag
-                  )
+                    presenterViewFlag,
+                  ),
                 );
 
                 let isGuid = "";
@@ -1647,7 +1671,7 @@ const Dashboard = () => {
               "HIDE_UNHIDE_PARTICIPANT_VIDEO".toLowerCase()
             ) {
               const meetingHost = JSON.parse(
-                localStorage.getItem("meetinHostInfo")
+                localStorage.getItem("meetinHostInfo"),
               );
               let isGuid = "";
               if (meetingHost?.isHost) {
@@ -1670,15 +1694,15 @@ const Dashboard = () => {
               dispatch(participantVideoButtonState(false));
               let currentMeetingID = 0;
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               if (isZoomEnabled) {
                 currentMeetingID = String(
-                  localStorage.getItem("currentMeetingID")
+                  localStorage.getItem("currentMeetingID"),
                 );
               } else {
                 currentMeetingID = Number(
-                  localStorage.getItem("currentMeetingID")
+                  localStorage.getItem("currentMeetingID"),
                 );
               }
 
@@ -1729,7 +1753,7 @@ const Dashboard = () => {
               localStorage.setItem("isMeetingVideo", true);
               localStorage.setItem(
                 "currentMeetingVideoUrl",
-                data.payload.videoUrl
+                data.payload.videoUrl,
               );
               console.log("iframeiframe", data.payload.userID);
 
@@ -1737,7 +1761,7 @@ const Dashboard = () => {
               if (data?.payload?.screenShare) {
                 console.log("Check Datat");
                 let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled")
+                  localStorage.getItem("isZoomEnabled"),
                 );
                 if (isZoomEnabled) {
                   console.log(data?.payload?.screenShare, "Check Datat");
@@ -1750,10 +1774,10 @@ const Dashboard = () => {
                 console.log("isMeetingVideo", audioControlForParticipant);
                 console.log("isMeetingVideo", videoControlForParticipant);
                 let videoControlForParticipantLoacl = JSON.parse(
-                  localStorage.getItem("isWebCamEnabled")
+                  localStorage.getItem("isWebCamEnabled"),
                 );
                 let audioControlForParticipantLocal = JSON.parse(
-                  localStorage.getItem("isMicEnabled")
+                  localStorage.getItem("isMicEnabled"),
                 );
                 console.log("iframeiframe", data.payload.userID);
                 dispatch(setAudioControlHost(audioControlForParticipantLocal));
@@ -1764,7 +1788,7 @@ const Dashboard = () => {
                 // Refine the URL by replacing placeholders
                 let refinedUrl = "";
                 let isZoomEnabled = JSON.parse(
-                  localStorage.getItem("isZoomEnabled")
+                  localStorage.getItem("isZoomEnabled"),
                 );
                 if (isZoomEnabled) {
                   refinedUrl = data.payload.videoUrl;
@@ -1773,11 +1797,11 @@ const Dashboard = () => {
                     .replace("$ParticipantFullName$", currentParticipantUser)
                     .replace(
                       "$IsMute$",
-                      audioControlForParticipantLocal.toString()
+                      audioControlForParticipantLocal.toString(),
                     )
                     .replace(
                       "$IsHideCamera$",
-                      videoControlForParticipantLoacl.toString()
+                      videoControlForParticipantLoacl.toString(),
                     );
                 }
 
@@ -1807,7 +1831,7 @@ const Dashboard = () => {
                 console.log("HostTransferEvent");
 
                 const isHost = JSON.parse(
-                  localStorage.getItem("isMeetingVideoHostCheck")
+                  localStorage.getItem("isMeetingVideoHostCheck"),
                 );
 
                 // Check if the current user's guid matches the mqtt newHost guid
@@ -1823,7 +1847,7 @@ const Dashboard = () => {
                     let isGuid = localStorage.getItem("isGuid");
                     localStorage.setItem(
                       "meetinHostInfo",
-                      JSON.stringify(meetingHost)
+                      JSON.stringify(meetingHost),
                     );
                     let refinedVideoUrl =
                       localStorage.getItem("refinedVideoUrl");
@@ -1840,29 +1864,29 @@ const Dashboard = () => {
                       RoomID: String(newRoomId),
                     };
                     await dispatch(
-                      getVideoCallParticipantsMainApi(Data, navigate, t)
+                      getVideoCallParticipantsMainApi(Data, navigate, t),
                     );
 
                     await dispatch(transferMeetingHostSuccess(true));
                   }
                   // Send HostTransferEvent to iframe
                   const iframe = iframeRef.current;
-                  if (iframe && iframe.contentWindow) {
-                    const msg = `HostTransferEvent_#_${newHostGuid}`;
-                    setTimeout(() => {
+                  if (!iframe) return;
+                  const msg = `HostTransferEvent_#_${newHostGuid}`;
+                  setTimeout(() => {
+                    if (iframe.contentWindow) {
                       iframe.contentWindow.postMessage(msg, "*");
-                      console.log("HostTransferEvent sent to iframe:", msg);
-                    }, 1000);
-                  }
+                    }
+                  }, 1000);
                 } else {
                   console.log(
-                    "Current host guid does not match MQTT newHost guid"
+                    "Current host guid does not match MQTT newHost guid",
                   );
                 }
               } catch (err) {
                 console.error(
                   "Error handling AUTO_TRANSFER_HOST_TO_PARTICIPANT_NOTIFY MQTT:",
-                  err
+                  err,
                 );
               }
             } else if (
@@ -1871,7 +1895,7 @@ const Dashboard = () => {
             ) {
               let userID = Number(localStorage.getItem("userID"));
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
 
               handRaisedWhileHostTransferFunc();
@@ -1890,7 +1914,7 @@ const Dashboard = () => {
                 };
                 localStorage.setItem(
                   "meetinHostInfo",
-                  JSON.stringify(meetingHost)
+                  JSON.stringify(meetingHost),
                 );
                 console.log("mqtt check 22");
                 dispatch(videoIconOrButtonState(true));
@@ -1932,7 +1956,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  participantListWaitingListMainApi(Data, navigate, t)
+                  participantListWaitingListMainApi(Data, navigate, t),
                 );
               }
             } else if (
@@ -1948,7 +1972,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MeetingReminderNotification"),
                       "[Meeting Title]",
-                      data.payload.calenderEvents.title.substring(0, 100)
+                      data.payload.calenderEvents.title.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -1956,7 +1980,7 @@ const Dashboard = () => {
               } catch (error) {
                 console.log(
                   error,
-                  "MeetingReminderNotificationMeetingReminderNotification"
+                  "MeetingReminderNotificationMeetingReminderNotification",
                 );
               }
             } else if (
@@ -1985,7 +2009,7 @@ const Dashboard = () => {
                     message: changeMQTTJSONOne(
                       t("MeetingReminderNotification"),
                       "[Meeting Title]",
-                      data.payload.title.substring(0, 100)
+                      data.payload.title.substring(0, 100),
                     ),
                   });
                   setNotificationID(id);
@@ -2007,7 +2031,7 @@ const Dashboard = () => {
               "PRESENTATION_PARTICIPANT_JOINED".toLowerCase()
             ) {
               dispatch(
-                presenterNewParticipantJoin(data.payload.newParticipant)
+                presenterNewParticipantJoin(data.payload.newParticipant),
               );
               console.log(data.payload.newParticipant, "checkdatacheckdata");
             } else if (
@@ -2015,13 +2039,13 @@ const Dashboard = () => {
               "VIDEO_SHARING_ENABLED".toLowerCase()
             ) {
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let participantUID = localStorage.getItem("participantUID");
               let isGuid = localStorage.getItem("isGuid");
@@ -2042,13 +2066,13 @@ const Dashboard = () => {
               "VIDEO_SHARING_DISABLED".toLowerCase()
             ) {
               let isZoomEnabled = JSON.parse(
-                localStorage.getItem("isZoomEnabled")
+                localStorage.getItem("isZoomEnabled"),
               );
               let isMeetingVideo = JSON.parse(
-                localStorage.getItem("isMeetingVideo")
+                localStorage.getItem("isMeetingVideo"),
               );
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck")
+                localStorage.getItem("isMeetingVideoHostCheck"),
               );
               let participantUID = localStorage.getItem("participantUID");
               let isGuid = localStorage.getItem("isGuid");
@@ -2076,8 +2100,8 @@ const Dashboard = () => {
             ) {
               dispatch(
                 removeUpComingEvent(
-                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID
-                )
+                  data.payload.upcomingEvents[0]?.meetingDetails?.pK_MDID,
+                ),
               );
             }
           } catch (error) {
@@ -2097,7 +2121,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2113,7 +2137,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("TDOD_STATUS_EDITED"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2128,7 +2152,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("TDOD_STATUS_DELETED"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2155,7 +2179,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.comment.userName,
                 "[Task Title]",
-                data.payload.comment.todoTitle.substring(0, 100)
+                data.payload.comment.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2173,7 +2197,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2189,7 +2213,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2206,7 +2230,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_TODO_CREATION"),
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
             setNotificationID(id);
@@ -2227,7 +2251,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.comment.userName,
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2245,7 +2269,7 @@ const Dashboard = () => {
                 "[User]",
                 data.payload.userName,
                 "[Task Title]",
-                data.payload.todoTitle.substring(0, 100)
+                data.payload.todoTitle.substring(0, 100),
               ),
             });
           }
@@ -2262,7 +2286,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("USER_ROLE_EDITED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2280,7 +2304,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("USER_DELETED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2299,7 +2323,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2315,7 +2339,7 @@ const Dashboard = () => {
             message: changeMQTTJSONOne(
               t("ORGANIZATION_DELETED"),
               "[organizationName]",
-              data.payload.organizationName
+              data.payload.organizationName,
             ),
           });
           setNotificationID(id);
@@ -2343,7 +2367,7 @@ const Dashboard = () => {
                 description: changeMQTTJSONOne(
                   t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
                   "[Task Title]",
-                  data.payload.taskTitle
+                  data.payload.taskTitle,
                 ),
                 icon: "",
               },
@@ -2525,7 +2549,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_COMMITTEE_CREATION"),
                 "[Committe Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
@@ -2542,7 +2566,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
                 "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Committee ${data.payload.committees.committeesTitle}`,
             });
@@ -2559,7 +2583,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2576,7 +2600,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_ARCHIVED"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
             });
           }
@@ -2592,7 +2616,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
                 "[Committee Title]",
-                data.payload.committeeTitle.substring(0, 100)
+                data.payload.committeeTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2611,7 +2635,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("MEMBER_REMOVED_FROM_COMMITTEE"),
                 "[Committee Title]",
-                data.payload.committees.committeesTitle.substring(0, 100)
+                data.payload.committees.committeesTitle.substring(0, 100),
               ),
               // message: `Committee ${data.payload.committeeTitle} in which you are a member has been set as In-Active`,
             });
@@ -2633,7 +2657,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_GROUP_CREATION"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2650,7 +2674,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_GROUP_MEMBER_ADDED"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2667,7 +2691,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_IN-ACTIVE"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
@@ -2684,7 +2708,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_ARCHIVED"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
             });
           }
@@ -2700,7 +2724,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_MEMBER_REMOVED"),
                 "[Group Title]",
-                data.payload.groups.groupTitle.substring(0, 100)
+                data.payload.groups.groupTitle.substring(0, 100),
               ),
               // message: `You have been added as a member in Group  ${data.payload.groups.groupTitle}`,
             });
@@ -2717,7 +2741,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("GROUP_STATUS_EDITED_ACTIVE"),
                 "[Group Title]",
-                data.payload.groupTitle.substring(0, 100)
+                data.payload.groupTitle.substring(0, 100),
               ),
               // message: `Group ${data.payload.groupTitle} in which you are a member has been set as In-Active`,
             });
@@ -2764,7 +2788,7 @@ const Dashboard = () => {
               },
             };
             dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate)
+              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
             );
           } else if (
             data.payload.data[0].senderID !== parseInt(createrID) &&
@@ -2785,7 +2809,7 @@ const Dashboard = () => {
               },
             };
             dispatch(
-              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate)
+              UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
             );
           }
         } else if (
@@ -2944,7 +2968,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle.slice(0, 30)
+                data.payload.pollTitle.slice(0, 30),
               ),
             });
           }
@@ -2961,7 +2985,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("POLL_UPDATED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -2977,7 +3001,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("POLL_EXPIRED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -2997,11 +3021,11 @@ const Dashboard = () => {
                 message: changeMQTTJSONOne(
                   t("PUBLISHED_POLL_DELETED"),
                   "[Poll Title]",
-                  data.payload.pollTitle
+                  data.payload.pollTitle,
                 ),
               });
             }
-          } catch { }
+          } catch {}
         } else if (
           data.payload.message
             .toLowerCase()
@@ -3017,7 +3041,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3036,7 +3060,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3064,7 +3088,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_POLL_PUBLISHED"),
                 "[Poll Title]",
-                data.payload.pollTitle
+                data.payload.pollTitle,
               ),
             });
           }
@@ -3082,7 +3106,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("NEW_RESOLUTION_CREATION"),
                 "[Resolution Title]",
-                data.payload.model.resolution.title
+                data.payload.model.resolution.title,
               ),
             });
           }
@@ -3098,7 +3122,7 @@ const Dashboard = () => {
               message: changeMQTTJSONOne(
                 t("RESOLUTION_CANCELLED"),
                 "[Resolution Title]",
-                data.payload.model.resolution.title
+                data.payload.model.resolution.title,
               ),
             });
           }
@@ -3111,11 +3135,12 @@ const Dashboard = () => {
             setNotification({
               ...notification,
               notificationShow: true,
-              message: changeMQTTJSONOne(
-                t("RESOLUTION_CLOSED"),
-                "[Resolution Title]",
-                data.payload.model.resolution.title
-              ),
+              message: t("RESOLUTION_CLOSED"),
+              // message: changeMQTTJSONOne(
+              //   t("RESOLUTION_CLOSED"),
+              //   "[Resolution Title]",
+              //   data.payload.model.resolution.title
+              // ),
             });
           }
           dispatch(resolutionMQTTClosed(data.payload.model));
@@ -3141,7 +3166,7 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           // localStorage.setItem("RingerCallCheckFlag", true);
           // localStorage.setItem("callType", data.payload.callType);
@@ -3159,7 +3184,7 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStartRecording();
+              await onHandleClickForStopRecording();
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
@@ -3227,7 +3252,7 @@ const Dashboard = () => {
           let userID = localStorage.getItem("userID");
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
 
@@ -3240,7 +3265,7 @@ const Dashboard = () => {
             // // Condition For Video Recording
             if (isCaller && (CallType === 1 || CallType === 2)) {
               console.log("Does Check Recording Start");
-              await onHandleClickForStartRecording();
+              await onHandleClickForStopRecording();
               await new Promise((resolve) => setTimeout(resolve, 1000));
             }
           }
@@ -3251,7 +3276,8 @@ const Dashboard = () => {
               console.log("Filtering participant:", data.payload.recepientID);
 
               return prevList.filter(
-                (participant) => participant.userID !== data.payload.recepientID
+                (participant) =>
+                  participant.userID !== data.payload.recepientID,
               );
             });
           }
@@ -3261,7 +3287,7 @@ const Dashboard = () => {
             setGroupVideoCallAccepted((prevState) => {
               // Check if the user is already in the accepted list
               const userExists = prevState.some(
-                (user) => user.recepientID === data.payload.recepientID
+                (user) => user.recepientID === data.payload.recepientID,
               );
               if (!userExists) {
                 return [...prevState, data.payload];
@@ -3302,7 +3328,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3344,19 +3370,19 @@ const Dashboard = () => {
             };
             if (RecipentIDsOninitiateVideoCall.length > 0) {
               const index = RecipentIDsOninitiateVideoCall.indexOf(
-                data.payload.recepientID
+                data.payload.recepientID,
               );
               if (index !== -1) {
                 // Remove the matching value
                 RecipentIDsOninitiateVideoCall.splice(index, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(RecipentIDsOninitiateVideoCall)
+                  JSON.stringify(RecipentIDsOninitiateVideoCall),
                 );
                 existingData.push(newData);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData)
+                  JSON.stringify(existingData),
                 );
                 dispatch(callRequestReceivedMQTT({}, ""));
               }
@@ -3375,7 +3401,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3386,7 +3412,7 @@ const Dashboard = () => {
 
           let CallType = Number(localStorage.getItem("CallType"));
           console.log(existingData.length, "existingDatalength");
-          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+          sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
           //For Stop Recording while user reject the call
           if (isZoomEnabled) {
@@ -3398,7 +3424,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             }
@@ -3407,8 +3433,8 @@ const Dashboard = () => {
           if (CallType === 2) {
             setGroupCallParticipantList((prevState) =>
               prevState.filter(
-                (user) => user.userID !== data.payload.recepientID
-              )
+                (user) => user.userID !== data.payload.recepientID,
+              ),
             );
           }
           let falgCheck1 = false;
@@ -3444,7 +3470,7 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           let falgCheck2 = false;
           if (isZoomEnabled) {
@@ -3476,7 +3502,7 @@ const Dashboard = () => {
               existingData.push(newData);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(existingData)
+                JSON.stringify(existingData),
               );
               let RecipentIDsOninitiateVideoCallflag = false;
               let remainingCount = 0;
@@ -3485,14 +3511,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID
+                  data.payload.recepientID,
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                    JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -3505,13 +3531,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3547,13 +3573,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -3599,7 +3625,7 @@ const Dashboard = () => {
 
           let RoomID =
             presenterViewFlag &&
-              (presenterViewHostFlag || presenterViewJoinFlag)
+            (presenterViewHostFlag || presenterViewJoinFlag)
               ? roomID
               : JSON.parse(localStorage.getItem("activeCall"))
                 ? localStorage.getItem("activeRoomID") != 0 &&
@@ -3610,9 +3636,9 @@ const Dashboard = () => {
                   ? newRoomID
                   : localStorage.getItem("participantRoomId");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
-          sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+          sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
 
           console.log("mqtt");
           console.log("mqtt", typeof RoomID);
@@ -3645,7 +3671,7 @@ const Dashboard = () => {
               localStorage.setItem("onlyLeaveCall", true);
               console.log("setLeaveOneToOne");
               let initiateVideoCall = JSON.parse(
-                localStorage.getItem("initiateVideoCall")
+                localStorage.getItem("initiateVideoCall"),
               );
               let initiateCallRoomID =
                 localStorage.getItem("initiateCallRoomID");
@@ -3666,7 +3692,7 @@ const Dashboard = () => {
               dispatch(videoChatMessagesFlag(false));
               dispatch(videoOutgoingCallFlag(false));
               dispatch(
-                callRequestReceivedMQTT(data.payload, data.payload.message)
+                callRequestReceivedMQTT(data.payload, data.payload.message),
               );
               console.log(data.payload.message, "datapayloadmessage");
             } else {
@@ -3676,7 +3702,7 @@ const Dashboard = () => {
                 setUnansweredCallParticipant((prevState) => {
                   // Check if the user is already in the accepted list
                   const userExists = prevState.some(
-                    (user) => user.recepientID === data.payload.recepientID
+                    (user) => user.recepientID === data.payload.recepientID,
                   );
 
                   console.log(userExists, "userExists");
@@ -3691,11 +3717,11 @@ const Dashboard = () => {
               // Step 1: Update RecipentIDsOninitiateVideoCall
               let recipientIDsOnInitiate =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
 
               const recipientIndex = recipientIDsOnInitiate.indexOf(
-                participantWhoDidNotRespond
+                participantWhoDidNotRespond,
               );
               console.log("setLeaveOneToOne", recipientIndex);
               if (recipientIndex !== -1) {
@@ -3703,7 +3729,7 @@ const Dashboard = () => {
                 recipientIDsOnInitiate.splice(recipientIndex, 1);
                 localStorage.setItem(
                   "RecipentIDsOninitiateVideoCall",
-                  JSON.stringify(recipientIDsOnInitiate)
+                  JSON.stringify(recipientIDsOnInitiate),
                 );
               }
 
@@ -3714,19 +3740,19 @@ const Dashboard = () => {
               callerStatusList = callerStatusList.filter(
                 (obj) =>
                   obj.participantId !== participantWhoDidNotRespond &&
-                  obj.CallStatus !== "Rejected" // Remove all Rejected
+                  obj.CallStatus !== "Rejected", // Remove all Rejected
               );
 
               console.log("setLeaveOneToOne", callerStatusList);
               localStorage.setItem(
                 "callerStatusObject",
-                JSON.stringify(callerStatusList)
+                JSON.stringify(callerStatusList),
               );
 
               // Step 3: Fetch updated arrays again
               const remainingRecipients =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
               console.log("setLeaveOneToOne", remainingRecipients);
 
@@ -3734,7 +3760,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               console.log(
                 "setLeaveOneToOne",
-                checkCallStatus(remainingCallerStatus)
+                checkCallStatus(remainingCallerStatus),
               );
 
               // Step 4: Final condition
@@ -3749,7 +3775,7 @@ const Dashboard = () => {
                 dispatch(videoChatMessagesFlag(false));
                 dispatch(videoOutgoingCallFlag(false));
                 dispatch(
-                  callRequestReceivedMQTT(data.payload, data.payload.message)
+                  callRequestReceivedMQTT(data.payload, data.payload.message),
                 );
               }
             }
@@ -3764,7 +3790,7 @@ const Dashboard = () => {
             localStorage.setItem("ringerRoomId", data.payload.roomID);
             localStorage.setItem("initiateVideoCall", true);
             dispatch(
-              callRequestReceivedMQTT(data.payload, data.payload.message)
+              callRequestReceivedMQTT(data.payload, data.payload.message),
             );
             let existingData =
               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -3778,7 +3804,7 @@ const Dashboard = () => {
               (item) =>
                 item.RecipientName === newData.RecipientName &&
                 item.RecipientID === newData.RecipientID &&
-                item.RoomID === newData.RoomID
+                item.RoomID === newData.RoomID,
             );
             if (existingObjectIndex !== -1) {
               existingData[existingObjectIndex] = newData;
@@ -3787,7 +3813,7 @@ const Dashboard = () => {
             }
             localStorage.setItem(
               "callerStatusObject",
-              JSON.stringify(existingData)
+              JSON.stringify(existingData),
             );
             let Dataa = {
               OrganizationID: Number(currentOrganization),
@@ -3802,7 +3828,7 @@ const Dashboard = () => {
           let activeRoomID = localStorage.getItem("activeRoomID");
           let NewRoomID = localStorage.getItem("NewRoomID");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
@@ -3867,6 +3893,10 @@ const Dashboard = () => {
               let newCallerID = Number(localStorage.getItem("newCallerID"));
               if (callerID === newCallerID) {
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
@@ -3913,6 +3943,10 @@ const Dashboard = () => {
               if (callerID === newCallerID) {
                 console.log("Check 123");
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
               }
               localStorage.setItem("newCallerID", callerID);
               localStorage.setItem("initiateVideoCall", false);
@@ -3930,6 +3964,11 @@ const Dashboard = () => {
               if (activeRoomID !== acceptedRoomID) {
                 console.log("Check 123");
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
+
                 localStorage.removeItem("acceptedRoomID");
                 dispatch(normalizeVideoPanelFlag(false));
                 dispatch(incomingVideoCallFlag(false));
@@ -3976,17 +4015,21 @@ const Dashboard = () => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
               } else if (data.payload.callerID === newCallerID) {
                 console.log("Check 123");
                 dispatch(incomingVideoCallFlag(false));
                 let acceptedRoomID = "";
                 if (isZoomEnabled) {
                   acceptedRoomID = String(
-                    localStorage.getItem("acceptedRoomID")
+                    localStorage.getItem("acceptedRoomID"),
                   );
                 } else {
                   acceptedRoomID = Number(
-                    localStorage.getItem("acceptedRoomID")
+                    localStorage.getItem("acceptedRoomID"),
                   );
                 }
 
@@ -4002,6 +4045,10 @@ const Dashboard = () => {
                 dispatch(maximizeVideoPanelFlag(false));
                 dispatch(minimizeVideoPanelFlag(false));
                 localStorage.setItem("activeCall", false);
+                sessionStorage.setItem(
+                  "activeCallSessionforOtoandGroup",
+                  false,
+                );
               }
             } else {
             }
@@ -4020,10 +4067,10 @@ const Dashboard = () => {
           let CallType = Number(localStorage.getItem("CallType"));
           let isCaller = JSON.parse(localStorage.getItem("isCaller"));
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let isMeetingVideoHostCheck = JSON.parse(
-            localStorage.getItem("isMeetingVideoHostCheck")
+            localStorage.getItem("isMeetingVideoHostCheck"),
           );
           let activeCall = JSON.parse(localStorage.getItem("activeCall"));
           let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -4041,7 +4088,7 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             } else if (
@@ -4057,15 +4104,15 @@ const Dashboard = () => {
                 console.log("Does Check Recording Stop Call Type 2");
                 iframe.contentWindow.postMessage(
                   "RecordingStopMsgFromIframe",
-                  "*"
+                  "*",
                 );
               }
             }
 
             RoomID =
               presenterViewFlagRef.current &&
-                (presenterViewHostFlagFlagRef.current ||
-                  presenterViewJoinFlagRef.current)
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
                 ? String(roomID)
                 : isMeetingVideo
                   ? isMeetingVideoHostCheck
@@ -4077,8 +4124,8 @@ const Dashboard = () => {
           } else {
             RoomID =
               presenterViewFlagRef.current &&
-                (presenterViewHostFlagFlagRef.current ||
-                  presenterViewJoinFlagRef.current)
+              (presenterViewHostFlagFlagRef.current ||
+                presenterViewJoinFlagRef.current)
                 ? Number(roomID)
                 : isMeetingVideo
                   ? isMeetingVideoHostCheck
@@ -4096,8 +4143,9 @@ const Dashboard = () => {
             // Also remove the user from groupCallParticipantList
             setGroupCallParticipantList((prevList) =>
               prevList.filter(
-                (participant) => participant.userID !== data.payload.recipientID
-              )
+                (participant) =>
+                  participant.userID !== data.payload.recipientID,
+              ),
             );
           }
 
@@ -4124,7 +4172,7 @@ const Dashboard = () => {
                 JSON.parse(localStorage.getItem("callerStatusObject")) || [];
               let RecipentIDsOninitiateVideoCall =
                 JSON.parse(
-                  localStorage.getItem("RecipentIDsOninitiateVideoCall")
+                  localStorage.getItem("RecipentIDsOninitiateVideoCall"),
                 ) || [];
 
               let newData = {
@@ -4138,7 +4186,7 @@ const Dashboard = () => {
                 (item) =>
                   item.RecipientName === newData.RecipientName &&
                   item.RecipientID === newData.RecipientID &&
-                  item.RoomID === newData.RoomID
+                  item.RoomID === newData.RoomID,
               );
               // console.log("mqtt",RoomID)
 
@@ -4146,7 +4194,7 @@ const Dashboard = () => {
                 existingData.splice(existingObjectIndex, 1);
                 localStorage.setItem(
                   "callerStatusObject",
-                  JSON.stringify(existingData)
+                  JSON.stringify(existingData),
                 );
                 if (
                   RecipentIDsOninitiateVideoCall.length === 0 &&
@@ -4219,7 +4267,7 @@ const Dashboard = () => {
           let userID = Number(localStorage.getItem("userID"));
           let currentUserName = localStorage.getItem("name");
           let isMeetingVideo = JSON.parse(
-            localStorage.getItem("isMeetingVideo")
+            localStorage.getItem("isMeetingVideo"),
           );
           let existingData =
             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
@@ -4249,12 +4297,12 @@ const Dashboard = () => {
           console.log("mqtt", roomID);
           let RecipentIDsOninitiateVideoCall =
             JSON.parse(
-              localStorage.getItem("RecipentIDsOninitiateVideoCall")
+              localStorage.getItem("RecipentIDsOninitiateVideoCall"),
             ) || [];
           console.log(isMeetingVideo, "Check Is Mqtt");
           console.log(
             Number(data.payload.roomID) === Number(roomID),
-            "Check Is Mqtt"
+            "Check Is Mqtt",
           );
           console.log(data.payload.roomID, "Check Is Mqtt");
           console.log(roomID, "Check Is Mqtt");
@@ -4268,7 +4316,7 @@ const Dashboard = () => {
             !isMeetingVideo && isZoomEnabled
               ? String(data.payload.roomID) === String(roomID)
               : Number(data.payload.roomID) === Number(roomID) &&
-              userID !== data.senderID
+                userID !== data.senderID
           ) {
             console.log("mqtt", data.payload.callTypeID);
             if (data.payload.callTypeID === 1) {
@@ -4309,14 +4357,14 @@ const Dashboard = () => {
               let existingObjectIndex = [];
               if (RecipentIDsOninitiateVideoCall.length > 0) {
                 const index = RecipentIDsOninitiateVideoCall.indexOf(
-                  data.payload.recepientID
+                  data.payload.recepientID,
                 );
                 if (index !== -1) {
                   // Remove the matching value
                   RecipentIDsOninitiateVideoCall.splice(index, 1);
                   localStorage.setItem(
                     "RecipentIDsOninitiateVideoCall",
-                    JSON.stringify(RecipentIDsOninitiateVideoCall)
+                    JSON.stringify(RecipentIDsOninitiateVideoCall),
                   );
                   RecipentIDsOninitiateVideoCallflag = true;
                   remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
@@ -4329,13 +4377,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4369,13 +4417,13 @@ const Dashboard = () => {
                     (item) =>
                       item.RecipientName === newData.RecipientName &&
                       item.RecipientID === newData.RecipientID &&
-                      item.RoomID === newData.RoomID
+                      item.RoomID === newData.RoomID,
                   );
                   if (existingObjectIndex !== -1) {
                     existingData.splice(existingObjectIndex, 1);
                     localStorage.setItem(
                       "callerStatusObject",
-                      JSON.stringify(existingData)
+                      JSON.stringify(existingData),
                     );
                     existingDataflag = true;
                     existingDataremainingCount = existingData.length || 0;
@@ -4419,7 +4467,7 @@ const Dashboard = () => {
               description: changeMQTTJSONOne(
                 t("NOTES-RECENT-ACTIVITY"),
                 "[Notes Title]",
-                data.payload.model.title
+                data.payload.model.title,
               ),
               icon: "",
             },
@@ -4500,13 +4548,13 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("FILE_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFileName
+                    data?.payload?.data?.displayFileName,
                   ),
                 });
               }
               setNotificationID(id);
               dispatch(fileSharedMQTT(data.payload));
-            } catch (error) { }
+            } catch (error) {}
           } else if (
             data.payload.message.toLowerCase() === "FOLDER_SHARED".toLowerCase()
           ) {
@@ -4517,16 +4565,16 @@ const Dashboard = () => {
                   message: changeMQTTJSONOne(
                     t("FOLDER_SHARED"),
                     "[Place holder]",
-                    data?.payload?.data?.displayFolderName
+                    data?.payload?.data?.displayFolderName,
                   ),
                 });
               }
               setNotificationID(id);
               dispatch(folderSharedMQTT(data.payload));
-            } catch (error) { }
+            } catch (error) {}
           } else if (
             data.payload.message.toLowerCase() ===
-            "FILE_SHARING_REMOVED".toLowerCase() ||
+              "FILE_SHARING_REMOVED".toLowerCase() ||
             "FILE_DELETED".toLowerCase()
           ) {
             try {
@@ -4538,7 +4586,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(fileRemoveMQTT(data?.payload?.fileID));
-            } catch (error) { }
+            } catch (error) {}
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_SHARING_REMOVED".toLowerCase()
@@ -4552,7 +4600,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.fileID));
-            } catch (error) { }
+            } catch (error) {}
           } else if (
             data.payload.message.toLowerCase() ===
             "FOLDER_DELETED".toLowerCase()
@@ -4566,7 +4614,7 @@ const Dashboard = () => {
               }
               setNotificationID(id);
               dispatch(folderRemoveMQTT(data?.payload?.folderID));
-            } catch (error) { }
+            } catch (error) {}
           }
           if (
             data.payload.message.toLowerCase() ===
@@ -4593,7 +4641,7 @@ const Dashboard = () => {
                 message: changeMQTTJSONOne(
                   t("MEETING_VIDEO_RECORDING_RECEIVED"),
                   "[Meeting Title]",
-                  data.payload.meetingTitle
+                  data.payload.meetingTitle,
                 ),
               });
               setNotificationID(id);
@@ -4610,15 +4658,15 @@ const Dashboard = () => {
                 message:
                   data.payload.callTypeID === 1
                     ? changeMQTTJSONOne(
-                      t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
-                      "[Participant Name]",
-                      data.payload?.callReceipents[0]?.name
-                    )
+                        t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+                        "[Participant Name]",
+                        data.payload?.callReceipents[0]?.name,
+                      )
                     : changeMQTTJSONOne(
-                      t("VIDEO_RECORDING_GROUP_RECEIVED"),
-                      "[Participant Name]",
-                      data.payload?.callReceipents[0]?.name
-                    ),
+                        t("VIDEO_RECORDING_GROUP_RECEIVED"),
+                        "[Participant Name]",
+                        data.payload?.callReceipents[0]?.name,
+                      ),
               });
               setNotificationID(id);
             }
@@ -4653,6 +4701,7 @@ const Dashboard = () => {
             .includes("SIGNATURE_DOCUMENT_RECEIVED".toLowerCase())
         ) {
           dispatch(SignatureDocumentReceived(data.payload));
+          if (data.payload?.workFlowStatusID === 3) return;
           setPendingApprovalTabCount((prev) => ({
             ...prev,
             pendingSignature: (prev.pendingSignature ?? 0) + 1,
@@ -4665,10 +4714,10 @@ const Dashboard = () => {
         ) {
           dispatch(SignatureDocumentStatusChange(data.payload));
           //here to decrease the signature count
-          setPendingApprovalTabCount((prev) => ({
-            ...prev,
-            pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
-          }));
+          // setPendingApprovalTabCount((prev) => ({
+          //   ...prev,
+          //   pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+          // }));
         }
         if (
           data.payload.message
@@ -4684,13 +4733,13 @@ const Dashboard = () => {
             showMessage(
               t("Document-has-been-signed-successfully"),
               "success",
-              setOpen
+              setOpen,
             );
           } else if (data.payload.data.status === "Declined") {
             showMessage(
               t("Document-has-been-declined-successfully"),
               "success",
-              setOpen
+              setOpen,
             );
           }
         }
@@ -4698,7 +4747,7 @@ const Dashboard = () => {
           data.payload.message
             .toLowerCase()
             .includes(
-              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase()
+              "SIGNATURE_DOCUMENT_STATUS_CHANGE_FOR_SIGNEES".toLowerCase(),
             )
         ) {
           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
@@ -4748,10 +4797,2865 @@ const Dashboard = () => {
       if (data.action.toLowerCase() === "Authority".toLowerCase()) {
         console.log("AUTHORITY_INACTIVE", data);
       }
+      if (data.action.toLowerCase() === "Compliance".toLowerCase()) {
+        //COMPLIANCE CREATED MQTT
+        if (
+          data.message?.toLowerCase() === "COMPLIANCE_CREATED".toLowerCase()
+        ) {
+          dispatch(complianceCreatedFromMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST ADDED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_CHECKLIST_ADDED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistAddedMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_CHECKLIST_UPDATED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistUpdateMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "CHECKLIST_DELETED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistDeletedMQTT(data.payload));
+        }
+        //COMPLIANCE COMPLIANCE UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_UPDATED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceUpdateMQTT(data.payload));
+        }
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const onMessageArrived = async (msg) => {
+  //   let min = 10000;
+  //   let max = 90000;
+  //   let id = min + Math.random() * (max - min);
+  //   let data = JSON.parse(msg.payloadString);
+  //   try {
+  //     if (data?.action?.toLowerCase() === "meeting" && data.payload) {
+  //       try {
+  //         const message = data.payload.message?.toLowerCase();
+
+  //         switch (message) {
+  //           case "new_meeting_creation": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_MEETING_CREATION"),
+  //                   "[Place holder]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(allMeetingsSocket(data.payload.meeting));
+  //             break;
+  //           }
+
+  //           case "meeting_edited_host": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_EDITED_HOST"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(allMeetingsSocket(data.payload.meeting));
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_started": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_STARTED"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(getMeetingStatusfromSocket(data.payload));
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_end": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_END"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             meetingEnded(data.payload);
+  //             dispatch(mqttCurrentMeetingEnded(data.payload));
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_cancelled": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_CANCELLED"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(getMeetingStatusfromSocket(data.payload));
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_admin": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_ADMIN"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(getMeetingStatusfromSocket(data.payload));
+  //             break;
+  //           }
+
+  //           case "new_upcoming_events": {
+  //             dispatch(
+  //               setMQTTRequestUpcomingEvents(data.payload.upcomingEvents[0])
+  //             );
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_proposed": {
+  //             dispatch(meetingStatusProposedMqtt(data.payload.meeting));
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_PROPOSED"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //             }
+  //             break;
+  //           }
+
+  //           case "meeting_status_edited_published": {
+  //             const newMeeting = {
+  //               ...data.payload.meeting,
+  //               talkGroupID: data.payload.talkGroupID,
+  //             };
+  //             dispatch(meetingStatusPublishedMqtt(newMeeting));
+
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_STATUS_EDITED_PUBLISHED"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             break;
+  //           }
+
+  //           case "agenda_voting_started": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: t("AGENDA_VOTING_STARTED"),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(meetingAgendaStartedMQTT(data.payload));
+  //             break;
+  //           }
+
+  //           case "agenda_voting_ended": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: t("AGENDA_VOTING_ENDED"),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(meetingAgendaEndedMQTT(data.payload));
+  //             break;
+  //           }
+
+  //           case "new_meeting_agenda_added": {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: t("NEW_MEETING_AGENDA_ADDED"),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(meetingAgendaUpdatedMQTT(data.payload));
+  //             break;
+  //           }
+
+  //           case "new_meetings_count": {
+  //             dispatch(getDashboardMeetingCountMQTT(data.payload));
+  //             break;
+  //           }
+
+  //           default: {
+  //             // Optional: log unhandled messages
+  //             console.warn("Unhandled MQTT Meeting message:", message);
+  //             break;
+  //           }
+  //         }
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+
+  //     if (data?.action?.toLowerCase() === "todo" && data.payload) {
+  //       const message = data.payload.message?.toLowerCase();
+
+  //       switch (message) {
+  //         case "new_todo_creation": {
+  //           dispatch(setTodoListActivityData(data.payload));
+
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_TODO_CREATION"),
+  //                 "[Task Title]",
+  //                 data.payload.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+  //           break;
+  //         }
+
+  //         case "tdod_status_edited": {
+  //           dispatch(setTodoStatusDataFormSocket(data.payload));
+
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("TDOD_STATUS_EDITED"),
+  //                 "[Task Title]",
+  //                 data.payload.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+  //           break;
+  //         }
+
+  //         case "tdod_status_deleted": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("TDOD_STATUS_DELETED"),
+  //                 "[Task Title]",
+  //                 data.payload.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+
+  //           dispatch(setTodoStatusDataFormSocket(data.payload));
+  //           break;
+  //         }
+
+  //         case "new_todo_deleted": {
+  //           // No action defined (intentionally left blank)
+  //           break;
+  //         }
+
+  //         case "new_todo_count": {
+  //           dispatch(getDashboardTaskCountMQTT(data.payload));
+  //           break;
+  //         }
+
+  //         case "new_comment_deletion": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQQTTJSONTwo(
+  //                 t("NEW_COMMENT_DELETION"),
+  //                 "[User]",
+  //                 data.payload.comment.userName,
+  //                 "[Task Title]",
+  //                 data.payload.comment.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+
+  //           dispatch(deleteCommentsMQTT(data.payload));
+  //           break;
+  //         }
+
+  //         default: {
+  //           // Handle messages that require `includes`
+  //           if (message?.includes("new_advance_meeting_todo")) {
+  //             dispatch(createTaskMeetingMQTT(data.payload));
+
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_TODO_CREATION"),
+  //                   "[Task Title]",
+  //                   data.payload.todoTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //           } else if (message?.includes("new_group_todo")) {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_TODO_CREATION"),
+  //                   "[Task Title]",
+  //                   data.payload.todoTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(createTaskGroupMQTT(data.payload));
+  //           } else if (message?.includes("new_committee_todo")) {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_TODO_CREATION"),
+  //                   "[Task Title]",
+  //                   data.payload.todoTitle.substring(0, 100)
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             dispatch(createTaskCommitteeMQTT(data.payload));
+  //           } else {
+  //             console.warn("Unhandled TODO MQTT message:", message);
+  //           }
+
+  //           break;
+  //         }
+  //       }
+  //     }
+
+  //     if (data?.action?.toLowerCase() === "comment" && data.payload) {
+  //       const message = data.payload.message?.toLowerCase();
+
+  //       switch (message) {
+  //         case "new_comment_creation": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQQTTJSONTwo(
+  //                 t("NEW_COMMENT_CREATION"),
+  //                 "[User]",
+  //                 data.payload.comment.userName,
+  //                 "[Task Title]",
+  //                 data.payload.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+
+  //           dispatch(postComments(data.payload.comment));
+  //           break;
+  //         }
+
+  //         case "new_comment_deletion": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQQTTJSONTwo(
+  //                 t("NEW_COMMENT_DELETION"),
+  //                 "[User]",
+  //                 data.payload.userName,
+  //                 "[Task Title]",
+  //                 data.payload.todoTitle.substring(0, 100)
+  //               ),
+  //             });
+  //             setNotificationID(id);
+  //           }
+
+  //           dispatch(deleteCommentsMQTT(data.payload));
+  //           break;
+  //         }
+
+  //         default: {
+  //           console.warn("Unhandled COMMENT MQTT message:", message);
+  //           break;
+  //         }
+  //       }
+  //     }
+
+  //     if (data?.action?.toLowerCase() === "notification" && data.payload) {
+  //       const message = data.payload.message?.toLowerCase();
+
+  //       const logoutWithDelay = () => {
+  //         setTimeout(() => {
+  //           if (data.payload.isLoggedOut) {
+  //             dispatch(userLogOutApiFunc(navigate, t));
+  //           }
+  //         }, 4000);
+  //       };
+
+  //       const navigateHomeWithDelay = () => {
+  //         setTimeout(() => {
+  //           navigate("/");
+  //         }, 4000);
+  //       };
+
+  //       const recentActivityDispatcher = (description) => {
+  //         const payload = data.payload;
+  //         if (!payload) return;
+
+  //         dispatch(
+  //           setRecentActivityDataNotification({
+  //             creationDateTime: payload.creationDateTime,
+  //             notificationTypes: {
+  //               pK_NTID: payload.notificationStatusID,
+  //               description,
+  //               icon: "",
+  //             },
+  //             key: 0,
+  //           })
+  //         );
+  //       };
+
+  //       switch (message) {
+  //         case "user_edited": {
+  //           setNotification({
+  //             notificationShow: true,
+  //             message: changeMQTTJSONOne(
+  //               t("USER_ROLE_EDITED"),
+  //               "[organizationName]",
+  //               data.payload.organizationName
+  //             ),
+  //           });
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "user_deleted": {
+  //           setNotification({
+  //             notificationShow: true,
+  //             message: changeMQTTJSONOne(
+  //               t("USER_DELETED"),
+  //               "[organizationName]",
+  //               data.payload.organizationName
+  //             ),
+  //           });
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "organization_subscription_cancelled": {
+  //           setNotification({
+  //             notificationShow: true,
+  //             message: changeMQTTJSONOne(
+  //               t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
+  //               "[organizationName]",
+  //               data.payload.organizationName
+  //             ),
+  //           });
+  //           setNotificationID(id);
+  //           navigateHomeWithDelay();
+  //           break;
+  //         }
+
+  //         case "organization_deleted": {
+  //           setNotification({
+  //             notificationShow: true,
+  //             message: changeMQTTJSONOne(
+  //               t("ORGANIZATION_DELETED"),
+  //               "[organizationName]",
+  //               data.payload.organizationName
+  //             ),
+  //           });
+  //           setNotificationID(id);
+  //           navigateHomeWithDelay();
+  //           break;
+  //         }
+
+  //         case "user_profile_edited": {
+  //           setNotification({
+  //             notificationShow: true,
+  //             message: t("USER_PROFILE_EDITED"),
+  //           });
+  //           setNotificationID(id);
+  //           break;
+  //         }
+
+  //         case "new_todo_creation_recent_activity": {
+  //           recentActivityDispatcher(
+  //             changeMQTTJSONOne(
+  //               t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
+  //               "[Task Title]",
+  //               data.payload.taskTitle
+  //             )
+  //           );
+  //           break;
+  //         }
+
+  //         case "new_meetting_creation_recent_activity": {
+  //           recentActivityDispatcher(
+  //             t("NEW_MEETTING_CREATION_RECENT_ACTIVITY")
+  //           );
+  //           break;
+  //         }
+
+  //         case "new_poll_published_recent_activity": {
+  //           recentActivityDispatcher(t("NEW_POLL_PUBLISHED_RECENT_ACTIVITY"));
+  //           break;
+  //         }
+
+  //         case "poll_expired_recent_activity": {
+  //           recentActivityDispatcher(t("POLL_EXPIRED_RECENT_ACTIVITY"));
+  //           break;
+  //         }
+
+  //         case "poll_updated_recent_activity": {
+  //           recentActivityDispatcher(t("POLL_UPDATED_RECENT_ACTIVITY"));
+  //           break;
+  //         }
+
+  //         case "poll_deleted_recent_activity": {
+  //           recentActivityDispatcher("The Poll has been deleted");
+  //           break;
+  //         }
+
+  //         case "organization_subscription_inactive": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: t(
+  //                 "Your-subscription-status-has-been-set-to-in-active"
+  //               ),
+  //             });
+  //           }
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "organization_subscription_suspended": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: t("Your-subscription-has-been-suspended"),
+  //             });
+  //           }
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "organization_status_inactive": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: t(
+  //                 "Your-organization-status-has-been-set-to-in-active"
+  //               ),
+  //             });
+  //           }
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "organization_status_suspended": {
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: t("Your-organization-status-has-been-suspended"),
+  //             });
+  //           }
+  //           setNotificationID(id);
+  //           logoutWithDelay();
+  //           break;
+  //         }
+
+  //         case "new_group_creation_recent_activity":
+  //         case "meeting_status_edited_started":
+  //         case "new_todo_deleted_recent_activity": {
+  //           // Intentionally left blank (future handling)
+  //           break;
+  //         }
+
+  //         default: {
+  //           console.warn("Unhandled NOTIFICATION MQTT message:", message);
+  //           break;
+  //         }
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "committee" && data.payload) {
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_committee_creation":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_COMMITTEE_CREATION"),
+  //                 "[Committe Title]",
+  //                 data.payload.committees.committeesTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeCommitteeResponse(data.payload.committees));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "new_member_added_in_committee":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_MEMBER_ADDED_IN_COMMITTEE"),
+  //                 "[Committee Title]",
+  //                 data.payload.committees.committeesTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeCommitteeResponse(data.payload.committees));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "committtee_status_edited_in_active":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("COMMITTTEE_STATUS_EDITED_IN_ACTIVE"),
+  //                 "[Committee Title]",
+  //                 data.payload.committeeTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeCommitteeStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "committtee_status_edited_archived":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("COMMITTTEE_STATUS_EDITED_ARCHIVED"),
+  //                 "[Committee Title]",
+  //                 data.payload.committeeTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeCommitteeStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "committtee_status_edited_active":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("COMMITTTEE_STATUS_EDITED_ACTIVE"),
+  //                 "[Committee Title]",
+  //                 data.payload.committeeTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeCommitteeStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "member_removed_from_committee":
+  //           dispatch(removeCommitteeMemberMQTT(data.payload));
+  //           setNotificationID(id);
+
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("MEMBER_REMOVED_FROM_COMMITTEE"),
+  //                 "[Committee Title]",
+  //                 data.payload.committees.committeesTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //     if (data.action.toLowerCase() === "group") {
+  //       console.log(data.action, "actionactionactionaction");
+
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_group_creation":
+  //           console.log(data.payload.message, "actionactionactionaction");
+  //           console.log(data.viewable, "actionactionactionaction");
+  //           console.log(data.payload, "actionactionactionaction");
+
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_GROUP_CREATION"),
+  //                 "[Group Title]",
+  //                 data.payload.groups.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeGroupResponse(data.payload.groups));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "new_group_member_added":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_GROUP_MEMBER_ADDED"),
+  //                 "[Group Title]",
+  //                 data.payload.groups.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeGroupResponse(data.payload.groups));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "group_status_edited_in-active":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("GROUP_STATUS_EDITED_IN-ACTIVE"),
+  //                 "[Group Title]",
+  //                 data.payload.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeGroupStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "group_status_edited_archived":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("GROUP_STATUS_EDITED_ARCHIVED"),
+  //                 "[Group Title]",
+  //                 data.payload.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeGroupStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "group_member_removed":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("GROUP_MEMBER_REMOVED"),
+  //                 "[Group Title]",
+  //                 data.payload.groups.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(removeGroupMemberMQTT(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "group_status_edited_active":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("GROUP_STATUS_EDITED_ACTIVE"),
+  //                 "[Group Title]",
+  //                 data.payload.groupTitle.substring(0, 100)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(realtimeGroupStatusResponse(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (
+  //       data.action.toLowerCase() === "talk" &&
+  //       checkFeatureIDAvailability(3)
+  //     ) {
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_one_to_one_message": {
+  //           let newMessageData = data.payload.data[0];
+  //           let activeOtoChatID = localStorage.getItem("activeOtoChatID");
+
+  //           if (data.payload.data[0].senderID !== parseInt(createrID)) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: `You have received a new message from ${data.payload.data[0].senderName}`,
+  //             });
+  //           }
+
+  //           dispatch(mqttInsertOtoMessage(data.payload));
+  //           setNotificationID(id);
+
+  //           if (
+  //             data.payload.data[0].senderID !== parseInt(createrID) &&
+  //             (parseInt(activeOtoChatID) !== data.payload.data[0].senderID ||
+  //               parseInt(activeOtoChatID) === 0)
+  //           ) {
+  //             let apiAcknowledgementData = {
+  //               TalkRequest: {
+  //                 ChannelID: newMessageData.channelID,
+  //                 Chat: {
+  //                   ChatID: newMessageData.senderID,
+  //                   MyID: parseInt(createrID),
+  //                   MessageStatus: "Delivered",
+  //                   SenderID: newMessageData.senderID,
+  //                   MessageID: newMessageData.messageID,
+  //                   ChatType: "O",
+  //                 },
+  //               },
+  //             };
+  //             dispatch(
+  //               UpdateMessageAcknowledgement(
+  //                 apiAcknowledgementData,
+  //                 t,
+  //                 navigate
+  //               )
+  //             );
+  //           } else if (
+  //             data.payload.data[0].senderID !== parseInt(createrID) &&
+  //             (parseInt(activeOtoChatID) === data.payload.data[0].senderID ||
+  //               parseInt(activeOtoChatID) !== 0)
+  //           ) {
+  //             let apiAcknowledgementData = {
+  //               TalkRequest: {
+  //                 ChannelID: newMessageData.channelID,
+  //                 Chat: {
+  //                   ChatID: newMessageData.senderID,
+  //                   MyID: parseInt(createrID),
+  //                   MessageStatus: "Seen",
+  //                   SenderID: newMessageData.senderID,
+  //                   MessageID: newMessageData.messageID,
+  //                   ChatType: "O",
+  //                 },
+  //               },
+  //             };
+  //             dispatch(
+  //               UpdateMessageAcknowledgement(
+  //                 apiAcknowledgementData,
+  //                 t,
+  //                 navigate
+  //               )
+  //             );
+  //           }
+  //           break;
+  //         }
+
+  //         case "new_group_message":
+  //           if (data.payload.data[0].senderID !== parseInt(createrID)) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: `${data.payload.data[0].senderName} has sent a message in group ${data.payload.data[0].groupName}`,
+  //             });
+  //           }
+  //           dispatch(mqttInsertPrivateGroupMessage(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "user_is_blocked":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: "Selected user is blocked",
+  //           });
+  //           dispatch(mqttBlockUser(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "user_is_unblocked":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: "Selected user is Unblocked",
+  //           });
+  //           dispatch(mqttUnblockUser(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "message_flagged":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: "Message Starred",
+  //           });
+  //           dispatch(mqttStarMessage(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "message_unflagged":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: "Message Unstarred",
+  //           });
+  //           dispatch(mqttUnstarMessage(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "new_group_created":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: `You have been added in Talk Group for ${data.payload.data[0].fullName}`,
+  //           });
+  //           dispatch(mqttGroupCreated(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "group_modified":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: `Group ${data.payload.data[0].fullName} has updated`,
+  //           });
+  //           dispatch(mqttGroupUpdated(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "unread_messages_count":
+  //           dispatch(mqttUnreadMessageCount(data.payload));
+  //           break;
+
+  //         case "new_broadcast_message":
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
+  //           });
+  //           dispatch(mqttInsertBroadcastMessage(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "message_delivered":
+  //         case "message_seen":
+  //           dispatch(mqttMessageStatusUpdate(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "message_deleted":
+  //           dispatch(mqttMessageDeleted(data.payload));
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: "Message Deleted",
+  //           });
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "user_left_the_group":
+  //           if (data.senderID === Number(createrID)) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: "You have left the group",
+  //             });
+  //             setNotificationID(id);
+  //             dispatch(mqttGroupLeft(data.payload));
+  //           } else {
+  //             dispatch(mqttGroupLeft(data.payload));
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: data.payload.data[0].notiMsg,
+  //             });
+  //             setNotificationID(id);
+  //           }
+  //           break;
+
+  //         case "last_message_after_deletion":
+  //           dispatch(lastMessageDeletion(data.payload));
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "polls") {
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_poll_published":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_POLL_PUBLISHED"),
+  //                 "[Poll Title]",
+  //                 data.payload.pollTitle.slice(0, 30)
+  //               ),
+  //             });
+  //           }
+  //           dispatch(notifyPollingSocket(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "poll_updated":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("POLL_UPDATED"),
+  //                 "[Poll Title]",
+  //                 data.payload.pollTitle
+  //               ),
+  //             });
+  //           }
+  //           dispatch(notifyPollingSocket(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "poll_expired":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("POLL_EXPIRED"),
+  //                 "[Poll Title]",
+  //                 data.payload.pollTitle
+  //               ),
+  //             });
+  //           }
+  //           dispatch(notifyPollingSocket(data.payload.polls));
+  //           setNotificationID(id);
+  //           break;
+
+  //         case "published_poll_deleted":
+  //           dispatch(deletePollsMQTT(data.payload.polls));
+  //           setNotificationID(id);
+  //           try {
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("PUBLISHED_POLL_DELETED"),
+  //                   "[Poll Title]",
+  //                   data.payload.pollTitle
+  //                 ),
+  //               });
+  //             }
+  //           } catch {}
+  //           break;
+
+  //         default:
+  //           if (
+  //             data.payload.message
+  //               .toLowerCase()
+  //               .includes("new_poll_published_group")
+  //           ) {
+  //             dispatch(createPollGroupsMQTT(data.payload));
+  //             setNotificationID(id);
+
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_POLL_PUBLISHED"),
+  //                   "[Poll Title]",
+  //                   data.payload.pollTitle
+  //                 ),
+  //               });
+  //             }
+  //           } else if (
+  //             data.payload.message
+  //               .toLowerCase()
+  //               .includes("new_poll_published_committee")
+  //           ) {
+  //             dispatch(createPollCommitteesMQTT(data.payload));
+  //             setNotificationID(id);
+
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_POLL_PUBLISHED"),
+  //                   "[Poll Title]",
+  //                   data.payload.pollTitle
+  //                 ),
+  //               });
+  //             }
+  //           } else if (
+  //             data.payload.message
+  //               .toLowerCase()
+  //               .includes("new_poll_published_meeting")
+  //           ) {
+  //             dispatch(createPollMeetingMQTT(data.payload));
+  //             setNotificationID(id);
+
+  //             let currentMeetingActive =
+  //               localStorage.getItem("currentMeetingID") !== null
+  //                 ? Number(localStorage.getItem("currentMeetingID"))
+  //                 : 0;
+
+  //             if (
+  //               Number(data?.payload?.meetingID) ===
+  //               Number(currentMeetingActive)
+  //             ) {
+  //               dispatch(castYourVotePollModal(true));
+  //             }
+
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("NEW_POLL_PUBLISHED"),
+  //                   "[Poll Title]",
+  //                   data.payload.pollTitle
+  //                 ),
+  //               });
+  //             }
+  //           }
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "resolution") {
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_resolution_creation":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("NEW_RESOLUTION_CREATION"),
+  //                 "[Resolution Title]",
+  //                 data.payload.model.resolution.title
+  //               ),
+  //             });
+  //           }
+  //           dispatch(resolutionMQTTCreate(data.payload.model));
+  //           break;
+
+  //         case "resolution_cancelled":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: changeMQTTJSONOne(
+  //                 t("RESOLUTION_CANCELLED"),
+  //                 "[Resolution Title]",
+  //                 data.payload.model.resolution.title
+  //               ),
+  //             });
+  //           }
+  //           dispatch(resolutionMQTTCancelled(data.payload.model));
+  //           break;
+
+  //         case "resolution_closed":
+  //           if (data.viewable) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: t("RESOLUTION_CLOSED"),
+  //             });
+  //           }
+  //           dispatch(resolutionMQTTClosed(data.payload.model));
+  //           break;
+
+  //         case "resoulution_vote_counter":
+  //           dispatch(resolutionMQTTVoteCounter(data.payload.data));
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (
+  //       data.action.toLowerCase() === "Video".toLowerCase() &&
+  //       checkFeatureIDAvailability(4)
+  //     ) {
+  //       if (
+  //         data.payload.message.toLowerCase() ===
+  //         "NEW_VIDEO_CALL_INITIATED".toLowerCase()
+  //       ) {
+  //         console.log("Check active");
+  //         setIsVisible(true);
+  //         // localStorage.setItem("activeCall", false);
+  //         let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+  //         let CallType = Number(localStorage.getItem("CallType"));
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         // localStorage.setItem("RingerCallCheckFlag", true);
+  //         // localStorage.setItem("callType", data.payload.callType);
+  //         // localStorage.setItem("callTypeID", data.payload.callTypeID);
+  //         // localStorage.setItem("newCallerID", data.payload.callerID);
+
+  //         localStorage.setItem("incommingCallType", data.payload.callType);
+  //         localStorage.setItem("incommingCallTypeID", data.payload.callTypeID);
+  //         localStorage.setItem("incommingNewCallerID", data.payload.callerID);
+
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+  //         if (isZoomEnabled) {
+  //           console.log("Does Check Recording Start");
+  //           // // Condition For Video Recording
+  //           if (isCaller && (CallType === 1 || CallType === 2)) {
+  //             console.log("Does Check Recording Start");
+  //             await onHandleClickForStopRecording();
+  //             await new Promise((resolve) => setTimeout(resolve, 1000));
+  //           }
+  //         }
+
+  //         let Dataa = {
+  //           OrganizationID: Number(currentOrganization),
+  //           RoomID: data.payload.roomID,
+  //         };
+  //         dispatch(CallRequestReceived(Dataa, navigate, t));
+  //         if (
+  //           activeCall ||
+  //           isMeetingVideo ||
+  //           presenterViewHostFlag.current ||
+  //           presenterViewJoinFlagRef.current
+  //         ) {
+  //           console.log(activeCall, "Check active");
+  //           console.log("Check active");
+  //           // dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
+  //           dispatch(incomingVideoCallFlag(true));
+  //           let timeValue = Number(localStorage.getItem("callRingerTimeout"));
+  //           localStorage.setItem("NewRoomID", data.payload.roomID);
+  //           timeValue = timeValue * 1000;
+  //           const timeoutId = setTimeout(() => {
+  //             console.log("Check active");
+
+  //             let Data = {
+  //               ReciepentID: Number(createrID),
+  //               RoomID: data.payload.roomID,
+  //               CallStatusID: 3,
+  //               CallTypeID: data.payload.callTypeID,
+  //             };
+  //             if (IncomingVideoCallFlagReducer === true) {
+  //               console.log("Check active");
+
+  //               dispatch(VideoCallResponse(Data, navigate, t));
+  //               localStorage.removeItem("NewRoomID");
+  //             }
+  //           }, timeValue);
+  //           return () => clearTimeout(timeoutId);
+  //         } else if (
+  //           (activeCall === false ||
+  //             activeCall === undefined ||
+  //             activeCall === null) &&
+  //           IncomingVideoCallFlagReducer === false
+  //         ) {
+  //           console.log("Check active");
+
+  //           dispatch(incomingVideoCallFlag(true));
+  //           console.log(data.payload.message, "Show me a message");
+  //           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
+  //           localStorage.setItem("NewRoomID", data.payload.roomID);
+  //           // localStorage.setItem("acceptedRoomID", 0);
+  //           localStorage.setItem("callerID", data.payload.callerID);
+  //           localStorage.setItem("callerNameInitiate", data.payload.callerName);
+  //           localStorage.setItem("recipentID", data.receiverID[0]);
+  //           localStorage.setItem("recipentName", currentUserName);
+  //         }
+  //         dispatch(callRequestReceivedMQTT({}, ""));
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_ACCEPTED".toLowerCase()
+  //       ) {
+  //         let NewRoomID = localStorage.getItem("NewRoomID");
+  //         let activeRoomID = localStorage.getItem("activeRoomID");
+  //         let userID = localStorage.getItem("userID");
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+
+  //         let CallType = Number(localStorage.getItem("CallType"));
+
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+  //         if (isZoomEnabled) {
+  //           console.log("Does Check Recording Start");
+  //           // // Condition For Video Recording
+  //           if (isCaller && (CallType === 1 || CallType === 2)) {
+  //             console.log("Does Check Recording Start");
+  //             await onHandleClickForStopRecording();
+  //             await new Promise((resolve) => setTimeout(resolve, 1000));
+  //           }
+  //         }
+
+  //         // NEW FILTER LOGIC FOR ZOOM + GROUP CALL (callType=2)
+  //         if (isZoomEnabled && CallType === 2) {
+  //           setInCallParticipantsList((prevList) => {
+  //             console.log("Filtering participant:", data.payload.recepientID);
+
+  //             return prevList.filter(
+  //               (participant) => participant.userID !== data.payload.recepientID
+  //             );
+  //           });
+  //         }
+
+  //         if (CallType === 2) {
+  //           console.log("mqtt");
+  //           setGroupVideoCallAccepted((prevState) => {
+  //             // Check if the user is already in the accepted list
+  //             const userExists = prevState.some(
+  //               (user) => user.recepientID === data.payload.recepientID
+  //             );
+  //             if (!userExists) {
+  //               return [...prevState, data.payload];
+  //             }
+  //             return prevState;
+  //           });
+  //         }
+  //         let falgCheck1 = false;
+  //         if (isZoomEnabled) {
+  //           falgCheck1 = String(activeRoomID) !== "" && !isCaller;
+  //         } else {
+  //           falgCheck1 = Number(activeRoomID) !== 0 && !isCaller;
+  //         }
+  //         let roomID = 0;
+  //         console.log("mqtt", activeRoomID);
+  //         if (activeRoomID) {
+  //           console.log("mqtt");
+  //           if (falgCheck1) {
+  //             roomID = activeRoomID;
+  //           } else {
+  //             if (!isCaller) {
+  //               roomID = NewRoomID;
+  //             } else {
+  //               roomID = isZoomEnabled
+  //                 ? String(initiateCallRoomID)
+  //                 : initiateCallRoomID;
+  //             }
+  //           }
+  //         } else {
+  //           if (!isCaller) {
+  //             roomID = NewRoomID;
+  //           } else {
+  //             roomID = isZoomEnabled
+  //               ? String(initiateCallRoomID)
+  //               : initiateCallRoomID;
+  //           }
+  //         }
+  //         console.log("mqtt", roomID);
+  //         let RecipentIDsOninitiateVideoCall =
+  //           JSON.parse(
+  //             localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //           ) || [];
+  //         let falgCheck2 = false;
+  //         if (isZoomEnabled) {
+  //           console.log("mqtt", falgCheck2);
+  //           falgCheck2 = String(data.payload.roomID) === String(roomID);
+  //         } else {
+  //           console.log("mqtt", falgCheck2);
+  //           falgCheck2 = Number(data.payload.roomID) === Number(roomID);
+  //         }
+  //         console.log("mqtt", falgCheck2);
+  //         if (!isMeetingVideo && falgCheck2 && userID !== data.senderID) {
+  //           console.log("mqtt", roomID);
+  //           dispatch(videoOutgoingCallFlag(false));
+  //           dispatch(videoCallAccepted(data.payload, data.payload.message));
+  //           localStorage.setItem("ringerRoomId", 0);
+  //           localStorage.setItem("NewRoomID", 0);
+  //           localStorage.setItem("callerID", data.receiverID[0]);
+  //           localStorage.setItem("callerName", data.payload.callerName);
+  //           localStorage.setItem("recipentID", data.payload.recepientID);
+  //           localStorage.setItem("recipentName", data.payload.recepientName);
+  //           localStorage.setItem("activeCall", true);
+  //           sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+  //           localStorage.setItem("activeRoomID", data.payload.roomID);
+  //           localStorage.setItem("CallType", data.payload.callTypeID);
+  //           console.log("leavecallMeetingVideo");
+  //           localStorage.setItem("callTypeID", data.payload.callTypeID);
+  //           if (data.payload.recepientID === Number(createrID)) {
+  //             localStorage.setItem("initiateVideoCall", false);
+  //           }
+
+  //           let existingData =
+  //             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+  //           let newData = {
+  //             RecipientName: data.payload.recepientName,
+  //             RecipientID: data.payload.recepientID,
+  //             CallStatus: "Accepted",
+  //             RoomID: data.payload.roomID,
+  //           };
+  //           if (RecipentIDsOninitiateVideoCall.length > 0) {
+  //             const index = RecipentIDsOninitiateVideoCall.indexOf(
+  //               data.payload.recepientID
+  //             );
+  //             if (index !== -1) {
+  //               // Remove the matching value
+  //               RecipentIDsOninitiateVideoCall.splice(index, 1);
+  //               localStorage.setItem(
+  //                 "RecipentIDsOninitiateVideoCall",
+  //                 JSON.stringify(RecipentIDsOninitiateVideoCall)
+  //               );
+  //               existingData.push(newData);
+  //               localStorage.setItem(
+  //                 "callerStatusObject",
+  //                 JSON.stringify(existingData)
+  //               );
+  //               dispatch(callRequestReceivedMQTT({}, ""));
+  //             }
+  //           }
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_REJECTED".toLowerCase()
+  //       ) {
+  //         console.log("mqtt");
+  //         //To make false sessionStorage which is set on VideoCall
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+
+  //         localStorage.setItem("ringerRoomId", 0);
+  //         sessionStorage.setItem("NonMeetingVideoCall", false);
+  //         let userID = Number(localStorage.getItem("userID"));
+  //         let currentUserName = localStorage.getItem("name");
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         let existingData =
+  //           JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //         let NewRoomID = localStorage.getItem("NewRoomID");
+  //         let activeRoomID = localStorage.getItem("activeRoomID");
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+
+  //         let CallType = Number(localStorage.getItem("CallType"));
+  //         console.log(existingData.length, "existingDatalength");
+  //         sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
+  //         //For Stop Recording while user reject the call
+  //         if (isZoomEnabled) {
+  //           console.log("Does Check Recording Stop");
+  //           if (isCaller && CallType === 1) {
+  //             console.log("Does Check Recording Stop");
+  //             const iframe = iframeRef.current;
+  //             if (iframe && iframe.contentWindow) {
+  //               console.log("Does Check Recording Stop");
+  //               iframe.contentWindow.postMessage(
+  //                 "RecordingStopMsgFromIframe",
+  //                 "*"
+  //               );
+  //             }
+  //           }
+  //         }
+
+  //         if (CallType === 2) {
+  //           setGroupCallParticipantList((prevState) =>
+  //             prevState.filter(
+  //               (user) => user.userID !== data.payload.recepientID
+  //             )
+  //           );
+  //         }
+  //         let falgCheck1 = false;
+  //         if (isZoomEnabled) {
+  //           console.log("mqtt", falgCheck1);
+  //           falgCheck1 = String(activeRoomID) !== "" && !isCaller;
+  //         } else {
+  //           console.log("mqtt", falgCheck1);
+  //           falgCheck1 = Number(activeRoomID) !== 0 && !isCaller;
+  //         }
+  //         let roomID = 0;
+  //         if (activeRoomID) {
+  //           if (falgCheck1) {
+  //             roomID = activeRoomID;
+  //           } else {
+  //             if (!isCaller) {
+  //               roomID = isZoomEnabled ? String(NewRoomID) : Number(NewRoomID);
+  //             } else {
+  //               roomID = isZoomEnabled
+  //                 ? String(initiateCallRoomID)
+  //                 : Number(initiateCallRoomID);
+  //             }
+  //           }
+  //         } else {
+  //           if (!isCaller) {
+  //             roomID = isZoomEnabled ? String(NewRoomID) : Number(NewRoomID);
+  //           } else {
+  //             roomID = isZoomEnabled
+  //               ? String(initiateCallRoomID)
+  //               : Number(initiateCallRoomID);
+  //           }
+  //         }
+  //         console.log("mqtt", roomID);
+  //         let RecipentIDsOninitiateVideoCall =
+  //           JSON.parse(
+  //             localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //           ) || [];
+  //         let falgCheck2 = false;
+  //         if (isZoomEnabled) {
+  //           console.log("mqtt", falgCheck2);
+  //           falgCheck2 = String(data.payload.roomID) === String(roomID);
+  //         } else {
+  //           console.log("mqtt", falgCheck1);
+  //           falgCheck2 = Number(data.payload.roomID) === Number(roomID);
+  //         }
+  //         if (!isMeetingVideo && falgCheck2 && userID !== data.senderID) {
+  //           console.log("mqtt", data.payload.callTypeID);
+  //           if (data.payload.callTypeID === 1) {
+  //             if (userID !== data.recepientID) {
+  //               localStorage.setItem("onlyLeaveCall", true);
+  //               console.log("setLeaveOneToOne");
+
+  //               setLeaveOneToOne(true);
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(videoOutgoingCallFlag(false));
+  //             }
+  //           } else if (data.payload.callTypeID === 2) {
+  //             let newData = {
+  //               RecipientName: data.payload.recepientName,
+  //               RecipientID: data.payload.recepientID,
+  //               CallStatus: "Rejected",
+  //               RoomID: data.payload.roomID,
+  //             };
+
+  //             existingData.push(newData);
+  //             localStorage.setItem(
+  //               "callerStatusObject",
+  //               JSON.stringify(existingData)
+  //             );
+  //             let RecipentIDsOninitiateVideoCallflag = false;
+  //             let remainingCount = 0;
+  //             let existingDataflag = false;
+  //             let existingDataremainingCount = 0;
+  //             let existingObjectIndex = [];
+  //             if (RecipentIDsOninitiateVideoCall.length > 0) {
+  //               const index = RecipentIDsOninitiateVideoCall.indexOf(
+  //                 data.payload.recepientID
+  //               );
+  //               if (index !== -1) {
+  //                 // Remove the matching value
+  //                 RecipentIDsOninitiateVideoCall.splice(index, 1);
+  //                 localStorage.setItem(
+  //                   "RecipentIDsOninitiateVideoCall",
+  //                   JSON.stringify(RecipentIDsOninitiateVideoCall)
+  //                 );
+  //                 RecipentIDsOninitiateVideoCallflag = true;
+  //                 remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
+  //               } else {
+  //               }
+  //               console.log("mqtt", RecipentIDsOninitiateVideoCall);
+  //             } else {
+  //               if (existingData.length > 0) {
+  //                 existingObjectIndex = existingData.findIndex(
+  //                   (item) =>
+  //                     item.RecipientName === newData.RecipientName &&
+  //                     item.RecipientID === newData.RecipientID &&
+  //                     item.RoomID === newData.RoomID
+  //                 );
+  //                 if (existingObjectIndex !== -1) {
+  //                   existingData.splice(existingObjectIndex, 1);
+  //                   localStorage.setItem(
+  //                     "callerStatusObject",
+  //                     JSON.stringify(existingData)
+  //                   );
+  //                   existingDataflag = true;
+  //                   existingDataremainingCount = existingData.length || 0;
+  //                 }
+  //                 if (existingDataflag) {
+  //                   if (existingDataremainingCount === 0) {
+  //                     if (RecipentIDsOninitiateVideoCall.length === 0) {
+  //                       localStorage.setItem("onlyLeaveCall", true);
+
+  //                       console.log("setLeaveOneToOne");
+  //                       setLeaveOneToOne(true);
+  //                       dispatch(videoChatMessagesFlag(false));
+  //                       dispatch(videoOutgoingCallFlag(false));
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //             if (RecipentIDsOninitiateVideoCallflag) {
+  //               if (remainingCount === 0) {
+  //                 if (existingData.length === 0) {
+  //                   localStorage.setItem("onlyLeaveCall", true);
+
+  //                   console.log("setLeaveOneToOne");
+  //                   setLeaveOneToOne(true);
+  //                   dispatch(videoChatMessagesFlag(false));
+  //                   dispatch(videoOutgoingCallFlag(false));
+  //                 }
+  //               }
+  //             } else {
+  //               if (existingData.length > 0) {
+  //                 existingObjectIndex = existingData.findIndex(
+  //                   (item) =>
+  //                     item.RecipientName === newData.RecipientName &&
+  //                     item.RecipientID === newData.RecipientID &&
+  //                     item.RoomID === newData.RoomID
+  //                 );
+  //                 if (existingObjectIndex !== -1) {
+  //                   existingData.splice(existingObjectIndex, 1);
+  //                   localStorage.setItem(
+  //                     "callerStatusObject",
+  //                     JSON.stringify(existingData)
+  //                   );
+  //                   existingDataflag = true;
+  //                   existingDataremainingCount = existingData.length || 0;
+  //                 }
+  //                 if (existingDataflag) {
+  //                   if (existingDataremainingCount === 0) {
+  //                     if (RecipentIDsOninitiateVideoCall.length === 0) {
+  //                       localStorage.setItem("onlyLeaveCall", true);
+
+  //                       console.log("setLeaveOneToOne");
+  //                       setLeaveOneToOne(true);
+  //                       dispatch(videoChatMessagesFlag(false));
+  //                       dispatch(videoOutgoingCallFlag(false));
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           if (currentUserName !== data.payload.recepientName) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: `${data.payload.recepientName} has declined the call`,
+  //             });
+  //             setNotificationID(id);
+  //           }
+  //           dispatch(callRequestReceivedMQTT({}, ""));
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_UNANSWERED".toLowerCase()
+  //       ) {
+  //         let roomID = localStorage.getItem("acceptedRoomID");
+  //         let newRoomID = localStorage.getItem("newRoomId");
+  //         let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let CallType = Number(localStorage.getItem("CallType"));
+  //         let existingData =
+  //           JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+  //         let RoomID =
+  //           presenterViewFlag &&
+  //           (presenterViewHostFlag || presenterViewJoinFlag)
+  //             ? roomID
+  //             : JSON.parse(localStorage.getItem("activeCall"))
+  //             ? localStorage.getItem("activeRoomID") != 0 &&
+  //               localStorage.getItem("activeRoomID") != null
+  //               ? localStorage.getItem("activeRoomID")
+  //               : localStorage.getItem("initiateCallRoomID")
+  //             : JSON.parse(localStorage.getItem("isMeetingVideoHostCheck"))
+  //             ? newRoomID
+  //             : localStorage.getItem("participantRoomId");
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
+  //         console.log("mqtt");
+  //         console.log("mqtt", typeof RoomID);
+  //         console.log("mqtt", typeof data.payload.roomID);
+
+  //         if (
+  //           isZoomEnabled
+  //             ? String(RoomID) === String(data.payload.roomID)
+  //             : RoomID === data.payload.roomID && activeCall && !isMeetingVideo
+  //         ) {
+  //           //To make false sessionStorage which is set on VideoCall
+  //           if (Number(data.senderID) !== Number(createrID)) {
+  //             if (Number(createrID) !== data.payload.recepientID) {
+  //               localStorage.setItem("unansweredFlag", true);
+  //             }
+  //           }
+  //           console.log("mqtt");
+  //           console.log(data.payload.message, "datapayloadmessage");
+
+  //           setNotification({
+  //             ...notification,
+  //             notificationShow: true,
+  //             message: t("VIDEO_CALL_UNANSWERED"),
+  //           });
+  //           setNotificationID(id);
+  //           if (data.payload.callTypeID === 1) {
+  //             sessionStorage.setItem("NonMeetingVideoCall", false);
+  //             console.log("mqtt");
+  //             dispatch(unansweredOneToOneCall(true));
+  //             localStorage.setItem("onlyLeaveCall", true);
+  //             console.log("setLeaveOneToOne");
+  //             let initiateVideoCall = JSON.parse(
+  //               localStorage.getItem("initiateVideoCall")
+  //             );
+  //             let initiateCallRoomID =
+  //               localStorage.getItem("initiateCallRoomID");
+
+  //             if (data.payload.recepientResponseCode === 3) {
+  //               if (
+  //                 initiateVideoCall &&
+  //                 data.payload.roomID === initiateCallRoomID
+  //               ) {
+  //                 localStorage.setItem("initiateVideoCall", false);
+  //                 localStorage.removeItem("initiateCallRoomID");
+  //                 setLeaveOneToOne(true);
+  //               }
+  //               console.log("Check New Thing");
+  //             } else {
+  //               setLeaveOneToOne(true);
+  //             }
+  //             dispatch(videoChatMessagesFlag(false));
+  //             dispatch(videoOutgoingCallFlag(false));
+  //             dispatch(
+  //               callRequestReceivedMQTT(data.payload, data.payload.message)
+  //             );
+  //             console.log(data.payload.message, "datapayloadmessage");
+  //           } else {
+  //             let CallType = Number(localStorage.getItem("CallType"));
+  //             if (CallType === 2) {
+  //               console.log("mqtt");
+  //               setUnansweredCallParticipant((prevState) => {
+  //                 // Check if the user is already in the accepted list
+  //                 const userExists = prevState.some(
+  //                   (user) => user.recepientID === data.payload.recepientID
+  //                 );
+
+  //                 console.log(userExists, "userExists");
+  //                 if (!userExists) {
+  //                   return [...prevState, data.payload];
+  //                 }
+  //                 return prevState;
+  //               });
+  //             }
+  //             const participantWhoDidNotRespond = data.payload.recepientID;
+
+  //             // Step 1: Update RecipentIDsOninitiateVideoCall
+  //             let recipientIDsOnInitiate =
+  //               JSON.parse(
+  //                 localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //               ) || [];
+
+  //             const recipientIndex = recipientIDsOnInitiate.indexOf(
+  //               participantWhoDidNotRespond
+  //             );
+  //             console.log("setLeaveOneToOne", recipientIndex);
+  //             if (recipientIndex !== -1) {
+  //               console.log("setLeaveOneToOne");
+  //               recipientIDsOnInitiate.splice(recipientIndex, 1);
+  //               localStorage.setItem(
+  //                 "RecipentIDsOninitiateVideoCall",
+  //                 JSON.stringify(recipientIDsOnInitiate)
+  //               );
+  //             }
+
+  //             // Step 2: Filter out the participant who didn’t respond
+  //             let callerStatusList =
+  //               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+  //             callerStatusList = callerStatusList.filter(
+  //               (obj) =>
+  //                 obj.participantId !== participantWhoDidNotRespond &&
+  //                 obj.CallStatus !== "Rejected" // Remove all Rejected
+  //             );
+
+  //             console.log("setLeaveOneToOne", callerStatusList);
+  //             localStorage.setItem(
+  //               "callerStatusObject",
+  //               JSON.stringify(callerStatusList)
+  //             );
+
+  //             // Step 3: Fetch updated arrays again
+  //             const remainingRecipients =
+  //               JSON.parse(
+  //                 localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //               ) || [];
+  //             console.log("setLeaveOneToOne", remainingRecipients);
+
+  //             const remainingCallerStatus =
+  //               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //             console.log(
+  //               "setLeaveOneToOne",
+  //               checkCallStatus(remainingCallerStatus)
+  //             );
+
+  //             // Step 4: Final condition
+  //             if (
+  //               remainingRecipients.length === 0 &&
+  //               remainingCallerStatus.length === 0
+  //             ) {
+  //               sessionStorage.setItem("NonMeetingVideoCall", false);
+  //               localStorage.setItem("onlyLeaveCall", true);
+  //               console.log("setLeaveOneToOne");
+  //               setLeaveOneToOne(true);
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(videoOutgoingCallFlag(false));
+  //               dispatch(
+  //                 callRequestReceivedMQTT(data.payload, data.payload.message)
+  //               );
+  //             }
+  //           }
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_RINGING".toLowerCase()
+  //       ) {
+  //         let userID = localStorage.getItem("userID");
+  //         if (data.senderID === userID) {
+  //           localStorage.setItem("initiateCallRoomID", data.payload.roomID);
+  //           localStorage.setItem("ringerRoomId", data.payload.roomID);
+  //           localStorage.setItem("initiateVideoCall", true);
+  //           dispatch(
+  //             callRequestReceivedMQTT(data.payload, data.payload.message)
+  //           );
+  //           let existingData =
+  //             JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //           let newData = {
+  //             RecipientName: data.payload.recepientName,
+  //             RecipientID: data.payload.recepientID,
+  //             CallStatus: "Ringing",
+  //             RoomID: data.payload.roomID,
+  //           };
+  //           let existingObjectIndex = existingData.findIndex(
+  //             (item) =>
+  //               item.RecipientName === newData.RecipientName &&
+  //               item.RecipientID === newData.RecipientID &&
+  //               item.RoomID === newData.RoomID
+  //           );
+  //           if (existingObjectIndex !== -1) {
+  //             existingData[existingObjectIndex] = newData;
+  //           } else {
+  //             existingData.push(newData);
+  //           }
+  //           localStorage.setItem(
+  //             "callerStatusObject",
+  //             JSON.stringify(existingData)
+  //           );
+  //           let Dataa = {
+  //             OrganizationID: Number(currentOrganization),
+  //             RoomID: data.payload.roomID,
+  //           };
+  //           dispatch(CallRequestReceived(Dataa, navigate, t));
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
+  //       ) {
+  //         let activeRoomID = localStorage.getItem("activeRoomID");
+  //         let NewRoomID = localStorage.getItem("NewRoomID");
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+  //         let CallType = Number(localStorage.getItem("CallType"));
+  //         let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+  //         let roomID = 0;
+  //         let flagCheck1 = false;
+  //         localStorage.setItem("MicOff", true);
+  //         sessionStorage.removeItem("activeCallSessionforOtoandGroup");
+
+  //         if (isZoomEnabled) {
+  //           if (String(initiateCallRoomID) !== String(data.payload.roomID)) {
+  //             console.log("Check It");
+  //             dispatch(incomingVideoCallFlag(false));
+  //           }
+  //         }
+
+  //         if (isZoomEnabled) {
+  //           console.log("Does Check Recording Stop");
+  //           // Function For Stop Video Recording
+  //           await sendStopRecordingMessageForMQTT();
+  //           await new Promise((resolve) => setTimeout(resolve, 100));
+  //           flagCheck1 = String(activeRoomID) !== "";
+  //         } else {
+  //           flagCheck1 = Number(activeRoomID) !== 0;
+  //         }
+  //         if (activeRoomID) {
+  //           if (flagCheck1 && !isCaller) {
+  //             roomID = activeRoomID;
+  //           } else {
+  //             if (!isCaller) {
+  //               roomID = NewRoomID;
+  //             } else {
+  //               roomID = initiateCallRoomID;
+  //             }
+  //           }
+  //         } else {
+  //           if (!isCaller) {
+  //             roomID = NewRoomID;
+  //           } else {
+  //             roomID = initiateCallRoomID;
+  //           }
+  //         }
+  //         console.log("mqtt", roomID);
+  //         let flagCheck2 = 0;
+
+  //         if (isZoomEnabled) {
+  //           console.log();
+  //           flagCheck2 = String(roomID) === String(data.payload.roomID);
+  //         } else {
+  //           flagCheck2 = Number(roomID) === Number(data.payload.roomID);
+  //         }
+  //         if (
+  //           flagCheck2 &&
+  //           (isMeetingVideo === null || isMeetingVideo === false)
+  //         ) {
+  //           let callerID = JSON.parse(localStorage.getItem("callerID"));
+  //           let newCallerID = JSON.parse(localStorage.getItem("newCallerID"));
+  //           if (IncomingVideoCallFlagReducer === true && callStatus === false) {
+  //             let callerID = Number(localStorage.getItem("callerID"));
+  //             let newCallerID = Number(localStorage.getItem("newCallerID"));
+  //             if (callerID === newCallerID) {
+  //               localStorage.setItem("activeCall", false);
+  //               sessionStorage.setItem(
+  //                 "activeCallSessionforOtoandGroup",
+  //                 false
+  //               );
+  //             }
+  //             localStorage.setItem("newCallerID", callerID);
+  //             localStorage.setItem("initiateVideoCall", false);
+  //             let acceptedRoomID = 0;
+  //             if (isZoomEnabled) {
+  //               acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
+  //             } else {
+  //               acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+  //             }
+
+  //             dispatch(incomingVideoCallFlag(false));
+  //             if (activeRoomID !== acceptedRoomID) {
+  //               dispatch(incomingVideoCallFlag(false));
+  //               localStorage.setItem("activeRoomID", acceptedRoomID);
+  //             }
+  //             if (activeRoomID === acceptedRoomID) {
+  //               console.log("Check One To Three");
+  //               if (
+  //                 NormalizeVideoFlag === true ||
+  //                 IncomingVideoCallFlagReducer === true ||
+  //                 MaximizeVideoFlag === true
+  //               ) {
+  //                 setNotification({
+  //                   ...notification,
+  //                   notificationShow: true,
+  //                   message: `Call has been disconnected by ${data.payload.callerName}`,
+  //                 });
+  //                 setNotificationID(id);
+  //               }
+  //               dispatch(normalizeVideoPanelFlag(false));
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(maximizeVideoPanelFlag(false));
+  //               dispatch(minimizeVideoPanelFlag(false));
+  //             }
+  //             console.log("Check 123");
+  //             dispatch(leaveCallModal(false));
+  //           } else if (
+  //             IncomingVideoCallFlagReducer === false &&
+  //             callStatus === true
+  //           ) {
+  //             console.log("Check 123");
+  //             let callerID = Number(localStorage.getItem("callerID"));
+  //             let newCallerID = Number(localStorage.getItem("newCallerID"));
+  //             if (callerID === newCallerID) {
+  //               console.log("Check 123");
+  //               localStorage.setItem("activeCall", false);
+  //               sessionStorage.setItem(
+  //                 "activeCallSessionforOtoandGroup",
+  //                 false
+  //               );
+  //             }
+  //             localStorage.setItem("newCallerID", callerID);
+  //             localStorage.setItem("initiateVideoCall", false);
+  //             let acceptedRoomID = "";
+  //             let activeRoomID = "";
+  //             if (isZoomEnabled) {
+  //               acceptedRoomID = String(localStorage.getItem("acceptedRoomID"));
+  //               activeRoomID = String(localStorage.getItem("activeRoomID"));
+  //             } else {
+  //               acceptedRoomID = Number(localStorage.getItem("acceptedRoomID"));
+  //               activeRoomID = Number(localStorage.getItem("activeRoomID"));
+  //             }
+
+  //             dispatch(incomingVideoCallFlag(false));
+  //             if (activeRoomID !== acceptedRoomID) {
+  //               console.log("Check 123");
+  //               localStorage.setItem("activeCall", false);
+  //               sessionStorage.setItem(
+  //                 "activeCallSessionforOtoandGroup",
+  //                 false
+  //               );
+
+  //               localStorage.removeItem("acceptedRoomID");
+  //               dispatch(normalizeVideoPanelFlag(false));
+  //               dispatch(incomingVideoCallFlag(false));
+  //               localStorage.setItem("activeRoomID", acceptedRoomID);
+  //             }
+  //             if (activeRoomID === acceptedRoomID) {
+  //               console.log("Check One To Three");
+
+  //               if (
+  //                 NormalizeVideoFlag === true ||
+  //                 IncomingVideoCallFlagReducer === true ||
+  //                 MaximizeVideoFlag === true
+  //               ) {
+  //                 setNotification({
+  //                   ...notification,
+  //                   notificationShow: true,
+  //                   message: `Call has been disconnected by ${data.payload.callerName}`,
+  //                 });
+  //                 setNotificationID(id);
+  //               }
+  //               let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
+  //               if (isMeeting) {
+  //                 console.log("Check One To Three");
+  //                 localStorage.removeItem("callTypeID");
+  //               }
+  //               dispatch(normalizeVideoPanelFlag(false));
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(maximizeVideoPanelFlag(false));
+  //               dispatch(minimizeVideoPanelFlag(false));
+  //             }
+  //             dispatch(leaveCallModal(false));
+  //           } else if (
+  //             IncomingVideoCallFlagReducer === true &&
+  //             callStatus === true
+  //           ) {
+  //             console.log("Check 123");
+  //             if (
+  //               data.payload.callerID === callerID &&
+  //               data.payload.callerID === newCallerID
+  //             ) {
+  //               console.log("Check 123");
+  //               dispatch(normalizeVideoPanelFlag(false));
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(maximizeVideoPanelFlag(false));
+  //               dispatch(minimizeVideoPanelFlag(false));
+  //               localStorage.setItem("activeCall", false);
+  //               sessionStorage.setItem(
+  //                 "activeCallSessionforOtoandGroup",
+  //                 false
+  //               );
+  //             } else if (data.payload.callerID === newCallerID) {
+  //               console.log("Check 123");
+  //               dispatch(incomingVideoCallFlag(false));
+  //               let acceptedRoomID = "";
+  //               if (isZoomEnabled) {
+  //                 acceptedRoomID = String(
+  //                   localStorage.getItem("acceptedRoomID")
+  //                 );
+  //               } else {
+  //                 acceptedRoomID = Number(
+  //                   localStorage.getItem("acceptedRoomID")
+  //                 );
+  //               }
+
+  //               localStorage.setItem("newCallerID", callerID);
+  //               localStorage.setItem("activeCall", true);
+  //               sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
+  //               localStorage.setItem("activeRoomID", acceptedRoomID);
+  //             } else if (data.payload.callerID === callerID) {
+  //               console.log("Check 123");
+  //               dispatch(normalizeVideoPanelFlag(false));
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(maximizeVideoPanelFlag(false));
+  //               dispatch(minimizeVideoPanelFlag(false));
+  //               localStorage.setItem("activeCall", false);
+  //               sessionStorage.setItem(
+  //                 "activeCallSessionforOtoandGroup",
+  //                 false
+  //               );
+  //             }
+  //           } else {
+  //           }
+  //           console.log("Check 123");
+  //           dispatch(leaveCallModal(false));
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "VIDEO_CALL_DISCONNECTED_RECIPIENT".toLowerCase()
+  //       ) {
+  //         let roomID = localStorage.getItem("acceptedRoomID");
+  //         let newRoomID = localStorage.getItem("newRoomId");
+  //         let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+  //         let participantRoomId = localStorage.getItem("participantRoomId");
+  //         let activeRoomID = localStorage.getItem("activeRoomID");
+  //         let CallType = Number(localStorage.getItem("CallType"));
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         let isMeetingVideoHostCheck = JSON.parse(
+  //           localStorage.getItem("isMeetingVideoHostCheck")
+  //         );
+  //         let activeCall = JSON.parse(localStorage.getItem("activeCall"));
+  //         let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
+  //         let existingData =
+  //           JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+  //         let RoomID = "";
+  //         if (isZoomEnabled) {
+  //           console.log("Does Check Recording Stop");
+  //           // // Condition For Video Recording
+  //           if (isCaller && CallType === 1) {
+  //             console.log("Does Check Recording Stop");
+  //             const iframe = iframeRef.current;
+  //             if (iframe && iframe.contentWindow) {
+  //               console.log("Does Check Recording Stop");
+  //               iframe.contentWindow.postMessage(
+  //                 "RecordingStopMsgFromIframe",
+  //                 "*"
+  //               );
+  //             }
+  //           } else if (
+  //             isCaller &&
+  //             CallType === 2 &&
+  //             existingData.length === 1
+  //           ) {
+  //             console.log("Does Check Recording Stop Call Type 2");
+
+  //             // Assuming iframeRef is defined
+  //             const iframe = iframeRef.current;
+  //             if (iframe && iframe.contentWindow) {
+  //               console.log("Does Check Recording Stop Call Type 2");
+  //               iframe.contentWindow.postMessage(
+  //                 "RecordingStopMsgFromIframe",
+  //                 "*"
+  //               );
+  //             }
+  //           }
+
+  //           RoomID =
+  //             presenterViewFlagRef.current &&
+  //             (presenterViewHostFlagFlagRef.current ||
+  //               presenterViewJoinFlagRef.current)
+  //               ? String(roomID)
+  //               : isMeetingVideo
+  //               ? isMeetingVideoHostCheck
+  //                 ? String(newRoomID)
+  //                 : String(participantRoomId)
+  //               : String(initiateCallRoomID)
+  //               ? String(initiateCallRoomID)
+  //               : String(activeRoomID);
+  //         } else {
+  //           RoomID =
+  //             presenterViewFlagRef.current &&
+  //             (presenterViewHostFlagFlagRef.current ||
+  //               presenterViewJoinFlagRef.current)
+  //               ? Number(roomID)
+  //               : isMeetingVideo
+  //               ? isMeetingVideoHostCheck
+  //                 ? Number(newRoomID)
+  //                 : Number(participantRoomId)
+  //               : Number(initiateCallRoomID)
+  //               ? Number(initiateCallRoomID)
+  //               : Number(activeRoomID);
+  //         }
+
+  //         console.log("mqtt");
+  //         console.log("mqtt", RoomID);
+
+  //         if (CallType === 2) {
+  //           // Also remove the user from groupCallParticipantList
+  //           setGroupCallParticipantList((prevList) =>
+  //             prevList.filter(
+  //               (participant) => participant.userID !== data.payload.recipientID
+  //             )
+  //           );
+  //         }
+
+  //         if (RoomID === data.payload.roomID && activeCall) {
+  //           if (data.payload.callTypeID === 1) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: `${data.payload.recipientName} has left the call`,
+  //             });
+  //             setNotificationID(id);
+  //             localStorage.setItem("onlyLeaveCall", true);
+  //             console.log("setLeaveOneToOne");
+  //             setLeaveOneToOne(true);
+  //             dispatch(videoChatMessagesFlag(false));
+  //             dispatch(videoOutgoingCallFlag(false));
+  //           } else {
+  //             console.log("mqtt");
+  //             let callerID = Number(localStorage.getItem("callerID"));
+  //             localStorage.setItem("newCallerID", callerID);
+  //             localStorage.setItem("initiateVideoCall", false);
+
+  //             let existingData =
+  //               JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //             let RecipentIDsOninitiateVideoCall =
+  //               JSON.parse(
+  //                 localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //               ) || [];
+
+  //             let newData = {
+  //               RecipientName: data.payload.recipientName,
+  //               RecipientID: data.payload.recipientID,
+  //               CallStatus: "Disconnected",
+  //               RoomID: data.payload.roomID,
+  //             };
+
+  //             let existingObjectIndex = existingData.findIndex(
+  //               (item) =>
+  //                 item.RecipientName === newData.RecipientName &&
+  //                 item.RecipientID === newData.RecipientID &&
+  //                 item.RoomID === newData.RoomID
+  //             );
+  //             // console.log("mqtt",RoomID)
+
+  //             if (existingObjectIndex !== -1) {
+  //               existingData.splice(existingObjectIndex, 1);
+  //               localStorage.setItem(
+  //                 "callerStatusObject",
+  //                 JSON.stringify(existingData)
+  //               );
+  //               if (
+  //                 RecipentIDsOninitiateVideoCall.length === 0 &&
+  //                 existingData.length === 0
+  //               ) {
+  //                 localStorage.setItem("onlyLeaveCall", true);
+  //                 console.log("setLeaveOneToOne");
+  //                 setLeaveOneToOne(true);
+  //                 dispatch(videoChatMessagesFlag(false));
+  //                 dispatch(videoOutgoingCallFlag(false));
+  //               }
+  //               setNotification({
+  //                 ...notification,
+  //                 notificationShow: true,
+  //                 message: `${data.payload.recipientName} has left the call`,
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //           }
+  //         }
+  //       } else if (
+  //         data.payload.message.toLowerCase() ===
+  //         "MISSED_CALLS_COUNT".toLowerCase()
+  //       ) {
+  //         dispatch(missedCallCount(data.payload, data.payload.message));
+  //       } else if (
+  //         data.payload.message.toLowerCase() === "VIDEO_CALL_BUSY".toLowerCase()
+  //       ) {
+  //         // if (data.payload.recepientID !== Number(createrID)) {
+  //         //   localStorage.setItem("ringerRoomId", 0);
+  //         //   dispatch(normalizeVideoPanelFlag(false));
+  //         //   dispatch(videoChatMessagesFlag(false));
+  //         //   dispatch(maximizeVideoPanelFlag(false));
+  //         //   dispatch(minimizeVideoPanelFlag(false));
+  //         //   setNotification({
+  //         //     ...notification,
+  //         //     notificationShow: true,
+  //         //     message: `${data.payload.recepientName} is currently Busy`,
+  //         //   });
+  //         //   setNotificationID(id);
+  //         //   let existingData =
+  //         //     JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //         //   let newData = {
+  //         //     RecipientName: data.payload.recepientName,
+  //         //     RecipientID: data.payload.recepientID,
+  //         //     CallStatus: "Busy",
+  //         //     RoomID: data.payload.roomID,
+  //         //   };
+  //         //   let existingObjectIndex = existingData.findIndex(
+  //         //     (item) =>
+  //         //       item.RecipientName === newData.RecipientName &&
+  //         //       item.RecipientID === newData.RecipientID &&
+  //         //       item.RoomID === newData.RoomID
+  //         //   );
+  //         //   if (existingObjectIndex !== -1) {
+  //         //     existingData[existingObjectIndex] = newData;
+  //         //   } else {
+  //         //     existingData.push(newData);
+  //         //   }
+  //         //   localStorage.setItem(
+  //         //     "callerStatusObject",
+  //         //     JSON.stringify(existingData)
+  //         //   );
+  //         //   localStorage.setItem("activeCall", false);
+  //         // }
+  //         console.log("mqtt");
+  //         //To make false sessionStorage which is set on VideoCall
+  //         localStorage.setItem("ringerRoomId", 0);
+  //         sessionStorage.setItem("NonMeetingVideoCall", false);
+  //         let userID = Number(localStorage.getItem("userID"));
+  //         let currentUserName = localStorage.getItem("name");
+  //         let isMeetingVideo = JSON.parse(
+  //           localStorage.getItem("isMeetingVideo")
+  //         );
+  //         let existingData =
+  //           JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+  //         let NewRoomID = localStorage.getItem("NewRoomID");
+  //         let activeRoomID = localStorage.getItem("activeRoomID");
+  //         let isCaller = JSON.parse(localStorage.getItem("isCaller"));
+  //         let isZoomEnabled = localStorage.getItem("isZoomEnabled");
+  //         let initiateCallRoomID = localStorage.getItem("initiateCallRoomID");
+  //         let roomID = 0;
+  //         if (activeRoomID) {
+  //           if (Number(activeRoomID) !== 0 && !isCaller) {
+  //             roomID = activeRoomID;
+  //           } else {
+  //             if (!isCaller) {
+  //               roomID = NewRoomID;
+  //             } else {
+  //               roomID = initiateCallRoomID;
+  //             }
+  //           }
+  //         } else {
+  //           if (!isCaller) {
+  //             roomID = NewRoomID;
+  //           } else {
+  //             roomID = initiateCallRoomID;
+  //           }
+  //         }
+  //         console.log("mqtt", roomID);
+  //         let RecipentIDsOninitiateVideoCall =
+  //           JSON.parse(
+  //             localStorage.getItem("RecipentIDsOninitiateVideoCall")
+  //           ) || [];
+  //         console.log(isMeetingVideo, "Check Is Mqtt");
+  //         console.log(
+  //           Number(data.payload.roomID) === Number(roomID),
+  //           "Check Is Mqtt"
+  //         );
+  //         console.log(data.payload.roomID, "Check Is Mqtt");
+  //         console.log(roomID, "Check Is Mqtt");
+  //         console.log(userID !== data.senderID, "Check Is Mqtt");
+  //         const isMqttCheck = isZoomEnabled
+  //           ? String(data.payload.roomID) === String(roomID)
+  //           : false;
+  //         console.log({ isMqttCheck }, "Check Is Mqtt");
+
+  //         if (
+  //           !isMeetingVideo && isZoomEnabled
+  //             ? String(data.payload.roomID) === String(roomID)
+  //             : Number(data.payload.roomID) === Number(roomID) &&
+  //               userID !== data.senderID
+  //         ) {
+  //           console.log("mqtt", data.payload.callTypeID);
+  //           if (data.payload.callTypeID === 1) {
+  //             if (userID !== data.recepientID) {
+  //               localStorage.setItem("onlyLeaveCall", true);
+  //               console.log("setLeaveOneToOne");
+  //               let initiateVideoCall =
+  //                 localStorage.getItem("initiateVideoCall");
+  //               let initiateCallRoomID =
+  //                 localStorage.getItem("initiateCallRoomID");
+  //               if (data.payload.recepientResponseCode === 5) {
+  //                 if (
+  //                   initiateVideoCall &&
+  //                   data.payload.roomID === initiateCallRoomID
+  //                 ) {
+  //                   localStorage.setItem("initiateVideoCall", false);
+  //                   localStorage.removeItem("initiateCallRoomID");
+  //                   setLeaveOneToOne(true);
+  //                 }
+  //                 console.log("Check New Thing");
+  //               } else {
+  //                 setLeaveOneToOne(true);
+  //               }
+  //               dispatch(videoChatMessagesFlag(false));
+  //               dispatch(videoOutgoingCallFlag(false));
+  //             }
+  //           } else if (data.payload.callTypeID === 2) {
+  //             let newData = {
+  //               RecipientName: data.payload.recepientName,
+  //               RecipientID: data.payload.recepientID,
+  //               CallStatus: "Rejected",
+  //               RoomID: data.payload.roomID,
+  //             };
+  //             let RecipentIDsOninitiateVideoCallflag = false;
+  //             let remainingCount = 0;
+  //             let existingDataflag = false;
+  //             let existingDataremainingCount = 0;
+  //             let existingObjectIndex = [];
+  //             if (RecipentIDsOninitiateVideoCall.length > 0) {
+  //               const index = RecipentIDsOninitiateVideoCall.indexOf(
+  //                 data.payload.recepientID
+  //               );
+  //               if (index !== -1) {
+  //                 // Remove the matching value
+  //                 RecipentIDsOninitiateVideoCall.splice(index, 1);
+  //                 localStorage.setItem(
+  //                   "RecipentIDsOninitiateVideoCall",
+  //                   JSON.stringify(RecipentIDsOninitiateVideoCall)
+  //                 );
+  //                 RecipentIDsOninitiateVideoCallflag = true;
+  //                 remainingCount = RecipentIDsOninitiateVideoCall.length || 0;
+  //               } else {
+  //               }
+  //               console.log("mqtt", RecipentIDsOninitiateVideoCall);
+  //             } else {
+  //               if (existingData.length > 0) {
+  //                 existingObjectIndex = existingData.findIndex(
+  //                   (item) =>
+  //                     item.RecipientName === newData.RecipientName &&
+  //                     item.RecipientID === newData.RecipientID &&
+  //                     item.RoomID === newData.RoomID
+  //                 );
+  //                 if (existingObjectIndex !== -1) {
+  //                   existingData.splice(existingObjectIndex, 1);
+  //                   localStorage.setItem(
+  //                     "callerStatusObject",
+  //                     JSON.stringify(existingData)
+  //                   );
+  //                   existingDataflag = true;
+  //                   existingDataremainingCount = existingData.length || 0;
+  //                 }
+  //                 if (existingDataflag) {
+  //                   if (existingDataremainingCount === 0) {
+  //                     if (RecipentIDsOninitiateVideoCall.length === 0) {
+  //                       localStorage.setItem("onlyLeaveCall", true);
+  //                       console.log("setLeaveOneToOne");
+  //                       setLeaveOneToOne(true);
+  //                       dispatch(videoChatMessagesFlag(false));
+  //                       dispatch(videoOutgoingCallFlag(false));
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //             if (RecipentIDsOninitiateVideoCallflag) {
+  //               if (remainingCount === 0) {
+  //                 if (existingData.length === 0) {
+  //                   localStorage.setItem("onlyLeaveCall", true);
+  //                   console.log("setLeaveOneToOne");
+  //                   setLeaveOneToOne(true);
+  //                   dispatch(videoChatMessagesFlag(false));
+  //                   dispatch(videoOutgoingCallFlag(false));
+  //                 }
+  //               }
+  //             } else {
+  //               if (existingData.length > 0) {
+  //                 existingObjectIndex = existingData.findIndex(
+  //                   (item) =>
+  //                     item.RecipientName === newData.RecipientName &&
+  //                     item.RecipientID === newData.RecipientID &&
+  //                     item.RoomID === newData.RoomID
+  //                 );
+  //                 if (existingObjectIndex !== -1) {
+  //                   existingData.splice(existingObjectIndex, 1);
+  //                   localStorage.setItem(
+  //                     "callerStatusObject",
+  //                     JSON.stringify(existingData)
+  //                   );
+  //                   existingDataflag = true;
+  //                   existingDataremainingCount = existingData.length || 0;
+  //                 }
+  //                 if (existingDataflag) {
+  //                   if (existingDataremainingCount === 0) {
+  //                     if (RecipentIDsOninitiateVideoCall.length === 0) {
+  //                       localStorage.setItem("onlyLeaveCall", true);
+  //                       console.log("setLeaveOneToOne");
+  //                       setLeaveOneToOne(true);
+  //                       dispatch(videoChatMessagesFlag(false));
+  //                       dispatch(videoOutgoingCallFlag(false));
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+
+  //           if (currentUserName !== data.payload.recepientName) {
+  //             setNotification({
+  //               ...notification,
+  //               notificationShow: true,
+  //               message: `${data.payload.recepientName} has declined the call`,
+  //             });
+  //             setNotificationID(id);
+  //           }
+  //           dispatch(callRequestReceivedMQTT({}, ""));
+  //         }
+  //       }
+  //     }
+  //     if (data.action.toLowerCase() === "notes") {
+  //       switch (data.payload.message.toLowerCase()) {
+  //         case "new_notes_creation":
+  //           const data2 = {
+  //             creationDateTime: data.dateTime,
+  //             notificationTypes: {
+  //               pK_NTID: 10,
+  //               description: changeMQTTJSONOne(
+  //                 t("NOTES-RECENT-ACTIVITY"),
+  //                 "[Notes Title]",
+  //                 data.payload.model.title
+  //               ),
+  //               icon: "",
+  //             },
+  //             key: 0,
+  //           };
+
+  //           dispatch(setRecentActivityDataNotification(data2));
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "calendar") {
+  //       const message = data.payload.message.toLowerCase();
+
+  //       switch (true) {
+  //         case message.includes("event_created_from_google_calendar"):
+  //           dispatch(createGoogleEventMQTT(data.payload));
+  //           break;
+
+  //         case message.includes("event_updated_from_google_calendar"):
+  //           dispatch(updateGoogletEventMQTT(data.payload));
+  //           break;
+
+  //         case message.includes("event_deleted_from_google_calendar"):
+  //           dispatch(deleteGoogleEventMQTT(data.payload));
+  //           break;
+
+  //         case message.includes("new_microsoft_event_creation"):
+  //           dispatch(createMicrosftEventMQTT(data.payload));
+  //           break;
+
+  //         case message.includes("new_microsoft_event_updated"):
+  //           dispatch(updateMicrosftEventMQTT(data.payload));
+  //           break;
+
+  //         case message.includes("new_microsoft_event_deleted"):
+  //           dispatch(deleteMicrosftEventMQTT(data.payload));
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "logout") {
+  //       const message = data.payload.toLowerCase();
+
+  //       switch (true) {
+  //         case message.includes("user_logout_due_to_inactivity"):
+  //           dispatch(userLogOutApiFunc(navigate, t));
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "login") {
+  //       const message = data.message.toLowerCase();
+
+  //       switch (message) {
+  //         case "user_login_activity":
+  //           leaveMeetingCall(data?.payload);
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "dataroom") {
+  //       const message = data.payload.message.toLowerCase();
+
+  //       try {
+  //         switch (message) {
+  //           case "file_shared":
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("FILE_SHARED"),
+  //                   "[Place holder]",
+  //                   data?.payload?.data?.displayFileName
+  //                 ),
+  //               });
+  //             }
+  //             setNotificationID(id);
+  //             dispatch(fileSharedMQTT(data.payload));
+  //             break;
+
+  //           case "folder_shared":
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("FOLDER_SHARED"),
+  //                   "[Place holder]",
+  //                   data?.payload?.data?.displayFolderName
+  //                 ),
+  //               });
+  //             }
+  //             setNotificationID(id);
+  //             dispatch(folderSharedMQTT(data.payload));
+  //             break;
+
+  //           case "file_sharing_removed":
+  //           case "file_deleted":
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: `file remove to you`,
+  //               });
+  //             }
+  //             setNotificationID(id);
+  //             dispatch(fileRemoveMQTT(data?.payload?.fileID));
+  //             break;
+
+  //           case "folder_sharing_removed":
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: `folder remove to you`,
+  //               });
+  //             }
+  //             setNotificationID(id);
+  //             dispatch(folderRemoveMQTT(data?.payload?.fileID));
+  //             break;
+
+  //           case "folder_deleted":
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: `folder remove to you`,
+  //               });
+  //             }
+  //             setNotificationID(id);
+  //             dispatch(folderRemoveMQTT(data?.payload?.folderID));
+  //             break;
+
+  //           case "meeting_transcript_downloaded":
+  //             dispatch(meetingTranscriptDownloaded(data.payload));
+  //             console.log(data.payload, "datapayload");
+  //             break;
+
+  //           case "meeting_minutes_downloaded":
+  //             dispatch(meetingMinutesDownloaded(data.payload));
+  //             console.log(data.payload, "datapayload");
+  //             break;
+
+  //           case "meeting_video_recording_received":
+  //             dispatch(meetingVideoRecording(data.payload));
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message: changeMQTTJSONOne(
+  //                   t("MEETING_VIDEO_RECORDING_RECEIVED"),
+  //                   "[Meeting Title]",
+  //                   data.payload.meetingTitle
+  //                 ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             break;
+
+  //           case "video_recording_received":
+  //             dispatch(videoRecording(data.payload));
+  //             if (data.viewable) {
+  //               setNotification({
+  //                 notificationShow: true,
+  //                 message:
+  //                   data.payload.callTypeID === 1
+  //                     ? changeMQTTJSONOne(
+  //                         t("VIDEO_RECORDING_ONETO_ONE_RECEIVED"),
+  //                         "[Participant Name]",
+  //                         data.payload?.callReceipents[0]?.name
+  //                       )
+  //                     : changeMQTTJSONOne(
+  //                         t("VIDEO_RECORDING_GROUP_RECEIVED"),
+  //                         "[Participant Name]",
+  //                         data.payload?.callReceipents[0]?.name
+  //                       ),
+  //               });
+  //               setNotificationID(id);
+  //             }
+  //             break;
+
+  //           default:
+  //             break;
+  //         }
+  //       } catch (error) {
+  //         console.log(error, "errorerrorerror");
+  //       }
+  //     }
+
+  //     //Web Notification
+  //     if (data.action.toLowerCase() === "webnotification") {
+  //       const message = data.payload.message.toLowerCase();
+
+  //       switch (message) {
+  //         case "web_notification":
+  //           console.log(data.payload, "datapayload");
+  //           dispatch(DiskusGlobalUnreadNotificationCount(data.payload));
+  //           setNotificationID(id);
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "workflow") {
+  //       const message = data.payload.message.toLowerCase();
+
+  //       switch (true) {
+  //         case message.includes("signature_document_sent_by_me"):
+  //           dispatch(SignatureDocumentReceivedMyMe(data.payload));
+  //           break;
+
+  //         case message.includes("signature_document_received"):
+  //           dispatch(SignatureDocumentReceived(data.payload));
+  //           if (data.payload?.workFlowStatusID === 3) return;
+  //           setPendingApprovalTabCount((prev) => ({
+  //             ...prev,
+  //             pendingSignature: (prev.pendingSignature ?? 0) + 1,
+  //           }));
+
+  //           break;
+
+  //         case message.includes("signature_document_status_change"):
+  //           dispatch(SignatureDocumentStatusChange(data.payload));
+  //           // If needed, decrease signature count here
+  //           break;
+
+  //         case message.includes("signature_document_action_by_me"):
+  //           dispatch(SignatureDocumentActionByMe(data.payload));
+  //           setPendingApprovalTabCount((prev) => ({
+  //             ...prev,
+  //             pendingSignature: Math.max((prev.pendingSignature ?? 0) - 1, 0),
+  //           }));
+  //           if (data.payload.data.status === "Signed") {
+  //             showMessage(
+  //               t("Document-has-been-signed-successfully"),
+  //               "success",
+  //               setOpen
+  //             );
+  //           } else if (data.payload.data.status === "Declined") {
+  //             showMessage(
+  //               t("Document-has-been-declined-successfully"),
+  //               "success",
+  //               setOpen
+  //             );
+  //           }
+  //           break;
+
+  //         case message.includes("signature_document_status_change_for_signees"):
+  //           dispatch(SignatureDocumentStatusChangeSignees(data.payload));
+  //           break;
+
+  //         case message.includes("minute_reviewer_added"):
+  //           dispatch(MinuteReviwerCount(data.payload));
+  //           setPendingApprovalTabCount((prev) => ({
+  //             ...prev,
+  //             pendingMinutes: (prev.pendingMinutes ?? 0) + 1,
+  //           }));
+  //           break;
+
+  //         case message.includes("minute_review_recieved_count"):
+  //           console.log(data.payload.pendingMinute, "IOS");
+  //           setPendingApprovalTabCount((prev) => {
+  //             if (prev.pendingMinutes !== data.payload.pendingMinute) {
+  //               return {
+  //                 ...prev,
+  //                 pendingMinutes: data.payload.pendingMinute,
+  //               };
+  //             }
+  //             return prev;
+  //           });
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+
+  //     if (data.action.toLowerCase() === "settings") {
+  //       const message = data.payload.message.toLowerCase();
+
+  //       switch (true) {
+  //         case message.includes("notification_marked_as_read"):
+  //           setUnReadCountNotification(0);
+  //           break;
+
+  //         default:
+  //           break;
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const onConnectionLost = () => {
     setTimeout(mqttConnection, 3000);
@@ -4882,7 +7786,7 @@ const Dashboard = () => {
     const session = sessionStorage.getItem("isMeeting");
     const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
     const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup"
+      "activeCallSessionforOtoandGroup",
     );
 
     setIsMeetingLocal(local ? JSON.parse(local) : false);
@@ -4919,31 +7823,30 @@ const Dashboard = () => {
     window.close();
   }, []);
 
-  const isOtoCallisActive =
-    activeCallLocalStorage && !activeCallsessionStorage ? true : false;
   useEffect(() => {
-    if (isOtoCallisActive) {
+    if (activeCallLocalStorage && !activeCallsessionStorage) {
       navigate("/AlreadyInGroupAndOtoCall");
     }
-  }, [isOtoCallisActive]);
+  }, [activeCallLocalStorage, activeCallsessionStorage]);
 
   return (
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ||
-            location.pathname.includes("meetingDocumentViewer") ? null : (
+          location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
           )}
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className='sidebar_layout' width={60}>
+                <Sider className="sidebar_layout" width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -4954,7 +7857,8 @@ const Dashboard = () => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }>
+                }
+              >
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -4980,22 +7884,24 @@ const Dashboard = () => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className='talk_features_home'>
+                <div className="talk_features_home">
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
             </Content>
           </Layout>
-          <NotificationBar
-            iconName={
-              <img src={IconMetroAttachment} alt='' draggable='false' />
-            }
-            notificationMessage={notification.message}
-            notificationState={notification.notificationShow}
-            setNotification={setNotification}
-            handleClose={closeNotification}
-            id={notificationID}
-          />
+          {notificationID !== 0 && (
+            <NotificationBar
+              iconName={
+                <img src={IconMetroAttachment} alt="" draggable="false" />
+              }
+              notificationMessage={notification.message}
+              notificationState={notification.notificationShow}
+              setNotification={setNotification}
+              handleClose={closeNotification}
+              id={notificationID}
+            />
+          )}
 
           {ShowGuestPopup && (
             <div>
@@ -5005,14 +7911,14 @@ const Dashboard = () => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
           {NormalizeVideoFlag === true ||
-            MinimizeVideoFlag === true ||
-            MaximizeVideoFlag === true ? (
+          MinimizeVideoFlag === true ||
+          MaximizeVideoFlag === true ? (
             <VideoCallScreen />
           ) : null}
           {/* Disconnectivity Modal  */}
@@ -5032,55 +7938,50 @@ const Dashboard = () => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
-                  <>
-                    <Row className='mb-1'>
-                      <Col lg={12} md={12} xs={12} sm={12}>
-                        <Row>
-                          <Col className='d-flex justify-content-center'>
-                            <img
-                              src={VerificationFailedIcon}
-                              width={60}
-                              className={"allowModalIcon"}
-                              alt=''
-                              draggable='false'
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col className='text-center mt-4'>
-                            <label className={"allow-limit-modal-p"}>
-                              {t(
-                                "The-organization-subscription-is-not-active-please-contact-your-admin"
-                              )}
-                            </label>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </>
+                  <Row className="mb-1">
+                    <Col lg={12} md={12} xs={12} sm={12}>
+                      <Row>
+                        <Col className="d-flex justify-content-center">
+                          <img
+                            src={VerificationFailedIcon}
+                            width={60}
+                            className={"allowModalIcon"}
+                            alt=""
+                            draggable="false"
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col className="text-center mt-4">
+                          <label className={"allow-limit-modal-p"}>
+                            {t(
+                              "The-organization-subscription-is-not-active-please-contact-your-admin",
+                            )}
+                          </label>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
                 </>
               }
               ModalFooter={
-                <>
-                  <Col sm={12} md={12} lg={12}>
-                    <Row className='mb-3'>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className='d-flex justify-content-center'>
-                        <Button
-                          className={"Ok-Successfull-btn"}
-                          text={t("Ok")}
-                          onClick={closeModal}
-                        />
-                      </Col>
-                    </Row>
+                <Row className="mb-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      className={"Ok-Successfull-btn"}
+                      text={t("Ok")}
+                      onClick={closeModal}
+                    />
                   </Col>
-                </>
+                </Row>
               }
             />
           )}

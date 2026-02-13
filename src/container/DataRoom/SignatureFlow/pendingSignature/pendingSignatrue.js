@@ -601,7 +601,7 @@ const SignatureViewer = () => {
 
               if (annots?.length === 0 || !annots[0].hasChildNodes()) {
                 showMessage(
-                  t("Signature-is-must-required"),
+                  t("Signature-is-required"),
                   "warning",
                   setOpen
                 );
@@ -733,7 +733,7 @@ const SignatureViewer = () => {
                 type: "customElement",
                 render: () => {
                   const SaveButton = document.createElement("button");
-                  SaveButton.textContent = "Sign";
+                  SaveButton.textContent = "Submit";
                   SaveButton.style.background = "#6172d6";
                   SaveButton.style.color = "#fff";
                   SaveButton.style.borderRadius = "4px";

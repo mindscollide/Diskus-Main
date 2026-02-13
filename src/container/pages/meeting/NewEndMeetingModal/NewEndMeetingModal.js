@@ -53,26 +53,26 @@ const NewEndMeetingModal = () => {
   const dispatch = useDispatch();
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterStartedFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterStartedFlag
+    (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
   const endMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.endMeetingModal
+    (state) => state.NewMeetingreducer.endMeetingModal,
   );
 
   //When Host Stop Recording
@@ -90,7 +90,7 @@ const NewEndMeetingModal = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     if (isZoomEnabled) {
       if (
@@ -110,7 +110,7 @@ const NewEndMeetingModal = () => {
             if (iframe && iframe.contentWindow) {
               iframe.contentWindow.postMessage(
                 "RecordingStopMsgFromIframe",
-                "*"
+                "*",
               );
               console.log("RecordingStopMsgFromIframe");
             }
@@ -126,7 +126,7 @@ const NewEndMeetingModal = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let newRoomID = localStorage.getItem("newRoomId");
     let isGuid = localStorage.getItem("isGuid");
@@ -138,12 +138,12 @@ const NewEndMeetingModal = () => {
     let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
     let isSharedSceenEnable = JSON.parse(
-      localStorage.getItem("isSharedSceenEnable")
+      localStorage.getItem("isSharedSceenEnable"),
     );
 
     if (presenterViewHostFlag || presenterViewJoinFlag) {
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
       let participantUID = localStorage.getItem("participantUID");
       let roomID = localStorage.getItem("acceptedRoomID");
@@ -152,8 +152,8 @@ const NewEndMeetingModal = () => {
       let RoomID = presenterViewFlag
         ? roomID
         : isMeetingVideoHostCheck
-        ? newRoomID
-        : participantRoomId;
+          ? newRoomID
+          : participantRoomId;
       let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
       dispatch(participantWaitingListBox(false));
       dispatch(toggleParticipantsVisibility(false));
@@ -240,8 +240,9 @@ const NewEndMeetingModal = () => {
         await dispatch(setRaisedUnRaisedParticiant(false));
         await dispatch(LeaveMeetingVideo(Data, navigate, t, 4));
       }
+      console.log("busyCall");
     }
-
+    console.log("busyCall");
     let leaveMeetingData = {
       FK_MDID: Number(currentMeetingID),
       DateTime: getCurrentDateTimeUTC(),
@@ -256,8 +257,8 @@ const NewEndMeetingModal = () => {
         setEditorRole,
         setAdvanceMeetingModalID,
         setViewAdvanceMeetingModal,
-        setCancelConfirmationModal
-      )
+        setCancelConfirmationModal,
+      ),
     );
     localStorage.removeItem("NotificationAdvanceMeetingID");
     localStorage.removeItem("QuickMeetingCheckNotification");
@@ -266,8 +267,8 @@ const NewEndMeetingModal = () => {
     localStorage.removeItem("AdvanceMeetingOperations");
     localStorage.removeItem("NotificationClickTaskID");
     localStorage.removeItem("viewadvanceMeetingTask");
-        localStorage.setItem("isMeeting", false);
-      sessionStorage.removeItem("isMeeting")
+    localStorage.setItem("isMeeting", false);
+    sessionStorage.removeItem("isMeeting");
   };
   const handleClickDiscard = () => {
     console.log("NewEndLeaveMeeting");

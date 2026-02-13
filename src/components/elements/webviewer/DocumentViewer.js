@@ -45,10 +45,10 @@ const DocumentViewer = () => {
 
   // Redux Selectors
   const FileRemoveMQTT = useSelector(
-    (state) => state.DataRoomReducer.FileRemoveMQTT
+    (state) => state.DataRoomReducer.FileRemoveMQTT,
   );
   const { attachmentBlob, xfdfData, ResponseMessage } = useSelector(
-    (state) => state.webViewer
+    (state) => state.webViewer,
   );
 
   // Memoized PDF Data
@@ -56,6 +56,8 @@ const DocumentViewer = () => {
     const params = new URLSearchParams(location.search).get("pdfData");
     return JSON.parse(params || "{}");
   }, [location.search]);
+
+  console.log(pdfData, "pdfDatapdfData");
 
   const { taskId, attachmentID, fileName, commingFrom, isPermission } = pdfData;
 
@@ -74,37 +76,24 @@ const DocumentViewer = () => {
       [new Uint8Array([...binaryString].map((char) => char.charCodeAt(0)))],
       {
         type: mimeType,
-      }
+      },
     );
   };
 
   // Fetch Annotations
   useEffect(() => {
-    const fetchAnnotations = () => {
-      const actions = {
-        1: getAnnotationsOfToDoAttachement,
-        2: getAnnotationsOfNotesAttachement,
-        3: getAnnotationsOfResolutionAttachement,
-        4: getAnnotationsOfDataroomAttachement,
-      };
-
+    try {
       const data = {
-        1: { TaskID: Number(taskId), TaskAttachementID: Number(attachmentID) },
-        2: { NoteID: Number(taskId), NoteAttachementID: Number(attachmentID) },
-        3: {
-          ResolutionID: Number(taskId),
-          ResolutionAttachementID: Number(attachmentID),
-        },
-        4: { FileID: attachmentID },
+        FileID: attachmentID,
       };
 
-      const action = actions[Number(commingFrom)];
-      if (action) dispatch(action(navigate, t, data[Number(commingFrom)]));
-    };
+      dispatch(getAnnotationsOfDataroomAttachement(navigate, t, data));
 
-    if (taskId && attachmentID) fetchAnnotations();
-    return clearLocalStorage;
-  }, [dispatch, navigate, t, taskId, attachmentID, commingFrom]);
+      return clearLocalStorage;
+    } catch (error) {
+      console.log({ error }, "pdfDatapdfData");
+    }
+  }, [attachmentID]);
 
   // Handle File Removal via MQTT
   useEffect(() => {
@@ -194,7 +183,7 @@ const DocumentViewer = () => {
 
     annotationManager.addEventListener(
       "annotationChanged",
-      handleAnnotationChange
+      handleAnnotationChange,
     );
 
     // Warn when closing tab
@@ -210,7 +199,7 @@ const DocumentViewer = () => {
     return () => {
       annotationManager.removeEventListener(
         "annotationChanged",
-        handleAnnotationChange
+        handleAnnotationChange,
       );
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
@@ -222,13 +211,12 @@ const DocumentViewer = () => {
       WebViewer(
         {
           path: "/webviewer/lib",
-          licenseKey:
-            process.env.REACT_APP_APRYSEKEY, // Replace with your key
+          licenseKey: process.env.REACT_APP_APRYSEKEY, // Replace with your key
           fullAPI: true,
           officeEditor: true, // Enables Office file support
           officeWorker: true, // Enables Office file conversion
         },
-        viewer.current
+        viewer.current,
       )
         .then((instance) => {
           setInstance(instance);
@@ -248,7 +236,7 @@ const DocumentViewer = () => {
 
           console.log(
             { mimeType, extension, CLIENT },
-            "mimeTypemimeTypemimeType"
+            "mimeTypemimeTypemimeType",
           );
 
           let blob = base64ToBlob(pdfResponseData.attachmentBlob, mimeType); // Convert Base64 to Blob
@@ -262,7 +250,7 @@ const DocumentViewer = () => {
             showMessage(
               t("file_format_not_supported_for_preview"),
               "error",
-              setOpen
+              setOpen,
             );
             return;
           }
@@ -411,8 +399,8 @@ const DocumentViewer = () => {
 
   return (
     <>
-      <div className='document-viewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="document-viewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       <Notification open={open} setOpen={setOpen} />

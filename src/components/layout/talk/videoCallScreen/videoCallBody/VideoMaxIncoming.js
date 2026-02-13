@@ -333,6 +333,8 @@ const VideoMaxIncoming = () => {
             dispatch(leaveCallModal(false));
             dispatch(participantPopup(false));
             localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
             localStorage.setItem("acceptedRoomID", 0);
             localStorage.setItem("activeRoomID", 0);
             localStorage.setItem("isCaller", false);
