@@ -49,8 +49,8 @@ const EndOfComplianceReport = () => {
 
   const donutData = [
     ["Task Status", "Count"],
-    ["Tasks Completed On Time", 45],
-    ["Tasks Completed Late", 33],
+    ["Tasks Completed On Time", 100],
+    ["Tasks Completed Late", 0],
   ];
 
   const donutOptions = {
