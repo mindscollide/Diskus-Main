@@ -269,49 +269,10 @@ const AgendaViewer = () => {
   const disableBeforeJoinZoom = useSelector(
     (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
+
   const UpgradeNowModalReducer = useSelector(
     (state) => state.UserManagementModals.UpgradeNowModal,
   );
-  const UpgradeNowModalReducer = useSelector(
-    (state) => state.UserManagementModals.UpgradeNowModal
-  );
-
-  console.log("UpgradeNowModalReducer", UpgradeNowModalReducer);
-  console.log("Video Feature Debug Data:", {
-    editorRole,
-    presenterViewFlag,
-    videoTalk,
-    presenterViewHostFlag,
-    presenterViewJoinFlag,
-    presenterStartedFlag,
-    newRoomID,
-    currentMeetingID,
-    callAcceptedRoomID,
-    participantRoomId,
-    isMeetingVideoHostCheck,
-    isZoomEnabled,
-    isMeetingVideo,
-    participantUID,
-    roomID,
-    isGuid,
-    RoomID,
-    UID,
-    GetAdvanceMeetingAgendabyMeetingIDForViewData,
-    cancelMeetingMaterial,
-    agendaResponseMessage,
-    AgendaVideoResponseMessage,
-    MaximizeHostVideoFlag,
-    NormalHostVideoFlag,
-    maximizeParticipantVideoFlag,
-    raisedUnRaisedParticipant,
-    normalParticipantVideoFlag,
-    maxParticipantVideoDeniedFlag,
-    maxParticipantVideoRemovedFlag,
-    nonMeetingVideo,
-    enableDisableVideoState,
-    participantEnableVideoState,
-    disableBeforeJoinZoom,
-  });
 
   const [menuAgenda, setMenuAgenda] = useState(false);
 

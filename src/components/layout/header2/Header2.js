@@ -150,18 +150,6 @@ const Header2 = ({ isVideo }) => {
     (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
-  const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
-  );
-
-  const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
-  );
-
-  const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
-  );
-
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const [modalNoteHeader, setModalNoteHeader] = useState(false);
   const [reload, setReload] = useState(false);
@@ -415,7 +403,7 @@ const Header2 = ({ isVideo }) => {
       const participantRoomId = localStorage.getItem("participantRoomId");
 
       const isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       const newName = localStorage.getItem("name");
@@ -425,7 +413,7 @@ const Header2 = ({ isVideo }) => {
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
       const alreadyInMeetingVideo = JSON.parse(
-        sessionStorage.getItem("alreadyInMeetingVideo")
+        sessionStorage.getItem("alreadyInMeetingVideo"),
       );
 
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
@@ -437,8 +425,8 @@ const Header2 = ({ isVideo }) => {
         presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
           ? roomID
           : isMeetingVideoHostCheck
-          ? newRoomID
-          : participantRoomId;
+            ? newRoomID
+            : participantRoomId;
 
       const UID = isMeetingVideoHostCheck ? isGuid : participantUID;
 
@@ -707,6 +695,8 @@ const Header2 = ({ isVideo }) => {
     }
   };
 
+  const checkifMeetingOngoing =
+    Number(editorRole.status) === 10 && viewAdvanceMeetingModal ? true : false;
   return (
     <>
       {activateBlur ? (
