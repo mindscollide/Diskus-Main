@@ -77,46 +77,46 @@ const Resolution = () => {
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const { resultresolution, setResultresolution } = useResolutionContext();
   const resolutionVoteCounter = useSelector(
-    (state) => state.ResolutionReducer.resolutionVoteCounter
+    (state) => state.ResolutionReducer.resolutionVoteCounter,
   );
   const ResolutionReducersearchVoterResolution = useSelector(
-    (state) => state.ResolutionReducer.searchVoterResolution
+    (state) => state.ResolutionReducer.searchVoterResolution,
   );
   const ResolutionReducerGetResolutions = useSelector(
-    (state) => state.ResolutionReducer.GetResolutions
+    (state) => state.ResolutionReducer.GetResolutions,
   );
   const ResolutionReducermqttResolutionCreated = useSelector(
-    (state) => state.ResolutionReducer.mqttResolutionCreated
+    (state) => state.ResolutionReducer.mqttResolutionCreated,
   );
   const ResolutionReducermqttResolutionCancelled = useSelector(
-    (state) => state.ResolutionReducer.mqttResolutionCancelled
+    (state) => state.ResolutionReducer.mqttResolutionCancelled,
   );
   const ResolutionReducermqttResolutionClosed = useSelector(
-    (state) => state.ResolutionReducer.mqttResolutionClosed
+    (state) => state.ResolutionReducer.mqttResolutionClosed,
   );
   const ResolutionReducercreateResolutionModal = useSelector(
-    (state) => state.ResolutionReducer.createResolutionModal
+    (state) => state.ResolutionReducer.createResolutionModal,
   );
   const ResolutionReducerviewResolutionModal = useSelector(
-    (state) => state.ResolutionReducer.viewResolutionModal
+    (state) => state.ResolutionReducer.viewResolutionModal,
   );
   const ResolutionReducerresultResolutionFlag = useSelector(
-    (state) => state.ResolutionReducer.resultResolutionFlag
+    (state) => state.ResolutionReducer.resultResolutionFlag,
   );
   const ResolutionReducervoteResolutionFlag = useSelector(
-    (state) => state.ResolutionReducer.voteResolutionFlag
+    (state) => state.ResolutionReducer.voteResolutionFlag,
   );
   const ResolutionReducerviewAttachmentFlag = useSelector(
-    (state) => state.ResolutionReducer.viewAttachmentFlag
+    (state) => state.ResolutionReducer.viewAttachmentFlag,
   );
   const ResolutionReducerupdateResolutionModal = useSelector(
-    (state) => state.ResolutionReducer.updateResolutionModal
+    (state) => state.ResolutionReducer.updateResolutionModal,
   );
   const ResolutionReducerLoading = useSelector(
-    (state) => state.ResolutionReducer.Loading
+    (state) => state.ResolutionReducer.Loading,
   );
   const AccessDeniedGlobalState = useSelector(
-    (state) => state.PollsReducer.AccessDeniedPolls
+    (state) => state.PollsReducer.AccessDeniedPolls,
   );
   const [totalResolution, setTotalResolution] = useState(0);
   const [totalVoterResolution, setTotalVoterResolution] = useState(0);
@@ -160,7 +160,7 @@ const Resolution = () => {
               navigate,
               t,
               1,
-              dispatch
+              dispatch,
             )
               .then((response) => {
                 dispatch(
@@ -168,8 +168,8 @@ const Resolution = () => {
                     navigate,
                     response.resolutionID,
                     t,
-                    setVoteresolution
-                  )
+                    setVoteresolution,
+                  ),
                 );
                 localStorage.removeItem("resVot");
               })
@@ -179,7 +179,7 @@ const Resolution = () => {
           } catch (error) {
             console.log(error);
           }
-        } catch (error) { }
+        } catch (error) {}
       }
     } catch (error) {
       console.log(error, "error");
@@ -194,7 +194,7 @@ const Resolution = () => {
           navigate,
           t,
           1,
-          dispatch
+          dispatch,
         )
           .then((response) => {
             viewResolution(response.resolutionID);
@@ -229,7 +229,7 @@ const Resolution = () => {
         localStorage.setItem("ButtonTab", 1);
         dispatch(getVoterResolution(navigate, 1, t));
       }
-    } catch { }
+    } catch {}
 
     return () => {
       localStorage.removeItem("moderatorPage");
@@ -299,8 +299,8 @@ const Resolution = () => {
           t,
           Data.Title,
           Data.CirculationDate,
-          Data.VotingDeadlineDate
-        )
+          Data.VotingDeadlineDate,
+        ),
       );
       setSearchResultsArea(false);
       setSearchIcon(false);
@@ -323,8 +323,8 @@ const Resolution = () => {
           t,
           Data.Title,
           Data.CirculationDate,
-          Data.VotingDeadlineDate
-        )
+          Data.VotingDeadlineDate,
+        ),
       );
     }
   };
@@ -442,8 +442,8 @@ const Resolution = () => {
         t,
         setResultresolution,
         setIsResolutionClosed,
-        isClosed
-      )
+        isClosed,
+      ),
     );
   };
 
@@ -532,20 +532,18 @@ const Resolution = () => {
             if (row.resolutionID === resolutionVoteCounter.resolutionID) {
               return {
                 ...row,
-                voteCount: resolutionVoteCounter.voteCount
-              }
+                voteCount: resolutionVoteCounter.voteCount,
+              };
             }
-            return row
-          })
-        })
+            return row;
+          });
+        });
         dispatch(resolutionMQTTVoteCounter(null));
-
       } catch (error) {
         console.log(error);
-
       }
     }
-  }, [resolutionVoteCounter])
+  }, [resolutionVoteCounter]);
 
   // moderator all and current columns
   const columnsModerator = [
@@ -1248,7 +1246,7 @@ const Resolution = () => {
       if (ResolutionReducersearchVoterResolution !== null) {
         setSearchVoter(ResolutionReducersearchVoterResolution.resolutionTable);
         setTotalVoterResolution(
-          ResolutionReducersearchVoterResolution.totalRecords
+          ResolutionReducersearchVoterResolution.totalRecords,
         );
       } else {
         setSearchVoter([]);
@@ -1279,7 +1277,7 @@ const Resolution = () => {
           let getData = ResolutionReducermqttResolutionCreated;
           let findIndexModerator = isSearchVoter.findIndex(
             (data, index) =>
-              data.resolutionID === getData.resolution.pK_ResolutionID
+              data.resolutionID === getData.resolution.pK_ResolutionID,
           );
           if (resolutionView === 2 && (buttonTab === 1 || buttonTab === 3)) {
             // Check if the user is a valid voter or non-voter
@@ -1290,7 +1288,7 @@ const Resolution = () => {
               findIndexModerator,
               findVoterisValid,
               getData,
-              "findIndexModeratorfindIndexModerator"
+              "findIndexModeratorfindIndexModerator",
             );
             if (findVoterisValid) {
               const voterResolution = {
@@ -1321,7 +1319,7 @@ const Resolution = () => {
               }
             }
           }
-        } catch { }
+        } catch {}
         dispatch(resolutionMQTTCreate(null));
       }
     } catch (error) {
@@ -1337,10 +1335,10 @@ const Resolution = () => {
             (obj) =>
               obj.resolutionID !==
               ResolutionReducermqttResolutionCancelled.resolution
-                .pK_ResolutionID
+                .pK_ResolutionID,
           );
           setSearchVoter(findCancelledResolution);
-        } catch { }
+        } catch {}
       }
     } catch (error) {
       console.log(error, "error");
@@ -1353,7 +1351,7 @@ const Resolution = () => {
         let getData = ResolutionReducermqttResolutionCreated;
         let findIndexResolution = isSearchVoter.findIndex(
           (data, index) =>
-            data.resolutionID === getData.resolution.pK_ResolutionID
+            data.resolutionID === getData.resolution.pK_ResolutionID,
         );
         if (resolutionView === 2) {
           if (buttonTab === 1) {
@@ -1361,7 +1359,7 @@ const Resolution = () => {
               (obj) =>
                 obj.resolutionID !==
                 ResolutionReducermqttResolutionCancelled.resolution
-                  .pK_ResolutionID
+                  .pK_ResolutionID,
             );
             setSearchVoter(findCancelledResolution);
           } else if (buttonTab === 2) {
@@ -1410,7 +1408,7 @@ const Resolution = () => {
             setSearchVoter(copyData);
           }
         }
-      } catch { }
+      } catch {}
     }
   }, [ResolutionReducermqttResolutionClosed]);
 
@@ -1457,7 +1455,7 @@ const Resolution = () => {
           </>
         ) : (
           <>
-            <Row className="mt-3">
+            <Row>
               <Col lg={12} md={12} sm={12}>
                 <Row>
                   <Col
@@ -1687,7 +1685,7 @@ const Resolution = () => {
                                     text={t("Search")}
                                     className={
                                       styles[
-                                      "SearchButton_SearchBar_Resolution"
+                                        "SearchButton_SearchBar_Resolution"
                                       ]
                                     }
                                     onClick={showSearchOptions}

@@ -48,29 +48,29 @@ const ManageUsers = () => {
   let userID = localStorage.getItem("userID");
 
   const UserMangementReducergetOrganizationUserStatsGraph = useSelector(
-    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph
+    (state) => state.UserMangementReducer.getOrganizationUserStatsGraph,
   );
 
   const UserMangementReducerallOrganizationUsersData = useSelector(
-    (state) => state.UserMangementReducer.allOrganizationUsersData
+    (state) => state.UserMangementReducer.allOrganizationUsersData,
   );
 
   console.log(UserMangementReducerallOrganizationUsersData, "statestate");
 
   const UserMangementReducerResponseMessage = useSelector(
-    (state) => state.UserMangementReducer.ResponseMessage
+    (state) => state.UserMangementReducer.ResponseMessage,
   );
 
   const UserManagementModalsdeleteUsersModal = useSelector(
-    (state) => state.UserManagementModals.deleteUsersModal
+    (state) => state.UserManagementModals.deleteUsersModal,
   );
 
   const UserManagementModalseditUserModal = useSelector(
-    (state) => state.UserManagementModals.editUserModal
+    (state) => state.UserManagementModals.editUserModal,
   );
 
   const UserManagementModalssuccessfullyUpdated = useSelector(
-    (state) => state.UserManagementModals.successfullyUpdated
+    (state) => state.UserManagementModals.successfullyUpdated,
   );
 
   //States
@@ -154,7 +154,7 @@ const ManageUsers = () => {
       UserMangementReducergetOrganizationUserStatsGraph.selectedPackageDetails.forEach(
         (data) => {
           UserCount += data.headCount - data.packageAllotedUsers;
-        }
+        },
       );
       setTotalUserCount(UserCount);
     }
@@ -175,7 +175,7 @@ const ManageUsers = () => {
       ) {
         console.log(Users, "UsersUsersUsersUsersUsersUsers");
         setManageUserGrid(
-          UserMangementReducerallOrganizationUsersData.organizationUsers
+          UserMangementReducerallOrganizationUsersData.organizationUsers,
         );
       } else {
         setManageUserGrid([]);
@@ -465,7 +465,7 @@ const ManageUsers = () => {
           if (conditionsToCheck.length === 0) return true;
 
           return conditionsToCheck.some((condition) => condition);
-        }
+        },
       );
 
     // Set the showSearches to false if any admin user is found and searchIsAdmin is true
@@ -576,7 +576,7 @@ const ManageUsers = () => {
                 .includes(manangeUserSearch.searchValue.toLowerCase());
 
             return matchesName;
-          }
+          },
         );
 
       setManageUserGrid(filteredData);

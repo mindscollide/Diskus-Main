@@ -117,7 +117,7 @@ body[dir="rtl"] .Archived-Group-btn {
 
 .Groupscontainer {
   height: 91vh;
-  width: 98% !important;
+  width: 100% !important;
   margin: 0 auto !important;
 }
 
@@ -270,12 +270,12 @@ body[dir="rtl"] .Confirm-activegroup-modal {
 }
 
 .Confirm-activegroup-modal:is(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+  :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited
+) {
   font-size: 12px;
   background: #6172d6 !important;
   color: #fff !important;
@@ -300,12 +300,12 @@ body[dir="rtl"] .Cancel-activegroup-modal {
 }
 
 .Cancel-activegroup-modal:is(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+  :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited
+) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
