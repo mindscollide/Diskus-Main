@@ -1019,7 +1019,7 @@ const searchNewUserMeeting = (navigate, Data, t, val) => {
     form.append("RequestMethod", searchUserMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axiosInstance
-      .post(newMeetingApi, form)
+      .post(meetingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
