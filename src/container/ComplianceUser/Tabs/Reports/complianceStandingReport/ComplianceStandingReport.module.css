@@ -233,6 +233,11 @@
   font-weight: 600;
   margin-top: 16px;
 }
+
+.goBackButton {
+  cursor: pointer;
+}
+
 .nodatafound_subHeading {
   font-weight: 700;
   font-size: 20px;

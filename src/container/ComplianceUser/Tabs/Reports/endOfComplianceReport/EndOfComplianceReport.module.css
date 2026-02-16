@@ -170,12 +170,15 @@
   padding: 8px;
   display: flex;
   align-items: center;
+  width: fit-content;
   margin-top: 20px;
   color: #6172d6;
   gap: 5px;
 }
 
 .reportDetailsBar span {
+  display: flex;
+  justify-content: center;
   font-size: 14px;
   font-weight: 600;
   font-family: "Montserrat";
@@ -410,4 +413,8 @@
   letter-spacing: 2%;
   font-weight: 600;
   margin-top: 16px;
+}
+
+.goBackButton {
+  cursor: pointer;
 }
