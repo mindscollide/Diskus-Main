@@ -344,7 +344,7 @@ const ComplianceStandingReport = () => {
                               <div
                                 className={`${styles.nodatafound_subHeading}`}
                               >
-                                No checklist Data
+                                {t("No-Checklist-Found")}
                               </div>
                             </div>
                           ) : (
@@ -371,7 +371,7 @@ const ComplianceStandingReport = () => {
                                       <div
                                         className={`${styles.nodatafound_subHeading}`}
                                       >
-                                        No Checklist Task
+                                        {t("No-Checklist-Task")}
                                       </div>
                                     </div>
                                   ) : (

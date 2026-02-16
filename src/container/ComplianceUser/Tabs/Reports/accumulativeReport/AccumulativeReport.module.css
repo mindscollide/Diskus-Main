@@ -61,8 +61,9 @@
 /* HEADER LIKE TABLE */
 .tableHeader {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
+  grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   font-weight: 600;
+  align-items: center;
   font-size: 14px;
   padding: 12px 16px;
   border-bottom: 1px solid #e5e5e5;
@@ -73,8 +74,9 @@
 /* EACH COLLAPSE ROW HEADER */
 .tableRow {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
+  grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   align-items: center;
+
   font-size: 14px;
   font-weight: 600;
   font-family: "Montserrat";
@@ -86,7 +88,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 500;
-  max-width: 300px;
+  max-width: 500px;
 }
 
 .badge {
@@ -220,7 +222,12 @@
   font-family: "Montserrat";
   color: #5a5a5a;
 }
-
+.titleSection label.ChecklistTitle {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+}
 .longTitle {
   font-size: 30px;
   font-weight: 500;
@@ -261,6 +268,7 @@
   gap: 10px;
   background: #ecefff;
   border-radius: 8px;
+  padding: 24px 30px;
 }
 
 .chartWrapper {
@@ -416,4 +424,24 @@
   letter-spacing: 2%;
   font-weight: 600;
   margin-top: 16px;
+}
+
+.nodatafound_subHeading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #e1e1e1;
+}
+.NoDataFoundTable {
+  height: 140px;
+  padding: 10px 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background: #ffffff;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
