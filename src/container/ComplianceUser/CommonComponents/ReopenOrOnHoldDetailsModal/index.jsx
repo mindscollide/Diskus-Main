@@ -16,6 +16,7 @@ const ReopenOrOnHoldDetailsModal = () => {
 
   const { isViewDetailsOpen, setIsViewDetailsOpen, complianceDetailsState } =
     useComplianceContext();
+    console.log(complianceDetailsState,"complianceDetailsStatecomplianceDetailsState")
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);
@@ -29,9 +30,13 @@ const ReopenOrOnHoldDetailsModal = () => {
       complianceDetailsState.complianceStatusChangeHistory.length > 0
     ) {
       try {
-        setComplianceStatusChangeHistory(
-          complianceDetailsState.complianceStatusChangeHistory,
-        );
+        const filteredHistory =
+          complianceDetailsState.complianceStatusChangeHistory.filter(
+            (item) =>
+              item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
+          );
+
+        setComplianceStatusChangeHistory(filteredHistory);
       } catch (error) {}
     } else {
       setComplianceStatusChangeHistory([]);

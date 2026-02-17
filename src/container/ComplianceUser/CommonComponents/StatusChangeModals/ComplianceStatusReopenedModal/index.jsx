@@ -19,7 +19,7 @@ import CustomUpload from "../../../../../components/elements/upload/Upload";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
 import { formatDateToYMD, parseUTCDateString } from "../../commonFunctions";
-const ComplianceStatusReopenedModal = () => {
+const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
 
   const [fileForSend, setFileForSend] = useState([]);
@@ -112,14 +112,14 @@ const ComplianceStatusReopenedModal = () => {
       }
 
       let fileExists = complianceReopenDetailsState.attachments.some(
-        (oldFileData) => oldFileData.name === fileData.name
+        (oldFileData) => oldFileData.name === fileData.name,
       );
 
       if (!size) {
         showMessage(
           t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
-          setOpen
+          setOpen,
         );
       } else if (!sizezero) {
         showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
@@ -251,7 +251,7 @@ const ComplianceStatusReopenedModal = () => {
                             }}
                           />
                         );
-                      }
+                      },
                     )
                   : null}
               </section>
@@ -277,7 +277,7 @@ const ComplianceStatusReopenedModal = () => {
               <Button
                 text={t("Proceed")}
                 className={styles["CancelButton"]}
-                onClick={handleProceedButton}
+                onClick={view ? handleProceedButtonView : handleProceedButton}
                 disableBtn={
                   complianceReopenDetailsState.reason === "" ||
                   complianceReopenDetailsState.dueDate === ""

@@ -36,6 +36,10 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceUpdateMqttData,
   );
 
+  const complianceReopenMqttData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
+  );
+
   console.log(
     complianceCreatedMqttData,
     "complianceCreatedMqttDatacomplianceCreatedMqttData",
@@ -352,6 +356,7 @@ export const ComlianceProvider = ({ children }) => {
   const [allCheckListByComplianceId, setAllCheckListByComplianceId] = useState(
     [],
   );
+
   console.log(
     allCheckListByComplianceId,
     "allCheckListByComplianceIdallCheckListByComplianceId",
@@ -391,6 +396,9 @@ export const ComlianceProvider = ({ children }) => {
 
   // To Download automatically Report State
   const [autoPdfDownload, setAutoPdfDownload] = useState(false);
+
+  //For Reopen dashboard Card Data in COmpliance
+  const [reopenDashboardList, setReopenDashboardList] = useState([]);
 
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
@@ -505,6 +513,17 @@ export const ComlianceProvider = ({ children }) => {
           setCheckAnyTaskOnPendingState(hasPendingTask);
         } else {
           setCheckAnyTaskOnPendingState(false);
+        }
+        if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
+          const hasTaskInProgress =
+            Array.isArray(checklistTasks) &&
+            checklistTasks.some(
+              (task) => task?.taskStatus?.statusName === "In Progress",
+            );
+
+          setCheckAnyTaskInProgress(hasTaskInProgress);
+        } else {
+          setCheckAnyTaskInProgress(false);
         }
       } catch (error) {}
     }
@@ -690,6 +709,37 @@ export const ComlianceProvider = ({ children }) => {
     }
   }, [complianceUpdateMqttData]);
 
+  // WHEN COMPLIANCE_REOPEN_MQTT comes
+  useEffect(() => {
+    if (!complianceReopenMqttData) return;
+    console.log(complianceReopenMqttData, "REOPENCOMPLIANCE");
+    try {
+      const data = complianceReopenMqttData;
+      const { complianceId, complianceStatusChangeHistory } = data || {};
+      console.log(data, "REOPENCOMPLIANCE");
+
+      if (!complianceId || !complianceStatusChangeHistory) return;
+
+      setComplianceDetailsState((prev) => {
+        if (!prev || prev.complianceId !== complianceId) return prev;
+
+        // Get latest status from newest history item
+        const latestHistory = complianceStatusChangeHistory[0];
+
+        return {
+          ...prev,
+          status: {
+            value: latestHistory?.toStatus?.statusId,
+            label: latestHistory?.toStatus?.statusName,
+          },
+          complianceStatusChangeHistory: complianceStatusChangeHistory,
+        };
+      });
+    } catch (error) {
+      console.error("Error processing complianceReopenMqttData:", error);
+    }
+  }, [complianceReopenMqttData]);
+
   return (
     <ComplianceContext.Provider
       value={{
@@ -804,6 +854,12 @@ export const ComlianceProvider = ({ children }) => {
         setComplianceDetailsViewState,
         autoPdfDownload,
         setAutoPdfDownload,
+        checkAnyTaskOnPendingState,
+        checkAnyChecklistOnPendingState,
+        checkAnyTaskInProgress,
+        setCheckAnyTaskInProgress,
+        reopenDashboardList,
+        setReopenDashboardList,
       }}
     >
       {children}

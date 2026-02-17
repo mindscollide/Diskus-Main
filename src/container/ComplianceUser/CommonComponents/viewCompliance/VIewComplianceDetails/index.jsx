@@ -44,6 +44,13 @@ const ViewComplianceDetails = () => {
     comlianceStatusReopenedModal,
     setComlianceStatusReopenedModal,
     setComplianceDetailsViewState,
+    resetModalStates,
+    setTempSelectedComplianceStatus,
+    checkAnyTaskOnPendingState,
+    checkAnyChecklistOnPendingState,
+    checkAnyTaskInProgress,
+    setCheckAnyTaskInProgress,
+    tempSelectedComplianceStatus,
   } = useComplianceContext();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -238,6 +245,136 @@ const ViewComplianceDetails = () => {
     console.log(Data, "DataDataData");
   };
 
+  const handleChangeComplianceStatus = (event) => {
+    console.log(event, "CompliaceStatusOnHoldModal");
+
+    // if compliance status is changed to Complete check any task still in In Progress or Pending status
+    if (event.value === 3) {
+      if (complianceDetailsState.status.value === 3) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 3) {
+        if (
+          // checkAnyChecklistOnPendingState ||
+          checkAnyTaskOnPendingState ||
+          checkAnyTaskInProgress
+        ) {
+          resetModalStates();
+          setComlianceCompleteExceptionModal(true);
+        } else {
+          updateCompliance(event);
+          // setComplianceDetailsState((prev) => ({
+          //   ...prev,
+          //   status: event,
+          // }));
+        }
+      }
+    }
+
+    // status change to Submit for Approval
+    if (event.value === 5) {
+      if (complianceDetailsState.status.value === 5) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 5) {
+        if (checkAnyChecklistOnPendingState) {
+          resetModalStates();
+          setTempSelectedComplianceStatus(event);
+          setSubmitForApprovalModal(true);
+        } else {
+          updateCompliance(event);
+
+          // setComplianceDetailsState((prev) => ({
+          //   ...prev,
+          //   status: event,
+          // }));
+        }
+      }
+    }
+
+    // status change to Reopen
+    if (event.value === 6) {
+      if (complianceDetailsState.status.value === 6) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 6) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComlianceStatusReopenedModal(true);
+      }
+    }
+    // status change to On Hold
+    if (event.value === 7) {
+      if (complianceDetailsState.status.value === 7) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 7) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceOnHoldModal(true);
+      }
+    }
+
+    // Status changed to Cancel
+    if (event.value === 9) {
+      if (complianceDetailsState.status.value === 9) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 9) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceCancelModal(true);
+      }
+    }
+    // Status chnage to In Progress
+    else if (event.value === 2) {
+      resetModalStates();
+      updateCompliance(event);
+
+      // setComplianceDetailsState((prev) => ({
+      //   ...prev,
+      //   status: event,
+      // }));
+      // setComplianceDetailsState((prev) => ({
+      //   ...prev,
+      //   status: event,
+      // }));
+    }
+  };
+
+const handleClickSubmitApprovalModal = useCallback(() => {
+  if (tempSelectedComplianceStatus) {
+    updateCompliance(tempSelectedComplianceStatus);
+  }
+  setSubmitForApprovalModal(false);
+  resetModalStates();
+}, [tempSelectedComplianceStatus]);
+
+
+const handleClickOnHoldModal = useCallback(() => {
+  if (tempSelectedComplianceStatus) {
+    updateCompliance(tempSelectedComplianceStatus);
+  }
+  setComplianceOnHoldModal(false);
+  resetModalStates();
+}, [tempSelectedComplianceStatus]);
+
+
+const handleClickCancelModal = useCallback(() => {
+  if (tempSelectedComplianceStatus) {
+    updateCompliance(tempSelectedComplianceStatus);
+  }
+  setComplianceCancelModal(false);
+  resetModalStates();
+}, [tempSelectedComplianceStatus]);
+
+const handleClickReOpendModal = useCallback(() => {
+  if (tempSelectedComplianceStatus) {
+    updateCompliance(tempSelectedComplianceStatus);
+  }
+  setComlianceStatusReopenedModal(false);
+  resetModalStates();
+}, [tempSelectedComplianceStatus]);
+
+
+
   return (
     <>
       <Row className="mt-3">
@@ -267,7 +404,7 @@ const ViewComplianceDetails = () => {
               <Select
                 isSearchable={false}
                 options={allowedComplianceStatusOptions}
-                onChange={handleStatusChange}
+                onChange={handleChangeComplianceStatus}
                 styles={statusSelectStyles}
                 value={complianceDetailsState.status}
                 placeholder="Select"
@@ -326,16 +463,18 @@ const ViewComplianceDetails = () => {
       )}
 
       {/* This is For Submit For Approval Modal */}
-      {submitForApprovalModal && <StatusSubmitForApprovalModal />}
+      {submitForApprovalModal && <StatusSubmitForApprovalModal view={true} handleProceedButtonView={handleClickSubmitApprovalModal} />}
 
       {/* This is For On Hold Modal */}
-      {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
+      {complianceOnHoldModal && <CompliaceStatusOnHoldModal view={true} handleProceedButtonView={handleClickOnHoldModal} />}
 
       {/* This is For Cancel Modal */}
-      {complianceCancelModal && <ComplianceStatusCancelModal />}
+      {complianceCancelModal && <ComplianceStatusCancelModal view={true} handleProceedButtonView={handleClickCancelModal} />}
 
       {/* This is For Re-opened Modal */}
-      {comlianceStatusReopenedModal && <ComplianceStatusReopenedModal />}
+      {comlianceStatusReopenedModal && (
+        <ComplianceStatusReopenedModal view={true}  handleProceedButtonView={handleClickReOpendModal}/>
+      )}
     </>
   );
 };

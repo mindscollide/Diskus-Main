@@ -5057,6 +5057,16 @@ const complianceUpdateMQTT = (mqttData) => {
   };
 };
 
+// For COMPLIANCE REOPENED MQTT
+const complianceReopenMQTT = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.COMPLIANCE_REOPEN_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -5116,4 +5126,5 @@ export {
   complianceChecklistUpdateMQTT,
   complianceChecklistDeletedMQTT,
   complianceUpdateMQTT,
+  complianceReopenMQTT,
 };

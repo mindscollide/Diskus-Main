@@ -270,7 +270,7 @@ const MainCompliance = () => {
               >
                 <img src={FiscalYearCalendar_Icon} alt="" />
                 <span className={styles["Fiscalyear_text"]}>
-                  Fiscal Year: 01 July - 30 June
+                  {`Fiscal Year: ${localStorage.getItem("FiscalDate") ?? ""}`}
                 </span>
               </Col>
             )}

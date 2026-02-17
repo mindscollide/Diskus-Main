@@ -7,7 +7,7 @@ import styles from "./submitForApproval.module.css";
 
 import alertIcon from "../../../../../assets/images/Alert Icon.png";
 
-const StatusSubmitForApprovalModal = () => {
+const StatusSubmitForApprovalModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const {
     submitForApprovalModal,
@@ -50,7 +50,7 @@ const StatusSubmitForApprovalModal = () => {
             <Col lg={12} md={12} sm={12} xs={12}>
               <div className={styles.ConfirmationText}>
                 {t(
-                  "Some-checklist-items-are-still-pending.-Do-you-want-to-continue-submitting-for-approval?"
+                  "Some-checklist-items-are-still-pending.-Do-you-want-to-continue-submitting-for-approval?",
                 )}
               </div>
             </Col>
@@ -75,7 +75,7 @@ const StatusSubmitForApprovalModal = () => {
               <Button
                 text={t("Proceed")}
                 className={styles["CancelButton"]}
-                onClick={handleProceedButton}
+                onClick={view ? handleProceedButtonView : handleProceedButton}
               />
             </Col>
           </Row>

@@ -230,6 +230,7 @@ import {
   complianceChecklistDeletedMQTT,
   complianceChecklistUpdateMQTT,
   complianceCreatedFromMQTT,
+  complianceReopenMQTT,
   complianceUpdateMQTT,
   setInactiveStatusData,
 } from "../../store/actions/ComplainSettingActions";
@@ -4831,6 +4832,15 @@ const Dashboard = () => {
           "COMPLIANCE_UPDATED".toLocaleLowerCase()
         ) {
           dispatch(complianceUpdateMQTT(data.payload));
+        }
+
+        //COMPLIANCE REOPENED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "REOPEN_COMPLIANCE".toLocaleLowerCase()
+        ) {
+          console.log(data.payload,"REOPENCOMPLIANCE")
+          dispatch(complianceReopenMQTT(data.payload));
         }
       }
     } catch (error) {

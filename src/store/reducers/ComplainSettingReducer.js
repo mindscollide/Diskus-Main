@@ -60,6 +60,7 @@ const initialState = {
   complianceCheckListMqttData: null,
   complianceCheckListUpdatedMqttData: null,
   complianceUpdateMqttData: null,
+  complianceReopenMqttData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1280,6 +1281,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         complianceUpdateMqttData: action.payload,
+      };
+    }
+
+    // For COMPLIANCE REOPENED MQTT
+    case actions.COMPLIANCE_REOPEN_MQTT: {
+      return {
+        ...state,
+        complianceReopenMqttData: action.payload,
       };
     }
 

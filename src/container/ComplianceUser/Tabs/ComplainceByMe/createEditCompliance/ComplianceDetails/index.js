@@ -869,6 +869,7 @@ const ComplainceDetails = () => {
       }));
     }
   };
+
   return (
     <>
       <Row className="mt-2">

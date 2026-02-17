@@ -240,18 +240,18 @@
 
 .nodatafound_subHeading {
   font-weight: 700;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
   text-align: center;
-  color: #5a5a5a;
+  color: #e1e1e1;
 }
 .NoDataFoundTable {
   height: 140px;
   padding: 10px 20px;
   border: 1px solid #e1e1e1;
   border-radius: 8px;
-  background: #ecefff;
+  background: #ffffff;
   margin-top: 10px;
   display: flex;
   justify-content: center;

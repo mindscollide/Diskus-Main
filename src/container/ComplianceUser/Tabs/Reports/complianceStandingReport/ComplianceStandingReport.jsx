@@ -382,7 +382,7 @@ const ComplianceStandingReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    checklisttask.dueDate
+                                                    checklisttask.dueDate,
                                                   )}
                                                 </p>
                                               </div>
@@ -428,7 +428,7 @@ const ComplianceStandingReport = () => {
                                             </Col>
                                           </Row>
                                         </div>
-                                      )
+                                      ),
                                     )
                                   )}
                                 </div>
@@ -436,7 +436,7 @@ const ComplianceStandingReport = () => {
                             ))
                           )}
                         </Panel>
-                      )
+                      ),
                     )}
                 </Collapse>
               </div>
@@ -502,16 +502,18 @@ const ComplianceStandingReport = () => {
                 >
                   <p>{t("Compliances-in-this-report")}:</p>
                 </Col>
-                {compliancesReport.map((item, index) => (
-                  <Col
-                    key={item.id}
-                    lg={12}
-                    xs="auto"
-                    className={`${styles.checklist_report}  `}
-                  >
-                    {index + 1}.{item.list}
-                  </Col>
-                ))}
+                {GetComplianceStandingReport.complianceStandingReport?.complianceListData?.map(
+                  (item, index) => (
+                    <Col
+                      key={item.complianceId}
+                      lg={12}
+                      xs="auto"
+                      className={`${styles.checklist_report}  `}
+                    >
+                      {index + 1}.{item.complianceTitle}
+                    </Col>
+                  ),
+                )}
               </Row>
             </div>
           )}
