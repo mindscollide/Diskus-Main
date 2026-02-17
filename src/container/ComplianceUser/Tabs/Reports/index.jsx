@@ -457,7 +457,8 @@ const Reports = () => {
               </Col>
               <Col lg={7} ms={6} sm={6}>
                 <h4 className={styles["ComplianceStatusReport_heading"]}>
-                  Organization’s compliance status report as of today.{" "}
+                  {t("Organizations-compliance-status-report-as-of-today.")}
+
                   <span
                     className={
                       styles["ComplianceStatusReportGenerated_heading"]
