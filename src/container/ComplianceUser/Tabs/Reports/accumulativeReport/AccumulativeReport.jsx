@@ -24,12 +24,12 @@ const AccumulativeReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
   );
 
   console.log(
     GetAccumulativeReport,
-    "GetAccumulativeReportGetAccumulativeReport",
+    "GetAccumulativeReportGetAccumulativeReport"
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -186,7 +186,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn,
+                        GetAccumulativeReport?.header?.generatedOn
                       )}
                     </p>
                   </div>
@@ -216,7 +216,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -224,7 +224,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -496,7 +496,7 @@ const AccumulativeReport = () => {
                         <label>{t("Generated-date")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.generatedOn,
+                            GetAccumulativeReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -515,7 +515,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -525,7 +525,7 @@ const AccumulativeReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -600,7 +600,7 @@ const AccumulativeReport = () => {
                         {checklist.checklistDescription}
                       </Tooltip>
                     </Col>
-                  )),
+                  ))
                 )}
               </Row>
             </div>

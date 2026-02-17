@@ -36,7 +36,7 @@ const Reports = () => {
   const navigate = useNavigate();
 
   const GetReportListingData = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetReportListingData,
+    (state) => state.ComplainceSettingReducerReducer.GetReportListingData
   );
 
   const [isScroll, setIsScroll] = useState(false);
@@ -67,10 +67,12 @@ const Reports = () => {
     emptyComplianceState,
   } = useComplianceContext();
 
+  console.log(complianceReportList, "complianceReportList");
+
   //  Initial Load
   useEffect(() => {
     dispatch(
-      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t),
+      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t)
     );
   }, []);
 
@@ -252,8 +254,8 @@ const Reports = () => {
       GetComplianceStandingReportAPI(
         navigate,
         { startDate: "", endDate: "" },
-        t,
-      ),
+        t
+      )
     );
   };
 
@@ -273,8 +275,8 @@ const Reports = () => {
               {record.reportTypeId === 1
                 ? t("End-of-Compliance-Reports")
                 : record.reportTypeId === 2
-                  ? t("Quarterly-reports")
-                  : t("Accumulative-reports")}
+                ? t("Quarterly-reports")
+                : t("Accumulative-reports")}
             </span>
           );
         },
@@ -302,12 +304,12 @@ const Reports = () => {
                 ?.toLowerCase()
                 .localeCompare(a.reportTitle?.toLowerCase())
             : reportTitleSort === "ascend"
-              ? a.reportTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.reportTitle?.toLowerCase())
-              : a.reportTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.reportTitle?.toLowerCase()),
+            ? a.reportTitle
+                ?.toLowerCase()
+                .localeCompare(b.reportTitle?.toLowerCase())
+            : a.reportTitle
+                ?.toLowerCase()
+                .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
           return <span>{text}</span>;
@@ -441,7 +443,7 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t],
+    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
   );
 
   return (
