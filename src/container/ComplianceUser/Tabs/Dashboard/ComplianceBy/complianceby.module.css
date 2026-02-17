@@ -1,11 +1,14 @@
 .complianceByCard {
   width: 100%;
-  min-height: 460px;
+  height: 460px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #fff;
   transition: all 0.3s ease;
   padding: 5px 10px;
+
+  display: flex;
+  flex-direction: column;
 }
 .complianceByCard:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -38,9 +41,17 @@
   text-align: left;
 }
 
+.CardInsideHeight {
+  flex: 1; /* takes all remaining space */
+  min-height: 0; /* required for scrolling in flex */
+  overflow-y: auto; /* vertical scroll only if needed */
+  overflow-x: hidden;
+  padding-bottom: 5px; /* optional spacing above button */
+}
+
 .ViewAllCompliancesButton {
+  margin-top: auto; /* ✅ pushes button to bottom */
   padding: 10px 0px !important;
-  margin-top: 10px;
   font-size: 12px !important;
   width: 100%;
   border: 1px solid #e1e1e1 !important;
@@ -51,5 +62,9 @@
 }
 
 .CardInsideHeight {
-  min-height: 330px;
+  flex: 1; /* ✅ takes remaining space */
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 10px;
 }

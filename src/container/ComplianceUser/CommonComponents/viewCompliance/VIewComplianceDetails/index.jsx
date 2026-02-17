@@ -56,98 +56,7 @@ const ViewComplianceDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const criticalityOptions = [
-    {
-      label: "Low",
-      value: 1,
-    },
-    {
-      label: "Medium",
-      value: 2,
-    },
-    {
-      label: "High",
-      value: 3,
-    },
-  ];
-
   console.log(complianceDetailsViewState, "complianceDetailsState");
-
-  /** Static Statuses (inside component) */
-  const COMPLIANCE_STATUSES = useMemo(
-    () => [
-      { label: "Not Started", value: 1 },
-      { label: "In Progress", value: 2 },
-      { label: "Completed ", value: 3 },
-      { label: "Overdue", value: 4 },
-      { label: "Submitted for Approval", value: 5 },
-      { label: "Re-Opened", value: 6 },
-      { label: "On Hold", value: 7 },
-      { label: "Submitted for Approval", value: 8 },
-      { label: "Cancelled", value: 8 },
-    ],
-    [],
-  );
-
-  /**  Dropdown change */
-  const handleStatusChange = useCallback(
-    (selectedOption) => {
-      const statusId = selectedOption.value;
-      console.log(statusId, "ComplianceStatusChangedTo");
-      switch (statusId) {
-        case 1: //  Not Started
-          setComlianceCompleteExceptionModal(true);
-          break;
-
-        case 2: // InProgress
-          updateCompliance(selectedOption);
-          // setComlianceCompleteExceptionModal(true);
-          break;
-
-        case 3: // Completed
-          setComlianceCompleteExceptionModal(true);
-          break;
-
-        case 4: // Overdue
-          // setComlianceCompleteExceptionModal(true);
-          break;
-
-        case 5: // On Submitted For Approval
-          setSubmitForApprovalModal(true);
-          break;
-
-        case 6: // Re-opened Compliance
-          setComlianceStatusReopenedModal(true);
-          break;
-
-        case 7: // On Hold Compliance
-          setComplianceOnHoldModal(true);
-          break;
-
-        case 8: // Submitted for Approval
-          setSubmitForApprovalModal(true);
-          break;
-
-        case 9: // On click Cancel
-          setComplianceCancelModal(true);
-          break;
-
-        default:
-          // Normal status update (no modal)
-          // setComplianceDetailsState((prev) => ({
-          //   ...prev,
-          //   status: selectedOption,
-          // }));
-          break;
-      }
-    },
-    [
-      setSubmitForApprovalModal,
-      setComplianceOnHoldModal,
-      setComlianceCompleteExceptionModal,
-      setComplianceDetailsState,
-    ],
-  );
 
   // styling for select:
   const getStatusColor = (status) => {
@@ -339,41 +248,37 @@ const ViewComplianceDetails = () => {
     }
   };
 
-const handleClickSubmitApprovalModal = useCallback(() => {
-  if (tempSelectedComplianceStatus) {
-    updateCompliance(tempSelectedComplianceStatus);
-  }
-  setSubmitForApprovalModal(false);
-  resetModalStates();
-}, [tempSelectedComplianceStatus]);
+  const handleClickSubmitApprovalModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setSubmitForApprovalModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
 
+  const handleClickOnHoldModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComplianceOnHoldModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
 
-const handleClickOnHoldModal = useCallback(() => {
-  if (tempSelectedComplianceStatus) {
-    updateCompliance(tempSelectedComplianceStatus);
-  }
-  setComplianceOnHoldModal(false);
-  resetModalStates();
-}, [tempSelectedComplianceStatus]);
+  const handleClickCancelModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComplianceCancelModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
 
-
-const handleClickCancelModal = useCallback(() => {
-  if (tempSelectedComplianceStatus) {
-    updateCompliance(tempSelectedComplianceStatus);
-  }
-  setComplianceCancelModal(false);
-  resetModalStates();
-}, [tempSelectedComplianceStatus]);
-
-const handleClickReOpendModal = useCallback(() => {
-  if (tempSelectedComplianceStatus) {
-    updateCompliance(tempSelectedComplianceStatus);
-  }
-  setComlianceStatusReopenedModal(false);
-  resetModalStates();
-}, [tempSelectedComplianceStatus]);
-
-
+  const handleClickReOpendModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComlianceStatusReopenedModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
 
   return (
     <>
@@ -463,17 +368,35 @@ const handleClickReOpendModal = useCallback(() => {
       )}
 
       {/* This is For Submit For Approval Modal */}
-      {submitForApprovalModal && <StatusSubmitForApprovalModal view={true} handleProceedButtonView={handleClickSubmitApprovalModal} />}
+      {submitForApprovalModal && (
+        <StatusSubmitForApprovalModal
+          view={true}
+          handleProceedButtonView={handleClickSubmitApprovalModal}
+        />
+      )}
 
       {/* This is For On Hold Modal */}
-      {complianceOnHoldModal && <CompliaceStatusOnHoldModal view={true} handleProceedButtonView={handleClickOnHoldModal} />}
+      {complianceOnHoldModal && (
+        <CompliaceStatusOnHoldModal
+          view={true}
+          handleProceedButtonView={handleClickOnHoldModal}
+        />
+      )}
 
       {/* This is For Cancel Modal */}
-      {complianceCancelModal && <ComplianceStatusCancelModal view={true} handleProceedButtonView={handleClickCancelModal} />}
+      {complianceCancelModal && (
+        <ComplianceStatusCancelModal
+          view={true}
+          handleProceedButtonView={handleClickCancelModal}
+        />
+      )}
 
       {/* This is For Re-opened Modal */}
       {comlianceStatusReopenedModal && (
-        <ComplianceStatusReopenedModal view={true}  handleProceedButtonView={handleClickReOpendModal}/>
+        <ComplianceStatusReopenedModal
+          view={true}
+          handleProceedButtonView={handleClickReOpendModal}
+        />
       )}
     </>
   );
