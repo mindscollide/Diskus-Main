@@ -233,6 +233,8 @@ import {
   complianceReopenMQTT,
   complianceUpdateMQTT,
   setInactiveStatusData,
+  setOrganizationSettingUpdateData,
+  taskMappedChecklistMQTT,
 } from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
@@ -4783,7 +4785,35 @@ const Dashboard = () => {
           });
         }
       }
-      if (data.action.toLowerCase() === "Settings".toLowerCase()) {
+      if (data.action?.toLowerCase() === "Settings".toLowerCase()) {
+        //ORGANIZATION SETTINGS UPDATED MQTT
+        if (data?.message?.toLowerCase() === "organization_settings_updated") {
+          console.log("ORGANIZATION_SETTINGS_UPDATED", data);
+          // Save organization settings to redux
+          if (data.payload?.organizationSettings) {
+            dispatch(
+              setOrganizationSettingUpdateData(
+                data.payload.organizationSettings,
+              ),
+            );
+
+            // Example: store fiscal info in localStorage
+            const fiscalStartMonth =
+              data.payload.organizationSettings.fiscalStartMonth;
+            const fiscalYearStartDay =
+              data.payload.organizationSettings.fiscalYearStartDay;
+
+            localStorage.setItem("fiscalStartMonth", fiscalStartMonth);
+            localStorage.setItem("fiscalYearStartDay", fiscalYearStartDay);
+
+            console.log(
+              "Fiscal Info Saved:",
+              fiscalStartMonth,
+              fiscalYearStartDay,
+            );
+          }
+        }
+
         if (
           data.payload.message
             .toLowerCase()
@@ -4839,8 +4869,17 @@ const Dashboard = () => {
           data.message?.toLowerCase() ===
           "REOPEN_COMPLIANCE".toLocaleLowerCase()
         ) {
-          console.log(data.payload,"REOPENCOMPLIANCE")
+          console.log(data.payload, "REOPENCOMPLIANCE");
           dispatch(complianceReopenMQTT(data.payload));
+        }
+
+        //TASK MAPPED WITH CHECKLIST MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "TASK_MAPPED_WITH_CHECKLIST".toLocaleLowerCase()
+        ) {
+          console.log(data.payload, "REOPENCOMPLIANCE");
+          dispatch(taskMappedChecklistMQTT(data.payload));
         }
       }
     } catch (error) {

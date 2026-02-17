@@ -19,6 +19,7 @@ const ViewCompliance = () => {
 
   // Compliance Context
   const {
+    complianceInfo,
     setComplianceInfo,
     setComplianceDetailsState,
     viewComplianceDetailsTab,
@@ -34,6 +35,7 @@ const ViewCompliance = () => {
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceInfo, "complianceInfocomplianceInfo");
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
@@ -167,7 +169,7 @@ const ViewCompliance = () => {
               className="cursor-pointer"
               onClick={handleClickBackIcon}
             />
-            {complianceDetailsState.complianceTitle}
+            {complianceInfo?.complianceName}
           </Col>
         </Row>
         <section className={` ${styles["ViewComplianceInnerSection"]}`}>

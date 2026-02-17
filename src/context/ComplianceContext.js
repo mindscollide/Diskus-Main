@@ -71,6 +71,9 @@ export const ComlianceProvider = ({ children }) => {
   const [expandChecklistOnTasksPage, setExpandChecklistOnTasksPage] =
     useState(null);
 
+  const [viewComplianceTasksContextData, setViewComplianceTasksContextData] =
+    useState(null);
+
   const [complianceDetailsState, setComplianceDetailsState] = useState({
     complianceTitle: "",
     complianceId: 0,
@@ -533,8 +536,12 @@ export const ComlianceProvider = ({ children }) => {
   useEffect(() => {
     if (complianceCreatedMqttData !== null) {
       try {
-        const { complianceID, complianceTitle, requestData } =
-          complianceCreatedMqttData;
+        const {
+          complianceID,
+          complianceTitle,
+          authorityShortCode,
+          requestData,
+        } = complianceCreatedMqttData;
 
         const {
           authorityId,
@@ -564,7 +571,7 @@ export const ComlianceProvider = ({ children }) => {
             createdBy: localStorage.getItem("userID"),
             createdDate: "",
             createdTime: "",
-            authorityShortCode: "",
+            authorityShortCode: authorityShortCode || "",
           };
           setComplianceByMeList((prev) => [complianceObj, ...prev]);
           setComplianceByMeTotal((prev) => prev + 1);
@@ -704,6 +711,13 @@ export const ComlianceProvider = ({ children }) => {
             : item,
         ),
       );
+
+      setComplianceInfo((prev) => {
+        return {
+          ...prev,
+          complianceName: complianceTitle,
+        };
+      });
     } catch (error) {
       console.error("Error processing complianceUpdateMqttData:", error);
     }
@@ -860,6 +874,8 @@ export const ComlianceProvider = ({ children }) => {
         setCheckAnyTaskInProgress,
         reopenDashboardList,
         setReopenDashboardList,
+        viewComplianceTasksContextData,
+        setViewComplianceTasksContextData,
       }}
     >
       {children}

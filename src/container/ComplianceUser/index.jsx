@@ -22,6 +22,11 @@ import EndOfComplianceReport from "./Tabs/Reports/endOfComplianceReport/EndOfCom
 import EndOfQuarterReport from "./Tabs/Reports/endOfQuarterReport/EndOfQuarterReport";
 import AccumulativeReport from "./Tabs/Reports/accumulativeReport/AccumulativeReport";
 import SearchComplianceReportModal from "./CommonComponents/searchComplianceReportModal";
+import {
+  getFiscalDateFromLocalStorage,
+  getFiscalYearRange,
+} from "./CommonComponents/commonFunctions";
+import { useFiscalYearRange } from "./CommonComponents/FiscalYearComponent/FiscalYear";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -31,6 +36,14 @@ const MainCompliance = () => {
     (state) =>
       state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses,
   );
+
+  const MqttOrganizationSettingUpdated = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated,
+  );
+
+  console.log(MqttOrganizationSettingUpdated, "MqttOrganizationSettingUpdated");
+
   const {
     createEditCompliance,
     setCreateEditComplaince,
@@ -53,6 +66,13 @@ const MainCompliance = () => {
     endOfQuarterReport,
     accumulativeReport,
   } = useComplianceContext();
+  // Pass the fiscal info from the MQTT payload to the hook
+  const fiscalYearRange = useFiscalYearRange({
+    fiscalYearStartDay: MqttOrganizationSettingUpdated?.fiscalYearStartDay,
+    fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
+  });
+
+  console.log(fiscalYearRange, "fiscalYearRangefiscalYearRange");
 
   useEffect(() => {
     dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
@@ -151,6 +171,7 @@ const MainCompliance = () => {
   if (showViewCompliance) {
     return <ViewCompliance />;
   }
+
   return (
     <>
       {complianceStatndingReport ||
@@ -270,7 +291,7 @@ const MainCompliance = () => {
               >
                 <img src={FiscalYearCalendar_Icon} alt="" />
                 <span className={styles["Fiscalyear_text"]}>
-                  {`Fiscal Year: ${localStorage.getItem("FiscalDate") ?? ""}`}
+                  {`Fiscal Year: ${fiscalYearRange}`}
                 </span>
               </Col>
             )}

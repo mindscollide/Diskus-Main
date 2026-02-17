@@ -61,6 +61,7 @@ const initialState = {
   complianceCheckListUpdatedMqttData: null,
   complianceUpdateMqttData: null,
   complianceReopenMqttData: null,
+  taskMappedCheckListData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1289,6 +1290,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         complianceReopenMqttData: action.payload,
+      };
+    }
+
+    // For TASK MAPPED WITH CHECKLIST MQTT
+    case actions.TASK_MAPPED_WITH_CHECKLIST_MQTT: {
+      return {
+        ...state,
+        taskMappedCheckListData: action.payload,
       };
     }
 

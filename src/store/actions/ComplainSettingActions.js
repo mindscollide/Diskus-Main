@@ -5067,6 +5067,16 @@ const complianceReopenMQTT = (mqttData) => {
   };
 };
 
+// For TASK MAPPED WITH CHECKLIST MQTT
+const taskMappedChecklistMQTT = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.TASK_MAPPED_WITH_CHECKLIST_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -5127,4 +5137,5 @@ export {
   complianceChecklistDeletedMQTT,
   complianceUpdateMQTT,
   complianceReopenMQTT,
+  taskMappedChecklistMQTT,
 };

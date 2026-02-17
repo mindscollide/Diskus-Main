@@ -80,7 +80,19 @@ const getUserSetting = (navigate, t, loader) => {
                 "calenderMonthsSpan",
                 response.data.responseResult.userSettings.calenderMonthsSpan,
               );
-              localStorage.setItem("FiscalDate", "6 Feb 2026");
+              // ✅ Store fiscalStartMonth and fiscalYearStartDay
+              const orgSettings =
+                response.data.responseResult.userSettings?.organizationSetting;
+              if (orgSettings) {
+                localStorage.setItem(
+                  "fiscalStartMonth",
+                  orgSettings.fiscalStartMonth,
+                );
+                localStorage.setItem(
+                  "fiscalYearStartDay",
+                  orgSettings.fiscalYearStartDay,
+                );
+              }
               function findConfigValue(data, key) {
                 const result = data.find((item) => item.configKey === key);
                 return result ? result.configValue : null; // Return configValue if found, else null
