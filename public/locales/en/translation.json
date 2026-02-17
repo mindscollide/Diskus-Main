@@ -2706,5 +2706,9 @@
   "Completed-on": "Completed on",
   "Date-range": "Date Range",
   "Compliances-in-this-report": "Compliances in this report",
-  "Reopen-or-onHold": "Reopen / onHold Details"
+  "Reopen-or-onHold": "Reopen / onHold Details",
+  "Completed-tasks": "Completed Tasks",
+  "Checklists-title": "Checklists Title",
+  "No-Checklist-Found": "No Checklist Found",
+  "No-Checklist-Task": "No Checklist Task"
 }

@@ -270,6 +270,7 @@ const ComplianceForMe = () => {
 
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
   });
+
   const columns = useMemo(
     () => [
       {
@@ -459,6 +460,7 @@ const ComplianceForMe = () => {
       getStatusColumnProps,
     ]
   );
+
   useAntTableScrollBottomVirtual(() => {
     if (complianceForMeList.length < complianceForMeTotal) {
       const nextPayload = {

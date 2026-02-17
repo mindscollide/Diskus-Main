@@ -29,13 +29,13 @@ const EndOfComplianceReport = () => {
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
   );
   console.log("Check Check Report");
 
   console.log(
     GetEndOfComplianceReport,
-    "GetEndOfComplianceReportGetEndOfComplianceReport",
+    "GetEndOfComplianceReportGetEndOfComplianceReport"
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -115,7 +115,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [reportList, t],
+    [reportList, t]
   );
 
   const mapTasksToRows = (tasks = []) => {
@@ -246,7 +246,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn,
+                        GetEndOfComplianceReport?.header?.generatedOn
                       )}
                     </p>
                   </div>
@@ -295,7 +295,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate,
+                              ?.complianceCreatedDate
                           )}
                         </p>
                       </div>
@@ -304,7 +304,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate,
+                              ?.complianceCompletionDate
                           )}
                         </p>
                       </div>
@@ -313,7 +313,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate,
+                              ?.complianceDueDate
                           )}
                         </p>
                       </div>
@@ -504,7 +504,7 @@ const EndOfComplianceReport = () => {
                           <label>{t("Generated-date")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetEndOfComplianceReport?.header?.generatedOn,
+                              GetEndOfComplianceReport?.header?.generatedOn
                             )}
                           </p>
                         </div>
@@ -559,7 +559,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate,
+                              ?.complianceCreatedDate
                           )}
                         </p>
                       </div>
@@ -569,7 +569,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate,
+                            ?.complianceCompletionDate
                         )}
                       </p>
                     </Col>
@@ -579,7 +579,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate,
+                            ?.complianceDueDate
                         )}
                       </p>
                     </Col>

@@ -24,12 +24,12 @@ const AccumulativeReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
   );
 
   console.log(
     GetAccumulativeReport,
-    "GetAccumulativeReportGetAccumulativeReport",
+    "GetAccumulativeReportGetAccumulativeReport"
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -42,9 +42,18 @@ const AccumulativeReport = () => {
 
   const donutData = [
     ["Task Status", "Count"],
-    ["Tasks Completed On Time", 45],
-    ["Tasks Completed Late", 33],
-    ["Pending or Overdue Tasks", 22],
+    [
+      "Tasks Completed On Time",
+      GetAccumulativeReport?.header?.tasksCompletedOnTime || 0,
+    ],
+    [
+      "Tasks Completed Late",
+      GetAccumulativeReport?.header?.tasksCompletedLate || 0,
+    ],
+    [
+      "Pending or Overdue Tasks",
+      GetAccumulativeReport?.header?.tasksPending || 0,
+    ],
   ];
 
   const donutOptions = {
@@ -177,7 +186,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn,
+                        GetAccumulativeReport?.header?.generatedOn
                       )}
                     </p>
                   </div>
@@ -207,7 +216,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -215,7 +224,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -275,14 +284,13 @@ const AccumulativeReport = () => {
               <div className={styles.tableWrapper}>
                 {/* 🔹 STATIC HEADER */}
                 <div className={styles.tableHeader}>
-                  <div>{t("Compliance-name")}↓</div>
-                  <div>{t("Authority")} ↓</div>
-                  <div>{t("Criticalityy")} </div>
-                  <div>{t("Due-date")} ↓</div>
-                  <div>{t("Total-checklists")} ↓</div>
-                  <div>{t("No-of-tasks")} ↓</div>
-                  <div>{t("Overdue-tasks")} ↓</div>
-                  <div>{t("Progress")} % ↓</div>
+                  <div>{t("Compliance-name")}</div>
+                  <div className="text-center">{t("Due-date")}</div>
+                  <div className="text-center">{t("Total-checklists")}</div>
+                  <div className="text-center">{t("No-of-tasks")}</div>
+                  <div className="text-center">{t("Completed-tasks")}</div>
+                  <div className="text-center">{t("Overdue-tasks")} </div>
+                  <div className="text-center">{t("Progress")} % </div>
                 </div>
 
                 {/* 🔹 COLLAPSE ROWS */}
@@ -304,109 +312,139 @@ const AccumulativeReport = () => {
                               {item.complianceTitle}
                             </Tooltip>
                           </div>
-                          <div className={styles.nameCol}>
-                            <span className={styles.badge}>
-                              <Tooltip title={item.authorityName}>
-                                {item.authorityName}
-                              </Tooltip>
-                            </span>
+
+                          <div className="text-center">
+                            {formatDateToYMD(item.complianceDueDate)}
                           </div>
-                          <div>
-                            <span className={styles.criticality}>
-                              {item.criticality}
-                            </span>
+                          <div className="text-center">
+                            {item.totalChecklists}
                           </div>
-                          <div>{item.complianceDueDate}</div>
-                          <div>{item.totalChecklists}</div>
-                          <div>{item.totalTasks}</div>
-                          <div>{item.tasksOverdue}</div>
-                          <div>{item.progressPercent}</div>
+                          <div className="text-center">{item.totalTasks}</div>
+                          <div className="text-center">
+                            {item.completedTasks}
+                          </div>
+                          <div className="text-center">{item.tasksOverdue}</div>
+                          <div className="text-center">
+                            {item.progressPercent}
+                          </div>
                         </div>
                       }
                     >
                       {/* EXPANDED CONTENT */}
+
                       <div className={styles.MainAccordianTable}>
-                        {item?.checklists?.map((checklistItem) => (
-                          <div
-                            key={checklistItem.checklistID}
-                            className={styles.panelContent}
-                          >
-                            {checklistItem?.tasks?.map((taskItem) => (
-                              <div
-                                key={taskItem.taskID}
-                                className={styles.insideAccordianTable}
-                              >
-                                <Row>
-                                  <Col lg={12} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      {" "}
-                                      <label>{t("Task-title")}:</label>
-                                      <Tooltip title={taskItem.taskTitle}>
-                                        <p>{taskItem.taskTitle}</p>
-                                      </Tooltip>
-                                    </div>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col lg={4} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianSubHeading
-                                      }
-                                    >
-                                      <label>{t("Assignee")}:</label>
-                                      <p> {taskItem.assigneeName}</p>
-                                    </div>
-                                  </Col>{" "}
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianSubHeading
-                                      }
-                                    >
-                                      <label>{t("Due-date")}:</label>
-                                      <p> {taskItem.taskDueDate}</p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianSubHeading
-                                      }
-                                    >
-                                      <label>{t("Completed-on")}:</label>
-                                      <p> {taskItem.taskCompletedOn}</p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianSubHeading
-                                      }
-                                    >
-                                      <label>{t("Status")}:</label>
-                                      <p> {taskItem.taskStatus}</p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianSubHeading
-                                      }
-                                    >
-                                      <label>{t("Completed")}:</label>
-                                      <p> {taskItem.completedTasks}</p>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </div>
-                            ))}
+                        {!item?.checklists.length ? (
+                          <div className={styles.NoDataFoundTable}>
+                            <div className={`${styles.nodatafound_subHeading}`}>
+                              {t("No-Checklist-Found")}
+                            </div>
                           </div>
-                        ))}
+                        ) : (
+                          item?.checklists?.map((checklistItem) => (
+                            <div
+                              key={checklistItem.checklistID}
+                              className={styles.panelContent}
+                            >
+                              <div className={styles.titleSection}>
+                                <label className={styles.ChecklistTitle}>
+                                  {t("Checklists-title")}:
+                                </label>
+                                <p className={styles.longTitle}>
+                                  {checklistItem.checklistTitle}
+                                </p>
+                              </div>
+                              {!checklistItem?.tasks?.length ? (
+                                <div className={styles.NoDataFoundTable}>
+                                  <div
+                                    className={`${styles.nodatafound_subHeading}`}
+                                  >
+                                    {t("No-Checklist-Task")}
+                                  </div>
+                                </div>
+                              ) : (
+                                checklistItem?.tasks?.map((taskItem) => (
+                                  <div
+                                    key={taskItem.taskID}
+                                    className={styles.insideAccordianTable}
+                                  >
+                                    <Row>
+                                      <Col lg={12} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianMainHeading
+                                          }
+                                        >
+                                          {" "}
+                                          <label>{t("Task-title")}:</label>
+                                          <Tooltip title={taskItem.taskTitle}>
+                                            <p>{taskItem.taskTitle}</p>
+                                          </Tooltip>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                    <Row>
+                                      <Col lg={4} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianSubHeading
+                                          }
+                                        >
+                                          <label>{t("Assignee")}:</label>
+                                          <p> {taskItem.assigneeName}</p>
+                                        </div>
+                                      </Col>{" "}
+                                      <Col lg={2} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianSubHeading
+                                          }
+                                        >
+                                          <label>{t("Due-date")}:</label>
+                                          <p>
+                                            {" "}
+                                            {formatDateToYMD(
+                                              taskItem.taskDueDate
+                                            )}
+                                          </p>
+                                        </div>
+                                      </Col>
+                                      <Col lg={2} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianSubHeading
+                                          }
+                                        >
+                                          <label>{t("Completed-on")}:</label>
+                                          <p> {taskItem.taskCompletedOn}</p>
+                                        </div>
+                                      </Col>
+                                      <Col lg={2} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianSubHeading
+                                          }
+                                        >
+                                          <label>{t("Status")}:</label>
+                                          <p> {taskItem.taskStatus}</p>
+                                        </div>
+                                      </Col>
+                                      <Col lg={2} xs="auto">
+                                        <div
+                                          className={
+                                            styles.insideAccordianSubHeading
+                                          }
+                                        >
+                                          <label>{t("Completed")}:</label>
+                                          <p> {taskItem.completedTasks}</p>
+                                        </div>
+                                      </Col>
+                                    </Row>
+                                  </div>
+                                ))
+                              )}
+                            </div>
+                          ))
+                        )}
                       </div>
                     </Panel>
                   ))}
@@ -458,7 +496,7 @@ const AccumulativeReport = () => {
                         <label>{t("Generated-date")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.generatedOn,
+                            GetAccumulativeReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -477,7 +515,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -487,7 +525,7 @@ const AccumulativeReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -562,7 +600,7 @@ const AccumulativeReport = () => {
                         {checklist.checklistDescription}
                       </Tooltip>
                     </Col>
-                  )),
+                  ))
                 )}
               </Row>
             </div>
