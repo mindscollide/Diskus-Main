@@ -2710,5 +2710,9 @@
   "Completed-tasks": "Completed Tasks",
   "Checklists-title": "Checklists Title",
   "No-Checklist-Found": "No Checklist Found",
-  "No-Checklist-Task": "No Checklist Task"
+  "No-Checklist-Task": "No Checklist Task",
+  "Organizations-compliance-status-report-as-of-today.": "Organization’s compliance status report as of today.",
+  "Generated": "Generated",
+  "No-data-Found": "No Data Found",
+  "due-date-range": "Due Date Range"
 }
