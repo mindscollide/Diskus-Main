@@ -3005,7 +3005,6 @@ const onMessageArrived = async (msg) => {
           "PUBLISHED_POLL_DELETED".toLowerCase()
         ) {
           dispatch(deletePollsMQTT(data.payload.polls));
-          setNotificationID(id);
           try {
             if (data.viewable) {
               setNotification({
@@ -3017,8 +3016,12 @@ const onMessageArrived = async (msg) => {
                   data.payload.pollTitle,
                 ),
               });
+              setNotificationID(id);
             }
-          } catch {}
+
+          } catch (error) {
+            console.log(error, "errorerror PUBLISHED_POLL_DELETED")
+          }
         } else if (
           data.payload.message
             .toLowerCase()
