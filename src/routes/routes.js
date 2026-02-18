@@ -87,6 +87,7 @@ import { AuthorityProvider } from "../context/AuthorityContext.js";
 import MainCompliance from "../container/ComplianceUser/index.jsx";
 import { ComlianceProvider } from "../context/ComplianceContext.js";
 import { NewMeetingProvider } from "../context/NewMeetingContext.js";
+import MainMeeting from "../container/meeting/index.jsx";
 
 const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
@@ -351,7 +352,8 @@ export const router = createBrowserRouter(
                   onError={logErrors}
                 >
                   <NewMeetingProvider>
-                    <NewMeeting />
+                    <MainMeeting />
+                    {/* <NewMeeting /> */}
                   </NewMeetingProvider>
                 </ErrorBoundary>
               </RouteWrapperUser>

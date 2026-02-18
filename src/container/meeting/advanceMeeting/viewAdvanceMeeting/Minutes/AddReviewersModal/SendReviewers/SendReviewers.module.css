@@ -1,0 +1,166 @@
+p.SelectAll {
+  margin: 0 !important;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  color: #5a5a5a;
+  margin-left: 10px !important;
+}
+
+.addReviewersCheckbox {
+  display: flex;
+  align-items: center;
+}
+
+.agendaTitleCheckbox {
+  margin-bottom: 15px;
+}
+
+.agenda-title {
+  font-weight: 600;
+  font-size: 16px;
+  color: #5f78d6;
+  margin: 0;
+  margin-left: 24px;
+}
+
+p.add-reviewers {
+  font-weight: 600;
+  font-size: 20px;
+  color: #5f78d6;
+  margin-top: 10px;
+}
+
+.minuteWrapper {
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-left: 24px;
+}
+
+.minuteParentLabel {
+  flex: auto;
+  margin-bottom: 0 !important;
+  display: block;
+  overflow: hidden;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5a5a5a;
+}
+
+span.view-details {
+  font-weight: 500;
+  font-size: 12px;
+  text-decoration-line: underline;
+  color: #6172d6;
+  cursor: pointer;
+  display: flex;
+  align-items: end;
+}
+
+.height-manage-minutes {
+  height: 72vh;
+  overflow: hidden auto;
+}
+
+.height-manage-minutes::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.height-manage-minutes::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+img.titleTick {
+  position: absolute;
+  top: 8px;
+}
+
+img.minuteTick {
+  position: absolute;
+  top: 16px;
+}
+
+.leftBorder {
+  border-left: 1px solid #e1e1e1;
+}
+
+.profile-wrapper {
+  margin: 15px 0px;
+  border: 1px solid #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.image-profile-wrapper {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  gap: 10px;
+}
+
+img.image-style {
+  border-radius: 100%;
+}
+
+.list-height {
+  height: 72vh;
+  overflow: hidden auto;
+  margin-top: -28px;
+}
+
+.list-height::-webkit-scrollbar {
+  width: 5px !important;
+  border-radius: 20px !important;
+  background-color: #f2f2f2 !important;
+}
+.list-height::-webkit-scrollbar-thumb {
+  border-radius: 20px !important;
+  background: #a2a2a2 !important;
+  margin-left: -15px !important;
+}
+
+.selectAllMinutesCheckbox {
+  display: flex;
+  gap: 15px;
+  justify-content: end;
+  align-items: center;
+  vertical-align: middle;
+}
+
+span.reviewer-count {
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  background: linear-gradient(270deg, #4adede -6.12%, #6172d6 100.01%);
+  border-radius: 100%;
+  top: -7px;
+  right: -7px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.agendaTitleCheckboxGeneral {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}
+
+.agendaTitleToCheckbox {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+  vertical-align: middle;
+}

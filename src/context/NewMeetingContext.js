@@ -83,6 +83,7 @@ export const NewMeetingProvider = ({ children }) => {
   const [proposedMeetingData, setProposedMeetingData] = useState([]);
   const [proposedMeetingDataRecord, setProposedMeetingDataRecord] = useState(0);
 
+  // --- Draft Meeting Data ---
   const [draftMeetingData, setDraftMeetingData] = useState([]);
   const [draftMeetingDataRecord, setDraftMeetingDataRecord] = useState(0);
 
@@ -210,32 +211,66 @@ export const NewMeetingProvider = ({ children }) => {
         getALlMeetingTypes?.meetingTypes
       ) {
         try {
-          setTotalMeetingRecords(searchMeetings.totalRecords);
-          setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-          if (Object.keys(searchMeetings.meetings).length > 0) {
-            // Filter agendas based on canView permission
-            let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
-              ...meeting,
-              meetingAgenda: meeting.meetingAgenda.filter(
-                (agenda) => agenda.objMeetingAgenda.canView,
-              ),
-            }));
-            // Redundant check for canView to ensure deep filtering
-            copyMeetingData.forEach((data) => {
-              data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
-                return agenda.objMeetingAgenda.canView === true;
-              });
-            });
-            console.log("handleViewMeeting", copyMeetingData);
-            setMeetingsRecords(copyMeetingData);
+          switch (Number(localStorage.getItem("MeetingCurrentView"))) {
+            case 1:
+              // PublishMeeting
+              setPublishedMeetingDataRecord(searchMeetings.totalRecords);
+              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
+              if (Object.keys(searchMeetings.meetings).length > 0) {
+                // Filter agendas based on canView permission
+                let copyMeetingData = searchMeetings.meetings.map(
+                  (meeting) => ({
+                    ...meeting,
+                    meetingAgenda: meeting.meetingAgenda.filter(
+                      (agenda) => agenda.objMeetingAgenda.canView,
+                    ),
+                  }),
+                );
+                // Redundant check for canView to ensure deep filtering
+                copyMeetingData.forEach((data) => {
+                  data.meetingAgenda = data.meetingAgenda.filter((agenda) => {
+                    return agenda.objMeetingAgenda.canView === true;
+                  });
+                });
+                console.log("handleViewMeeting", copyMeetingData);
+                setPublishedMeetingData(copyMeetingData);
+              }
+              break;
+            case 3:
+              // DraftMeeting
+              setDraftMeetingDataRecord(searchMeetings.totalRecords);
+              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
+              if (Object.keys(searchMeetings.meetings).length > 0) {
+                setDraftMeetingData(searchMeetings.meetings);
+              }
+              break;
+            case 2:
+              // ProposedMeeting
+              setProposedMeetingDataRecord(searchMeetings.totalRecords);
+              setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
+              if (Object.keys(searchMeetings.meetings).length > 0) {
+                setProposedMeetingData(searchMeetings.meetings);
+              }
+              break;
           }
         } catch (error) {
           console.log(error);
+          setMeetingsRecords([]);
+          setPublishedMeetingData([]);
+          setDraftMeetingData([]);
+          setProposedMeetingData([]);
+          setPublishedMeetingDataRecord(0);
+          setDraftMeetingDataRecord(0);
+          setProposedMeetingDataRecord(0);
         }
       } else {
-        setMeetingsRecords([]);
+        setPublishedMeetingData([]);
+        setDraftMeetingData([]);
+        setProposedMeetingData([]);
       }
-    } catch {}
+    } catch (error) {
+      console.log(error);
+    }
   }, [searchMeetings, getALlMeetingTypes]);
 
   /**
@@ -342,6 +377,25 @@ export const NewMeetingProvider = ({ children }) => {
     setCreatedMeetingInfo,
     isProposedMeetingCreate,
     setIsProposedMeetingCreate,
+    // New States
+    currentTab,
+    setCurrentTab,
+    publishedMeetingData,
+    setPublishedMeetingData,
+    publishedMeetingDataRecord,
+    setPublishedMeetingDataRecord,
+    proposedMeetingData,
+    setProposedMeetingData,
+    proposedMeetingDataRecord,
+    setProposedMeetingDataRecord,
+    draftMeetingData,
+    setDraftMeetingData,
+    draftMeetingDataRecord,
+    setDraftMeetingDataRecord,
+    isCreateEditMeeting,
+    setIsCreateEditMeeting,
+    setIsViewMeeting,
+    isViewMeeting,
   };
 
   // Provide the state data to the context

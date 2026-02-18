@@ -2277,7 +2277,7 @@ const GetAllMeetingDetailsApiFunc = (
   loader,
   setCurrentMeetingID,
   setSceduleMeeting,
-  setDataroomMapFolderId,
+  setCreatedMeetingInfo,
   viewValue,
   flag,
   role,
@@ -2301,7 +2301,8 @@ const GetAllMeetingDetailsApiFunc = (
               loader,
               setCurrentMeetingID,
               setSceduleMeeting,
-              setDataroomMapFolderId,
+              setCreatedMeetingInfo,
+
               viewValue,
               flag,
               role,
@@ -2358,7 +2359,7 @@ const GetAllMeetingDetailsApiFunc = (
                     navigate,
                     MappedData,
                     t,
-                    setDataroomMapFolderId,
+                    setCreatedMeetingInfo,
                     false,
                     false,
                     false,
@@ -2377,7 +2378,7 @@ const GetAllMeetingDetailsApiFunc = (
                 ),
               );
               try {
-                setSceduleMeeting(true);
+                dispatch(meetingDetailsGlobalFlag(true));
                 console.log("rolerole goes in this check");
                 // dispatch(scheduleMeetingPageFlag(true));
                 setCurrentMeetingID(Data.MeetingID);
@@ -5806,7 +5807,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
   navigate,
   Data,
   t,
-  setDataroomMapFolderId,
+  setCreatedMeetingInfo,
   members,
   MeetID,
   rows,
@@ -5834,6 +5835,7 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
               navigate,
               Data,
               t,
+              setCreatedMeetingInfo,
               members,
               MeetID,
               rows,
@@ -5863,7 +5865,14 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 "folderDataRoomMeeting",
                 response.data.responseResult.folderID,
               );
-              setDataroomMapFolderId(response.data.responseResult.folderID);
+              setCreatedMeetingInfo((prev) => ({
+                ...prev,
+                meetingId: Data.MeetingID,
+                meetingMapFolderId:
+                  response?.data?.responseResult?.folderID ?? 0,
+                meetingTitle: Data.MeetingTitle,
+              }));
+
               let newarry = [];
               members.forEach((data, index) => {
                 newarry.push(data.userID);
@@ -5920,7 +5929,13 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 "folderDataRoomMeeting",
                 response.data.responseResult.folderID,
               );
-              setDataroomMapFolderId(response.data.responseResult.folderID);
+              setCreatedMeetingInfo((prev) => ({
+                ...prev,
+                meetingId: Data.MeetingID,
+                meetingMapFolderId:
+                  response?.data?.responseResult?.folderID ?? 0,
+                meetingTitle: Data.MeetingTitle,
+              }));
               let newarry = [];
               members.forEach((data, index) => {
                 newarry.push(data.userID);
@@ -5976,7 +5991,13 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                 "folderDataRoomMeeting",
                 response.data.responseResult.folderID,
               );
-              setDataroomMapFolderId(response.data.responseResult.folderID);
+              setCreatedMeetingInfo((prev) => ({
+                ...prev,
+                meetingId: Data.MeetingID,
+                meetingMapFolderId:
+                  response?.data?.responseResult?.folderID ?? 0,
+                meetingTitle: Data.MeetingTitle,
+              }));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -10680,8 +10701,6 @@ const meetingMinutesDownloaded = (response) => {
     payload: response,
   };
 };
-
-
 
 export {
   meetingMinutesDownloaded,
