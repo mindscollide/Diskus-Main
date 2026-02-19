@@ -22,6 +22,11 @@ import EndOfComplianceReport from "./Tabs/Reports/endOfComplianceReport/EndOfCom
 import EndOfQuarterReport from "./Tabs/Reports/endOfQuarterReport/EndOfQuarterReport";
 import AccumulativeReport from "./Tabs/Reports/accumulativeReport/AccumulativeReport";
 import SearchComplianceReportModal from "./CommonComponents/searchComplianceReportModal";
+import {
+  getFiscalDateFromLocalStorage,
+  getFiscalYearRange,
+} from "./CommonComponents/commonFunctions";
+import { useFiscalYearRange } from "./CommonComponents/FiscalYearComponent/FiscalYear";
 
 const MainCompliance = () => {
   const { t } = useTranslation();
@@ -29,8 +34,16 @@ const MainCompliance = () => {
   const navigate = useNavigate();
   const AllComplianceStatus = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses,
   );
+
+  const MqttOrganizationSettingUpdated = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated,
+  );
+
+  console.log(MqttOrganizationSettingUpdated, "MqttOrganizationSettingUpdated");
+
   const {
     createEditCompliance,
     setCreateEditComplaince,
@@ -53,10 +66,19 @@ const MainCompliance = () => {
     endOfQuarterReport,
     accumulativeReport,
   } = useComplianceContext();
+  // Pass the fiscal info from the MQTT payload to the hook
+  const fiscalYearRange = useFiscalYearRange({
+    fiscalYearStartDay: MqttOrganizationSettingUpdated?.fiscalYearStartDay,
+    fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
+  });
+
+  console.log(fiscalYearRange, "fiscalYearRangefiscalYearRange");
 
   useEffect(() => {
     dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
   }, []);
+
+  console.log(showViewCompliance, "showViewComplianceshowViewCompliance");
 
   console.log(viewTypeDashboard, "viewTypeDashboardviewTypeDashboard");
 
@@ -149,6 +171,7 @@ const MainCompliance = () => {
   if (showViewCompliance) {
     return <ViewCompliance />;
   }
+
   return (
     <>
       {complianceStatndingReport ||
@@ -179,8 +202,8 @@ const MainCompliance = () => {
                 {mainComplianceTabs === 2
                   ? t("Compliances-by-me")
                   : mainComplianceTabs === 4
-                  ? t("Reports")
-                  : "Compliance Dashboard"}
+                    ? t("Reports")
+                    : "Compliance Dashboard"}
               </span>
               {mainComplianceTabs === 2 && (
                 <Button
@@ -268,7 +291,7 @@ const MainCompliance = () => {
               >
                 <img src={FiscalYearCalendar_Icon} alt="" />
                 <span className={styles["Fiscalyear_text"]}>
-                  Fiscal Year: 01 July - 30 June
+                  {`Fiscal Year: ${fiscalYearRange}`}
                 </span>
               </Col>
             )}

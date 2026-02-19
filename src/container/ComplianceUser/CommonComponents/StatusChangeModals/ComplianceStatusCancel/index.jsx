@@ -9,7 +9,7 @@ import CustomRadioGroup from "../../../../../components/elements/radio/CustomRad
 import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 // import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
-const ComplianceStatusCancelModal = () => {
+const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const [selectOptions, setSelectOption] = useState(0);
   const {
@@ -60,7 +60,7 @@ const ComplianceStatusCancelModal = () => {
           <>
             <div className={styles.confirmationMessage}>
               {t(
-                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress"
+                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress",
               )}
             </div>
             <div className="mt-4">
@@ -102,7 +102,7 @@ const ComplianceStatusCancelModal = () => {
                 <Button
                   text={t("Confirm-action")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={handleProceedButton}
+                  onClick={view ? handleProceedButtonView : handleProceedButton}
                 />
               </Col>
             </Row>

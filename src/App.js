@@ -40,7 +40,7 @@ const App = () => {
   const dispatch = useDispatch();
   const { signOut } = useAuthContext();
   const { t } = useTranslation();
-
+  // Hello
   useEffect(() => {
     const syncSessionAndRedirect = async () => {
       const localToken = localStorage.getItem("token");

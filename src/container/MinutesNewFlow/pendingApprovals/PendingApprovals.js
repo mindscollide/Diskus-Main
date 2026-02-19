@@ -42,25 +42,25 @@ const PendingApproval = () => {
   //newly implemented record
   // Select the MQTT payloads from Redux
   const AddedAsMinuteReviwer = useSelector(
-    (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload
+    (state) => state.SignatureWorkFlowReducer.addedAsMinuteReviwerMqttPayload,
   );
 
   console.log(AddedAsMinuteReviwer, "AddedAsMinuteReviwer");
   const GetMinuteReviewPendingApprovalsByReviewerIdData = useSelector(
     (state) =>
-      state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsByReviewerIdData,
   );
   const GetMinuteReviewPendingApprovalsStatsByReviewerIdData = useSelector(
     (state) =>
-      state.MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData
+      state.MinutesReducer.GetMinuteReviewPendingApprovalsStatsByReviewerIdData,
   );
   const PendingApprovalCountDataData = useSelector(
-    (state) => state.MinutesReducer.PendingApprovalCountData
+    (state) => state.MinutesReducer.PendingApprovalCountData,
   );
 
   const getMinutesReviewerData = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.validateEncryptedStringMinuteReviewData
+      state.SignatureWorkFlowReducer.validateEncryptedStringMinuteReviewData,
   );
   console.log(getMinutesReviewerData, "getMinutesReviewerData");
   //Getting current Language
@@ -103,10 +103,10 @@ const PendingApproval = () => {
   const handleReviewMinutesClick = async () => {
     let Data = { sRow: 0, Length: 10 };
     await dispatch(
-      GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t)
+      GetMinuteReviewPendingApprovalsStatsByReviewerId(navigate, t),
     );
     await dispatch(
-      GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t)
+      GetMinuteReviewPendingApprovalsByReviewerId(Data, navigate, t),
     );
     setReviewMinutesActive(true); // Set Review Minutes button to active
     setReviewAndSignActive(false); // Set Review & Sign button to inactive
@@ -129,13 +129,13 @@ const PendingApproval = () => {
     setSelectedValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)]
+        : [...prevValues, String(filterValue)],
     );
   };
 
   const handleApplyFilter = () => {
     const filteredData = originalData.filter((item) =>
-      selectedValues.includes(item.status.toString())
+      selectedValues.includes(item.status.toString()),
     );
     setRowsPendingApproval(filteredData);
     setVisible(false);
@@ -334,15 +334,15 @@ const PendingApproval = () => {
             text === "Expired"
               ? styles["expiredStatus"]
               : text === "Pending"
-              ? styles["pendingStatus"]
-              : styles["reviewedStatus"]
+                ? styles["pendingStatus"]
+                : styles["reviewedStatus"]
           }
         >
           {text === "Expired"
             ? t("Expired")
             : text === "Pending"
-            ? t("Pending")
-            : t("Reviewed")}
+              ? t("Pending")
+              : t("Reviewed")}
         </p>
       ),
     },
@@ -422,7 +422,7 @@ const PendingApproval = () => {
           PendingApprovalCountDataData;
         console.log(
           PendingApprovalCountDataData,
-          "PendingApprovalCountDataData"
+          "PendingApprovalCountDataData",
         );
         setPendingApprovalTabCount({
           pendingMinutes: pendingMinuteReviews,
@@ -457,7 +457,7 @@ const PendingApproval = () => {
     <section className={styles["pendingApprovalContainer"]}>
       {" "}
       {/* Container for pending approval section */}
-      <Row className="my-3 d-flex align-items-center">
+      <Row className="mb-2 d-flex align-items-center">
         <Col sm={12} md={12} lg={12}>
           <span className={styles["pendingApprovalHeading"]}>
             {t("Pending-approval")}{" "}
@@ -531,7 +531,7 @@ const PendingApproval = () => {
                           }}
                           label={`${convertToArabicNumerals(
                             progress.reviewedPercentage,
-                            lang
+                            lang,
                           )}%`}
                           now={progress.reviewedPercentage}
                           key={1}
@@ -542,7 +542,7 @@ const PendingApproval = () => {
                           }}
                           label={`${convertToArabicNumerals(
                             progress.pendingPercentage,
-                            lang
+                            lang,
                           )}%`}
                           now={progress.pendingPercentage}
                           key={2}
@@ -553,7 +553,7 @@ const PendingApproval = () => {
                           }}
                           label={`${convertToArabicNumerals(
                             progress.expiredPercentage,
-                            lang
+                            lang,
                           )}%`}
                           now={progress.expiredPercentage}
                           key={3}

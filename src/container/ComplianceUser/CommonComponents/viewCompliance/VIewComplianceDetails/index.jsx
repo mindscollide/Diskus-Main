@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -6,37 +6,57 @@ import Select from "react-select";
 import styles from "./viewComplianceDetails.module.css";
 import { Tag } from "antd";
 import ViewComplianceChecklistAccordian from "../../ViewComplianceChecklistAccordian/index.jsx.js";
-import { formatDateToYMD } from "../../commonFunctions.js";
+import {
+  formatDateToYMD,
+  parseYYYYMMDDToEndOfDay,
+} from "../../commonFunctions.js";
 import StatusSubmitForApprovalModal from "../../StatusChangeModals/SubmitForApproval/index.jsx";
+import ComplianceStatusCompleteExceptionModal from "../../StatusChangeModals/ComplianceStatusCompleteModal/index.jsx";
+import CompliaceStatusOnHoldModal from "../../StatusChangeModals/ComplianceStatusOnHoldModal/index.jsx";
+import ComplianceStatusCancelModal from "../../StatusChangeModals/ComplianceStatusCancel/index.jsx";
+import ComplianceStatusReopenedModal from "../../StatusChangeModals/ComplianceStatusReopenedModal/index.jsx";
+import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater.js";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { EditComplianceAPI } from "../../../../../store/actions/ComplainSettingActions.js";
 
 const ViewComplianceDetails = () => {
   const {
+    complianceDetailsViewState,
     complianceDetailsState,
     allowedComplianceStatusOptions,
     setComplianceDetailsState,
     complianceViewMode,
+    complianceOnHoldSelectOption,
+    complianceCancelSelectOption,
+    complianceInfo,
+    setComplianceInfo,
+    complianceOnHoldReasonState,
+    submitForApprovalModal,
     setSubmitForApprovalModal,
+    complianceOnHoldModal,
+    setComplianceOnHoldModal,
+    comlianceCompleteExceptionModal,
+    setComlianceCompleteExceptionModal,
+    complianceCancelModal,
+    setComplianceCancelModal,
+    comlianceStatusReopenedModal,
+    setComlianceStatusReopenedModal,
+    setComplianceDetailsViewState,
+    resetModalStates,
+    setTempSelectedComplianceStatus,
+    checkAnyTaskOnPendingState,
+    checkAnyChecklistOnPendingState,
+    checkAnyTaskInProgress,
+    setCheckAnyTaskInProgress,
+    tempSelectedComplianceStatus,
   } = useComplianceContext();
   const { t } = useTranslation();
-  console.log(complianceDetailsState, "complianceDetailsState");
-  // Functions
-  const handleChangeComplianceStatus = (event) => {
-    console.log(event, "ComplianceStatusChangedTo");
-    const { statusId } = event;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    // For On Hold
-    if (statusId === 7) {
-      // if status changed on hold
-      setSubmitForApprovalModal(true);
-
-      // Else if status changed in progress
-    } else if (statusId === 2) {
-      setComplianceDetailsState((prev) => ({
-        ...prev,
-        status: event,
-      }));
-    }
-  };
+  console.log(complianceDetailsViewState, "complianceDetailsState");
 
   // styling for select:
   const getStatusColor = (status) => {
@@ -61,6 +81,7 @@ const ViewComplianceDetails = () => {
         return "#000";
     }
   };
+
   const statusSelectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -97,12 +118,174 @@ const ViewComplianceDetails = () => {
     }),
   };
 
+  const updateCompliance = (selectedOption) => {
+    const tagsArr = complianceDetailsViewState.tags.map(
+      (data) => data.tagTitle,
+    );
+
+    const Data = {
+      complianceId: complianceInfo.complianceId,
+      complianceTitle: complianceDetailsViewState.complianceTitle,
+      description: complianceDetailsViewState.description,
+      authorityId: complianceDetailsViewState.authority.value,
+      criticality: complianceDetailsViewState.criticality.value,
+      dueDate: complianceDetailsViewState.dueDate,
+      newStatusId: selectedOption.value,
+      tags: tagsArr,
+      ReasonToMakeComplianceOnHold:
+        complianceDetailsViewState.status.value === 7 ||
+        complianceDetailsViewState.status.value === 9
+          ? complianceOnHoldReasonState
+          : "", // On Hold Compliance
+      OnHoldAlongWithComplianceCheckListAndTask:
+        complianceDetailsViewState.status.value === 7
+          ? complianceOnHoldSelectOption
+          : complianceDetailsViewState.status.value === 9
+            ? complianceCancelSelectOption
+            : 0, // On Hold Compliance Including Checklist and Task
+    };
+
+    setComplianceDetailsViewState((prev) => ({
+      ...prev,
+      status: selectedOption,
+    }));
+    dispatch(EditComplianceAPI(navigate, Data, t, null));
+
+    console.log(Data, "DataDataData");
+  };
+
+  const handleChangeComplianceStatus = (event) => {
+    console.log(event, "CompliaceStatusOnHoldModal");
+
+    // if compliance status is changed to Complete check any task still in In Progress or Pending status
+    if (event.value === 3) {
+      if (complianceDetailsState.status.value === 3) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 3) {
+        if (
+          // checkAnyChecklistOnPendingState ||
+          checkAnyTaskOnPendingState ||
+          checkAnyTaskInProgress
+        ) {
+          resetModalStates();
+          setComlianceCompleteExceptionModal(true);
+        } else {
+          updateCompliance(event);
+          // setComplianceDetailsState((prev) => ({
+          //   ...prev,
+          //   status: event,
+          // }));
+        }
+      }
+    }
+
+    // status change to Submit for Approval
+    if (event.value === 5) {
+      if (complianceDetailsState.status.value === 5) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 5) {
+        if (checkAnyChecklistOnPendingState) {
+          resetModalStates();
+          setTempSelectedComplianceStatus(event);
+          setSubmitForApprovalModal(true);
+        } else {
+          updateCompliance(event);
+
+          // setComplianceDetailsState((prev) => ({
+          //   ...prev,
+          //   status: event,
+          // }));
+        }
+      }
+    }
+
+    // status change to Reopen
+    if (event.value === 6) {
+      if (complianceDetailsState.status.value === 6) {
+        // do nothing
+      } else if (complianceDetailsState.status.value !== 6) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComlianceStatusReopenedModal(true);
+      }
+    }
+    // status change to On Hold
+    if (event.value === 7) {
+      if (complianceDetailsState.status.value === 7) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 7) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceOnHoldModal(true);
+      }
+    }
+
+    // Status changed to Cancel
+    if (event.value === 9) {
+      if (complianceDetailsState.status.value === 9) {
+        // setTempSelectedComplianceStatus(event);
+        // setComplianceOnHoldModal(true);
+      } else if (complianceDetailsState.status.value !== 9) {
+        resetModalStates();
+        setTempSelectedComplianceStatus(event);
+        setComplianceCancelModal(true);
+      }
+    }
+    // Status chnage to In Progress
+    else if (event.value === 2) {
+      resetModalStates();
+      updateCompliance(event);
+
+      // setComplianceDetailsState((prev) => ({
+      //   ...prev,
+      //   status: event,
+      // }));
+      // setComplianceDetailsState((prev) => ({
+      //   ...prev,
+      //   status: event,
+      // }));
+    }
+  };
+
+  const handleClickSubmitApprovalModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setSubmitForApprovalModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
+
+  const handleClickOnHoldModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComplianceOnHoldModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
+
+  const handleClickCancelModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComplianceCancelModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
+
+  const handleClickReOpendModal = useCallback(() => {
+    if (tempSelectedComplianceStatus) {
+      updateCompliance(tempSelectedComplianceStatus);
+    }
+    setComlianceStatusReopenedModal(false);
+    resetModalStates();
+  }, [tempSelectedComplianceStatus]);
+
   return (
     <>
       <Row className="mt-3">
         <Col sm={12} md={12} lg={12}>
           <div className={styles["complianceViewLabel"]}>{`${t(
-            "Description"
+            "Description",
           )}`}</div>
           <div className={styles["complianceViewValue"]}>
             {complianceDetailsState.description}
@@ -126,10 +309,16 @@ const ViewComplianceDetails = () => {
               <Select
                 isSearchable={false}
                 options={allowedComplianceStatusOptions}
-                labelInValue={t("Status")}
                 onChange={handleChangeComplianceStatus}
                 styles={statusSelectStyles}
                 value={complianceDetailsState.status}
+                placeholder="Select"
+                labelInValue={t("Status")}
+                // isSearchable={false}
+                // options={allowedComplianceStatusOptions}
+                // onChange={handleChangeComplianceStatus}
+                // styles={statusSelectStyles}
+                // value={complianceDetailsState.status}
                 // classNamePrefix="Select_status_compliance"
                 className={styles.Select_status_compliance}
               />
@@ -143,7 +332,7 @@ const ViewComplianceDetails = () => {
         <Row className="mt-3">
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Criticality-level"
+              "Criticality-level",
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {complianceDetailsState.criticality.label}
@@ -151,7 +340,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Due-date"
+              "Due-date",
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {formatDateToYMD(complianceDetailsState.dueDate)}
@@ -159,7 +348,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Tags"
+              "Tags",
             )}:`}</div>
             {Array.isArray(complianceDetailsState.tags) &&
               complianceDetailsState.tags.length > 0 &&
@@ -172,7 +361,43 @@ const ViewComplianceDetails = () => {
         </Row>
       </>
       <ViewComplianceChecklistAccordian />
-      <StatusSubmitForApprovalModal />
+
+      {/* This is for completion Modal */}
+      {comlianceCompleteExceptionModal && (
+        <ComplianceStatusCompleteExceptionModal />
+      )}
+
+      {/* This is For Submit For Approval Modal */}
+      {submitForApprovalModal && (
+        <StatusSubmitForApprovalModal
+          view={true}
+          handleProceedButtonView={handleClickSubmitApprovalModal}
+        />
+      )}
+
+      {/* This is For On Hold Modal */}
+      {complianceOnHoldModal && (
+        <CompliaceStatusOnHoldModal
+          view={true}
+          handleProceedButtonView={handleClickOnHoldModal}
+        />
+      )}
+
+      {/* This is For Cancel Modal */}
+      {complianceCancelModal && (
+        <ComplianceStatusCancelModal
+          view={true}
+          handleProceedButtonView={handleClickCancelModal}
+        />
+      )}
+
+      {/* This is For Re-opened Modal */}
+      {comlianceStatusReopenedModal && (
+        <ComplianceStatusReopenedModal
+          view={true}
+          handleProceedButtonView={handleClickReOpendModal}
+        />
+      )}
     </>
   );
 };

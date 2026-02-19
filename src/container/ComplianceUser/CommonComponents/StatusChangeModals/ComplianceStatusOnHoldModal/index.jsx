@@ -10,7 +10,7 @@ import CustomRadioGroup from "../../../../../components/elements/radio/CustomRad
 import { values } from "lodash";
 import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
-const CompliaceStatusOnHoldModal = () => {
+const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const [selectOptions, setSelectOption] = useState(0);
   const {
@@ -94,7 +94,7 @@ const CompliaceStatusOnHoldModal = () => {
                 <Button
                   text={t("Mark-on-hold")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={handleProceedButton}
+                  onClick={view ? handleProceedButtonView : handleProceedButton}
                 />
               </Col>
             </Row>

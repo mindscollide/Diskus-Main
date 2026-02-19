@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./viewCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -19,6 +19,7 @@ const ViewCompliance = () => {
 
   // Compliance Context
   const {
+    complianceInfo,
     setComplianceInfo,
     setComplianceDetailsState,
     viewComplianceDetailsTab,
@@ -33,12 +34,15 @@ const ViewCompliance = () => {
     emptyComplianceState,
   } = useComplianceContext();
 
-  console.log();
+  console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceInfo, "complianceInfocomplianceInfo");
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
   );
+
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
 
   useEffect(() => {
     if (viewComplianceByMeDetails !== null) {
@@ -134,6 +138,19 @@ const ViewCompliance = () => {
     setViewComplianceDetailsTab(1);
     emptyComplianceState();
   };
+
+  // To Show Reopen View Detail Bar when Reopen or Hold status coming
+  const shouldShowReopenSection = useMemo(() => {
+    const history = viewComplianceByMeDetails?.complianceStatusChangeHistory;
+
+    if (!Array.isArray(history) || history.length === 0) return false;
+
+    return history.some(
+      (item) =>
+        item?.fromStatus?.statusId === 6 || item?.fromStatus?.statusId === 7
+    );
+  }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
+
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
@@ -152,7 +169,7 @@ const ViewCompliance = () => {
               className="cursor-pointer"
               onClick={handleClickBackIcon}
             />
-            {complianceDetailsState.complianceTitle}
+            {complianceInfo?.complianceName}
           </Col>
         </Row>
         <section className={` ${styles["ViewComplianceInnerSection"]}`}>
@@ -203,8 +220,7 @@ const ViewCompliance = () => {
               >
                 {/* {isViewDetailsBtnActive && ( */}
                 <>
-                  {complianceDetailsState.complianceStatusChangeHistory.length >
-                    0 && (
+                  {shouldShowReopenSection && (
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
@@ -219,6 +235,7 @@ const ViewCompliance = () => {
                       />
                     </div>
                   )}
+
                   {complianceDetailsState.showProgressBar ? (
                     <>
                       {/* <Col sm={12} md={3} lg={3} className="mt-2"> */}

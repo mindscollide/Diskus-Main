@@ -16,10 +16,6 @@
   background: none !important;
 }
 
-.ant-table-tbody {
-  margin: 20px 0 20px 0 !important;
-}
-
 .ant-table-thead > tr > th {
   background-color: none !important;
   white-space: nowrap !important;

@@ -2188,3 +2188,23 @@ export const DeleteCheckList = {
 export const ChangeTaskStatus = {
   RequestMethod: "ServiceManager.ChangeTaskStatus",
 };
+
+//API For Get End Of Compliance Report
+export const GetEndOfComplianceReport = {
+  RequestMethod: "ServiceManager.GetEndOfComplianceReport",
+};
+
+//API For Get Quarter Report
+export const GetQuarterReport = {
+  RequestMethod: "ServiceManager.GetQuarterlyReport",
+};
+
+//API For Get Compliance Standing Report
+export const GetComplianceStandingReport = {
+  RequestMethod: "ServiceManager.GetComplianceStandingReport",
+};
+
+//API For Get Accumulative Report
+export const GetAccumulativeReport = {
+  RequestMethod: "ServiceManager.GetAccumulativeReport",
+};

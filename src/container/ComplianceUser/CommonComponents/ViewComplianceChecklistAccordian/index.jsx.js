@@ -31,12 +31,19 @@ const ViewComplianceChecklistAccordian = () => {
     complianceViewMode,
   } = useComplianceContext();
 
-  console.log(allCheckListByComplianceId, "allCheckListByComplianceId");
+  console.log(
+    {
+      allCheckListByComplianceId,
+      setExpandChecklistOnTasksPage,
+      setViewComplianceDetailsTab,
+      complianceViewMode,
+    },
+    "CheckListByComplianceCheckListByCompliance",
+  );
 
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
       setGetCheckListData(allCheckListByComplianceId);
-
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
     }
@@ -117,8 +124,8 @@ const ViewComplianceChecklistAccordian = () => {
                 statusName: selectedStatus.label,
               },
             }
-          : item
-      )
+          : item,
+      ),
     );
 
     // 🚀 CALL API HERE
@@ -228,7 +235,7 @@ const ViewComplianceChecklistAccordian = () => {
         {getCheckListData?.length > 0 ? (
           getCheckListData.map((data, index) => {
             const isExpanded = expandedCheckListIds.find(
-              (data2, index) => data2 === data.checklistId
+              (data2, index) => data2 === data.checklistId,
             );
 
             console.log(isExpanded, data, "isExpandedisExpanded");
@@ -264,7 +271,7 @@ const ViewComplianceChecklistAccordian = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
-                            "Description"
+                            "Description",
                           )}`}</div>
                           <div className={styles["complianceViewValue"]}>
                             {data.description}
@@ -274,7 +281,7 @@ const ViewComplianceChecklistAccordian = () => {
                       <Row className="mt-2">
                         <Col sm={12} md={3} lg={3}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
-                            "Due-date"
+                            "Due-date",
                           )}`}</div>
                           <div className={styles["complianceViewValue"]}>
                             {formatDateToYMD(data.dueDate)}
@@ -282,7 +289,7 @@ const ViewComplianceChecklistAccordian = () => {
                         </Col>
                         <Col sm={12} md={2} lg={2}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
-                            "Status"
+                            "Status",
                           )}:`}</div>
                           {complianceViewMode === "byMe" ? (
                             <Select
@@ -292,7 +299,7 @@ const ViewComplianceChecklistAccordian = () => {
                               onChange={(selectedOption) =>
                                 handleChecklistStatusChange(
                                   data.checklistId,
-                                  selectedOption
+                                  selectedOption,
                                 )
                               }
                               styles={statusSelectStyles}

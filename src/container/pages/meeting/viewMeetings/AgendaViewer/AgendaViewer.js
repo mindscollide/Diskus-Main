@@ -144,7 +144,7 @@ const AgendaViewer = () => {
 
   console.log(
     viewMeetingAgendaViewerRowData,
-    "viewMeetingAgendaViewerRowDataviewMeetingAgendaViewerRowData"
+    "viewMeetingAgendaViewerRowDataviewMeetingAgendaViewerRowData",
   );
 
   const [talkGroupID, setTalkGroupID] = useState(0);
@@ -168,19 +168,19 @@ const AgendaViewer = () => {
   let currentUserName = localStorage.getItem("name");
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const presenterStartedFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterStartedFlag
+    (state) => state.videoFeatureReducer.presenterStartedFlag,
   );
 
   console.log(presenterViewFlag, "presenterViewFlagpresenterViewFlag");
@@ -192,7 +192,7 @@ const AgendaViewer = () => {
 
   //this is for video Host Check
   let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
+    localStorage.getItem("isMeetingVideoHostCheck"),
   );
 
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -204,111 +204,75 @@ const AgendaViewer = () => {
   let RoomID = presenterViewFlag
     ? roomID
     : isMeetingVideoHostCheck
-    ? newRoomID
-    : participantRoomId;
+      ? newRoomID
+      : participantRoomId;
   let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
   const GetAdvanceMeetingAgendabyMeetingIDForViewData = useSelector(
     (state) =>
-      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData
+      state.MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDForViewData,
   );
 
   const cancelMeetingMaterial = useSelector(
-    (state) => state.NewMeetingreducer.cancelMeetingMaterial
+    (state) => state.NewMeetingreducer.cancelMeetingMaterial,
   );
 
   const agendaResponseMessage = useSelector(
-    (state) => state.MeetingAgendaReducer.ResponseMessage
+    (state) => state.MeetingAgendaReducer.ResponseMessage,
   );
 
   const AgendaVideoResponseMessage = useSelector(
-    (state) => state.videoFeatureReducer.ResponseMessage
+    (state) => state.videoFeatureReducer.ResponseMessage,
   );
 
   const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag,
   );
 
   const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
   const normalParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag,
   );
 
   const maxParticipantVideoDeniedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
 
   //For Non Video MEeting Modal
   const nonMeetingVideo = useSelector(
-    (state) => state.videoFeatureReducer.nonMeetingVideo
+    (state) => state.videoFeatureReducer.nonMeetingVideo,
   );
 
   const enableDisableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.enableDisableVideoState
+    (state) => state.videoFeatureReducer.enableDisableVideoState,
   );
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.participantEnableVideoState
+    (state) => state.videoFeatureReducer.participantEnableVideoState,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
-  );
-  const UpgradeNowModalReducer = useSelector(
-    (state) => state.UserManagementModals.UpgradeNowModal
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
 
-  console.log("UpgradeNowModalReducer", UpgradeNowModalReducer);
-  console.log("Video Feature Debug Data:", {
-    editorRole,
-    presenterViewFlag,
-    videoTalk,
-    presenterViewHostFlag,
-    presenterViewJoinFlag,
-    presenterStartedFlag,
-    newRoomID,
-    currentMeetingID,
-    callAcceptedRoomID,
-    participantRoomId,
-    isMeetingVideoHostCheck,
-    isZoomEnabled,
-    isMeetingVideo,
-    participantUID,
-    roomID,
-    isGuid,
-    RoomID,
-    UID,
-    GetAdvanceMeetingAgendabyMeetingIDForViewData,
-    cancelMeetingMaterial,
-    agendaResponseMessage,
-    AgendaVideoResponseMessage,
-    MaximizeHostVideoFlag,
-    NormalHostVideoFlag,
-    maximizeParticipantVideoFlag,
-    raisedUnRaisedParticipant,
-    normalParticipantVideoFlag,
-    maxParticipantVideoDeniedFlag,
-    maxParticipantVideoRemovedFlag,
-    nonMeetingVideo,
-    enableDisableVideoState,
-    participantEnableVideoState,
-    disableBeforeJoinZoom,
-  });
+  const UpgradeNowModalReducer = useSelector(
+    (state) => state.UserManagementModals.UpgradeNowModal,
+  );
 
   const [menuAgenda, setMenuAgenda] = useState(false);
 
@@ -344,7 +308,7 @@ const AgendaViewer = () => {
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       let NotificationClickMeetingID = localStorage.getItem(
-        "NotificationAdvanceMeetingID"
+        "NotificationAdvanceMeetingID",
       );
       let Data = {
         MeetingID:
@@ -382,7 +346,7 @@ const AgendaViewer = () => {
       GetAdvanceMeetingAgendabyMeetingIDForViewData.length !== 0
     ) {
       setViewMeetingAgendaViewerRowData(
-        GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList
+        GetAdvanceMeetingAgendabyMeetingIDForViewData.agendaList,
       );
     }
   }, [GetAdvanceMeetingAgendabyMeetingIDForViewData]);
@@ -391,7 +355,7 @@ const AgendaViewer = () => {
     if (viewMeetingAgendaViewerRowData.length !== 0) {
       // Check if any of the canView values is true
       const anyCanViewTrue = viewMeetingAgendaViewerRowData.some(
-        (row) => row.canView
+        (row) => row.canView,
       );
 
       // Update the emptyStateRows state based on the condition
@@ -465,8 +429,8 @@ const AgendaViewer = () => {
         currentOrganization,
         1,
         meetingTitle,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -507,8 +471,8 @@ const AgendaViewer = () => {
         currentOrganization,
         1,
         meetingTitle,
-        advanceMeetingModalID
-      )
+        advanceMeetingModalID,
+      ),
     );
     localStorage.setItem("meetingTitle", meetingTitle);
     const emptyArray = [];
@@ -540,8 +504,8 @@ const AgendaViewer = () => {
           currentOrganization,
           1,
           meetingTitle,
-          advanceMeetingModalID
-        )
+          advanceMeetingModalID,
+        ),
       );
       localStorage.setItem("meetingTitle", meetingTitle);
     } else if (activeCall === true && isMeeting === false) {
@@ -564,8 +528,8 @@ const AgendaViewer = () => {
         false,
         setEditorRole,
         setAdvanceMeetingModalID,
-        setViewAdvanceMeetingModal
-      )
+        setViewAdvanceMeetingModal,
+      ),
     );
     // if (flag) {
     //   console.log("mqtt mqmqmqmqmqmq");
@@ -600,8 +564,8 @@ const AgendaViewer = () => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(GetGroupMessages(navigate, chatGroupData, t));
       await dispatch(
@@ -609,16 +573,16 @@ const AgendaViewer = () => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       await dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
     }
   };
@@ -632,7 +596,7 @@ const AgendaViewer = () => {
     ) {
       let allChatMessages = AllUserChats?.AllUserChatsData;
       const foundRecord = allChatMessages.allMessages.find(
-        (item) => item.id === talkGroupID
+        (item) => item.id === talkGroupID,
       );
       console.log(AllUserChats, talkGroupID, "AllUserChatsAllUserChats");
 
@@ -652,7 +616,7 @@ const AgendaViewer = () => {
 
   useEffect(() => {
     if (agendaResponseMessage === t("Success")) {
-      showMessage(t("Email-sent-successfully"), "Success", setOpen);
+      showMessage(t("Email-sent"), "Success", setOpen);
       dispatch(clearResponseMessage(""));
     }
     if (agendaResponseMessage === t("Invalid-data")) {
@@ -690,7 +654,7 @@ const AgendaViewer = () => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaStartedData.agendaID,
             )
           ) {
             return {
@@ -741,7 +705,7 @@ const AgendaViewer = () => {
             item.subAgenda.some(
               (subItem) =>
                 subItem.subAgendaID ===
-                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID
+                MeetingAgendaReducer.MeetingAgendaEndedData.agendaID,
             )
           ) {
             return {
@@ -819,10 +783,10 @@ const AgendaViewer = () => {
 
     console.log("onClickVideoIconOpenVideo");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let nonMeetingCheck = JSON.parse(
-      sessionStorage.getItem("NonMeetingVideoCall")
+      sessionStorage.getItem("NonMeetingVideoCall"),
     );
 
     if (nonMeetingCheck) {
@@ -894,7 +858,7 @@ const AgendaViewer = () => {
         await sessionStorage.setItem("alreadyInMeetingVideo", true);
         await sessionStorage.setItem(
           "alreadyInMeetingVideoStartPresenterCheck",
-          true
+          true,
         );
         dispatch(presenterFlagForAlreadyInParticipantMeetingVideo(true));
       }
@@ -916,7 +880,7 @@ const AgendaViewer = () => {
         };
 
         dispatch(
-          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
         );
       } else {
         console.log("maximizeParticipantVideoFlag");
@@ -928,7 +892,7 @@ const AgendaViewer = () => {
         };
 
         dispatch(
-          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4)
+          openPresenterViewMainApi(t, navigate, data, currentMeeting, 4),
         );
       }
     }
@@ -1081,8 +1045,8 @@ const AgendaViewer = () => {
                                       presenterViewHostFlag
                                         ? 1
                                         : presenterViewJoinFlag
-                                        ? 3
-                                        : 2
+                                          ? 3
+                                          : 2,
                                     )
                                   }
                                 >
@@ -1091,8 +1055,8 @@ const AgendaViewer = () => {
                                     {presenterViewHostFlag
                                       ? t("Stop-presentation")
                                       : presenterViewJoinFlag
-                                      ? t("Leave-presentation")
-                                      : t("Join-presentation")}
+                                        ? t("Leave-presentation")
+                                        : t("Join-presentation")}
                                   </p>
                                 </div>
                               </Tooltip>
@@ -1214,7 +1178,7 @@ const AgendaViewer = () => {
                   onDragEnd(
                     result,
                     viewMeetingAgendaViewerRowData,
-                    setViewMeetingAgendaViewerRowData
+                    setViewMeetingAgendaViewerRowData,
                   )
                 }
               >
@@ -1267,7 +1231,7 @@ const AgendaViewer = () => {
                                     />
                                   </>
                                 );
-                              }
+                              },
                             )
                           ) : (
                             <>
@@ -1312,7 +1276,7 @@ const AgendaViewer = () => {
                                     className={styles["Empty_state_Subheading"]}
                                   >
                                     {t(
-                                      "Add-some-purpose-start-by-creating-your-agenda"
+                                      "Add-some-purpose-start-by-creating-your-agenda",
                                     )}
                                   </span>
                                 </Col>
@@ -1432,16 +1396,16 @@ const AgendaViewer = () => {
                       callerID === currentUserID || callerID === 0
                         ? t("End Host")
                         : callerID !== currentUserID
-                        ? t("End Participant")
-                        : null
+                          ? t("End Participant")
+                          : null
                     }
                     className="leave-meeting-options__btn leave-meeting-red-button"
                     onClick={
                       callerID === currentUserID || callerID === 0
                         ? leaveCallHost
                         : callerID !== currentUserID
-                        ? leaveCallParticipant
-                        : null
+                          ? leaveCallParticipant
+                          : null
                     }
                   />
 

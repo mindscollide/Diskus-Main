@@ -47,7 +47,7 @@ body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
 .dashbaord_data {
   width: calc(100% - 90px);
   height: calc(100vh - 89px);
-  padding: 0 10px !important;
+  padding: 10px 10px !important;
 }
 .dashbaord_Talk {
   min-width: 80px;

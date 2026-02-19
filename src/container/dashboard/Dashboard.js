@@ -225,7 +225,17 @@ import {
 } from "../../store/actions/DataRoom2_actions";
 
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
-import { setInactiveStatusData } from "../../store/actions/ComplainSettingActions";
+import {
+  complianceChecklistAddedMQTT,
+  complianceChecklistDeletedMQTT,
+  complianceChecklistUpdateMQTT,
+  complianceCreatedFromMQTT,
+  complianceReopenMQTT,
+  complianceUpdateMQTT,
+  setInactiveStatusData,
+  setOrganizationSettingUpdateData,
+  taskMappedChecklistMQTT,
+} from "../../store/actions/ComplainSettingActions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -273,100 +283,100 @@ const Dashboard = () => {
   const roleRoute = getLocalStorageItemNonActiveCheck("VERIFICATION");
 
   const cancelModalMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.cancelModalMeetingDetails
+    (state) => state.NewMeetingreducer.cancelModalMeetingDetails,
   );
   const isInternetDisconnectModalVisible = useSelector(
-    (state) => state.UserManagementModals.internetDisconnectModal
+    (state) => state.UserManagementModals.internetDisconnectModal,
   );
   const mobileAppPopUp = useSelector(
-    (state) => state.UserManagementModals.mobileAppPopUp
+    (state) => state.UserManagementModals.mobileAppPopUp,
   );
   const IncomingVideoCallFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.IncomingVideoCallFlag
+    (state) => state.videoFeatureReducer.IncomingVideoCallFlag,
   );
 
   const VideoMainReducerResponseMessage = useSelector(
-    (state) => state.VideoMainReducer.ResponseMessage
+    (state) => state.VideoMainReducer.ResponseMessage,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
 
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+    (state) => state.videoFeatureReducer.NormalizeVideoFlag,
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const MaximizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeVideoFlag,
   );
 
   const ShowGuestPopup = useSelector(
-    (state) => state.videoFeatureReducer.ShowGuestPopup
+    (state) => state.videoFeatureReducer.ShowGuestPopup,
   );
 
   const VideoChatMessagesFlagReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatMessagesFlag
+    (state) => state.videoFeatureReducer.VideoChatMessagesFlag,
   );
 
   const MinimizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MinimizeVideoFlag
+    (state) => state.videoFeatureReducer.MinimizeVideoFlag,
   );
 
   const MeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
   );
 
   const waitingParticipantsList = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList
+    (state) => state.videoFeatureReducer.waitingParticipantsList,
   );
 
   const showInitimationMessegeModalLeaveVideoMeeting = useSelector(
-    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState
+    (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState,
   );
 
   const videoControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.videoControlForParticipant
+    (state) => state.videoFeatureReducer.videoControlForParticipant,
   );
 
   const audioControlForParticipant = useSelector(
-    (state) => state.videoFeatureReducer.audioControlForParticipant
+    (state) => state.videoFeatureReducer.audioControlForParticipant,
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (state) => state.videoFeatureReducer.presenterViewFlag,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   const leavePresenterOrJoinOtherCalls = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls
+    (state) => state.videoFeatureReducer.leavePresenterOrJoinOtherCalls,
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare
+    (state) => state.videoFeatureReducer.globallyScreenShare,
   );
 
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (state) => state.videoFeatureReducer.disableBeforeJoinZoom,
   );
 
   console.log(raisedUnRaisedParticipant, "raisedUnRaisedParticipant");
@@ -378,7 +388,7 @@ const Dashboard = () => {
       resumeRecordingState,
       stopRecordingState,
     },
-    "CheckisPausedOccurOrNot"
+    "CheckisPausedOccurOrNot",
   );
 
   const [checkInternet, setCheckInternet] = useState(navigator);
@@ -412,10 +422,10 @@ const Dashboard = () => {
   const presenterViewFlagRef = useRef(presenterViewFlag);
   const maximizeParticipantVideoFlagRef = useRef(maximizeParticipantVideoFlag);
   const getJoinMeetingParticipantorHostrequestGuidRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
   const getJoinMeetingParticipantorHostrequestRoomIdRef = useRef(
-    getJoinMeetingParticipantorHostrequest
+    getJoinMeetingParticipantorHostrequest,
   );
 
   // Update ref whenever presenterViewJoinFlag changes
@@ -478,7 +488,7 @@ const Dashboard = () => {
 
   function checkCallStatus(data) {
     return !data.some(
-      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing"
+      (item) => item.CallStatus === "Accepted" || item.CallStatus === "ringing",
     );
   }
 
@@ -556,7 +566,7 @@ const Dashboard = () => {
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let alreadyInMeetingVideoStartPresenterCheck = JSON.parse(
-      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck")
+      sessionStorage.getItem("alreadyInMeetingVideoStartPresenterCheck"),
     );
     let activeCallState = JSON.parse(localStorage.getItem("activeCall"));
     let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
@@ -567,7 +577,7 @@ const Dashboard = () => {
     let newRoomId = localStorage.getItem("newRoomId");
     let participantRoomId = localStorage.getItem("participantRoomId");
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     console.log("mqtt mqmqmqmqmqmq", activeCallState);
     console.log("mqtt mqmqmqmqmqmq", currentCallType);
@@ -588,7 +598,7 @@ const Dashboard = () => {
             console.log("maximizeParticipantVideoFlag");
             let data = {
               RoomID: String(
-                isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                isMeetingVideoHostCheck ? newRoomId : participantRoomId,
               ),
               UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
               IsHandRaised: false,
@@ -708,7 +718,7 @@ const Dashboard = () => {
   const stopPresenterView = async (payload) => {
     console.log("mqtt mqmqmqmqmqmq");
     let StopPresenterViewAwait = JSON.parse(
-      sessionStorage.getItem("StopPresenterViewAwait")
+      sessionStorage.getItem("StopPresenterViewAwait"),
     );
     let userIDCurrent = Number(localStorage.getItem("userID"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
@@ -723,16 +733,16 @@ const Dashboard = () => {
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let alreadyInMeetingVideo = JSON.parse(
       sessionStorage.getItem("alreadyInMeetingVideo")
         ? sessionStorage.getItem("alreadyInMeetingVideo")
-        : false
+        : false,
     );
     console.log(
       String(meetingVideoID) === String(payload?.meetingID),
-      "mqtt mqmqmqmqmqmq"
+      "mqtt mqmqmqmqmqmq",
     );
     if (String(meetingVideoID) === String(payload?.meetingID)) {
       console.log("mqtt mqmqmqmqmqmq", payload);
@@ -747,7 +757,7 @@ const Dashboard = () => {
         console.log("mqtt mqmqmqmqmqmq", currentCallType);
         console.log(
           "typeof StopPresenterViewAwait:",
-          typeof StopPresenterViewAwait
+          typeof StopPresenterViewAwait,
         );
         console.log("value:", StopPresenterViewAwait);
         if (
@@ -768,7 +778,7 @@ const Dashboard = () => {
 
               let dataAudio = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 IsMuted: false, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -779,7 +789,7 @@ const Dashboard = () => {
               dispatch(muteUnMuteSelfMainApi(navigate, t, dataAudio, 1));
               let dataVideo = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 HideVideo: true, // Ensuring it's a boolean
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
@@ -791,7 +801,7 @@ const Dashboard = () => {
 
               let data = {
                 RoomID: String(
-                  isMeetingVideoHostCheck ? newRoomId : participantRoomId
+                  isMeetingVideoHostCheck ? newRoomId : participantRoomId,
                 ),
                 UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
                 IsHandRaised: false,
@@ -845,7 +855,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("hostUrl", refinedVideoUrl);
@@ -862,7 +872,7 @@ const Dashboard = () => {
                   RoomID: String(newRoomId),
                 };
                 await dispatch(
-                  getVideoCallParticipantsMainApi(Data, navigate, t)
+                  getVideoCallParticipantsMainApi(Data, navigate, t),
                 );
               }
               await dispatch(transferMeetingHostSuccess(true));
@@ -876,7 +886,7 @@ const Dashboard = () => {
               };
               localStorage.setItem(
                 "meetinHostInfo",
-                JSON.stringify(meetingHost)
+                JSON.stringify(meetingHost),
               );
               dispatch(makeHostNow(meetingHost));
               localStorage.setItem("refinedVideoUrl", hostUrl);
@@ -933,7 +943,7 @@ const Dashboard = () => {
       const currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
       const isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
       const isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
 
       const { meetingID, userID } = mqttData.payload;
@@ -944,7 +954,7 @@ const Dashboard = () => {
       const alreadyRequested = waitingParticipantsList?.some(
         (p) =>
           Number(p.userID) === Number(userID) &&
-          Number(p.meetingID) === Number(meetingID)
+          Number(p.meetingID) === Number(meetingID),
       );
       console.log(alreadyRequested, "Filtered unique participants");
 
@@ -1042,7 +1052,7 @@ const Dashboard = () => {
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
+      localStorage.getItem("isMeetingVideoHostCheck"),
     );
     let handStatus = JSON.parse(localStorage.getItem("handStatus"));
 
@@ -1055,7 +1065,7 @@ const Dashboard = () => {
 
           let data = {
             RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
             ),
             UID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             IsHandRaised: false,
@@ -1065,7 +1075,7 @@ const Dashboard = () => {
       }
     }
   };
-const onMessageArrived = async (msg) => {
+  const onMessageArrived = async (msg) => {
     var min = 10000;
     var max = 90000;
     var id = min + Math.random() * (max - min);
@@ -3005,7 +3015,6 @@ const onMessageArrived = async (msg) => {
           "PUBLISHED_POLL_DELETED".toLowerCase()
         ) {
           dispatch(deletePollsMQTT(data.payload.polls));
-          setNotificationID(id);
           try {
             if (data.viewable) {
               setNotification({
@@ -3017,8 +3026,12 @@ const onMessageArrived = async (msg) => {
                   data.payload.pollTitle,
                 ),
               });
+              setNotificationID(id);
             }
-          } catch {}
+
+          } catch (error) {
+            console.log(error, "errorerror PUBLISHED_POLL_DELETED")
+          }
         } else if (
           data.payload.message
             .toLowerCase()
@@ -4775,7 +4788,35 @@ const onMessageArrived = async (msg) => {
           });
         }
       }
-      if (data.action.toLowerCase() === "Settings".toLowerCase()) {
+      if (data.action?.toLowerCase() === "Settings".toLowerCase()) {
+        //ORGANIZATION SETTINGS UPDATED MQTT
+        if (data?.message?.toLowerCase() === "organization_settings_updated") {
+          console.log("ORGANIZATION_SETTINGS_UPDATED", data);
+          // Save organization settings to redux
+          if (data.payload?.organizationSettings) {
+            dispatch(
+              setOrganizationSettingUpdateData(
+                data.payload.organizationSettings,
+              ),
+            );
+
+            // Example: store fiscal info in localStorage
+            const fiscalStartMonth =
+              data.payload.organizationSettings.fiscalStartMonth;
+            const fiscalYearStartDay =
+              data.payload.organizationSettings.fiscalYearStartDay;
+
+            localStorage.setItem("fiscalStartMonth", fiscalStartMonth);
+            localStorage.setItem("fiscalYearStartDay", fiscalYearStartDay);
+
+            console.log(
+              "Fiscal Info Saved:",
+              fiscalStartMonth,
+              fiscalYearStartDay,
+            );
+          }
+        }
+
         if (
           data.payload.message
             .toLowerCase()
@@ -4789,6 +4830,60 @@ const onMessageArrived = async (msg) => {
       // Authority
       if (data.action.toLowerCase() === "Authority".toLowerCase()) {
         console.log("AUTHORITY_INACTIVE", data);
+      }
+      if (data.action.toLowerCase() === "Compliance".toLowerCase()) {
+        //COMPLIANCE CREATED MQTT
+        if (
+          data.message?.toLowerCase() === "COMPLIANCE_CREATED".toLowerCase()
+        ) {
+          dispatch(complianceCreatedFromMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST ADDED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_CHECKLIST_ADDED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistAddedMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_CHECKLIST_UPDATED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistUpdateMQTT(data.payload));
+        }
+        //COMPLIANCE CHECKLIST UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "CHECKLIST_DELETED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceChecklistDeletedMQTT(data.payload));
+        }
+        //COMPLIANCE COMPLIANCE UPDATED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_UPDATED".toLocaleLowerCase()
+        ) {
+          dispatch(complianceUpdateMQTT(data.payload));
+        }
+
+        //COMPLIANCE REOPENED MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "REOPEN_COMPLIANCE".toLocaleLowerCase()
+        ) {
+          console.log(data.payload, "REOPENCOMPLIANCE");
+          dispatch(complianceReopenMQTT(data.payload));
+        }
+
+        //TASK MAPPED WITH CHECKLIST MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "TASK_MAPPED_WITH_CHECKLIST".toLocaleLowerCase()
+        ) {
+          console.log(data.payload, "REOPENCOMPLIANCE");
+          dispatch(taskMappedChecklistMQTT(data.payload));
+        }
       }
     } catch (error) {
       console.log(error);
@@ -7743,7 +7838,7 @@ const onMessageArrived = async (msg) => {
     const session = sessionStorage.getItem("isMeeting");
     const isActiveOtoAndGroupCall = localStorage.getItem("activeCall");
     const isActiveOtoAndGroupCallTab = sessionStorage.getItem(
-      "activeCallSessionforOtoandGroup"
+      "activeCallSessionforOtoandGroup",
     );
 
     setIsMeetingLocal(local ? JSON.parse(local) : false);
@@ -7790,11 +7885,12 @@ const onMessageArrived = async (msg) => {
     <>
       <ConfigProvider
         direction={currentLanguage === "ar" ? ar_EG : en_US}
-        locale={currentLanguage === "ar" ? ar_EG : en_US}>
+        locale={currentLanguage === "ar" ? ar_EG : en_US}
+      >
         {IncomingVideoCallFlagReducer === true && (
-          <div className='overlay-incoming-videocall' />
+          <div className="overlay-incoming-videocall" />
         )}
-        <Layout className='mainDashboardLayout'>
+        <Layout className="mainDashboardLayout">
           {location.pathname === "/Diskus/videochat" ||
           location.pathname.includes("meetingDocumentViewer") ? null : (
             <Header2 />
@@ -7802,7 +7898,7 @@ const onMessageArrived = async (msg) => {
           <Layout>
             {location.pathname.includes("meetingDocumentViewer") ? null : (
               <>
-                <Sider className='sidebar_layout' width={60}>
+                <Sider className="sidebar_layout" width={60}>
                   <Sidebar />
                 </Sider>
               </>
@@ -7813,7 +7909,8 @@ const onMessageArrived = async (msg) => {
                 className={
                   !location.pathname.includes("meetingDocumentViewer") &&
                   "dashbaord_data"
-                }>
+                }
+              >
                 <>
                   {/* When checking one and group call */}
                   {/* {isMeetingLocal || activeCallOtoAndGroupCallLocal
@@ -7839,7 +7936,7 @@ const onMessageArrived = async (msg) => {
                 </>
               </div>
               {!location.pathname.includes("meetingDocumentViewer") && (
-                <div className='talk_features_home'>
+                <div className="talk_features_home">
                   {activateBlur ? null : roleRoute ? null : <Talk />}
                 </div>
               )}
@@ -7848,7 +7945,7 @@ const onMessageArrived = async (msg) => {
           {notificationID !== 0 && (
             <NotificationBar
               iconName={
-                <img src={IconMetroAttachment} alt='' draggable='false' />
+                <img src={IconMetroAttachment} alt="" draggable="false" />
               }
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
@@ -7866,8 +7963,8 @@ const onMessageArrived = async (msg) => {
           {IncomingVideoCallFlagReducer === true ? <VideoMaxIncoming /> : null}
           {VideoChatMessagesFlagReducer === true ? (
             <TalkChat2
-              chatParentHead='chat-messenger-head-video'
-              chatMessageClass='chat-messenger-head-video'
+              chatParentHead="chat-messenger-head-video"
+              chatMessageClass="chat-messenger-head-video"
             />
           ) : null}
           {/* <Modal show={true} size="md" setShow={true} /> */}
@@ -7893,27 +7990,27 @@ const onMessageArrived = async (msg) => {
               ButtonTitle={"Block"}
               centered
               size={"md"}
-              modalHeaderClassName='d-none'
+              modalHeaderClassName="d-none"
               ModalBody={
                 <>
-                  <Row className='mb-1'>
+                  <Row className="mb-1">
                     <Col lg={12} md={12} xs={12} sm={12}>
                       <Row>
-                        <Col className='d-flex justify-content-center'>
+                        <Col className="d-flex justify-content-center">
                           <img
                             src={VerificationFailedIcon}
                             width={60}
                             className={"allowModalIcon"}
-                            alt=''
-                            draggable='false'
+                            alt=""
+                            draggable="false"
                           />
                         </Col>
                       </Row>
                       <Row>
-                        <Col className='text-center mt-4'>
+                        <Col className="text-center mt-4">
                           <label className={"allow-limit-modal-p"}>
                             {t(
-                              "The-organization-subscription-is-not-active-please-contact-your-admin"
+                              "The-organization-subscription-is-not-active-please-contact-your-admin",
                             )}
                           </label>
                         </Col>
@@ -7923,12 +8020,13 @@ const onMessageArrived = async (msg) => {
                 </>
               }
               ModalFooter={
-                <Row className='mb-3'>
+                <Row className="mb-3">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center'>
+                    className="d-flex justify-content-center"
+                  >
                     <Button
                       className={"Ok-Successfull-btn"}
                       text={t("Ok")}

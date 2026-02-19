@@ -1,3 +1,4 @@
+import { formatDateToYMD } from "../../container/ComplianceUser/CommonComponents/commonFunctions";
 import * as actions from "../action_types";
 
 const initialState = {
@@ -51,6 +52,16 @@ const initialState = {
   GetComplianceReopenDashboardData: null,
   GetComlianceQuarterlyTasksDashboardData: null,
   GetReportListingData: null,
+  GetEndOfComplianceReport: null,
+  GetQuarterReport: null,
+  GetComplianceStandingReport: null,
+  GetAccumulativeReport: null,
+  complianceCreatedMqttData: null,
+  complianceCheckListMqttData: null,
+  complianceCheckListUpdatedMqttData: null,
+  complianceUpdateMqttData: null,
+  complianceReopenMqttData: null,
+  taskMappedCheckListData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1128,6 +1139,165 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ComplianceDataRoomMapFolderId: action.response,
         addReopenComplianceDetails: action.response2,
+      };
+    }
+
+    //API For Get End Of Compliance Report
+    case actions.Get_END_OF_COMPLIANCE_REPORT_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.Get_END_OF_COMPLIANCE_REPORT_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetEndOfComplianceReport: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.Get_END_OF_COMPLIANCE_REPORT_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetEndOfComplianceReport: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //API For Get Quarter Report
+    case actions.Get_QUARTER_REPORT_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.Get_QUARTER_REPORT_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterReport: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.Get_QUARTER_REPORT_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetQuarterReport: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //API For Get Compliance Standing Report
+    case actions.Get_COMPLIANCE_STANDING_REPORT_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.Get_COMPLIANCE_STANDING_REPORT_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceStandingReport: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.Get_COMPLIANCE_STANDING_REPORT_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetComplianceStandingReport: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    //API For Get Accumulative Report
+    case actions.Get_ACCUMULATIVE_REPORT_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.Get_ACCUMULATIVE_REPORT_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        GetAccumulativeReport: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.Get_ACCUMULATIVE_REPORT_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        GetAccumulativeReport: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.COMPLIANCE_CREATED_MQTT: {
+      return {
+        ...state,
+        complianceCreatedMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist Added Mqtt
+    case actions.COMPLIANCE_CHECKLIST_ADDED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist UPDATED Mqtt
+    case actions.COMPLIANCE_CHECKLIST_UPDATED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListUpdatedMqttData: action.payload,
+      };
+    }
+
+    // For Compliance Checklist DELETED Mqtt
+    case actions.COMPLIANCE_CHECKLIST_DELETED_MQTT: {
+      return {
+        ...state,
+        complianceCheckListDeletedMqttData: action.payload,
+      };
+    }
+
+    // For COMPLIANCE UPDATED MQTT
+    case actions.COMPLIANCE_UPDATED_MQTT: {
+      return {
+        ...state,
+        complianceUpdateMqttData: action.payload,
+      };
+    }
+
+    // For COMPLIANCE REOPENED MQTT
+    case actions.COMPLIANCE_REOPEN_MQTT: {
+      return {
+        ...state,
+        complianceReopenMqttData: action.payload,
+      };
+    }
+
+    // For TASK MAPPED WITH CHECKLIST MQTT
+    case actions.TASK_MAPPED_WITH_CHECKLIST_MQTT: {
+      return {
+        ...state,
+        taskMappedCheckListData: action.payload,
       };
     }
 
