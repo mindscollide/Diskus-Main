@@ -4,8 +4,11 @@ import { ComplianceEmptyState } from "../../../../../components/elements";
 import { useSelector } from "react-redux";
 import { Progress } from "antd";
 import { Col, Row } from "react-bootstrap";
+import { useComplianceContext } from "../../../../../context/ComplianceContext";
 
 const QuarterlySubmittedCompliance = () => {
+  const { setMainComplianceTabs } = useComplianceContext();
+
   const GetQuarterlySubmittedDashboard = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.GetQuarterlySubmittedDashboard,
@@ -36,7 +39,10 @@ const QuarterlySubmittedCompliance = () => {
 
       {/* Show progress when data exists */}
       {hasData && (
-        <div className={styles.quarterlySubmittedCard}>
+        <div
+          className={styles.quarterlySubmittedCard}
+          onClick={() => setMainComplianceTabs(2)}
+        >
           <Row className={styles.fullHeightRow}>
             <Col xs={8}>
               <h2 className={styles.cardHeading}>

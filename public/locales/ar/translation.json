@@ -2469,7 +2469,7 @@
   "Please-try-again-after": "Please try again after",
   "Select-working-days": "Select Working Days",
   "Compliances-by-me": "Compliances by Me",
-  "Compliances-for-me": "Compliances for Me",
+  "Compliances-for-me": "Compliances For Me",
   "File-successfully-uploaded": "File successfully uploaded",
   "RESOLUTION_CLOSED": "Resolution Closed",
   "Attendance-report": "Attendance report",
@@ -2520,5 +2520,6 @@
   "Organizations-compliance-status-report-as-of-today.": "Organization’s compliance status report as of today.",
   "Generated": "Generated",
   "No-data-Found": "No Data Found",
-  "due-date-range": "Due Date Range"
+  "due-date-range": "Due Date Range",
+  "No-fiscal-year": "No fiscal year coming"
 }

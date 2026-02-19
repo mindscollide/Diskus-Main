@@ -53,14 +53,14 @@ const UpcomingComplianceDeadline = () => {
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
                 </span>{" "}
-                <span className={styles.normalText}>Due this quarter</span>
+                <span className={styles.normalText}>Due This Quarter</span>
               </span>
 
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
                 </span>{" "}
-                <span className={styles.normalText}>Due this Week</span>
+                <span className={styles.normalText}>Due This Week</span>
               </span>
             </Col>
           </Row>
