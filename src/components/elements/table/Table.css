@@ -63,8 +63,23 @@
   .ant-table
   .ant-table-thead
   > tr
-  > th:first-child {
-  padding-left: 16px !important;
+  > th:nth-child(2),
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(3),
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(4),
+.ant-table-wrapper.Authority_Table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th:nth-child(5) {
+  padding-left: 5px !important;
 }
 .ant-table-wrapper.Authority_Table .ant-table .ant-table-tbody {
   margin: 0 !important;

@@ -168,11 +168,6 @@ const ComplianceForMe = () => {
   const getCriticalityColumnProps = () => ({
     filteredValue: criticalityFilter, // controlled filter
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      // default: select all
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(criticalityOptions.map((c) => c.value));
-      }
-
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
@@ -220,11 +215,6 @@ const ComplianceForMe = () => {
     filteredValue: statusFilter,
 
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      // default: select all
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(allComplianceStatusForFilter.map((s) => s.statusTitle));
-      }
-      console.log(selectedKeys, "selectedKeys");
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group

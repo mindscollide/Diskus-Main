@@ -212,7 +212,6 @@ const ViewComplianceDetails = () => {
     const tagsArr = complianceDetailsViewState.tags.map(
       (data) => data.tagTitle
     );
-
     const Data = {
       complianceId: complianceInfo.complianceId,
       complianceTitle: complianceDetailsViewState.complianceTitle,
@@ -265,7 +264,7 @@ const ViewComplianceDetails = () => {
       return;
     }
 
-    console.log(Data, "DataDataData");
+    // console.log(Data, "DataDataData");
     dispatch(EditComplianceAPI(navigate, Data, t, null));
   };
 
@@ -350,6 +349,7 @@ const ViewComplianceDetails = () => {
     }
     // Status chnage to In Progress
     else if (event.value === 2) {
+      console.log("herehrer");
       updateCompliance(event);
       resetModalStates();
 
@@ -398,8 +398,9 @@ const ViewComplianceDetails = () => {
     resetModalStates();
   }, [
     tempSelectComplianceStatus,
-    complianceOnHoldSelectOption,
     complianceOnHoldReasonState,
+    complianceOnHoldSelectOption,
+    complianceCancelSelectOption,
   ]);
 
   const handleClickCancelModal = useCallback(() => {
@@ -412,7 +413,7 @@ const ViewComplianceDetails = () => {
     // resetModalStates();
   }, [
     tempSelectComplianceStatus,
-    complianceOnHoldSelectOption,
+    complianceCancelSelectOption,
     complianceOnHoldReasonState,
   ]);
 
