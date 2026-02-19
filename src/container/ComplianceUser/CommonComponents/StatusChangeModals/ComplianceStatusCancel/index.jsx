@@ -28,12 +28,18 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
     setSelectOption(0);
     resetModalStates();
   };
+
   const handleProceedButton = () => {
     console.log(selectOptions, "selectOptionsvalue");
     setSelectOption(0);
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);
     setComplianceCancelSelectOption(selectOptions);
+  };
+
+  const handleProceedByViewButton = () => {
+    setComplianceCancelSelectOption(selectOptions);
+    handleProceedButtonView();
   };
 
   useEffect(() => {
@@ -60,7 +66,7 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
           <>
             <div className={styles.confirmationMessage}>
               {t(
-                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress",
+                "Once-cancelled,-this-compliance-cannot-be-Re-opened-or-moved-back-to-In-Progress"
               )}
             </div>
             <div className="mt-4">
@@ -102,7 +108,9 @@ const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
                 <Button
                   text={t("Confirm-action")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={view ? handleProceedButtonView : handleProceedButton}
+                  onClick={
+                    view ? handleProceedByViewButton : handleProceedButton
+                  }
                 />
               </Col>
             </Row>

@@ -24,7 +24,6 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
   } = useComplianceContext();
 
   console.log(selectOptions, "selectOptionsselectOptions");
-
   const handleCloseButton = () => {
     setSelectOption(0);
     resetModalStates();
@@ -35,6 +34,11 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
     setComplianceOnHoldSelectOption(selectOptions);
+  };
+
+  const handleProceedByViewButton = () => {
+    setComplianceOnHoldSelectOption(selectOptions);
+    handleProceedButtonView();
   };
 
   useEffect(() => {
@@ -94,13 +98,19 @@ const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
                 <Button
                   text={t("Mark-on-hold")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={view ? handleProceedButtonView : handleProceedButton}
+                  onClick={
+                    view ? handleProceedByViewButton : handleProceedButton
+                  }
                 />
               </Col>
             </Row>
           </>
         }
       />
+      {/* <ComplianceStatusChangeResonReasonModal
+        view={view}
+        handleProceedButtonView={handleProceedButtonView}
+      /> */}
       <ComplianceStatusChangeResonReasonModal />
     </>
   );

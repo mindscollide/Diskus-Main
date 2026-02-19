@@ -390,7 +390,7 @@ const ManageAuthority = () => {
     { label: "Active", value: "Active" },
     { label: "In Active", value: "Inactive" },
   ];
-
+  const [allFieldEmpty, setAllFieldEmpty] = useState(false);
   const getStatusColumnProps = () => ({
     filteredValue: statusFilter, // controlled filter
     filterDropdown: ({
@@ -399,11 +399,6 @@ const ManageAuthority = () => {
       confirm,
       clearFilters,
     }) => {
-      // Initialize selectedKeys to all if empty
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(statusOptions.map((s) => s.value));
-      }
-
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
@@ -437,7 +432,7 @@ const ManageAuthority = () => {
             <CustomButton
               text="Ok"
               onClick={() => {
-                setStatusFilter(selectedKeys); // update controlled state
+                setStatusFilter(selectedKeys.length > 0 ? selectedKeys : []); // update controlled state
                 confirm(); // refresh table
               }}
               className={styles["ResetButtonFilter"]}
