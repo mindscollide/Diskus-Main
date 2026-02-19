@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -15,11 +15,21 @@ import ComplianceStatusCompleteExceptionModal from "../../StatusChangeModals/Com
 import CompliaceStatusOnHoldModal from "../../StatusChangeModals/ComplianceStatusOnHoldModal/index.jsx";
 import ComplianceStatusCancelModal from "../../StatusChangeModals/ComplianceStatusCancel/index.jsx";
 import ComplianceStatusReopenedModal from "../../StatusChangeModals/ComplianceStatusReopenedModal/index.jsx";
-import { multiDatePickerDateChangIntoUTC } from "../../../../../commen/functions/date_formater.js";
+import {
+  createConvert,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../commen/functions/date_formater.js";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { EditComplianceAPI } from "../../../../../store/actions/ComplainSettingActions.js";
+import {
+  AddReopenComplianceAPI,
+  EditComplianceAPI,
+  SaveComplianceDocumentsAndMappingsAPI,
+  SaveComplianceFilesAPI,
+} from "../../../../../store/actions/ComplainSettingActions.js";
+import { uploadDocumentsTaskApi } from "../../../../../store/actions/ToDoList_action.js";
+import ComplianceStatusChangeResonReasonModal from "../../StatusChangeModals/ComplianceStatusOnHoldReasonModal/index.jsx";
 
 const ViewComplianceDetails = () => {
   const {
@@ -50,13 +60,29 @@ const ViewComplianceDetails = () => {
     checkAnyChecklistOnPendingState,
     checkAnyTaskInProgress,
     setCheckAnyTaskInProgress,
-    tempSelectedComplianceStatus,
+    tempSelectComplianceStatus,
+    complianceReopenDetailsState,
+    setComplianceStatusChangeReasonModal,
+    complianceStatusChangeReasonModal,
+    // complianceOnHoldReasonState,
   } = useComplianceContext();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  console.log(
+    complianceReopenDetailsState,
+    "complianceReopenDetailsStatecomplianceReopenDetailsState"
+  );
 
-  console.log(complianceDetailsViewState, "complianceDetailsState");
+  const complianceReopenedDetail = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails
+  );
+  const complianceDataroomFolderId = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId
+  );
+
+  console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
 
   // styling for select:
   const getStatusColor = (status) => {
@@ -117,10 +143,74 @@ const ViewComplianceDetails = () => {
       display: "none",
     }),
   };
+  const [editComplianceData, setEditComplianceData] = useState(null);
+
+  const uploadReopenCompilanceDocuments = async (folderID) => {
+    try {
+      let saveFiles = [];
+      let uploadedFiles;
+      // 1️⃣ Upload individual documents
+      if (complianceReopenDetailsState.attachments.length > 0) {
+        await Promise.all(
+          complianceReopenDetailsState.attachments.map((newData) =>
+            dispatch(
+              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles)
+            )
+          )
+        );
+        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        uploadedFiles = await dispatch(
+          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID)
+        );
+
+        // 3️⃣ Build payload AFTER data exists
+        const Data2 = {
+          complianceId: editComplianceData.complianceId,
+          complianceStatusChangeHistoryID: complianceReopenedDetail,
+          fileIds: uploadedFiles
+            ? uploadedFiles.map((file) => ({
+                PK_FileID: file.pK_FileID,
+              }))
+            : [],
+        };
+
+        // 4️⃣ Final mapping API
+        dispatch(
+          SaveComplianceDocumentsAndMappingsAPI(
+            navigate,
+            Data2,
+            t,
+            editComplianceData,
+            setEditComplianceData
+            // setChecklistTabs
+          )
+        );
+      } else {
+        dispatch(
+          EditComplianceAPI(
+            navigate,
+            editComplianceData,
+            t
+            // setChecklistTabs
+          )
+        );
+      }
+
+      console.log("uploadedFiles:", uploadedFiles); // ✅ DATA HERE
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (complianceDataroomFolderId !== 0 && complianceReopenedDetail !== null) {
+      uploadReopenCompilanceDocuments(complianceDataroomFolderId);
+    }
+  }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
   const updateCompliance = (selectedOption) => {
     const tagsArr = complianceDetailsViewState.tags.map(
-      (data) => data.tagTitle,
+      (data) => data.tagTitle
     );
 
     const Data = {
@@ -141,17 +231,42 @@ const ViewComplianceDetails = () => {
         complianceDetailsViewState.status.value === 7
           ? complianceOnHoldSelectOption
           : complianceDetailsViewState.status.value === 9
-            ? complianceCancelSelectOption
-            : 0, // On Hold Compliance Including Checklist and Task
+          ? complianceCancelSelectOption
+          : 0, // On Hold Compliance Including Checklist and Task
     };
 
     setComplianceDetailsViewState((prev) => ({
       ...prev,
       status: selectedOption,
     }));
-    dispatch(EditComplianceAPI(navigate, Data, t, null));
+    // For Reopen Compliance
+    if (selectedOption.value === 6) {
+      // There should we use update with repopend compliancere
+
+      let DataReOpenCompliance = {
+        complianceId: Data.complianceId,
+        updatedDueDate: createConvert(complianceReopenDetailsState.dueDate),
+        reason: complianceReopenDetailsState.reason,
+      };
+      let reopenDataroomMap = {
+        complianceId: complianceInfo.complianceId,
+        complianceTitle: complianceDetailsState.complianceTitle,
+      };
+      console.log("DataReOpenCompliance", complianceReopenDetailsState);
+      setEditComplianceData(Data);
+      dispatch(
+        AddReopenComplianceAPI(
+          navigate,
+          DataReOpenCompliance,
+          t,
+          reopenDataroomMap
+        )
+      );
+      return;
+    }
 
     console.log(Data, "DataDataData");
+    dispatch(EditComplianceAPI(navigate, Data, t, null));
   };
 
   const handleChangeComplianceStatus = (event) => {
@@ -209,6 +324,7 @@ const ViewComplianceDetails = () => {
         setComlianceStatusReopenedModal(true);
       }
     }
+
     // status change to On Hold
     if (event.value === 7) {
       if (complianceDetailsState.status.value === 7) {
@@ -234,8 +350,8 @@ const ViewComplianceDetails = () => {
     }
     // Status chnage to In Progress
     else if (event.value === 2) {
-      resetModalStates();
       updateCompliance(event);
+      resetModalStates();
 
       // setComplianceDetailsState((prev) => ({
       //   ...prev,
@@ -249,43 +365,73 @@ const ViewComplianceDetails = () => {
   };
 
   const handleClickSubmitApprovalModal = useCallback(() => {
-    if (tempSelectedComplianceStatus) {
-      updateCompliance(tempSelectedComplianceStatus);
+    if (tempSelectComplianceStatus) {
+      updateCompliance(tempSelectComplianceStatus);
     }
     setSubmitForApprovalModal(false);
     resetModalStates();
-  }, [tempSelectedComplianceStatus]);
+  }, [tempSelectComplianceStatus]);
 
   const handleClickOnHoldModal = useCallback(() => {
-    if (tempSelectedComplianceStatus) {
-      updateCompliance(tempSelectedComplianceStatus);
-    }
+    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
     setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(true);
+
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+  ]);
+
+  const handleClickOnHoldOrCancelReasonModal = useCallback(() => {
+    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    // setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(false);
+
+    if (tempSelectComplianceStatus) {
+      updateCompliance(tempSelectComplianceStatus);
+    }
     resetModalStates();
-  }, [tempSelectedComplianceStatus]);
+  }, [
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+  ]);
 
   const handleClickCancelModal = useCallback(() => {
-    if (tempSelectedComplianceStatus) {
-      updateCompliance(tempSelectedComplianceStatus);
-    }
+    // console.log(handleProceedButtonView, "handleProceedButtonView");
     setComplianceCancelModal(false);
-    resetModalStates();
-  }, [tempSelectedComplianceStatus]);
+    setComplianceStatusChangeReasonModal(true);
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+  ]);
 
   const handleClickReOpendModal = useCallback(() => {
-    if (tempSelectedComplianceStatus) {
-      updateCompliance(tempSelectedComplianceStatus);
+    // console.log("DataReOpenCompliance", complianceReopenDetailsState);
+
+    if (tempSelectComplianceStatus) {
+      updateCompliance(tempSelectComplianceStatus);
     }
     setComlianceStatusReopenedModal(false);
     resetModalStates();
-  }, [tempSelectedComplianceStatus]);
+  }, [tempSelectComplianceStatus, complianceReopenDetailsState]);
 
   return (
     <>
       <Row className="mt-3">
         <Col sm={12} md={12} lg={12}>
           <div className={styles["complianceViewLabel"]}>{`${t(
-            "Description",
+            "Description"
           )}`}</div>
           <div className={styles["complianceViewValue"]}>
             {complianceDetailsState.description}
@@ -332,7 +478,7 @@ const ViewComplianceDetails = () => {
         <Row className="mt-3">
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Criticality-level",
+              "Criticality-level"
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {complianceDetailsState.criticality.label}
@@ -340,7 +486,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Due-date",
+              "Due-date"
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {formatDateToYMD(complianceDetailsState.dueDate)}
@@ -348,7 +494,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Tags",
+              "Tags"
             )}:`}</div>
             {Array.isArray(complianceDetailsState.tags) &&
               complianceDetailsState.tags.length > 0 &&
@@ -380,6 +526,12 @@ const ViewComplianceDetails = () => {
         <CompliaceStatusOnHoldModal
           view={true}
           handleProceedButtonView={handleClickOnHoldModal}
+        />
+      )}
+      {complianceStatusChangeReasonModal && (
+        <ComplianceStatusChangeResonReasonModal
+          view={true}
+          handleProceedButtonView={handleClickOnHoldOrCancelReasonModal}
         />
       )}
 
