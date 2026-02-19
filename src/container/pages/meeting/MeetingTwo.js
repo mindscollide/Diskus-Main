@@ -856,12 +856,8 @@ const NewMeeting = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings:
-              MeetingProp !== null
-                ? false
-                : UserMeetPropoDatPoll !== null
-                  ? false
-                  : true,
+            PublishedMeetings: true,
+            ProposedMeetings: false,
           };
           if (
             getALlMeetingTypes.length === 0 &&
@@ -3218,6 +3214,29 @@ const NewMeeting = () => {
     localStorage.setItem("meetingTitle", record.title);
   };
 
+  const handleClickContributeAgenda = (record) => {
+    console.log("Agenda", record);
+    handleEditMeeting(
+      record.pK_MDID,
+      record.isQuickMeeting,
+      "Agenda Contributor",
+      record,
+    );
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setEditorRole({
+      status: record.status,
+      role: "Agenda Contributor",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    setEditMeeting(true);
+    dispatch(viewMeetingFlag(false));
+  };
+
   const moreButtons = (record) => {
     const STATUS = {
       UPCOMING: 1,
@@ -3240,6 +3259,7 @@ const NewMeeting = () => {
         isOrganizer,
 
       cancel: status === STATUS.UPCOMING && isOrganizer,
+      contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
 
       talk:
         status !== STATUS.NOT_CONDUCTED &&
@@ -3247,7 +3267,9 @@ const NewMeeting = () => {
         record.talkGroupID !== 0,
 
       viewAgenda:
-        (status === STATUS.ENDED || status === STATUS.ACTIVE) &&
+        (status === STATUS.ENDED ||
+          status === STATUS.UPCOMING ||
+          status === STATUS.ACTIVE) &&
         (isOrganizer || isAgendaContributor || isParticipant),
 
       attendance: status === STATUS.ENDED && isOrganizer,
@@ -3363,6 +3385,15 @@ const NewMeeting = () => {
           >
             <img src={DownloadVideoIcon} alt="" width="16" height="16" />
             <span>{t("View-minutes")}</span>
+          </div>
+        )}
+        {canShow.contributeAgenda && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickContributeAgenda(record)}
+          >
+            <img src={AgendaIcon} alt="" width="16" height="16" />
+            <span>{t("Contribute-agenda")}</span>
           </div>
         )}
       </div>
@@ -3530,7 +3561,7 @@ const NewMeeting = () => {
         localStorage.setItem("meetingTitle", record.title);
         break;
       case "CONTRIBUTE_AGENDA":
-        handleClickViewAgenda(record);
+        handleClickContributeAgenda(record);
         break;
       default:
         break;
@@ -3604,8 +3635,8 @@ const NewMeeting = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        align: "center",
-        width: 100,
+        align: "left",
+        width: 140,
         ellipsis: true,
         filters: statusFilters,
         filterIcon: (filtered) => (
@@ -3824,7 +3855,7 @@ const NewMeeting = () => {
           const canStartMeeting =
             (meetingCurrentStatus === 1 &&
               isOrganizer &&
-              minutesDifference <= minutesAgo) ||
+              minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
           console.log(
@@ -4018,6 +4049,7 @@ const NewMeeting = () => {
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -4046,7 +4078,10 @@ const NewMeeting = () => {
         PageNumber:
           meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings: Number(currentView) === 1 ? true : false,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -4429,6 +4464,7 @@ const NewMeeting = () => {
       Length: Number(PageSize),
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
@@ -5389,32 +5425,58 @@ const NewMeeting = () => {
                     </Col>
                   </Row>
                   {Number(currentView) === 2 ? (
-                    <UnpublishedProposedMeeting
-                      viewProposeDatePoll={viewProposeDatePoll}
-                      setViewProposeDatePoll={setViewProposeDatePoll}
-                      setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setViewAdvanceMeetingModalUnpublish={
-                        setViewAdvanceMeetingModalUnpublish
-                      }
-                      setResponseByDate={setResponseByDate}
-                      setSceduleMeeting={setSceduleMeeting}
-                      setEditorRole={setEditorRole}
-                      setEditMeeting={setEditMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      currentMeeting={currentMeetingID}
-                      editorRole={editorRole}
-                      setDataroomMapFolderId={setDataroomMapFolderId}
-                      videoTalk={videoTalk}
-                      setVideoTalk={setVideoTalk}
-                      setProposedNewMeeting={setProposedNewMeeting}
-                      setIsProposedMeetEdit={setIsProposedMeetEdit}
-                    />
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}
+                      >
+                        <UnpublishedProposedMeeting
+                          viewProposeDatePoll={viewProposeDatePoll}
+                          setViewProposeDatePoll={setViewProposeDatePoll}
+                          setViewProposeOrganizerPoll={
+                            setViewProposeOrganizerPoll
+                          }
+                          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                          setViewAdvanceMeetingModalUnpublish={
+                            setViewAdvanceMeetingModalUnpublish
+                          }
+                          setResponseByDate={setResponseByDate}
+                          setSceduleMeeting={setSceduleMeeting}
+                          setEditorRole={setEditorRole}
+                          setEditMeeting={setEditMeeting}
+                          setCurrentMeetingID={setCurrentMeetingID}
+                          currentMeeting={currentMeetingID}
+                          editorRole={editorRole}
+                          setDataroomMapFolderId={setDataroomMapFolderId}
+                          videoTalk={videoTalk}
+                          setVideoTalk={setVideoTalk}
+                          setProposedNewMeeting={setProposedNewMeeting}
+                          setIsProposedMeetEdit={setIsProposedMeetEdit}
+                          searchFields={searchFields}
+                        />
+                      </Col>
+                    </Row>
                   ) : Number(currentView) === 3 ? (
-                    <DraftMeeting />
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}
+                      >
+                        <DraftMeeting />
+                      </Col>
+                    </Row>
                   ) : Number(currentView) === 1 ? (
                     <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}
+                      >
                         <>
                           <Table
                             getPopupContainer={(node) =>
@@ -5431,32 +5493,55 @@ const NewMeeting = () => {
                               emptyText: <EmptyTableComponent />, // Set your custom empty text here
                             }}
                             scroll={{
-                              y: "60vh",
+                              y: "55vh",
                             }}
+                            footer={() => (
+                              <Row
+                                className={styles["PaginationStyle-Committee"]}
+                              >
+                                <Col
+                                  className={"pagination-groups-table"}
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                >
+                                  <CustomPagination
+                                    current={
+                                      meetingPageCurrent !== null
+                                        ? Number(meetingPageCurrent)
+                                        : 1
+                                    }
+                                    pageSize={
+                                      meetingpageRow !== null
+                                        ? Number(meetingpageRow)
+                                        : 50
+                                    }
+                                    onChange={handelChangePagination}
+                                    total={totalRecords}
+                                    showSizer={true}
+                                    pageSizeOptionsValues={[
+                                      "30",
+                                      "50",
+                                      "100",
+                                      "200",
+                                    ]}
+                                  />
+                                </Col>
+                              </Row>
+                            )}
                           />
-                          {/* <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: false }}
-                            pagination={false}
-                            onChange={handleTableChange}
-                            className="newMeetingTable"
-                            rows={rows}
-                            locale={{
-                              emptyText: <EmptyTableComponent />, // Set your custom empty text here
-                            }}
-                          /> */}
                         </>
                       </Col>
                     </Row>
                   ) : null}
-                  {rows.length > 0 ? (
+                  {/* {rows.length > 0 ? (
                     <>
                       <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center "
+                          className="d-flex justify-content-center mt-2 "
                         >
                           <Row className={styles["PaginationStyle-Committee"]}>
                             <Col
@@ -5491,7 +5576,7 @@ const NewMeeting = () => {
                         </Col>
                       </Row>
                     </>
-                  ) : null}
+                  ) : null} */}
                 </span>
               </Col>
             </Row>

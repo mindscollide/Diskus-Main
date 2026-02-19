@@ -646,7 +646,7 @@ const DraftMeeting = () => {
           sticky={true}
           pagination={false}
           scroll={{
-            y: 450,
+            y: "55vh",
           }}
         />
       </Col>
