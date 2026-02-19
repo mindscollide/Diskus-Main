@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import styles from "./meeting.module.css";
 import { useTranslation } from "react-i18next";
 import { Row, Col, Tooltip } from "react-bootstrap";
@@ -86,6 +86,31 @@ const MainMeeting = () => {
     DateView: "",
   });
 
+  useEffect(() => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: true,
+      ProposedMeetings: false,
+    };
+
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    // Fetch meeting types if not already loaded
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+
+      localStorage.setItem("MeetingCurrentView", 1);
+      localStorage.setItem("MeetingPageRows", 30);
+      localStorage.setItem("MeetingPageCurrent", 1);
+    }
+  }, []);
   /**
    * Handles closing the search modal and resetting search fields
    */
