@@ -10,7 +10,7 @@ import CustomRadioGroup from "../../../../../components/elements/radio/CustomRad
 import { values } from "lodash";
 import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
-const CompliaceStatusOnHoldModal = () => {
+const CompliaceStatusOnHoldModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const [selectOptions, setSelectOption] = useState(0);
   const {
@@ -24,7 +24,6 @@ const CompliaceStatusOnHoldModal = () => {
   } = useComplianceContext();
 
   console.log(selectOptions, "selectOptionsselectOptions");
-
   const handleCloseButton = () => {
     setSelectOption(0);
     resetModalStates();
@@ -35,6 +34,11 @@ const CompliaceStatusOnHoldModal = () => {
     setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(true);
     setComplianceOnHoldSelectOption(selectOptions);
+  };
+
+  const handleProceedByViewButton = () => {
+    setComplianceOnHoldSelectOption(selectOptions);
+    handleProceedButtonView();
   };
 
   useEffect(() => {
@@ -94,13 +98,19 @@ const CompliaceStatusOnHoldModal = () => {
                 <Button
                   text={t("Mark-on-hold")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={handleProceedButton}
+                  onClick={
+                    view ? handleProceedByViewButton : handleProceedButton
+                  }
                 />
               </Col>
             </Row>
           </>
         }
       />
+      {/* <ComplianceStatusChangeResonReasonModal
+        view={view}
+        handleProceedButtonView={handleProceedButtonView}
+      /> */}
       <ComplianceStatusChangeResonReasonModal />
     </>
   );

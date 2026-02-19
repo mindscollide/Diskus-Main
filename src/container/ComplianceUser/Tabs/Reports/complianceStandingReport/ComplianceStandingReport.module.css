@@ -110,7 +110,7 @@
 /* HEADER LIKE TABLE */
 .tableHeader {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
+  grid-template-columns: 4fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
   font-weight: 600;
   font-size: 14px;
   padding: 12px 16px;
@@ -122,7 +122,7 @@
 /* EACH COLLAPSE ROW HEADER */
 .tableRow {
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
+  grid-template-columns: 4fr 1fr 1fr 1.2fr 1fr 1fr 1fr 1.5fr;
   align-items: center;
   font-size: 14px;
   font-weight: 600;
@@ -131,7 +131,11 @@
 }
 
 .nameCol {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 500;
+  max-width: 300px;
 }
 
 .badge {
@@ -173,7 +177,11 @@
   padding: 16px;
   background: #f6f9fc !important;
 }
-
+.MainAccordianTable {
+  max-height: 300px;
+  overflow: hidden;
+  overflow-y: auto;
+}
 .insideAccordianTable {
   height: 140px;
   padding: 10px 20px;
@@ -226,4 +234,36 @@
   margin-top: 16px;
 }
 
+.goBackButton {
+  cursor: pointer;
+}
 
+.nodatafound_subHeading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #e1e1e1;
+}
+.NoDataFoundTable {
+  height: 140px;
+  padding: 10px 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background: #ffffff;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ResetButtonFilter {
+  padding: 2px 15px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-weight: 600 !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}

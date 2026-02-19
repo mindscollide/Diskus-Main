@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./EndOfComplianceReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -12,52 +12,49 @@ import { Chart } from "react-google-charts";
 import { t } from "i18next";
 import CustomTable from "../../../../../components/elements/table/Table";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
+import { useSelector } from "react-redux";
+import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import { useTranslation } from "react-i18next";
+import ReopenOrOnHoldDetailsModal from "../../../CommonComponents/ReopenOrOnHoldDetailsModal";
 
 const { Panel } = Collapse;
 
 const EndOfComplianceReport = () => {
-  const { endOfComplianceReport, setEndOfComplianceReport, reportList } =
-    useComplianceContext();
+  const { t } = useTranslation();
+  const {
+    setShowViewCompliance,
+    endOfComplianceReport,
+    isViewDetailsOpen,
+    setIsViewDetailsOpen,
+    setEndOfComplianceReport,
+    reportList,
+    autoPdfDownload,
+    setAutoPdfDownload,
+  } = useComplianceContext();
+
+  const GetEndOfComplianceReport = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
+  );
+  console.log("Check Check Report");
+
+  console.log(
+    GetEndOfComplianceReport,
+    "GetEndOfComplianceReportGetEndOfComplianceReport"
+  );
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
 
-  const checkListsReport = [
-    {
-      id: 1,
-      list: "Strengthening Ethical Practices and Upholding Regulatory Compliance Standards Across All Business",
-    },
-    {
-      id: 2,
-      list: "Upholding Ethical Standards and Regulatory Compliance Across All Business Operations",
-    },
-    {
-      id: 3,
-      list: "Promoting Ethical Conduct and Ensuring Regulatory Compliance in All Business Functions",
-    },
-    {
-      id: 4,
-      list: "Strengthening Business Integrity Through Ethical Practices and Compliance",
-    },
-    {
-      id: 5,
-      list: "Ensuring Transparency and Accountability Across All Business Practices",
-    },
-    {
-      id: 6,
-      list: "Embedding Ethical Responsibility and Regulatory Compliance Across Operations",
-    },
-    {
-      id: 7,
-      list: "Fostering Ethical Leadership and Compliance-Driven Culture",
-    },
-    { id: 8, list: "Implementing Robust Policies for Regulatory Adherence" },
-  ];
+  useEffect(() => {
+    if (autoPdfDownload && GetEndOfComplianceReport) {
+      handleAutoDownload();
+    }
+  }, [autoPdfDownload, GetEndOfComplianceReport]);
 
   const donutData = [
     ["Task Status", "Count"],
-    ["Tasks Completed On Time", 45],
-    ["Tasks Completed Late", 33],
+    ["Tasks Completed On Time", 100],
+    ["Tasks Completed Late", 0],
   ];
 
   const donutOptions = {
@@ -69,71 +66,9 @@ const EndOfComplianceReport = () => {
     pieSliceText: "none",
     backgroundColor: "transparent",
     chartArea: { width: "100%", height: "100%" },
-    colors: ["#6172D6", "#FFC300"],
+    colors: ["#6272D6"],
     tooltip: { text: "percentage" },
   };
-
-  const complianceData = [
-    {
-      id: 1,
-      checklistName: "GDPR Policy Review",
-      dueDate: "30 November 2024",
-      totalTasks: 10,
-      overdueTasks: 10,
-    },
-    {
-      id: 2,
-      checklistName: "Data Handling Audit",
-      dueDate: "20 December 2024",
-      totalTasks: 10,
-      overdueTasks: 10,
-    },
-    {
-      id: 3,
-      checklistName: "Incident Response Plan",
-      dueDate: "15 March 2025",
-      totalTasks: 20,
-      overdueTasks: 10,
-    },
-  ];
-
-  const reportsData = [
-    {
-      taskName: "Draft Policy Update",
-      assignee: "Ali Khan",
-      dueDate: "05 December 2025",
-      completedOn: "05 December 2025",
-      completed: "On Time",
-    },
-    {
-      taskName: "Stakeholder Sign-Off",
-      assignee: "Sara Ahmed",
-      dueDate: "05 December 2025",
-      completedOn: "05 December 2025",
-      completed: "Overdue",
-    },
-    {
-      taskName: "Stakeholder Sign-Off",
-      assignee: "Sara Ahmed",
-      dueDate: "05 December 2025",
-      completedOn: "05 December 2025",
-      completed: "Overdue",
-    },
-    {
-      taskName: "Stakeholder Sign-Off",
-      assignee: "Sara Ahmed",
-      dueDate: "05 December 2025",
-      completedOn: "05 December 2025",
-      completed: "Overdue",
-    },
-    {
-      taskName: "Stakeholder Sign-Off",
-      assignee: "Sara Ahmed",
-      dueDate: "05 December 2025",
-      completedOn: "05 December 2025",
-      completed: "Overdue",
-    },
-  ];
 
   const columns = useMemo(
     () => [
@@ -184,8 +119,18 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [reportList, t],
+    [reportList, t]
   );
+
+  const mapTasksToRows = (tasks = []) => {
+    return tasks.map((task) => ({
+      taskName: task.taskTitle,
+      assignee: task.assigneeName,
+      dueDate: formatDateToYMD(task.taskDueDate),
+      completedOn: formatDateToYMD(task.taskCompletedOn),
+      completed: task.completionStatus,
+    }));
+  };
 
   const options = {
     // default is `save`
@@ -226,6 +171,27 @@ const EndOfComplianceReport = () => {
 
   const getTargetElement = () => document.getElementById("content-id");
 
+  const handleAutoDownload = async () => {
+    try {
+      setIsGenerating(true);
+      setShowPdfLayout(true);
+
+      await new Promise((r) => setTimeout(r, 300));
+      await document.fonts.ready;
+
+      await generatePDF(getTargetElement, options);
+
+      // 👇 After Download Close Report
+      setEndOfComplianceReport(false);
+      setAutoPdfDownload(false);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowPdfLayout(false);
+      setIsGenerating(false);
+    }
+  };
+
   const handleClickGenerateODF = async () => {
     try {
       setIsGenerating(true); // spinner ON
@@ -241,14 +207,16 @@ const EndOfComplianceReport = () => {
       setIsGenerating(false); // spinner OFF
     }
   };
-
+  const handleOpenReopenModal = () => {
+    setIsViewDetailsOpen(true);
+  };
   return (
     <>
       <div className={styles.mainDivComplianceStanding}>
         <Spin
           spinning={isGenerating}
           size="large"
-          tip="Generating PDF..."
+          tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
           {!showPdfLayout && (
@@ -258,6 +226,7 @@ const EndOfComplianceReport = () => {
                 <Col xs="auto">
                   <img
                     src={BackButton}
+                    className={styles.goBackButton}
                     alt="BackButton"
                     onClick={() => setEndOfComplianceReport(false)}
                   />
@@ -267,8 +236,11 @@ const EndOfComplianceReport = () => {
                 <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
                   <img src={Verification} alt="Verification" />
                   <div>
-                    <label>Report Type:</label>
-                    <p>End of Compliance</p>
+                    <label>{t("Report-type")}:</label>
+                    <p>
+                      {GetEndOfComplianceReport?.header?.reportType ||
+                        "End of Compliance"}
+                    </p>
                   </div>
                 </Col>
 
@@ -280,8 +252,12 @@ const EndOfComplianceReport = () => {
                 >
                   <img src={ComplianceCalendar} alt="ComplianceCalendar" />
                   <div>
-                    <label>Generated Date:</label>
-                    <p>15 January 2025</p>
+                    <label>{t("Generated-date")}:</label>
+                    <p>
+                      {formatDateToYMD(
+                        GetEndOfComplianceReport?.header?.generatedOn
+                      ) || "-"}
+                    </p>
                   </div>
                 </Col>
 
@@ -289,10 +265,11 @@ const EndOfComplianceReport = () => {
                 <Col lg={4} xs={4}>
                   <div className={styles.reportDetailsBar}>
                     <span>
-                      This compliance was Re-opened 1 times
+                      {t("This-compliance-was-Re-opened-1-times")}
                       <CustomButton
                         text="Reopen Details"
                         className={styles.reportDetailButton}
+                        onClick={handleOpenReopenModal}
                       />
                     </span>
                   </div>
@@ -313,32 +290,54 @@ const EndOfComplianceReport = () => {
                 {/* LEFT SIDE — TITLE + META */}
                 <Col lg={8} md={7} sm={12}>
                   <div className={styles.titleSection}>
-                    <label>Compliance Title:</label>
+                    <label> {t("Compliance-title")}:</label>
+
                     <p className={styles.longTitle}>
-                      Implementation of End-to-End Data Encryption Across All
-                      Internal Systems, External Communication
+                      {GetEndOfComplianceReport?.complianceSummary
+                        ?.complianceTitle || "No Compliance Title"}
                     </p>
 
                     <div className={styles.metaRow}>
                       <div>
-                        <span>Created on</span>
-                        <p>13 June 2025</p>
+                        <span>{t("Created-on")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceCreatedDate
+                          ) || "-"}
+                        </p>
                       </div>
                       <div>
-                        <span>Completion date</span>
-                        <p>13 July 2025</p>
+                        <span>{t("Completion-date")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceCompletionDate
+                          ) || "-"}
+                        </p>
                       </div>
                       <div>
-                        <span>Due Date</span>
-                        <p>12 July 2025</p>
+                        <span>{t("Due-date")}</span>
+                        <p>
+                          {formatDateToYMD(
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.complianceDueDate
+                          ) || "-"}
+                        </p>
                       </div>
                       <div>
-                        <span>Total Checklists</span>
-                        <p>14</p>
+                        <span>{t("Total-checklists")} </span>
+                        <p>
+                          {GetEndOfComplianceReport?.complianceSummary
+                            ?.totalChecklists || 0}
+                        </p>
                       </div>
                       <div>
-                        <span>Total Tasks</span>
-                        <p>216</p>
+                        <span>{t("Total-tasks")}</span>
+                        <p>
+                          {GetEndOfComplianceReport?.complianceSummary
+                            ?.totalTasks || 0}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -359,11 +358,15 @@ const EndOfComplianceReport = () => {
 
                       {/* Center Label */}
                       <div className={styles.centerLabel}>
-                        <h2>58%</h2>
+                        <h2>
+                          {GetEndOfComplianceReport?.complianceSummary
+                            ?.completedOnTimePercent || 0}
+                          %
+                        </h2>
                         <p>
-                          Complete
+                          {t("Complete ")}
                           <br />
-                          On Time
+                          {t("On-time")}
                         </p>
                       </div>
                     </div>
@@ -372,11 +375,17 @@ const EndOfComplianceReport = () => {
                     <div className={styles.customLegend}>
                       <div>
                         <span className={styles.legendDotBlue}></span>
-                        Tasks Completed On Time (45)
+                        {t("Tasks-completed-on-time")} (
+                        {GetEndOfComplianceReport?.complianceSummary
+                          ?.tasksCompletedOnTime || 0}
+                        )
                       </div>
                       <div>
                         <span className={styles.legendDotYellow}></span>
-                        Tasks Completed Late (33)
+                        {t("Tasks-completed-late")} (
+                        {GetEndOfComplianceReport?.complianceSummary
+                          ?.tasksCompletedLate || 0}
+                        )
                       </div>
                     </div>
                   </div>
@@ -387,10 +396,10 @@ const EndOfComplianceReport = () => {
               <div className={styles.tableWrapper}>
                 {/* 🔹 STATIC HEADER */}
                 <div className={styles.tableHeader}>
-                  <div>Checklist Name</div>
-                  <div>Due Date</div>
-                  <div>No. of Tasks</div>
-                  <div>Overdue Tasks</div>
+                  <div>{t("Checklist-name")}</div>
+                  <div> {t("Due-date")}</div>
+                  <div> {t("No-of-tasks")}</div>
+                  <div> {t("Overdue-tasks")}</div>
                 </div>
 
                 {/* 🔹 COLLAPSE ROWS */}
@@ -402,34 +411,42 @@ const EndOfComplianceReport = () => {
                   )}
                   className={styles.collapseWrapper}
                 >
-                  {complianceData.map((item) => (
-                    <Panel
-                      key={item.id}
-                      header={
-                        <div className={styles.tableRow}>
-                          <div className={styles.nameCol}>
-                            {item.checklistName}
-                          </div>
-                          <div>{item.dueDate}</div>
-                          <div>{item.totalTasks}</div>
-                          <div>{item.overdueTasks}</div>
-                        </div>
-                      }
-                    >
-                      {/* EXPANDED CONTENT */}
-                      <div className={styles.panelContent}>
-                        <div className={styles.insideAccordianTable}>
-                          <CustomTable
-                            rows={reportsData}
-                            column={columns}
-                            // scroll={{ x: "scroll", y: 550 }}
-                            pagination={false}
-                            // onChange={handleChangeReportSorter}
-                          />
-                        </div>
+                  {!GetEndOfComplianceReport?.checklists?.length ? (
+                    <div className={styles.NoDataFoundTable}>
+                      <div className={`${styles.nodatafound_subHeading}`}>
+                        {t("No-Checklist-Found")}
                       </div>
-                    </Panel>
-                  ))}
+                    </div>
+                  ) : (
+                    GetEndOfComplianceReport?.checklists?.map((item) => (
+                      <Panel
+                        key={item.checklistID}
+                        header={
+                          <div className={styles.tableRow}>
+                            <div className={styles.nameCol}>
+                              {item.checklistTitle}
+                            </div>
+                            <div>{formatDateToYMD(item.checklistDueDate)}</div>
+                            <div>{item.completedTasks}</div>
+                            <div>{item.overdueTasks}</div>
+                          </div>
+                        }
+                      >
+                        {/* EXPANDED CONTENT */}
+                        <div className={styles.panelContent}>
+                          <div className={styles.insideAccordianTable}>
+                            <CustomTable
+                              rows={mapTasksToRows(item?.tasks)}
+                              column={columns}
+                              // scroll={{ x: "scroll", y: 550 }}
+                              pagination={false}
+                              // onChange={handleChangeReportSorter}
+                            />
+                          </div>
+                        </div>
+                      </Panel>
+                    ))
+                  )}
                 </Collapse>
               </div>
             </div>
@@ -444,10 +461,12 @@ const EndOfComplianceReport = () => {
                   className={`${styles.ComplianceMainHeading} mt-4`}
                 >
                   <div>
-                    <label>Compliance Title:</label>
+                    <label>{t("Compliance-title")}:</label>
                     <p>
-                      Implementation of End-to-End Data Encryption Across All
-                      Internal Systems, External Communication
+                      {
+                        GetEndOfComplianceReport?.complianceSummary
+                          ?.complianceTitle
+                      }
                     </p>
                   </div>
                 </Col>
@@ -455,79 +474,115 @@ const EndOfComplianceReport = () => {
               <Row className={`${styles.ComplianceSection} mt-4`}>
                 <Col lg={8}>
                   <Row className="align-items-center">
-                    <Col lg={4} xs="auto">
+                    <Col lg={5} xs="auto">
                       <label className={styles.ComplianceReportHeadings}>
-                        Criticality: Medium
+                        {t("Criticalityy")}:
+                        {
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.criticality
+                        }
                       </label>
                       <div className={styles.iconTextWrapperPDFDownload}>
                         <img src={Verification} alt="Verification" />
                         <div>
-                          <label>Report Type:</label>
-                          <p>End of Compliance</p>
+                          <label>{t("Report-type")}:</label>
+                          <p>{GetEndOfComplianceReport?.header?.reportType}</p>
                         </div>
                       </div>
                     </Col>
 
-                    <Col lg={5} xs="auto">
+                    <Col lg={4} xs="auto">
                       <label className={styles.ComplianceReportHeadings}>
-                        Authority: PCI DSS
+                        {t("Authority")}:{" "}
+                        {
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.authorityName
+                        }
                       </label>
-                      <div
-                        className={`${styles.iconTextWrapperPDFDownload} d-flex `}
-                      >
+                      <div className={`${styles.iconTextWrapperPDFDownload} `}>
                         <img
                           src={ComplianceCalendar}
                           alt="ComplianceCalendar"
                         />
                         <div>
-                          <label>Generated Date:</label>
-                          <p>15 november 2025</p>
+                          <label>{t("Generated-date")}:</label>
+                          <p>
+                            {formatDateToYMD(
+                              GetEndOfComplianceReport?.header?.generatedOn
+                            )}
+                          </p>
                         </div>
                       </div>
                     </Col>
                     <Col lg={3}>
                       {" "}
                       <label className={styles.ComplianceReportHeadings}>
-                        Reopen: 06 Times
+                        {t("Reopen")}:{" "}
+                        {
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.reopenCount
+                        }{" "}
+                        {t("Times")}
                       </label>
-                      <div
-                        className={`${styles.iconTextWrapperPDFDownload} d-flex `}
-                      >
+                      <div className={`${styles.iconTextWrapperPDFDownload} `}>
                         <div>
-                          <label>Total Checklists:</label>
-                          <p>14</p>
+                          <label>{t("Total-checklists")}:</label>
+                          <p>
+                            {
+                              GetEndOfComplianceReport?.complianceSummary
+                                ?.totalChecklists
+                            }
+                          </p>
                         </div>
                         <div>
-                          <label>Total Tasks:</label>
-                          <p>216</p>
+                          <label>{t("Total-tasks")}:</label>
+                          <p>
+                            {
+                              GetEndOfComplianceReport?.complianceSummary
+                                ?.totalTasks
+                            }
+                          </p>
                         </div>
                       </div>
                     </Col>
                   </Row>
+                  {/*  */}
                   <Row
-                    className={`${styles.iconTextWrapperPDFDownload} mx-1 mt-4`}
+                    className={`${styles.iconTextWrapperPDFDownload} mx-1  mt-4`}
                   >
-                    <Col
-                      lg={4}
-                      xs="auto"
-                      className={`${styles.iconTextWrapperPDFDownload} d-flex gap-2 `}
-                    >
+                    <Col xs="auto" lg={1}>
                       <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-
-                      <div>
-                        <label>Created on:</label>
-                        <p>15 November 2024</p>
-                      </div>
+                    </Col>
+                    <Col lg={3} xs="auto" className={` `}>
+                      <label>{t("Created-on")}:</label>
+                      <p>
+                        {formatDateToYMD(
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.complianceCreatedDate
+                        )}
+                      </p>
                     </Col>
                     <Col lg={3}>
-                      <label>Completion Date:</label>
-                      <p>05 December 2024</p>
+                      <label>{t("Completion-date")}:</label>
+                      <p>
+                        {formatDateToYMD(
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.complianceCompletionDate
+                        )}
+                      </p>
                     </Col>
                     <Col lg={3}>
-                      <label>Due Date:</label>
-                      <p>15 December 2024</p>
+                      <label>{t("Due-date")}:</label>
+                      <p>
+                        {" "}
+                        {formatDateToYMD(
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.complianceDueDate
+                        )}
+                      </p>
                     </Col>
                   </Row>
+                  {/*  */}
                 </Col>
                 <Col lg={4}>
                   <div className={styles.chartFlexDownloadedPdf}>
@@ -541,11 +596,17 @@ const EndOfComplianceReport = () => {
                       />
 
                       <div className={styles.centerLabel}>
-                        <h2>58%</h2>
+                        <h2>
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.completedOnTimePercent
+                          }
+                          %
+                        </h2>
                         <p>
-                          Complete
+                          {t("Complete ")}
                           <br />
-                          On Time
+                          {t("On-time")}
                         </p>
                       </div>
                     </div>
@@ -553,11 +614,21 @@ const EndOfComplianceReport = () => {
                     <div className={styles.customLegend}>
                       <div>
                         <span className={styles.legendDotBlue}></span>
-                        Tasks Completed On Time (45)
+                        {t("Tasks-completed-on-time")} (
+                        {
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.tasksCompletedOnTime
+                        }
+                        )
                       </div>
                       <div>
                         <span className={styles.legendDotYellow}></span>
-                        Tasks Completed Late (33)
+                        {t("Tasks-completed-late")} (
+                        {
+                          GetEndOfComplianceReport?.complianceSummary
+                            ?.tasksCompletedLate
+                        }
+                        )
                       </div>
                     </div>
                   </div>
@@ -570,25 +641,75 @@ const EndOfComplianceReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-4`}
                 >
-                  <p>Checklists in this report:</p>
+                  <p>{t("Checklists-in-this-report")}:</p>
                 </Col>
-                {checkListsReport.map((item, index) => (
-                  <Col
-                    key={item.id}
-                    lg={12}
-                    xs="auto"
-                    className={`${styles.checklist_report}  `}
-                  >
-                    {index + 1}.{item.list}
-                  </Col>
+
+                {GetEndOfComplianceReport?.checklists.map((checklist) => (
+                  <div key={checklist.checklistID}>
+                    {checklist?.tasks?.map((task, index) => (
+                      <Col
+                        key={task.taskID}
+                        lg={12}
+                        xs="auto"
+                        className={`${styles.checklist_report}  `}
+                      >
+                        {index + 1}.{task.taskDescription}
+                      </Col>
+                    ))}
+                  </div>
                 ))}
               </Row>
             </div>
           )}
         </Spin>
       </div>
+
+      {isViewDetailsOpen && <ReopenOrOnHoldDetailsModal />}
     </>
   );
 };
 
 export default EndOfComplianceReport;
+
+{
+  /* <Row
+className={`${styles.iconTextWrapperPDFDownload} mx-1 mt-4`}
+>
+<Col
+  lg={4}
+  xs="auto"
+  className={` d-flex align-items-center gap-2 `}
+>
+  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+
+  <div>
+    <label>{t("Created-on")}:</label>
+    <p>
+      {formatDateToYMD(
+        GetEndOfComplianceReport?.complianceSummary
+          ?.complianceCreatedDate
+      )}
+    </p>
+  </div>
+</Col>
+<Col lg={3}>
+  <label>{t("Completion-date")}:</label>
+  <p>
+    {formatDateToYMD(
+      GetEndOfComplianceReport?.complianceSummary
+        ?.complianceCompletionDate
+    )}
+  </p>
+</Col>
+<Col lg={3}>
+  <label>{t("Due-date")}:</label>
+  <p>
+    {" "}
+    {formatDateToYMD(
+      GetEndOfComplianceReport?.complianceSummary
+        ?.complianceDueDate
+    )}
+  </p>
+</Col>
+</Row> */
+}

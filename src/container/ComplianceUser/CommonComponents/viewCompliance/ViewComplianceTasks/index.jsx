@@ -67,7 +67,7 @@ const ViewComplianceTasks = () => {
     const allowedStatusIds = TASK_STATUS_TRANSITIONS[record.taskStatusId] || [];
 
     return taskStatus.filter((status) =>
-      allowedStatusIds.includes(status.value)
+      allowedStatusIds.includes(status.value),
     );
   };
   // context
@@ -77,26 +77,31 @@ const ViewComplianceTasks = () => {
     setExpandChecklistOnTasksPage,
     complianceViewMode,
     allTasksStatusForFilter,
+    viewComplianceTasksContextData,
+    setViewComplianceTasksContextData,
   } = useComplianceContext();
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState"
+    "complianceDetailsStatecomplianceDetailsState",
   );
+  console.log(expandChecklistOnTasksPage, "expandChecklistOnTasksPage");
+  console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
+
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
   const getAllComplianceChecklistTaskForMe = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceIdForMe
+        .GetComplianceChecklistsWithTasksByComplianceIdForMe,
   );
 
   console.log(
     getAllComplianceChecklistTask,
-    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask"
+    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask",
   );
 
   // Status for All tasks
@@ -146,29 +151,32 @@ const ViewComplianceTasks = () => {
       };
       if (complianceViewMode === "byMe") {
         dispatch(
-          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t),
         );
       } else if (complianceViewMode === "forMe") {
         dispatch(
           GetComplianceChecklistsWithTasksByComplianceIdForMeAPI(
             navigate,
             Data,
-            t
-          )
+            t,
+          ),
         );
       }
     }
   }, [complianceDetailsState]);
 
   useEffect(() => {
-    if (expandChecklistOnTasksPage && viewComplianceTasksData?.length > 0) {
+    if (
+      expandChecklistOnTasksPage &&
+      viewComplianceTasksContextData?.length > 0
+    ) {
       setExpandedCheckListIds([expandChecklistOnTasksPage]); // 👈 expand only one
       setAddChecklistCloseState(true);
 
       // 🔁 Reset so refresh / tab switch doesn't re-trigger
       setExpandChecklistOnTasksPage(null);
     }
-  }, [expandChecklistOnTasksPage, viewComplianceTasksData]);
+  }, [expandChecklistOnTasksPage, viewComplianceTasksContextData]);
 
   useEffect(() => {
     if (complianceViewMode === "byMe") {
@@ -178,7 +186,7 @@ const ViewComplianceTasks = () => {
       ) {
         try {
           const { checklistList } = getAllComplianceChecklistTask;
-          setViewComplianceTasksData(checklistList);
+          setViewComplianceTasksContextData(checklistList);
         } catch (error) {}
       }
     } else if (complianceViewMode === "forMe") {
@@ -188,7 +196,7 @@ const ViewComplianceTasks = () => {
       ) {
         try {
           const { checklistList } = getAllComplianceChecklistTaskForMe;
-          setViewComplianceTasksData(checklistList);
+          setViewComplianceTasksContextData(checklistList);
         } catch (error) {}
       }
     }
@@ -272,7 +280,7 @@ const ViewComplianceTasks = () => {
     checklistId,
     pagination,
     filters,
-    sorter
+    sorter,
   ) => {
     setActiveSortedChecklistId(checklistId);
 
@@ -352,7 +360,7 @@ const ViewComplianceTasks = () => {
   };
   // functions
   const handleStatusChange = (taskId, selectedStatus) => {
-    setViewComplianceTasksData((prev) =>
+    setViewComplianceTasksContextData((prev) =>
       prev.map((checklist) => ({
         ...checklist,
         taskList: checklist.taskList?.map((task) =>
@@ -362,9 +370,9 @@ const ViewComplianceTasks = () => {
                 taskStatusId: selectedStatus.value,
                 taskStatus: selectedStatus.label,
               }
-            : task
+            : task,
         ),
-      }))
+      })),
     );
 
     // 🔗 API payload (when you connect backend)
@@ -470,10 +478,12 @@ const ViewComplianceTasks = () => {
         taskTitleSort === "descend"
           ? b.taskTitle?.toLowerCase().localeCompare(a.taskTitle?.toLowerCase())
           : taskTitleSort === "ascend"
-          ? a.taskTitle?.toLowerCase().localeCompare(b.taskTitle?.toLowerCase())
-          : a.taskTitle
-              ?.toLowerCase()
-              .localeCompare(b.taskTitle?.toLowerCase()),
+            ? a.taskTitle
+                ?.toLowerCase()
+                .localeCompare(b.taskTitle?.toLowerCase())
+            : a.taskTitle
+                ?.toLowerCase()
+                .localeCompare(b.taskTitle?.toLowerCase()),
     },
 
     {
@@ -515,12 +525,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.assignedUsers[0]?.name?.toLowerCase())
           : assignedToSort === "ascend"
-          ? a.assignedUsers[0]?.name
-              ?.toLowerCase()
-              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
-          : a.assignedUsers[0]?.name
-              ?.toLowerCase()
-              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
+            ? a.assignedUsers[0]?.name
+                ?.toLowerCase()
+                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
+            : a.assignedUsers[0]?.name
+                ?.toLowerCase()
+                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
     },
     {
       title: (
@@ -545,12 +555,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.deadLineDate?.toLowerCase())
           : dueDateSort === "ascend"
-          ? a.deadLineDate
-              ?.toLowerCase()
-              .localeCompare(b.deadLineDate?.toLowerCase())
-          : a.deadLineDate
-              ?.toLowerCase()
-              .localeCompare(b.deadLineDate?.toLowerCase()),
+            ? a.deadLineDate
+                ?.toLowerCase()
+                .localeCompare(b.deadLineDate?.toLowerCase())
+            : a.deadLineDate
+                ?.toLowerCase()
+                .localeCompare(b.deadLineDate?.toLowerCase()),
 
       dataIndex: "deadLineDate",
       key: "deadLineDate",
@@ -654,7 +664,7 @@ const ViewComplianceTasks = () => {
   // Row
   return (
     <>
-      {viewComplianceTasksData?.length > 0 ? (
+      {viewComplianceTasksContextData?.length > 0 ? (
         <Row className="mt-3">
           <div
             ref={accordionContainerRef}
@@ -665,10 +675,10 @@ const ViewComplianceTasks = () => {
             }
           >
             {
-              viewComplianceTasksData?.length > 0
-                ? viewComplianceTasksData.map((data, index) => {
+              viewComplianceTasksContextData?.length > 0
+                ? viewComplianceTasksContextData.map((data, index) => {
                     const isExpanded = expandedCheckListIds.find(
-                      (data2, index) => data2 === data.checklistId
+                      (data2, index) => data2 === data.checklistId,
                     );
 
                     // const taskData = data.taskList;
@@ -676,7 +686,7 @@ const ViewComplianceTasks = () => {
                       (task, index) => ({
                         ...task,
                         key: task.taskId || `${data.checklistId}-${index}`,
-                      })
+                      }),
                     );
 
                     return (
@@ -719,7 +729,7 @@ const ViewComplianceTasks = () => {
                                       data.checklistId,
                                       pagination,
                                       filters,
-                                      sorter
+                                      sorter,
                                     )
                                   }
                                 />

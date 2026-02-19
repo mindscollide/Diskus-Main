@@ -1,11 +1,14 @@
 .reopenedComplianceCard {
   width: 100%;
-  min-height: 460px;
+  height: 460px;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   background-color: #fff;
   padding: 5px 10px;
   transition: all 0.3s ease;
+
+  display: flex;
+  flex-direction: column;
 }
 .reopenedComplianceCard:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -29,8 +32,8 @@
 }
 
 .ViewAllComplianceButton {
+  margin-top: auto; /* ✅ pushes button to bottom */
   padding: 10px 0px !important;
-  margin-top: 10px;
   font-size: 12px !important;
   width: 100%;
   border: 1px solid #e1e1e1 !important;
@@ -41,5 +44,9 @@
 }
 
 .CardInsideHeight {
-  min-height: 357px;
+  flex: 1; /* ✅ takes remaining space */
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-bottom: 10px;
 }

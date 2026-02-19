@@ -6,7 +6,10 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./complianceStatusOnHoldReasonModal.module.css";
 import { TextAreafieldwithCount } from "../../../../../components/elements/input_field/Input_field_withCount";
 
-const ComplianceStatusChangeResonReasonModal = () => {
+const ComplianceStatusChangeResonReasonModal = ({
+  view,
+  handleProceedButtonView,
+}) => {
   const { t } = useTranslation();
   const {
     complianceStatusChangeReasonModal,
@@ -97,7 +100,7 @@ const ComplianceStatusChangeResonReasonModal = () => {
               <Button
                 text={t("Proceed")}
                 className={styles["CancelButton"]}
-                onClick={handleProceedButton}
+                onClick={view ? handleProceedButtonView : handleProceedButton}
                 disableBtn={complianceOnHoldReasonState === ""}
               />
             </Col>
