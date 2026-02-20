@@ -70,7 +70,7 @@ const ViewComplianceDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log(
-    complianceReopenDetailsState,
+   complianceDetailsState,
     "complianceReopenDetailsStatecomplianceReopenDetailsState"
   );
 

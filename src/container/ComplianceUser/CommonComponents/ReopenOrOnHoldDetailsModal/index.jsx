@@ -109,6 +109,7 @@ const ReopenOrOnHoldDetailsModal = () => {
                               data={file}
                               name={file.displayFileName}
                               id={file.fileId}
+                              key={file.fileId}
                             />
                           </Col>
                         ))
