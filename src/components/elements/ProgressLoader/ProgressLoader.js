@@ -20,6 +20,7 @@ export const ProgressLoader = ({ progress }) => {
     setTwoColors(updatedColors);
   }, []); // Dependency array ensures this runs once after component mounts
 
+  console.log(progress, "progressprogress");
   return (
     <section>
       {/* Commenting the Progress bar due to 0011401: Diskus Loader (CR Priority 128) */}
@@ -28,6 +29,7 @@ export const ProgressLoader = ({ progress }) => {
         strokeColor={twoColors}
         showInfo={false}
         className={"Progress_bar"}
+        status="active"
       />
     </section>
   );
