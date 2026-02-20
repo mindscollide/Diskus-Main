@@ -150,7 +150,10 @@ const ViewCompliance = () => {
         item?.fromStatus?.statusId === 6 || item?.fromStatus?.statusId === 7
     );
   }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
-
+  console.log(
+    complianceDetailsState,
+    "complianceDetailsStatecomplianceDetailsState"
+  );
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
@@ -248,7 +251,9 @@ const ViewCompliance = () => {
                             {`${complianceDetailsState.progressPercent}%`}
                           </span>
                         </div>
-                        <ProgressLoader progress={20} />
+                        <ProgressLoader
+                          progress={complianceDetailsState.progressPercent}
+                        />
                       </div>
                     </>
                   ) : (
