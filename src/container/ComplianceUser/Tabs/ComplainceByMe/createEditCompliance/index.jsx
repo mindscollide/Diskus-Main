@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./createEditCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import ViewCompliance from "../../../CommonComponents/viewCompliance";
+import { useSelector } from "react-redux";
 
 const CreateEditCompliance = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,11 @@ const CreateEditCompliance = () => {
     showViewCompliance,
     setShowViewCompliance,
   } = useComplianceContext();
+  // Tracking all Loading States
 
   console.log(
     { checkListData, complianceDetailsState },
-    "checkListTabscheckListTabs",
+    "checkListTabscheckListTabs"
   );
 
   useEffect(() => {
@@ -40,7 +42,7 @@ const CreateEditCompliance = () => {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
         );
       } catch (error) {}
     }
@@ -51,7 +53,7 @@ const CreateEditCompliance = () => {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
         );
       } catch (error) {}
     }
@@ -59,12 +61,35 @@ const CreateEditCompliance = () => {
 
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
+    "complianceDetailsStatecomplianceDetailsState"
   );
+
+  const ComplianceMain = useRef();
+
+  // const handleOutsideClick = (event) => {
+  //   if (
+  //     ComplianceMain.current &&
+  //     !ComplianceMain.current.contains(event.target) &&
+  //     (complianceAddEditViewState === 2 || complianceAddEditViewState === 1)
+  //   ) {
+  //     // setShowWebNotification(false);
+  //     alert("All changes will bw lost");
+  //   }
+  // };
+  //Event Handler for Outside Click of Web Notification Window
+  // useEffect(() => {
+  //   document.addEventListener("click", handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener("click", handleOutsideClick);
+  //   };
+  // }, [complianceAddEditViewState]);
 
   return (
     <>
-      <section className={styles["MainCompliance_Container"]}>
+      <section
+        className={styles["MainCompliance_Container"]}
+        // ref={ComplianceMain}
+      >
         <Row className="my-2 ">
           {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
             {complianceInfo.complianceId !== 0
@@ -76,8 +101,8 @@ const CreateEditCompliance = () => {
             {complianceAddEditViewState === 2
               ? `Edit: ${complianceInfo.complianceName}`
               : complianceInfo.complianceId !== 0
-                ? complianceInfo.complianceName
-                : t("Create-new-compliance")}
+              ? complianceInfo.complianceName
+              : t("Create-new-compliance")}
           </Col>
 
           {}
@@ -137,8 +162,8 @@ const CreateEditCompliance = () => {
                   complianceInfo.complianceId !== 0
                     ? false
                     : complianceAddEditViewState === 2
-                      ? false
-                      : true
+                    ? false
+                    : true
                 }
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
@@ -155,10 +180,10 @@ const CreateEditCompliance = () => {
                   complianceAddEditViewState === 2
                     ? false
                     : complianceInfo.complianceId === 0
-                      ? true
-                      : checklistCount === 0
-                        ? true
-                        : false
+                    ? true
+                    : checklistCount === 0
+                    ? true
+                    : false
                 }
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {
