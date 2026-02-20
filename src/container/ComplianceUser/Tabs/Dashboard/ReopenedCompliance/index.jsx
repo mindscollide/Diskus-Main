@@ -90,7 +90,9 @@ const ReopenedCompliance = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-2"
               >
-                <h3 className={styles.cardHeading}>Reopened Compliances</h3>
+                <h3 className={styles.cardHeading}>
+                  {t("Reopened-compliances")}
+                </h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -124,7 +126,9 @@ const ReopenedCompliance = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-4"
               >
-                <h3 className={styles.cardHeading}>Reopened Compliances</h3>
+                <h3 className={styles.cardHeading}>
+                  {t("Reopened-compliances")}
+                </h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -158,7 +162,7 @@ const ReopenedCompliance = () => {
           </div>
 
           <CustomButton
-            text={t("View All Reopened Compliances")}
+            text={t("View-all-reopened-compliances")}
             className={styles.ViewAllComplianceButton}
             onClick={() => setMainComplianceTabs(2)}
           />

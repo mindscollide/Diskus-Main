@@ -73,7 +73,9 @@ const ComplianceDashboard = () => {
 
       await dispatch(GetQuarterlySubmittedComplianceAPI(navigate, Data, t));
       await dispatch(GetComplianceUpcomingDeadlineAPI(navigate, Data, t));
-      await dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
+      await dispatch(
+        GetComplianceQuarterlyTasksDashboardAPI(navigate, Data, t),
+      );
     } catch (err) {
       console.error("Static dashboard APIs failed:", err);
     }

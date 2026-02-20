@@ -750,6 +750,22 @@ export const ComlianceProvider = ({ children }) => {
           status: currentStatus, // value & label format expected by UI
         }));
 
+        // ✅ ADD THIS
+        setComplianceDetailsState((prev) => ({
+          ...prev,
+          complianceTitle,
+          complianceId,
+          description,
+          authority: {
+            value: authorityId,
+            label: authorityId?.toString() || "",
+          },
+          criticality: selectedCriticality,
+          dueDate,
+          tags,
+          status: currentStatus,
+        }));
+
         // ✅ Set allowed status options directly
         setAllowedComplianceStatusOptions(allowedStatuses);
 
