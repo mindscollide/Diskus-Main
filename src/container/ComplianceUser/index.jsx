@@ -282,19 +282,18 @@ const MainCompliance = () => {
                 text={t("Reports")}
               />
             </Col>
-            {mainComplianceTabs === 1 && (
-              <Col
-                sm={12}
-                md={3}
-                lg={3}
-                className="d-flex justify-content-end gap-2 align-items-center"
-              >
-                <img src={FiscalYearCalendar_Icon} alt="" />
-                <span className={styles["Fiscalyear_text"]}>
-                  {`Fiscal Year: ${fiscalYearRange}`}
-                </span>
-              </Col>
-            )}
+
+            <Col
+              sm={12}
+              md={3}
+              lg={3}
+              className="d-flex justify-content-end gap-2 align-items-center"
+            >
+              <img src={FiscalYearCalendar_Icon} alt="" />
+              <span className={styles["Fiscalyear_text"]}>
+                {`Fiscal Year: ${fiscalYearRange ? fiscalYearRange : t("No-fiscal-year")}`}
+              </span>
+            </Col>
           </Row>
           {mainComplianceTabs === 1 && <ComplianceDashboard />}
           {mainComplianceTabs === 2 && <ComplianceByMe />}

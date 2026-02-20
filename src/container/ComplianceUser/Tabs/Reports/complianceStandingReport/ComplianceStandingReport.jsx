@@ -1066,15 +1066,15 @@ const ComplianceStandingReport = () => {
                 >
                   <p>{t("Compliances-in-this-report")}:</p>
                 </Col>
-                {GetComplianceStandingReport.complianceStandingReport?.complianceListData?.map(
+                {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
                   (item, index) => (
                     <Col
-                      key={item.complianceId}
+                      key={item?.complianceId}
                       lg={12}
                       xs="auto"
                       className={`${styles.checklist_report}  `}
                     >
-                      {index + 1}.{item.complianceTitle}
+                      {index + 1}.{item?.complianceTitle}
                     </Col>
                   ),
                 )}

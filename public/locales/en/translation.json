@@ -2552,7 +2552,7 @@
   "Select-day-number": "Select Day Number",
   "Select-working-days": "Select Working Days",
   "Compliances-by-me": "Compliances by Me",
-  "Compliances-for-me": "Compliances for Me",
+  "Compliances-for-me": "Compliances For Me",
   "No-matching-records": "No matching records.",
   "Authorities": "Authorities",
   "Create-compliance": "Create Compliance",
@@ -2715,5 +2715,6 @@
   "Organizations-compliance-status-report-as-of-today.": "Organization’s compliance status report as of today.",
   "Generated": "Generated",
   "No-data-Found": "No Data Found",
-  "due-date-range": "Due Date Range"
+  "due-date-range": "Due Date Range",
+  "No-fiscal-year": "No fiscal year coming"
 }
