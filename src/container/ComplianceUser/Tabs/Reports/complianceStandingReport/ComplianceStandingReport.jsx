@@ -56,37 +56,6 @@ const ComplianceStandingReport = () => {
 
   const [dateRange, setDateRange] = useState(null);
 
-  const compliancesReport = [
-    {
-      id: 1,
-      list: "Strengthening Ethical Practices and Upholding Regulatory Compliance Standards Across All Business",
-    },
-    {
-      id: 2,
-      list: "Upholding Ethical Standards and Regulatory Compliance Across All Business Operations",
-    },
-    {
-      id: 3,
-      list: "Promoting Ethical Conduct and Ensuring Regulatory Compliance in All Business Functions",
-    },
-    {
-      id: 4,
-      list: "Strengthening Business Integrity Through Ethical Practices and Compliance",
-    },
-    {
-      id: 5,
-      list: "Embedding Ethical Responsibility and Regulatory Compliance Across Operations",
-    },
-    {
-      id: 6,
-      list: "Driving Ethical Governance and Compliance Across the Organization",
-    },
-    {
-      id: 7,
-      list: "Embedding Ethical Responsibility and Regulatory Compliance Across Operations",
-    },
-  ];
-
   const options = {
     // default is `save`
     method: "save",

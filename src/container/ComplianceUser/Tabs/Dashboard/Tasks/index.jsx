@@ -37,7 +37,7 @@ const ComplianceTasks = () => {
   );
 
   const complianceTaskList =
-    GetComplianceTasksDashboardData?.taskList?.slice(0, 3) || [];
+    GetComplianceTasksDashboardData?.taskList?.slice(0, 4) || [];
 
   const filterOptions = [
     { label: "Overdue", value: 1 },
