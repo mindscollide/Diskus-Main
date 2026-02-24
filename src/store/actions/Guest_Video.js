@@ -447,10 +447,7 @@ const admitRejectAttendeeMainApi = (
                 setLoadingDeny(false);
               }
               await dispatch(
-                admitRejectSuccess(
-                  response.data.responseResult,
-                  t("Successful")
-                )
+                admitRejectSuccess(response.data.responseResult, t(""))
               );
 
               // when flag is true then after click on accept all participantWaitinglistbox closed
@@ -795,7 +792,7 @@ const removeParticipantMeetingMainApi = (navigate, t, data) => {
               await dispatch(
                 removeParticipantMeetingSuccess(
                   response.data.responseResult,
-                  t("Successful")
+                  t("")
                 )
               );
               dispatch(guestLeaveVideoMeeting(data.UID));

@@ -227,8 +227,8 @@ const UpdateQuickMeeting = ({
   const [attachments, setAttachments] = useState([]);
   const generateRandomAgendaID = generateRandomNegativeAuto();
   console.log(
-    { allPresenters, attendeesParticipant },
-    "allPresentersallPresenters"
+    { attachments },
+    "attachments"
   );
   const [fileSize, setFileSize] = useState(0);
   //Reminder Stats

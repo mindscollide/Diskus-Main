@@ -34,7 +34,11 @@ import SubDedaultDragger from "./SubDedaultDragger";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useEffect } from "react";
-import { MeetingContext, useMeetingContext } from "../../../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../../../context/MeetingContext";
+import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -64,7 +68,7 @@ const SubAgendaMappingDragging = ({
 
   const { isAgendaUpdateWhenMeetingActive } = useContext(MeetingContext);
   const getMeetingusers = useSelector(
-    (state) => state.NewMeetingreducer.getMeetingusers
+    (state) => state.NewMeetingreducer.getMeetingusers,
   );
   // const getAllMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.getAllMeetingDetails
@@ -169,7 +173,7 @@ const SubAgendaMappingDragging = ({
   // Initialize the subExpand state based on the number of rows and subAgendas
   useEffect(() => {
     const initialState = rows.map((row) =>
-      Array(row.subAgenda.length).fill(false)
+      Array(row.subAgenda.length).fill(false),
     );
     setSubExpand(initialState);
   }, [rows]);
@@ -199,7 +203,7 @@ const SubAgendaMappingDragging = ({
     } else {
       // Close all other subAgendas in the current row except the one you're expanding
       const updatedSubExpand = rows.map((row, i) =>
-        i === index ? Array(row.subAgenda.length).fill(false) : subExpand[i]
+        i === index ? Array(row.subAgenda.length).fill(false) : subExpand[i],
       );
       updatedSubExpand[index][subIndex] = true;
 
@@ -248,7 +252,7 @@ const SubAgendaMappingDragging = ({
   const lockFunctionActiveSubMenus = async (
     parentIndex,
     subAgendaID,
-    isLocked
+    isLocked,
   ) => {
     let Data = {
       AgendaID: subAgendaID,
@@ -257,8 +261,8 @@ const SubAgendaMappingDragging = ({
     let flag = await new Promise((resolve) => {
       dispatch(
         UpateMeetingStatusLockApiFunc(navigate, t, Data, 1, (updatedFlag) =>
-          resolve(updatedFlag)
-        )
+          resolve(updatedFlag),
+        ),
       );
     });
     if (flag) {
@@ -267,7 +271,7 @@ const SubAgendaMappingDragging = ({
         const parentRow = prevRows[parentIndex];
         // Find the index of the subMenu in the subAgenda array
         const subMenuIndex = parentRow.subAgenda.findIndex(
-          (subMenu) => subMenu.subAgendaID === subAgendaID
+          (subMenu) => subMenu.subAgendaID === subAgendaID,
         );
 
         // If the subMenu is found, update its isLocked value
@@ -357,9 +361,7 @@ const SubAgendaMappingDragging = ({
   }, [currentLanguage]);
 
   useEffect(() => {
-    if (
-      getMeetingusers  !== null
-    ) {
+    if (getMeetingusers !== null) {
       const newData = {
         meetingOrganizers: getMeetingusers.meetingOrganizers,
         meetingParticipants: getMeetingusers.meetingParticipants,
@@ -443,9 +445,9 @@ const SubAgendaMappingDragging = ({
                           editorRole.status === 9
                             ? true
                             : Number(editorRole.status) === 10 &&
-                              !isAgendaUpdateWhenMeetingActive
-                            ? true
-                            : false
+                                !isAgendaUpdateWhenMeetingActive
+                              ? true
+                              : false
                         }
                       >
                         {(provided, snapshot) => (
@@ -513,10 +515,10 @@ const SubAgendaMappingDragging = ({
                                                   : styles["SubAgendaArrow"]
                                               }
                                               onClick={() => {
-                                                  handleSubMenuExpand(
-                                                    index,
-                                                    subIndex
-                                                  );
+                                                handleSubMenuExpand(
+                                                  index,
+                                                  subIndex,
+                                                );
                                               }}
                                             />
                                           </section>
@@ -559,29 +561,29 @@ const SubAgendaMappingDragging = ({
                                                   editorRole.status === 9
                                                     ? true
                                                     : editorRole.role ===
-                                                        "Participant" ||
-                                                      editorRole.role ===
-                                                        "Agenda Contributor" ||
-                                                      editorRole.status ===
-                                                        "9" ||
-                                                      editorRole.status === 9
-                                                    ? true
-                                                    : Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
-                                                      !isAgendaUpdateWhenMeetingActive
-                                                    ? true
-                                                    : false
+                                                          "Participant" ||
+                                                        editorRole.role ===
+                                                          "Agenda Contributor" ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
+                                                      ? true
+                                                      : Number(
+                                                            editorRole.status,
+                                                          ) === 10 &&
+                                                          !isAgendaUpdateWhenMeetingActive
+                                                        ? true
+                                                        : false
                                                 }
                                                 placeholder={t(
-                                                  "Sub-agenda-title"
+                                                  "Sub-agenda-title",
                                                 )}
                                                 value={subAgendaData.subTitle}
                                                 change={(e) =>
                                                   handleSubAgendaTitleChange(
                                                     index,
                                                     subIndex,
-                                                    e
+                                                    e,
                                                   )
                                                 }
                                               />
@@ -612,7 +614,7 @@ const SubAgendaMappingDragging = ({
                                                   handleSelectChange(
                                                     index,
                                                     subIndex,
-                                                    value
+                                                    value,
                                                   )
                                                 }
                                                 isDisabled={
@@ -622,19 +624,19 @@ const SubAgendaMappingDragging = ({
                                                   editorRole.status === 9
                                                     ? true
                                                     : editorRole.role ===
-                                                        "Participant" ||
-                                                      editorRole.role ===
-                                                        "Agenda Contributor" ||
-                                                      editorRole.status ===
-                                                        "9" ||
-                                                      editorRole.status === 9
-                                                    ? true
-                                                    : Number(
-                                                        editorRole.status
-                                                      ) === 10 &&
-                                                      !isAgendaUpdateWhenMeetingActive
-                                                    ? true
-                                                    : false
+                                                          "Participant" ||
+                                                        editorRole.role ===
+                                                          "Agenda Contributor" ||
+                                                        editorRole.status ===
+                                                          "9" ||
+                                                        editorRole.status === 9
+                                                      ? true
+                                                      : Number(
+                                                            editorRole.status,
+                                                          ) === 10 &&
+                                                          !isAgendaUpdateWhenMeetingActive
+                                                        ? true
+                                                        : false
                                                 }
                                                 classNamePrefix={
                                                   "SelectOrganizersSelect_active"
@@ -833,7 +835,7 @@ const SubAgendaMappingDragging = ({
                                                     parentIslockedCheck ||
                                                       handleCrossSubAjenda(
                                                         index,
-                                                        subIndex
+                                                        subIndex,
                                                       );
                                                   }}
                                                 />
@@ -860,7 +862,7 @@ const SubAgendaMappingDragging = ({
                                                 // t("Hide-details")
                                                 <Button
                                                   text={t(
-                                                    "Description-and-attachement"
+                                                    "Description-and-attachement",
                                                   )}
                                                   className={
                                                     styles[
@@ -868,20 +870,20 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                      handleSubMenuExpand(
-                                                        index,
-                                                        subIndex
-                                                      );
+                                                    handleSubMenuExpand(
+                                                      index,
+                                                      subIndex,
+                                                    );
                                                   }}
                                                 />
                                               ) : (
                                                 <Button
                                                   text={t(
-                                                    "Description-and-attachement"
+                                                    "Description-and-attachement",
                                                   )}
                                                   disableBtn={
                                                     Number(
-                                                      editorRole.status
+                                                      editorRole.status,
                                                     ) === 10 &&
                                                     !isAgendaUpdateWhenMeetingActive
                                                       ? true
@@ -893,10 +895,10 @@ const SubAgendaMappingDragging = ({
                                                     ]
                                                   }
                                                   onClick={() => {
-                                                      handleSubMenuExpand(
-                                                        index,
-                                                        subIndex
-                                                      );
+                                                    handleSubMenuExpand(
+                                                      index,
+                                                      subIndex,
+                                                    );
                                                   }}
                                                 />
                                               )}
@@ -938,31 +940,31 @@ const SubAgendaMappingDragging = ({
                                                         editorRole.status === 9
                                                           ? true
                                                           : editorRole.role ===
-                                                              "Participant" ||
-                                                            editorRole.role ===
-                                                              "Agenda Contributor" ||
-                                                            editorRole.status ===
-                                                              "9" ||
-                                                            editorRole.status ===
-                                                              9
-                                                          ? true
-                                                          : Number(
-                                                              editorRole.status
-                                                            ) === 10 &&
-                                                            !isAgendaUpdateWhenMeetingActive
-                                                          ? true
-                                                          : false
+                                                                "Participant" ||
+                                                              editorRole.role ===
+                                                                "Agenda Contributor" ||
+                                                              editorRole.status ===
+                                                                "9" ||
+                                                              editorRole.status ===
+                                                                9
+                                                            ? true
+                                                            : Number(
+                                                                  editorRole.status,
+                                                                ) === 10 &&
+                                                                !isAgendaUpdateWhenMeetingActive
+                                                              ? true
+                                                              : false
                                                       }
                                                       change={(e) =>
                                                         handleAgendaDescription(
                                                           index,
                                                           subIndex,
-                                                          e
+                                                          e,
                                                         )
                                                       }
                                                       rows="4"
                                                       placeholder={t(
-                                                        "Agenda-description"
+                                                        "Agenda-description",
                                                       )}
                                                       required={true}
                                                     />
@@ -998,7 +1000,7 @@ const SubAgendaMappingDragging = ({
                                                 </Row>
                                                 <Row className="mt-3">
                                                   <Col lg={6} md={6} sm={6}>
-                                                    <Radio.Group
+                                                    <CustomRadioGroup
                                                       value={
                                                         subAgendaData.subSelectRadio
                                                       }
@@ -1006,65 +1008,56 @@ const SubAgendaMappingDragging = ({
                                                         handleSubAgendaRadioChange(
                                                           index,
                                                           subIndex,
-                                                          e
+                                                          e,
                                                         )
                                                       }
                                                       disabled={
                                                         parentIslockedCheck ||
                                                         subAgendaData.isLocked ||
                                                         editorRole.status ===
-                                                          "9" ||
-                                                        editorRole.status ===
                                                           9 ||
+                                                        editorRole.status ===
+                                                          "9" ||
                                                         editorRole.role ===
                                                           "Participant" ||
                                                         editorRole.role ===
-                                                          "Agenda Contributor"
-                                                          ? true
-                                                          : Number(
-                                                              editorRole.status
-                                                            ) === 10 &&
-                                                            !isAgendaUpdateWhenMeetingActive
-                                                          ? true
-                                                          : false
+                                                          "Agenda Contributor" ||
+                                                        (Number(
+                                                          editorRole.status,
+                                                        ) === 10 &&
+                                                          !isAgendaUpdateWhenMeetingActive)
                                                       }
-                                                    >
-                                                      <Radio value={1}>
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Radio_Button_options"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {t("Document")}
-                                                        </span>
-                                                      </Radio>
-                                                      <Radio value={2}>
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "Radio_Button_options"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {t("URL")}
-                                                        </span>
-                                                      </Radio>
-                                                      {/* <Radio value={3}>
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t(
-                                                          "Request from contributor"
-                                                        )}
-                                                      </span>
-                                                    </Radio> */}
-                                                    </Radio.Group>
+                                                      options={[
+                                                        {
+                                                          value: 1,
+                                                          label: (
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "Radio_Button_options"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {t("Document")}
+                                                            </span>
+                                                          ),
+                                                        },
+                                                        {
+                                                          value: 2,
+                                                          label: (
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "Radio_Button_options"
+                                                                ]
+                                                              }
+                                                            >
+                                                              {t("URL")}
+                                                            </span>
+                                                          ),
+                                                        },
+                                                      ]}
+                                                    />
                                                   </Col>
                                                   <Col
                                                     lg={6}
@@ -1081,7 +1074,7 @@ const SubAgendaMappingDragging = ({
                                                       9 ? null : (
                                                       <>
                                                         {subAgendaData.subAgendaID.includes(
-                                                          "A"
+                                                          "A",
                                                         ) ? null : (
                                                           <>
                                                             <img
@@ -1099,11 +1092,12 @@ const SubAgendaMappingDragging = ({
                                                                   9
                                                                   ? "disabled"
                                                                   : Number(
-                                                                      editorRole.status
-                                                                    ) === 10 &&
-                                                                    !isAgendaUpdateWhenMeetingActive
-                                                                  ? "pe-none"
-                                                                  : ""
+                                                                        editorRole.status,
+                                                                      ) ===
+                                                                        10 &&
+                                                                      !isAgendaUpdateWhenMeetingActive
+                                                                    ? "pe-none"
+                                                                    : ""
                                                               }`}
                                                               onClick={() => {
                                                                 if (
@@ -1117,7 +1111,7 @@ const SubAgendaMappingDragging = ({
                                                                   )
                                                                 ) {
                                                                   openAdvancePermissionModal(
-                                                                    subAgendaData.subAgendaID
+                                                                    subAgendaData.subAgendaID,
                                                                   );
                                                                 }
                                                               }}
@@ -1130,7 +1124,7 @@ const SubAgendaMappingDragging = ({
                                                               height="25.89px"
                                                               className={
                                                                 Number(
-                                                                  editorRole.status
+                                                                  editorRole.status,
                                                                 ) === 10 &&
                                                                 !isAgendaUpdateWhenMeetingActive
                                                                   ? "pe-none"
@@ -1145,15 +1139,16 @@ const SubAgendaMappingDragging = ({
                                                                   9
                                                                   ? ""
                                                                   : Number(
-                                                                      editorRole.status
-                                                                    ) === 10 &&
-                                                                    !isAgendaUpdateWhenMeetingActive
-                                                                  ? null
-                                                                  : openVoteMOdal(
-                                                                      subAgendaData.subAgendaID,
-                                                                      subAgendaData.agendaVotingID,
-                                                                      subAgendaData.subTitle
-                                                                    )
+                                                                        editorRole.status,
+                                                                      ) ===
+                                                                        10 &&
+                                                                      !isAgendaUpdateWhenMeetingActive
+                                                                    ? null
+                                                                    : openVoteMOdal(
+                                                                        subAgendaData.subAgendaID,
+                                                                        subAgendaData.agendaVotingID,
+                                                                        subAgendaData.subTitle,
+                                                                      )
                                                               }
                                                             />
                                                             <img
@@ -1162,8 +1157,8 @@ const SubAgendaMappingDragging = ({
                                                                 parentIslockedCheck
                                                                   ? closedLocked
                                                                   : subAgendaData.isLocked
-                                                                  ? DarkLock
-                                                                  : Lock
+                                                                    ? DarkLock
+                                                                    : Lock
                                                               }
                                                               alt=""
                                                               width="18.87px"
@@ -1178,21 +1173,22 @@ const SubAgendaMappingDragging = ({
                                                                       "lockBtn_inActive"
                                                                     ]
                                                                   : subAgendaData.isLocked ||
-                                                                    editorRole.status ===
-                                                                      "9" ||
-                                                                    editorRole.status ===
-                                                                      9
-                                                                  ? styles[
-                                                                      "lockBtn_inActive_coursor"
-                                                                    ]
-                                                                  : Number(
-                                                                      editorRole.status
-                                                                    ) === 10 &&
-                                                                    !isAgendaUpdateWhenMeetingActive
-                                                                  ? "pe-none"
-                                                                  : styles[
-                                                                      "lockBtn"
-                                                                    ]
+                                                                      editorRole.status ===
+                                                                        "9" ||
+                                                                      editorRole.status ===
+                                                                        9
+                                                                    ? styles[
+                                                                        "lockBtn_inActive_coursor"
+                                                                      ]
+                                                                    : Number(
+                                                                          editorRole.status,
+                                                                        ) ===
+                                                                          10 &&
+                                                                        !isAgendaUpdateWhenMeetingActive
+                                                                      ? "pe-none"
+                                                                      : styles[
+                                                                          "lockBtn"
+                                                                        ]
                                                               }
                                                               onClick={() => {
                                                                 if (
@@ -1206,7 +1202,7 @@ const SubAgendaMappingDragging = ({
                                                                   lockFunctionActiveSubMenus(
                                                                     index,
                                                                     subAgendaData.subAgendaID,
-                                                                    subAgendaData.isLocked
+                                                                    subAgendaData.isLocked,
                                                                   );
                                                                 }
                                                               }}

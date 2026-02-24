@@ -2865,6 +2865,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem("CallType", Data.CallTypeID);
     dispatch(InitiateVideoCall(Data, navigate, t));
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("callerID", Number(currentUserId));
     localStorage.setItem("recipentCalledID", talkStateData.ActiveChatData.id);
     localStorage.setItem("isCaller", true);
@@ -2970,6 +2972,8 @@ const ChatMainBody = ({ chatMessageClass }) => {
     localStorage.setItem("CallType", Data.CallTypeID);
     dispatch(InitiateVideoCall(Data, navigate, t));
     localStorage.setItem("activeCall", true);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", true);
+
     localStorage.setItem("callerID", Number(currentUserId));
     localStorage.setItem("isCaller", true);
     dispatch(callRequestReceivedMQTT({}, ""));

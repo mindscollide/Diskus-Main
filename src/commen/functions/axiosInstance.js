@@ -30,6 +30,15 @@ axiosInstance.interceptors.response.use(
     console.log("SUCCESS →", code, message);
 
     if (
+      code === 400 &&
+      (message.toLowerCase() === "Token is required".toLowerCase() )
+    ) {
+      console.warn("Unauthorized - redirecting to login...");
+      signOut("Session expired", store.dispatch);
+      return;
+    }
+
+    if (
       code === 401 &&
       (message === "tokens does not match" || message === "Invalid Agent".toLowerCase())
     ) {
@@ -49,6 +58,15 @@ axiosInstance.interceptors.response.use(
       .trim();
 
     console.log("ERROR →", code, message);
+
+    if (
+      code === 400 &&
+      (message.toLowerCase() === "Token is required".toLowerCase() )
+    ) {
+      console.warn("Unauthorized - redirecting to login...");
+      signOut("Session expired", store.dispatch);
+      return;
+    }
 
     if (
       code === 401 &&

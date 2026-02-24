@@ -40,14 +40,14 @@ const Attendees = () => {
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
   const { getMeetingUsersRSVP } = useSelector(
-    (state) => state.NewMeetingreducer
+    (state) => state.NewMeetingreducer,
   );
   const { t } = useTranslation();
   const navigate = useNavigate();
   useEffect(() => {
     if (JSON.parse(localStorage.getItem("AdvanceMeetingOperations")) === true) {
       let NotificationClickMeetingID = localStorage.getItem(
-        "NotificationAdvanceMeetingID"
+        "NotificationAdvanceMeetingID",
       );
       let MeetingData = { MeetingID: Number(NotificationClickMeetingID) };
       dispatch(getAllMeetingUsersRSVPApi(navigate, t, MeetingData));
@@ -94,6 +94,8 @@ const Attendees = () => {
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
         PublishedMeetings:
           currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -118,8 +120,8 @@ const Attendees = () => {
             false,
             setEditorRole,
             advanceMeetingModalID,
-            false
-          )
+            false,
+          ),
         );
         dispatch(viewAdvanceMeetingPublishPageFlag(false));
         localStorage.removeItem("AdvanceMeetingOperations");
@@ -135,6 +137,8 @@ const Attendees = () => {
           Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
+          ProposedMeetings:
+            currentView && Number(currentView) === 2 ? true : false,
         };
         console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -161,7 +165,8 @@ const Attendees = () => {
                 currentLanauge === "ar"
                   ? styles["AttendingBox_Ar"]
                   : styles["AttendingBox"]
-              }>
+              }
+            >
               <span className={styles["AttendeesCount_Attending"]}>
                 {Attending < 10
                   ? convertToArabicNumerals(`0${Attending}`)
@@ -179,10 +184,13 @@ const Attendees = () => {
                 currentLanauge === "ar"
                   ? styles["AttendingBox_Ar"]
                   : styles["AttendingBox"]
-              }>
+              }
+            >
               <span className={styles["AttendeesCount_Maybe"]}>
                 {" "}
-                {mayBe < 10 ? convertToArabicNumerals(`0${mayBe}`) : convertToArabicNumerals(mayBe)}
+                {mayBe < 10
+                  ? convertToArabicNumerals(`0${mayBe}`)
+                  : convertToArabicNumerals(mayBe)}
               </span>
               <span className={styles["AttendeesCount_Maybe_tagline"]}>
                 {t("Maybe")}
@@ -197,10 +205,13 @@ const Attendees = () => {
                 currentLanauge === "ar"
                   ? styles["AttendingBox_Ar"]
                   : styles["AttendingBox"]
-              }>
+              }
+            >
               <span className={styles["AttendeesCount_NotAttending"]}>
                 {" "}
-                {notAttending < 10 ? convertToArabicNumerals(`0${notAttending}`) : convertToArabicNumerals(notAttending)}
+                {notAttending < 10
+                  ? convertToArabicNumerals(`0${notAttending}`)
+                  : convertToArabicNumerals(notAttending)}
               </span>
               <span className={styles["AttendeesCount_NotAttending_tagline"]}>
                 {t("Not-attending")}
@@ -215,9 +226,12 @@ const Attendees = () => {
                 currentLanauge === "ar"
                   ? styles["AttendingBox_Ar"]
                   : styles["AttendingBox"]
-              }>
+              }
+            >
               <span className={styles["AttendeesCount_NotResponded"]}>
-                {notResponded < 10 ? convertToArabicNumerals(`0${notResponded}`) : convertToArabicNumerals(notResponded)}
+                {notResponded < 10
+                  ? convertToArabicNumerals(`0${notResponded}`)
+                  : convertToArabicNumerals(notResponded)}
               </span>
               <span className={styles["AttendeesCount_NotResponded_tagline"]}>
                 {t("Not-responded")}
@@ -231,7 +245,8 @@ const Attendees = () => {
         sm={12}
         md={12}
         lg={12}
-        className={`${styles["Attendees_container"]}`}>
+        className={`${styles["Attendees_container"]}`}
+      >
         <section className={styles["Members_Area"]}>
           <p className={styles["AttendeesAreaHeading"]}>{t("Organizers")}</p>
           <div className={styles["Cards"]}>

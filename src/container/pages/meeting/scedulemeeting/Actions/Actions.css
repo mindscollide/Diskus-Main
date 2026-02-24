@@ -300,7 +300,10 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -316,7 +319,10 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   text-align: center;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -360,12 +366,6 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   z-index: 0 !important;
 }
 
-.todolistContainer {
-  height: 85vh;
-  width: 98% !important;
-  margin: 0 auto !important;
-}
-
 .ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
   text-align: center !important;
 }
@@ -378,18 +378,6 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   text-align: center !important;
 }
 
-.todolist-heading-size {
-  font-size: calc(38px - 50%) !important;
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-  position: relative;
-  top: 3px;
-}
-
-body[dir="rtl"] .todolist-heading-size {
-  font-weight: 600 !important;
-}
-
 @media screen and (max-width: 900px) {
   .row-scroll-todolist {
     position: relative !important;
@@ -399,13 +387,6 @@ body[dir="rtl"] .todolist-heading-size {
 }
 
 @media screen and (max-width: 1200px) {
-  .todolist-heading-size {
-    font-size: 15px !important;
-    color: #6172d6 !important;
-    font-weight: 600 !important;
-    margin-top: 2px !important;
-  }
-
   .todolist-create-btn button {
     font-size: calc(14px - 20%) !important;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -430,7 +411,12 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
   margin-top: -3px;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLineTodo {
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
   text-align: center !important;
   padding-right: 0 !important;
 }
@@ -479,7 +465,12 @@ body[dir="rtl"] .Completed {
   font-weight: 600 !important;
 }
 
-.filterValues-dropdown div .rc-virtual-list .rc-virtual-list-holder div .rc-virtual-list-holder-inner {
+.filterValues-dropdown
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  div
+  .rc-virtual-list-holder-inner {
   display: block !important;
   width: auto;
 }
@@ -501,7 +492,11 @@ body[dir="rtl"] .PaginationStyle-TodoList {
   padding: 8px 10px !important;
 }
 
-.Status-Todo div .rc-virtual-list .rc-virtual-list-holder .rc-virtual-list-holder-inner {
+.Status-Todo
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  .rc-virtual-list-holder-inner {
   display: block !important;
 }
 
@@ -513,12 +508,22 @@ td.ant-table-column-sort {
   padding-right: 10px;
 }
 
-.ToDo .ant-table .ant-table-body .ant-table-tbody>tr.ant-table-placeholder:hover>td {
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder:hover
+  > td {
   background: none;
   border: none;
 }
 
-.ToDo .ant-table .ant-table-body .ant-table-tbody>tr.ant-table-placeholder>td {
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder
+  > td {
   border: none;
 }
 
@@ -548,5 +553,4 @@ td.ant-table-column-sort {
   bottom: 0;
   right: 0;
   left: 0;
-
 }

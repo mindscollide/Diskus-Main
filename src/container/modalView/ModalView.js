@@ -39,6 +39,7 @@ import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
 import {
   clearMessegesVideoFeature,
+  disableZoomBeforeJoinSession,
   endMeetingStatusForQuickMeetingModal,
   getParticipantMeetingJoinMainApi,
   leaveMeetingOnlogout,
@@ -83,63 +84,63 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     MeetingStatusEnded,
   } = useSelector((state) => state.meetingIdReducer);
   const assigneesViewMeetingDetails = useSelector(
-    (state) => state.assignees.ViewMeetingDetails
+    (state) => state.assignees.ViewMeetingDetails,
   );
 
   const meetingIdReducerMeetingStatusEnded = useSelector(
-    (state) => state.meetingIdReducer.MeetingStatusEnded
+    (state) => state.meetingIdReducer.MeetingStatusEnded,
   );
 
   const calendarReducereventsDetails = useSelector(
-    (state) => state.calendarReducer.eventsDetails
+    (state) => state.calendarReducer.eventsDetails,
   );
 
   const userProfileData = useSelector(
-    (state) => state.settingReducer?.UserProfileData
+    (state) => state.settingReducer?.UserProfileData,
   );
 
   const MaximizeHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag
+    (state) => state.videoFeatureReducer.MaximizeHostVideoFlag,
   );
 
   const NormalHostVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalHostVideoFlag
+    (state) => state.videoFeatureReducer.NormalHostVideoFlag,
   );
 
   const maximizeParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag
+    (state) => state.videoFeatureReducer.maximizeParticipantVideoFlag,
   );
 
   const normalParticipantVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.normalParticipantVideoFlag
+    (state) => state.videoFeatureReducer.normalParticipantVideoFlag,
   );
 
   const maxParticipantVideoDeniedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoDeniedFlag,
   );
 
   const maxParticipantVideoRemovedFlag = useSelector(
-    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag
+    (state) => state.videoFeatureReducer.maxParticipantVideoRemovedFlag,
   );
   const endMeetingStatusForQuickMeetingModalFlag = useSelector(
     (state) =>
-      state.videoFeatureReducer.endMeetingStatusForQuickMeetingModalFlag
+      state.videoFeatureReducer.endMeetingStatusForQuickMeetingModalFlag,
   );
   const leaveMeetingOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
   );
 
   const enableDisableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.enableDisableVideoState
+    (state) => state.videoFeatureReducer.enableDisableVideoState,
   );
 
   // FOr Participant Enable and Disable check Video Icon
   const participantEnableVideoState = useSelector(
-    (state) => state.videoFeatureReducer.participantEnableVideoState
+    (state) => state.videoFeatureReducer.participantEnableVideoState,
   );
 
   const AgendaVideoResponseMessage = useSelector(
-    (state) => state.videoFeatureReducer.ResponseMessage
+    (state) => state.videoFeatureReducer.ResponseMessage,
   );
 
   const {
@@ -164,7 +165,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   const [allMeetingDetails, setAllMeetingDetails] = useState(null);
   console.log(
     allMeetingDetails,
-    "allMeetingDetailsallMeetingDetailsallMeetingDetails"
+    "allMeetingDetailsallMeetingDetailsallMeetingDetails",
   );
   const [meetingDifference, setMeetingDifference] = useState(0);
   // for meatings  Attendees List
@@ -312,7 +313,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let StatusCheck = assigneesViewMeetingDetails.meetingStatus.pK_MSID;
         setMeetStatus(StatusCheck);
         const found = rightsButtons.find(
-          (element) => element.user.pK_UID === parseInt(createrID)
+          (element) => element.user.pK_UID === parseInt(createrID),
         );
 
         if (Object.keys(found).length > 0) {
@@ -396,7 +397,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     organization: "Default",
                     role: 2,
                   });
-                }
+                },
               );
             }
           }
@@ -431,7 +432,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     CreationDateTime: atchmenDataaa.creationDateTime,
                     FK_MAID: atchmenDataaa.fK_MAID,
                   });
-                }
+                },
               );
             }
             meetingAgenAtc.push({
@@ -461,7 +462,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
                 FK_MDID: externalMeetingAttendeesData.fK_MDID,
               });
-            }
+            },
           );
         } catch (error) {
           //  Block of code to handle errors
@@ -474,14 +475,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingTypeID: viewData.meetingDetails.fK_MTID,
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             viewData.meetingEvent.meetingDate + viewData.meetingEvent.startTime,
-            currentLanguage
+            currentLanguage,
           ),
           currentLanguage,
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               viewData.meetingEvent.meetingDate +
-                viewData.meetingEvent.startTime
-            )
+                viewData.meetingEvent.startTime,
+            ),
           ).format("HH:mm:ss"),
           MeetingEndTime: viewData.meetingEvent.endTime,
           MeetingLocation: viewData.meetingEvent.location,
@@ -512,7 +513,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let rightsButtons = calendarMeetingData.meetingAttendees;
         let meetingStatus = calendarMeetingData.meetingStatus.status;
         const found = rightsButtons.find(
-          (element) => element.user.pK_UID === parseInt(createrID)
+          (element) => element.user.pK_UID === parseInt(createrID),
         );
 
         if (Object.keys(found).length > 0) {
@@ -582,7 +583,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       PK_AAID: meetingdata.attendeeAvailability.pK_AAID,
                     },
                   });
-                }
+                },
               );
 
               setAddedParticipantNameList(List);
@@ -599,7 +600,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     organization: "Default",
                     role: 2,
                   });
-                }
+                },
               );
             }
           }
@@ -634,7 +635,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     CreationDateTime: atchmenDataaa.creationDateTime,
                     FK_MAID: atchmenDataaa.fK_MAID,
                   });
-                }
+                },
               );
             }
             meetingAgenAtc.push({
@@ -653,7 +654,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 CreationTime: minutesOfMeetingData.creationTime,
                 FK_MDID: minutesOfMeetingData.fK_MDID,
               });
-            }
+            },
           );
         } catch (error) {
           //  Block of code to handle errors
@@ -666,7 +667,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                 EmailAddress: externalMeetingAttendeesData.emailAddress,
                 FK_MDID: externalMeetingAttendeesData.fK_MDID,
               });
-            }
+            },
           );
         } catch (error) {
           //  Block of code to handle errors
@@ -679,14 +680,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
           MeetingTypeID: calendarMeetingData.meetingDetails.fK_MTID,
           MeetingDate: newTimeFormaterAsPerUTCFullDate(
             calendarMeetingData.meetingEvent.meetingDate +
-              calendarMeetingData.meetingEvent.startTime
+              calendarMeetingData.meetingEvent.startTime,
           ),
           currentLanguage,
           MeetingStartTime: moment(
             EditmeetingDateFormat(
               calendarMeetingData.meetingEvent.meetingDate +
-                calendarMeetingData.meetingEvent.startTime
-            )
+                calendarMeetingData.meetingEvent.startTime,
+            ),
           ).format("HH:mm:ss"),
           MeetingEndTime: calendarMeetingData.meetingEvent.endTime,
           MeetingLocation: calendarMeetingData.meetingEvent.location,
@@ -754,11 +755,11 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let findReminingMinutesAgo = settingConfigurations.find(
           (remainsData, index) =>
             remainsData?.configKey?.toLowerCase() ===
-            "Join_Meeting_Before_Minutes".toLowerCase()
+            "Join_Meeting_Before_Minutes".toLowerCase(),
         );
         console.log(
           findReminingMinutesAgo,
-          "findReminingMinutesAgofindReminingMinutesAgo"
+          "findReminingMinutesAgofindReminingMinutesAgo",
         );
         if (findReminingMinutesAgo !== undefined) {
           setRemainingMinutesAgo(Number(findReminingMinutesAgo.configValue));
@@ -782,7 +783,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         currentUTCDateTime.substring(6, 8), // Day
         currentUTCDateTime.substring(8, 10), // Hours
         currentUTCDateTime.substring(10, 12), // Minutes
-        currentUTCDateTime.substring(12, 14) // Seconds
+        currentUTCDateTime.substring(12, 14), // Seconds
       );
 
       const meetingDateObj = new Date(
@@ -791,7 +792,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         meetingDateTime.substring(6, 8), // Day
         meetingDateTime.substring(8, 10), // Hours
         meetingDateTime.substring(10, 12), // Minutes
-        meetingDateTime.substring(12, 14) // Seconds
+        meetingDateTime.substring(12, 14), // Seconds
       );
       // Calculate the time difference in milliseconds
       const timeDifference = meetingDateObj - currentDateObj;
@@ -905,7 +906,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     }
     console.log(
       "meetingDetails",
-      allMeetingDetails.meetingDetails.videoCallURL
+      allMeetingDetails.meetingDetails.videoCallURL,
     );
     const startMeetingRequest = {
       VideoCallURL: allMeetingDetails.meetingDetails.videoCallURL,
@@ -926,8 +927,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         setViewFlag,
         null,
         null,
-        false
-      )
+        false,
+      ),
     );
     // let meetingID = checkMeetingID;
     // let Data = {
@@ -956,6 +957,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       PageNumber: 1,
       Length: 50,
       PublishedMeetings: true,
+      ProposedMeetings: false,
     };
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
     setViewFlag(false);
@@ -970,7 +972,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         let newUserGUID = localStorage.getItem("isGuid");
         let newName = localStorage.getItem("name");
         let currentMeetingID = JSON.parse(
-          localStorage.getItem("currentMeetingID")
+          localStorage.getItem("currentMeetingID"),
         );
 
         let Data = {
@@ -1008,8 +1010,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         t,
         newData,
         setViewFlag,
-        setEndMeetingConfirmationModal
-      )
+        setEndMeetingConfirmationModal,
+      ),
     );
   }, []);
 
@@ -1044,12 +1046,14 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     if (isMeetingVideo === true && String(typeOfMeeting) === "isQuickMeeting") {
       const meetHostFlag = JSON.parse(localStorage.getItem("meetinHostInfo"));
       const currentMeetingID = JSON.parse(
-        localStorage.getItem("currentMeetingID")
+        localStorage.getItem("currentMeetingID"),
       );
       await dispatch(normalizeVideoPanelFlag(false));
       await dispatch(maximizeVideoPanelFlag(false));
       await dispatch(minimizeVideoPanelFlag(false));
       localStorage.setItem("activeCall", false);
+      sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
       localStorage.setItem("isMeeting", false);
       sessionStorage.removeItem("isMeeting");
       localStorage.setItem("meetingTitle", "");
@@ -1091,7 +1095,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         DateTime: getCurrentDateTimeUTC(),
       };
       await dispatch(
-        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag),
       );
     } else if (String(typeOfMeeting) === "isQuickMeeting") {
       console.log("mqtt mqmqmqmqmqmq");
@@ -1100,7 +1104,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         DateTime: getCurrentDateTimeUTC(),
       };
       await dispatch(
-        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag)
+        LeaveCurrentMeeting(navigate, t, leaveMeetingData, true, setViewFlag),
       );
       await dispatch(normalizeVideoPanelFlag(false));
       await dispatch(minimizeVideoPanelFlag(false));
@@ -1125,8 +1129,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
         navigate,
         dataRoomData,
         t,
-        record.DisplayAttachmentName
-      )
+        record.DisplayAttachmentName,
+      ),
     );
   };
 
@@ -1146,10 +1150,10 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       if (Number(meetStatus) === 10) {
         window.open(
           `/Diskus/meetingDocumentViewer?pdfData=${encodeURIComponent(
-            pdfDataJson
+            pdfDataJson,
           )}`,
           "_blank",
-          "noopener noreferrer"
+          "noopener noreferrer",
         );
       } else {
         openDocumentViewer(ext, pdfDataJson, dispatch, navigate, t, record);
@@ -1181,7 +1185,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
     //   dispatch(maxParticipantVideoCallPanel(true));
     // } else {
     let findRoleId = createMeeting.MeetingAttendees.find(
-      (attendee, index) => attendee.User.PK_UID === parseInt(createrID)
+      (attendee, index) => attendee.User.PK_UID === parseInt(createrID),
     );
     console.log(findRoleId, "gadgetgadgetgadgetgadget");
     if (findRoleId !== undefined) {
@@ -1189,8 +1193,9 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       console.log(isParticipant, "gadgetgadgetgadgetgadget");
 
       let getMeetingVideoHost = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
+        localStorage.getItem("isMeetingVideoHostCheck"),
       );
+      dispatch(disableZoomBeforeJoinSession(true));
 
       if (!getMeetingVideoHost) {
         dispatch(participantVideoButtonState(true));
@@ -1503,26 +1508,26 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                       ? data.MeetingAgendaAttachments.map(
                                           (
                                             MeetingAgendaAttachmentsData,
-                                            index
+                                            index,
                                           ) => {
                                             console.log(
                                               MeetingAgendaAttachmentsData,
-                                              "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData"
+                                              "MeetingAgendaAttachmentsDataMeetingAgendaAttachmentsData",
                                             );
                                             return (
                                               <Col sm={6} md={6} lg={6}>
                                                 <AttachmentViewer
                                                   id={Number(
-                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName
+                                                    MeetingAgendaAttachmentsData.OriginalAttachmentName,
                                                   )}
                                                   handleEyeIcon={() =>
                                                     handeClickView(
-                                                      MeetingAgendaAttachmentsData
+                                                      MeetingAgendaAttachmentsData,
                                                     )
                                                   }
                                                   handleClickDownload={() =>
                                                     downloadClick(
-                                                      MeetingAgendaAttachmentsData
+                                                      MeetingAgendaAttachmentsData,
                                                     )
                                                   }
                                                   data={
@@ -1534,7 +1539,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                 />
                                               </Col>
                                             );
-                                          }
+                                          },
                                         )
                                       : null}
                                   </Row>
@@ -1572,7 +1577,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                             {addedParticipantNameList
                               .filter(
                                 (atList) =>
-                                  atList.role === 1 || atList.role === 3
+                                  atList.role === 1 || atList.role === 3,
                               ) // Filter only the relevant roles
                               .map((atList, index) => (
                                 <EmployeeCard
@@ -1660,7 +1665,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                   </Row>
                                 </Col>
                               );
-                            }
+                            },
                           )
                         ) : (
                           <Row className="meeting-view-minutes-tab">
@@ -1685,7 +1690,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       ? attachmentsList.map((data, index) => {
                           console.log(
                             data,
-                            "attachmentsListattachmentsListattachmentsList"
+                            "attachmentsListattachmentsListattachmentsList",
                           );
                           return (
                             <Col sm={6} lg={6} md={6}>

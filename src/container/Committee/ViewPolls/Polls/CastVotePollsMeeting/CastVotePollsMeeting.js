@@ -18,6 +18,7 @@ import {
   castVoteApi,
   UpdatedCastVoteAPI,
 } from "../../../../../store/actions/Polls_actions";
+import CustomRadioGroup from "../../../../../components/elements/radio/CustomRadioGroup";
 
 const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
@@ -60,7 +61,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
   };
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
-      (data, index) => data === value
+      (data, index) => data === value,
     );
     if (findID !== undefined) {
       return true;
@@ -101,7 +102,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
       if (isAlreadySelected) {
         // Remove the answer if it was already selected
         const updatedAnswers = viewProgressPollsDetails.answer.filter(
-          (id) => id !== pollAnswerID
+          (id) => id !== pollAnswerID,
         );
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -215,26 +216,33 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                           <Checkbox
                                             name={data.pollAnswerID}
                                             checked={handleForCheck(
-                                              data.pollAnswerID
+                                              data.pollAnswerID,
                                             )}
                                             onChange={handleCheckBoxYes}
                                             classNameCheckBoxP="d-none"
                                           />
                                         ) : (
-                                          <Radio.Group
-                                            onChange={(e) =>
-                                              setViewProgressPollsDetails({
-                                                ...viewProgressPollsDetails,
-                                                answer: [e.target.value],
-                                              })
-                                            }
-                                            value={
-                                              viewProgressPollsDetails.answer[0]
-                                            }
+                                          <CustomRadioGroup
                                             className="AnotherRadioSelect"
-                                          >
-                                            <Radio value={data.pollAnswerID} />
-                                          </Radio.Group>
+                                            value={
+                                              viewProgressPollsDetails
+                                                .answer?.[0]
+                                            }
+                                            onChange={(e) =>
+                                              setViewProgressPollsDetails(
+                                                (prev) => ({
+                                                  ...prev,
+                                                  answer: [e.target.value],
+                                                }),
+                                              )
+                                            }
+                                            options={[
+                                              {
+                                                value: data.pollAnswerID,
+                                                label: data.answerText ?? null,
+                                              },
+                                            ]}
+                                          />
                                         )}
                                         <Progress
                                           className="Progress_bar_Polls"
@@ -242,7 +250,7 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                                           status="active"
                                           onClick={() =>
                                             handleSectionClick(
-                                              data.pollAnswerID
+                                              data.pollAnswerID,
                                             )
                                           }
                                         />
@@ -275,8 +283,8 @@ const CastVotePollsMeeting = ({ setvotePolls }) => {
                         <>
                           {moment(
                             EditmeetingDateFormat(
-                              viewProgressPollsDetails?.Date
-                            )
+                              viewProgressPollsDetails?.Date,
+                            ),
                           ).format("DD MMM YYYY")}
                         </>
                       )}

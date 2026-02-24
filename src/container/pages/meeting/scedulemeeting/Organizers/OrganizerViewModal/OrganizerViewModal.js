@@ -17,7 +17,7 @@ import {
   proposeNewMeetingPageFlag,
 } from "../../../../../../store/actions/NewMeetingActions";
 import { useEffect, useState } from "react";
-import SceduleProposedmeeting from "../../meetingDetails/UnpublishedProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
+import SceduleProposedmeeting from "../../meetingDetails/ProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
 
 const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   const { t } = useTranslation();
@@ -28,14 +28,14 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
   let userID = localStorage.getItem("userID");
 
   const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting,
   );
   const getUserProposedOrganizerData = useSelector(
-    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
+    (state) => state.NewMeetingreducer.getUserProposedOrganizerData,
   );
 
   let viewProposeDatePollMeetingID = Number(
-    localStorage.getItem("viewProposeDatePollMeetingID")
+    localStorage.getItem("viewProposeDatePollMeetingID"),
   );
 
   const [organizerRows, setOrganizerRows] = useState([]);
@@ -61,7 +61,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
 
       getUserProposedOrganizerData.forEach((datesData, index) => {
         const uniqueData = new Set(
-          datesData.selectedProposedDates.map(JSON.stringify)
+          datesData.selectedProposedDates.map(JSON.stringify),
         );
         ProposeDates = Array.from(uniqueData).map(JSON.parse);
       });
@@ -144,6 +144,7 @@ const OrganizerViewModal = ({ setViewProposeOrganizerPoll }) => {
         PageNumber: Number(meetingPageCurrent),
         Length: Number(meetingpageRow),
         PublishedMeetings: false,
+        ProposedMeetings: true,
       };
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));

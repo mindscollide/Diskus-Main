@@ -55,6 +55,8 @@ import { useSelector } from "react-redux";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { useTableScrollBottom } from "../CommonFunctions/reusableFunctions";
+import { Checkbox } from "antd";
+import CustomButton from "../../../../components/elements/button/Button";
 
 const ManageAuthority = () => {
   // Translation hook for multi-language support
@@ -102,33 +104,33 @@ const ManageAuthority = () => {
   const searchBoxRef = useRef(null);
 
   const GetAllAuthority = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities
+    (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities,
   );
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
   const authorityInactiveMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive,
   );
 
   const authorityActiveMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityActive
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityActive,
   );
 
   const authorityDeletedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityDeleted
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityDeleted,
   );
 
   const authorityCreatedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityCreated
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityCreated,
   );
 
   const authorityUpdatedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityUpdated
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityUpdated,
   );
   const { setHasReachedBottom } = useTableScrollBottom(() => {
     if (recordsLength !== data.length) {
@@ -141,8 +143,8 @@ const ManageAuthority = () => {
             ...searchPayload,
             sRow: data.length,
           },
-          t
-        )
+          t,
+        ),
       );
     }
   });
@@ -175,8 +177,8 @@ const ManageAuthority = () => {
         setAddEditViewAuthoriyModal,
         setAuthorityViewState,
         setAuthorityId,
-        2
-      )
+        2,
+      ),
     );
   };
 
@@ -193,8 +195,8 @@ const ManageAuthority = () => {
         setAddEditViewAuthoriyModal,
         setAuthorityViewState,
         setAuthorityId,
-        3
-      )
+        3,
+      ),
     );
   };
 
@@ -264,8 +266,8 @@ const ManageAuthority = () => {
               ...authority,
               status: authorityInactiveMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setInactiveStatusData(null));
   }, [authorityInactiveMessage]);
@@ -281,8 +283,8 @@ const ManageAuthority = () => {
               ...authority,
               status: authorityActiveMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setActiveStatusData(null));
   }, [authorityActiveMessage]);
@@ -297,8 +299,8 @@ const ManageAuthority = () => {
 
     setData((prevData) =>
       prevData.filter(
-        (authority) => authority.authorityId !== deletedAuthorityId
-      )
+        (authority) => authority.authorityId !== deletedAuthorityId,
+      ),
     );
 
     // optional: update total record count if you are tracking it
@@ -319,7 +321,7 @@ const ManageAuthority = () => {
     setData((prevData) => {
       // ✅ Prevent duplicate insertion
       const alreadyExists = prevData.some(
-        (a) => a.authorityId === newAuthority.authorityId
+        (a) => a.authorityId === newAuthority.authorityId,
       );
 
       if (alreadyExists) return prevData;
@@ -350,8 +352,8 @@ const ManageAuthority = () => {
               sector: authorityUpdatedMessage.authority.sector,
               status: authorityUpdatedMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setAuthorityUpdatedData(null));
   }, [authorityUpdatedMessage]);
@@ -384,42 +386,70 @@ const ManageAuthority = () => {
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
+  const statusOptions = [
+    { label: "Active", value: "Active" },
+    { label: "In Active", value: "Inactive" },
+  ];
+  const [allFieldEmpty, setAllFieldEmpty] = useState(false);
+  const getStatusColumnProps = () => ({
+    filteredValue: statusFilter, // controlled filter
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={statusOptions.map((s) => ({
+              label: s.label,
+              value: s.value,
+            }))}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
+            }}
+          />
+
+          <div style={{ display: "flex", gap: 8, marginTop: "10px" }}>
+            {/* Reset Button */}
+            <CustomButton
+              text="Reset"
+              onClick={() => {
+                const allValues = statusOptions.map((s) => s.value);
+                setSelectedKeys(allValues); // select all checkboxes
+                setStatusFilter(allValues); // update controlled state
+                confirm(); // refresh table
+              }}
+              className={styles["ResetButtonFilter"]}
+            />
+
+            {/* Ok Button */}
+            <CustomButton
+              text="Ok"
+              onClick={() => {
+                setStatusFilter(selectedKeys.length > 0 ? selectedKeys : []); // update controlled state
+                confirm(); // refresh table
+              }}
+              className={styles["ResetButtonFilter"]}
+            />
+          </div>
+        </div>
+      );
+    },
+    onFilter: (value, record) => value.includes(record.status),
+    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+  });
+
   // ========================
   // Table Columns Definition
   // ========================
   const columnsAuthority = useMemo(
     () => [
-      {
-        title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Authority-name")}
-            {authorityNameSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : authorityNameSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
-          </span>
-        ),
-        dataIndex: "authorityName",
-        key: "authorityName",
-        width: "25%",
-        ellipsis: true,
-        align: "left",
-        sorter: (a, b) =>
-          authorityNameSort === "descend"
-            ? b.authorityName
-                ?.toLowerCase()
-                .localeCompare(a.authorityName?.toLowerCase())
-            : authorityNameSort === "ascend"
-            ? a.authorityName
-                ?.toLowerCase()
-                .localeCompare(b.authorityName?.toLowerCase())
-            : a.authorityName
-                ?.toLowerCase()
-                .localeCompare(b.authorityName?.toLowerCase()),
-      },
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
@@ -445,10 +475,43 @@ const ManageAuthority = () => {
                 ?.toLowerCase()
                 .localeCompare(a.shortCode?.toLowerCase())
             : shortCodeSort === "ascend"
-            ? a.shortCode
+              ? a.shortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.shortCode?.toLowerCase())
+              : a.shortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.shortCode?.toLowerCase()),
+      },
+      {
+        title: (
+          <span className="d-flex gap-2 align-items-center justify-content-start">
+            {t("Authority-name")}
+            {authorityNameSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+            ) : authorityNameSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            )}
+          </span>
+        ),
+        dataIndex: "authorityName",
+        key: "authorityName",
+        width: "25%",
+        ellipsis: true,
+        align: "left",
+        sorter: (a, b) =>
+          authorityNameSort === "descend"
+            ? b.authorityName
                 ?.toLowerCase()
-                .localeCompare(b.shortCode?.toLowerCase())
-            : null,
+                .localeCompare(a.authorityName?.toLowerCase())
+            : authorityNameSort === "ascend"
+              ? a.authorityName
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityName?.toLowerCase())
+              : a.authorityName
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityName?.toLowerCase()),
       },
       {
         title: (
@@ -469,12 +532,12 @@ const ManageAuthority = () => {
                 ?.toLowerCase()
                 .localeCompare(a.countryName?.toLowerCase())
             : countrySort === "ascend"
-            ? a.countryName
-                ?.toLowerCase()
-                .localeCompare(b.countryName?.toLowerCase())
-            : a.countryName
-                ?.toLowerCase()
-                .localeCompare(b.countryName?.toLowerCase()),
+              ? a.countryName
+                  ?.toLowerCase()
+                  .localeCompare(b.countryName?.toLowerCase())
+              : a.countryName
+                  ?.toLowerCase()
+                  .localeCompare(b.countryName?.toLowerCase()),
 
         dataIndex: "countryName",
         key: "countryName",
@@ -499,8 +562,8 @@ const ManageAuthority = () => {
           sectorSort === "descend"
             ? b.sector?.toLowerCase().localeCompare(a.sector?.toLowerCase())
             : sectorSort === "ascend"
-            ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
-            : null,
+              ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
+              : a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase()),
 
         dataIndex: "sector",
         key: "sector",
@@ -515,18 +578,8 @@ const ManageAuthority = () => {
         width: "10%",
         align: "center",
         ellipsis: true,
-        filters: [
-          { text: "Active", value: "Active" },
-          { text: "Inactive", value: "Inactive" },
-        ],
-        filteredValue: statusFilter || null, // ✅ controls filter state
-
-        onFilter: (value, record) => {
-          return record.status === value;
-        },
-        filterIcon: () => (
-          <ChevronDown className="filter-chevron-icon-todolist" />
-        ),
+        ...getStatusColumnProps(),
+        render: (text) => (text === "Inactive" ? t("In-active") : text),
       },
       {
         title: t(""),
@@ -574,7 +627,14 @@ const ManageAuthority = () => {
         },
       },
     ],
-    [t, shortCodeSort, authorityNameSort, countrySort, sectorSort, statusFilter] // Re-render columns when language changes
+    [
+      t,
+      shortCodeSort,
+      authorityNameSort,
+      countrySort,
+      sectorSort,
+      statusFilter,
+    ], // Re-render columns when language changes
   );
 
   // Tracks whether Enter key search was triggered
@@ -700,7 +760,7 @@ const ManageAuthority = () => {
       pagination,
       filters,
       sorter,
-      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter"
+      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter",
     );
     // 🔁 Reset all icons first
     resetAllSorts();
@@ -721,7 +781,7 @@ const ManageAuthority = () => {
     }
     // ✅ Status filter
     if (filters?.status) {
-      setStatusFilter(filters.status); // ["Active"] | ["Inactive"] | null
+      setStatusFilter(filters.status || ["Active", "Inactive"]); // ["Active"] | ["Inactive"] | null
     }
   };
 

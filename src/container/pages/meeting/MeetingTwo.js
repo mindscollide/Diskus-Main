@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./meetingTwo.module.css";
+import "./Meeting.css";
 import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
@@ -28,7 +29,7 @@ import EditIcon from "../../../assets/images/Edit-Icon.png";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Dropdown, Menu, Tooltip } from "antd";
+import { Checkbox, Dropdown, Menu, Popover, Tooltip } from "antd";
 import {
   Button,
   Table,
@@ -42,7 +43,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
-import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/UnpublishedProposedMeeting";
+import UnpublishedProposedMeeting from "./scedulemeeting/meetingDetails/ProposedMeeting/ProposedMeeting";
 import NewEndMeetingModal from "./NewEndMeetingModal/NewEndMeetingModal";
 import { useSelector } from "react-redux";
 import {
@@ -79,6 +80,8 @@ import {
   clearMeetingState,
   emailRouteID,
   ProposedMeetingViewFlagAction,
+  boardDeckModal,
+  getMeetingRecordingFilesApi,
 } from "../../../store/actions/NewMeetingActions";
 import { mqttCurrentMeetingEnded } from "../../../store/actions/GetMeetingUserId";
 import { downloadAttendanceReportApi } from "../../../store/actions/Download_action";
@@ -98,6 +101,7 @@ import {
   utcConvertintoGMT,
   getCurrentDateTimeUTC,
   resolutionResultTable,
+  forRecentActivity,
 } from "../../../commen/functions/date_formater";
 
 import { StatusValue } from "./statusJson";
@@ -119,12 +123,15 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 import BoardDeckModal from "../../BoardDeck/BoardDeckModal/BoardDeckModal";
 import ShareModalBoarddeck from "../../BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
 import BoardDeckSendEmail from "../../BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
-import { MeetingContext } from "../../../context/MeetingContext";
+import {
+  MeetingContext,
+  useMeetingContext,
+} from "../../../context/MeetingContext";
 import moment from "moment";
 import { DownloadMeetingRecording } from "../../../store/actions/VideoChat_actions";
 import { showMessage } from "../../../components/elements/snack_bar/utill";
 import ShareViaDataRoomPathModal from "../../BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
-import ViewProposedMeetingModal from "./scedulemeeting/meetingDetails/UnpublishedProposedMeeting/ViewProposedMeetingModal/ViewProposedMeetingModal";
+import ViewProposedMeetingModal from "./scedulemeeting/meetingDetails/ProposedMeeting/ViewProposedMeetingModal/ViewProposedMeetingModal";
 import { useGroupsContext } from "../../../context/GroupsContext";
 import { webnotificationGlobalFlag } from "../../../store/actions/UpdateUserNotificationSetting";
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
@@ -133,6 +140,20 @@ import { useResolutionContext } from "../../../context/ResolutionContext";
 import DownloadOptionsModal from "./DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
 import DeleteMeetingConfirmationModal from "./deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 import EmptyTableComponent from "./EmptyTableComponent/EmptyTableComponent";
+import { clearMessegesUserManagement } from "../../../store/actions/UserManagementActions";
+import DraftMeeting from "./draftMeeting";
+import CustomButton from "../../../components/elements/button/Button";
+import { useNewMeetingContext } from "../../../context/NewMeetingContext";
+
+import SortIconAscend from "../../../assets/images/sortingIcons/SorterIconAscend.png";
+import SortIconDescend from "../../../assets/images/sortingIcons/SorterIconDescend.png";
+import CancelMeetingIcon from "../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
+import ChatIcon from "../../../assets/images/New Meeting Listing Icons/Talk.png";
+import AgendaIcon from "../../../assets/images/New Meeting Listing Icons/ViewAgenda.png";
+import ClipboardIcon from "../../../assets/images/New Meeting Listing Icons/Attendance.png";
+import DownloadVideoIcon from "../../../assets/images/New Meeting Listing Icons/VideoRecording.png";
+import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
+import MeetingRecording from "./MeetingRecording/MeetingRecording";
 
 const NewMeeting = () => {
   const { t } = useTranslation();
@@ -161,15 +182,32 @@ const NewMeeting = () => {
     setEditMeeting,
     setPolls,
     boardDeckMeetingID,
-    setmeetingDetails,
+    setBoardDeckMeetingID,
     boardDeckMeetingTitle,
+    setBoardDeckMeetingTitle,
+    setmeetingDetails,
     setDownloadMeeting,
     setDeleteMeetingRecord,
     setDeleteMeetingConfirmationModal,
     deleteMeetingConfirmationModal,
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
-  } = useContext(MeetingContext);
+    editFlag,
+    setEditFlag,
+    setStepDownloadModal,
+    downloadVideoRecordingModal,
+    setDownloadVideoRecordingModal,
+  } = useMeetingContext();
+  const {
+    totalMeetingRecords,
+    isMeetingTypeFilter,
+
+    createEditMeeting,
+    setCreateEditMeeting,
+    setMeetingTypeFilter,
+  } = useNewMeetingContext();
+
+  console.log(isMeetingTypeFilter, "isMeetingTypeFilter");
 
   const { setResultresolution } = useResolutionContext();
 
@@ -216,6 +254,7 @@ const NewMeeting = () => {
   const searchMeetings = useSelector(
     (state) => state.NewMeetingreducer.searchMeetings
   );
+
   const endForAllMeeting = useSelector(
     (state) => state.NewMeetingreducer.endForAllMeeting
   );
@@ -252,6 +291,14 @@ const NewMeeting = () => {
   );
   const boardDeckModalData = useSelector(
     (state) => state.NewMeetingreducer.boardDeckModalData
+  );
+  const ResponseMessageUserMangementReducer = useSelector(
+    (state) => state.UserMangementReducer.ResponseMessage
+  );
+
+  console.log(
+    ResponseMessageUserMangementReducer,
+    "ResponseMessageUserMangementReducer"
   );
   const boardDeckEmailModal = useSelector(
     (state) => state.NewMeetingreducer.boardDeckEmailModal
@@ -294,9 +341,10 @@ const NewMeeting = () => {
   let minutes = now.getUTCMinutes().toString().padStart(2, "0");
   let seconds = now.getUTCSeconds().toString().padStart(2, "0");
   let currentUTCDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
   const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
   const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
+  const [minutesAgo, setMinutesAgo] = useState(0);
+  const [startMeetingButton, setStartMeetingButton] = useState([]);
 
   const [quickMeeting, setQuickMeeting] = useState(false);
   const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
@@ -306,7 +354,7 @@ const NewMeeting = () => {
   const [isDownloadAvailable, setIsDownloadAvailable] = useState(false);
   const [downloadMeetingRecord, setDownloadMeetingRecord] = useState(null);
 
-  const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
+  // const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
   const [defaultFiltersValues, setDefaultFilterValues] = useState([]);
   const [boarddeckOptions, setBoarddeckOptions] = useState({
     selectall: false,
@@ -323,7 +371,6 @@ const NewMeeting = () => {
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
-  const [editFlag, setEditFlag] = useState(false);
 
   const [currentMeetingID, setCurrentMeetingID] = useState(0);
   const [open, setOpen] = useState({
@@ -332,9 +379,10 @@ const NewMeeting = () => {
     severity: "error",
   });
   const [rows, setRow] = useState([]);
+
+  console.log(rows, "rows");
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
-  const [minutesAgo, setMinutesAgo] = useState(null);
   const [searchFields, setSearchFeilds] = useState({
     MeetingTitle: "",
     Date: "",
@@ -347,7 +395,7 @@ const NewMeeting = () => {
     meetingID: null,
     showButton: false,
   });
-  const [startMeetingButton, setStartMeetingButton] = useState([]);
+  // const [startMeetingButton, setStartMeetingButton] = useState([]);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [viewProposeOrganizerPoll, setViewProposeOrganizerPoll] =
     useState(false);
@@ -410,6 +458,7 @@ const NewMeeting = () => {
   );
 
   const { setViewGroupPage, setShowModal } = useGroupsContext();
+  const [meetingTitle, setMeetingTitle] = useState("");
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
@@ -449,10 +498,26 @@ const NewMeeting = () => {
             return meetingRecord;
           });
         });
+        setDublicatedrows((prevRows) => {
+          return prevRows.map((meetingRecord) => {
+            if (
+              Number(meetingRecord?.pK_MDID) === Number(meetingID) &&
+              meetingRecord?.isPrimaryOrganizer === true
+            ) {
+              console.log(meetingRecord, "meetingIDmeetingID");
+
+              return {
+                ...meetingRecord,
+                isRecordingAvailable: true,
+              };
+            }
+            return meetingRecord;
+          });
+        });
         dispatch(meetingVideoRecording(null));
 
         console.log(rows, "meetingRecords");
-      } catch (error) { }
+      } catch (error) {}
     }
   }, [meetingVideoRecording]);
   console.log(rows, "meetingRecords");
@@ -492,8 +557,8 @@ const NewMeeting = () => {
                 attendeeId === 2
                   ? "Participant"
                   : attendeeId === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
               isPrimaryOrganizer: false,
             });
             setVideoTalk({
@@ -594,8 +659,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                      ? "Agenda Contributor"
-                      : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -630,8 +695,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                      ? "Agenda Contributor"
-                      : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -720,6 +785,7 @@ const NewMeeting = () => {
           PageNumber: 1,
           Length: 30,
           PublishedMeetings: false,
+          ProposedMeetings: true,
         };
         dispatch(searchNewUserMeeting(navigate, searchData, t));
         localStorage.setItem("MeetingCurrentView", 2);
@@ -761,8 +827,8 @@ const NewMeeting = () => {
               attendeeId === 2
                 ? "Participant"
                 : attendeeId === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             isPrimaryOrganizer: false,
           });
           setVideoTalk({
@@ -789,12 +855,8 @@ const NewMeeting = () => {
             UserID: Number(userID),
             PageNumber: Number(meetingPageCurrent),
             Length: Number(meetingpageRow),
-            PublishedMeetings:
-              MeetingProp !== null
-                ? false
-                : UserMeetPropoDatPoll !== null
-                  ? false
-                  : true,
+            PublishedMeetings: true,
+            ProposedMeetings: false,
           };
           if (
             getALlMeetingTypes.length === 0 &&
@@ -839,8 +901,8 @@ const NewMeeting = () => {
               MeetingProp !== null
                 ? false
                 : UserMeetPropoDatPoll !== null
-                  ? false
-                  : true,
+                ? false
+                : true,
           };
 
           await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -920,8 +982,8 @@ const NewMeeting = () => {
               attendeeId === 2
                 ? "Participant"
                 : attendeeId === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             isPrimaryOrganizer: false,
           });
           setVideoTalk({
@@ -968,8 +1030,8 @@ const NewMeeting = () => {
               attendeeRoleID === 2
                 ? "Participant"
                 : attendeeRoleID === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             isPrimaryOrganizer: isPrimaryOrganizer,
           });
           setVideoTalk({
@@ -1072,8 +1134,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                      ? "Agenda Contributor"
-                      : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -1092,8 +1154,8 @@ const NewMeeting = () => {
                   attendeeId === 2
                     ? "Participant"
                     : attendeeId === 4
-                      ? "Agenda Contributor"
-                      : "Organizer",
+                    ? "Agenda Contributor"
+                    : "Organizer",
                 isPrimaryOrganizer: false,
               });
               setVideoTalk({
@@ -1143,8 +1205,8 @@ const NewMeeting = () => {
         attendeeId === 2
           ? "Participant"
           : attendeeId === 4
-            ? "Agenda Contributor"
-            : "Organizer",
+          ? "Agenda Contributor"
+          : "Organizer",
       isPrimaryOrganizer: false,
     });
     setVideoTalk({
@@ -1178,8 +1240,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("AgCont");
@@ -1208,8 +1270,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("AdOrg");
@@ -1269,8 +1331,8 @@ const NewMeeting = () => {
                 Number(result.attendeeId) === 2
                   ? "Participant"
                   : Number(result.attendeeId) === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
               status: Number(result.meetingStatusId),
             });
             localStorage.setItem("isMinutePublished", result.isMinutePublished);
@@ -1372,8 +1434,8 @@ const NewMeeting = () => {
                 Number(result.attendeeId) === 2
                   ? "Participant"
                   : Number(result.attendeeId) === 4
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
               status: Number(result.meetingStatusId),
             });
           }
@@ -1403,8 +1465,8 @@ const NewMeeting = () => {
               Number(result.attendeeId) === 2
                 ? "Participant"
                 : Number(result.attendeeId) === 4
-                  ? "Agenda Contributor"
-                  : "Organizer",
+                ? "Agenda Contributor"
+                : "Organizer",
             status: Number(result.meetingStatusId),
           });
           localStorage.removeItem("meetingMin");
@@ -1484,7 +1546,7 @@ const NewMeeting = () => {
 
         setMeetingTypeFilter(meetingtypeFilter);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes]);
 
   useEffect(() => {
@@ -1510,7 +1572,15 @@ const NewMeeting = () => {
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
-        currentView && Number(currentView) === 1 ? true : false,
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 1
+          ? true
+          : false,
+      ProposedMeetings:
+        localStorage.getItem("MeetingCurrentView") &&
+        Number(localStorage.getItem("MeetingCurrentView")) === 2
+          ? true
+          : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -1535,6 +1605,7 @@ const NewMeeting = () => {
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -1701,6 +1772,7 @@ const NewMeeting = () => {
       PageNumber: 1,
       Length: 30,
       PublishedMeetings: true,
+      ProposedMeetings: false,
     };
     if (
       getALlMeetingTypes.length === 0 &&
@@ -1726,7 +1798,7 @@ const NewMeeting = () => {
   };
 
   //UnPublished Meeting Page
-  const handleUnPublishedMeeting = async () => {
+  const handleDraftMeeting = async () => {
     dispatch(clearMeetingState());
 
     let searchData = {
@@ -1737,6 +1809,42 @@ const NewMeeting = () => {
       PageNumber: 1,
       Length: 30,
       PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    if (
+      getALlMeetingTypes.length === 0 &&
+      Object.keys(getALlMeetingTypes).length === 0
+    ) {
+      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+    }
+    console.log("chek search meeting");
+    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    localStorage.setItem("MeetingCurrentView", 3);
+    localStorage.setItem("MeetingPageRows", 30);
+    localStorage.setItem("MeetingPageCurrent", 1);
+    setSearchFeilds({
+      ...searchFields,
+      Date: "",
+      DateView: "",
+      MeetingTitle: "",
+      OrganizerName: "",
+    });
+    setSearchMeeting(false);
+    setSearchText("");
+    setentereventIcon(false);
+  };
+  const handleProposedMeeting = async () => {
+    dispatch(clearMeetingState());
+
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(userID),
+      PageNumber: 1,
+      Length: 30,
+      PublishedMeetings: false,
+      ProposedMeetings: true,
     };
     if (
       getALlMeetingTypes.length === 0 &&
@@ -2127,52 +2235,1339 @@ const NewMeeting = () => {
   );
 
   const handleClickDownloadBtn = (record) => {
-    console.log("recordrecordrecord", record);
-    if (record.isVideoCall && record.isRecordingAvailable) {
-      setIsDownloadAvailable(true);
-    }
-    // downloadMeetinModal,
-    setDownloadMeetingRecord(record);
-    setDownloadMeeting(true);
+    let Data = { MeetingID: record?.pK_MDID };
+    // setDownloadMeeting(true);
+    setMeetingTitle(record.meetingTitle);
+    dispatch(
+      getMeetingRecordingFilesApi(
+        navigate,
+        t,
+        Data,
+        setDownloadVideoRecordingModal
+      )
+    );
+  };
+
+  const handleClickViewMinutes = (record) => {
+    setEditorRole({
+      status: record?.status,
+      role: record.isParticipant
+        ? "Participant"
+        : record.isAgendaContributor
+        ? "Agenda Contributor"
+        : "Organizer",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    dispatch(emailRouteID(5));
+    setAdvanceMeetingModalID(record.pK_MDID);
+    setViewAdvanceMeetingModal(true);
+    dispatch(viewAdvanceMeetingPublishPageFlag(true));
+    dispatch(scheduleMeetingPageFlag(false));
+    localStorage.setItem("currentMeetingID", record.pK_MDID);
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
   };
   //Filteration Work Meeting Type Ends
 
-  const handleClickDeleteMeeting = async (record) => {
-    let Data = {
-      MeetingID: record.pK_MDID,
-      StatusID: 4,
-    };
+  // const MeetingColoumns = [
+  //   {
+  //     title: (
+  //       <span className="d-flex gap-2 align-items-center">
+  //         {" "}
+  //         {t("Title")}{" "}
+  //         {meetingTitleSort === "descend" ? (
+  //           <img src={DescendIcon} alt="" />
+  //         ) : meetingTitleSort === "ascend" ? (
+  //           <img src={AscendIcon} alt="" />
+  //         ) : (
+  //           <img src={DoubleArrowIcon} alt="" />
+  //         )}
+  //       </span>
+  //     ),
+  //     dataIndex: "title",
+  //     key: "title",
+  //     ellipsis: true,
+  //     align: currentLanguage === "en" ? "left" : "right",
+  //     width: "115px",
+  //     render: (text, record) => {
+  //       return (
+  //         <span
+  //           className={styles["meetingTitle"]}
+  //           onClick={() => {
+  //             handleViewMeeting(
+  //               record.videoCallURL,
+  //               record.pK_MDID,
+  //               record.isQuickMeeting,
+  //               record.status,
+  //             );
+  //             localStorage.setItem("videoCallURL", record.videoCallURL);
+  //             setVideoTalk({
+  //               isChat: record.isChat,
+  //               isVideoCall: record.isVideoCall,
+  //               talkGroupID: record.talkGroupID,
+  //             });
+  //             setEditorRole({
+  //               status: record.status,
+  //               role: record.isParticipant
+  //                 ? "Participant"
+  //                 : record.isAgendaContributor
+  //                   ? "Agenda Contributor"
+  //                   : "Organizer",
+  //               isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //             });
+  //             localStorage.setItem(
+  //               "isMinutePublished",
+  //               record.isMinutePublished,
+  //             );
+  //             localStorage.setItem("meetingTitle", record.title);
+  //           }}
+  //         >
+  //           {text}
+  //         </span>
+  //       );
+  //     },
+  //     // onHeaderCell: () => ({
+  //     //   onClick: () => {
+  //     //     setMeetingTitleSort((order) => {
+  //     //       if (order === "descend") return "ascend";
+  //     //       if (order === "ascend") return null;
+  //     //       return "descend";
+  //     //     });
+  //     //   },
+  //     // }),
+  //     sorter: (a, b) => {
+  //       return meetingTitleSort === "descend"
+  //         ? b?.title.toLowerCase().localeCompare(a?.title.toLowerCase())
+  //         : a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+  //     },
+  //   },
+  //   {
+  //     title: t("Status"),
+  //     dataIndex: "status",
+  //     key: "status",
+  //     width: "90px",
+  //     ellipsis: true,
+  //     align: "center",
+  //     filterResetToDefaultFilteredValue: true,
+  //     filterIcon: (filtered) => (
+  //       <ChevronDown
+  //         className="filter-chevron-icon-todolist"
+  //         onClick={handleClickChevron}
+  //       />
+  //     ),
+  //     filterDropdown: () => (
+  //       <Dropdown
+  //         overlay={menu}
+  //         visible={visible}
+  //         onVisibleChange={(open) => setVisible(open)}
+  //       >
+  //         <div />
+  //       </Dropdown>
+  //     ),
+  //     render: (text, record) => {
+  //       return StatusValue(t, record.status);
+  //     },
+  //   },
+  //   {
+  //     title: (
+  //       <span className="d-flex gap-2 align-items-center justify-content-center">
+  //         {t("Organizer")}
+  //         {meetingOrganizerSort === "descend" ? (
+  //           <img src={DescendIcon} alt="" />
+  //         ) : (
+  //           <img src={AscendIcon} alt="" />
+  //         )}
+  //       </span>
+  //     ),
+  //     dataIndex: "host",
+  //     key: "host",
+  //     width: "110px",
+  //     align: "center",
+  //     onHeaderCell: () => ({
+  //       onClick: () => {
+  //         setMeetingOrganizerSort((order) => {
+  //           if (order === "descend") return "ascend";
+  //           if (order === "ascend") return null;
+  //           return "descend";
+  //         });
+  //       },
+  //     }),
+  //     sorter: (a, b) =>
+  //       a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
+  //     render: (text, record) => {
+  //       return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
+  //     },
+  //   },
+  //   {
+  //     title: (
+  //       <span className="d-flex gap-2 align-items-center justify-content-center">
+  //         {t("Date-time")}
+  //         {meetingDateTimeSort === "descend" ? (
+  //           <img src={ArrowDownIcon} alt="" />
+  //         ) : (
+  //           <img src={ArrowUpIcon} alt="" />
+  //         )}
+  //       </span>
+  //     ),
+  //     dataIndex: "dateOfMeeting",
+  //     key: "dateOfMeeting",
+  //     width: "155px",
+  //     align: "center",
+  //     onHeaderCell: () => ({
+  //       onClick: () => {
+  //         setMeetingDateTimeSort((order) => {
+  //           if (order === "descend") return "ascend";
+  //           if (order === "ascend") return null;
+  //           return "descend";
+  //         });
+  //       },
+  //     }),
+  //     render: (text, record) => {
+  //       if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+  //         return (
+  //           <span className="text-truncate d-block">
+  //             {newTimeFormaterAsPerUTCFullDate(
+  //               record.dateOfMeeting + record.meetingStartTime,
+  //               currentLanguage,
+  //             )}
+  //           </span>
+  //         );
+  //       }
+  //     },
+  //     sorter: (a, b, sortOrder) => {
+  //       const dateA = utcConvertintoGMT(
+  //         `${a?.dateOfMeeting}${a?.meetingStartTime}`,
+  //       );
+  //       const dateB = utcConvertintoGMT(
+  //         `${b?.dateOfMeeting}${b?.meetingStartTime}`,
+  //       );
+  //       return dateA - dateB;
+  //     },
+  //   },
+  //   {
+  //     title: t("Meeting-type"),
+  //     dataIndex: "meetingType",
+  //     key: "meetingType",
+  //     width: "115px",
+  //     align: "center",
+  //     ellipsis: true,
+  //     filterIcon: (filtered) => (
+  //       <ChevronDown
+  //         className="filter-chevron-icon-todolist"
+  //         onClick={handleClickChevronMeetingType}
+  //         // onClick={() => setVisibleMeetingType(!visibleMeetingType)}
+  //         defaultChecked
+  //       />
+  //     ),
+  //     filterDropdown: () => (
+  //       <Dropdown
+  //         overlay={filterMenu}
+  //         visible={visibleMeetingType}
+  //         onVisibleChange={(open) => setVisibleMeetingType(!open)}
+  //       >
+  //         <div />
+  //       </Dropdown>
+  //     ),
+  //     render: (text, record) => {
+  //       const meetingType = Number(record.meetingType);
+  //       const matchedFilter = isMeetingTypeFilter.find(
+  //         (data) => meetingType === Number(data.value),
+  //       );
 
-    setDeleteMeetingRecord(Data);
-    setDeleteMeetingConfirmationModal(true);
+  //       console.log(matchedFilter, "matchedFiltermatchedFilter");
+  //       return record.isQuickMeeting && meetingType === 1
+  //         ? t("Quick-meeting")
+  //         : t(matchedFilter)
+  //           ? t(matchedFilter.text)
+  //           : "";
+  //     },
+  //   },
+  //   {
+  //     dataIndex: "Chat",
+  //     key: "Chat",
+  //     width: "85px",
+  //     align: "center",
+  //     render: (text, record) => {
+  //       return (
+  //         <>
+  //           <div className={styles["icon-wrapper"]}>
+  //             {record.isAttachment ? (
+  //               <span>
+  //                 <Tooltip placement="topRight" title={t("ClipIcon")}>
+  //                   <img
+  //                     src={ClipIcon}
+  //                     className="cursor-pointer"
+  //                     alt=""
+  //                     draggable="false"
+  //                   />
+  //                 </Tooltip>
+  //               </span>
+  //             ) : null}
+
+  //             {record.isVideoCall ? (
+  //               <span>
+  //                 <img
+  //                   src={VideoIcon}
+  //                   alt=""
+  //                   title={t("Video")}
+  //                   draggable="false"
+  //                 />
+  //               </span>
+  //             ) : null}
+  //             {record.isChat ? (
+  //               <span onClick={(e) => groupChatInitiation(record)}>
+  //                 <Tooltip placement="topLeft" title={t("Chat")}>
+  //                   <img
+  //                     src={CommentIcon}
+  //                     className="cursor-pointer"
+  //                     alt=""
+  //                     draggable="false"
+  //                   />
+  //                 </Tooltip>
+  //               </span>
+  //             ) : null}
+  //             {record.status === "9" &&
+  //             (record.isOrganizer || record.isPrimaryOrganizer) ? (
+  //               <Tooltip placement="topLeft" title={t("Attendance")}>
+  //                 <img
+  //                   src={member}
+  //                   className="cursor-pointer"
+  //                   alt=""
+  //                   draggable="false"
+  //                   onClick={() => onClickDownloadIcon(record.pK_MDID)}
+  //                 />
+  //               </Tooltip>
+  //             ) : null}
+  //           </div>
+  //         </>
+  //       );
+  //     },
+  //   },
+  //   {
+  //     dataIndex: "Join",
+  //     key: "Join",
+  //     width: "80px",
+  //     align: "center",
+  //     render: (text, record) => {
+  //       console.log("end meeting chaek", record);
+  //       const startMeetingRequest = {
+  //         VideoCallURL: record.videoCallURL,
+  //         MeetingID: Number(record.pK_MDID),
+  //         StatusID: 10,
+  //       };
+  //       let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
+  //       const currentDateObj = new Date(
+  //         currentUTCDateTime.substring(0, 4), // Year
+  //         parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
+  //         currentUTCDateTime.substring(6, 8), // Day
+  //         currentUTCDateTime.substring(8, 10), // Hours
+  //         currentUTCDateTime.substring(10, 12), // Minutes
+  //         currentUTCDateTime.substring(12, 14), // Seconds
+  //       );
+
+  //       const meetingDateObj = new Date(
+  //         meetingDateTime.substring(0, 4), // Year
+  //         parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
+  //         meetingDateTime.substring(6, 8), // Day
+  //         meetingDateTime.substring(8, 10), // Hours
+  //         meetingDateTime.substring(10, 12), // Minutes
+  //         meetingDateTime.substring(12, 14), // Seconds
+  //       );
+
+  //       // Calculate the time difference in milliseconds
+  //       const timeDifference = meetingDateObj - currentDateObj;
+
+  //       // Convert milliseconds to minutes
+  //       const minutesDifference = Math.floor(timeDifference / (1000 * 60));
+  //       const isButtonShown = startMeetingButton.find(
+  //         (btnData, index) =>
+  //           Number(btnData.meetingID) === Number(record.pK_MDID),
+  //       );
+  //       if (Number(record.status) === 1) {
+  //         if (record.isParticipant) {
+  //         } else if (record.isAgendaContributor) {
+  //         } else {
+  //           if (
+  //             // startMeetingButton === true
+  //             (record.isQuickMeeting === true &&
+  //               minutesDifference < minutesAgo) ||
+  //             (record.isQuickMeeting === true &&
+  //               record.pK_MDID === isButtonShown?.meetingID &&
+  //               isButtonShown?.showButton)
+  //           ) {
+  //             return (
+  //               <span className="d-flex justify-content-center">
+  //                 <Button
+  //                   text={t("Start-meeting")}
+  //                   className={styles["Start-Meeting"]}
+  //                   onClick={() => {
+  //                     dispatch(
+  //                       UpdateOrganizersMeeting(
+  //                         record.isQuickMeeting,
+  //                         navigate,
+  //                         t,
+  //                         4,
+  //                         startMeetingRequest,
+  //                         setEditorRole,
+  //                         setAdvanceMeetingModalID,
+  //                         setDataroomMapFolderId,
+  //                         setSceduleMeeting,
+  //                         setViewFlag,
+  //                         setEditFlag,
+  //                       ),
+  //                     );
+  //                     setEditorRole({
+  //                       status: record.status,
+  //                       role: "Organizer",
+  //                       isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                     });
+  //                     setVideoTalk({
+  //                       isChat: record.isChat,
+  //                       isVideoCall: record.isVideoCall,
+  //                       talkGroupID: record.talkGroupID,
+  //                     });
+  //                     localStorage.setItem("videoCallURL", record.videoCallURL);
+  //                     localStorage.setItem("meetingTitle", record.title);
+  //                     localStorage.setItem(
+  //                       "isMinutePublished",
+  //                       record.isMinutePublished,
+  //                     );
+  //                   }}
+  //                 />
+  //               </span>
+  //             );
+  //           } else if (
+  //             (record.isQuickMeeting === false &&
+  //               minutesDifference < minutesAgo) ||
+  //             (record.isQuickMeeting === false &&
+  //               record.pK_MDID === isButtonShown?.meetingID &&
+  //               isButtonShown?.showButton)
+  //           ) {
+  //             return (
+  //               <span className="d-flex justify-content-center">
+  //                 <Button
+  //                   text={t("Start-meeting")}
+  //                   className={styles["Start-Meeting"]}
+  //                   onClick={() => {
+  //                     console.log(
+  //                       "end meeting chaek",
+  //                       startMeetingRequest,
+  //                       record,
+  //                     );
+  //                     dispatch(
+  //                       UpdateOrganizersMeeting(
+  //                         record.isQuickMeeting,
+  //                         navigate,
+  //                         t,
+  //                         3,
+  //                         startMeetingRequest,
+  //                         setEditorRole,
+  //                         // setAdvanceMeetingModalID,
+  //                         setDataroomMapFolderId,
+  //                         setViewAdvanceMeetingModal,
+  //                         setAdvanceMeetingModalID,
+  //                         setViewAdvanceMeetingModal,
+  //                         record.isPrimaryOrganizer,
+  //                       ),
+  //                     );
+  //                     setVideoTalk({
+  //                       isChat: record.isChat,
+  //                       isVideoCall: record.isVideoCall,
+  //                       talkGroupID: record.talkGroupID,
+  //                     });
+  //                     localStorage.setItem("videoCallURL", record.videoCallURL);
+  //                     localStorage.setItem("currentMeetingID", record.pK_MDID);
+  //                     localStorage.setItem(
+  //                       "isMinutePublished",
+  //                       record.isMinutePublished,
+  //                     );
+  //                     localStorage.setItem("meetingTitle", record.title);
+  //                     setAdvanceMeetingModalID(record.pK_MDID);
+  //                     dispatch(viewMeetingFlag(true));
+  //                     // setViewAdvanceMeetingModal(true);
+  //                     // dispatch(viewAdvanceMeetingPublishPageFlag(true));
+  //                     dispatch(scheduleMeetingPageFlag(false));
+  //                     setEditorRole({
+  //                       status: 10,
+  //                       role: "Organizer",
+  //                       isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                     });
+  //                   }}
+  //                 />
+  //               </span>
+  //             );
+  //           }
+  //         }
+  //       } else if (Number(record.status) === 10) {
+  //         if (record.isParticipant) {
+  //           return (
+  //             <span className="d-flex justify-content-center">
+  //               <Button
+  //                 text={t("Join-meeting")}
+  //                 className={styles["joining-Meeting"]}
+  //                 onClick={() => {
+  //                   handleViewMeeting(
+  //                     record.videoCallURL,
+  //                     record.pK_MDID,
+  //                     record.isQuickMeeting,
+  //                     record.status,
+  //                   );
+  //                   setEditorRole({
+  //                     status: record.status,
+  //                     role: "Participant",
+  //                     isPrimaryOrganizer: false,
+  //                   });
+  //                   setVideoTalk({
+  //                     isChat: record.isChat,
+  //                     isVideoCall: record.isVideoCall,
+  //                     talkGroupID: record.talkGroupID,
+  //                   });
+  //                   localStorage.setItem("videoCallURL", record.videoCallURL);
+
+  //                   // dispatch(viewMeetingFlag(true));
+  //                   localStorage.setItem(
+  //                     "isMinutePublished",
+  //                     record.isMinutePublished,
+  //                   );
+  //                   localStorage.setItem("meetingTitle", record.title);
+  //                 }}
+  //               />
+  //             </span>
+  //           );
+  //         } else if (record.isAgendaContributor) {
+  //           return (
+  //             <span className="d-flex justify-content-center">
+  //               <Button
+  //                 text={t("Join-meeting")}
+  //                 className={styles["joining-Meeting"]}
+  //                 onClick={() => {
+  //                   handleViewMeeting(
+  //                     record.videoCallURL,
+  //                     record.pK_MDID,
+  //                     record.isQuickMeeting,
+  //                     record.status,
+  //                   );
+  //                   // setIsOrganisers(isOrganiser);
+  //                   setEditorRole({
+  //                     status: record.status,
+  //                     role: "Agenda Contributor",
+  //                     isPrimaryOrganizer: false,
+  //                   });
+  //                   setVideoTalk({
+  //                     isChat: record.isChat,
+  //                     isVideoCall: record.isVideoCall,
+  //                     talkGroupID: record.talkGroupID,
+  //                   });
+  //                   localStorage.setItem("videoCallURL", record.videoCallURL);
+
+  //                   dispatch(viewMeetingFlag(true));
+  //                   localStorage.setItem(
+  //                     "isMinutePublished",
+  //                     record.isMinutePublished,
+  //                   );
+  //                   localStorage.setItem("meetingTitle", record.title);
+  //                 }}
+  //               />
+  //             </span>
+  //           );
+  //         } else if (record.isOrganizer) {
+  //           return (
+  //             <span className="d-flex justify-content-center">
+  //               <Button
+  //                 text={t("Join-meeting")}
+  //                 className={styles["joining-Meeting"]}
+  //                 onClick={() => {
+  //                   handleViewMeeting(
+  //                     record.videoCallURL,
+  //                     record.pK_MDID,
+  //                     record.isQuickMeeting,
+  //                     record.status,
+  //                   );
+  //                   // setIsOrganisers(isOrganiser);
+  //                   setEditorRole({
+  //                     status: record.status,
+  //                     role: "Organizer",
+  //                     isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                   });
+  //                   setVideoTalk({
+  //                     isChat: record.isChat,
+  //                     isVideoCall: record.isVideoCall,
+  //                     talkGroupID: record.talkGroupID,
+  //                   });
+  //                   localStorage.setItem("videoCallURL", record.videoCallURL);
+
+  //                   dispatch(viewMeetingFlag(true));
+  //                   localStorage.setItem(
+  //                     "isMinutePublished",
+  //                     record.isMinutePublished,
+  //                   );
+  //                   localStorage.setItem("meetingTitle", record.title);
+  //                 }}
+  //               />
+  //             </span>
+  //           );
+  //         }
+  //       } else if (
+  //         Number(record.status) === 9 &&
+  //         record.isOrganizer &&
+  //         record.isQuickMeeting === false
+  //       ) {
+  //         return (
+  //           <>
+  //             <span className="d-flex justify-content-center">
+  //               <Button
+  //                 text={t("Download")}
+  //                 className={styles["Board-Deck"]}
+  //                 onClick={() => handleClickDownloadBtn(record)}
+  //                 // onClick={() => {
+  //                 //   boardDeckOnClick(record);
+  //                 //   setEditorRole({
+  //                 //     status: record.status,
+  //                 //     role: record.isParticipant
+  //                 //       ? "Participant"
+  //                 //       : record.isAgendaContributor
+  //                 //       ? "Agenda Contributor"
+  //                 //       : "Organizer",
+  //                 //     isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                 //   });
+  //                 //   setVideoTalk({
+  //                 //     isChat: record.isChat,
+  //                 //     isVideoCall: record.isVideoCall,
+  //                 //     talkGroupID: record.talkGroupID,
+  //                 //   });
+  //                 //   localStorage.setItem("videoCallURL", record.videoCallURL);
+  //                 // }}
+  //               />
+  //             </span>
+  //           </>
+  //         );
+  //       } else {
+  //       }
+  //     },
+  //   },
+
+  //   {
+  //     dataIndex: "Edit",
+  //     key: "Edit",
+  //     width: "33px",
+  //     render: (text, record) => {
+  //       console.log(record, "checkIsPrimaryOrganizercheckIsPrimaryOrganizer");
+  //       const isQuickMeeting = record.isQuickMeeting;
+  //       let checkIsPrimaryOrganizer = record.isPrimaryOrganizer;
+  //       if (
+  //         record.status === "8" ||
+  //         record.status === "4" ||
+  //         record.status === "9"
+  //       ) {
+  //         return null;
+  //       } else {
+  //         if (isQuickMeeting) {
+  //           if (record.isOrganizer) {
+  //             if (record.status !== "10") {
+  //               return (
+  //                 <>
+  //                   <Row>
+  //                     <Col
+  //                       sm={12}
+  //                       md={12}
+  //                       lg={12}
+  //                       className="d-flex justify-content-center"
+  //                     >
+  //                       <Tooltip placement="topRight" title={t("Edit")}>
+  //                         <img
+  //                           src={EditIcon}
+  //                           className="cursor-pointer"
+  //                           width="17.11px"
+  //                           height="17.11px"
+  //                           alt=""
+  //                           draggable="false"
+  //                           onClick={() => {
+  //                             handleEditMeeting(
+  //                               record.pK_MDID,
+  //                               record.isQuickMeeting,
+  //                               "Organizer",
+  //                               record,
+  //                             );
+  //                             setVideoTalk({
+  //                               isChat: record.isChat,
+  //                               isVideoCall: record.isVideoCall,
+  //                               talkGroupID: record.talkGroupID,
+  //                             });
+  //                             localStorage.setItem(
+  //                               "videoCallURL",
+  //                               record.videoCallURL,
+  //                             );
+  //                           }}
+  //                         />
+  //                       </Tooltip>
+  //                     </Col>
+  //                   </Row>
+  //                 </>
+  //               );
+  //             }
+  //           }
+  //         } else {
+  //           if (record.isParticipant) {
+  //           } else if (record.isOrganizer) {
+  //             return (
+  //               <>
+  //                 <Row>
+  //                   <Col
+  //                     sm={12}
+  //                     md={12}
+  //                     lg={12}
+  //                     className="d-flex justify-content-center"
+  //                   >
+  //                     <Tooltip placement="topRight" title={t("Edit")}>
+  //                       <img
+  //                         src={EditIcon}
+  //                         className="cursor-pointer"
+  //                         width="17.11px"
+  //                         height="17.11px"
+  //                         alt=""
+  //                         draggable="false"
+  //                         onClick={() => {
+  //                           handleEditMeeting(
+  //                             record.pK_MDID,
+  //                             record.isQuickMeeting,
+  //                             // record.isAgendaContributor,
+  //                             "Organizer",
+  //                             record,
+  //                           );
+  //                           setVideoTalk({
+  //                             isChat: record.isChat,
+  //                             isVideoCall: record.isVideoCall,
+  //                             talkGroupID: record.talkGroupID,
+  //                           });
+  //                           localStorage.setItem(
+  //                             "videoCallURL",
+  //                             record.videoCallURL,
+  //                           );
+  //                           setEditorRole({
+  //                             status: record.status,
+  //                             role: "Organizer",
+  //                             isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                           });
+  //                           setEditMeeting(true);
+  //                           dispatch(viewMeetingFlag(true));
+  //                         }}
+  //                       />
+  //                     </Tooltip>
+  //                   </Col>
+  //                 </Row>
+  //               </>
+  //             );
+  //           } else if (record.isAgendaContributor) {
+  //             return (
+  //               <>
+  //                 <Row>
+  //                   <Col
+  //                     sm={12}
+  //                     md={12}
+  //                     lg={12}
+  //                     className="d-flex justify-content-center"
+  //                   >
+  //                     <Tooltip placement="topRight" title={t("Edit")}>
+  //                       <img
+  //                         src={EditIcon}
+  //                         className="cursor-pointer"
+  //                         width="17.11px"
+  //                         height="17.11px"
+  //                         alt=""
+  //                         draggable="false"
+  //                         onClick={() => {
+  //                           handleEditMeeting(
+  //                             record.pK_MDID,
+  //                             record.isQuickMeeting,
+  //                             // record.isAgendaContributor,
+  //                             "Agenda Contributor",
+  //                             record,
+  //                           );
+  //                           setVideoTalk({
+  //                             isChat: record.isChat,
+  //                             isVideoCall: record.isVideoCall,
+  //                             talkGroupID: record.talkGroupID,
+  //                           });
+  //                           localStorage.setItem(
+  //                             "videoCallURL",
+  //                             record.videoCallURL,
+  //                           );
+  //                           setEditorRole({
+  //                             status: record.status,
+  //                             role: "Agenda Contributor",
+  //                             isPrimaryOrganizer: record.isPrimaryOrganizer,
+  //                           });
+  //                           setEditMeeting(true);
+  //                           dispatch(viewMeetingFlag(false));
+  //                         }}
+  //                       />
+  //                     </Tooltip>
+  //                   </Col>
+  //                 </Row>
+  //               </>
+  //             );
+  //           }
+  //         }
+  //       }
+  //     },
+  //   },
+  // ];
+
+  const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
+  const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
+  const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
+  const [meetingDateSort, setMeetingDateSort] = useState("ascend");
+  const [duplicatedRows, setDuplicatedRows] = useState([]);
+
+  // Status Filter State
+  const [statusFilterVisible, setStatusFilterVisible] = useState(false);
+  const [selectedStatusValues, setSelectedStatusValues] = useState([
+    "10",
+    "1",
+    "9",
+    "8",
+    "4",
+  ]);
+
+  // Meeting Type Filter State
+  const [meetingTypeFilterVisible, setMeetingTypeFilterVisible] =
+    useState(false);
+  const [selectedMeetingTypeValues, setSelectedMeetingTypeValues] = useState([
+    "1",
+    "2",
+    "3",
+  ]);
+
+  // Status Filter Options
+  const statusFilters = [
+    { value: "10", text: "Active" },
+    { value: "1", text: "Upcoming" },
+    { value: "9", text: "Ended" },
+    { value: "8", text: "Not-conducted" },
+    { value: "4", text: "Cancelled" },
+  ];
+
+  // Meeting Type Filter Options
+  const meetingTypeFilters = [
+    { value: "1", text: "Board Meeting" },
+    { value: "2", text: "Committee Meeting" },
+    { value: "3", text: "Group Meeting" },
+  ];
+  // Status Filter Handlers
+  const handleStatusMenuClick = (filterValue) => {
+    setSelectedStatusValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
   };
 
-  const MeetingColoumns = [
-    {
-      title: (
-        <span className='d-flex gap-2 align-items-center'>
-          {" "}
-          {t("Title")}{" "}
-          {meetingTitleSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
-          ) : meetingTitleSort === "ascend" ? (
-            <img src={AscendIcon} alt='' />
-          ) :
-            (
-              <img src={DoubleArrowIcon} alt='' />
-            )
+  const handleApplyStatusFilter = () => {
+    const filteredData = duplicatedRows.filter((item) =>
+      selectedStatusValues.includes(item.status?.toString())
+    );
+    setRow(filteredData);
+    setStatusFilterVisible(false);
+  };
+
+  const resetStatusFilter = () => {
+    setSelectedStatusValues(["10", "1", "9", "8", "4"]);
+    setStatusFilterVisible(false);
+    setRow(duplicatedRows);
+  };
+
+  const handleClickStatusChevron = () => {
+    setStatusFilterVisible((prevVisible) => !prevVisible);
+  };
+
+  // Meeting Type Filter Handlers
+  const handleMeetingTypeMenuClick = (filterValue) => {
+    setSelectedMeetingTypeValues((prevValues) =>
+      prevValues.includes(filterValue)
+        ? prevValues.filter((value) => String(value) !== String(filterValue))
+        : [...prevValues, String(filterValue)]
+    );
+  };
+
+  const handleApplyMeetingTypeFilter = () => {
+    const filteredData = duplicatedRows.filter((item) =>
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
+    );
+    setRow(filteredData);
+    setMeetingTypeFilterVisible(false);
+  };
+
+  const resetMeetingTypeFilter = () => {
+    setSelectedMeetingTypeValues(["1", "2", "3"]);
+    setRow(duplicatedRows);
+    setMeetingTypeFilterVisible(false);
+  };
+
+  const handleClickMeetingTypeChevron = () => {
+    setMeetingTypeFilterVisible((prevVisible) => !prevVisible);
+  };
+
+  // Status Filter Menu
+  const statusMenu = (
+    <Menu>
+      {statusFilters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleStatusMenuClick(filter.value)}>
+          <Checkbox checked={selectedStatusValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className='d-flex align-items-center justify-content-between p-1'>
+        <Button
+          text={"Reset"}
+          className={"FilterResetBtn"}
+          onClick={resetStatusFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedStatusValues.length === 0}
+          className={"ResetOkBtn"}
+          onClick={handleApplyStatusFilter}
+        />
+      </div>
+    </Menu>
+  );
+
+  // Meeting Type Filter Menu
+  const meetingTypeMenu = (
+    <Menu>
+      {meetingTypeFilters.map((filter) => (
+        <Menu.Item
+          key={filter.value}
+          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
+          <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
+            {filter.text}
+          </Checkbox>
+        </Menu.Item>
+      ))}
+      <Menu.Divider />
+      <div className='d-flex align-items-center justify-content-between p-1'>
+        <Button
+          text={"Reset"}
+          className={"FilterResetBtn"}
+          onClick={resetMeetingTypeFilter}
+        />
+        <Button
+          text={"Ok"}
+          disableBtn={selectedMeetingTypeValues.length === 0}
+          className={"ResetOkBtn"}
+          onClick={handleApplyMeetingTypeFilter}
+        />
+      </div>
+    </Menu>
+  );
+
+  const handleClickViewAgenda = (record) => {
+    console.log("Agenda", record);
+    handleViewMeeting(
+      record.videoCallURL,
+      record.pK_MDID,
+      record.isQuickMeeting,
+      record.status
+    );
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    setEditorRole({
+      status: record.status,
+      role: record.isParticipant
+        ? "Participant"
+        : record.isAgendaContributor
+        ? "Agenda Contributor"
+        : "Organizer",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    dispatch(emailRouteID(3));
+
+    localStorage.setItem("isMinutePublished", record.isMinutePublished);
+    localStorage.setItem("meetingTitle", record.title);
+  };
+
+  const handleClickContributeAgenda = (record) => {
+    console.log("Agenda", record);
+    handleEditMeeting(
+      record.pK_MDID,
+      record.isQuickMeeting,
+      "Agenda Contributor",
+      record
+    );
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setEditorRole({
+      status: record.status,
+      role: "Agenda Contributor",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    setEditMeeting(true);
+    dispatch(viewMeetingFlag(false));
+  };
+
+  const moreButtons = (record) => {
+    const STATUS = {
+      UPCOMING: 1,
+      ACTIVE: 10,
+      ENDED: 9,
+      NOT_CONDUCTED: 8,
+      CANCELLED: 4,
+    };
+    const status = Number(record.status);
+
+    const isOrganizer = record.isOrganizer;
+    const isParticipant = record.isParticipant;
+    const isAgendaContributor = record.isAgendaContributor;
+
+    const canShow = {
+      edit:
+        (status === STATUS.UPCOMING ||
+          status === STATUS.ACTIVE ||
+          status === STATUS.NOT_CONDUCTED) &&
+        isOrganizer,
+
+      cancel: status === STATUS.UPCOMING && isOrganizer,
+      contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
+
+      talk:
+        status !== STATUS.NOT_CONDUCTED &&
+        status !== STATUS.CANCELLED &&
+        record.talkGroupID !== 0,
+
+      viewAgenda:
+        (status === STATUS.ENDED ||
+          status === STATUS.UPCOMING ||
+          status === STATUS.ACTIVE) &&
+        (isOrganizer || isAgendaContributor || isParticipant),
+
+      attendance: status === STATUS.ENDED && isOrganizer,
+
+      recording:
+        status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
+      viewMinutes:
+        (status === STATUS.ENDED && !record.isQuickMeeting && isParticipant) ||
+        (isAgendaContributor &&
+          !record.isQuickMeeting &&
+          status === STATUS.ENDED),
+    };
+    const hasAnyAction = Object.values(canShow).some(Boolean);
+
+    if (!hasAnyAction) {
+      return null;
+    }
+
+    return (
+      <div className={styles.morebuttons}>
+        {canShow.edit && (
+          <div
+            className={styles.morebtn}
+            onClick={() => {
+              if (record.isOrganizer || record.isAgendaContributor) {
+                handleEditMeeting(
+                  record.pK_MDID,
+                  record.isQuickMeeting,
+                  record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                  record
+                );
+                setVideoTalk({
+                  isChat: record.isChat,
+                  isVideoCall: record.isVideoCall,
+                  talkGroupID: record.talkGroupID,
+                });
+                localStorage.setItem("videoCallURL", record.videoCallURL);
+                setEditorRole({
+                  status: record.status,
+                  role: record.isAgendaContributor
+                    ? "Agenda Contributor"
+                    : "Organizer",
+                  isPrimaryOrganizer: record.isPrimaryOrganizer,
+                });
+                setEditMeeting(true);
+                dispatch(viewMeetingFlag(true));
+              }
+            }}>
+            <img src={EditIcon} alt='' width='16' height='16' />
+            <span>{t("Edit-meeting")}</span>
+          </div>
+        )}
+
+        {/* {canShow.cancel && (
+          <div
+            className={styles.morebtn}
+            onClick={() => console.log("Cancel", record)}>
+            <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+            <span>{t("Cancel-meeting")}</span>
+          </div>
+        )} */}
+
+        {canShow.talk && (
+          <div
+            className={styles.morebtn}
+            onClick={() => groupChatInitiation(record)}>
+            <img src={ChatIcon} alt='' width='16' height='16' />
+            <span>{t("Talk")}</span>
+          </div>
+        )}
+
+        {canShow.viewAgenda && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickViewAgenda(record)}>
+            <img src={AgendaIcon} alt='' width='16' height='16' />
+            <span>{t("View-agenda")}</span>
+          </div>
+        )}
+
+        {canShow.attendance && (
+          <div
+            className={styles.morebtn}
+            onClick={() => onClickDownloadIcon(record.pK_MDID)}>
+            <img src={ClipboardIcon} alt='' width='16' height='16' />
+            <span>{t("Attendance-report")}</span>
+          </div>
+        )}
+
+        {canShow.recording && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickDownloadBtn(record)}>
+            <img src={DownloadVideoIcon} alt='' width='16' height='16' />
+            <span>{t("Download-view-recording")}</span>
+          </div>
+        )}
+        {canShow.viewMinutes && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickViewMinutes(record)}>
+            <img src={DownloadVideoIcon} alt='' width='16' height='16' />
+            <span>{t("View-minutes")}</span>
+          </div>
+        )}
+        {canShow.contributeAgenda && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickContributeAgenda(record)}>
+            <img src={AgendaIcon} alt='' width='16' height='16' />
+            <span>{t("Contribute-agenda")}</span>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const onMeetingAction = (actionType, record) => {
+    console.log(actionType, record);
+    const startMeetingRequest = {
+      VideoCallURL: record.videoCallURL,
+      MeetingID: Number(record.pK_MDID),
+      StatusID: 10,
+    };
+    switch (actionType) {
+      case "BOARD_DECK":
+        setDownloadMeeting(false);
+        setBoardDeckMeetingID(record?.pK_MDID);
+        setBoardDeckMeetingTitle(record?.title);
+        dispatch(boardDeckModal(true));
+        localStorage.setItem("meetingTitle", record?.title);
+        break;
+      case "START_MEETING":
+        if (!record.isQuickMeeting) {
+          setAdvanceMeetingModalID(record.pK_MDID);
+          dispatch(viewMeetingFlag(true));
+          dispatch(scheduleMeetingPageFlag(false));
+        }
+        dispatch(
+          UpdateOrganizersMeeting(
+            record.isQuickMeeting,
+            navigate,
+            t,
+            3,
+            startMeetingRequest,
+            setEditorRole,
+            // setAdvanceMeetingModalID,
+            setDataroomMapFolderId,
+            setViewAdvanceMeetingModal,
+            setAdvanceMeetingModalID,
+            setViewAdvanceMeetingModal,
+            record.isPrimaryOrganizer
+          )
+        );
+        setVideoTalk({
+          isChat: record.isChat,
+          isVideoCall: record.isVideoCall,
+          talkGroupID: record.talkGroupID,
+        });
+        localStorage.setItem("videoCallURL", record.videoCallURL);
+        localStorage.setItem("currentMeetingID", record.pK_MDID);
+        localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        localStorage.setItem("meetingTitle", record.title);
+        setEditorRole({
+          status: "10",
+          role: "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
+
+        // startMeeting(record);
+        break;
+      case "EDIT_MEETING":
+        if (record.isQuickMeeting === false) {
+          handleEditMeeting(
+            record.pK_MDID,
+            record.isQuickMeeting,
+            "Organizer",
+            record
+          );
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+        } else {
+          if (record.isOrganizer || record.isAgendaContributor) {
+            handleEditMeeting(
+              record.pK_MDID,
+              record.isQuickMeeting,
+              record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
+              record
+            );
+            setVideoTalk({
+              isChat: record.isChat,
+              isVideoCall: record.isVideoCall,
+              talkGroupID: record.talkGroupID,
+            });
+            localStorage.setItem("videoCallURL", record.videoCallURL);
+            setEditorRole({
+              status: record.status,
+              role: record.isAgendaContributor
+                ? "Agenda Contributor"
+                : "Organizer",
+              isPrimaryOrganizer: record.isPrimaryOrganizer,
+            });
+            setEditMeeting(true);
+            dispatch(viewMeetingFlag(true));
+            return;
           }
-        </span>
-      ),
-      dataIndex: "title",
-      key: "title",
-      ellipsis: true,
-      align: currentLanguage === "en" ? "left" : "right",
-      width: "115px",
-      render: (text, record) => {
-        return (
+        }
+        // editMeeting(record);
+        break;
+      case "JOIN_MEETING":
+        // joinMeeting(record);
+        if (
+          record.isOrganizer ||
+          record.isAgendaContributor ||
+          record.isParticipant
+        ) {
+          handleViewMeeting(
+            record.videoCallURL,
+            record.pK_MDID,
+            record.isQuickMeeting,
+            record.status
+          );
+          // setIsOrganisers(isOrganiser);
+          setEditorRole({
+            status: record.status,
+            role: record.isAgendaContributor
+              ? "Agenda Contributor"
+              : record.isParticipant
+              ? "Participant"
+              : "Organizer",
+            isPrimaryOrganizer: record.isPrimaryOrganizer,
+          });
+          setVideoTalk({
+            isChat: record.isChat,
+            isVideoCall: record.isVideoCall,
+            talkGroupID: record.talkGroupID,
+          });
+          localStorage.setItem("videoCallURL", record.videoCallURL);
+
+          dispatch(viewMeetingFlag(true));
+          localStorage.setItem("isMinutePublished", record.isMinutePublished);
+          localStorage.setItem("meetingTitle", record.title);
+        }
+
+        break;
+      case "END_MEETING":
+        // endMeeting(record);
+        break;
+      case "VIEW_MEETING":
+        handleViewMeeting(
+          record.videoCallURL,
+          record.pK_MDID,
+          record.isQuickMeeting,
+          record.status
+        );
+        localStorage.setItem("videoCallURL", record.videoCallURL);
+        setVideoTalk({
+          isChat: record.isChat,
+          isVideoCall: record.isVideoCall,
+          talkGroupID: record.talkGroupID,
+        });
+        setEditorRole({
+          status: record.status,
+          role: record.isParticipant
+            ? "Participant"
+            : record.isAgendaContributor
+            ? "Agenda Contributor"
+            : "Organizer",
+          isPrimaryOrganizer: record.isPrimaryOrganizer,
+        });
+        localStorage.setItem("isMinutePublished", record.isMinutePublished);
+        localStorage.setItem("meetingTitle", record.title);
+        break;
+      case "CONTRIBUTE_AGENDA":
+        handleClickContributeAgenda(record);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const columns = useMemo(() => {
+    return [
+      // ===== Meeting Title =====
+      {
+        title: (
+          <div className='d-flex align-items-center gap-2'>
+            <span>{t("Meeting-title")}</span>
+            {meetingTitleSort && (
+              <img
+                src={
+                  meetingTitleSort === "ascend"
+                    ? SortIconAscend
+                    : SortIconDescend
+                }
+                alt='Sort Icon'
+              />
+            )}
+          </div>
+        ),
+        dataIndex: "title",
+        key: "title",
+        width: 180,
+        ellipsis: true,
+        sorter: (a, b) => a.title.localeCompare(b.title),
+        sortOrder: meetingTitleSort,
+        render: (text, record) => (
           <span
-            className={styles["meetingTitle"]}
             onClick={() => {
               handleViewMeeting(
                 record.videoCallURL,
@@ -2191,8 +3586,8 @@ const NewMeeting = () => {
                 role: record.isParticipant
                   ? "Participant"
                   : record.isAgendaContributor
-                    ? "Agenda Contributor"
-                    : "Organizer",
+                  ? "Agenda Contributor"
+                  : "Organizer",
                 isPrimaryOrganizer: record.isPrimaryOrganizer,
               });
               localStorage.setItem(
@@ -2200,692 +3595,425 @@ const NewMeeting = () => {
                 record.isMinutePublished
               );
               localStorage.setItem("meetingTitle", record.title);
-            }}>
+            }}
+            className={styles.tableRow}>
             {text}
           </span>
-        );
+        ),
       },
-      // onHeaderCell: () => ({
-      //   onClick: () => {
-      //     setMeetingTitleSort((order) => {
-      //       if (order === "descend") return "ascend";
-      //       if (order === "ascend") return null;
-      //       return "descend";
-      //     });
-      //   },
-      // }),
-      sorter: (a, b) => {
-        return meetingTitleSort === "descend"
-          ? b?.title.toLowerCase().localeCompare(a?.title.toLowerCase())
-          : a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+
+      // ===== Status =====
+      {
+        title: t("Status"),
+        dataIndex: "status",
+        key: "status",
+        align: "left",
+        width: 140,
+        ellipsis: true,
+        filters: statusFilters,
+        filterIcon: (filtered) => (
+          <ChevronDown
+            className={`status-filter-chevron ${filtered ? "active" : ""}`}
+          />
+        ),
+        defaultFilteredValue: ["10", "1", "9", "8", "4"],
+        filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) => record.status === value,
+        render: (text) => StatusValue(t, text),
+        sorter: (a, b) => a.status - b.status,
       },
-    },
-    {
-      title: t("Status"),
-      dataIndex: "status",
-      key: "status",
-      width: "90px",
-      ellipsis: true,
-      align: "center",
-      filterResetToDefaultFilteredValue: true,
-      filterIcon: (filtered) => (
-        <ChevronDown
-          className='filter-chevron-icon-todolist'
-          onClick={handleClickChevron}
-        />
-      ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={menu}
-          visible={visible}
-          onVisibleChange={(open) => setVisible(open)}>
-          <div />
-        </Dropdown>
-      ),
-      render: (text, record) => {
-        return StatusValue(t, record.status);
+
+      // ===== Organizer =====
+      {
+        title: (
+          <div className='d-flex align-items-center justify-content-center gap-2'>
+            <span>{t("Organizer")}</span>
+            {organizerNameSort && (
+              <img
+                src={
+                  organizerNameSort === "ascend"
+                    ? SortIconAscend
+                    : SortIconDescend
+                }
+                alt='Sort Icon'
+              />
+            )}
+          </div>
+        ),
+        dataIndex: "host",
+        key: "host",
+        width: 105,
+        align: "center",
+        ellipsis: true,
+        sorter: (a, b) =>
+          a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
+        sortOrder: organizerNameSort,
       },
-    },
-    {
-      title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
-          {t("Organizer")}
-          {meetingOrganizerSort === "descend" ? (
-            <img src={DescendIcon} alt='' />
-          ) : (
-            <img src={AscendIcon} alt='' />
-          )}
-        </span>
-      ),
-      dataIndex: "host",
-      key: "host",
-      width: "110px",
-      align: "center",
-      onHeaderCell: () => ({
-        onClick: () => {
-          setMeetingOrganizerSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
-      sorter: (a, b) =>
-        a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
-      render: (text, record) => {
-        return <span className={styles["orgaizer_value"]}>{record?.host}</span>;
-      },
-    },
-    {
-      title: (
-        <span className='d-flex gap-2 align-items-center justify-content-center'>
-          {t("Date-time")}
-          {meetingDateTimeSort === "descend" ? (
-            <img src={ArrowDownIcon} alt='' />
-          ) : (
-            <img src={ArrowUpIcon} alt='' />
-          )}
-        </span>
-      ),
-      dataIndex: "dateOfMeeting",
-      key: "dateOfMeeting",
-      width: "155px",
-      align: "center",
-      onHeaderCell: () => ({
-        onClick: () => {
-          setMeetingDateTimeSort((order) => {
-            if (order === "descend") return "ascend";
-            if (order === "ascend") return null;
-            return "descend";
-          });
-        },
-      }),
-      render: (text, record) => {
-        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-          return (
-            <span className='text-truncate d-block'>
-              {newTimeFormaterAsPerUTCFullDate(
-                record.dateOfMeeting + record.meetingStartTime,
-                currentLanguage
-              )}
-            </span>
+
+      // ===== Meeting Time =====
+      {
+        title: (
+          <div className='d-flex align-items-center justify-content-center gap-2'>
+            <span>{t("Time")}</span>
+            {meetingTimeSort && (
+              <img
+                src={meetingTimeSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+                alt='Sort Icon'
+              />
+            )}
+          </div>
+        ),
+        dataIndex: "time",
+        key: "time",
+        width: 120,
+        align: "center",
+        ellipsis: true,
+        sorter: (a, b) => {
+          const dateA = utcConvertintoGMT(
+            `${a.dateOfMeeting}${a.meetingStartTime}`
           );
-        }
+          const dateB = utcConvertintoGMT(
+            `${b.dateOfMeeting}${b.meetingStartTime}`
+          );
+          return dateA - dateB;
+        },
+        sortOrder: meetingTimeSort,
+        render: (text, record) => {
+          const start = forRecentActivity(
+            record.dateOfMeeting + record.meetingStartTime
+          );
+          const end = forRecentActivity(
+            record.dateOfMeeting + record.meetingEndTime
+          );
+          if (!start || !end) return null;
+          return `${moment(start).format("hh:mm a")} - ${moment(end).format(
+            "hh:mm a"
+          )}`;
+        },
       },
-      sorter: (a, b, sortOrder) => {
-        const dateA = utcConvertintoGMT(
-          `${a?.dateOfMeeting}${a?.meetingStartTime}`
-        );
-        const dateB = utcConvertintoGMT(
-          `${b?.dateOfMeeting}${b?.meetingStartTime}`
-        );
-        return dateA - dateB;
+
+      // ===== Meeting Date =====
+      {
+        title: (
+          <div className='d-flex align-items-center justify-content-center gap-2'>
+            <span>{t("Date")}</span>
+            {meetingDateSort && (
+              <img
+                src={meetingDateSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+                alt='Sort Icon'
+              />
+            )}
+          </div>
+        ),
+        dataIndex: "date",
+        key: "date",
+        width: 95,
+        align: "center",
+        ellipsis: true,
+        sorter: (a, b) => {
+          // Combine date + startTime into ISO-like format for comparison
+          const dateA = new Date(
+            a.dateOfMeeting.substring(0, 4), // Year
+            parseInt(a.dateOfMeeting.substring(4, 6)) - 1, // Month (0-based)
+            a.dateOfMeeting.substring(6, 8), // Day
+            a.meetingStartTime.substring(0, 2), // Hours
+            a.meetingStartTime.substring(2, 4), // Minutes
+            a.meetingStartTime.substring(4, 6) // Seconds
+          );
+
+          const dateB = new Date(
+            b.dateOfMeeting.substring(0, 4),
+            parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
+            b.dateOfMeeting.substring(6, 8),
+            b.meetingStartTime.substring(0, 2),
+            b.meetingStartTime.substring(2, 4),
+            b.meetingStartTime.substring(4, 6)
+          );
+
+          return dateA - dateB; // returns number for Ant Design sorter
+        },
+        sortOrder: meetingDateSort,
+        render: (text, record) => {
+          const meetingDate = new Date(
+            record.dateOfMeeting.substring(0, 4),
+            parseInt(record.dateOfMeeting.substring(4, 6)) - 1,
+            record.dateOfMeeting.substring(6, 8),
+            record.meetingStartTime.substring(0, 2),
+            record.meetingStartTime.substring(2, 4),
+            record.meetingStartTime.substring(4, 6)
+          );
+
+          return <>{moment(meetingDate).format("Do MMM, YYYY")}</>;
+        },
       },
-    },
-    {
-      title: t("Meeting-type"),
-      dataIndex: "meetingType",
-      key: "meetingType",
-      width: "115px",
-      align: "center",
-      ellipsis: true,
-      filterIcon: (filtered) => (
-        <ChevronDown
-          className='filter-chevron-icon-todolist'
-          onClick={handleClickChevronMeetingType}
-          // onClick={() => setVisibleMeetingType(!visibleMeetingType)}
-          defaultChecked
-        />
-      ),
-      filterDropdown: () => (
-        <Dropdown
-          overlay={filterMenu}
-          visible={visibleMeetingType}
-          onVisibleChange={(open) => setVisibleMeetingType(!open)}>
-          <div />
-        </Dropdown>
-      ),
-      render: (text, record) => {
-        const meetingType = Number(record.meetingType);
-        const matchedFilter = isMeetingTypeFilter.find(
-          (data) => meetingType === Number(data.value)
-        );
 
-        console.log(matchedFilter, "matchedFiltermatchedFilter");
-        return record.isQuickMeeting && meetingType === 1
-          ? t("Quick-meeting")
-          : t(matchedFilter)
-            ? t(matchedFilter.text)
-            : "";
+      // ===== Meeting Type =====
+      {
+        title: (
+          <span className='d-flex justify-content-center align-items-center'>
+            {t("Meeting-type")}
+          </span>
+        ),
+        dataIndex: "meetingType",
+        key: "meetingType",
+        width: 140,
+        align: "center",
+        filters: isMeetingTypeFilter.map((filter) => ({
+          text: filter.text,
+          value: filter.value,
+        })),
+        defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
+        filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) =>
+          Number(record.meetingType) === Number(value),
+        filterIcon: (filtered) => (
+          <ChevronDown
+            className={`filter-chevron-icon-todolist ${
+              filtered ? "active" : ""
+            }`}
+          />
+        ),
+        render: (_, record) => {
+          const meetingType = Number(record.meetingType);
+          const matchedFilter = isMeetingTypeFilter.find(
+            (f) => Number(f.value) === meetingType
+          );
+          if (record.isQuickMeeting && meetingType === 1)
+            return t("Quick-meeting");
+          return matchedFilter ? t(matchedFilter.text) : "";
+        },
       },
-    },
-    {
-      dataIndex: "Chat",
-      key: "Chat",
-      width: "85px",
-      align: "center",
-      render: (text, record) => {
-        return (
-          <>
-            <div className={styles["icon-wrapper"]}>
-              {record.isAttachment ? (
-                <span>
-                  <Tooltip placement='topRight' title={t("ClipIcon")}>
-                    <img
-                      src={ClipIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
-                    />
-                  </Tooltip>
-                </span>
-              ) : null}
 
-              {record.isVideoCall ? (
-                <span>
-                  <img
-                    src={VideoIcon}
-                    alt=''
-                    title={t("Video")}
-                    draggable='false'
-                  />
-                </span>
-              ) : null}
-              {record.isChat ? (
-                <span onClick={(e) => groupChatInitiation(record)}>
-                  <Tooltip placement='topLeft' title={t("Chat")}>
-                    <img
-                      src={CommentIcon}
-                      className='cursor-pointer'
-                      alt=''
-                      draggable='false'
-                    />
-                  </Tooltip>
-                </span>
-              ) : null}
-              {record.status === "9" &&
-                (record.isOrganizer || record.isPrimaryOrganizer) ? (
-                <Tooltip placement='topLeft' title={t("Attendance")}>
-                  <img
-                    src={member}
-                    className='cursor-pointer'
-                    alt=''
-                    draggable='false'
-                    onClick={() => onClickDownloadIcon(record.pK_MDID)}
-                  />
-                </Tooltip>
-              ) : null}
-            </div>
-          </>
-        );
-      },
-    },
-    {
-      dataIndex: "Join",
-      key: "Join",
-      width: "80px",
-      align: "center",
-      render: (text, record) => {
-        console.log("end meeting chaek", record);
-        const startMeetingRequest = {
-          VideoCallURL: record.videoCallURL,
-          MeetingID: Number(record.pK_MDID),
-          StatusID: 10,
-        };
-        let meetingDateTime = record.dateOfMeeting + record.meetingStartTime;
-        const currentDateObj = new Date(
-          currentUTCDateTime.substring(0, 4), // Year
-          parseInt(currentUTCDateTime.substring(4, 6)) - 1, // Month (0-based)
-          currentUTCDateTime.substring(6, 8), // Day
-          currentUTCDateTime.substring(8, 10), // Hours
-          currentUTCDateTime.substring(10, 12), // Minutes
-          currentUTCDateTime.substring(12, 14) // Seconds
-        );
+      // ===== Action Column =====
+      {
+        title: "",
+        width: 110,
+        key: "action",
+        align: "center",
+        render: (_, record) => {
+          const {
+            dateOfMeeting,
+            meetingStartTime,
+            status,
+            isQuickMeeting,
+            isOrganizer,
+            isParticipant,
+            isAgendaContributor,
+            pK_MDID,
+          } = record;
 
-        const meetingDateObj = new Date(
-          meetingDateTime.substring(0, 4), // Year
-          parseInt(meetingDateTime.substring(4, 6)) - 1, // Month (0-based)
-          meetingDateTime.substring(6, 8), // Day
-          meetingDateTime.substring(8, 10), // Hours
-          meetingDateTime.substring(10, 12), // Minutes
-          meetingDateTime.substring(12, 14) // Seconds
-        );
+          const meetingDateTime = dateOfMeeting + meetingStartTime;
+          const currentUTCDateTime = getCurrentDateTimeUTC();
 
-        // Calculate the time difference in milliseconds
-        const timeDifference = meetingDateObj - currentDateObj;
+          // Convert string datetime to Date objects
+          const parseDateTime = (dateTimeStr) =>
+            new Date(
+              dateTimeStr.substring(0, 4), // Year
+              parseInt(dateTimeStr.substring(4, 6), 10) - 1, // Month
+              dateTimeStr.substring(6, 8), // Day
+              dateTimeStr.substring(8, 10), // Hours
+              dateTimeStr.substring(10, 12), // Minutes
+              dateTimeStr.substring(12, 14) // Seconds
+            );
 
-        // Convert milliseconds to minutes
-        const minutesDifference = Math.floor(timeDifference / (1000 * 60));
-        const isButtonShown = startMeetingButton.find(
-          (btnData, index) =>
-            Number(btnData.meetingID) === Number(record.pK_MDID)
-        );
-        if (Number(record.status) === 1) {
-          if (record.isParticipant) {
-          } else if (record.isAgendaContributor) {
-          } else {
-            if (
-              // startMeetingButton === true
-              (record.isQuickMeeting === true &&
-                minutesDifference < minutesAgo) ||
-              (record.isQuickMeeting === true &&
-                record.pK_MDID === isButtonShown?.meetingID &&
-                isButtonShown?.showButton)
-            ) {
+          const currentDateObj = parseDateTime(currentUTCDateTime);
+          const meetingDateObj = parseDateTime(meetingDateTime);
+
+          const minutesDifference = Math.floor(
+            (meetingDateObj - currentDateObj) / (1000 * 60)
+          );
+          const meetingCurrentStatus = Number(status);
+
+          const isButtonShown = startMeetingButton.find(
+            (btnData) => Number(btnData.meetingID) === Number(pK_MDID)
+          );
+
+          const canStartMeeting =
+            (meetingCurrentStatus === 1 &&
+              isOrganizer &&
+              minutesDifference < minutesAgo) ||
+            (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
+
+          console.log(
+            {
+              canStartMeeting,
+              meetingCurrentStatus,
+              minutesDifference,
+              minutesAgo,
+              pK_MDID,
+              isButtonShown,
+            },
+            "canStartMeetingcanStartMeeting"
+          );
+
+          const handleClick = (actionType) =>
+            onMeetingAction(actionType, record);
+
+          // ===== UPCOMING =====
+          if (meetingCurrentStatus === 1) {
+            if (isOrganizer) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <Button
-                    text={t("Start-meeting")}
-                    className={styles["Start-Meeting"]}
-                    onClick={() => {
-                      dispatch(
-                        UpdateOrganizersMeeting(
-                          record.isQuickMeeting,
-                          navigate,
-                          t,
-                          4,
-                          startMeetingRequest,
-                          setEditorRole,
-                          setAdvanceMeetingModalID,
-                          setDataroomMapFolderId,
-                          setSceduleMeeting,
-                          setViewFlag,
-                          setEditFlag
-                        )
-                      );
-                      setEditorRole({
-                        status: record.status,
-                        role: "Organizer",
-                        isPrimaryOrganizer: record.isPrimaryOrganizer,
-                      });
-                      setVideoTalk({
-                        isChat: record.isChat,
-                        isVideoCall: record.isVideoCall,
-                        talkGroupID: record.talkGroupID,
-                      });
-                      localStorage.setItem("videoCallURL", record.videoCallURL);
-                      localStorage.setItem("meetingTitle", record.title);
-                      localStorage.setItem(
-                        "isMinutePublished",
-                        record.isMinutePublished
-                      );
-                    }}
+                <div className='d-flex justify-content-center align-items-center'>
+                  <CustomButton
+                    text={
+                      canStartMeeting ? t("Start-meeting") : t("Edit-meeting")
+                    }
+                    className={
+                      canStartMeeting
+                        ? styles.StartMeetingButton
+                        : styles.EditMeetingButton
+                    }
+                    onClick={() =>
+                      handleClick(
+                        canStartMeeting ? "START_MEETING" : "EDIT_MEETING"
+                      )
+                    }
                   />
-                </span>
+                </div>
               );
-            } else if (
-              (record.isQuickMeeting === false &&
-                minutesDifference < minutesAgo) ||
-              (record.isQuickMeeting === false &&
-                record.pK_MDID === isButtonShown?.meetingID &&
-                isButtonShown?.showButton)
-            ) {
+            }
+            if (isAgendaContributor) {
               return (
-                <span className='d-flex justify-content-center'>
-                  <Button
-                    text={t("Start-meeting")}
-                    className={styles["Start-Meeting"]}
-                    onClick={() => {
-                      console.log(
-                        "end meeting chaek",
-                        startMeetingRequest,
-                        record
-                      );
-                      dispatch(
-                        UpdateOrganizersMeeting(
-                          record.isQuickMeeting,
-                          navigate,
-                          t,
-                          3,
-                          startMeetingRequest,
-                          setEditorRole,
-                          // setAdvanceMeetingModalID,
-                          setDataroomMapFolderId,
-                          setViewAdvanceMeetingModal,
-                          setAdvanceMeetingModalID,
-                          setViewAdvanceMeetingModal,
-                          record.isPrimaryOrganizer
-                        )
-                      );
-                      setVideoTalk({
-                        isChat: record.isChat,
-                        isVideoCall: record.isVideoCall,
-                        talkGroupID: record.talkGroupID,
-                      });
-                      localStorage.setItem("videoCallURL", record.videoCallURL);
-                      localStorage.setItem("currentMeetingID", record.pK_MDID);
-                      localStorage.setItem(
-                        "isMinutePublished",
-                        record.isMinutePublished
-                      );
-                      localStorage.setItem("meetingTitle", record.title);
-                      setAdvanceMeetingModalID(record.pK_MDID);
-                      dispatch(viewMeetingFlag(true));
-                      // setViewAdvanceMeetingModal(true);
-                      // dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                      dispatch(scheduleMeetingPageFlag(false));
-                      setEditorRole({
-                        status: 10,
-                        role: "Organizer",
-                        isPrimaryOrganizer: record.isPrimaryOrganizer,
-                      });
-                    }}
+                <div className='d-flex justify-content-center align-items-center'>
+                  <CustomButton
+                    text={t("Contribute-agenda")}
+                    className={styles.ContributeAgendaButton}
+                    onClick={() => handleClick("CONTRIBUTE_AGENDA")}
                   />
-                </span>
+                </div>
+              );
+            }
+            if (isParticipant) {
+              return (
+                <div className='d-flex justify-content-center align-items-center'>
+                  <CustomButton
+                    text={t("View-meeting")}
+                    className={styles.ViewMeetingButton}
+                    onClick={() => handleClick("VIEW_MEETING")}
+                  />
+                </div>
               );
             }
           }
-        } else if (Number(record.status) === 10) {
-          if (record.isParticipant) {
-            return (
-              <span className='d-flex justify-content-center'>
-                <Button
-                  text={t("Join-meeting")}
-                  className={styles["joining-Meeting"]}
-                  onClick={() => {
-                    handleViewMeeting(
-                      record.videoCallURL,
-                      record.pK_MDID,
-                      record.isQuickMeeting,
-                      record.status
-                    );
-                    setEditorRole({
-                      status: record.status,
-                      role: "Participant",
-                      isPrimaryOrganizer: false,
-                    });
-                    setVideoTalk({
-                      isChat: record.isChat,
-                      isVideoCall: record.isVideoCall,
-                      talkGroupID: record.talkGroupID,
-                    });
-                    localStorage.setItem("videoCallURL", record.videoCallURL);
 
-                    // dispatch(viewMeetingFlag(true));
-                    localStorage.setItem(
-                      "isMinutePublished",
-                      record.isMinutePublished
-                    );
-                    localStorage.setItem("meetingTitle", record.title);
-                  }}
-                />
-              </span>
-            );
-          } else if (record.isAgendaContributor) {
+          // ===== ACTIVE =====
+          if (meetingCurrentStatus === 10) {
             return (
-              <span className='d-flex justify-content-center'>
-                <Button
+              <div className='d-flex justify-content-center align-items-center'>
+                <CustomButton
                   text={t("Join-meeting")}
-                  className={styles["joining-Meeting"]}
-                  onClick={() => {
-                    handleViewMeeting(
-                      record.videoCallURL,
-                      record.pK_MDID,
-                      record.isQuickMeeting,
-                      record.status
-                    );
-                    // setIsOrganisers(isOrganiser);
-                    setEditorRole({
-                      status: record.status,
-                      role: "Agenda Contributor",
-                      isPrimaryOrganizer: false,
-                    });
-                    setVideoTalk({
-                      isChat: record.isChat,
-                      isVideoCall: record.isVideoCall,
-                      talkGroupID: record.talkGroupID,
-                    });
-                    localStorage.setItem("videoCallURL", record.videoCallURL);
-
-                    dispatch(viewMeetingFlag(true));
-                    localStorage.setItem(
-                      "isMinutePublished",
-                      record.isMinutePublished
-                    );
-                    localStorage.setItem("meetingTitle", record.title);
-                  }}
+                  className={styles.JoinMeetingButton}
+                  onClick={() => handleClick("JOIN_MEETING")}
                 />
-              </span>
-            );
-          } else if (record.isOrganizer) {
-            return (
-              <span className='d-flex justify-content-center'>
-                <Button
-                  text={t("Join-meeting")}
-                  className={styles["joining-Meeting"]}
-                  onClick={() => {
-                    handleViewMeeting(
-                      record.videoCallURL,
-                      record.pK_MDID,
-                      record.isQuickMeeting,
-                      record.status
-                    );
-                    // setIsOrganisers(isOrganiser);
-                    setEditorRole({
-                      status: record.status,
-                      role: "Organizer",
-                      isPrimaryOrganizer: record.isPrimaryOrganizer,
-                    });
-                    setVideoTalk({
-                      isChat: record.isChat,
-                      isVideoCall: record.isVideoCall,
-                      talkGroupID: record.talkGroupID,
-                    });
-                    localStorage.setItem("videoCallURL", record.videoCallURL);
-
-                    dispatch(viewMeetingFlag(true));
-                    localStorage.setItem(
-                      "isMinutePublished",
-                      record.isMinutePublished
-                    );
-                    localStorage.setItem("meetingTitle", record.title);
-                  }}
-                />
-              </span>
+              </div>
             );
           }
-        } else if (
-          Number(record.status) === 9 &&
-          record.isOrganizer &&
-          record.isQuickMeeting === false
-        ) {
-          return (
-            <>
-              <span className='d-flex justify-content-center'>
-                <Button
-                  text={t("Download")}
-                  className={styles["Board-Deck"]}
-                  onClick={() => handleClickDownloadBtn(record)}
-                // onClick={() => {
-                //   boardDeckOnClick(record);
-                //   setEditorRole({
-                //     status: record.status,
-                //     role: record.isParticipant
-                //       ? "Participant"
-                //       : record.isAgendaContributor
-                //       ? "Agenda Contributor"
-                //       : "Organizer",
-                //     isPrimaryOrganizer: record.isPrimaryOrganizer,
-                //   });
-                //   setVideoTalk({
-                //     isChat: record.isChat,
-                //     isVideoCall: record.isVideoCall,
-                //     talkGroupID: record.talkGroupID,
-                //   });
-                //   localStorage.setItem("videoCallURL", record.videoCallURL);
-                // }}
-                />
-              </span>
-            </>
-          );
-        } else {
-        }
-      },
-    },
 
-    {
-      dataIndex: "Edit",
-      key: "Edit",
-      width: "33px",
-      render: (text, record) => {
-        console.log(record, "checkIsPrimaryOrganizercheckIsPrimaryOrganizer");
-        const isQuickMeeting = record.isQuickMeeting;
-        let checkIsPrimaryOrganizer = record.isPrimaryOrganizer;
-        if (
-          record.status === "8" ||
-          record.status === "4" ||
-          record.status === "9"
-        ) {
+          // ===== ENDED =====
+          if (meetingCurrentStatus === 9 && isOrganizer && !isQuickMeeting) {
+            return (
+              <div className='d-flex justify-content-center align-items-center'>
+                <CustomButton
+                  text={t("Board-deck")}
+                  className={styles.BoardDeckButton}
+                  onClick={() => handleClick("BOARD_DECK")}
+                />
+              </div>
+            );
+          }
+
+          // ===== NOT CONDUCTED =====
+          if (meetingCurrentStatus === 8 && isOrganizer) {
+            return (
+              <div className='d-flex justify-content-center align-items-center'>
+                <CustomButton
+                  text={t("Edit-meeting")}
+                  className={styles.EditMeetingButton}
+                  onClick={() => handleClick("EDIT_MEETING")}
+                />
+              </div>
+            );
+          }
+
+          // ===== Cancelled or others =====
           return null;
-        } else {
-          if (isQuickMeeting) {
-            if (record.isOrganizer) {
-              if (record.status !== "10") {
-                return (
-                  <>
-                    <Row>
-                      <Col
-                        sm={12}
-                        md={12}
-                        lg={12}
-                        className='d-flex justify-content-center'>
-                        <Tooltip placement='topRight' title={t("Edit")}>
-                          <img
-                            src={EditIcon}
-                            className='cursor-pointer'
-                            width='17.11px'
-                            height='17.11px'
-                            alt=''
-                            draggable='false'
-                            onClick={() => {
-                              handleEditMeeting(
-                                record.pK_MDID,
-                                record.isQuickMeeting,
-                                "Organizer",
-                                record
-                              );
-                              setVideoTalk({
-                                isChat: record.isChat,
-                                isVideoCall: record.isVideoCall,
-                                talkGroupID: record.talkGroupID,
-                              });
-                              localStorage.setItem(
-                                "videoCallURL",
-                                record.videoCallURL
-                              );
-                            }}
-                          />
-                        </Tooltip>
-                      </Col>
-                    </Row>
-                  </>
-                );
-              }
-            }
-          } else {
-            if (record.isParticipant) {
-            } else if (record.isOrganizer) {
-              return (
-                <>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
-                        <img
-                          src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
-                          onClick={() => {
-                            handleEditMeeting(
-                              record.pK_MDID,
-                              record.isQuickMeeting,
-                              // record.isAgendaContributor,
-                              "Organizer",
-                              record
-                            );
-                            setVideoTalk({
-                              isChat: record.isChat,
-                              isVideoCall: record.isVideoCall,
-                              talkGroupID: record.talkGroupID,
-                            });
-                            localStorage.setItem(
-                              "videoCallURL",
-                              record.videoCallURL
-                            );
-                            setEditorRole({
-                              status: record.status,
-                              role: "Organizer",
-                              isPrimaryOrganizer: record.isPrimaryOrganizer,
-                            });
-                            setEditMeeting(true);
-                            dispatch(viewMeetingFlag(true));
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-                </>
-              );
-            } else if (record.isAgendaContributor) {
-              return (
-                <>
-                  <Row>
-                    <Col
-                      sm={12}
-                      md={12}
-                      lg={12}
-                      className='d-flex justify-content-center'>
-                      <Tooltip placement='topRight' title={t("Edit")}>
-                        <img
-                          src={EditIcon}
-                          className='cursor-pointer'
-                          width='17.11px'
-                          height='17.11px'
-                          alt=''
-                          draggable='false'
-                          onClick={() => {
-                            handleEditMeeting(
-                              record.pK_MDID,
-                              record.isQuickMeeting,
-                              // record.isAgendaContributor,
-                              "Agenda Contributor",
-                              record
-                            );
-                            setVideoTalk({
-                              isChat: record.isChat,
-                              isVideoCall: record.isVideoCall,
-                              talkGroupID: record.talkGroupID,
-                            });
-                            localStorage.setItem(
-                              "videoCallURL",
-                              record.videoCallURL
-                            );
-                            setEditorRole({
-                              status: record.status,
-                              role: "Agenda Contributor",
-                              isPrimaryOrganizer: record.isPrimaryOrganizer,
-                            });
-                            setEditMeeting(true);
-                            dispatch(viewMeetingFlag(false));
-                          }}
-                        />
-                      </Tooltip>
-                    </Col>
-                  </Row>
-                </>
-              );
-            }
-          }
-        }
+        },
       },
-    },
-  ];
+
+      // ===== More Popover =====
+      {
+        title: "",
+        dataIndex: "meetingAction",
+        key: "meetingAction",
+        width: 110,
+        align: "center",
+        render: (_, record) => {
+          let checkifCancelledAndNotConducted =
+            record.status === 4 || record.status === 8;
+          return (
+            !checkifCancelledAndNotConducted && (
+              <div className='d-flex justify-content-center align-items-center'>
+                <Popover
+                  content={moreButtons(record)}
+                  trigger='click'
+                  overlayClassName='MoreButtons_overlay'
+                  showArrow={false}
+                  placement='bottomRight'>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text='More'
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </Popover>
+              </div>
+            )
+          );
+        },
+      },
+    ];
+  }, [
+    meetingTitleSort,
+    organizerNameSort,
+    meetingTimeSort,
+    meetingDateSort,
+    statusFilterVisible,
+    selectedStatusValues,
+    meetingTypeFilterVisible,
+    selectedMeetingTypeValues,
+    isMeetingTypeFilter,
+    minutesAgo,
+  ]);
+
+  // Handle table sorting and filtering changes
+  const handleTableChange = (pagination, filters, sorter) => {
+    console.log("Table change:", { pagination, filters, sorter });
+
+    // Reset all sort states first
+    setMeetingTitleSort(null);
+    setOrganizerNameSort(null);
+    setMeetingTimeSort(null);
+    setMeetingDateSort(null);
+
+    // Set the active sort based on which column is sorted
+    if (sorter.order) {
+      switch (sorter.columnKey) {
+        case "title":
+          setMeetingTitleSort(sorter.order);
+          break;
+        case "host":
+          setOrganizerNameSort(sorter.order);
+          break;
+        case "time":
+          setMeetingTimeSort(sorter.order);
+          break;
+        case "date":
+          setMeetingDateSort(sorter.order);
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
   //For searching Filed Only
   const handleSearchChange = (event) => {
@@ -2903,6 +4031,7 @@ const NewMeeting = () => {
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     console.log("chek search meeting");
     await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -2931,7 +4060,10 @@ const NewMeeting = () => {
         PageNumber:
           meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
         Length: meetingpageRow !== null ? Number(meetingpageRow) : 50,
-        PublishedMeetings: Number(currentView) === 1 ? true : false,
+        PublishedMeetings:
+          currentView && Number(currentView) === 1 ? true : false,
+        ProposedMeetings:
+          currentView && Number(currentView) === 2 ? true : false,
       };
       console.log("chek search meeting");
       await dispatch(searchNewUserMeeting(navigate, searchData, t));
@@ -3169,7 +4301,7 @@ const NewMeeting = () => {
       if (searchMeetings !== null && searchMeetings !== undefined) {
         setTotalRecords(searchMeetings.totalRecords);
         setMinutesAgo(searchMeetings.meetingStartedMinuteAgo);
-        if (Object.keys(searchMeetings.meetings).length > 0) {
+        if (searchMeetings.meetings.length > 0) {
           // Create a deep copy of the meetings array
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
@@ -3188,9 +4320,11 @@ const NewMeeting = () => {
         }
       } else {
         setRow([]);
-        setDublicatedrows([]);
+        setDuplicatedRows([]);
       }
-    } catch { }
+    } catch (error) {
+      console.log(error);
+    }
   }, [searchMeetings]);
 
   useEffect(() => {
@@ -3240,12 +4374,18 @@ const NewMeeting = () => {
         userDetails: null,
       };
       setRow([newData, ...rows]);
+      setDublicatedrows([newData, ...rows]);
       dispatch(meetingParticipantAdded(null));
     }
     if (mqtMeetingPrRemoved !== null) {
       try {
         let meetingID = mqtMeetingPrRemoved.meetingID;
         setRow((isRowData) => {
+          return isRowData.filter((newData, index) => {
+            return Number(newData.pK_MDID) !== Number(meetingID);
+          });
+        });
+        setDublicatedrows((isRowData) => {
           return isRowData.filter((newData, index) => {
             return Number(newData.pK_MDID) !== Number(meetingID);
           });
@@ -3266,7 +4406,8 @@ const NewMeeting = () => {
         );
 
         setRow(updatedRows);
-      } catch { }
+        setDublicatedrows(updatedRows);
+      } catch {}
     }
   }, [mqttMeetingAcRemoved]);
 
@@ -3292,7 +4433,7 @@ const NewMeeting = () => {
         setDefaultFilterValues(newData);
         setMeetingTypeFilter(meetingtypeFilter);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [getALlMeetingTypes?.meetingTypes]);
 
   const handelChangePagination = async (current, PageSize) => {
@@ -3305,6 +4446,7 @@ const NewMeeting = () => {
       Length: Number(PageSize),
       PublishedMeetings:
         currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     localStorage.setItem("MeetingPageRows", PageSize);
     localStorage.setItem("MeetingPageCurrent", current);
@@ -3329,8 +4471,10 @@ const NewMeeting = () => {
             let updatedRows = [...rows];
             updatedRows[indexToUpdate] = newMeetingData;
             setRow(updatedRows);
+            setDublicatedrows(updatedRows);
           } else {
             setRow([newMeetingData, ...rows]);
+            setDublicatedrows([newMeetingData, ...rows]);
           }
         } catch (error) {
           console.log(error, "Meeting Created and Published");
@@ -3383,6 +4527,18 @@ const NewMeeting = () => {
                 }
               });
             });
+            setDublicatedrows((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
             setStartMeetingButton((prevStateStartBtn) => {
               return prevStateStartBtn.filter(
                 (newBtn, index) =>
@@ -3415,13 +4571,25 @@ const NewMeeting = () => {
                 }
               });
             });
+            setDublicatedrows((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return {
+                    ...item,
+                    status: String(meetingStatusID),
+                  };
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
             setStartMeetingButton((prevStateStartBtn) => {
               return prevStateStartBtn.filter(
                 (newBtn, index) =>
                   Number(newBtn.meetingID) !== Number(meetingID)
               );
             });
-          } catch { }
+          } catch {}
         }
       } catch (error) {
         console.log(error);
@@ -3455,6 +4623,7 @@ const NewMeeting = () => {
           let updatedRows = [...rows];
           updatedRows[indexToUpdate] = endMeetingData;
           setRow(updatedRows);
+          setDublicatedrows(updatedRows);
           if (
             advanceMeetingModalID === endMeetingData.pK_MDID &&
             endMeetingData.status === "9"
@@ -3506,8 +4675,18 @@ const NewMeeting = () => {
                 }
               });
             });
+            setDublicatedrows((rowsData) => {
+              return rowsData.map((item) => {
+                if (item.pK_MDID === meetingID) {
+                  return newMeetingData;
+                } else {
+                  return item; // Return the original item if the condition is not met
+                }
+              });
+            });
           } else {
             setRow([newMeetingData, ...rows]);
+            setDublicatedrows([newMeetingData, ...rows]);
           }
         };
         updateMeeting();
@@ -3530,6 +4709,15 @@ const NewMeeting = () => {
           }
         });
       });
+      setDublicatedrows((rowsData) => {
+        return rowsData.map((item) => {
+          if (item.pK_MDID === meetingID) {
+            return meetingData;
+          } else {
+            return item; // Return the original item if the condition is not met
+          }
+        });
+      });
     }
   }, [CommitteeMeetingMQTT]);
 
@@ -3539,6 +4727,15 @@ const NewMeeting = () => {
         let meetingID = GroupMeetingMQTT.meeting.pK_MDID;
         let meetingData = GroupMeetingMQTT.meeting;
         setRow((rowsData) => {
+          return rowsData.map((item) => {
+            if (item.pK_MDID === meetingID) {
+              return meetingData;
+            } else {
+              return item; // Return the original item if the condition is not met
+            }
+          });
+        });
+        setDublicatedrows((rowsData) => {
           return rowsData.map((item) => {
             if (item.pK_MDID === meetingID) {
               return meetingData;
@@ -3592,6 +4789,20 @@ const NewMeeting = () => {
       console.log(error);
     }
   }, [ResponseMessage]);
+
+  useEffect(() => {
+    try {
+      if (
+        ResponseMessageUserMangementReducer !== "" &&
+        ResponseMessageUserMangementReducer !== undefined
+      ) {
+        showMessage(ResponseMessageUserMangementReducer, "error", setOpen);
+        dispatch(clearMessegesUserManagement());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, [ResponseMessageUserMangementReducer]);
 
   useEffect(() => {
     try {
@@ -3857,19 +5068,10 @@ const NewMeeting = () => {
         }
       }
       console.log("webNotifactionDataRoutecheckFlag");
-    } catch (error) { }
+    } catch (error) {}
 
-    return () => { };
+    return () => {};
   }, [globalFunctionWebnotificationFlag]);
-
-
-  const handleTableChange = (pagination, filters, sorter) => {
-    console.log({ pagination, filters, sorter }, "handleTableChange");
-    if (sorter.columnKey === "title") {
-      setMeetingTitleSort(sorter.order);
-      console.log("handleTableChange title", sorter.order);
-    }
-  }
 
   return (
     <>
@@ -3964,7 +5166,7 @@ const NewMeeting = () => {
           </>
         ) : (
           <>
-            <Row className='mt-2'>
+            <Row>
               <Col
                 sm={12}
                 md={12}
@@ -3976,7 +5178,7 @@ const NewMeeting = () => {
                 <span>
                   <ReactBootstrapDropdown
                     className='SceduleMeetingButton d-inline-block position-relative ms-2'
-                  // onClick={eventClickHandler}
+                    // onClick={eventClickHandler}
                   >
                     <ReactBootstrapDropdown.Toggle
                       title={t("Schedule-a-meeting")}>
@@ -4159,13 +5361,13 @@ const NewMeeting = () => {
                 </div>
               </Col>
             </Row>
-            <Row className='mt-2'>
+            <Row>
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["PaperStylesMeetingTwoPage"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Button
-                        text={t("Published-meetings")}
+                        text={t("Published")}
                         className={
                           Number(currentView) === 1
                             ? styles["publishedMeetingButton-active"]
@@ -4174,71 +5376,146 @@ const NewMeeting = () => {
                         onClick={handlePublishedMeeting}
                       />
                       <Button
-                        text={t("Unpublished-proposed-meetings")}
+                        text={t("Draft")}
+                        className={
+                          Number(currentView) === 3
+                            ? styles["UnpublishedMeetingButton-active"]
+                            : styles["UnpublishedMeetingButton"]
+                        }
+                        onClick={handleDraftMeeting}
+                      />
+                      <Button
+                        text={t("Proposed")}
                         className={
                           Number(currentView) === 2
                             ? styles["UnpublishedMeetingButton-active"]
                             : styles["UnpublishedMeetingButton"]
                         }
-                        onClick={handleUnPublishedMeeting}
+                        onClick={handleProposedMeeting}
                       />
                     </Col>
                   </Row>
                   {Number(currentView) === 2 ? (
-                    <UnpublishedProposedMeeting
-                      viewProposeDatePoll={viewProposeDatePoll}
-                      setViewProposeDatePoll={setViewProposeDatePoll}
-                      setViewProposeOrganizerPoll={setViewProposeOrganizerPoll}
-                      setAdvanceMeetingModalID={setAdvanceMeetingModalID}
-                      setViewAdvanceMeetingModalUnpublish={
-                        setViewAdvanceMeetingModalUnpublish
-                      }
-                      setResponseByDate={setResponseByDate}
-                      setSceduleMeeting={setSceduleMeeting}
-                      setEditorRole={setEditorRole}
-                      setEditMeeting={setEditMeeting}
-                      setCurrentMeetingID={setCurrentMeetingID}
-                      currentMeeting={currentMeetingID}
-                      editorRole={editorRole}
-                      setDataroomMapFolderId={setDataroomMapFolderId}
-                      videoTalk={videoTalk}
-                      setVideoTalk={setVideoTalk}
-                      setProposedNewMeeting={setProposedNewMeeting}
-                      setIsProposedMeetEdit={setIsProposedMeetEdit}
-                    />
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}>
+                        <UnpublishedProposedMeeting
+                          viewProposeDatePoll={viewProposeDatePoll}
+                          setViewProposeDatePoll={setViewProposeDatePoll}
+                          setViewProposeOrganizerPoll={
+                            setViewProposeOrganizerPoll
+                          }
+                          setAdvanceMeetingModalID={setAdvanceMeetingModalID}
+                          setViewAdvanceMeetingModalUnpublish={
+                            setViewAdvanceMeetingModalUnpublish
+                          }
+                          setResponseByDate={setResponseByDate}
+                          setSceduleMeeting={setSceduleMeeting}
+                          setEditorRole={setEditorRole}
+                          setEditMeeting={setEditMeeting}
+                          setCurrentMeetingID={setCurrentMeetingID}
+                          currentMeeting={currentMeetingID}
+                          editorRole={editorRole}
+                          setDataroomMapFolderId={setDataroomMapFolderId}
+                          videoTalk={videoTalk}
+                          setVideoTalk={setVideoTalk}
+                          setProposedNewMeeting={setProposedNewMeeting}
+                          setIsProposedMeetEdit={setIsProposedMeetEdit}
+                          searchFields={searchFields}
+                        />
+                      </Col>
+                    </Row>
+                  ) : Number(currentView) === 3 ? (
+                    <Row className='mt-2'>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}>
+                        <DraftMeeting />
+                      </Col>
+                    </Row>
                   ) : Number(currentView) === 1 ? (
                     <Row className='mt-2'>
-                      <Col lg={12} md={12} sm={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["MainMeetingTablePublished"]}>
                         <>
                           <Table
-                            column={MeetingColoumns}
-                            scroll={{ y: "54vh", x: false }}
-                            pagination={false}
+                            getPopupContainer={(node) =>
+                              node.closest(".ant-table")
+                            }
                             onChange={handleTableChange}
-                            className='newMeetingTable'
+                            className='MeetingTable'
+                            column={columns}
+                            size={"small"}
                             rows={rows}
+                            sticky={true}
+                            pagination={false}
                             locale={{
                               emptyText: <EmptyTableComponent />, // Set your custom empty text here
                             }}
+                            scroll={{
+                              y: "55vh",
+                            }}
+                            footer={() => (
+                              <Row
+                                className={styles["PaginationStyle-Committee"]}>
+                                <Col
+                                  className={"pagination-groups-table"}
+                                  sm={12}
+                                  md={12}
+                                  lg={12}>
+                                  <CustomPagination
+                                    current={
+                                      meetingPageCurrent !== null
+                                        ? Number(meetingPageCurrent)
+                                        : 1
+                                    }
+                                    pageSize={
+                                      meetingpageRow !== null
+                                        ? Number(meetingpageRow)
+                                        : 50
+                                    }
+                                    onChange={handelChangePagination}
+                                    total={totalRecords}
+                                    showSizer={true}
+                                    pageSizeOptionsValues={[
+                                      "30",
+                                      "50",
+                                      "100",
+                                      "200",
+                                    ]}
+                                  />
+                                </Col>
+                              </Row>
+                            )}
                           />
                         </>
                       </Col>
                     </Row>
                   ) : null}
-                  {rows.length > 0 ? (
+                  {/* {rows.length > 0 ? (
                     <>
-                      <Row className='mt-5'>
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className='d-flex justify-content-center '>
+                          className="d-flex justify-content-center mt-2 "
+                        >
                           <Row className={styles["PaginationStyle-Committee"]}>
                             <Col
                               className={"pagination-groups-table"}
                               sm={12}
                               md={12}
-                              lg={12}>
+                              lg={12}
+                            >
                               <CustomPagination
                                 current={
                                   meetingPageCurrent !== null
@@ -4265,7 +5542,7 @@ const NewMeeting = () => {
                         </Col>
                       </Row>
                     </>
-                  ) : null}
+                  ) : null} */}
                 </span>
               </Col>
             </Row>
@@ -4306,6 +5583,7 @@ const NewMeeting = () => {
           boardDeckMeetingTitle={boardDeckMeetingTitle}
         />
       )}
+      {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
       {deleteMeetingConfirmationModal && <DeleteMeetingConfirmationModal />}
     </>
   );

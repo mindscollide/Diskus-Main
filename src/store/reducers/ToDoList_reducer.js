@@ -538,6 +538,9 @@ const toDoListReducer = (state = initialState, action) => {
         getDashboardTaskCountMQTT: newRecords,
       };
     }
+    case actions.TASK_REDUCER_LOADER: {
+      return { ...state, Loading: action.payload };
+    }
     default:
       return { ...state };
   }

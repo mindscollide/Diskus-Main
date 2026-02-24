@@ -1,6 +1,5 @@
 .NewMeeting_container {
-  width: 98% !important;
-  margin: 0 auto !important;
+  max-width: 100% !important;
 }
 
 .NewMeetinHeading {
@@ -195,18 +194,9 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .PaginationStyle-Committee {
-  background-color: #fff !important;
-  display: flex !important;
-  justify-content: center !important;
-  width: auto !important;
   padding: 12px 40px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
-}
-
-body[dir="rtl"] .PaginationStyle-Committee {
-  width: 100% !important;
-  padding: 12px 10px !important;
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
@@ -235,11 +225,13 @@ body[dir="rtl"] .PaginationStyle-Committee {
   border-radius: 8px !important;
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
-  --Paper-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
-    0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  --Paper-shadow:
+    0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   box-shadow: var(--Paper-shadow);
   display: inline-block !important;
   background: #fff !important;
+  min-height: calc(100vh - 155px);
 }
 
 .UnpublishedMeetingButton {
@@ -390,4 +382,236 @@ body[dir="rtl"] .ResetOkBtn {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+/* New Style */
+
+.NewMeetinHeading {
+  color: #6172d6 !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+}
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 8px;
+}
+.Search-Box_meeting {
+  max-width: 100%;
+  width: 100%;
+  /* width: 502px !important; */
+  height: 242px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  position: absolute !important;
+  right: 0;
+  z-index: 5 !important;
+  top: 39px !important;
+}
+
+.SearchButtonMeetings {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.ResetButtonMeeting {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  font-weight: 600 !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+.Meeting_Wrapper {
+  padding: 10px 20px 20px 10px !important;
+  height: calc(100% - 89px);
+}
+
+.MeetingListContainer {
+  background: #fff !important;
+  max-width: 100% !important;
+  padding: 10px 20px;
+  border-radius: 4px;
+  border: 1px solid #e1e1e1;
+  min-height: 80vh;
+}
+
+.tabButton_Active {
+  padding: 7px 12px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  background: #6172d6 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+}
+
+.tabButton {
+  padding: 7px 12px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  font-weight: 600 !important;
+  color: #5a5a5a !important;
+}
+
+.EndMeetingButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #f16b6b !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+.StartMeetingButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #55ce5c !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+.ContributeAgendaButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+.ViewMeetingButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+
+.JoinMeetingButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #f16b6b !important;
+  border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+
+.EditMeetingButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #ecefff !important;
+  border: none !important;
+  display: flex;
+  color: #6172d6 !important;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+
+.MoreMeetingButton {
+  max-width: 128px !important;
+  max-height: 25px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+.BoardDeckButton {
+  max-width: 118px !important;
+  max-height: 25px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 10px;
+  font-weight: 400;
+  font-size: 0.8em;
+  border-radius: 4px !important;
+  white-space: nowrap;
+}
+.morebuttons {
+  display: flex;
+  flex-direction: column;
+}
+
+.morebtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 5px;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  color: #5a5a5a;
+}
+.morebtn::after {
+  content: "";
+  position: absolute;
+  background-color: #a2a2a2;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+}
+.morebtn:last-child::after {
+  display: none;
+}
+
+.more-btn:hover {
+  background: #f5f5f5;
+}
+.tableRow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.MainMeetingTablePublished {
+  height: auto !important;
+  min-height: 60vh !important;
 }

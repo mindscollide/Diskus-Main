@@ -2,12 +2,14 @@ import React, { useLayoutEffect, useState } from "react";
 import { Progress } from "antd";
 import "./ProgressLoader.css";
 
-const ProgressLoader = ({ progress }) => {
+export const ProgressLoader = ({ progress }) => {
   const currentUrl = window.location.href;
   const [twoColors, setTwoColors] = useState({
     "0%": "#6172d6",
     "100%": "#49dbdb",
   });
+
+  console.log(currentUrl, "currentUrlcurrentUrl");
 
   useLayoutEffect(() => {
     const currentLanguage = localStorage.getItem("i18nextLng");
@@ -18,16 +20,17 @@ const ProgressLoader = ({ progress }) => {
     setTwoColors(updatedColors);
   }, []); // Dependency array ensures this runs once after component mounts
 
+  console.log(progress, "progressprogress");
   return (
     <section>
       {/* Commenting the Progress bar due to 0011401: Diskus Loader (CR Priority 128) */}
-      {/* <Progress
+      <Progress
         percent={progress}
         strokeColor={twoColors}
-        className={currentUrl.toLowerCase().includes("/Diskus".toLowerCase()) || currentUrl.toLowerCase().includes("/Admin".toLowerCase()) ?  "Progress_bar_Loader" : "Progress_bar_Loader_auth"}
-      /> */}
+        showInfo={false}
+        className={"Progress_bar"}
+        status="active"
+      />
     </section>
   );
 };
-
-export default ProgressLoader;

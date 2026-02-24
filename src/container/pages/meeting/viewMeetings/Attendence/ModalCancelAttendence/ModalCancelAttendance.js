@@ -23,11 +23,11 @@ const ModalCancelAttendance = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const attendanceConfirmationModal = useSelector(
-    (state) => state.NewMeetingreducer.attendanceConfirmationModal
+    (state) => state.NewMeetingreducer.attendanceConfirmationModal,
   );
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
-  let meetingPageCurrent =localStorage.getItem("MeetingPageCurrent");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let currentView = localStorage.getItem("MeetingCurrentView");
 
   const handleNOFunctionality = () => {
@@ -56,6 +56,8 @@ const ModalCancelAttendance = ({
           Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
           PublishedMeetings:
             currentView && Number(currentView) === 1 ? true : false,
+          ProposedMeetings:
+            currentView && Number(currentView) === 2 ? true : false,
         };
         console.log("chek search meeting");
         dispatch(searchNewUserMeeting(navigate, searchData, t));

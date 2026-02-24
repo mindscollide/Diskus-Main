@@ -12,6 +12,7 @@ const Accordian = ({
     <>
       <Accordion
         flush
+        alwaysOpen={true}
         defaultActiveKey={defaultActiveKey}
         className={className}
       >

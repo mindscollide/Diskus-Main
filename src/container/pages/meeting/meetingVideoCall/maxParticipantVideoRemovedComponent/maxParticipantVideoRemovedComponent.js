@@ -35,6 +35,8 @@ const MaxParticipantVideoRemovedComponent = () => {
     const emptyArray = [];
     localStorage.setItem("callerStatusObject", JSON.stringify(emptyArray));
     localStorage.setItem("activeCall", false);
+    sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
+
     localStorage.setItem("isCaller", false);
     localStorage.setItem("acceptedRoomID", 0);
     localStorage.setItem("activeRoomID", 0);

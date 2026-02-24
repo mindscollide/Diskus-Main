@@ -409,21 +409,21 @@ const ReviewSignature = () => {
               status?.toLowerCase() === "Pending Signature".toLowerCase()
                 ? styles["pendingStatus"]
                 : status?.toLowerCase() === "Signed".toLowerCase()
-                  ? styles["signedStatus"]
-                  : status?.toLowerCase() === "Declined".toLowerCase()
-                    ? styles["declineStatus"]
-                    : styles["draftStatus"]
+                ? styles["signedStatus"]
+                : status?.toLowerCase() === "Declined".toLowerCase()
+                ? styles["declineStatus"]
+                : styles["draftStatus"]
             }
           >
             {status?.toLowerCase() === "Pending Signature".toLowerCase()
               ? t("Signature-pending")
               : status?.toLowerCase() === "Signed".toLowerCase()
-                ? t("Signed")
-                : status?.toLowerCase() === "Declined".toLowerCase()
-                  ? t("Declined")
-                  : status?.toLowerCase() === "draftStatus".toLowerCase()
-                    ? t("draftStatus")
-                    : null}
+              ? t("Signed")
+              : status?.toLowerCase() === "Declined".toLowerCase()
+              ? t("Declined")
+              : status?.toLowerCase() === "draftStatus".toLowerCase()
+              ? t("draftStatus")
+              : null}
           </p>
         );
       },
@@ -460,8 +460,6 @@ const ReviewSignature = () => {
     }
   });
 
-
-
   useEffect(() => {
     if (
       getAllPendingApprovalStatuses !== null &&
@@ -494,7 +492,7 @@ const ReviewSignature = () => {
         let { data } = getAllPendingForApprovalStats;
 
         setApprovalStats(data);
-      } catch { }
+      } catch {}
     }
   }, [getAllPendingForApprovalStats]);
 
@@ -518,7 +516,7 @@ const ReviewSignature = () => {
             setOriginalData(pendingApprovals);
           }
         }
-      } catch (error) { }
+      } catch (error) {}
     }
   }, [listOfPendingForApprovalSignatures]);
 
@@ -538,21 +536,23 @@ const ReviewSignature = () => {
           setTotalDataLength((prev) => prev + 1);
         }
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [workflowsignaturedocument]);
 
   useEffect(() => {
     try {
       if (workflowsignaturedocumentActionByMe !== null) {
         const { data } = workflowsignaturedocumentActionByMe;
+
+        console.log(data, "datadatadata");
         setReviewSignature((reviewSignatureCopy) =>
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                ...data2,
-                status: data.status,
-                actorStatusID: data.actorStatusID,
-              }
+                  ...data2,
+                  status: data.status,
+                  actorStatusID: data.actorStatusID,
+                }
               : data2
           )
         );
@@ -569,10 +569,10 @@ const ReviewSignature = () => {
           reviewSignatureCopy.map((data2) =>
             data2.workFlowID === data.workFlowID
               ? {
-                ...data2,
-                status: data.status,
-                workFlowStatusID: data.workFlowStatusID,
-              }
+                  ...data2,
+                  status: data.status,
+                  workFlowStatusID: data.workFlowStatusID,
+                }
               : data2
           )
         );
