@@ -76,6 +76,10 @@ const Talk = () => {
     emptyComplianceState,
     setMainComplianceTabs,
     setShowViewCompliance,
+    setComplianceStandingReport,
+    setEndOfComplianceReport,
+    setEndOfQuarterReport,
+    setAccumulativeReport,
   } = useComplianceContext();
   const {
     pendingApprovalsTabCount,
@@ -88,58 +92,58 @@ const Talk = () => {
   //Getting api result from the reducer
   const AllUserChats = useSelector((state) => state.talkStateData.AllUserChats);
   const talkSocketUnreadMessageCount = useSelector(
-    (state) => state.talkStateData.talkSocketUnreadMessageCount
+    (state) => state.talkStateData.talkSocketUnreadMessageCount,
   );
 
   const VideoChatPanelReducer = useSelector(
-    (state) => state.videoFeatureReducer.VideoChatPanel
+    (state) => state.videoFeatureReducer.VideoChatPanel,
   );
   const MissedCallCountData = useSelector(
-    (state) => state.VideoMainReducer.MissedCallCountData
+    (state) => state.VideoMainReducer.MissedCallCountData,
   );
   const MissedCallCountMqttData = useSelector(
-    (state) => state.VideoMainReducer.MissedCallCountMqttData
+    (state) => state.VideoMainReducer.MissedCallCountMqttData,
   );
   const ActiveChatBoxGS = useSelector(
-    (state) => state.talkFeatureStates.ActiveChatBoxGS
+    (state) => state.talkFeatureStates.ActiveChatBoxGS,
   );
 
   const scheduleMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
   );
   const viewProposeDateMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag,
   );
   const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag,
   );
   const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag,
   );
   const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag,
   );
   const proposeNewMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag,
   );
   const viewMeetingFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
+    (state) => state.NewMeetingreducer.viewMeetingFlag,
   );
 
   const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
+    (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
 
   const PendingApprovalCountData = useSelector(
-    (state) => state.MinutesReducer.PendingApprovalCountData
+    (state) => state.MinutesReducer.PendingApprovalCountData,
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (state) => state.videoFeatureReducer.presenterViewHostFlag,
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
   );
 
   let currentLang = localStorage.getItem("i18nextLng");
@@ -228,6 +232,10 @@ const Talk = () => {
     setMainComplianceTabs(1);
     emptyComplianceState();
     setShowViewCompliance(false);
+    setComplianceStandingReport(false);
+    setEndOfComplianceReport(false);
+    setEndOfQuarterReport(false);
+    setAccumulativeReport(false);
   };
 
   //Setting state data of global response all chat to chatdata
@@ -249,7 +257,7 @@ const Talk = () => {
       }
     },
     [presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting],
-    dispatch
+    dispatch,
   );
   const handleMeetingPendingApprovals = async () => {
     if (
@@ -334,24 +342,24 @@ const Talk = () => {
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       dispatch(
         GetAllUsersGroupsRoomsList(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       dispatch(
         GetAllUserChats(
           navigate,
           parseInt(currentUserId),
           parseInt(currentOrganizationId),
-          t
-        )
+          t,
+        ),
       );
       dispatch(headerShowHideStatus(true));
       dispatch(footerShowHideStatus(true));
@@ -378,7 +386,7 @@ const Talk = () => {
       AllUserChats.AllUserChatsData.length !== 0
     ) {
       setUnreadMessageCount(
-        AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount
+        AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount,
       );
     }
   }, [AllUserChats?.AllUserChatsData?.unreadMessageCount]);
@@ -396,7 +404,7 @@ const Talk = () => {
         setUnreadMessageCount(mqttUnreadMessageCount.data[0].totalCount);
       } else {
         setUnreadMessageCount(
-          AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount
+          AllUserChats?.AllUserChatsData?.unreadMessageCount[0]?.totalCount,
         );
       }
     }
@@ -502,7 +510,7 @@ const Talk = () => {
   console.log(
     pendingApprovalsTabCount.pendingMinutes,
     pendingApprovalsTabCount.pendingSignature,
-    "IOS"
+    "IOS",
   );
   return (
     <>
@@ -564,7 +572,7 @@ const Talk = () => {
                   ? convertNumbersInString(
                       (pendingApprovalsTabCount.pendingMinutes || 0) +
                         (pendingApprovalsTabCount.pendingSignature || 0),
-                      currentLang
+                      currentLang,
                     )
                   : ""}
               </span>
@@ -716,8 +724,8 @@ const Talk = () => {
                   activeVideoIcon && subIcons
                     ? "talk_subIcon with-hover"
                     : !activeVideoIcon && subIcons
-                    ? "talk_subIcon"
-                    : "talk_subIcon_hidden"
+                      ? "talk_subIcon"
+                      : "talk_subIcon_hidden"
                 }
                 onClick={videoIconClick}
               >
@@ -765,8 +773,8 @@ const Talk = () => {
                   ActiveChatBoxGS && subIcons
                     ? "talk_subIcon with-hover"
                     : !ActiveChatBoxGS && subIcons
-                    ? "talk_subIcon"
-                    : "talk_subIcon_hidden"
+                      ? "talk_subIcon"
+                      : "talk_subIcon_hidden"
                 }
                 onClick={iconClick}
               >

@@ -82,6 +82,7 @@ const ModalToDoListChecklist = ({
   const calendRef = useRef();
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
+  let createrName = localStorage.getItem("name");
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
@@ -501,6 +502,14 @@ const ModalToDoListChecklist = ({
         });
 
         setAllAsgneeOption(AllAsignee);
+        if (selectedAsignee === "") {
+          const AssingSelf = {
+            value: createrID,
+            label: createrName,
+          };
+          setTaskAssignedTo([AssingSelf.value]);
+          setSelectedAsignee(AssingSelf);
+        }
       } catch (error) {}
     }
   }, [AllAssigneesData]);
@@ -525,6 +534,7 @@ const ModalToDoListChecklist = ({
 
   const onChangeSearch = (item) => {
     // console.log(item, "itemitemitem");
+    console.log(item, "onChangeSearch");
     // setPresenterValue(item);
     setTaskAssignedTo([item.value]);
     setSelectedAsignee(item);

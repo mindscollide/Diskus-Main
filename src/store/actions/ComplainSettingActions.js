@@ -3160,7 +3160,7 @@ const GetComplianceQuarterlyTasksDashboardFail = (message) => {
   };
 };
 
-const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
+const GetComplianceQuarterlyTasksDashboardAPI = (navigate, Data, t) => {
   return (dispatch) => {
     dispatch(GetComplianceQuarterlyTasksDashboardInit());
     let form = new FormData();
@@ -3169,13 +3169,13 @@ const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
       GetComplianceQuarterlyTasksDashboard.RequestMethod,
     );
     // ✅ send complete payload as JSON string
-    // form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(Data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
+          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -5051,6 +5051,7 @@ const complianceChecklistDeletedMQTT = (mqttData) => {
 
 // For COMPLIANCE UPDATED MQTT
 const complianceUpdateMQTT = (mqttData) => {
+  console.log(mqttData, "mqttDatamqttData");
   return {
     type: actions.COMPLIANCE_UPDATED_MQTT,
     payload: mqttData,

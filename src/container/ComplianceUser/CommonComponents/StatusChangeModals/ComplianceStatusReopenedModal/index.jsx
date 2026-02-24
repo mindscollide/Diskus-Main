@@ -21,6 +21,7 @@ import { maxFileSize } from "../../../../../commen/functions/utils";
 import { formatDateToYMD, parseUTCDateString } from "../../commonFunctions";
 const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
+  const [tempDueDateChange, setTempDueDateChange] = useState("");
 
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
@@ -59,6 +60,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     setComplianceDetailsState((prev) => ({
       ...prev,
       status: tempSelectComplianceStatus,
+      dueDate: tempDueDateChange,
     }));
   };
 
@@ -87,6 +89,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       ...prev,
       dueDate: meetingDateValueFormat2,
     }));
+    setTempDueDateChange(meetingDateValueFormat2);
   };
 
   let previousFileList = [];
@@ -112,14 +115,14 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       }
 
       let fileExists = complianceReopenDetailsState.attachments.some(
-        (oldFileData) => oldFileData.name === fileData.name,
+        (oldFileData) => oldFileData.name === fileData.name
       );
 
       if (!size) {
         showMessage(
           t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
-          setOpen,
+          setOpen
         );
       } else if (!sizezero) {
         showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
@@ -142,6 +145,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     }));
   };
   console.log(complianceDetailsState.dueDate, "Current DueDate");
+
   return (
     <Modal
       show={comlianceStatusReopenedModal}
@@ -251,7 +255,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                             }}
                           />
                         );
-                      },
+                      }
                     )
                   : null}
               </section>

@@ -245,6 +245,8 @@ const CreateEditViewComplianceChecklist = () => {
       setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
+      setGetCheckListData([]); // ✅ IMPORTANT FIX
+      setExpandedCheckListIds([]); // optional but clean
     }
   }, [GetComplianceChecklistsByComplianceId]);
 

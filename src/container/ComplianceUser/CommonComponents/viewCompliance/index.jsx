@@ -281,7 +281,9 @@ const ViewCompliance = () => {
                             {`${complianceDetailsState.progressPercent}%`}
                           </span>
                         </div>
-                        <ProgressLoader progress={20} />
+                        <ProgressLoader
+                          progress={complianceDetailsState.progressPercent}
+                        />
                       </div>
                     </>
                   ) : (
