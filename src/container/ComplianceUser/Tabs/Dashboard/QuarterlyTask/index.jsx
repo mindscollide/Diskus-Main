@@ -50,7 +50,7 @@ const QuarterlyTask = () => {
             <Col xs={12}>
               <div className={styles.progressWrapper}>
                 <div className={styles.progressLabel}>
-                  {GetComlianceQuarterlyTasksDashboardData?.completedTasks ??
+                  {GetComlianceQuarterlyTasksDashboardData?.percentCompleted ??
                     "0"}
                   %
                 </div>

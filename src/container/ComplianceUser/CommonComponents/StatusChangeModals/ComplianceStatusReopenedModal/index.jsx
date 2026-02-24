@@ -19,8 +19,9 @@ import CustomUpload from "../../../../../components/elements/upload/Upload";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
 import { formatDateToYMD, parseUTCDateString } from "../../commonFunctions";
-const ComplianceStatusReopenedModal = () => {
+const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
+  const [tempDueDateChange, setTempDueDateChange] = useState("");
 
   const [fileForSend, setFileForSend] = useState([]);
   const [fileSize, setFileSize] = useState(0);
@@ -59,6 +60,7 @@ const ComplianceStatusReopenedModal = () => {
     setComplianceDetailsState((prev) => ({
       ...prev,
       status: tempSelectComplianceStatus,
+      dueDate: tempDueDateChange,
     }));
   };
 
@@ -87,6 +89,7 @@ const ComplianceStatusReopenedModal = () => {
       ...prev,
       dueDate: meetingDateValueFormat2,
     }));
+    setTempDueDateChange(meetingDateValueFormat2);
   };
 
   let previousFileList = [];
@@ -142,6 +145,7 @@ const ComplianceStatusReopenedModal = () => {
     }));
   };
   console.log(complianceDetailsState.dueDate, "Current DueDate");
+
   return (
     <Modal
       show={comlianceStatusReopenedModal}
@@ -277,7 +281,7 @@ const ComplianceStatusReopenedModal = () => {
               <Button
                 text={t("Proceed")}
                 className={styles["CancelButton"]}
-                onClick={handleProceedButton}
+                onClick={view ? handleProceedButtonView : handleProceedButton}
                 disableBtn={
                   complianceReopenDetailsState.reason === "" ||
                   complianceReopenDetailsState.dueDate === ""

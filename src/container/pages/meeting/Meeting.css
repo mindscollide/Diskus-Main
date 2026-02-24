@@ -572,6 +572,18 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   height: 14px;
   border-radius: 50%;
 }
+.status-color-nonConducted {
+  background-color: darkgray !important;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+.status-color-cancelled {
+  background-color: #ff0000 !important;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
 
 /* main dropdown container */
 .ant-table-filter-dropdown .ant-dropdown-menu-item.ant-dropdown-menu-item {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./reopenedCompliance.module.css";
 import {
   ComplianceCard,
@@ -26,6 +26,8 @@ const ReopenedCompliance = () => {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
     setShowViewCompliance,
+    reopenDashboardList,
+    setReopenDashboardList,
   } = useComplianceContext();
 
   const GetComplianceReopenDashboardData = useSelector(
@@ -33,8 +35,18 @@ const ReopenedCompliance = () => {
       state.ComplainceSettingReducerReducer.GetComplianceReopenDashboardData,
   );
 
-  const complianceListReopen =
-    GetComplianceReopenDashboardData?.reopenComplianceList?.slice(0, 3) || [];
+  console.log(reopenDashboardList, "GetComplianceReopenDashboardData");
+
+  // Sync API response into context
+  useEffect(() => {
+    if (!GetComplianceReopenDashboardData?.reopenComplianceList) return;
+
+    setReopenDashboardList(
+      GetComplianceReopenDashboardData?.reopenComplianceList,
+    );
+  }, [GetComplianceReopenDashboardData]);
+
+  const complianceListReopen = reopenDashboardList?.slice(0, 3) || [];
 
   const filterOptions = [
     { label: "Due Date", value: 1 },
@@ -42,7 +54,7 @@ const ReopenedCompliance = () => {
     { label: "Authority", value: 3 },
   ];
 
-  const hasReopenedCompliance = GetComplianceReopenDashboardData !== null;
+  const hasReopenedCompliance = reopenDashboardList?.length > 0;
 
   const handleCardClick = (complianceId) => {
     console.log(complianceId, "asgvdajsgdv");
@@ -78,7 +90,9 @@ const ReopenedCompliance = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-2"
               >
-                <h3 className={styles.cardHeading}>Reopened Compliances</h3>
+                <h3 className={styles.cardHeading}>
+                  {t("Reopened-compliances")}
+                </h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -112,7 +126,9 @@ const ReopenedCompliance = () => {
                 sm={12}
                 className="d-flex align-items-center justify-content-start gap-4"
               >
-                <h3 className={styles.cardHeading}>Reopened Compliances</h3>
+                <h3 className={styles.cardHeading}>
+                  {t("Reopened-compliances")}
+                </h3>
                 <Select
                   classNamePrefix="DashbaordSelectDropdown"
                   isSearchable={false}
@@ -130,7 +146,7 @@ const ReopenedCompliance = () => {
 
           {/* Dynamic Rendering */}
           <div className={styles.CardInsideHeight}>
-            {complianceListReopen.map((item) => (
+            {complianceListReopen?.map((item) => (
               <ComplianceCard
                 key={item.complianceId}
                 title={item.complianceTitle}
@@ -146,7 +162,7 @@ const ReopenedCompliance = () => {
           </div>
 
           <CustomButton
-            text={t("View All Reopened Compliances")}
+            text={t("View-all-reopened-compliances")}
             className={styles.ViewAllComplianceButton}
             onClick={() => setMainComplianceTabs(2)}
           />

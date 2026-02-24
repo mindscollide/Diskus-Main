@@ -65,7 +65,7 @@ const getUserSetting = (navigate, t, loader) => {
     form.append("RequestMethod", getUserSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(userSettingData));
     await axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -78,8 +78,21 @@ const getUserSetting = (navigate, t, loader) => {
             ) {
               localStorage.setItem(
                 "calenderMonthsSpan",
-                response.data.responseResult.userSettings.calenderMonthsSpan
+                response.data.responseResult.userSettings.calenderMonthsSpan,
               );
+              // ✅ Store fiscalStartMonth and fiscalYearStartDay
+              const orgSettings =
+                response.data.responseResult.userSettings?.organizationSetting;
+              if (orgSettings) {
+                localStorage.setItem(
+                  "fiscalStartMonth",
+                  orgSettings.fiscalStartMonth,
+                );
+                localStorage.setItem(
+                  "fiscalYearStartDay",
+                  orgSettings.fiscalYearStartDay,
+                );
+              }
               function findConfigValue(data, key) {
                 const result = data.find((item) => item.configKey === key);
                 return result ? result.configValue : null; // Return configValue if found, else null
@@ -100,12 +113,12 @@ const getUserSetting = (navigate, t, loader) => {
               localStorage.setItem("isZoomEnabled", configValue);
               const microsoftClientId =
                 response.data.responseResult.userSettings.configurations.find(
-                  (item) => item.configKey === "Microsoft_Client_ID"
+                  (item) => item.configKey === "Microsoft_Client_ID",
                 )?.configValue;
               dispatch(setClinetIdMS(microsoftClientId));
               const googleClientId =
                 response.data.responseResult.userSettings.configurations.find(
-                  (item) => item.configKey === "Google_Client_ID"
+                  (item) => item.configKey === "Google_Client_ID",
                 )?.configValue;
               dispatch(setClinetIdGoogle(googleClientId));
               if (
@@ -116,12 +129,12 @@ const getUserSetting = (navigate, t, loader) => {
               ) {
                 localStorage.setItem(
                   "officeEventColor",
-                  response.data.responseResult.userSettings.officeEventColor
+                  response.data.responseResult.userSettings.officeEventColor,
                 );
 
                 console.log(
                   "Client ID",
-                  response.data.responseResult.userSettings.configurations
+                  response.data.responseResult.userSettings.configurations,
                 );
               } else {
                 localStorage.removeItem("officeEventColor");
@@ -135,11 +148,11 @@ const getUserSetting = (navigate, t, loader) => {
               ) {
                 localStorage.setItem(
                   "googleEventColor",
-                  response.data.responseResult.userSettings.googleEventColor
+                  response.data.responseResult.userSettings.googleEventColor,
                 );
                 console.log(
                   "Client ID",
-                  response.data.responseResult.userSettings.configurations
+                  response.data.responseResult.userSettings.configurations,
                 );
               } else {
                 localStorage.removeItem("googleEventColor");
@@ -147,8 +160,8 @@ const getUserSetting = (navigate, t, loader) => {
 
               dispatch(
                 currentUserPicture(
-                  response.data.responseResult.userSettings.userProfilePicture
-                )
+                  response.data.responseResult.userSettings.userProfilePicture,
+                ),
               );
 
               let dataToFind =
@@ -156,53 +169,53 @@ const getUserSetting = (navigate, t, loader) => {
 
               localStorage.setItem(
                 "diskusEventColor",
-                response.data.responseResult.userSettings.diskusEventColor
+                response.data.responseResult.userSettings.diskusEventColor,
               );
 
               let baseUrlCaller = findAndSetConfigValue(
                 dataToFind,
-                "Video_Server_Base_URL_Caller"
+                "Video_Server_Base_URL_Caller",
               );
 
               if (configValue) {
                 baseUrlCaller = findAndSetConfigValue(
                   dataToFind,
-                  "Zoom_Video_Server_Base_URL_Caller"
+                  "Zoom_Video_Server_Base_URL_Caller",
                 );
                 if (baseUrlCaller) {
                   localStorage.setItem(
                     "videoBaseURLCaller",
-                    baseUrlCaller.configValue
+                    baseUrlCaller.configValue,
                   );
                 }
               } else if (baseUrlCaller) {
                 localStorage.setItem(
                   "videoBaseURLCaller",
-                  baseUrlCaller.configValue
+                  baseUrlCaller.configValue,
                 );
               }
 
               let baseUrlParticipant = findAndSetConfigValue(
                 dataToFind,
-                "Video_Server_Base_URL_Participant"
+                "Video_Server_Base_URL_Participant",
               );
 
               if (configValue) {
                 baseUrlParticipant = findAndSetConfigValue(
                   dataToFind,
-                  "Zoom_Video_Server_Base_URL_Participant"
+                  "Zoom_Video_Server_Base_URL_Participant",
                 );
 
                 if (baseUrlParticipant) {
                   localStorage.setItem(
                     "videoBaseURLParticipant",
-                    baseUrlParticipant.configValue
+                    baseUrlParticipant.configValue,
                   );
                 }
               } else if (baseUrlParticipant) {
                 localStorage.setItem(
                   "videoBaseURLParticipant",
-                  baseUrlParticipant.configValue
+                  baseUrlParticipant.configValue,
                 );
               }
 
@@ -222,20 +235,20 @@ const getUserSetting = (navigate, t, loader) => {
 
               let getCallRinger = findAndSetConfigValue(
                 dataToFind,
-                "Video_Call_Ringer_Timeout_Seconds"
+                "Video_Call_Ringer_Timeout_Seconds",
               );
               if (getCallRinger !== undefined) {
                 localStorage.setItem(
                   "callRingerTimeout",
-                  getCallRinger.configValue
+                  getCallRinger.configValue,
                 );
               }
               await dispatch(
                 settingSuccess(
                   response.data.responseResult.userSettings,
                   "",
-                  false
-                )
+                  false,
+                ),
               );
               // navigate("/Admin/ManageUsers");
             } else if (
@@ -245,8 +258,8 @@ const getUserSetting = (navigate, t, loader) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-records-found")
-                )
+                  t("No-records-found"),
+                ),
               );
             } else if (
               response.data.responseResult.responseMessage ===
@@ -255,24 +268,24 @@ const getUserSetting = (navigate, t, loader) => {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t("No-records-found")
-                )
+                  t("No-records-found"),
+                ),
               );
             }
           } else {
             dispatch(
               settingFail(
                 response.data.responseMessage,
-                t("Something-went-wrong")
-              )
+                t("Something-went-wrong"),
+              ),
             );
           }
         } else {
           dispatch(
             settingFail(
               response.data.responseMessage,
-              t("Something-went-wrong")
-            )
+              t("Something-went-wrong"),
+            ),
           );
         }
       })
@@ -309,7 +322,7 @@ const getUserDetails = (
   userID,
   t,
   OrganizationID,
-  setUserProfileModal
+  setUserProfileModal,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userSettingData = {
@@ -321,8 +334,8 @@ const getUserDetails = (
     let form = new FormData();
     form.append("RequestMethod", getuserdetails.RequestMethod);
     form.append("RequestData", JSON.stringify(userSettingData));
-     axiosInstance
-    .post(settingApi, form)
+    axiosInstance
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -332,8 +345,8 @@ const getUserDetails = (
               userID,
               t,
               OrganizationID,
-              setUserProfileModal
-            )
+              setUserProfileModal,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -341,14 +354,14 @@ const getUserDetails = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserDetails_01".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserDetails_01".toLowerCase(),
                 )
             ) {
               await dispatch(
                 getuserdetailssuccess(
                   response.data.responseResult.organization,
-                  ""
-                )
+                  "",
+                ),
               );
               if (typeof setUserProfileModal === "function") {
                 setUserProfileModal(true);
@@ -357,7 +370,7 @@ const getUserDetails = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserDetails_02".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserDetails_02".toLowerCase(),
                 )
             ) {
               await dispatch(getuserdetailsfail(t("No-records-found")));
@@ -368,7 +381,7 @@ const getUserDetails = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_GetUserDetails_03".toLowerCase()
+                  "Settings_SettingsServiceManager_GetUserDetails_03".toLowerCase(),
                 )
             ) {
               await dispatch(getuserdetailsfail(t("No-records-found")));
@@ -426,7 +439,7 @@ const updateuserprofile = (
   setMobileEnable,
   setDesignationEnable,
   setNameEanble,
-  setUser
+  setUser,
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -435,7 +448,7 @@ const updateuserprofile = (
     form.append("RequestMethod", updateProfileData.RequestMethod);
     form.append("RequestData", JSON.stringify(updateData));
     axiosInstance
-    .post(settingApi, form)
+      .post(settingApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
@@ -446,8 +459,8 @@ const updateuserprofile = (
               t,
               setMobileEnable,
               setDesignationEnable,
-              setNameEanble
-            )
+              setNameEanble,
+            ),
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -455,11 +468,11 @@ const updateuserprofile = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UpdateUserProfile_01".toLowerCase()
+                  "Settings_SettingsServiceManager_UpdateUserProfile_01".toLowerCase(),
                 )
             ) {
               await dispatch(
-                updateprofilesuccess(t("Record-updated-successfully"))
+                updateprofilesuccess(t("Record-updated-successfully")),
               );
               setUser(false);
               let userID = localStorage.getItem("userID");
@@ -469,14 +482,14 @@ const updateuserprofile = (
 
               setNameEanble(true);
               await dispatch(
-                getUserDetails(navigate, userID, t, OrganizationID)
+                getUserDetails(navigate, userID, t, OrganizationID),
               );
               await dispatch(getUserSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UpdateUserProfile_02".toLowerCase()
+                  "Settings_SettingsServiceManager_UpdateUserProfile_02".toLowerCase(),
                 )
             ) {
               dispatch(updateprofilefail(t("No-Records-updated")));
@@ -484,7 +497,7 @@ const updateuserprofile = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Settings_SettingsServiceManager_UpdateUserProfile_03".toLowerCase()
+                  "Settings_SettingsServiceManager_UpdateUserProfile_03".toLowerCase(),
                 )
             ) {
               dispatch(updateprofilefail(t("Something-went-wrong")));

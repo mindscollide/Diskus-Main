@@ -3,7 +3,10 @@ import styles from "./upcomingComplianceDeadline.module.css";
 import { ComplianceEmptyState } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
+import { useComplianceContext } from "../../../../../context/ComplianceContext";
 const UpcomingComplianceDeadline = () => {
+  const { setMainComplianceTabs } = useComplianceContext();
+
   const GetUpcomingDealineComplianceDashboard = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
@@ -38,7 +41,10 @@ const UpcomingComplianceDeadline = () => {
       )}
 
       {hasData && (
-        <div className={styles.upcomingComplianceCard}>
+        <div
+          className={styles.upcomingComplianceCard}
+          onClick={() => setMainComplianceTabs(2)}
+        >
           <Row>
             <Col xs={12}>
               <h2 className={styles.cardHeading}>
@@ -53,14 +59,14 @@ const UpcomingComplianceDeadline = () => {
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
                 </span>{" "}
-                <span className={styles.normalText}>Due this quarter</span>
+                <span className={styles.normalText}>Due This Quarter</span>
               </span>
 
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
                 </span>{" "}
-                <span className={styles.normalText}>Due this Week</span>
+                <span className={styles.normalText}>Due This Week</span>
               </span>
             </Col>
           </Row>

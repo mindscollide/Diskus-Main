@@ -14,7 +14,7 @@ export const parseUTCDateString = (dateStr) => {
     Number(day),
     Number(hour),
     Number(minute),
-    Number(second)
+    Number(second),
   );
 };
 
@@ -70,4 +70,52 @@ export const getDueDateTimeNumber = (dueDate, dueTime) => {
   const isoDateTime = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 
   return new Date(isoDateTime).getTime(); // NUMBER
+};
+
+const allStatuses = [
+  { statusId: 1, statusName: "Not Started" },
+  { statusId: 2, statusName: "In Progress" },
+  { statusId: 3, statusName: "Completed" },
+  { statusId: 5, statusName: "Submitted for Approval" },
+  { statusId: 6, statusName: "Reopened" },
+  { statusId: 7, statusName: "On Hold" },
+  { statusId: 9, statusName: "Cancelled" },
+];
+const statusTransitions = {
+  1: [2, 7], // Not Started → In Progress, On Hold
+  2: [5, 7, 9], // In Progress → Submitted, On Hold, Cancelled
+  7: [2, 9], // On Hold → In Progress, Cancelled
+  5: [3, 6, 7], // Submitted → Completed, Reopened, On Hold
+  6: [5, 7, 9], // Reopened → Submitted, On Hold, Cancelled
+  3: [6], // Completed → Reopened
+  9: [], // Cancelled → none
+};
+
+export const getAllowedStatuses = (currentStatusId) => {
+  const current = allStatuses.find(function (s) {
+    return s.statusId === currentStatusId;
+  });
+
+  const allowedIds = statusTransitions[currentStatusId] || [];
+
+  const allowed = allStatuses
+    .filter(function (s) {
+      return allowedIds.includes(s.statusId);
+    })
+    .map(function (s) {
+      return {
+        value: s.statusId,
+        label: s.statusName,
+      };
+    });
+
+  return {
+    currentStatus: current
+      ? {
+          value: current.statusId,
+          label: current.statusName,
+        }
+      : null,
+    allowedStatuses: allowed,
+  };
 };

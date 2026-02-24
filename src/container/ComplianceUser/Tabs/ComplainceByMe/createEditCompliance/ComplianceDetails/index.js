@@ -57,6 +57,7 @@ const ComplainceDetails = () => {
     complianceAddEditViewState,
     setCloseConfirmationModal,
     setComplianceInfo,
+    checkListData,
     setChecklistTabs,
     complianceDetailsState,
     setComplianceDetailsState,
@@ -84,6 +85,12 @@ const ComplainceDetails = () => {
     setComlianceStatusReopenedModal,
     complianceReopenDetailsState,
   } = useComplianceContext();
+
+  console.log(
+    { checkListData, complianceDetailsState },
+    "checkListTabscheckListTabs"
+  );
+
   console.log(complianceDetailsState, "complianceDetailsState");
   const complianceDataroomFolderId = useSelector(
     (state) =>
@@ -470,6 +477,7 @@ const ComplainceDetails = () => {
       uploadReopenCompilanceDocuments(complianceDataroomFolderId);
     }
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
+
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
@@ -852,6 +860,7 @@ const ComplainceDetails = () => {
       }));
     }
   };
+
   return (
     <>
       <Row className="mt-2">

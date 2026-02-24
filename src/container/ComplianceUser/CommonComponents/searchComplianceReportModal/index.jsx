@@ -71,6 +71,8 @@ const SearchComplianceReportModal = () => {
     ),
     generatedOnStartDate: searchComplianceReportPayload.dueDateFrom || "",
     generatedOnEndDate: searchComplianceReportPayload.dueDateTo || "",
+    length: searchComplianceReportPayload.length || 10,
+    sRow: searchComplianceReportPayload.sRow || 0,
   });
 
   const hitSearchApi = () => {
@@ -107,7 +109,7 @@ const SearchComplianceReportModal = () => {
       reportType: "",
       dueDateFrom: "",
       dueDateTo: "",
-      pageNumber: 0,
+      sRow: 0,
       length: 10,
     };
 
@@ -123,6 +125,8 @@ const SearchComplianceReportModal = () => {
           reportTypeIds: "",
           generatedOnStartDate: "",
           generatedOnEndDate: "",
+          length: 10,
+          sRow: 0,
         },
         t,
       ),
@@ -149,7 +153,7 @@ const SearchComplianceReportModal = () => {
               )}
               name={"reportTitleOutside"}
               disable={searchbox}
-              value={searchComplianceReportPayload.reportTitleOutside}
+              value={searchComplianceReportPayload?.reportTitleOutside}
               onKeyDown={handleKeyDown}
               applyClass={"PollingSearchInput"}
               maxLength={100}
@@ -164,7 +168,7 @@ const SearchComplianceReportModal = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      {searchComplianceReportPayload.reportTitleOutside &&
+                      {searchComplianceReportPayload?.reportTitleOutside &&
                       enterpressed ? (
                         <>
                           <img
@@ -223,7 +227,7 @@ const SearchComplianceReportModal = () => {
                           placeholder={t("Report-title")}
                           maxLength={100}
                           name={"reportTitle"}
-                          value={searchComplianceReportPayload.reportTitle}
+                          value={searchComplianceReportPayload?.reportTitle}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChange}
@@ -234,7 +238,7 @@ const SearchComplianceReportModal = () => {
                           labelclass={"d-none"}
                           placeholder={t("Report-type")}
                           name={"reportType"}
-                          value={searchComplianceReportPayload.reportType}
+                          value={searchComplianceReportPayload?.reportType}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChange}

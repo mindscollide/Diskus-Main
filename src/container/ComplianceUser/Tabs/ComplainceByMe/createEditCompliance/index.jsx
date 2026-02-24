@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import styles from "./createEditCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { GetComplianceChecklistsByComplianceIdAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import ViewCompliance from "../../../CommonComponents/viewCompliance";
+import { useSelector } from "react-redux";
 
 const CreateEditCompliance = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const CreateEditCompliance = () => {
   const {
     complianceInfo,
     checkListTabs,
+    checkListData,
     setChecklistTabs,
     checklistCount,
     taskCount,
@@ -28,6 +30,12 @@ const CreateEditCompliance = () => {
     showViewCompliance,
     setShowViewCompliance,
   } = useComplianceContext();
+  // Tracking all Loading States
+
+  console.log(
+    { checkListData, complianceDetailsState },
+    "checkListTabscheckListTabs"
+  );
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
@@ -56,9 +64,32 @@ const CreateEditCompliance = () => {
     "complianceDetailsStatecomplianceDetailsState"
   );
 
+  const ComplianceMain = useRef();
+
+  // const handleOutsideClick = (event) => {
+  //   if (
+  //     ComplianceMain.current &&
+  //     !ComplianceMain.current.contains(event.target) &&
+  //     (complianceAddEditViewState === 2 || complianceAddEditViewState === 1)
+  //   ) {
+  //     // setShowWebNotification(false);
+  //     alert("All changes will bw lost");
+  //   }
+  // };
+  //Event Handler for Outside Click of Web Notification Window
+  // useEffect(() => {
+  //   document.addEventListener("click", handleOutsideClick);
+  //   return () => {
+  //     document.removeEventListener("click", handleOutsideClick);
+  //   };
+  // }, [complianceAddEditViewState]);
+
   return (
     <>
-      <section className={styles["MainCompliance_Container"]}>
+      <section
+        className={styles["MainCompliance_Container"]}
+        // ref={ComplianceMain}
+      >
         <Row className="my-2 ">
           {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
             {complianceInfo.complianceId !== 0

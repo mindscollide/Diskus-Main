@@ -49,6 +49,7 @@ import {
   ProposedMeetingViewFlagAction,
   meetingStatusProposedMqtt,
   endMeetingStatusApi,
+  searchNewUserMeeting,
 } from "../../../../../../store/actions/NewMeetingActions";
 import {
   GetAllUserChats,
@@ -86,6 +87,7 @@ import DeleteMeetingConfirmationModal from "../../../deleteMeetingConfirmationMo
 import EmptyTableComponent from "../../../EmptyTableComponent/EmptyTableComponent";
 import { useNewMeetingContext } from "../../../../../../context/NewMeetingContext";
 import CustomButton from "../../../../../../components/elements/button/Button";
+import CustomPagination from "../../../../../../commen/functions/customPagination/Paginations";
 const currentLanguage = localStorage.getItem("i18nextLng");
 
 const UnpublishedProposedMeeting = ({
@@ -100,6 +102,7 @@ const UnpublishedProposedMeeting = ({
   setVideoTalk,
   setProposedNewMeeting,
   setIsProposedMeetEdit,
+  searchFields,
 }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -110,8 +113,13 @@ const UnpublishedProposedMeeting = ({
     setMeetingsRecords,
     isMeetingTypeFilter,
   } = useNewMeetingContext();
-  let currentUserId = localStorage.getItem("userID");
-  let currentOrganizationId = localStorage.getItem("organizationID");
+  let currentView = localStorage.getItem("MeetingCurrentView");
+  //Current User ID
+  let userID = localStorage.getItem("userID");
+  //Current Organization
+  let organizationID = localStorage.getItem("organizationID");
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   let MeetingProp = localStorage.getItem("meetingprop");
   let UserMeetPropoDatPoll = localStorage.getItem("UserMeetPropoDatPoll");
   const currentLanguage = localStorage.getItem("i18nextLng");
@@ -1611,6 +1619,24 @@ const UnpublishedProposedMeeting = ({
       } catch (error) {}
     }
   }, [UserMeetPropoDatPoll]);
+
+  const handelChangePagination = async (current, PageSize) => {
+    let searchData = {
+      Date: searchFields.Date,
+      Title: searchFields.MeetingTitle,
+      HostName: searchFields.OrganizerName,
+      UserID: Number(userID),
+      PageNumber: Number(current),
+      Length: Number(PageSize),
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
+    };
+    localStorage.setItem("MeetingPageRows", PageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+  };
   return (
     <section>
       <Row>
@@ -1626,9 +1652,31 @@ const UnpublishedProposedMeeting = ({
             locale={{
               emptyText: <EmptyTableComponent />, // Set your custom empty text here
             }}
-            scroll={{
-              y: 450,
-            }}
+            footer={() => (
+              <Row className={styles["PaginationStyle-Committee"]}>
+                <Col
+                  className={"pagination-groups-table"}
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+                  <CustomPagination
+                    current={
+                      meetingPageCurrent !== null
+                        ? Number(meetingPageCurrent)
+                        : 1
+                    }
+                    pageSize={
+                      meetingpageRow !== null ? Number(meetingpageRow) : 50
+                    }
+                    onChange={handelChangePagination}
+                    total={totalMeetingRecords}
+                    showSizer={true}
+                    pageSizeOptionsValues={["30", "50", "100", "200"]}
+                  />
+                </Col>
+              </Row>
+            )}
           />
         </Col>
       </Row>

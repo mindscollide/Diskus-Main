@@ -167,15 +167,18 @@
 .reportDetailsBar {
   background-color: #ecefff;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 8px;
   display: flex;
   align-items: center;
+  width: fit-content;
   margin-top: 20px;
   color: #6172d6;
   gap: 5px;
 }
 
 .reportDetailsBar span {
+  display: flex;
+  justify-content: center;
   font-size: 14px;
   font-weight: 600;
   font-family: "Montserrat";
@@ -329,6 +332,8 @@
 
 .ComplianceSection {
   padding: 0px 16px;
+  display: flex;
+  align-items: center;
 }
 
 .iconTextWrapperPDFDownload {
@@ -338,7 +343,7 @@
   white-space: nowrap;
   background: #ecefff;
   border-radius: 8px;
-  padding: 20px 18px;
+  padding: 24px 18px;
   justify-content: center; /*  */
 }
 
@@ -390,7 +395,7 @@
   align-items: center; /* 🔥 vertical center */
   justify-content: center;
   gap: 20px;
-  padding: 16px 10px;
+  padding: 30px 10px;
   background: #ecefff;
   border-radius: 6.21px;
 }
@@ -410,4 +415,27 @@
   letter-spacing: 2%;
   font-weight: 600;
   margin-top: 16px;
+}
+
+.goBackButton {
+  cursor: pointer;
+}
+.nodatafound_subHeading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #e1e1e1;
+}
+.NoDataFoundTable {
+  height: 150px;
+  padding: 10px 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background: #ffffff;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

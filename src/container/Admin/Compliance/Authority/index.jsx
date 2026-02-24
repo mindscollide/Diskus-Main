@@ -104,33 +104,33 @@ const ManageAuthority = () => {
   const searchBoxRef = useRef(null);
 
   const GetAllAuthority = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities
+    (state) => state.ComplainceSettingReducerReducer.GetAllAuthorities,
   );
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
   const authorityInactiveMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityInactive,
   );
 
   const authorityActiveMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityActive
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityActive,
   );
 
   const authorityDeletedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityDeleted
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityDeleted,
   );
 
   const authorityCreatedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityCreated
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityCreated,
   );
 
   const authorityUpdatedMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityUpdated
+    (state) => state.ComplainceSettingReducerReducer.SocketAuthorityUpdated,
   );
   const { setHasReachedBottom } = useTableScrollBottom(() => {
     if (recordsLength !== data.length) {
@@ -143,8 +143,8 @@ const ManageAuthority = () => {
             ...searchPayload,
             sRow: data.length,
           },
-          t
-        )
+          t,
+        ),
       );
     }
   });
@@ -177,8 +177,8 @@ const ManageAuthority = () => {
         setAddEditViewAuthoriyModal,
         setAuthorityViewState,
         setAuthorityId,
-        2
-      )
+        2,
+      ),
     );
   };
 
@@ -195,8 +195,8 @@ const ManageAuthority = () => {
         setAddEditViewAuthoriyModal,
         setAuthorityViewState,
         setAuthorityId,
-        3
-      )
+        3,
+      ),
     );
   };
 
@@ -266,8 +266,8 @@ const ManageAuthority = () => {
               ...authority,
               status: authorityInactiveMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setInactiveStatusData(null));
   }, [authorityInactiveMessage]);
@@ -283,8 +283,8 @@ const ManageAuthority = () => {
               ...authority,
               status: authorityActiveMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setActiveStatusData(null));
   }, [authorityActiveMessage]);
@@ -299,8 +299,8 @@ const ManageAuthority = () => {
 
     setData((prevData) =>
       prevData.filter(
-        (authority) => authority.authorityId !== deletedAuthorityId
-      )
+        (authority) => authority.authorityId !== deletedAuthorityId,
+      ),
     );
 
     // optional: update total record count if you are tracking it
@@ -321,7 +321,7 @@ const ManageAuthority = () => {
     setData((prevData) => {
       // ✅ Prevent duplicate insertion
       const alreadyExists = prevData.some(
-        (a) => a.authorityId === newAuthority.authorityId
+        (a) => a.authorityId === newAuthority.authorityId,
       );
 
       if (alreadyExists) return prevData;
@@ -352,8 +352,8 @@ const ManageAuthority = () => {
               sector: authorityUpdatedMessage.authority.sector,
               status: authorityUpdatedMessage.authority.status,
             }
-          : authority
-      )
+          : authority,
+      ),
     );
     dispatch(setAuthorityUpdatedData(null));
   }, [authorityUpdatedMessage]);
@@ -390,7 +390,7 @@ const ManageAuthority = () => {
     { label: "Active", value: "Active" },
     { label: "In Active", value: "Inactive" },
   ];
-
+  const [allFieldEmpty, setAllFieldEmpty] = useState(false);
   const getStatusColumnProps = () => ({
     filteredValue: statusFilter, // controlled filter
     filterDropdown: ({
@@ -399,11 +399,6 @@ const ManageAuthority = () => {
       confirm,
       clearFilters,
     }) => {
-      // Initialize selectedKeys to all if empty
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(statusOptions.map((s) => s.value));
-      }
-
       return (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
@@ -437,7 +432,7 @@ const ManageAuthority = () => {
             <CustomButton
               text="Ok"
               onClick={() => {
-                setStatusFilter(selectedKeys); // update controlled state
+                setStatusFilter(selectedKeys.length > 0 ? selectedKeys : []); // update controlled state
                 confirm(); // refresh table
               }}
               className={styles["ResetButtonFilter"]}
@@ -455,37 +450,6 @@ const ManageAuthority = () => {
   // ========================
   const columnsAuthority = useMemo(
     () => [
-      {
-        title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Authority-name")}
-            {authorityNameSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : authorityNameSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
-          </span>
-        ),
-        dataIndex: "authorityName",
-        key: "authorityName",
-        width: "25%",
-        ellipsis: true,
-        align: "left",
-        sorter: (a, b) =>
-          authorityNameSort === "descend"
-            ? b.authorityName
-                ?.toLowerCase()
-                .localeCompare(a.authorityName?.toLowerCase())
-            : authorityNameSort === "ascend"
-            ? a.authorityName
-                ?.toLowerCase()
-                .localeCompare(b.authorityName?.toLowerCase())
-            : a.authorityName
-                ?.toLowerCase()
-                .localeCompare(b.authorityName?.toLowerCase()),
-      },
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
@@ -511,12 +475,43 @@ const ManageAuthority = () => {
                 ?.toLowerCase()
                 .localeCompare(a.shortCode?.toLowerCase())
             : shortCodeSort === "ascend"
-            ? a.shortCode
+              ? a.shortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.shortCode?.toLowerCase())
+              : a.shortCode
+                  ?.toLowerCase()
+                  .localeCompare(b.shortCode?.toLowerCase()),
+      },
+      {
+        title: (
+          <span className="d-flex gap-2 align-items-center justify-content-start">
+            {t("Authority-name")}
+            {authorityNameSort === "descend" ? (
+              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+            ) : authorityNameSort === "ascend" ? (
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+            ) : (
+              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+            )}
+          </span>
+        ),
+        dataIndex: "authorityName",
+        key: "authorityName",
+        width: "25%",
+        ellipsis: true,
+        align: "left",
+        sorter: (a, b) =>
+          authorityNameSort === "descend"
+            ? b.authorityName
                 ?.toLowerCase()
-                .localeCompare(b.shortCode?.toLowerCase())
-            : a.shortCode
-                ?.toLowerCase()
-                .localeCompare(b.shortCode?.toLowerCase()),
+                .localeCompare(a.authorityName?.toLowerCase())
+            : authorityNameSort === "ascend"
+              ? a.authorityName
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityName?.toLowerCase())
+              : a.authorityName
+                  ?.toLowerCase()
+                  .localeCompare(b.authorityName?.toLowerCase()),
       },
       {
         title: (
@@ -537,12 +532,12 @@ const ManageAuthority = () => {
                 ?.toLowerCase()
                 .localeCompare(a.countryName?.toLowerCase())
             : countrySort === "ascend"
-            ? a.countryName
-                ?.toLowerCase()
-                .localeCompare(b.countryName?.toLowerCase())
-            : a.countryName
-                ?.toLowerCase()
-                .localeCompare(b.countryName?.toLowerCase()),
+              ? a.countryName
+                  ?.toLowerCase()
+                  .localeCompare(b.countryName?.toLowerCase())
+              : a.countryName
+                  ?.toLowerCase()
+                  .localeCompare(b.countryName?.toLowerCase()),
 
         dataIndex: "countryName",
         key: "countryName",
@@ -567,8 +562,8 @@ const ManageAuthority = () => {
           sectorSort === "descend"
             ? b.sector?.toLowerCase().localeCompare(a.sector?.toLowerCase())
             : sectorSort === "ascend"
-            ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
-            : a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase()),
+              ? a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase())
+              : a.sector?.toLowerCase().localeCompare(b.sector?.toLowerCase()),
 
         dataIndex: "sector",
         key: "sector",
@@ -632,7 +627,14 @@ const ManageAuthority = () => {
         },
       },
     ],
-    [t, shortCodeSort, authorityNameSort, countrySort, sectorSort, statusFilter] // Re-render columns when language changes
+    [
+      t,
+      shortCodeSort,
+      authorityNameSort,
+      countrySort,
+      sectorSort,
+      statusFilter,
+    ], // Re-render columns when language changes
   );
 
   // Tracks whether Enter key search was triggered
@@ -758,7 +760,7 @@ const ManageAuthority = () => {
       pagination,
       filters,
       sorter,
-      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter"
+      "handleChangeAuthorityFilerSorterhandleChangeAuthorityFilerSorter",
     );
     // 🔁 Reset all icons first
     resetAllSorts();

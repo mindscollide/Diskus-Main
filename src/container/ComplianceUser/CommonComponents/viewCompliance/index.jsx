@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styles from "./viewCompliance.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -8,17 +8,34 @@ import { useTranslation } from "react-i18next";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import ViewComplianceDetails from "./VIewComplianceDetails";
 import ViewComplianceTasks from "./ViewComplianceTasks";
-import { Button } from "../../../../components/elements";
+import { Button, Notification } from "../../../../components/elements";
 import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
 import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
+import { showMessage } from "../../../../components/elements/snack_bar/utill";
+import { useDispatch } from "react-redux";
+import { clearAuthorityMessage } from "../../../../store/actions/ComplainSettingActions";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch()
 
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
+  const complainceRespnseMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+  );
+
+  const complainceSeverityMessage = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.severity
+  );
   // const [isViewDetailsBtnActive, setIsViewDetailsBtnActive] = useState(true);
 
   // Compliance Context
   const {
+    complianceInfo,
     setComplianceInfo,
     setComplianceDetailsState,
     viewComplianceDetailsTab,
@@ -33,12 +50,15 @@ const ViewCompliance = () => {
     emptyComplianceState,
   } = useComplianceContext();
 
-  console.log();
+  console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceInfo, "complianceInfocomplianceInfo");
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
   );
+
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
 
   useEffect(() => {
     if (viewComplianceByMeDetails !== null) {
@@ -126,6 +146,7 @@ const ViewCompliance = () => {
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
+
   const handleOpenReopenModal = () => {
     setIsViewDetailsOpen(true);
   };
@@ -134,6 +155,35 @@ const ViewCompliance = () => {
     setViewComplianceDetailsTab(1);
     emptyComplianceState();
   };
+
+  // To Show Reopen View Detail Bar when Reopen or Hold status coming
+  const shouldShowReopenSection = useMemo(() => {
+    const history = viewComplianceByMeDetails?.complianceStatusChangeHistory;
+
+    if (!Array.isArray(history) || history.length === 0) return false;
+
+    return history.some(
+      (item) =>
+        item?.fromStatus?.statusId === 6 || item?.fromStatus?.statusId === 7
+    );
+  }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
+
+  useEffect(() => {
+    if (
+      complainceRespnseMessage !== null &&
+      complainceRespnseMessage !== undefined &&
+      complainceRespnseMessage !== "" &&
+      complainceSeverityMessage !== null
+    ) {
+      try {
+        showMessage(complainceRespnseMessage, complainceSeverityMessage, setOpen);
+        setTimeout(() => {
+          dispatch(clearAuthorityMessage());
+        }, 4000);
+      } catch (error) {}
+    }
+  }, [complainceRespnseMessage, complainceSeverityMessage]);
+
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
@@ -152,7 +202,7 @@ const ViewCompliance = () => {
               className="cursor-pointer"
               onClick={handleClickBackIcon}
             />
-            {complianceDetailsState.complianceTitle}
+            {complianceInfo?.complianceName}
           </Col>
         </Row>
         <section className={` ${styles["ViewComplianceInnerSection"]}`}>
@@ -203,8 +253,7 @@ const ViewCompliance = () => {
               >
                 {/* {isViewDetailsBtnActive && ( */}
                 <>
-                  {complianceDetailsState.complianceStatusChangeHistory.length >
-                    0 && (
+                  {shouldShowReopenSection && (
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
@@ -219,6 +268,7 @@ const ViewCompliance = () => {
                       />
                     </div>
                   )}
+
                   {complianceDetailsState.showProgressBar ? (
                     <>
                       {/* <Col sm={12} md={3} lg={3} className="mt-2"> */}
@@ -231,7 +281,9 @@ const ViewCompliance = () => {
                             {`${complianceDetailsState.progressPercent}%`}
                           </span>
                         </div>
-                        <ProgressLoader progress={20} />
+                        <ProgressLoader
+                          progress={complianceDetailsState.progressPercent}
+                        />
                       </div>
                     </>
                   ) : (
@@ -250,6 +302,8 @@ const ViewCompliance = () => {
           {viewComplianceDetailsTab === 2 && <ViewComplianceTasks />}
         </section>
       </section>
+      <Notification open={open} setOpen={setOpen} />
+
       <ReopenOrOnHoldDetailsModal />
     </>
   );

@@ -9,7 +9,7 @@ import CustomRadioGroup from "../../../../../components/elements/radio/CustomRad
 import ComplianceStatusChangeResonReasonModal from "../ComplianceStatusOnHoldReasonModal";
 // import ComplianceStatusOnHoldReasonModal from "../ComplianceStatusOnHoldReasonModal";
 
-const ComplianceStatusCancelModal = () => {
+const ComplianceStatusCancelModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const [selectOptions, setSelectOption] = useState(0);
   const {
@@ -28,12 +28,18 @@ const ComplianceStatusCancelModal = () => {
     setSelectOption(0);
     resetModalStates();
   };
+
   const handleProceedButton = () => {
     console.log(selectOptions, "selectOptionsvalue");
     setSelectOption(0);
     setComplianceCancelModal(false);
     setComplianceStatusChangeReasonModal(true);
     setComplianceCancelSelectOption(selectOptions);
+  };
+
+  const handleProceedByViewButton = () => {
+    setComplianceCancelSelectOption(selectOptions);
+    handleProceedButtonView();
   };
 
   useEffect(() => {
@@ -102,7 +108,9 @@ const ComplianceStatusCancelModal = () => {
                 <Button
                   text={t("Confirm-action")}
                   className={styles["ProceedButtonStyles"]}
-                  onClick={handleProceedButton}
+                  onClick={
+                    view ? handleProceedByViewButton : handleProceedButton
+                  }
                 />
               </Col>
             </Row>

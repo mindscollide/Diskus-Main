@@ -65,6 +65,8 @@ const ComplianceByMe = () => {
     allComplianceStatusForFilter,
   } = useComplianceContext();
 
+  console.log(complianceByMeList, "complianceByMeList");
+
   useEffect(() => {
     dispatch(
       listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t)
@@ -178,9 +180,6 @@ const ComplianceByMe = () => {
     filteredValue: criticalityFilter, // controlled filter
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
       // default: select all
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(criticalityOptions.map((c) => c.value));
-      }
 
       return (
         <div style={{ padding: 8 }}>
@@ -229,11 +228,6 @@ const ComplianceByMe = () => {
     filteredValue: statusFilter,
 
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      // default: select all
-      if (selectedKeys.length === 0) {
-        setSelectedKeys(allComplianceStatusForFilter.map((s) => s.statusTitle));
-      }
-
       console.log(selectedKeys, "selectedKeys");
 
       return (

@@ -23,8 +23,6 @@ import {
   GetComplianceChecklistsWithTasksByComplianceId,
   EditComplianceChecklist,
   SearchCompliancesByCreatorIdRM,
-  ViewComplianceByMeDetailsRM,
-  ViewComplianceForMeById,
   SearchComplianceForMe,
   ViewComplianceDetailsByViewTypeRM,
   GetComplianceChecklistsWithTasksByComplianceIdForMe,
@@ -43,9 +41,14 @@ import {
   SaveComplianceFiles,
   DeleteCheckList,
   ChangeTaskStatus,
+  GetEndOfComplianceReport,
+  GetQuarterReport,
+  GetComplianceStandingReport,
+  GetAccumulativeReport,
 } from "../../commen/apis/Api_config";
 import { showDeleteAuthorityModal } from "./ManageAuthoriyAction";
 import { taskReducerLoader } from "./ToDoList_action";
+import { isFunction } from "../../commen/functions/utils";
 
 const GetAllAuthorityInit = () => {
   return {
@@ -3157,7 +3160,7 @@ const GetComplianceQuarterlyTasksDashboardFail = (message) => {
   };
 };
 
-const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
+const GetComplianceQuarterlyTasksDashboardAPI = (navigate, Data, t) => {
   return (dispatch) => {
     dispatch(GetComplianceQuarterlyTasksDashboardInit());
     let form = new FormData();
@@ -3166,13 +3169,13 @@ const GetComplianceQuarterlyTasksDashboardAPI = (navigate, t) => {
       GetComplianceQuarterlyTasksDashboard.RequestMethod,
     );
     // ✅ send complete payload as JSON string
-    // form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(Data));
     axiosInstance
       .post(complainceApi, form)
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, t));
+          dispatch(GetComplianceQuarterlyTasksDashboardAPI(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3279,7 +3282,8 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               await dispatch(
                 EditComplianceSuccess(response.data.responseResult, ""),
               );
-              setChecklistTabs(2);
+
+              isFunction(setChecklistTabs) && setChecklistTabs(2);
             } else if (
               message.includes(
                 "compliance_complianceservicemanager_editcompliance_02",
@@ -4654,6 +4658,426 @@ const createCompilanceDataRoomMapFolderId = (payload, payload2) => {
   };
 };
 
+//API For Get End Of Compliance Report
+const GetEndOfComplianceReportInit = () => {
+  return {
+    type: actions.Get_END_OF_COMPLIANCE_REPORT_INIT,
+  };
+};
+
+const GetEndOfComplianceReportSuccess = (response, message) => {
+  return {
+    type: actions.Get_END_OF_COMPLIANCE_REPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetEndOfComplianceReportFail = (message) => {
+  return {
+    type: actions.Get_END_OF_COMPLIANCE_REPORT_FAIL,
+    message: message,
+  };
+};
+
+const GetEndOfComplianceReportAPI = (navigate, data, t, showLoader = true) => {
+  return (dispatch) => {
+    if (showLoader) {
+      dispatch(GetEndOfComplianceReportInit());
+    }
+    let form = new FormData();
+    form.append("RequestMethod", GetEndOfComplianceReport.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetEndOfComplianceReportAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetEndOfComplianceReport_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetEndOfComplianceReportSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetEndOfComplianceReport_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetEndOfComplianceReportFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetEndOfComplianceReport_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetEndOfComplianceReportFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetEndOfComplianceReport_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetEndOfComplianceReportFail(""));
+            }
+          } else {
+            await dispatch(
+              GetEndOfComplianceReportFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            GetEndOfComplianceReportFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(GetEndOfComplianceReportFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//API For Get Quarter Report
+const GetQuarterReportInit = () => {
+  return {
+    type: actions.Get_QUARTER_REPORT_INIT,
+  };
+};
+
+const GetQuarterReportSuccess = (response, message) => {
+  return {
+    type: actions.Get_QUARTER_REPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetQuarterReportFail = (message) => {
+  return {
+    type: actions.Get_QUARTER_REPORT_FAIL,
+    message: message,
+  };
+};
+
+const GetQuarterReportAPI = (navigate, data, t, showLoader = true) => {
+  return (dispatch) => {
+    if (showLoader) {
+      dispatch(GetQuarterReportInit());
+    }
+    let form = new FormData();
+    form.append("RequestMethod", GetQuarterReport.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetQuarterReportAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetQuarterlyReport_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetQuarterReportSuccess(response.data.responseResult, ""),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetQuarterlyReport_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetQuarterReportFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetQuarterlyReport_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetQuarterReportFail(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetQuarterlyReport_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetQuarterReportFail(""));
+            }
+          } else {
+            await dispatch(GetQuarterReportFail(t("Something-went-wrong")));
+          }
+        } else {
+          await dispatch(GetQuarterReportFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetQuarterReportFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//API For Get Compliance Standing Report
+const GetComplianceStandingReportInit = () => {
+  return {
+    type: actions.Get_COMPLIANCE_STANDING_REPORT_INIT,
+  };
+};
+
+const GetComplianceStandingReportSuccess = (response, message) => {
+  return {
+    type: actions.Get_COMPLIANCE_STANDING_REPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetComplianceStandingReportFail = (message) => {
+  return {
+    type: actions.Get_COMPLIANCE_STANDING_REPORT_FAIL,
+    message: message,
+  };
+};
+
+const GetComplianceStandingReportAPI = (navigate, data, t) => {
+  return (dispatch) => {
+    dispatch(GetComplianceStandingReportInit());
+    let form = new FormData();
+    form.append("RequestMethod", GetComplianceStandingReport.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetComplianceStandingReportAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceStandingReport_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetComplianceStandingReportSuccess(
+                  response.data.responseResult,
+                  "",
+                ),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceStandingReport_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetComplianceStandingReportFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceStandingReport_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetComplianceStandingReportFail(t("Something-went-wrong")),
+              );
+            }
+          } else {
+            await dispatch(
+              GetComplianceStandingReportFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(
+            GetComplianceStandingReportFail(t("Something-went-wrong")),
+          );
+        }
+      })
+      .catch((response) => {
+        // dispatch(GetComplianceStandingReportFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//API For Get Accumulative Report
+const GetAccumulativeReportInit = () => {
+  return {
+    type: actions.Get_ACCUMULATIVE_REPORT_INIT,
+  };
+};
+
+const GetAccumulativeReportSuccess = (response, message) => {
+  return {
+    type: actions.Get_ACCUMULATIVE_REPORT_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const GetAccumulativeReportFail = (message) => {
+  return {
+    type: actions.Get_ACCUMULATIVE_REPORT_FAIL,
+    message: message,
+  };
+};
+
+const GetAccumulativeReportAPI = (navigate, data, t, showLoader = true) => {
+  return (dispatch) => {
+    if (showLoader) {
+      dispatch(GetAccumulativeReportInit());
+    }
+    let form = new FormData();
+    form.append("RequestMethod", GetAccumulativeReport.RequestMethod);
+    // ✅ send complete payload as JSON string
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(complainceApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAccumulativeReportAPI(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAccumulativeReport_01".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetAccumulativeReportSuccess(response.data.responseResult, ""),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAccumulativeReport_02".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetAccumulativeReportFail(""));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetComplianceStandingReport_03".toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                GetAccumulativeReportFail(t("Something-went-wrong")),
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Compliance_ComplianceServiceManager_GetAccumulativeReport_04".toLowerCase(),
+                )
+            ) {
+              await dispatch(GetAccumulativeReportFail(""));
+            }
+          } else {
+            await dispatch(
+              GetAccumulativeReportFail(t("Something-went-wrong")),
+            );
+          }
+        } else {
+          await dispatch(GetAccumulativeReportFail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(GetAccumulativeReportFail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const complianceCreatedFromMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CREATED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist Added Mqtt
+const complianceChecklistAddedMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_ADDED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist UPDATED Mqtt
+const complianceChecklistUpdateMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_UPDATED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For Compliance Checklist DELETED Mqtt
+const complianceChecklistDeletedMQTT = (mqttData) => {
+  return {
+    type: actions.COMPLIANCE_CHECKLIST_DELETED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For COMPLIANCE UPDATED MQTT
+const complianceUpdateMQTT = (mqttData) => {
+  console.log(mqttData, "mqttDatamqttData");
+  return {
+    type: actions.COMPLIANCE_UPDATED_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For COMPLIANCE REOPENED MQTT
+const complianceReopenMQTT = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.COMPLIANCE_REOPEN_MQTT,
+    payload: mqttData,
+  };
+};
+
+// For TASK MAPPED WITH CHECKLIST MQTT
+const taskMappedChecklistMQTT = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.TASK_MAPPED_WITH_CHECKLIST_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -4704,4 +5128,15 @@ export {
   DeleteCheckListAPI,
   ChangeTaskStatusAPI,
   createCompilanceDataRoomMapFolderId,
+  GetEndOfComplianceReportAPI,
+  GetQuarterReportAPI,
+  GetComplianceStandingReportAPI,
+  GetAccumulativeReportAPI,
+  complianceCreatedFromMQTT,
+  complianceChecklistAddedMQTT,
+  complianceChecklistUpdateMQTT,
+  complianceChecklistDeletedMQTT,
+  complianceUpdateMQTT,
+  complianceReopenMQTT,
+  taskMappedChecklistMQTT,
 };
