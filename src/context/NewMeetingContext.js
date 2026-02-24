@@ -89,16 +89,16 @@ export const NewMeetingProvider = ({ children }) => {
 
   // --- Redux Selectors for Global State ---
   const meetingReminderNotification = useSelector(
-    (state) => state.NewMeetingreducer.meetingReminderNotification,
+    (state) => state.NewMeetingreducer.meetingReminderNotification
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
   );
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
+    (state) => state.NewMeetingreducer.searchMeetings
   );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
 
   // --- Local Filtering and Data Management ---
@@ -156,7 +156,7 @@ export const NewMeetingProvider = ({ children }) => {
         setMeetingsRecords((rowsData) => {
           // Find the index of the row that matches the ID
           const rowIndex = rowsData.findIndex(
-            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
           );
           console.log(rowIndex, "rowIndexrowIndex");
           // If a matching row is found, create a new array with the updated row
@@ -222,9 +222,9 @@ export const NewMeetingProvider = ({ children }) => {
                   (meeting) => ({
                     ...meeting,
                     meetingAgenda: meeting.meetingAgenda.filter(
-                      (agenda) => agenda.objMeetingAgenda.canView,
+                      (agenda) => agenda.objMeetingAgenda.canView
                     ),
-                  }),
+                  })
                 );
                 // Redundant check for canView to ensure deep filtering
                 copyMeetingData.forEach((data) => {
@@ -252,6 +252,7 @@ export const NewMeetingProvider = ({ children }) => {
                 setProposedMeetingData(searchMeetings.meetings);
               }
               break;
+            default:
           }
         } catch (error) {
           console.log(error);
@@ -417,7 +418,7 @@ export const useNewMeetingContext = () => {
   // Throw an error if the hook is used outside of the NewMeetingProvider
   if (!context) {
     throw new Error(
-      "useNewMeetingContext must be used within a NewMeetingProvider",
+      "useNewMeetingContext must be used within a NewMeetingProvider"
     );
   }
 
