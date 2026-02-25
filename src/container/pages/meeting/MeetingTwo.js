@@ -3607,8 +3607,8 @@ const NewMeeting = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        align: "left",
-        width: 140,
+        align: "center",
+        width:90,
         ellipsis: true,
         filters: statusFilters,
         filterIcon: (filtered) => (
@@ -3619,8 +3619,7 @@ const NewMeeting = () => {
         defaultFilteredValue: ["10", "1", "9", "8", "4"],
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
-        render: (text) => StatusValue(t, text),
-        sorter: (a, b) => a.status - b.status,
+        render: (text) => <div >{StatusValue(t, text)}</div>,
       },
 
       // ===== Organizer =====
