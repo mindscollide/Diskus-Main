@@ -27,11 +27,8 @@ const ComplianceStandingReport = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const criticalityOptions = [
-    { label: t("Low"), value: 1 },
-    { label: t("Medium"), value: 2 },
-    { label: t("High"), value: 3 },
-  ];
+  const { criticalityOptions } = useComplianceContext();
+
 
   //Sorting Table
   const [complianceNameSort, setComplianceNameSort] = useState(null);

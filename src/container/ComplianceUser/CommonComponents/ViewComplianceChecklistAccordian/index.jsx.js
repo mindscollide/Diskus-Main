@@ -10,6 +10,7 @@ import NoChecklistImg from "../../../../assets/images/NoChecklistImg.png";
 import Select from "react-select";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import { formatDateToYMD } from "../commonFunctions";
+import { useSelector } from "react-redux";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
@@ -18,6 +19,11 @@ const ViewComplianceChecklistAccordian = () => {
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   // const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
+  );
+
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
 
   const allExpanded =
     getCheckListData.length > 0 &&
@@ -34,9 +40,7 @@ const ViewComplianceChecklistAccordian = () => {
   console.log(
     {
       allCheckListByComplianceId,
-      setExpandChecklistOnTasksPage,
-      setViewComplianceDetailsTab,
-      complianceViewMode,
+      
     },
     "CheckListByComplianceCheckListByCompliance",
   );

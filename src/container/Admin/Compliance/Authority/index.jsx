@@ -497,7 +497,7 @@ const ManageAuthority = () => {
         ),
         dataIndex: "authorityName",
         key: "authorityName",
-        width: "25%",
+        width: "20%",
         ellipsis: true,
         align: "left",
         sorter: (a, b) =>
@@ -575,7 +575,7 @@ const ManageAuthority = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        width: "10%",
+        width: "5%",
         align: "center",
         ellipsis: true,
         ...getStatusColumnProps(),
@@ -585,7 +585,7 @@ const ManageAuthority = () => {
         title: t(""),
         dataIndex: "Delete",
         key: "Delete",
-        width: "20%",
+        width: "18%",
 
         // Action buttons column
         render: (text, record) => {

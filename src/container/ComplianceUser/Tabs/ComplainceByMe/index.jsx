@@ -32,11 +32,8 @@ const ComplianceByMe = () => {
   const { t } = useTranslation();
   const [isScroll, setIsScroll] = useState(false);
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const criticalityOptions = [
-    { label: t("Low"), value: 1 },
-    { label: t("Medium"), value: 2 },
-    { label: t("High"), value: 3 },
-  ];
+  const { criticalityOptions } = useComplianceContext();
+
   const getCompliancesForCreator = useSelector(
     (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
   );
@@ -328,11 +325,11 @@ const ComplianceByMe = () => {
         render: (text) => (
           <span className="d-flex justify-content-center">
             {text === 1 ? (
-              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
+              <Tooltip title={t("High")}>{t("High")}</Tooltip>
             ) : text === 2 ? (
               <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
             ) : (
-              <Tooltip title={t("High")}>{t("High")}</Tooltip>
+              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
             )}
           </span>
         ),

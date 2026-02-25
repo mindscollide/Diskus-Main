@@ -51,10 +51,10 @@ const CreateEditViewComplianceChecklist = () => {
     severity: "error",
   });
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
@@ -84,11 +84,11 @@ const CreateEditViewComplianceChecklist = () => {
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsByComplianceId
+        .GetComplianceChecklistsByComplianceId,
   );
   console.log(
     GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId"
+    "GetComplianceChecklistsByComplianceId",
   );
   let currentLanguage = localStorage.getItem("i18nextLng");
   // const [checkListData, setChecklistData] = useState({
@@ -97,13 +97,9 @@ const CreateEditViewComplianceChecklist = () => {
   //   checklistDueDate: "",
   // });
   const changeComplainceDueDate = (date) => {
-    let meetingDateValueFormat2 = new Date(date);
-    meetingDateValueFormat2.setHours(23);
-    meetingDateValueFormat2.setMinutes(59);
-    meetingDateValueFormat2.setSeconds(58);
     setChecklistData((prev) => ({
       ...prev,
-      checklistDueDate: meetingDateValueFormat2,
+      checklistDueDate: date, // keep the date object as is
     }));
   };
 
@@ -142,7 +138,7 @@ const CreateEditViewComplianceChecklist = () => {
           description: checkListData.checklistDescription,
           complianceId: complianceInfo.complianceId,
           dueDate: multiDatePickerDateChangIntoUTC(
-            checkListData.checklistDueDate
+            checkListData.checklistDueDate,
           ),
         };
         dispatch(
@@ -152,8 +148,8 @@ const CreateEditViewComplianceChecklist = () => {
             t,
             complianceInfo,
             setChecklistData,
-            setIsEditTrue
-          )
+            setIsEditTrue,
+          ),
         );
       } else {
         // Add
@@ -162,7 +158,7 @@ const CreateEditViewComplianceChecklist = () => {
           description: checkListData.checklistDescription,
           complianceId: complianceInfo.complianceId,
           dueDate: multiDatePickerDateChangIntoUTC(
-            checkListData.checklistDueDate
+            checkListData.checklistDueDate,
           ),
         };
         console.log(Data, "handleClickSaveBtn");
@@ -172,8 +168,8 @@ const CreateEditViewComplianceChecklist = () => {
             Data,
             t,
             complianceInfo,
-            setChecklistData
-          )
+            setChecklistData,
+          ),
         );
       }
     }
@@ -198,7 +194,7 @@ const CreateEditViewComplianceChecklist = () => {
           checklistTitle: checklistData.checklistTitle,
           checklistDescription: checklistData.checklistDescription,
           checklistDueDate: checklistData.dueDate
-            ? moment(checklistData.dueDate, "YYYYMMDD").endOf("day").toDate()
+            ? moment(checklistData.dueDate, "YYYYMMDD").toDate()
             : null,
         });
       } catch (error) {}
@@ -238,7 +234,7 @@ const CreateEditViewComplianceChecklist = () => {
       GetComplianceChecklistsByComplianceId !== null
     ) {
       setChecklistCount(
-        GetComplianceChecklistsByComplianceId.checklistList.length
+        GetComplianceChecklistsByComplianceId.checklistList.length,
       );
       setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
@@ -323,7 +319,7 @@ const CreateEditViewComplianceChecklist = () => {
     if (complianceAddEditViewState === 3) return;
     if (complianceAddEditViewState === 2 || isEditTrue) {
       let getCheckObj = getCheckListData.find(
-        (data, index) => data.checklistId === checkListData.checklistId
+        (data, index) => data.checklistId === checkListData.checklistId,
       );
       if (getCheckObj !== undefined) {
         if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
@@ -338,15 +334,15 @@ const CreateEditViewComplianceChecklist = () => {
                 Data,
                 t,
                 setErrors,
-                setIsChecklistTitleExist
-              )
+                setIsChecklistTitleExist,
+              ),
             );
           }
         }
       }
       console.log(
         { getCheckObj, getCheckListData, checkListData },
-        "handleBlur"
+        "handleBlur",
       );
       return;
     }
@@ -370,8 +366,8 @@ const CreateEditViewComplianceChecklist = () => {
               Data,
               t,
               setErrors,
-              setIsChecklistTitleExist
-            )
+              setIsChecklistTitleExist,
+            ),
           );
         }
         // }
@@ -569,7 +565,7 @@ const CreateEditViewComplianceChecklist = () => {
         {getCheckListData?.length > 0 ? (
           getCheckListData.map((data, index) => {
             const isExpanded = expandedCheckListIds.find(
-              (data2, index) => data2 === data.checklistId
+              (data2, index) => data2 === data.checklistId,
             );
 
             return (

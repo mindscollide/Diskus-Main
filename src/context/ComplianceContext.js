@@ -338,15 +338,15 @@ export const ComlianceProvider = ({ children }) => {
   };
   const criticalityOptions = [
     {
-      label: "Low",
+      label: t("High"),
       value: 1,
     },
     {
-      label: "Medium",
+      label: t("Medium"),
       value: 2,
     },
     {
-      label: "High",
+      label: t("Low"),
       value: 3,
     },
   ];
@@ -1009,6 +1009,7 @@ export const ComlianceProvider = ({ children }) => {
         setReopenDashboardList,
         viewComplianceTasksContextData,
         setViewComplianceTasksContextData,
+        criticalityOptions
       }}
     >
       {children}

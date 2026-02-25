@@ -36,7 +36,7 @@ const Reports = () => {
   const navigate = useNavigate();
 
   const GetReportListingData = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetReportListingData
+    (state) => state.ComplainceSettingReducerReducer.GetReportListingData,
   );
 
   const [isScroll, setIsScroll] = useState(false);
@@ -72,7 +72,7 @@ const Reports = () => {
   //  Initial Load
   useEffect(() => {
     dispatch(
-      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t)
+      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t),
     );
   }, []);
 
@@ -254,8 +254,8 @@ const Reports = () => {
       GetComplianceStandingReportAPI(
         navigate,
         { startDate: "", endDate: "" },
-        t
-      )
+        t,
+      ),
     );
   };
 
@@ -275,8 +275,8 @@ const Reports = () => {
               {record.reportTypeId === 1
                 ? t("End-of-Compliance-Reports")
                 : record.reportTypeId === 2
-                ? t("Quarterly-reports")
-                : t("Accumulative-reports")}
+                  ? t("Quarterly-reports")
+                  : t("Accumulative-reports")}
             </span>
           );
         },
@@ -304,12 +304,12 @@ const Reports = () => {
                 ?.toLowerCase()
                 .localeCompare(a.reportTitle?.toLowerCase())
             : reportTitleSort === "ascend"
-            ? a.reportTitle
-                ?.toLowerCase()
-                .localeCompare(b.reportTitle?.toLowerCase())
-            : a.reportTitle
-                ?.toLowerCase()
-                .localeCompare(b.reportTitle?.toLowerCase()),
+              ? a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase())
+              : a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
           return <span>{text}</span>;
@@ -443,43 +443,38 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
+    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t],
   );
 
   return (
     <>
+      <section className={styles["ComplianceStatusReport_Section"]}>
+        <Row className={styles["ComplianceReport"]}>
+          <Col lg={2} ms={2} sm={2}>
+            <img className="" src={ComplianceReportLiting} alt="" />
+          </Col>
+          <Col lg={7} ms={6} sm={6}>
+            <h4 className={styles["ComplianceStatusReport_heading"]}>
+              {t("Organizations-compliance-status-report-as-of-today.")}
+
+              <span
+                className={styles["ComplianceStatusReportGenerated_heading"]}
+              ></span>
+            </h4>
+          </Col>
+          <Col lg={3} ms={4} sm={4}>
+            <div className="d-flex align-items-center justify-content-center mt-3">
+              <CustomButton
+                className={styles["actionButtons_complianceStatusReport"]}
+                text={"View Report"}
+                onClick={onClickOfViewPort}
+              />
+            </div>
+          </Col>
+        </Row>
+      </section>
       {complianceReportList?.length > 0 ? (
         <>
-          <section className={styles["ComplianceStatusReport_Section"]}>
-            <Row className={styles["ComplianceReport"]}>
-              <Col lg={2} ms={2} sm={2}>
-                <img className="" src={ComplianceReportLiting} alt="" />
-              </Col>
-              <Col lg={7} ms={6} sm={6}>
-                <h4 className={styles["ComplianceStatusReport_heading"]}>
-                  {t("Organizations-compliance-status-report-as-of-today.")}
-
-                  <span
-                    className={
-                      styles["ComplianceStatusReportGenerated_heading"]
-                    }
-                  >
-                    Generated{" "}
-                    <img src={ComplianceStatusReportCheckedIcon} alt="" />
-                  </span>
-                </h4>
-              </Col>
-              <Col lg={3} ms={4} sm={4}>
-                <div className="d-flex align-items-center justify-content-center mt-3">
-                  <CustomButton
-                    className={styles["actionButtons_complianceStatusReport"]}
-                    text={"View Report"}
-                    onClick={onClickOfViewPort}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </section>
           <CustomTable
             rows={complianceReportList}
             column={columns}
