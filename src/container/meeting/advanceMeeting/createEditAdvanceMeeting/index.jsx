@@ -53,16 +53,21 @@ const CreateEditAdvanceMeeting = (
     //   setSceduleMeeting,
     //   setDataroomMapFolderId,
     //   dataroomMapFolderId,
-  },
+  }
 ) => {
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
+
+  const {} = useSelector((state) => state.NewMeetingreducer.currentMeetingInfo);
   const { editorRole, setEditorRole, setCurrentMeetingID, currentMeeting } =
     useMeetingContext();
+    const { meetingID = 0 } = useSelector(
+      (state) => state.NewMeetingreducer.currentMeetingInfo
+    );
   const { createdMeetingInfo, setCreatedMeetingInfo } = useNewMeetingContext();
   //   const [meetingDetails, setmeetingDetails] = useState(
   //     editorRole.role === "Agenda Contributor" ? false : true,
@@ -86,40 +91,40 @@ const CreateEditAdvanceMeeting = (
   let userID = localStorage.getItem("userID");
 
   const createEditMeetingDetailsTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingDetailsGlobalFlag,
+    (state) => state.NewMeetingreducer.meetingDetailsGlobalFlag
   );
   const createEditOrganizersTab = useSelector(
-    (state) => state.NewMeetingreducer.organizersGlobalFlag,
+    (state) => state.NewMeetingreducer.organizersGlobalFlag
   );
   const createEditAgendaContributorsTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaContributorsGlobalFlag,
+    (state) => state.NewMeetingreducer.agendaContributorsGlobalFlag
   );
   const createEditParticipantsTab = useSelector(
-    (state) => state.NewMeetingreducer.participantsGlobalFlag,
+    (state) => state.NewMeetingreducer.participantsGlobalFlag
   );
   const createEditAgendaTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaGlobalFlag,
+    (state) => state.NewMeetingreducer.agendaGlobalFlag
   );
   const createEditMeetingMaterialTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialGlobalFlag,
+    (state) => state.NewMeetingreducer.meetingMaterialGlobalFlag
   );
   const createEditMinutesTab = useSelector(
-    (state) => state.NewMeetingreducer.minutesGlobalFlag,
+    (state) => state.NewMeetingreducer.minutesGlobalFlag
   );
   const createEditProposedMeetingDatesTab = useSelector(
-    (state) => state.NewMeetingreducer.proposedMeetingDatesGlobalFlag,
+    (state) => state.NewMeetingreducer.proposedMeetingDatesGlobalFlag
   );
   const createEditActionsPageTab = useSelector(
-    (state) => state.NewMeetingreducer.actionsGlobalFlag,
+    (state) => state.NewMeetingreducer.actionsGlobalFlag
   );
   const createEditPollsTab = useSelector(
-    (state) => state.NewMeetingreducer.pollsGlobalFlag,
+    (state) => state.NewMeetingreducer.pollsGlobalFlag
   );
   const createEditAttendanceTab = useSelector(
-    (state) => state.NewMeetingreducer.attendanceGlobalFlag,
+    (state) => state.NewMeetingreducer.attendanceGlobalFlag
   );
   const createEditUploadTab = useSelector(
-    (state) => state.NewMeetingreducer.uploadGlobalFlag,
+    (state) => state.NewMeetingreducer.uploadGlobalFlag
   );
 
   const dispatch = useDispatch();
@@ -161,14 +166,14 @@ const CreateEditAdvanceMeeting = (
           navigate,
           t,
           Data,
-          true,
-          setCurrentMeetingID,
-          //   setSceduleMeeting,
-          setCreatedMeetingInfo,
-          0,
-          1,
-          false,
-        ),
+          // true,
+          // setCurrentMeetingID,
+          // //   setSceduleMeeting,
+          // // setCreatedMeetingInfo,
+          // 0,
+          // 1,
+          // false
+        )
       );
 
       dispatch(meetingDetailsGlobalFlag(true));
@@ -415,7 +420,7 @@ const CreateEditAdvanceMeeting = (
     <section>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          {createdMeetingInfo.meetingId !== 0 ? (
+          {meetingID !== 0 ? (
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {t("Edit-meeting")}
             </span>
@@ -427,15 +432,14 @@ const CreateEditAdvanceMeeting = (
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className="mb-4">
+        <Col lg={12} md={12} sm={12} className='mb-4'>
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="py-2 d-flex gap-2 flex-wrap"
-              >
+                className='py-2 d-flex gap-2 flex-wrap'>
                 <Button
                   text={t("Meeting-details")}
                   className={
@@ -445,13 +449,13 @@ const CreateEditAdvanceMeeting = (
                   }
                   onClick={showMeetingDeitals}
                 />
-                {createdMeetingInfo.meetingId !== 0 && (
+                {meetingID !== 0 && (
                   <>
                     {" "}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={
-                          createdMeetingInfo.meetingId !== 0 ? true : false
+                          meetingID !== 0 ? true : false
                         }
                         text={t("Organizers")}
                         className={
@@ -465,7 +469,7 @@ const CreateEditAdvanceMeeting = (
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={
-                          createdMeetingInfo.meetingId !== 0 ? true : false
+                          meetingID !== 0 ? true : false
                         }
                         text={t("Agenda-contributors")}
                         className={
@@ -479,7 +483,7 @@ const CreateEditAdvanceMeeting = (
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
                         disableBtn={
-                          createdMeetingInfo.meetingId !== 0 ? true : false
+                          meetingID !== 0 ? true : false
                         }
                         text={t("Participants")}
                         className={
@@ -492,7 +496,7 @@ const CreateEditAdvanceMeeting = (
                     )}
                     <Button
                       disableBtn={
-                        createdMeetingInfo.meetingId !== 0 ? true : false
+                        meetingID !== 0 ? true : false
                       }
                       text={t("Agenda-builder")}
                       className={
@@ -504,7 +508,7 @@ const CreateEditAdvanceMeeting = (
                     />
                     <Button
                       disableBtn={
-                        createdMeetingInfo.meetingId !== 0 ? true : false
+                        meetingID !== 0 ? true : false
                       }
                       text={t("Meeting-materials")}
                       className={
@@ -567,10 +571,10 @@ const CreateEditAdvanceMeeting = (
                     ) : null}
                     {Number(editorRole.status) === 10 &&
                     editorRole.role === "Organizer" &&
-                    createdMeetingInfo.meetingId !== 0 ? (
+                    meetingID !== 0 ? (
                       <Button
                         disableBtn={
-                          createdMeetingInfo.meetingId !== 0 ? true : false
+                          meetingID !== 0 ? true : false
                         }
                         text={t("Attendence")}
                         className={
@@ -586,165 +590,17 @@ const CreateEditAdvanceMeeting = (
               </Col>
             </Row>
 
-            {createEditMeetingDetailsTab && (
-              <MeetingDetails
-              // setorganizers={setorganizers}
-              // setmeetingDetails={setmeetingDetails}
-              // setSceduleMeeting={setSceduleMeeting}
-              // setAgendaContributors={setAgendaContributors}
-              // setParticipants={setParticipants}
-              // setAgenda={setAgenda}
-              // setMinutes={setMinutes}
-              // setactionsPage={setactionsPage}
-              // setAttendance={setAttendance}
-              // setPolls={setPolls}
-              // setMeetingMaterial={setMeetingMaterial}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // currentMeeting={currentMeeting}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
+            {createEditMeetingDetailsTab && <MeetingDetails />}
 
-            {createEditOrganizersTab && (
-              <Organizers
-              // setorganizers={setorganizers}
-              // setmeetingDetails={setmeetingDetails}
-              // setSceduleMeeting={setSceduleMeeting}
-              // setAgendaContributors={setAgendaContributors}
-              // setParticipants={setParticipants}
-              // setAgenda={setAgenda}
-              // setMinutes={setMinutes}
-              // setactionsPage={setactionsPage}
-              // setAttendance={setAttendance}
-              // setPolls={setPolls}
-              // setMeetingMaterial={setMeetingMaterial}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditAgendaContributorsTab && (
-              <AgendaContributers
-              //   setorganizers={setorganizers}
-              //   setCurrentMeetingID={setCurrentMeetingID}
-              //   currentMeeting={currentMeeting}
-              //   setSceduleMeeting={setSceduleMeeting}
-              //   setAgendaContributors={setAgendaContributors}
-              //   setParticipants={setParticipants}
-              //   setEditMeeting={setEditMeeting}
-              //   isEditMeeting={isEditMeeting}
-              //   editorRole={editorRole}
-              //   setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditParticipantsTab && (
-              <Participants
-              // setParticipants={setParticipants}
-              // setAgenda={setAgenda}
-              // proposedMeetingDates={proposedMeetingDates}
-              // setSceduleMeeting={setSceduleMeeting}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setAgendaContributors={setAgendaContributors}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditAgendaTab && (
-              <Agenda
-              // setSceduleMeeting={setSceduleMeeting}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setMeetingMaterial={setMeetingMaterial}
-              // setAgenda={setAgenda}
-              // setParticipants={setParticipants}
-              // dataroomMapFolderId={dataroomMapFolderId}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditMeetingMaterialTab && (
-              <MeetingMaterial
-              // setSceduleMeeting={setSceduleMeeting}
-              // setMeetingMaterial={setMeetingMaterial}
-              // setMinutes={setMinutes}
-              // currentMeeting={currentMeeting}
-              // setactionsPage={setactionsPage}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setAgenda={setAgenda}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditMinutesTab && (
-              <Minutes
-              // setMinutes={setMinutes}
-              // setMeetingMaterial={setMeetingMaterial}
-              // setSceduleMeeting={setSceduleMeeting}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setactionsPage={setactionsPage}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditActionsPageTab && (
-              <Actions
-              // setMinutes={setMinutes}
-              // setSceduleMeeting={setSceduleMeeting}
-              // setPolls={setPolls}
-              // setactionsPage={setactionsPage}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // dataroomMapFolderId={dataroomMapFolderId}
-              // setMeetingMaterial={setMeetingMaterial}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditPollsTab && (
-              <Polls
-              // setSceduleMeeting={setSceduleMeeting}
-              // setPolls={setPolls}
-              // setAttendance={setAttendance}
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setactionsPage={setactionsPage}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
-            {createEditAttendanceTab && (
-              <Attendence
-              // currentMeeting={currentMeeting}
-              // setCurrentMeetingID={setCurrentMeetingID}
-              // setEditMeeting={setEditMeeting}
-              // isEditMeeting={isEditMeeting}
-              // editorRole={editorRole}
-              // setAttendance={setAttendance}
-              // setPolls={setPolls}
-              // setSceduleMeeting={setSceduleMeeting}
-              // setDataroomMapFolderId={setDataroomMapFolderId}
-              />
-            )}
+            {createEditOrganizersTab && <Organizers />}
+            {createEditAgendaContributorsTab && <AgendaContributers />}
+            {createEditParticipantsTab && <Participants />}
+            {createEditAgendaTab && <Agenda />}
+            {createEditMeetingMaterialTab && <MeetingMaterial />}
+            {createEditMinutesTab && <Minutes />}
+            {createEditActionsPageTab && <Actions />}
+            {createEditPollsTab && <Polls />}
+            {createEditAttendanceTab && <Attendence />}
           </span>
         </Col>
       </Row>

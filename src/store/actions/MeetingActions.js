@@ -1,3 +1,48 @@
+import {
+  CreateUpdateMeetingDataroomMapped,
+  getAllMeetingDetailsByMeetingID,
+  getallMeetingType,
+  joinMeeting,
+  meetingStatusUpdate,
+  saveMeetingDetials,
+  searchUserMeetings,
+} from "../../commen/apis/Api_config";
+import { dataRoomApi, meetingApi } from "../../commen/apis/Api_ends_points";
+import axiosInstance from "../../commen/functions/axiosInstance";
+import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
+import { getAllUnpublishedMeetingData } from "../../hooks/meetingResponse/response";
+import * as actions from "../action_types";
+import { RefreshToken } from "./Auth_action";
+import { GetAdvanceMeetingAgendabyMeetingID } from "./MeetingAgenda_action";
+import {
+  GetAllMeetingRecurringApiNew,
+  GetAllMeetingRemindersApiFrequencyNew,
+  GetAllMeetingTypesNewFunction,
+  getMeetingByCommitteeIDApi,
+  getMeetingbyGroupApi,
+  meetingDetailsGlobalFlag,
+} from "./NewMeetingActions";
+
+import {
+  nonMeetingVideoGlobalModal,
+  presenterViewGlobalState,
+  videoIconOrButtonState,
+} from "./VideoFeature_actions";
+
+export const setCurrentMeetingInfo = ({
+  meetingID,
+  meetingTitle,
+  mapFolderId,
+}) => {
+  return {
+    type: actions.CURRENT_MEETING_INFO,
+    response: {
+      meetingID,
+      meetingTitle,
+      mapFolderId,
+    },
+  };
+};
 /**
  * ============================================================
  * JOIN MEETING ACTION (NEW FLOW)
@@ -12,11 +57,6 @@
  *
  * ============================================================
  */
-
-import {
-  nonMeetingVideoGlobalModal,
-  presenterViewGlobalState,
-} from "./VideoFeature_actions";
 
 /**
  * Action: JOIN_MEETING_INIT
@@ -94,10 +134,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
          * - Refresh token
          * - Retry joining meeting
          */
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(NewJoinCurrentMeeting(navigate, t, Data));
-        } else if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 200) {
           /**
            * ============================================================
            * SUCCESS RESPONSE (200)
@@ -113,7 +150,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase(),
+                  "Meeting_MeetingServiceManager_JoinMeeting_01".toLowerCase()
                 )
             ) {
               // Hide video icon/button
@@ -123,8 +160,8 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
               await dispatch(
                 joinMeetingSuccess(
                   response.data.responseResult,
-                  t("Successful"),
-                ),
+                  t("Successful")
+                )
               );
 
               /**
@@ -134,27 +171,25 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
                 // Fetch meeting details
                 let viewMeetingData = { MeetingID: Number(Data.FK_MDID) };
 
-                await dispatch(
-                  ViewMeeting(
-                    navigate,
-                    viewMeetingData,
-                    t,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    no,
-                  ),
-                );
+                // await dispatch(
+                //   ViewMeeting(
+                //     navigate,
+                //     viewMeetingData,
+                //     t,
+                //     setViewFlag,
+                //     setEditFlag,
+                //     setSceduleMeeting,
+                //     no
+                //   )
+                // );
               } else {
                 // Open advance meeting publish page
-                isFunction(setAdvanceMeetingModalID) &&
-                  setAdvanceMeetingModalID(Number(Data.FK_MDID));
-
-                isFunction(setViewAdvanceMeetingModal) &&
-                  setViewAdvanceMeetingModal(true);
-
-                await dispatch(viewAdvanceMeetingPublishPageFlag(true));
-                await dispatch(scheduleMeetingPageFlag(false));
+                // isFunction(setAdvanceMeetingModalID) &&
+                //   setAdvanceMeetingModalID(Number(Data.FK_MDID));
+                // isFunction(setViewAdvanceMeetingModal) &&
+                //   setViewAdvanceMeetingModal(true);
+                // await dispatch(viewAdvanceMeetingPublishPageFlag(true));
+                // await dispatch(scheduleMeetingPageFlag(false));
               }
 
               /**
@@ -165,7 +200,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
               /**
                * Update meeting status (10 = Joined)
                */
-              await dispatch(currentMeetingStatus(10));
+              // await dispatch(currentMeetingStatus(10));
 
               /**
                * ============================================================
@@ -174,7 +209,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
                */
 
               let activeStatusOneToOne = JSON.parse(
-                localStorage.getItem("activeCall"),
+                localStorage.getItem("activeCall")
               );
 
               let presenterViewStatus =
@@ -192,7 +227,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
                   WasInVideo: false,
                 };
 
-                dispatch(joinPresenterViewMainApi(navigate, t, data));
+                // dispatch(joinPresenterViewMainApi(navigate, t, data));
               } else if (presenterViewStatus && activeStatusOneToOne) {
                 /**
                  * Case B:
@@ -220,7 +255,7 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_02".toLowerCase(),
+                  "Meeting_MeetingServiceManager_JoinMeeting_02".toLowerCase()
                 )
             ) {
               dispatch(joinMeetingFail(t("Unsuccessful")));
@@ -233,15 +268,15 @@ const NewJoinCurrentMeeting = (navigate, t, Data, isQuickMeeting) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase(),
+                  "Meeting_MeetingServiceManager_JoinMeeting_03".toLowerCase()
                 )
             ) {
               dispatch(
                 joinMeetingFail(
                   t(
-                    "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time",
-                  ),
-                ),
+                    "Unable-to-join-the-meeting-at-this-time-please-try-after-some-time"
+                  )
+                )
               );
             } else {
               /**
@@ -319,7 +354,7 @@ const meetingStatusUpdateApi = (
   navigate,
   t,
   Data,
-  route,
+  route
   //   setEditorRole,
   //   setAdvanceMeetingModalID,
   //   setDataroomMapFolderId,
@@ -353,10 +388,6 @@ const meetingStatusUpdateApi = (
       /* ============================= */
       /* TOKEN EXPIRED */
       /* ============================= */
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t));
-        return dispatch(meetingStatusUpdateApi(navigate, t, Data, route));
-      }
 
       /* ============================= */
       /* SUCCESS RESPONSE */
@@ -373,7 +404,7 @@ const meetingStatusUpdateApi = (
         ====================================================== */
         if (
           message.includes(
-            "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase(),
+            "Meeting_MeetingServiceManager_MeetingStatusUpdate_01".toLowerCase()
           )
         ) {
           await dispatch(
@@ -384,16 +415,13 @@ const meetingStatusUpdateApi = (
               route === 5
                 ? t("Meeting-published-successfully")
                 : (route === 4 || route === 6 || route === 7 || route === 11) &&
-                    Data.StatusID === 10
-                  ? t("Meeting-started-successfully")
-                  : (route === 4 ||
-                        route === 6 ||
-                        route === 7 ||
-                        route === 12) &&
-                      Data.StatusID === 9
-                    ? t("Meeting-ended-successfully")
-                    : "",
-            ),
+                  Data.StatusID === 10
+                ? t("Meeting-started-successfully")
+                : (route === 4 || route === 6 || route === 7 || route === 12) &&
+                  Data.StatusID === 9
+                ? t("Meeting-ended-successfully")
+                : ""
+            )
           );
 
           /* =====================================================
@@ -410,26 +438,26 @@ const meetingStatusUpdateApi = (
                   navigate,
                   t,
                   { MeetingID: Number(Data.MeetingID) },
-                  true,
-                  setSceduleMeeting,
-                  setDataroomMapFolderId,
-                ),
+                  true
+                  // setSceduleMeeting,
+                  // setDataroomMapFolderId,
+                )
               );
 
-              dispatch(
-                JoinCurrentMeeting(
-                  false,
-                  navigate,
-                  t,
-                  leaveMeetingData,
-                  setViewFlag,
-                  setEditFlag,
-                  setSceduleMeeting,
-                  1,
-                  setAdvanceMeetingModalID,
-                  setViewAdvanceMeetingModal,
-                ),
-              );
+              // dispatch(
+              //   JoinCurrentMeeting(
+              //     false,
+              //     navigate,
+              //     t,
+              //     leaveMeetingData,
+              //     setViewFlag,
+              //     setEditFlag,
+              //     setSceduleMeeting,
+              //     1,
+              //     setAdvanceMeetingModalID,
+              //     setViewAdvanceMeetingModal
+              //   )
+              // );
               break;
             }
 
@@ -439,31 +467,30 @@ const meetingStatusUpdateApi = (
             case 4: {
               if (Data.StatusID === 9) {
                 // End meeting
-                setEndMeetingConfirmationModal(false);
+                // setEndMeetingConfirmationModal(false);
               } else {
-                if (!isQuickMeeting) {
-                  setAdvanceMeetingModalID(Data.MeetingID);
-                  setEditorRole({
-                    status: "10",
-                    role: "Organizer",
-                    isPrimaryOrganizer: false,
-                  });
-                }
-
-                dispatch(
-                  NewJoinCurrentMeeting(
-                    navigate,
-                    t,
-                    Data,
-                    leaveMeetingData,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    1,
-                    setAdvanceMeetingModalID,
-                    setViewAdvanceMeetingModal,
-                  ),
-                );
+                // if (!isQuickMeeting) {
+                //   setAdvanceMeetingModalID(Data.MeetingID);
+                //   setEditorRole({
+                //     status: "10",
+                //     role: "Organizer",
+                //     isPrimaryOrganizer: false,
+                //   });
+                // }
+                // dispatch(
+                //   NewJoinCurrentMeeting(
+                //     navigate,
+                //     t,
+                //     Data,
+                //     leaveMeetingData,
+                //     setViewFlag,
+                //     setEditFlag,
+                //     setSceduleMeeting,
+                //     1,
+                //     setAdvanceMeetingModalID,
+                //     setViewAdvanceMeetingModal
+                //   )
+                // );
               }
               break;
             }
@@ -484,9 +511,8 @@ const meetingStatusUpdateApi = (
                 PublishedMeetings: true,
               };
 
-              await dispatch(searchNewUserMeeting(navigate, searchData, t));
-              setSceduleMeeting(false);
-              dispatch(scheduleMeetingPageFlag(false));
+              // await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              // dispatch(scheduleMeetingPageFlag(false));
               break;
             }
 
@@ -499,15 +525,15 @@ const meetingStatusUpdateApi = (
                   NewJoinCurrentMeeting(
                     navigate,
                     t,
-                    Data,
-                    leaveMeetingData,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    1,
-                    setAdvanceMeetingModalID,
-                    setViewAdvanceMeetingModal,
-                  ),
+                    Data
+                    // leaveMeetingData,
+                    // setViewFlag,
+                    // setEditFlag,
+                    // setSceduleMeeting,
+                    // 1,
+                    // setAdvanceMeetingModalID,
+                    // setViewAdvanceMeetingModal
+                  )
                 );
               } else {
                 dispatch(getMeetingByCommitteeIDApi(navigate, t, {}));
@@ -537,14 +563,14 @@ const meetingStatusUpdateApi = (
                     navigate,
                     t,
                     Data,
-                    leaveMeetingData,
-                    setViewFlag,
-                    setEditFlag,
-                    setSceduleMeeting,
-                    route,
-                    setAdvanceMeetingModalID,
-                    setViewAdvanceMeetingModal,
-                  ),
+                    leaveMeetingData
+                    // setViewFlag,
+                    // setEditFlag,
+                    // setSceduleMeeting,
+                    // route,
+                    // setAdvanceMeetingModalID,
+                    // setViewAdvanceMeetingModal
+                  )
                 );
               }
               break;
@@ -560,21 +586,21 @@ const meetingStatusUpdateApi = (
           dispatch(meetingStatusUpdate_fail(t("Record-not-updated")));
         else if (message.includes("meetingstatusupdate_04"))
           dispatch(
-            meetingStatusUpdate_fail(t("Add-meeting-agenda-to-publish")),
+            meetingStatusUpdate_fail(t("Add-meeting-agenda-to-publish"))
           );
         else if (message.includes("meetingstatusupdate_05"))
           dispatch(
-            meetingStatusUpdate_fail(t("Add-meeting-organizers-to-publish")),
+            meetingStatusUpdate_fail(t("Add-meeting-organizers-to-publish"))
           );
         else if (message.includes("meetingstatusupdate_06"))
           dispatch(
-            meetingStatusUpdate_fail(t("Add-meeting-participants-to-publish")),
+            meetingStatusUpdate_fail(t("Add-meeting-participants-to-publish"))
           );
         else if (message.includes("meetingstatusupdate_07"))
           dispatch(
             meetingStatusUpdate_fail(
-              t("Meeting-cannot-be-published-after-time-has-elapsed"),
-            ),
+              t("Meeting-cannot-be-published-after-time-has-elapsed")
+            )
           );
         else dispatch(meetingStatusUpdate_fail(t("Something-went-wrong")));
       } else {
@@ -583,5 +609,990 @@ const meetingStatusUpdateApi = (
     } catch (error) {
       dispatch(meetingStatusUpdate_fail(t("Something-went-wrong")));
     }
+  };
+};
+const handleSaveMeetingInit = () => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_INIT,
+  };
+};
+
+const handleSaveMeetingSuccess = (response, message) => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const handleSaveMeetingFailed = (message) => {
+  return {
+    type: actions.SAVE_MEETING_DETAILS_FAILED,
+    message: message,
+  };
+};
+
+//Function For Save Meeting Api Function
+export const SaveMeetingDetialsApi = (
+  navigate,
+  t,
+  data,
+  meetingState
+  // setSceduleMeeting,
+  // setorganizers,
+  // setmeetingDetails,
+  // viewValue,
+  // setCurrentMeetingID,
+  // currentMeeting,
+  // meetingDetails,
+  // setDataroomMapFolderId,
+  // members,
+  // rows,
+  // ResponseDate,
+  // setProposedNewMeeting,
+  // flag
+) => {
+  // MeetingState = Published or Update or Save
+  return (dispatch) => {
+    dispatch(handleSaveMeetingInit());
+    let form = new FormData();
+    form.append("RequestMethod", saveMeetingDetials.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            SaveMeetingDetialsApi(
+              navigate,
+              t,
+              data,
+              meetingState
+              // setSceduleMeeting,
+              // setorganizers,
+              // setmeetingDetails,
+              // viewValue,
+              // setCurrentMeetingID,
+              // currentMeeting,
+              // meetingDetails,
+              // setDataroomMapFolderId,
+              // members,
+              // rows,
+              // ResponseDate,
+              // setProposedNewMeeting
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_01".toLowerCase()
+                )
+            ) {
+              let MeetID = response.data.responseResult.meetingID;
+              // setCurrentMeetingID(response.data.responseResult.meetingID);
+              dispatch(
+                handleSaveMeetingSuccess(response.data.responseResult, "")
+              );
+              // if (viewValue === 1) {
+              // let MappedData = {
+              //   MeetingID: response.data.responseResult.meetingID,
+              //   MeetingTitle: meetingDetails.MeetingTitle,
+              //   IsUpdateFlow: flag ? true : false,
+              // };
+              // dispatch(
+              //   CreateUpdateMeetingDataRoomMapeedApiFunc(
+              //     navigate,
+              //     MappedData,
+              //     t,
+              //     setDataroomMapFolderId,
+              //     members,
+              //     MeetID,
+              //     rows,
+              //     ResponseDate,
+              //     setProposedNewMeeting,
+              //     flag,
+              //     setSceduleMeeting
+              //   )
+              // );
+              // setSceduleMeeting(false);
+              // } else if (viewValue === 2) {
+              //   if (Number(data.MeetingDetails.MeetingStatusID) === 1) {
+              //     setSceduleMeeting(false);
+              //     // dispatch(scheduleMeetingPageFlag(false));
+
+              //     dispatch(
+              //       handleSaveMeetingSuccess(
+              //         response.data.responseResult,
+              //         t("Meeting-details-updated-and-published-successfully")
+              //       )
+              //     );
+              //     // dispatch(meetingDetailsGlobalFlag(false));
+              //     // dispatch(organizersGlobalFlag(true));
+              //     // dispatch(agendaContributorsGlobalFlag(false));
+              //     // dispatch(participantsGlobalFlag(false));
+              //     // dispatch(agendaGlobalFlag(false));
+              //     // dispatch(meetingMaterialGlobalFlag(false));
+              //     // dispatch(minutesGlobalFlag(false));
+              //     // dispatch(proposedMeetingDatesGlobalFlag(false));
+              //     // dispatch(actionsGlobalFlag(false));
+              //     // dispatch(pollsGlobalFlag(false));
+              //     // dispatch(attendanceGlobalFlag(false));
+              //     // dispatch(uploadGlobalFlag(false));
+              //     let currentView = localStorage.getItem("MeetingCurrentView");
+              //     let meetingpageRow = localStorage.getItem("MeetingPageRows");
+              //     let meetingPageCurrent =
+              //       localStorage.getItem("MeetingPageCurrent");
+              //     let userID = localStorage.getItem("userID");
+              //     let searchData = {
+              //       Date: "",
+              //       Title: "",
+              //       HostName: "",
+              //       UserID: Number(userID),
+              //       PageNumber:
+              //         meetingPageCurrent !== null
+              //           ? Number(meetingPageCurrent)
+              //           : 1,
+              //       Length:
+              //         meetingpageRow !== null ? Number(meetingpageRow) : 30,
+              //       PublishedMeetings:
+              //         localStorage.getItem("MeetingCurrentView") &&
+              //         Number(localStorage.getItem("MeetingCurrentView")) === 1
+              //           ? true
+              //           : false,
+              //       ProposedMeetings:
+              //         localStorage.getItem("MeetingCurrentView") &&
+              //         Number(localStorage.getItem("MeetingCurrentView")) === 2
+              //           ? true
+              //           : false,
+              //     };
+              //     await dispatch(searchNewUserMeeting(navigate, searchData, t));
+              //   } else {
+              //     let Data = {
+              //       MeetingID: Number(response.data.responseResult.meetingID),
+              //     };
+              //     await dispatch(
+              //       GetAllMeetingDetailsApiFunc(
+              //         navigate,
+              //         t,
+              //         Data,
+              //         true,
+              //         setCurrentMeetingID,
+              //         setSceduleMeeting,
+              //         setDataroomMapFolderId,
+              //         data.MeetingDetails.MeetingStatusID
+              //       )
+              //     );
+
+              //     // dispatch(meetingDetailsGlobalFlag(false));
+              //     // dispatch(organizersGlobalFlag(true));
+              //     // dispatch(agendaContributorsGlobalFlag(false));
+              //     // dispatch(participantsGlobalFlag(false));
+              //     // dispatch(agendaGlobalFlag(false));
+              //     // dispatch(meetingMaterialGlobalFlag(false));
+              //     // dispatch(minutesGlobalFlag(false));
+              //     // dispatch(proposedMeetingDatesGlobalFlag(false));
+              //     // dispatch(actionsGlobalFlag(false));
+              //     // dispatch(pollsGlobalFlag(false));
+              //     // dispatch(attendanceGlobalFlag(false));
+              //     // dispatch(uploadGlobalFlag(false));
+              //     setorganizers(true);
+              //     setmeetingDetails(false);
+              //   }
+              // } else if (viewValue === 3) {
+              //   // setorganizers(true);
+              //   // setmeetingDetails(false);
+              // } else if (viewValue === 4) {
+              //   let MappedData = {
+              //     MeetingID: response.data.responseResult.meetingID,
+              //     MeetingTitle: meetingDetails.MeetingTitle,
+              //     IsUpdateFlow: true,
+              //   };
+              //   // await dispatch(
+              //   //   CreateUpdateMeetingDataRoomMapeedApiFunc(
+              //   //     navigate,
+              //   //     MappedData,
+              //   //     t,
+              //   //     setDataroomMapFolderId
+              //   //   )
+              //   // );
+
+              //   // dispatch(meetingDetailsGlobalFlag(false));
+              //   // dispatch(organizersGlobalFlag(true));
+              //   // dispatch(agendaContributorsGlobalFlag(false));
+              //   // dispatch(participantsGlobalFlag(false));
+              //   // dispatch(agendaGlobalFlag(false));
+              //   // dispatch(meetingMaterialGlobalFlag(false));
+              //   // dispatch(minutesGlobalFlag(false));
+              //   // dispatch(proposedMeetingDatesGlobalFlag(false));
+              //   // dispatch(actionsGlobalFlag(false));
+              //   // dispatch(pollsGlobalFlag(false));
+              //   // dispatch(attendanceGlobalFlag(false));
+              //   // dispatch(uploadGlobalFlag(false));
+              //   setorganizers(true);
+              //   setmeetingDetails(false);
+              // }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_02".toLowerCase()
+                )
+            ) {
+              let data = [];
+              dispatch(handleSaveMeetingFailed(t("No-record-found", data)));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t(
+                    "Consecutive-date-times-should-be-greater-than-previous-date-time"
+                  )
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-agenda-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(t("Add-meeting-organizers-to-publish"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t("Add-meeting-participants-to-publish")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SaveMeetingDetails_08".toLowerCase()
+                )
+            ) {
+              dispatch(
+                handleSaveMeetingFailed(
+                  t("Meeting-cannot-be-published-after-time-has-elapsed")
+                )
+              );
+            } else {
+              dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(handleSaveMeetingFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
+// Search Meeting Init
+const SearchMeeting_Init = () => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_INIT,
+  };
+};
+// Search Meeting Init
+const SearchMeeting_Success = (response, message) => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+// Search Meeting Init
+const SearchMeeting_Fail = (message) => {
+  return {
+    type: actions.GET_SEARCH_NEW_MEETINGS_FAIL,
+    message: message,
+  };
+};
+export const getAllMeetingsApi = (navigate, t, Data, val) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(SearchMeeting_Init());
+    let form = new FormData();
+    form.append("RequestMethod", searchUserMeetings.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          console.log("chek search meeting");
+          dispatch(getAllMeetingsApi(navigate, t, Data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+                )
+            ) {
+              if (val === 1) {
+                // dispatch(ProposedMeetingViewFlagAction(false));
+              }
+              let getMeetingData = await getAllUnpublishedMeetingData(
+                response.data.responseResult.meetings,
+                1
+              );
+              let newMeetingData = {
+                meetingStartedMinuteAgo:
+                  response.data.responseResult.meetingStartedMinuteAgo,
+                meetings: getMeetingData,
+                pageNumbers: response.data.responseResult.pageNumbers,
+                totalRecords: response.data.responseResult.totalRecords,
+              };
+              await dispatch(SearchMeeting_Success(newMeetingData, ""));
+              let webNotifactionDataRoutecheckFlag = JSON.parse(
+                localStorage.getItem("webNotifactionDataRoutecheckFlag")
+              );
+              try {
+                if (webNotifactionDataRoutecheckFlag) {
+                  // dispatch(webnotificationGlobalFlag(true));
+                }
+              } catch (error) {
+                console.log(error);
+              }
+              if (
+                JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) ===
+                true
+              ) {
+                if (
+                  JSON.parse(localStorage.getItem("MeetingStatusID")) === 12
+                ) {
+                  //Notification Work
+                  console.log("ComingIN");
+                  //if the Meeting status is Proposed then navigate to the unpublished open Scedule Proposed meeting Modal
+                  // dispatch(showSceduleProposedMeeting(true));
+                } else {
+                  console.log("ComingIN");
+                  //Else condition if the meeting status of the proposed meeting is not [published] then navigate to Proposed Meeting page
+                  localStorage.removeItem("MeetingStatusID");
+                  localStorage.removeItem("ProposedMeetingOrganizer");
+                  localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
+                }
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("No-records-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+            } else {
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const handlegetAllMeetingTypesInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_INIT,
+  };
+};
+
+const handlegetAllMeetingTypesSuccess = (response, message, loader) => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_SUCCESS,
+    response: response,
+    message: message,
+    loader: loader,
+  };
+};
+
+const handlegetAllMeetingTypesFailed = (message, loader) => {
+  return {
+    type: actions.GET_ALL_MEETING_TYPES_NEW_FAILED,
+    message: message,
+    loader: loader,
+  };
+};
+
+export const listOfMeetingTypesApi = (navigate, t, loader) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(handlegetAllMeetingTypesInit());
+    let form = new FormData();
+    form.append("RequestMethod", getallMeetingType.RequestMethod);
+    try {
+      const response = await axiosInstance.post(meetingApi, form);
+
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        // Retry the API request
+        await dispatch(listOfMeetingTypesApi(navigate, t, loader));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_01".toLowerCase()
+              )
+          ) {
+            dispatch(
+              handlegetAllMeetingTypesSuccess(
+                response.data.responseResult,
+                "",
+                loader
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_02".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Meeting_MeetingServiceManager_GetAllMeetingTypes_03".toLowerCase()
+              )
+          ) {
+            dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+          } else {
+            dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+      }
+    } catch (error) {
+      dispatch(handlegetAllMeetingTypesFailed(t("Something-went-wrong")));
+    }
+  };
+};
+
+//Create update Meeting Data Room Mapped
+
+const showCreateUpdateMeetingDataRoomInit = () => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_INIT,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomSuccess = (response, message, flag) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_SUCCESS,
+    response: response,
+    message: message,
+    loader: flag,
+  };
+};
+
+const showCreateUpdateMeetingDataRoomFailed = (response, message) => {
+  return {
+    type: actions.CREATE_UPDATE_MEETING_DATA_ROOM_MAPPED_FAILED,
+    message: message,
+  };
+};
+
+export const CreateUpdateMeetingDataRoomMapedApi = (
+  navigate,
+  Data,
+  t
+  // setCreatedMeetingInfo,
+  // members,
+  // MeetID,
+  // rows,
+  // ResponseDate,
+  // setProposedNewMeeting,
+  // flag,
+  // setSceduleMeeting
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return (dispatch) => {
+    dispatch(showCreateUpdateMeetingDataRoomInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append(
+      "RequestMethod",
+      CreateUpdateMeetingDataroomMapped.RequestMethod
+    );
+    axiosInstance
+      .post(dataRoomApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            CreateUpdateMeetingDataRoomMapedApi(
+              navigate,
+              Data,
+              t
+              // setCreatedMeetingInfo,
+              // members,
+              // MeetID,
+              // rows,
+              // ResponseDate,
+              // setProposedNewMeeting,
+              // flag,
+              // setSceduleMeeting
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult.folderID,
+                  "",
+                  false
+                )
+              );
+              // localStorage.setItem(
+              //   "folderDataRoomMeeting",
+              //   response.data.responseResult.folderID
+              // );
+              // dispatch(
+              //   setCurrentMeetingInfo({
+              //     meetingID: Data.MeetingID,
+              //     meetingTitle: Data.MeetingTitle,
+              //     mapFolderId:  response?.data?.responseResult?.folderID ?? 0,
+              //   })
+              // );
+
+              // let newarry = [];
+              // members.forEach((data, index) => {
+              //   newarry.push(data.userID);
+              // });
+              // let Data2 = {
+              //   MeetingID: MeetID,
+              //   MeetingAttendeRoleID: 2,
+              //   UpdatedUsers: newarry,
+              // };
+              // dispatch(
+              //   UpdateMeetingUserApiFunc(
+              //     navigate,
+              //     Data2,
+              //     t,
+              //     members,
+              //     3,
+              //     MeetID,
+              //     rows,
+              //     ResponseDate,
+              //     true,
+              //     setProposedNewMeeting,
+              //     setSceduleMeeting
+              //   )
+              // );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_02".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-save-or-map-folder"),
+                  "",
+                  false
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult.folderID,
+                  "",
+                  false
+                )
+              );
+              localStorage.setItem(
+                "folderDataRoomMeeting",
+                response.data.responseResult.folderID
+              );
+              // setCurrentMeetingInfo((prev) => ({
+              //   ...prev,
+              //   meetingId: Data.MeetingID,
+              //   meetingMapFolderId:
+              //     response?.data?.responseResult?.folderID ?? 0,
+              //   meetingTitle: Data.MeetingTitle,
+              // }));
+              // dispatch(
+              //   setCurrentMeetingInfo({
+              //     meetingID: Data.MeetingID,
+              //     meetingTitle: Data.MeetingTitle,
+              //     mapFolderId:  response?.data?.responseResult?.folderID ?? 0,
+              //   })
+              // );
+              // let newarry = [];
+              // members.forEach((data, index) => {
+              //   newarry.push(data.userID);
+              // });
+              // let Data2 = {
+              //   MeetingID: MeetID,
+              //   MeetingAttendeRoleID: 2,
+              //   UpdatedUsers: newarry,
+              // };
+              // dispatch(
+              //   UpdateMeetingUserApiFunc(
+              //     navigate,
+              //     Data2,
+              //     t,
+              //     members,
+              //     3,
+              //     MeetID,
+              //     rows,
+              //     ResponseDate,
+              //     true,
+              //     setProposedNewMeeting
+              //   )
+              // );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Unable-to-update-folder"),
+                  "",
+                  false
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_05".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                showCreateUpdateMeetingDataRoomSuccess(
+                  response.data.responseResult,
+                  "",
+                  false
+                )
+              );
+              localStorage.setItem(
+                "folderDataRoomMeeting",
+                response.data.responseResult.folderID
+              );
+              dispatch(
+                setCurrentMeetingInfo({
+                  meetingID: Data.MeetingID,
+                  meetingTitle: Data.MeetingTitle,
+                  mapFolderId: response?.data?.responseResult?.folderID ?? 0,
+                })
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_06".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(
+                  t("Failed-to-create-new-mapping"),
+                  "",
+                  false
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_CreateUpdateMeetingDataRoomMap_07".toLowerCase()
+                )
+            ) {
+              dispatch(
+                showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          showCreateUpdateMeetingDataRoomFailed(t("Something-went-wrong"))
+        );
+      });
+  };
+};
+
+export const setActiveCreateAndEditMeetingTab = (tab) => ({
+  type: actions.ACTIVE_CREATE_AND_EDIT_MEETING_TAB,
+  payload: tab,
+});
+export const setActiveViewMeetingTab = (tab) => ({
+  type: actions.ACTIVE_VIEW_MEETING_TAB,
+  payload: tab,
+});
+
+//GET ALL MEETING DETAILS STARTED
+
+const showGetAllMeetingDetialsInit = () => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_INIT,
+  };
+};
+
+const showGetAllMeetingDetialsSuccess = (response, message, loader) => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_SUCCESS,
+    response: response,
+    message: message,
+    loader: loader,
+  };
+};
+
+const showGetAllMeetingDetialsFailed = (message) => {
+  return {
+    type: actions.GET_ALL_MEETING_DETAILS_BY_MEETINGID_FAILED,
+    message: message,
+  };
+};
+const cleareAllState = () => {
+  return {
+    type: actions.CLEARE_ALL_MEETING_STATE,
+  };
+};
+//GET ALL MEETING DETAILS API Function
+export const GetAllMeetingDetailsApiFunc = (
+  navigate,
+  t,
+  Data,
+  // loader,
+  // setCurrentMeetingID,
+  // setSceduleMeeting,
+  // setCreatedMeetingInfo,
+  viewValue,
+  // flag,
+  role
+) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    await dispatch(showGetAllMeetingDetialsInit());
+    let form = new FormData();
+    form.append("RequestMethod", getAllMeetingDetailsByMeetingID.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    await axiosInstance
+      .post(meetingApi, form)
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            GetAllMeetingDetailsApiFunc(
+              navigate,
+              t,
+              Data
+              // loader,
+              // setCurrentMeetingID,
+              // setSceduleMeeting,
+              // setCreatedMeetingInfo,
+
+              // viewValue,
+              // flag,
+              // role
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
+                )
+            ) {
+              localStorage.setItem(
+                "meetingTitle",
+                response.data.responseResult.advanceMeetingDetails.meetingTitle
+              );
+              localStorage.setItem(
+                "currentMeetingLS",
+                response.data.responseResult.advanceMeetingDetails.meetingID
+              );
+              let MappedData = {
+                MeetingID:
+                  response.data.responseResult.advanceMeetingDetails.meetingID,
+                MeetingTitle:
+                  response.data.responseResult.advanceMeetingDetails
+                    .meetingTitle,
+                IsUpdateFlow:
+                  viewValue !== null &&
+                  viewValue !== undefined &&
+                  viewValue !== 0 &&
+                  Number(viewValue) === 11
+                    ? false
+                    : true,
+              };
+              // if (flag !== undefined && flag != null) {
+              //   if (flag === 1) {
+              //     await dispatch(GetAllMeetingTypesNewFunction(navigate, t));
+              //     // Reminder Frequency Drop Down API
+              //     await dispatch(
+              //       GetAllMeetingRemindersApiFrequencyNew(navigate, t)
+              //     );
+              //     // Recurring Drop Down API
+              //     await dispatch(
+              //       GetAllMeetingRecurringApiNew(navigate, t, false)
+              //     );
+              //   } else if (flag === 2) {
+              //     console.log("Flag for proposed meeting Edit flow only");
+              //   }
+              // }
+              // else {
+              await dispatch(
+                CreateUpdateMeetingDataRoomMapedApi(
+                  navigate,
+                  MappedData,
+                  t
+                  // setCreatedMeetingInfo,
+                  // false,
+                  // false,
+                  // false,
+                  // false,
+                  // false,
+                  // false
+                )
+              );
+              // }
+
+              await dispatch(
+                showGetAllMeetingDetialsSuccess(
+                  response.data.responseResult,
+                  "",
+                  false
+                )
+              );
+              try {
+                dispatch(meetingDetailsGlobalFlag(true));
+                console.log("rolerole goes in this check");
+                // dispatch(scheduleMeetingPageFlag(true));
+                // setCurrentMeetingID(Data.MeetingID);
+                if (role === "Agenda Contributor") {
+                  let agendaMeetingID = {
+                    MeetingID: Data.MeetingID,
+                  };
+                  dispatch(
+                    GetAdvanceMeetingAgendabyMeetingID(
+                      agendaMeetingID,
+                      navigate,
+                      t
+                    )
+                  );
+                }
+              } catch {}
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_02".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingDetialsFailed(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_03".toLowerCase()
+                )
+            ) {
+              dispatch(showGetAllMeetingDetialsFailed(t("No-record-found")));
+            } else {
+              dispatch(
+                showGetAllMeetingDetialsFailed(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(showGetAllMeetingDetialsFailed(t("Something-went-wrong")));
+      });
   };
 };

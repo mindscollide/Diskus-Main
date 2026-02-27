@@ -172,6 +172,8 @@ const initialState = {
     meetingTitle: "",
     mapFolderId: 0,
   },
+  activeCreateAndEditMeetingTab: "details",
+  activeViewMeetingTab: "details",
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -271,6 +273,7 @@ const NewMeetingreducer = (state = initialState, action) => {
         };
       }
       case actions.QUICKMEETING_SAVE_DOCUMENTS_FAIL: {
+        break;
       }
 
       case actions.EMAIL_ROUTE_ID: {
@@ -2742,26 +2745,51 @@ const NewMeetingreducer = (state = initialState, action) => {
           responseMessage: "",
         };
 
-        case actions.CURRENT_MEETING_INFO: 
+      case actions.CURRENT_MEETING_INFO:
         return {
           ...state,
           currentMeetingInfo: {
             ...state.currentMeetingInfo,
-            meetingID: action.response.meetingId,
-            meetingTitle: action.response.meetingTitle,
-            mapFolderId: action.response.mapFolderId,
+
+            meetingID:
+              state.currentMeetingInfo.meetingID !== 0
+                ? state.currentMeetingInfo.meetingID
+                : action.response.meetingID,
+
+            meetingTitle:
+              state.currentMeetingInfo.meetingTitle !== ""
+                ? state.currentMeetingInfo.meetingTitle
+                : action.response.meetingTitle,
+
+            mapFolderId:
+              state.currentMeetingInfo.mapFolderId !== 0
+                ? state.currentMeetingInfo.mapFolderId
+                : action.response.mapFolderId,
           },
-        }
-        case actions.CLEAR_CURRENT_MEETING_INFO:
-          return {
-            ...state,
-            currentMeetingInfo: {
-              ...state.currentMeetingInfo,
-              meetingID: 0,
-              meetingTitle: "",
-              mapFolderId: 0,
-            },
-          }
+        };
+      case actions.CLEAR_CURRENT_MEETING_INFO:
+        return {
+          ...state,
+          currentMeetingInfo: {
+            ...state.currentMeetingInfo,
+            meetingID: 0,
+            meetingTitle: "",
+            mapFolderId: 0,
+          },
+        };
+
+      case actions.ACTIVE_CREATE_AND_EDIT_MEETING_TAB: {
+        return {
+          ...state,
+          activeCreateAndEditMeetingTab: action.payload,
+        };
+      }
+      case actions.ACTIVE_VIEW_MEETING_TAB: {
+        return {
+          ...state,
+          activeViewMeetingTab: action.payload,
+        };
+      }
 
       default:
         return {

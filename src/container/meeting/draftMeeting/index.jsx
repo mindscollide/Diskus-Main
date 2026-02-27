@@ -4,7 +4,6 @@ import { forRecentActivity } from "../../../commen/functions/date_formater";
 import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox, Menu, Popover } from "antd";
 import CustomButton from "../../../components/elements/button/Button";
-import { StatusValue } from "../../pages/meeting/statusJson";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../components/elements";
@@ -48,7 +47,7 @@ import {
 import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 // Styles (reuse DraftMeeting styles from existing component)
-import styles from "../../pages/meeting/draftMeeting/draft.module.css";
+import styles from "@/container/meeting/meeting.module.css";
 
 const DraftMeetingList = () => {
   const { t } = useTranslation();

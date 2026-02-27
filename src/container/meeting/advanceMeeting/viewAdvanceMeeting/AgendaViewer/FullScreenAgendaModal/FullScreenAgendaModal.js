@@ -44,13 +44,13 @@ import TalkInactiveIcon from "./../AV-Images/Talk Inactive.svg";
 import {
   exportAgenda,
   printAgenda,
-} from "../../../../../../store/actions/MeetingAgenda_action";
+} from "@/store/actions/MeetingAgenda_action";
 import {
   GetAllUserChats,
   GetAllUsers,
   GetGroupMessages,
   activeChat,
-} from "../../../../../../store/actions/Talk_action";
+} from "@/store/actions/Talk_action";
 import {
   activeChatBoxGS,
   addNewChatScreen,
@@ -61,16 +61,16 @@ import {
   footerShowHideStatus,
   headerShowHideStatus,
   recentChatFlag,
-} from "../../../../../../store/actions/Talk_Feature_actions";
-import { getCurrentDateTimeUTC } from "../../../../../../commen/functions/date_formater";
-import MaxHostVideoCallComponent from "../../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "../../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "../../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "../../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
-import { useMeetingContext } from "../../../../../../context/MeetingContext";
-import { userLogOutApiFunc } from "../../../../../../store/actions/Auth_Sign_Out";
+} from "@/store/actions/Talk_Feature_actions";
+import { getCurrentDateTimeUTC } from "@/commen/functions/date_formater";
+// import MaxHostVideoCallComponent from "../../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+// import NormalHostVideoCallComponent from "../../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+// import ParticipantVideoCallComponent from "../../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+// import NormalParticipantVideoComponent from "../../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+// import MaxParticipantVideoDeniedComponent from "../../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+// import MaxParticipantVideoRemovedComponent from "../../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import { useMeetingContext } from "@/context/MeetingContext";
+import { userLogOutApiFunc } from "@/store/actions/Auth_Sign_Out";
 
 const FullScreenAgendaModal = ({
   setFullScreenView,

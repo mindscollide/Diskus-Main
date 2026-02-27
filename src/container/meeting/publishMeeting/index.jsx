@@ -13,10 +13,10 @@ import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 // Components
 import { Table } from "../../../components/elements";
 import CustomButton from "../../../components/elements/button/Button";
-import EmptyTableComponent from "../../pages/meeting/EmptyTableComponent/EmptyTableComponent";
+import EmptyTableComponent from "@/container/meeting/commonComponents/EmptyTableComponent/EmptyTableComponent";
 
 // Status helper
-import { StatusValue } from "../../pages/meeting/statusJson";
+import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
 
 // Date formatters
 import {
@@ -90,14 +90,34 @@ import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 // Styles (reuse MeetingTwo styles for consistency)
 import styles from "./publishMeeting.module.css";
 
-import { showMessage } from "../../../components/elements/snack_bar/utill";
+import { showMessage } from "@/components/elements/snack_bar/utill";
 import { ChevronDown } from "react-bootstrap-icons";
-import CustomPagination from "../../../commen/functions/customPagination/Paginations";
+import CustomPagination from "@/commen/functions/customPagination/Paginations";
+import BoardDeckModal from "@/container/meeting/commonComponents/BoardDeck/BoardDeckModal/BoardDeckModal";
+import BoardDeckSendEmail from "@/container/meeting/commonComponents/BoardDeck/BoardDeckSendEmail/BoardDeckSendEmail";
+import ShareModalBoarddeck from "@/container/meeting/commonComponents//BoardDeck/ShareModalBoardDeck/ShareModalBoarddeck";
+import DownloadOptionsModal from "@/container/meeting/commonComponents/DownloadMeetingTranscribeAndRecording/DownloadOptionsModal/DownloadOptionsModal";
+import ShareViaDataRoomPathModal from "@/container/meeting/commonComponents/BoardDeck/ShareViaDataRoomPathModal/ShareViaDataRoomPathModal";
+import MeetingRecording from "@/container/meeting/commonComponents/MeetingRecording/MeetingRecording";
 
 const PublishedMeetingList = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const boardDeckModalData = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckModalData
+  );
+
+  const boardDeckEmailModal = useSelector(
+    (state) => state.NewMeetingreducer.boardDeckEmailModal
+  );
+  const boarddeckShareModal = useSelector(
+    (state) => state.NewMeetingreducer.boarddeckShareModal
+  );
+  const shareViaDataRoomPathConfirmModal = useSelector(
+    (state) => state.NewMeetingreducer.shareViaDataRoomPathConfirmation
+  );
 
   // ─── Context ───
   const {
@@ -116,11 +136,14 @@ const PublishedMeetingList = () => {
     setViewFlag,
     editFlag,
     setEditFlag,
-    setBoardDeckMeetingID,
-    setBoardDeckMeetingTitle,
     setDownloadMeeting,
     setCurrentMeetingID,
     setDownloadVideoRecordingModal,
+    boardDeckMeetingID,
+    setBoardDeckMeetingID,
+    boardDeckMeetingTitle,
+    setBoardDeckMeetingTitle,
+    downloadVideoRecordingModal,
   } = useMeetingContext();
 
   const {
@@ -132,6 +155,7 @@ const PublishedMeetingList = () => {
     publishedMeetingDataRecord,
     setPublishedMeetingData,
     searchFilters,
+    setIsCreateEditMeeting
   } = useNewMeetingContext();
 
   // ─── Redux selectors ───
@@ -149,6 +173,41 @@ const PublishedMeetingList = () => {
     message: "",
     severity: "error",
   });
+  // Status Filter State
+  const [statusFilterVisible, setStatusFilterVisible] = useState(false);
+  const [selectedStatusValues, setSelectedStatusValues] = useState([
+    "10",
+    "1",
+    "9",
+    "8",
+    "4",
+  ]);
+
+  // Meeting Type Filter State
+  const [meetingTypeFilterVisible, setMeetingTypeFilterVisible] =
+    useState(false);
+  const [selectedMeetingTypeValues, setSelectedMeetingTypeValues] = useState([
+    "1",
+    "2",
+    "3",
+  ]);
+  // For BoardDeck Send Email Modal
+  const [radioValue, setRadioValue] = useState(1);
+  const [boarddeckOptions, setBoarddeckOptions] = useState({
+    selectall: false,
+    Organizer: false,
+    AgendaContributor: false,
+    Participants: false,
+    Minutes: false,
+    Task: false,
+    polls: false,
+    attendeceReport: false,
+    video: false,
+    Agenda: false,
+  });
+
+  const [isDownloadAvailable, setIsDownloadAvailable] = useState(false);
+  const [downloadMeetingRecord, setDownloadMeetingRecord] = useState(null);
 
   let currentView = localStorage.getItem("MeetingCurrentView");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
@@ -237,7 +296,7 @@ const PublishedMeetingList = () => {
             joinMeetingData,
             setViewFlag,
             setEditFlag,
-            setSceduleMeeting,
+            setIsCreateEditMeeting,
             1,
             setAdvanceMeetingModalID,
             setViewAdvanceMeetingModal
@@ -253,7 +312,7 @@ const PublishedMeetingList = () => {
               t,
               setViewFlag,
               setEditFlag,
-              setSceduleMeeting,
+              setIsCreateEditMeeting,
               1
             )
           );
@@ -421,6 +480,28 @@ const PublishedMeetingList = () => {
     localStorage.setItem("isMinutePublished", record.isMinutePublished);
     localStorage.setItem("meetingTitle", record.title);
   };
+  const handleClickContributeAgenda = (record) => {
+    console.log("Agenda", record);
+    handleEditMeeting(
+      record.pK_MDID,
+      record.isQuickMeeting,
+      "Agenda Contributor",
+      record
+    );
+    setVideoTalk({
+      isChat: record.isChat,
+      isVideoCall: record.isVideoCall,
+      talkGroupID: record.talkGroupID,
+    });
+    localStorage.setItem("videoCallURL", record.videoCallURL);
+    setEditorRole({
+      status: record.status,
+      role: "Agenda Contributor",
+      isPrimaryOrganizer: record.isPrimaryOrganizer,
+    });
+    setEditMeeting(true);
+    dispatch(viewMeetingFlag(false));
+  };
 
   // ─── More popover content ───
   const moreButtons = (record) => {
@@ -432,6 +513,7 @@ const PublishedMeetingList = () => {
       CANCELLED: 4,
     };
     const status = Number(record.status);
+
     const isOrganizer = record.isOrganizer;
     const isParticipant = record.isParticipant;
     const isAgendaContributor = record.isAgendaContributor;
@@ -442,30 +524,36 @@ const PublishedMeetingList = () => {
           status === STATUS.ACTIVE ||
           status === STATUS.NOT_CONDUCTED) &&
         isOrganizer,
+
       cancel: status === STATUS.UPCOMING && isOrganizer,
+      contributeAgenda: status === STATUS.UPCOMING && isAgendaContributor,
+
       talk:
         status !== STATUS.NOT_CONDUCTED &&
         status !== STATUS.CANCELLED &&
         record.talkGroupID !== 0,
+
       viewAgenda:
-        (status === STATUS.ENDED || status === STATUS.ACTIVE) &&
+        (status === STATUS.ENDED ||
+          status === STATUS.UPCOMING ||
+          status === STATUS.ACTIVE) &&
         (isOrganizer || isAgendaContributor || isParticipant),
+
       attendance: status === STATUS.ENDED && isOrganizer,
+
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
       viewMinutes:
-        (status === STATUS.ENDED &&
-          !record.isQuickMeeting &&
-          isParticipant &&
-          record.isMinutePublished) ||
+        (status === STATUS.ENDED && !record.isQuickMeeting && isParticipant) ||
         (isAgendaContributor &&
           !record.isQuickMeeting &&
-          status === STATUS.ENDED &&
-          record.isMinutePublished),
+          status === STATUS.ENDED),
     };
-
     const hasAnyAction = Object.values(canShow).some(Boolean);
-    if (!hasAnyAction) return null;
+
+    if (!hasAnyAction) {
+      return null;
+    }
 
     return (
       <div className={styles.morebuttons}>
@@ -504,6 +592,15 @@ const PublishedMeetingList = () => {
           </div>
         )}
 
+        {/* {canShow.cancel && (
+          <div
+            className={styles.morebtn}
+            onClick={() => console.log("Cancel", record)}>
+            <img src={CancelMeetingIcon} alt='' width='16' height='16' />
+            <span>{t("Cancel-meeting")}</span>
+          </div>
+        )} */}
+
         {canShow.talk && (
           <div
             className={styles.morebtn}
@@ -539,7 +636,6 @@ const PublishedMeetingList = () => {
             <span>{t("Download-view-recording")}</span>
           </div>
         )}
-
         {canShow.viewMinutes && (
           <div
             className={styles.morebtn}
@@ -548,18 +644,26 @@ const PublishedMeetingList = () => {
             <span>{t("View-minutes")}</span>
           </div>
         )}
+        {canShow.contributeAgenda && (
+          <div
+            className={styles.morebtn}
+            onClick={() => handleClickContributeAgenda(record)}>
+            <img src={AgendaIcon} alt='' width='16' height='16' />
+            <span>{t("Contribute-agenda")}</span>
+          </div>
+        )}
       </div>
     );
   };
 
   // ─── Meeting action handler ───
   const onMeetingAction = (actionType, record) => {
+    console.log(actionType, record);
     const startMeetingRequest = {
       VideoCallURL: record.videoCallURL,
       MeetingID: Number(record.pK_MDID),
       StatusID: 10,
     };
-
     switch (actionType) {
       case "BOARD_DECK":
         setDownloadMeeting(false);
@@ -568,7 +672,6 @@ const PublishedMeetingList = () => {
         dispatch(boardDeckModal(true));
         localStorage.setItem("meetingTitle", record?.title);
         break;
-
       case "START_MEETING":
         if (!record.isQuickMeeting) {
           setAdvanceMeetingModalID(record.pK_MDID);
@@ -583,6 +686,7 @@ const PublishedMeetingList = () => {
             3,
             startMeetingRequest,
             setEditorRole,
+            // setAdvanceMeetingModalID,
             setDataroomMapFolderId,
             setViewAdvanceMeetingModal,
             setAdvanceMeetingModalID,
@@ -604,8 +708,9 @@ const PublishedMeetingList = () => {
           role: "Organizer",
           isPrimaryOrganizer: record.isPrimaryOrganizer,
         });
-        break;
 
+        // startMeeting(record);
+        break;
       case "EDIT_MEETING":
         if (record.isQuickMeeting === false) {
           handleEditMeeting(
@@ -646,9 +751,10 @@ const PublishedMeetingList = () => {
             return;
           }
         }
+        // editMeeting(record);
         break;
-
       case "JOIN_MEETING":
+        // joinMeeting(record);
         if (
           record.isOrganizer ||
           record.isAgendaContributor ||
@@ -660,6 +766,7 @@ const PublishedMeetingList = () => {
             record.isQuickMeeting,
             record.status
           );
+          // setIsOrganisers(isOrganiser);
           setEditorRole({
             status: record.status,
             role: record.isAgendaContributor
@@ -675,12 +782,16 @@ const PublishedMeetingList = () => {
             talkGroupID: record.talkGroupID,
           });
           localStorage.setItem("videoCallURL", record.videoCallURL);
+
           dispatch(viewMeetingFlag(true));
           localStorage.setItem("isMinutePublished", record.isMinutePublished);
           localStorage.setItem("meetingTitle", record.title);
         }
-        break;
 
+        break;
+      case "END_MEETING":
+        // endMeeting(record);
+        break;
       case "VIEW_MEETING":
         handleViewMeeting(
           record.videoCallURL,
@@ -706,11 +817,9 @@ const PublishedMeetingList = () => {
         localStorage.setItem("isMinutePublished", record.isMinutePublished);
         localStorage.setItem("meetingTitle", record.title);
         break;
-
       case "CONTRIBUTE_AGENDA":
-        handleClickViewAgenda(record);
+        handleClickContributeAgenda(record);
         break;
-
       default:
         break;
     }
@@ -784,19 +893,18 @@ const PublishedMeetingList = () => {
         dataIndex: "status",
         key: "status",
         align: "center",
-        width: 100,
+        width: 90,
         ellipsis: true,
         filters: statusFilters,
-        defaultFilteredValue: ["10", "1", "9", "8", "4"],
-        filterResetToDefaultFilteredValue: true,
-        onFilter: (value, record) => record.status === value,
         filterIcon: (filtered) => (
           <ChevronDown
             className={`status-filter-chevron ${filtered ? "active" : ""}`}
           />
         ),
-        render: (text) => StatusValue(t, text),
-        sorter: (a, b) => a.status - b.status,
+        defaultFilteredValue: ["10", "1", "9", "8", "4"],
+        filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) => record.status === value,
+        render: (text) => <div>{StatusValue(t, text)}</div>,
       },
 
       // ===== Organizer =====
@@ -887,14 +995,16 @@ const PublishedMeetingList = () => {
         align: "center",
         ellipsis: true,
         sorter: (a, b) => {
+          // Combine date + startTime into ISO-like format for comparison
           const dateA = new Date(
-            a.dateOfMeeting.substring(0, 4),
-            parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8),
-            a.meetingStartTime.substring(0, 2),
-            a.meetingStartTime.substring(2, 4),
-            a.meetingStartTime.substring(4, 6)
+            a.dateOfMeeting.substring(0, 4), // Year
+            parseInt(a.dateOfMeeting.substring(4, 6)) - 1, // Month (0-based)
+            a.dateOfMeeting.substring(6, 8), // Day
+            a.meetingStartTime.substring(0, 2), // Hours
+            a.meetingStartTime.substring(2, 4), // Minutes
+            a.meetingStartTime.substring(4, 6) // Seconds
           );
+
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
@@ -903,7 +1013,8 @@ const PublishedMeetingList = () => {
             b.meetingStartTime.substring(2, 4),
             b.meetingStartTime.substring(4, 6)
           );
-          return dateA - dateB;
+
+          return dateA - dateB; // returns number for Ant Design sorter
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
@@ -915,6 +1026,7 @@ const PublishedMeetingList = () => {
             record.meetingStartTime.substring(2, 4),
             record.meetingStartTime.substring(4, 6)
           );
+
           return <>{moment(meetingDate).format("Do MMM, YYYY")}</>;
         },
       },
@@ -936,6 +1048,8 @@ const PublishedMeetingList = () => {
         })),
         defaultFilteredValue: isMeetingTypeFilter.map((f) => f.value),
         filterResetToDefaultFilteredValue: true,
+        onFilter: (value, record) =>
+          Number(record.meetingType) === Number(value),
         filterIcon: (filtered) => (
           <ChevronDown
             className={`filter-chevron-icon-todolist ${
@@ -943,8 +1057,6 @@ const PublishedMeetingList = () => {
             }`}
           />
         ),
-        onFilter: (value, record) =>
-          Number(record.meetingType) === Number(value),
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
@@ -977,14 +1089,15 @@ const PublishedMeetingList = () => {
           const meetingDateTime = dateOfMeeting + meetingStartTime;
           const currentUTCDateTime = getCurrentDateTimeUTC();
 
+          // Convert string datetime to Date objects
           const parseDateTime = (dateTimeStr) =>
             new Date(
-              dateTimeStr.substring(0, 4),
-              parseInt(dateTimeStr.substring(4, 6), 10) - 1,
-              dateTimeStr.substring(6, 8),
-              dateTimeStr.substring(8, 10),
-              dateTimeStr.substring(10, 12),
-              dateTimeStr.substring(12, 14)
+              dateTimeStr.substring(0, 4), // Year
+              parseInt(dateTimeStr.substring(4, 6), 10) - 1, // Month
+              dateTimeStr.substring(6, 8), // Day
+              dateTimeStr.substring(8, 10), // Hours
+              dateTimeStr.substring(10, 12), // Minutes
+              dateTimeStr.substring(12, 14) // Seconds
             );
 
           const currentDateObj = parseDateTime(currentUTCDateTime);
@@ -1002,7 +1115,7 @@ const PublishedMeetingList = () => {
           const canStartMeeting =
             (meetingCurrentStatus === 1 &&
               isOrganizer &&
-              minutesDifference <= minutesAgo) ||
+              minutesDifference < minutesAgo) ||
             (pK_MDID === isButtonShown?.meetingID && isButtonShown?.showButton);
 
           const handleClick = (actionType) =>
@@ -1082,17 +1195,17 @@ const PublishedMeetingList = () => {
           }
 
           // ===== NOT CONDUCTED =====
-          if (meetingCurrentStatus === 8 && isOrganizer) {
-            return (
-              <div className='d-flex justify-content-center align-items-center'>
-                <CustomButton
-                  text={t("Edit-meeting")}
-                  className={styles.EditMeetingButton}
-                  onClick={() => handleClick("EDIT_MEETING")}
-                />
-              </div>
-            );
-          }
+          // if (meetingCurrentStatus === 8 && isOrganizer) {
+          //   return (
+          //     <div className='d-flex justify-content-center align-items-center'>
+          //       <CustomButton
+          //         text={t("Edit-meeting")}
+          //         className={styles.EditMeetingButton}
+          //         onClick={() => handleClick("EDIT_MEETING")}
+          //       />
+          //     </div>
+          //   );
+          // }
 
           // ===== Cancelled or others =====
           return null;
@@ -1106,22 +1219,28 @@ const PublishedMeetingList = () => {
         key: "meetingAction",
         width: 110,
         align: "center",
-        render: (_, record) => (
-          <div className='d-flex justify-content-center align-items-center'>
-            <Popover
-              content={moreButtons(record)}
-              trigger='click'
-              overlayClassName='MoreButtons_overlay'
-              showArrow={false}
-              placement='bottomRight'>
-              <CustomButton
-                className={styles.MoreMeetingButton}
-                text='More'
-                icon2={<img src={ChevronDownIcon} width={10} alt='' />}
-              />
-            </Popover>
-          </div>
-        ),
+        render: (_, record) => {
+          let checkifCancelledAndNotConducted =
+            record.status === 4 || record.status === 8;
+          return (
+            !checkifCancelledAndNotConducted && (
+              <div className='d-flex justify-content-center align-items-center'>
+                <Popover
+                  content={moreButtons(record)}
+                  trigger='click'
+                  overlayClassName='MoreButtons_overlay'
+                  showArrow={false}
+                  placement='bottomRight'>
+                  <CustomButton
+                    className={styles.MoreMeetingButton}
+                    text='More'
+                    icon2={<img src={ChevronDownIcon} width={10} alt='' />}
+                  />
+                </Popover>
+              </div>
+            )
+          );
+        },
       },
     ];
   }, [
@@ -1129,7 +1248,12 @@ const PublishedMeetingList = () => {
     organizerNameSort,
     meetingTimeSort,
     meetingDateSort,
+    statusFilterVisible,
+    selectedStatusValues,
+    meetingTypeFilterVisible,
+    selectedMeetingTypeValues,
     isMeetingTypeFilter,
+    minutesAgo,
   ]);
 
   // ─── Handle table sorting ───
@@ -1177,66 +1301,94 @@ const PublishedMeetingList = () => {
   };
 
   return (
-    <Row className='mt-2'>
-      <Col lg={12} md={12} sm={12}>
-        <Table
-          getPopupContainer={(node) => node.closest(".ant-table")}
-          onChange={handleTableChange}
-          className='MeetingTable'
-          column={columns}
-          size={"small"}
-          rows={publishedMeetingData}
-          sticky={true}
-          pagination={false}
-          // footer=(
-          //   <>
-          //     {publishedMeetingData.length > 0 ? (
-          //       <>
-          //         <Row>
-          //           <Col
-          //             lg={12}
-          //             md={12}
-          //             sm={12}
-          //             className='d-flex justify-content-center '>
-          //             <Row className={styles["PaginationStyle-Committee"]}>
-          //               <Col
-          //                 className={"pagination-groups-table"}
-          //                 sm={12}
-          //                 md={12}
-          //                 lg={12}>
-          //                 <CustomPagination
-          //                   current={
-          //                     meetingPageCurrent !== null
-          //                       ? Number(meetingPageCurrent)
-          //                       : 1
-          //                   }
-          //                   pageSize={
-          //                     meetingpageRow !== null
-          //                       ? Number(meetingpageRow)
-          //                       : 50
-          //                   }
-          //                   onChange={handelChangePagination}
-          //                   total={publishedMeetingDataRecord}
-          //                   showSizer={true}
-          //                   pageSizeOptionsValues={["30", "50", "100", "200"]}
-          //                 />
-          //               </Col>
-          //             </Row>
-          //           </Col>
-          //         </Row>
-          //       </>
-          //     ) : null}
-          //   </>
-          //   )
-          locale={{
-            emptyText: <EmptyTableComponent />,
-          }}
-          scroll={{
-            y: "60vh",
-          }}
+    <>
+      <Row className='mt-2'>
+        <Col lg={12} md={12} sm={12}>
+          <Table
+            getPopupContainer={(node) => node.closest(".ant-table")}
+            onChange={handleTableChange}
+            className='MeetingTable'
+            column={columns}
+            size={"small"}
+            rows={publishedMeetingData}
+            sticky={true}
+            pagination={false}
+            footer={() => (
+              <>
+                {publishedMeetingData.length > 0 ? (
+                  <>
+                    <Row className={styles["PaginationStyle-Committee"]}>
+                      <Col
+                        className={"pagination-groups-table"}
+                        sm={12}
+                        md={12}
+                        lg={12}>
+                        <CustomPagination
+                          current={
+                            meetingPageCurrent !== null
+                              ? Number(meetingPageCurrent)
+                              : 1
+                          }
+                          pageSize={
+                            meetingpageRow !== null
+                              ? Number(meetingpageRow)
+                              : 50
+                          }
+                          onChange={handelChangePagination}
+                          total={publishedMeetingDataRecord}
+                          showSizer={true}
+                          pageSizeOptionsValues={["30", "50", "100", "200"]}
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : null}
+              </>
+            )}
+            locale={{
+              emptyText: <EmptyTableComponent />,
+            }}
+            scroll={{
+              y: "60vh",
+            }}
+          />
+        </Col>
+      </Row>
+      {boardDeckModalData && (
+        <BoardDeckModal
+          boardDeckMeetingID={boardDeckMeetingID}
+          boarddeckOptions={boarddeckOptions}
+          setBoarddeckOptions={setBoarddeckOptions}
+          editorRole={editorRole}
         />
-      </Col>
-    </Row>
+      )}
+      {boarddeckShareModal && (
+        <ShareModalBoarddeck
+          radioValue={radioValue}
+          setRadioValue={setRadioValue}
+          boarddeckOptions={boarddeckOptions}
+        />
+      )}
+      {boardDeckEmailModal && (
+        <BoardDeckSendEmail
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
+          boardDeckMeetingID={boardDeckMeetingID}
+          boarddeckOptions={boarddeckOptions}
+          radioValue={radioValue}
+          setBoarddeckOptions={setBoarddeckOptions}
+        />
+      )}
+      <DownloadOptionsModal
+        isDownloadAvailable={isDownloadAvailable}
+        downloadMeetingRecord={downloadMeetingRecord}
+      />
+      {shareViaDataRoomPathConfirmModal && (
+        <ShareViaDataRoomPathModal
+          boardDeckMeetingTitle={boardDeckMeetingTitle}
+        />
+      )}
+      {downloadVideoRecordingModal && <MeetingRecording title={meetingTitle} />}
+    </>
   );
 };
 

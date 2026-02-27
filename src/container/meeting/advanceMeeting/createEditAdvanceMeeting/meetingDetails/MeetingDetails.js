@@ -56,11 +56,12 @@ import {
 } from "../../../../../commen/functions/time_formatter";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { SaveMeetingDetialsApi } from "../../../../../store/actions/MeetingActions";
 
 const MeetingDetails = ({
-  setorganizers,
-  setmeetingDetails,
-  setSceduleMeeting,
+  // setorganizers,
+  // setmeetingDetails,
+  // setSceduleMeeting,
   setCurrentMeetingID,
   currentMeeting,
   setEditMeeting,
@@ -77,29 +78,35 @@ const MeetingDetails = ({
     editorRole,
   } = useContext(MeetingContext);
 
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
+
+  console.log(currentMeetingInfo, "currentMeetingInfocurrentMeetingInfo");
+
   const nextConfirmModal = useSelector(
-    (state) => state.NewMeetingreducer.nextConfirmModal,
+    (state) => state.NewMeetingreducer.nextConfirmModal
   );
   // const cancelModalMeetingDetails = useSelector(
   //   (state) => state.NewMeetingreducer.cancelModalMeetingDetails
   // );
   const getmeetingURL = useSelector(
-    (state) => state.NewMeetingreducer.getmeetingURL,
+    (state) => state.NewMeetingreducer.getmeetingURL
   );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
 
   const getAllReminderFrequency = useSelector(
-    (state) => state.NewMeetingreducer.getAllReminderFrequency,
+    (state) => state.NewMeetingreducer.getAllReminderFrequency
   );
   const recurring = useSelector((state) => state.NewMeetingreducer.recurring);
   const ResponseMessage = useSelector(
-    (state) => state.NewMeetingreducer.ResponseMessage,
+    (state) => state.NewMeetingreducer.ResponseMessage
   );
 
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails,
+    (state) => state.NewMeetingreducer.getAllMeetingDetails
   );
 
   const [meetingTypeDropdown, setmeetingTypeDropdown] = useState([]);
@@ -118,7 +125,6 @@ const MeetingDetails = ({
       endTime: getEndTime?.newFormatTime,
     },
   ]);
-  console.log(rows, "rowsrowsrowsrows");
   //For Custom language datepicker
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -126,7 +132,6 @@ const MeetingDetails = ({
 
   const calendRef = useRef();
   const [error, seterror] = useState(false);
-  const [publishedFlag, setPublishedFlag] = useState(false);
 
   const [open, setOpen] = useState({
     open: false,
@@ -134,6 +139,7 @@ const MeetingDetails = ({
     severity: "error",
   });
   const [meetingDetails, setMeetingDetails] = useState({
+    MeetingID: 0,
     MeetingTitle: "",
     MeetingType: {
       PK_MTID: 0,
@@ -223,6 +229,7 @@ const MeetingDetails = ({
         },
         IsVideoCall: false,
         IsPublished: false,
+        MeetingID: 0,
       });
       setRows([
         {
@@ -254,8 +261,6 @@ const MeetingDetails = ({
     });
   };
 
-  console.log("MeetingDetailsMeetingDetails", meetingDetails);
-  console.log("MeetingDetailsMeetingDetails rows", rows);
 
   const handleMeetingStartTime = (index, date) => {
     let newDate = new Date(date);
@@ -285,7 +290,7 @@ const MeetingDetails = ({
           showMessage(
             "Start time must be after previous end time",
             "error",
-            setOpen,
+            setOpen
           );
           return;
         }
@@ -348,7 +353,7 @@ const MeetingDetails = ({
 
     if (isValidRow(lastRow)) {
       let { DateGMT, dateFormat } = incrementDateforPropsedMeeting(
-        lastRow.dateForView,
+        lastRow.dateForView
       );
       setRows([
         ...rows,
@@ -397,7 +402,7 @@ const MeetingDetails = ({
       let meetingEndTime = moment(data.endTime).format("HHmmss");
       console.log(
         { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime",
+        "meetingEndTime"
       );
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
@@ -440,19 +445,20 @@ const MeetingDetails = ({
       };
       console.log({ data }, "meetingEndTime");
       dispatch(
-        SaveMeetingDetialsNewApiFunction(
+        SaveMeetingDetialsApi(
           navigate,
           t,
           data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          2,
-          setCurrentMeetingID,
-          currentMeeting,
-          meetingDetails,
-          setDataroomMapFolderId,
-        ),
+          "published"
+          // setSceduleMeeting,
+          // setorganizers,
+          // setmeetingDetails,
+          // 2,
+          // setCurrentMeetingID,
+          // currentMeeting,
+          // meetingDetails,
+          // setDataroomMapFolderId,
+        )
       );
     } else {
       seterror(true);
@@ -478,10 +484,7 @@ const MeetingDetails = ({
       let meetingDates = moment(data.dateForView).format("YYYYMMDD");
       let meetingStartTime = moment(data.startTime).format("HHmmss");
       let meetingEndTime = moment(data.endTime).format("HHmmss");
-      console.log(
-        { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime",
-      );
+
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
         StartTime: createConvert(meetingDates + meetingStartTime),
@@ -536,19 +539,20 @@ const MeetingDetails = ({
       };
       console.log(data, "newArrnewArrnewArrnewArr");
       dispatch(
-        SaveMeetingDetialsNewApiFunction(
+        SaveMeetingDetialsApi(
           navigate,
           t,
           data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          2,
-          setCurrentMeetingID,
-          currentMeeting,
-          meetingDetails,
-          setDataroomMapFolderId,
-        ),
+          "Save"
+          // setSceduleMeeting,
+          // setorganizers,
+          // setmeetingDetails,
+          // 2,
+          // setCurrentMeetingID,
+          // currentMeeting,
+          // meetingDetails,
+          // setDataroomMapFolderId,
+        )
       );
       localStorage.setItem("MeetingTitle", meetingDetails.MeetingTitle);
     } else {
@@ -581,7 +585,7 @@ const MeetingDetails = ({
       let meetingEndTime = moment(data.endTime).format("HHmmss");
       console.log(
         { meetingDates, meetingStartTime, meetingEndTime },
-        "meetingEndTime",
+        "meetingEndTime"
       );
       newArr.push({
         MeetingDate: createConvert(meetingDates + meetingStartTime).slice(0, 8),
@@ -620,7 +624,7 @@ const MeetingDetails = ({
       let organizationID = JSON.parse(localStorage.getItem("organizationID"));
       let data = {
         MeetingDetails: {
-          MeetingID: Number(currentMeeting),
+          MeetingID: currentMeetingInfo.meetingID,
           MeetingTitle: meetingDetails.MeetingTitle,
           MeetingType: meetingDetails.MeetingType,
           Location: meetingDetails.Location,
@@ -640,19 +644,20 @@ const MeetingDetails = ({
         },
       };
       dispatch(
-        SaveMeetingDetialsNewApiFunction(
+        SaveMeetingDetialsApi(
           navigate,
           t,
           data,
-          setSceduleMeeting,
-          setorganizers,
-          setmeetingDetails,
-          4,
-          setCurrentMeetingID,
-          currentMeeting,
-          meetingDetails,
-          setDataroomMapFolderId,
-        ),
+          "Update"
+          // setSceduleMeeting,
+          // setorganizers,
+          // setmeetingDetails,
+          // 4,
+          // setCurrentMeetingID,
+          // currentMeeting,
+          // meetingDetails,
+          // setDataroomMapFolderId,
+        )
       );
       console.log("newArrnewArrnewArrnewArr", data);
     } else {
@@ -804,7 +809,7 @@ const MeetingDetails = ({
   // };
   console.log(
     getALlMeetingTypes?.meetingTypes,
-    "getALlMeetingTypes?.meetingTypes",
+    "getALlMeetingTypes?.meetingTypes"
   );
 
   //Reminder Frequency Drop Down Data
@@ -928,7 +933,6 @@ const MeetingDetails = ({
         getAllMeetingDetails !== null &&
         getAllMeetingDetails !== undefined
       ) {
-        let PublishedMeetingStatus = getAllMeetingDetails.isPublished;
         let MeetingData = getAllMeetingDetails.advanceMeetingDetails;
         console.log(MeetingData, "MeetingDataMeetingData");
         let isPublishedState = getAllMeetingDetails.isPublished;
@@ -936,7 +940,6 @@ const MeetingDetails = ({
         let getmeetingRecurrance = MeetingData.meetingRecurrance;
         let getmeetingReminders = MeetingData.meetingReminders;
         let getmeetingType = MeetingData.meetingType;
-        let wasPublishedFlag = MeetingData.wasMeetingPublished;
         setCurrentMeetingStatus(MeetingData.meetingStatus.pK_MSID);
         setMeetingDetails({
           MeetingTitle: MeetingData.meetingTitle,
@@ -997,28 +1000,28 @@ const MeetingDetails = ({
           getmeetingDates.forEach((data, index) => {
             newDateTimeData.push({
               selectedOption: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.startTime,
+                data.meetingDate + data.startTime
               ).slice(0, 8),
               startDate: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.startTime,
+                data.meetingDate + data.startTime
               ).slice(8, 14),
               endDate: convertDateTimetoGMTMeetingDetail(
-                data.meetingDate + data.endTime,
+                data.meetingDate + data.endTime
               ).slice(8, 14),
               endTime: resolutionResultTable(data.meetingDate + data.endTime),
               startTime: resolutionResultTable(
-                data.meetingDate + data.startTime,
+                data.meetingDate + data.startTime
               ),
               dateForView: resolutionResultTable(
-                data.meetingDate + data.startTime,
+                data.meetingDate + data.startTime
               ),
             });
           });
         }
         setRows(newDateTimeData);
-        setPublishedFlag(PublishedMeetingStatus);
       } else {
         setCurrentMeetingStatus(11);
+        setRows([]);
       }
     } catch {}
   }, [getAllMeetingDetails, currentMeeting]);
@@ -1045,11 +1048,10 @@ const MeetingDetails = ({
           lg={12}
           md={12}
           sm={12}
-          className={styles["Scroller_meeting_detials"]}
-        >
+          className={styles["Scroller_meeting_detials"]}>
           <Row>
             {/* First Half */}
-            <Col lg={7} md={7} sm={12} className="mt-3">
+            <Col lg={7} md={7} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
@@ -1073,9 +1075,9 @@ const MeetingDetails = ({
                       isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isEditMeeting === true
-                          ? true
-                          : false
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                   />
                   <Row>
@@ -1085,15 +1087,14 @@ const MeetingDetails = ({
                           error && meetingDetails.MeetingTitle === ""
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
-                        }
-                      >
+                        }>
                         {t("Please-enter-meeting-title")}
                       </p>
                     </Col>
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
@@ -1122,9 +1123,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                       />
 
@@ -1135,8 +1136,7 @@ const MeetingDetails = ({
                               error && meetingDetails.MeetingType === 0
                                 ? ` ${styles["errorMessage-inLogin"]} `
                                 : `${styles["errorMessage-inLogin_hidden"]}`
-                            }
-                          >
+                            }>
                             {t("Please-select-meeting-type")}
                           </p>
                         </Col>
@@ -1158,7 +1158,7 @@ const MeetingDetails = ({
                         placeholder={t("Location-Videourl")}
                         applyClass={"meetinInnerSearch"}
                         name={"Location"}
-                        labelclass="d-none"
+                        labelclass='d-none'
                         change={HandleChange}
                         value={meetingDetails.Location}
                         disable={
@@ -1169,9 +1169,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                         maxLength={245}
                       />
@@ -1185,18 +1185,17 @@ const MeetingDetails = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className="d-flex flex-column flex-wrap"
-                >
+                  className='d-flex flex-column flex-wrap'>
                   <TextField
                     label={
                       <span className={styles["Meeting_type_heading"]}>
                         {t("Add-notes")}
                       </span>
                     }
-                    applyClass="text-area-create-meeting"
-                    type="text"
+                    applyClass='text-area-create-meeting'
+                    type='text'
                     as={"textarea"}
-                    rows="5"
+                    rows='5'
                     name={"Notes"}
                     change={HandleChange}
                     placeholder={t("Note-for-this-meeting")}
@@ -1211,14 +1210,14 @@ const MeetingDetails = ({
                       isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isEditMeeting === true
-                          ? true
-                          : false
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                   />
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={4} md={4} sm={12}>
                   <span className={styles["Scedule_heading"]}>
                     {t("Scheduled-on")}
@@ -1243,15 +1242,14 @@ const MeetingDetails = ({
                   lg={12}
                   md={12}
                   sm={12}
-                  className={styles["Scroller_meeting"]}
-                >
+                  className={styles["Scroller_meeting"]}>
                   {rows.length > 0
                     ? rows.map((data, index) => {
                         return (
                           <>
                             <Row key={index}>
                               <Col lg={12} md={12} sm={12} key={index}>
-                                <Row className="mt-2">
+                                <Row className='mt-2'>
                                   <Col lg={4} md={4} sm={12}>
                                     <DatePicker
                                       // selected={data.selectedOption}
@@ -1262,17 +1260,17 @@ const MeetingDetails = ({
                                           ? rows[index - 1].selectedOption
                                           : moment().toDate()
                                       }
-                                      placeholder="DD/MM/YYYY"
+                                      placeholder='DD/MM/YYYY'
                                       render={
                                         <InputIcon
-                                          placeholder="DD/MM/YYYY"
-                                          className="datepicker_input"
+                                          placeholder='DD/MM/YYYY'
+                                          className='datepicker_input'
                                         />
                                       }
                                       editable={false}
-                                      className="datePickerTodoCreate2"
+                                      className='datePickerTodoCreate2'
                                       onOpenPickNewDate={true}
-                                      inputMode=""
+                                      inputMode=''
                                       calendar={calendarValue}
                                       locale={localValue}
                                       ref={calendRef}
@@ -1287,19 +1285,17 @@ const MeetingDetails = ({
                                         isEditMeeting === true
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
-                                                Number(editorRole.status) ===
-                                                  2 ||
-                                                Number(editorRole.status) ===
-                                                  1 ||
-                                                Number(editorRole.status) ===
-                                                  12 ||
-                                                Number(editorRole.status) ===
-                                                  10) &&
-                                              editorRole.role ===
-                                                "Agenda Contributor" &&
-                                              isEditMeeting === true
-                                            ? true
-                                            : false
+                                              Number(editorRole.status) === 2 ||
+                                              Number(editorRole.status) === 1 ||
+                                              Number(editorRole.status) ===
+                                                12 ||
+                                              Number(editorRole.status) ===
+                                                10) &&
+                                            editorRole.role ===
+                                              "Agenda Contributor" &&
+                                            isEditMeeting === true
+                                          ? true
+                                          : false
                                       }
                                     />
                                     <p
@@ -1307,8 +1303,7 @@ const MeetingDetails = ({
                                         error && data.selectedOption === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("Scheduled-date-is-required")}
                                     </p>
                                   </Col>
@@ -1316,17 +1311,16 @@ const MeetingDetails = ({
                                     lg={3}
                                     md={3}
                                     sm={3}
-                                    className="timePicker"
-                                  >
+                                    className='timePicker'>
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
                                       // selected={data.startDate}
                                       value={data.startTime}
                                       editable={false}
@@ -1342,19 +1336,17 @@ const MeetingDetails = ({
                                         isEditMeeting === true
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
-                                                Number(editorRole.status) ===
-                                                  2 ||
-                                                Number(editorRole.status) ===
-                                                  1 ||
-                                                Number(editorRole.status) ===
-                                                  12 ||
-                                                Number(editorRole.status) ===
-                                                  10) &&
-                                              editorRole.role ===
-                                                "Agenda Contributor" &&
-                                              isEditMeeting === true
-                                            ? true
-                                            : false
+                                              Number(editorRole.status) === 2 ||
+                                              Number(editorRole.status) === 1 ||
+                                              Number(editorRole.status) ===
+                                                12 ||
+                                              Number(editorRole.status) ===
+                                                10) &&
+                                            editorRole.role ===
+                                              "Agenda Contributor" &&
+                                            isEditMeeting === true
+                                          ? true
+                                          : false
                                       }
                                     />
                                     <p
@@ -1362,8 +1354,7 @@ const MeetingDetails = ({
                                         error && data.startDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("start-time-is-required")}
                                     </p>
                                   </Col>
@@ -1371,26 +1362,25 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-center align-items-center"
-                                  >
+                                    className='d-flex justify-content-center align-items-center'>
                                     <img
                                       draggable={false}
                                       src={desh}
-                                      width="19.02px"
-                                      alt=""
+                                      width='19.02px'
+                                      alt=''
                                     />
                                   </Col>
                                   <Col lg={3} md={3} sm={12}>
                                     <DatePicker
-                                      arrowClassName="arrowClass"
-                                      containerClassName="containerClassTimePicker"
-                                      className="timePicker"
+                                      arrowClassName='arrowClass'
+                                      containerClassName='containerClassTimePicker'
+                                      className='timePicker'
                                       disableDayPicker
-                                      inputClass="inputTImeMeeting"
+                                      inputClass='inputTImeMeeting'
                                       calendar={calendarValue}
                                       locale={localValue}
                                       value={data.endTime}
-                                      format="hh:mm A"
+                                      format='hh:mm A'
                                       plugins={[<TimePicker hideSeconds />]}
                                       editable={false}
                                       onChange={(date) =>
@@ -1404,19 +1394,17 @@ const MeetingDetails = ({
                                         isEditMeeting === true
                                           ? true
                                           : (Number(editorRole.status) === 11 ||
-                                                Number(editorRole.status) ===
-                                                  2 ||
-                                                Number(editorRole.status) ===
-                                                  1 ||
-                                                Number(editorRole.status) ===
-                                                  12 ||
-                                                Number(editorRole.status) ===
-                                                  10) &&
-                                              editorRole.role ===
-                                                "Agenda Contributor" &&
-                                              isEditMeeting === true
-                                            ? true
-                                            : false
+                                              Number(editorRole.status) === 2 ||
+                                              Number(editorRole.status) === 1 ||
+                                              Number(editorRole.status) ===
+                                                12 ||
+                                              Number(editorRole.status) ===
+                                                10) &&
+                                            editorRole.role ===
+                                              "Agenda Contributor" &&
+                                            isEditMeeting === true
+                                          ? true
+                                          : false
                                       }
                                     />
                                     <p
@@ -1424,8 +1412,7 @@ const MeetingDetails = ({
                                         error && data.endDate === ""
                                           ? ` ${styles["errorMessage-inLogin"]} `
                                           : `${styles["errorMessage-inLogin_hidden"]}`
-                                      }
-                                    >
+                                      }>
                                       {t("end-time-is-required")}
                                     </p>
                                   </Col>
@@ -1433,10 +1420,9 @@ const MeetingDetails = ({
                                     lg={1}
                                     md={1}
                                     sm={12}
-                                    className="d-flex justify-content-end position-relative align-items-center"
-                                  >
+                                    className='d-flex justify-content-end position-relative align-items-center'>
                                     {index === 0 ? null : Number(
-                                        editorRole.status,
+                                        editorRole.status
                                       ) === 9 &&
                                       isEditMeeting ===
                                         true ? null : editorRole.role ===
@@ -1445,9 +1431,9 @@ const MeetingDetails = ({
                                       <img
                                         draggable={false}
                                         src={redcrossIcon}
-                                        width="23px"
-                                        alt=""
-                                        height="23px"
+                                        width='23px'
+                                        alt=''
+                                        height='23px'
                                         className={styles["Cross_icon_class"]}
                                         onClick={() => {
                                           HandleCancelFunction(index);
@@ -1509,7 +1495,7 @@ const MeetingDetails = ({
               {/* </Row> */}
             </Col>
             {/* Second Half */}
-            <Col lg={5} md={5} sm={12} className="mt-3">
+            <Col lg={5} md={5} sm={12} className='mt-3'>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
@@ -1571,15 +1557,15 @@ const MeetingDetails = ({
                       meetingDetails.ReminderFrequency.value === 0
                         ? true
                         : (Number(editorRole.status) === 9 ||
-                              Number(editorRole.status) === 8 ||
-                              Number(editorRole.status) === 10) &&
-                            editorRole.role === "Organizer" &&
-                            isEditMeeting === true
-                          ? true
-                          : editorRole.role === "Agenda Contributor" &&
-                              isEditMeeting === true
-                            ? true
-                            : false
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                     isSearchable={false}
                   />
@@ -1605,15 +1591,15 @@ const MeetingDetails = ({
                       meetingDetails.ReminderFrequencyTwo.value === 0
                         ? true
                         : (Number(editorRole.status) === 9 ||
-                              Number(editorRole.status) === 8 ||
-                              Number(editorRole.status) === 10) &&
-                            editorRole.role === "Organizer" &&
-                            isEditMeeting === true
-                          ? true
-                          : editorRole.role === "Agenda Contributor" &&
-                              isEditMeeting === true
-                            ? true
-                            : false
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                     isSearchable={false}
                   />
@@ -1625,14 +1611,13 @@ const MeetingDetails = ({
                         error && meetingDetails.ReminderFrequency.value === 0
                           ? ` ${styles["errorMessage-inLogin"]} `
                           : `${styles["errorMessage-inLogin_hidden"]}`
-                      }
-                    >
+                      }>
                       {t("Please-select-reminder-frequency")}
                     </p>
                   </Col>
                 </Row>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <TextField
                     label={
@@ -1640,10 +1625,10 @@ const MeetingDetails = ({
                         {t("Add-description")}
                       </span>
                     }
-                    applyClass="text-area-create-resolution"
-                    type="text"
+                    applyClass='text-area-create-resolution'
+                    type='text'
                     as={"textarea"}
-                    rows="2"
+                    rows='2'
                     placeholder={t("Description")}
                     required={true}
                     name={"Description"}
@@ -1658,18 +1643,18 @@ const MeetingDetails = ({
                       isEditMeeting === true
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                            isEditMeeting === true
-                          ? true
-                          : false
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                   />
                 </Col>
               </Row>
 
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={6} md={6} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleRSPV}
                         checkedValue={meetingDetails.AllowRSPV}
@@ -1681,9 +1666,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
@@ -1698,8 +1683,7 @@ const MeetingDetails = ({
                       lg={12}
                       md={12}
                       sm={12}
-                      className="d-flex gap-2 justify-content-start"
-                    >
+                      className='d-flex gap-2 justify-content-start'>
                       <Switch
                         onChange={handleNotifyOrganizers}
                         checkedValue={meetingDetails.NotifyMeetingOrganizer}
@@ -1711,9 +1695,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
@@ -1723,10 +1707,10 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleGroupChat}
                         checkedValue={meetingDetails.groupChat}
@@ -1738,9 +1722,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
@@ -1750,8 +1734,8 @@ const MeetingDetails = ({
                   </Row>
                 </Col>
                 <Col lg={6} md={6} sm={12}>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Row className='mt-2'>
+                    <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                       <Switch
                         onChange={handleVideoCameraButton}
                         checkedValue={meetingDetails.IsVideoCall}
@@ -1763,9 +1747,9 @@ const MeetingDetails = ({
                           isEditMeeting === true
                             ? true
                             : editorRole.role === "Agenda Contributor" &&
-                                isEditMeeting === true
-                              ? true
-                              : false
+                              isEditMeeting === true
+                            ? true
+                            : false
                         }
                       />
                       <span className={styles["Create_group_chat_heading"]}>
@@ -1842,14 +1826,14 @@ const MeetingDetails = ({
                   </Row> */}
                 </Col>
               </Row>
-              <Row className="mt-3">
+              <Row className='mt-3'>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["reccurring_heading"]}>
                     {t("Recurring")}
                   </span>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row className='mt-2'>
                 <Col lg={12} md={12} sm={12}>
                   <Select
                     onChange={handleRecurringSelectoptions}
@@ -1862,18 +1846,18 @@ const MeetingDetails = ({
                       process.env.REACT_APP_ENV === "prod"
                         ? true
                         : (Number(editorRole.status) === 9 ||
-                              Number(editorRole.status) === 8 ||
-                              Number(editorRole.status) === 10) &&
-                            editorRole.role === "Organizer" &&
-                            isEditMeeting === true
-                          ? true
-                          : editorRole.role === "Agenda Contributor" &&
-                              isEditMeeting === true
-                            ? true
-                            : false
+                            Number(editorRole.status) === 8 ||
+                            Number(editorRole.status) === 10) &&
+                          editorRole.role === "Organizer" &&
+                          isEditMeeting === true
+                        ? true
+                        : editorRole.role === "Agenda Contributor" &&
+                          isEditMeeting === true
+                        ? true
+                        : false
                     }
                     styles={customStyles}
-                    menuPlacement="top" // Set menuPlacement to 'top' to open the dropdown upwards
+                    menuPlacement='top' // Set menuPlacement to 'top' to open the dropdown upwards
                     menuPortalTarget={document.body}
                     isSearchable={false}
                     // isDisabled={true} THIS IS TO BE DONE, When the build is to be done on production and comment the above isDisabled
@@ -1884,26 +1868,18 @@ const MeetingDetails = ({
           </Row>
         </Col>
       </Row>
-      <Row className="mt-5">
+      <Row className='mt-5'>
         <Col
           lg={12}
           md={12}
           sm={12}
-          className="d-flex gap-3 justify-content-end"
-        >
+          className='d-flex gap-3 justify-content-end'>
           <Button
             text={t("Cancel")}
             className={styles["Published"]}
             onClick={() => setGoBackCancelModal(true)}
           />
-          {(Number(editorRole.status) === 9 ||
-            Number(editorRole.status) === 8 ||
-            Number(editorRole.status) === 10) &&
-          editorRole.role === "Organizer" &&
-          isEditMeeting === true ? null : editorRole.role ===
-              "Agenda Contributor" && isEditMeeting === true ? null : Number(
-              currentMeeting,
-            ) === 0 ? (
+          {currentMeetingInfo.meetingID === 0 ? (
             <>
               <Button
                 text={t("Next")}
@@ -1912,19 +1888,28 @@ const MeetingDetails = ({
               />
             </>
           ) : (
-            <>
-              <Button
-                text={t("Next")}
-                className={styles["Update_Next"]}
-                onClick={UpdateMeetings}
-              />
-            </>
+            currentMeetingInfo.meetingID !== 0 &&
+            editorRole.role === "Organizer" &&
+            (
+              editorRole.status === "11" ||
+              editorRole.status === "08" ||
+              editorRole.status === "12"
+            )(
+              <>
+                <Button
+                  text={t("Next")}
+                  className={styles["Update_Next"]}
+                  onClick={UpdateMeetings}
+                />
+              </>
+            )
           )}
 
           {editorRole.role === "Organizer" &&
           (Number(editorRole.status) === 11 ||
             Number(editorRole.status) === 12) &&
-          meetingDetails.IsPublished ? (
+          meetingDetails.IsPublished &&
+          currentMeetingInfo.meetingID !== 0 ? (
             <Button
               disableBtn={!meetingDetails.IsPublished}
               text={t("Publish")}
@@ -1936,15 +1921,12 @@ const MeetingDetails = ({
       </Row>
 
       <CancelButtonModal
-        setSceduleMeeting={setSceduleMeeting}
-        setMeetingDetails={setMeetingDetails}
         setRows={setRows}
-        flag={true}
       />
       {nextConfirmModal && (
         <NextModal
-          setmeetingDetails={setmeetingDetails}
-          setorganizers={setorganizers}
+          // setmeetingDetails={setmeetingDetails}
+          // setorganizers={setorganizers}
           flag={1}
         />
       )}

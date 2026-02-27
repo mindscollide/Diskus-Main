@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button, ResultMessage, Table } from "../../../components/elements";
-import { StatusValue } from "../../pages/meeting/statusJson";
+import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
 import {
   getCurrentDateTimeUTC,
   newTimeFormaterAsPerUTCFullDate,

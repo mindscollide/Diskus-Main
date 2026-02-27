@@ -27,14 +27,14 @@ import {
   getCurrentDateTimeUTC,
   forRecentActivity,
 } from "../../../../../commen/functions/date_formater";
-import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrganizers_action";
+import { UpdateOrganizersMeeting } from "@/store/actions/MeetingOrganizers_action";
 import {
   GetAllUsers,
   GetAllUserChats,
   GetGroupMessages,
   activeChat,
   GetAllUsersGroupsRoomsList,
-} from "../../../../../store/actions/Talk_action";
+} from "@/store/actions/Talk_action";
 import {
   recentChatFlag,
   headerShowHideStatus,
@@ -45,14 +45,14 @@ import {
   createGroupScreen,
   chatBoxActiveFlag,
   activeChatBoxGS,
-} from "../../../../../store/actions/Talk_Feature_actions";
+} from "@/store/actions/Talk_Feature_actions";
 import CancelButtonModal from "./CancelButtonModal/CancelButtonModal";
 import moment from "moment";
-import { FetchMeetingURLApi } from "../../../../../store/actions/NewMeetingActions";
+import { FetchMeetingURLApi } from "@/store/actions/NewMeetingActions";
 import {
   callRequestReceivedMQTT,
   LeaveCall,
-} from "../../../../../store/actions/VideoMain_actions";
+} from "@/store/actions/VideoMain_actions";
 import {
   normalizeVideoPanelFlag,
   videoChatPanel,
@@ -67,25 +67,25 @@ import {
   clearMessegesVideoFeature,
   getParticipantMeetingJoinMainApi,
   disableZoomBeforeJoinSession,
-} from "../../../../../store/actions/VideoFeature_actions";
-import { convertToGMT } from "../../../../../commen/functions/time_formatter";
+} from "@/store/actions/VideoFeature_actions";
 import {
   ClearResponseMessageGuest,
   getMeetingGuestVideoMainApi,
-} from "../../../../../store/actions/Guest_Video";
+} from "@/store/actions/Guest_Video";
 
-import EndMeetingConfirmationModal from "../../EndMeetingConfirmationModal/EndMeetingConfirmationModal";
-import { useMeetingContext } from "../../../../../context/MeetingContext";
+import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal.js";
+import { useMeetingContext } from "@/context/MeetingContext";
 import { useCallback } from "react";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import MaxHostVideoCallComponent from "../../meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "../../meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import MaxParticipantVideoDeniedComponent from "../../meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../../meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
-import NormalParticipantVideoComponent from "../../meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import { showMessage } from "@/components/elements/snack_bar/utill";
+import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
 import NonMeetingVideoModal from "../nonMeetingVideoModal/NonMeetingVideoModal";
-const ViewMeetingDetails = ({}) => {
+
+const ViewMeetingDetails = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

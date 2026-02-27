@@ -20,7 +20,7 @@ import {
   deleteCommentApi,
   taskFromDashboardAction,
 } from "./../../store/actions/ToDoList_action";
-import { getRandomUniqueNumber } from "../pages/meeting/scedulemeeting/Agenda/drageFunction";
+import { getRandomUniqueNumber } from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/drageFunction";
 import { useDispatch, useSelector } from "react-redux";
 import {
   postAssgineeComment,

@@ -9,7 +9,6 @@ import { Button, TextField } from "@/components/elements";
 import searchIcon from "@/assets/images/searchicon.svg";
 import BlackCrossIcon from "@/assets/images/BlackCrossIconModals.svg";
 import { useNewMeetingContext } from "@/context/NewMeetingContext";
-import CustomPagination from "@/commen/functions/customPagination/Paginations";
 import ProposedMeetingList from "@/container/meeting/proposedMeeting";
 import DraftNeetingList from "@/container/meeting/draftMeeting";
 import PublishedMeetingList from "@/container/meeting/publishMeeting";
@@ -26,6 +25,12 @@ import {
 } from "@/store/actions/NewMeetingActions";
 import { useDispatch, useSelector } from "react-redux";
 import CreateEditAdvanceMeeting from "./advanceMeeting/createEditAdvanceMeeting";
+import {
+  getAllMeetingsApi,
+  listOfMeetingTypesApi,
+} from "../../store/actions/MeetingActions";
+import { useMeetingContext } from "../../context/MeetingContext";
+import ViewMeetingModal from "./advanceMeeting/viewAdvanceMeeting/ViewMeetingModal";
 
 /**
  * MainMeeting Component
@@ -65,6 +70,13 @@ const MainMeeting = () => {
     setIsCreateEditMeeting,
   } = useNewMeetingContext();
 
+  const {
+    setViewAdvanceMeetingModal,
+    viewAdvanceMeetingModal,
+    advanceMeetingModalID,
+    setAdvanceMeetingModalID,
+  } = useMeetingContext();
+
   // Local state management
   const [searchText, setSearchText] = useState("");
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -98,13 +110,13 @@ const MainMeeting = () => {
       ProposedMeetings: false,
     };
 
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    dispatch(getAllMeetingsApi(navigate, t, searchData));
     // Fetch meeting types if not already loaded
     if (
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      dispatch(listOfMeetingTypesApi(navigate, t, true));
     }
     localStorage.setItem("MeetingCurrentView", 1);
     localStorage.setItem("MeetingPageRows", 30);
@@ -179,11 +191,11 @@ const MainMeeting = () => {
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      await dispatch(listOfMeetingTypesApi(navigate, t, true));
     }
 
     console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(getAllMeetingsApi(navigate, t, searchData));
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 1);
@@ -227,11 +239,11 @@ const MainMeeting = () => {
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      await dispatch(listOfMeetingTypesApi(navigate, t, true));
     }
 
     console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(getAllMeetingsApi(navigate, t, searchData));
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 3);
@@ -275,11 +287,11 @@ const MainMeeting = () => {
       getALlMeetingTypes.length === 0 &&
       Object.keys(getALlMeetingTypes).length === 0
     ) {
-      await dispatch(GetAllMeetingTypesNewFunction(navigate, t, true));
+      await dispatch(listOfMeetingTypesApi(navigate, t, true));
     }
 
     console.log("chek search meeting");
-    dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(getAllMeetingsApi(navigate, t, searchData));
 
     // Update localStorage with current view state
     localStorage.setItem("MeetingCurrentView", 2);
@@ -316,7 +328,7 @@ const MainMeeting = () => {
         PublishedMeetings: Number(currentView) === 1 ? true : false,
       };
       console.log("chek search meeting");
-      await dispatch(searchNewUserMeeting(navigate, searchData, t));
+      await dispatch(getAllMeetingsApi(navigate, t, searchData));
       setentereventIcon(true);
     }
   };
@@ -339,7 +351,7 @@ const MainMeeting = () => {
         currentView && Number(currentView) === 1 ? true : false,
     };
     console.log("chek search meeting");
-    await dispatch(searchNewUserMeeting(navigate, searchData, t));
+    await dispatch(getAllMeetingsApi(navigate, t, searchData));
     setSearchText("");
     setentereventIcon(false);
     setSearchFeilds({
@@ -352,6 +364,10 @@ const MainMeeting = () => {
 
   if (isCreateEditMeeting) {
     return <CreateEditAdvanceMeeting />;
+  }
+
+  if (viewAdvanceMeetingModal) {
+    return <ViewMeetingModal />;
   }
 
   return (

@@ -3,21 +3,21 @@ import styles from "./CancelButtonModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Modal } from "../../../../../../components/elements";
-import { searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import { meetingDetailsGlobalFlag, searchNewUserMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { MeetingContext } from "../../../../../../context/MeetingContext";
 import { useNavigate } from "react-router-dom";
+import { useNewMeetingContext } from "../../../../../../context/NewMeetingContext";
 const CancelButtonModal = ({
-  setSceduleMeeting,
-  setMeetingDetails,
   setRows,
-  flag,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { goBackCancelModal, setGoBackCancelModal } =
     useContext(MeetingContext);
+  const { setIsCreateEditMeeting, isCreateEditMeeting } =
+    useNewMeetingContext();
   let userID = localStorage.getItem("userID");
   let meetingpageRow = localStorage.getItem("MeetingPageRows");
   let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
@@ -29,51 +29,51 @@ const CancelButtonModal = ({
 
   const handleYesFunctionality = () => {
     if (localStorage.getItem("navigateLocation") === "dataroom") {
-      navigate("/Diskus/dataroom");
-      setSceduleMeeting(false);
       setGoBackCancelModal(false);
+      setIsCreateEditMeeting(false);
+      navigate("/Diskus/dataroom");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "resolution") {
-      navigate("/Diskus/resolution");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/resolution");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "committee") {
-      navigate("/Diskus/committee");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/committee");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "groups") {
-      navigate("/Diskus/groups");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/groups");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "polling") {
-      navigate("/Diskus/polling");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/polling");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "calendar") {
-      navigate("/Diskus/calendar");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/calendar");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "todolist") {
-      navigate("/Diskus/todolist");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/todolist");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Notes") {
-      navigate("/Diskus/Notes");
-      setSceduleMeeting(false);
+      setIsCreateEditMeeting(false);
       setGoBackCancelModal(false);
+      navigate("/Diskus/Notes");
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "MainDashBoard") {
+      setIsCreateEditMeeting(false);
       navigate("/Diskus/");
-      setSceduleMeeting(false);
-      setGoBackCancelModal(false);
       localStorage.removeItem("navigateLocation");
     } else if (localStorage.getItem("navigateLocation") === "Meeting") {
+      setGoBackCancelModal(false);
       let searchData = {
         Date: "",
         Title: "",
@@ -90,10 +90,10 @@ const CancelButtonModal = ({
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
-      setSceduleMeeting(false);
-      setMeetingDetails(true);
+      setIsCreateEditMeeting(false);
+      dispatch(meetingDetailsGlobalFlag(true));
       setRows([]);
-      setSceduleMeeting(false);
+      // setIsCreateEditMeeting(false);
       localStorage.removeItem("navigateLocation");
     } else {
       let searchData = {
@@ -112,8 +112,8 @@ const CancelButtonModal = ({
       console.log("chek search meeting");
       dispatch(searchNewUserMeeting(navigate, searchData, t));
       setGoBackCancelModal(false);
-      setSceduleMeeting(false);
-      setMeetingDetails(true);
+      setIsCreateEditMeeting(false);
+      dispatch(meetingDetailsGlobalFlag(true));
       setRows([]);
     }
   };
@@ -135,11 +135,10 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center"
-              >
+                className='d-flex justify-content-center'>
                 <span className={styles["UnsaveheadingFileUpload"]}>
                   {t(
-                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving",
+                    "You-have-unsaved-changes-if-you-leave-this-page-your-changes-will-be-lost-do-you-want-to-continue-without-saving"
                   )}
                 </span>
               </Col>
@@ -153,8 +152,7 @@ const CancelButtonModal = ({
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2"
-              >
+                className='d-flex justify-content-center gap-2'>
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}

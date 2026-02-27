@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, ResultMessage, Table } from "../../../components/elements";
-import { StatusValue } from "../../pages/meeting/statusJson";
 import {
   getCurrentDateTimeUTC,
   newTimeFormaterAsPerUTCFullDate,
@@ -44,6 +43,8 @@ import UpdateQuickMeeting from "../../QuickMeeting/UpdateQuickMeeting/UpdateQuic
 import CreateQuickMeeting from "../../QuickMeeting/CreateQuickMeeting/CreateQuickMeeting";
 import { activeChatBoxGS, addNewChatScreen, chatBoxActiveFlag, createGroupScreen, createShoutAllScreen, footerActionStatus, footerShowHideStatus, headerShowHideStatus, recentChatFlag } from "../../../store/actions/Talk_Feature_actions";
 import { GetAllUserChats, GetAllUsers, GetAllUsersGroupsRoomsList, GetGroupMessages, activeChat } from "../../../store/actions/Talk_action";
+import { StatusValue } from "@/container/meeting/commonComponents/statusJson";
+
 
 const CommitteeMeetingTab = ({ committeeStatus }) => {
   const { t } = useTranslation();

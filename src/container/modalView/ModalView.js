@@ -33,7 +33,7 @@ import {
   searchNewUserMeeting,
 } from "../../store/actions/NewMeetingActions";
 import { getMeetingGuestVideoMainApi } from "../../store/actions/Guest_Video";
-import EndMeetingConfirmationModal from "../pages/meeting/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
+import EndMeetingConfirmationModal from "@/container/meeting/commonComponents/EndMeetingConfirmationModal/EndMeetingConfirmationModal";
 import { MeetingContext } from "../../context/MeetingContext";
 import { showMessage } from "../../components/elements/snack_bar/utill";
 import { removeCalenderDataFunc } from "../../store/actions/GetDataForCalendar";
@@ -55,12 +55,12 @@ import {
   toggleParticipantsVisibility,
   videoIconOrButtonState,
 } from "../../store/actions/VideoFeature_actions";
-import MaxHostVideoCallComponent from "../pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import NormalHostVideoCallComponent from "../pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "../pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { userLogOutApiFunc } from "../../store/actions/Auth_Sign_Out";
 import { openDocumentViewer } from "../../commen/functions/utils";
 import { getAnnotationsOfDataroomAttachement } from "../../store/actions/webVieverApi_actions";

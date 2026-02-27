@@ -2,38 +2,34 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
   AttachmentViewer,
   Button,
   Notification,
-} from "../../../../../components/elements";
+} from "@/components/elements";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
   showCastVoteAgendaModal,
   showviewVotesAgenda,
-} from "../../../../../store/actions/NewMeetingActions";
+} from "@/store/actions/NewMeetingActions";
 import {
   AgendaVotingStatusUpdate,
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
   clearResponseMessage,
-} from "../../../../../store/actions/MeetingAgenda_action";
+} from "@/store/actions/MeetingAgenda_action";
 import styles from "./Agenda.module.css";
 import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
-import ViewVoteModal from "../../viewMeetings/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
-import CastVoteAgendaModal from "../../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
-import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
+import { getFileExtension } from "@/container/DataRoom/SearchFunctionality/option";
+import { DataRoomDownloadFileApiFunc } from "@/store/actions/DataRoom_actions";
 import CollapseIcon from "./AV-Images/Collapse-Icon.png";
-import { timeFormatFunction } from "../../../../../commen/functions/date_formater";
-import { fileFormatforSignatureFlow } from "../../../../../commen/functions/utils";
-import { showMessage } from "../../../../../components/elements/snack_bar/utill";
-import { useMeetingContext } from "../../../../../context/MeetingContext";
+import { useMeetingContext } from "@/context/MeetingContext";
+import ViewVoteModal from "../Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
+import CastVoteAgendaModal from "../Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 
 const ParentAgenda = ({
   data,

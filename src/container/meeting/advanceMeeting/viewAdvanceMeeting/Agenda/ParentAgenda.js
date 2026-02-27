@@ -9,28 +9,28 @@ import {
   AttachmentViewer,
   Button,
   Notification,
-} from "../../../../../components/elements";
-import AttachmentIcon from "../../../../../assets/images/Attachment.svg";
+} from "@/components/elements";
+import AttachmentIcon from "@/assets/images/Attachment.svg";
 import {
   showAdvancePermissionModal,
   showVoteAgendaModal,
   showCastVoteAgendaModal,
   showviewVotesAgenda,
-} from "../../../../../store/actions/NewMeetingActions";
+} from "@/store/actions/NewMeetingActions";
 import {
   AgendaVotingStatusUpdate,
   GetAgendaAndVotingInfo,
   GetCurrentAgendaDetails,
   clearResponseMessage,
-} from "../../../../../store/actions/MeetingAgenda_action";
+} from "@/store/actions/MeetingAgenda_action";
 import styles from "./Agenda.module.css";
 import Urls from "./Urls";
 import RequestContributor from "./RequestContributor";
 import SubAgendaMappingDragging from "./SubAgendaMappingDragging";
-import dropmdownblack from "../../../../../assets/images/whitedown.png";
-import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
-import ViewVoteModal from "../../scedulemeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
-import CastVoteAgendaModal from "../../scedulemeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import dropmdownblack from "@/assets/images/whitedown.png";
+import blackArrowUpper from "@/assets/images/whiteupper.png";
+import ViewVoteModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/ViewVoteModal/ViewVoteModal";
+import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
 import { getFileExtension } from "../../../../DataRoom/SearchFunctionality/option";
 import { DataRoomDownloadFileApiFunc } from "../../../../../store/actions/DataRoom_actions";
 import { timeFormatFunction } from "../../../../../commen/functions/date_formater";

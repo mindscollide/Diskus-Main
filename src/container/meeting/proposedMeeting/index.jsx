@@ -14,11 +14,10 @@ import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 // Components
 import { Button, Table } from "../../../components/elements";
 import CustomButton from "../../../components/elements/button/Button";
-import EmptyTableComponent from "../../pages/meeting/EmptyTableComponent/EmptyTableComponent";
-import SceduleProposedmeeting from "../../pages/meeting/scedulemeeting/meetingDetails/ProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
-import DeleteMeetingModal from "../../pages/meeting/scedulemeeting/meetingDetails/ProposedMeeting/DeleteMeetingModal/DeleteMeetingModal";
-import DeleteMeetingConfirmationModal from "../../pages/meeting/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
-
+import EmptyTableComponent from "@/container/meeting/commonComponents//EmptyTableComponent/EmptyTableComponent";
+import SceduleProposedmeeting from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/ProposedMeeting/SceduleProposedMeeting/SceduleProposedmeeting";
+import DeleteMeetingModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/meetingDetails/ProposedMeeting/DeleteMeetingModal/DeleteMeetingModal";
+import DeleteMeetingConfirmationModal from "@/container/meeting/commonComponents/deleteMeetingConfirmationModal/deleteMeetingConfirmationModal";
 // Date formatters
 import {
   forRecentActivity,
@@ -27,8 +26,7 @@ import {
   utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 
-// Status helper
-import { StatusValue } from "../../pages/meeting/statusJson";
+
 
 // Redux actions
 import {
@@ -63,12 +61,7 @@ import {
   meetingStatusProposedMqtt,
 } from "../../../store/actions/NewMeetingActions";
 
-import {
-  GetAllUserChats,
-  activeChat,
-} from "../../../store/actions/Talk_action";
 
-import { UpdateOrganizersMeeting } from "../../../store/actions/MeetingOrganizers_action";
 
 // Utils
 import {
@@ -92,7 +85,7 @@ import ArrowUpIcon from "../../../assets/images/sortingIcons/Arrow-up.png";
 import ChevronDownIcon from "../../../assets/images/dropdown-icon.png";
 
 // Styles (reuse ProposedMeeting styles)
-import styles from "../../pages/meeting/scedulemeeting/meetingDetails/ProposedMeeting/ProposedMeeting.module.css";
+import styles from "../meeting.module.css";
 
 const ProposedMeetingList = ({
   setViewProposeDatePoll,

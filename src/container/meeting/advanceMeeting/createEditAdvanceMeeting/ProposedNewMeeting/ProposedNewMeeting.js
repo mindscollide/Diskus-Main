@@ -677,7 +677,14 @@ const ProposedNewMeeting = ({
       UserID: Number(userID),
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings: Number(currentView) === 1 ? true : false,
+      PublishedMeetings:
+            Number(localStorage.getItem("MeetingCurrentView")) === 1
+              ? true
+              : false,
+          ProposedMeetings:
+            Number(localStorage.getItem("MeetingCurrentView")) === 2
+              ? true
+              : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   };

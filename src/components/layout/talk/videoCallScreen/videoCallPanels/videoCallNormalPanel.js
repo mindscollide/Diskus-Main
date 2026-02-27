@@ -52,12 +52,12 @@ import {
   updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
 import BlackCrossIcon from "../../../../../assets/images/BlackCrossIconModals.svg";
-import NormalHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
-import MaxHostVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
-import ParticipantVideoCallComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
-import NormalParticipantVideoComponent from "../../../../../container/pages/meeting/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
-import MaxParticipantVideoDeniedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
-import MaxParticipantVideoRemovedComponent from "../../../../../container/pages/meeting/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
+import NormalHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalHostVideoCallComponent/NormalHostVideoCallComponent";
+import MaxHostVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxHostVideoCallComponent/MaxHostVideoCallComponent";
+import ParticipantVideoCallComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoCallComponent/maxParticipantVideoCallComponent";
+import NormalParticipantVideoComponent from "@/container/meeting/commonComponents/meetingVideoCall/normalParticipantVideoComponent/NormalParticipantVideoComponent";
+import MaxParticipantVideoDeniedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoDeniedComponent/maxParticipantVideoDeniedComponent";
+import MaxParticipantVideoRemovedComponent from "@/container/meeting/commonComponents/meetingVideoCall/maxParticipantVideoRemovedComponent/maxParticipantVideoRemovedComponent";
 import { LeaveMeetingVideo } from "../../../../../store/actions/NewMeetingActions";
 import {
   initiateVideoCallFail,
