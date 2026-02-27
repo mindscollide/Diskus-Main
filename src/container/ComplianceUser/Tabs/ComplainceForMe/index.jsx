@@ -39,6 +39,12 @@ const ComplianceForMe = () => {
   // const [totalRecords, setTotalRecords] = useState(0);
 
   // Sort State
+  const [sortConfig, setSortConfig] = useState({
+    key: "dueDate", // default sort column (optional)
+    order: "ascend", // default order (optional)
+  });
+
+  // Sort State
   const [complianceTitleSort, setComplianceTitleSort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState("ascend");
   const [authoritySort, setAuthority] = useState(null);
@@ -257,19 +263,82 @@ const ComplianceForMe = () => {
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
   });
 
+  //Implemented Manual SOrting because ant design allow sorting on whole column width
+  const sortedComplianceList = useMemo(() => {
+    if (!sortConfig.key || !sortConfig.order) return complianceForMeList;
+
+    const sorted = [...complianceForMeList].sort((a, b) => {
+      switch (sortConfig.key) {
+        case "complianceTitle":
+          return a.complianceTitle
+            ?.toLowerCase()
+            .localeCompare(b.complianceTitle?.toLowerCase());
+
+        case "authorityShortCode":
+          return a.authorityShortCode
+            ?.toLowerCase()
+            .localeCompare(b.authorityShortCode?.toLowerCase());
+
+        case "dueDate":
+          return (
+            getDueDateTimeNumber(a.dueDate, a.dueTime) -
+            getDueDateTimeNumber(b.dueDate, b.dueTime)
+          );
+
+        default:
+          return 0;
+      }
+    });
+
+    return sortConfig.order === "ascend" ? sorted : sorted.reverse();
+  }, [complianceForMeList, sortConfig]);
+
+  const renderSortIcon = (columnKey) => {
+    const isActive = sortConfig.key === columnKey;
+    const order = isActive ? sortConfig.order : null;
+
+    const icon =
+      order === "descend"
+        ? ArrowUpIcon
+        : order === "ascend"
+          ? ArrowDownIcon
+          : DefaultSortIcon;
+
+    return (
+      <img
+        src={icon}
+        alt=""
+        className="cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+
+          setSortConfig((prev) => {
+            if (prev.key !== columnKey) {
+              return { key: columnKey, order: "ascend" };
+            }
+
+            if (prev.order === "ascend") {
+              return { key: columnKey, order: "descend" };
+            }
+
+            if (prev.order === "descend") {
+              return { key: null, order: null };
+            }
+
+            return { key: columnKey, order: "ascend" };
+          });
+        }}
+      />
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className="d-flex gap-2 align-items-center">
             {t("Compliance-title")}
-            {complianceTitleSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : complianceTitleSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            {renderSortIcon("complianceTitle")}
           </span>
         ),
         dataIndex: "complianceTitle",
@@ -277,25 +346,7 @@ const ComplianceForMe = () => {
         width: "43%",
         ellipsis: true,
         align: "left",
-        render: (text) => {
-          return (
-            <span>
-              <Tooltip title={text}>{text}</Tooltip>
-            </span>
-          );
-        },
-        sorter: (a, b) =>
-          complianceTitleSort === "descend"
-            ? b.complianceTitle
-                ?.toLowerCase()
-                .localeCompare(a.complianceTitle?.toLowerCase())
-            : complianceTitleSort === "ascend"
-              ? a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase())
-              : a.complianceTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.complianceTitle?.toLowerCase()),
+        render: (text) => <Tooltip title={text}>{text}</Tooltip>,
       },
       {
         title: t("Criticality"),
@@ -318,7 +369,6 @@ const ComplianceForMe = () => {
           </span>
         ),
       },
-
       {
         title: t("Status"),
         dataIndex: "status",
@@ -339,13 +389,7 @@ const ComplianceForMe = () => {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Due-date")}
-            {dueDateSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : dueDateSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            {renderSortIcon("dueDate")}
           </span>
         ),
         dataIndex: "DueDate",
@@ -353,36 +397,17 @@ const ComplianceForMe = () => {
         width: "10%",
         ellipsis: true,
         align: "center",
-        render: (_, record) => {
-          return (
-            <span>
-              <Tooltip
-                title={`${formatDateToYMD(record.dueDate)}`}
-              >{`${formatDateToYMD(record.dueDate)}`}</Tooltip>
-            </span>
-          );
-        },
-        sorter: (a, b) => {
-          const aTime = getDueDateTimeNumber(a.dueDate, a.dueTime);
-          const bTime = getDueDateTimeNumber(b.dueDate, b.dueTime);
-
-          if (dueDateSort === "descend") return bTime - aTime;
-          if (dueDateSort === "ascend") return aTime - bTime;
-
-          return aTime - bTime;
-        },
+        render: (_, record) => (
+          <Tooltip title={formatDateToYMD(record.dueDate)}>
+            {formatDateToYMD(record.dueDate)}
+          </Tooltip>
+        ),
       },
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-center">
             {t("Authority")}
-            {authoritySort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : authoritySort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            {renderSortIcon("authorityShortCode")}
           </span>
         ),
         dataIndex: "authorityShortCode",
@@ -390,25 +415,7 @@ const ComplianceForMe = () => {
         width: "14%",
         ellipsis: true,
         align: "center",
-        render: (text) => {
-          return (
-            <span>
-              <Tooltip title={text}>{text}</Tooltip>
-            </span>
-          );
-        },
-        sorter: (a, b) =>
-          authoritySort === "descend"
-            ? b.authorityShortCode
-                ?.toLowerCase()
-                .localeCompare(a.authorityShortCode?.toLowerCase())
-            : authoritySort === "ascend"
-              ? a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase())
-              : a.authorityShortCode
-                  ?.toLowerCase()
-                  .localeCompare(b.authorityShortCode?.toLowerCase()),
+        render: (text) => <Tooltip title={text}>{text}</Tooltip>,
       },
       {
         title: "",
@@ -462,12 +469,20 @@ const ComplianceForMe = () => {
     <>
       {complianceForMeList.length > 0 ? (
         <CustomTable
-          rows={complianceForMeList}
+          rows={sortedComplianceList}
           column={columns}
           className={"Compliance_Table mt-3"}
           scroll={{ x: "scroll", y: 550 }}
           pagination={false}
-          onChange={handleChangeComplianceSorter}
+          onChange={(pagination, filters) => {
+            if (filters?.criticality) {
+              setCriticalityFilter(filters.criticality || [1, 2, 3]);
+            }
+
+            if (filters?.complianceStatusTitle) {
+              setStatusFilter(filters.complianceStatusTitle);
+            }
+          }}
         />
       ) : (
         <>

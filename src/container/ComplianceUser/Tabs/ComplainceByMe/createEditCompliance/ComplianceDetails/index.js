@@ -84,11 +84,11 @@ const ComplainceDetails = () => {
     setComlianceCompleteExceptionModal,
     setComlianceStatusReopenedModal,
     complianceReopenDetailsState,
-    criticalityOptions
+    criticalityOptions,
   } = useComplianceContext();
 
   console.log(
-    { checkListData, complianceDetailsState },
+    { complianceDetailsState, complianceDetailsState },
     "checkListTabscheckListTabs",
   );
 
@@ -154,8 +154,6 @@ const ComplainceDetails = () => {
     severity: "error",
   });
   const [editComplianceData, setEditComplianceData] = useState(null);
-
-
 
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
     useState(false);

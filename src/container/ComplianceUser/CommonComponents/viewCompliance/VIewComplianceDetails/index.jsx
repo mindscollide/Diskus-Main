@@ -348,7 +348,7 @@ const ViewComplianceDetails = () => {
       }
     }
     // Status chnage to In Progress
-    else if (event.value === 2) {
+  if (event.value === 2) {
       console.log("herehrer");
       updateCompliance(event);
       resetModalStates();

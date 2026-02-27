@@ -97,8 +97,8 @@ const SearchComplianceBoxModal = () => {
             navigate,
             updatedPayload,
             t,
-            setComplianceForMeList
-          )
+            setComplianceForMeList,
+          ),
         );
       }
   };
@@ -259,7 +259,7 @@ const SearchComplianceBoxModal = () => {
           <span ref={searchBoxRef} className="position-relative">
             <TextField
               placeholder={t(
-                "Compliance-title.click-the-icon-to-view-more-options"
+                "Compliance-title.click-the-icon-to-view-more-options",
               )}
               name={"complianceTitleOutside"}
               disable={searchbox}
@@ -331,7 +331,7 @@ const SearchComplianceBoxModal = () => {
                       </Col>
                     </Row>
                     <Row className="mt-4">
-                      <Col lg={6} md={6} sm={6} xs={6}>
+                      <Col lg={12} md={12} sm={12} xs={12}>
                         <TextField
                           labelclass={"d-none"}
                           placeholder={t("Compliance-title")}
@@ -343,6 +343,9 @@ const SearchComplianceBoxModal = () => {
                           change={handleChangeCompliance}
                         />
                       </Col>
+                    </Row>
+
+                    <Row className="mt-2">
                       <Col lg={6} md={6} sm={12} xs={12}>
                         <TextField
                           labelclass={"d-none"}
@@ -355,10 +358,7 @@ const SearchComplianceBoxModal = () => {
                           change={handleChangeCompliance}
                         />
                       </Col>
-                    </Row>
-
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col lg={6} md={6} sm={12} xs={12}>
                         <DatePicker.RangePicker
                           format="DD/MM/YYYY"
                           placeholder={["Start Date", "End Date"]}

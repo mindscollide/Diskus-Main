@@ -14,7 +14,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Notification } from "../../../../../../components/elements";
-import { multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import { _justShowDateformatBilling, forRecentActivity, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -31,7 +31,7 @@ import deleteIcon from "../../../../../../assets/images/Icon material-delete.png
 import editIcon from "../../../../../../assets/images/Icon material-edit.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
-import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
+import { formatDateToYMD, parseUTCDateString } from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
@@ -79,6 +79,8 @@ const CreateEditViewComplianceChecklist = () => {
     setDeleteChecklistConfirmationModalState,
     setDeleteChecklistId,
   } = useComplianceContext();
+  console.log(checkListData, "checkListData");
+
   console.log(complianceDetailsState, "complianceDetailsState");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
@@ -99,7 +101,7 @@ const CreateEditViewComplianceChecklist = () => {
   const changeComplainceDueDate = (date) => {
     setChecklistData((prev) => ({
       ...prev,
-      checklistDueDate: date, // keep the date object as is
+      checklistDueDate: new Date(date), // keep the date object as is
     }));
   };
 
@@ -193,9 +195,7 @@ const CreateEditViewComplianceChecklist = () => {
           checklistId: checklistData.checklistId,
           checklistTitle: checklistData.checklistTitle,
           checklistDescription: checklistData.checklistDescription,
-          checklistDueDate: checklistData.dueDate
-            ? moment(checklistData.dueDate, "YYYYMMDD").toDate()
-            : null,
+          checklistDueDate: checklistData.checklistDueDate,
         });
       } catch (error) {}
   };
@@ -236,7 +236,17 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length,
       );
-      setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
+      let updateTIme = GetComplianceChecklistsByComplianceId.checklistList.map((data , index) => {
+        return {
+          ...data,
+          checklistDueDate: forRecentActivity(data.dueDate + data.dueTime)
+        }
+      })
+
+      console.log(updateTIme, 
+        "updateTIme"
+      )
+      setGetCheckListData(updateTIme);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
     } else {
@@ -605,7 +615,7 @@ const CreateEditViewComplianceChecklist = () => {
                             {t("Due-date")}
                           </p>
                           <p className={styles["ViewChecklistDetailStyles"]}>
-                            {formatDateToYMD(data.dueDate)}
+                            {moment(forRecentActivity(data.dueDate + data.dueTime)).format("DD MMM YYYY")}
                           </p>
                         </div>
                       ) : (

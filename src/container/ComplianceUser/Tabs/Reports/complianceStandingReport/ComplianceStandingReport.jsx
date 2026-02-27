@@ -7,7 +7,7 @@ import Verification from "./../../../../../assets/images/Verification.png";
 import ComplianceCalendar from "./../../../../../assets/images/ComplianceCalendar.png";
 import { DatePicker, Collapse, Progress, Spin, Tooltip, Checkbox } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
-import { DownOutlined } from "@ant-design/icons";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -15,8 +15,8 @@ import { useNavigate } from "react-router-dom";
 import { GetComplianceStandingReportAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { useTranslation } from "react-i18next";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
-import ArrowUpIcon from "../../../../../assets/images/sortingIcons/Arrow-up.png";
-import ArrowDownIcon from "../../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import DefaultSortIcon from "../../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
@@ -28,7 +28,6 @@ const ComplianceStandingReport = () => {
   const { t } = useTranslation();
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
   const { criticalityOptions } = useComplianceContext();
-
 
   //Sorting Table
   const [complianceNameSort, setComplianceNameSort] = useState(null);
@@ -52,6 +51,8 @@ const ComplianceStandingReport = () => {
   const [showPdfLayout, setShowPdfLayout] = useState(false);
 
   const [dateRange, setDateRange] = useState(null);
+
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   const options = {
     // default is `save`
@@ -89,6 +90,7 @@ const ComplianceStandingReport = () => {
       },
     },
   };
+
   const getTargetElement = () => document.getElementById("content-id");
 
   const handleClickGenerateODF = async () => {
@@ -219,124 +221,165 @@ const ComplianceStandingReport = () => {
     filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
   });
 
+  const tableData =
+    GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
+      (item) => ({
+        key: item.complianceId,
+        ComplianceName: item.complianceTitle,
+        Authority: item.authorityShortCode,
+        criticality: item.criticality.value,
+        dueDate: item.dueDate,
+        totalChecklists: item.totalChecklists,
+        NoOfTasks: item.totalTasks,
+        overdueTasks: item.overdueTasks,
+        Progress: item.progressPercentage,
+        originalData: item, // keep full object for collapse usage
+      }),
+    ) || [];
+
+  // 2️⃣ Toggle function
+  const toggleRowExpand = (key) => {
+    setExpandedRowKeys(
+      (prev) =>
+        prev.includes(key)
+          ? prev.filter((k) => k !== key) // collapse
+          : [...prev, key], // expand
+    );
+  };
+
   const columns = useMemo(
     () => [
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className="d-flex gap-2 align-items-center">
             {t("Compliance-name")}
-            {complianceNameSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : complianceNameSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={
+                complianceNameSort === "descend"
+                  ? ArrowUpIcon
+                  : complianceNameSort === "ascend"
+                    ? ArrowDownIcon
+                    : DefaultSortIcon
+              }
+              alt=""
+            />
           </span>
         ),
         dataIndex: "ComplianceName",
         key: "ComplianceName",
-        width: "35%",
-        ellipsis: true,
+        width: "25%",
         sorter: (a, b) =>
-          complianceNameSort === "descend"
-            ? b.ComplianceName?.toLowerCase().localeCompare(
-                a.ComplianceName?.toLowerCase(),
-              )
-            : complianceNameSort === "ascend"
-              ? a.ComplianceName?.toLowerCase().localeCompare(
-                  b.ComplianceName?.toLowerCase(),
-                )
-              : a.ComplianceName?.toLowerCase().localeCompare(
-                  b.ComplianceName?.toLowerCase(),
-                ),
-        align: "start",
+          a.ComplianceName?.toLowerCase().localeCompare(
+            b.ComplianceName?.toLowerCase(),
+          ),
+        sortOrder: complianceNameSort,
         render: (text) => {
           return <span>{text}</span>;
         },
       },
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className="d-flex gap-2 align-items-center">
             {t("Authority")}
-            {authoritySort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : authoritySort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={
+                authoritySort === "descend"
+                  ? ArrowUpIcon
+                  : authoritySort === "ascend"
+                    ? ArrowDownIcon
+                    : DefaultSortIcon
+              }
+              alt=""
+            />
           </span>
         ),
         dataIndex: "Authority",
         key: "Authority",
-        width: "35%",
-        ellipsis: true,
         sorter: (a, b) =>
-          authoritySort === "descend"
-            ? b.Authority?.toLowerCase().localeCompare(
-                a.Authority?.toLowerCase(),
-              )
-            : authoritySort === "ascend"
-              ? a.Authority?.toLowerCase().localeCompare(
-                  b.Authority?.toLowerCase(),
-                )
-              : a.Authority?.toLowerCase().localeCompare(
-                  b.Authority?.toLowerCase(),
-                ),
-        align: "start",
+          a.Authority?.toLowerCase().localeCompare(b.Authority?.toLowerCase()),
+        sortOrder: authoritySort,
         render: (text) => {
-          return <span>{text}</span>;
+          return <span className={styles.badge}>{text}</span>;
         },
       },
       {
         title: t("Criticality"),
         dataIndex: "criticality",
         key: "criticality",
-        width: "10%",
         ellipsis: true,
         align: "center",
         ...getCriticalityColumnProps(),
-        render: (text) => (
-          <span className="d-flex justify-content-center">
-            {text === 1 ? (
-              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
-            ) : text === 2 ? (
-              <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
-            ) : (
-              <Tooltip title={t("High")}>{t("High")}</Tooltip>
-            )}
-          </span>
-        ),
+        render: (text) => {
+          let style = {};
+
+          if (text === 3) {
+            // High
+            style = {
+              fontSize: "13px",
+              color: "#F16B6B",
+              fontWeight: 600,
+              backgroundColor: "#FFDEDE",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          } else if (text === 2) {
+            // Medium
+            style = {
+              fontSize: "13px",
+              color: "#D8A709",
+              fontWeight: 600,
+              backgroundColor: "#FFF8E1",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          } else if (text === 1) {
+            // Low
+            style = {
+              fontSize: "13px",
+              color: "#6172D6",
+              fontWeight: 600,
+              backgroundColor: "#ECEFFF",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          }
+
+          const label =
+            text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High");
+
+          return <span style={style}>{label}</span>;
+        },
       },
       {
         title: (
-          <span className="d-flex gap-2 align-items-center justify-content-start">
+          <span className="d-flex gap-2 align-items-center">
             {t("Due-date")}
-            {dueDateSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : dueDateSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={
+                dueDateSort === "descend"
+                  ? ArrowUpIcon
+                  : dueDateSort === "ascend"
+                    ? ArrowDownIcon
+                    : DefaultSortIcon
+              }
+              alt=""
+            />
           </span>
         ),
         dataIndex: "dueDate",
         key: "dueDate",
-        width: "13%",
-        ellipsis: true,
-        align: "left",
-        render: (_, record) => <span>{formatDateToYMD(record.dueDate)}</span>,
-        sorter: (a, b) => {
-          const aTime = Number(a.dueDate);
-          const bTime = Number(b.dueDate);
-
-          if (dueDateSort === "descend") return bTime - aTime;
-          if (dueDateSort === "ascend") return aTime - bTime;
-
-          return aTime - bTime;
-        },
+        sorter: (a, b) => Number(a.dueDate) - Number(b.dueDate),
+        sortOrder: dueDateSort,
+        render: (value) => formatDateToYMD(value),
       },
       {
         title: (
@@ -353,21 +396,11 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "totalChecklists",
         key: "totalChecklists",
-        width: "35%",
+        width: "12%",
         ellipsis: true,
-        sorter: (a, b) =>
-          totalCheckListsSort === "descend"
-            ? b.totalChecklists
-                ?.toLowerCase()
-                .localeCompare(a.totalChecklists?.toLowerCase())
-            : totalCheckListsSort === "ascend"
-              ? a.totalChecklists
-                  ?.toLowerCase()
-                  .localeCompare(b.totalChecklists?.toLowerCase())
-              : a.totalChecklists
-                  ?.toLowerCase()
-                  .localeCompare(b.totalChecklists?.toLowerCase()),
-        align: "start",
+        sorter: (a, b) => (a.totalChecklists || 0) - (b.totalChecklists || 0),
+        sortOrder: totalCheckListsSort,
+        align: "center",
         render: (text) => {
           return <span>{text}</span>;
         },
@@ -387,21 +420,11 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "NoOfTasks",
         key: "NoOfTasks",
-        width: "35%",
+        width: "10%",
         ellipsis: true,
-        sorter: (a, b) =>
-          totalCheckListsSort === "descend"
-            ? b.NoOfTasks?.toLowerCase().localeCompare(
-                a.NoOfTasks?.toLowerCase(),
-              )
-            : noOfTasksSort === "ascend"
-              ? a.NoOfTasks?.toLowerCase().localeCompare(
-                  b.NoOfTasks?.toLowerCase(),
-                )
-              : a.NoOfTasks?.toLowerCase().localeCompare(
-                  b.NoOfTasks?.toLowerCase(),
-                ),
-        align: "start",
+        sorter: (a, b) => (a.NoOfTasks || 0) - (b.NoOfTasks || 0),
+        sortOrder: noOfTasksSort,
+        align: "center",
         render: (text) => {
           return <span>{text}</span>;
         },
@@ -421,21 +444,11 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "overdueTasks",
         key: "overdueTasks",
-        width: "35%",
+        width: "11%",
         ellipsis: true,
-        sorter: (a, b) =>
-          overdueTasksSort === "descend"
-            ? b.overdueTasks
-                ?.toLowerCase()
-                .localeCompare(a.overdueTasks?.toLowerCase())
-            : overdueTasksSort === "ascend"
-              ? a.overdueTasks
-                  ?.toLowerCase()
-                  .localeCompare(b.overdueTasks?.toLowerCase())
-              : a.overdueTasks
-                  ?.toLowerCase()
-                  .localeCompare(b.overdueTasks?.toLowerCase()),
-        align: "start",
+        sorter: (a, b) => (a.overdueTasks || 0) - (b.overdueTasks || 0),
+        sortOrder: overdueTasksSort,
+        align: "center",
         render: (text) => {
           return <span>{text}</span>;
         },
@@ -455,21 +468,33 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "Progress",
         key: "Progress",
-        width: "35%",
+        width: "8%",
+        align: "center",
         ellipsis: true,
-        sorter: (a, b) =>
-          progressSort === "descend"
-            ? b.Progress?.toLowerCase().localeCompare(a.Progress?.toLowerCase())
-            : progressSort === "ascend"
-              ? a.Progress?.toLowerCase().localeCompare(
-                  b.Progress?.toLowerCase(),
-                )
-              : a.Progress?.toLowerCase().localeCompare(
-                  b.Progress?.toLowerCase(),
-                ),
-        align: "start",
+        sorter: (a, b) => (a.progressSort || 0) - (b.progressSort || 0),
+        sortOrder: progressSort,
         render: (text) => {
           return <span>{text}</span>;
+        },
+      },
+      {
+        title: "",
+        key: "arrow",
+        align: "right",
+        render: (_, record) => {
+          const isExpanded = expandedRowKeys.includes(record.key);
+
+          return (
+            <span
+              onClick={(e) => {
+                e.stopPropagation(); // prevent row click from toggling
+                toggleRowExpand(record.key);
+              }}
+              style={{ cursor: "pointer", fontSize: "16px" }}
+            >
+              {isExpanded ? <UpOutlined /> : <DownOutlined />}
+            </span>
+          );
         },
       },
     ],
@@ -484,16 +509,6 @@ const ComplianceStandingReport = () => {
       t,
     ],
   );
-  const mapTasksToRows = (tasks = []) =>
-    tasks.map((task) => ({
-      key: task.taskID,
-      taskTitle: task.taskTitle,
-      assignee: task.assigneeName,
-      dueDate: formatDateToYMD(task.dueDate),
-      completedOn: formatDateToYMD(task.completedOn),
-      status: task.status,
-      completion: task.completionStatus,
-    }));
 
   return (
     <>
@@ -591,7 +606,7 @@ const ComplianceStandingReport = () => {
               {/* Compliance Table */}
               <div className={styles.tableWrapper}>
                 {/* 🔹 STATIC HEADER */}
-                <div className={styles.tableHeader}>
+                {/* <div className={styles.tableHeader}>
                   <div>{t("Compliance-name")}↓</div>
                   <div>{t("Authority")} ↓</div>
                   <div>{t("Criticalityy")}↓ </div>
@@ -600,312 +615,93 @@ const ComplianceStandingReport = () => {
                   <div>{t("No-of-tasks")} ↓</div>
                   <div>{t("Overdue-tasks")} ↓</div>
                   <div>{t("Progress")} % ↓</div>
-                </div>
+                </div> */}
 
-                {/* 🔹 COLLAPSE ROWS */}
-                <Collapse
-                  bordered={false}
-                  expandIconPosition="end"
-                  expandIcon={({ isActive }) => (
-                    <DownOutlined
-                      rotate={isActive ? 180 : 0}
-                      style={{
-                        fontSize: "15px",
-                        color: "#5a5a5a",
-                      }}
-                    />
-                  )}
-                  className={styles.collapseWrapper}
-                >
-                  {GetComplianceStandingReport?.complianceStandingReport
-                    ?.complianceListData?.length > 0 &&
-                    GetComplianceStandingReport.complianceStandingReport.complianceListData.map(
-                      (item) => (
-                        <Panel
-                          key={item.complianceId}
-                          header={
-                            <div className={styles.tableRow}>
-                              <div className={styles.nameCol}>
-                                <Tooltip title={item.complianceTitle}>
-                                  <p> {item.complianceTitle}</p>
-                                </Tooltip>
-                              </div>
-                              <div>
-                                <span className={styles.badge}>
-                                  {item.authorityShortCode}
-                                </span>
-                              </div>
-                              <div>
-                                <span className={styles.criticality}>
-                                  {item.criticality.label}
-                                </span>
-                              </div>
-                              <div>{formatDateToYMD(item.dueDate)}</div>
-                              <div>{item.totalChecklists}</div>
-                              <div>{item.totalTasks}</div>
-                              <div>{item.overdueTasks}</div>
-                              <div>{item.progressPercentage}</div>
-                            </div>
-                          }
-                        >
-                          {" "}
+                <CustomTable
+                  rows={tableData}
+                  column={columns}
+                  pagination={false}
+                  rowKey="key"
+                  onChange={handleChangeStandingReportSorter}
+                  expandable={{
+                    showExpandColumn: false,
+                    expandedRowKeys: expandedRowKeys,
+                    onExpandedRowsChange: setExpandedRowKeys,
+                    expandedRowRender: (record) => {
+                      const item = record.originalData;
+
+                      if (!item) return null;
+
+                      return (
+                        <div className="p-3">
                           {!item?.checklistData?.length ? (
                             <div className={styles.NoDataFoundTable}>
-                              <div
-                                className={`${styles.nodatafound_subHeading}`}
-                              >
+                              <div className={styles.nodatafound_subHeading}>
                                 {t("No-Checklist-Found")}
                               </div>
                             </div>
                           ) : (
-                            item?.checklistData?.map((checklist) => (
+                            item.checklistData.map((checklist) => (
                               <div
                                 className={styles.panelContent}
                                 key={checklist.checklistId}
                               >
+                                {/* Checklist Title */}
                                 <Row>
-                                  <Col
-                                    lg={12}
-                                    xs="auto"
-                                    className={`${styles.ComplianceMainHeading}`}
-                                  >
-                                    <div>
+                                  <Col lg={12}>
+                                    <div
+                                      className={styles.ComplianceMainHeading}
+                                    >
                                       <label>{t("Checklist-title")}:</label>
                                       <p>{checklist.checklistTitle}</p>
                                     </div>
                                   </Col>
                                 </Row>
+
+                                {/* Checklist Tasks */}
                                 <div className={styles.MainAccordianTable}>
                                   {!checklist?.checklistTasks?.length ? (
                                     <div className={styles.NoDataFoundTable}>
                                       <div
-                                        className={`${styles.nodatafound_subHeading}`}
+                                        className={
+                                          styles.nodatafound_subHeading
+                                        }
                                       >
                                         {t("No-Checklist-Task")}
                                       </div>
                                     </div>
                                   ) : (
-                                    checklist.checklistTasks.map(
-                                      (checklisttask) => (
-                                        <div
-                                          className={
-                                            styles.insideAccordianTable
-                                          }
-                                          key={checklisttask.taskId}
-                                        >
-                                          <Row>
-                                            <Col lg={12} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianMainHeading
-                                                }
-                                              >
-                                                <label>
-                                                  {t("Task-title")}:
-                                                </label>
-                                                <p>{checklisttask.taskTitle}</p>
-                                              </div>
-                                            </Col>
-                                          </Row>
-                                          <Row>
-                                            <Col lg={4} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianSubHeading
-                                                }
-                                              >
-                                                <label>{t("Assignee")}:</label>
-                                                <p>
-                                                  {checklisttask.taskAssignee}
-                                                </p>
-                                              </div>
-                                            </Col>{" "}
-                                            <Col lg={2} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianSubHeading
-                                                }
-                                              >
-                                                <label>{t("Due-date")}:</label>
-                                                <p>
-                                                  {formatDateToYMD(
-                                                    checklisttask.dueDate,
-                                                  )}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col lg={2} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianSubHeading
-                                                }
-                                              >
-                                                <label>
-                                                  {t("Completed-on")}:
-                                                </label>
-                                                <p>
-                                                  {checklisttask.completedOnDate ??
-                                                    "-"}
-                                                </p>
-                                              </div>
-                                            </Col>
-                                            <Col lg={2} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianSubHeading
-                                                }
-                                              >
-                                                <label> {t("Status")}:</label>
-                                                <p>{checklisttask.status}</p>
-                                              </div>
-                                            </Col>
-                                            <Col lg={2} xs="auto">
-                                              <div
-                                                className={
-                                                  styles.insideAccordianSubHeading
-                                                }
-                                              >
-                                                <label>{t("Completed")}:</label>
-                                                <p>
-                                                  {
-                                                    checklisttask.completionStatus
-                                                  }
-                                                </p>
-                                              </div>
-                                            </Col>
-                                          </Row>
-                                        </div>
-                                      ),
-                                    )
-                                  )}
-                                </div>
-                              </div>
-                            ))
-                          )}
-                        </Panel>
-                      ),
-                    )}
-                </Collapse>
-              </div>
-
-              <Collapse
-                bordered={false}
-                expandIconPosition="end"
-                expandIcon={({ isActive }) => (
-                  <DownOutlined
-                    rotate={isActive ? 180 : 0}
-                    style={{
-                      fontSize: "15px",
-                      color: "#5a5a5a",
-                    }}
-                  />
-                )}
-                className={styles.collapseWrapper}
-              >
-                {!GetComplianceStandingReport?.complianceStandingReport
-                  ?.complianceListData?.length ? (
-                  <div className={styles.NoDataFoundTable}>
-                    <div className={`${styles.nodatafound_subHeading}`}>
-                      {t("No-data-Found")}
-                    </div>
-                  </div>
-                ) : (
-                  GetComplianceStandingReport.complianceStandingReport.complianceListData.map(
-                    (item) => (
-                      <Panel
-                        key={item.complianceId}
-                        header={
-                          <div className={styles.tableRow}>
-                            <div className={styles.nameCol}>
-                              <Tooltip title={item.complianceTitle}>
-                                <p> {item.complianceTitle}</p>
-                              </Tooltip>
-                            </div>
-                            <div>
-                              <span className={styles.badge}>
-                                {item.authorityShortCode}
-                              </span>
-                            </div>
-                            <div>
-                              <span className={styles.criticality}>
-                                {item.criticality.label}
-                              </span>
-                            </div>
-                            <div>{formatDateToYMD(item.dueDate)}</div>
-                            <div>{item.totalChecklists}</div>
-                            <div>{item.totalTasks}</div>
-                            <div>{item.overdueTasks}</div>
-                            <div>{item.progressPercentage}</div>
-                          </div>
-                        }
-                      >
-                        {" "}
-                        {!item?.checklistData?.length ? (
-                          <div className={styles.NoDataFoundTable}>
-                            <div className={`${styles.nodatafound_subHeading}`}>
-                              {t("No-Checklist-Found")}
-                            </div>
-                          </div>
-                        ) : (
-                          item?.checklistData?.map((checklist) => (
-                            <div
-                              className={styles.panelContent}
-                              key={checklist.checklistId}
-                            >
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  xs="auto"
-                                  className={`${styles.ComplianceMainHeading}`}
-                                >
-                                  <div>
-                                    <label>{t("Checklist-title")}:</label>
-                                    <p>{checklist.checklistTitle}</p>
-                                  </div>
-                                </Col>
-                              </Row>
-                              <div className={styles.MainAccordianTable}>
-                                {!checklist?.checklistTasks?.length ? (
-                                  <div className={styles.NoDataFoundTable}>
-                                    <div
-                                      className={`${styles.nodatafound_subHeading}`}
-                                    >
-                                      {t("No-Checklist-Task")}
-                                    </div>
-                                  </div>
-                                ) : (
-                                  checklist.checklistTasks.map(
-                                    (checklisttask) => (
+                                    checklist.checklistTasks.map((task) => (
                                       <div
                                         className={styles.insideAccordianTable}
-                                        key={checklisttask.taskId}
+                                        key={task.taskId}
                                       >
                                         <Row>
-                                          <Col lg={12} xs="auto">
+                                          <Col lg={12}>
                                             <div
                                               className={
                                                 styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>{t("Task-title")}:</label>
-                                              <p>{checklisttask.taskTitle}</p>
+                                              <p>{task.taskTitle}</p>
                                             </div>
                                           </Col>
                                         </Row>
+
                                         <Row>
-                                          <Col lg={4} xs="auto">
+                                          <Col lg={4}>
                                             <div
                                               className={
                                                 styles.insideAccordianSubHeading
                                               }
                                             >
                                               <label>{t("Assignee")}:</label>
-                                              <p>
-                                                {checklisttask.taskAssignee}
-                                              </p>
+                                              <p>{task.taskAssignee}</p>
                                             </div>
-                                          </Col>{" "}
-                                          <Col lg={2} xs="auto">
+                                          </Col>
+
+                                          <Col lg={2}>
                                             <div
                                               className={
                                                 styles.insideAccordianSubHeading
@@ -913,13 +709,12 @@ const ComplianceStandingReport = () => {
                                             >
                                               <label>{t("Due-date")}:</label>
                                               <p>
-                                                {formatDateToYMD(
-                                                  checklisttask.dueDate,
-                                                )}
+                                                {formatDateToYMD(task.dueDate)}
                                               </p>
                                             </div>
                                           </Col>
-                                          <Col lg={2} xs="auto">
+
+                                          <Col lg={2}>
                                             <div
                                               className={
                                                 styles.insideAccordianSubHeading
@@ -929,47 +724,48 @@ const ComplianceStandingReport = () => {
                                                 {t("Completed-on")}:
                                               </label>
                                               <p>
-                                                {checklisttask.completedOnDate ??
-                                                  "-"}
+                                                {task.completedOnDate ?? "-"}
                                               </p>
                                             </div>
                                           </Col>
-                                          <Col lg={2} xs="auto">
+
+                                          <Col lg={2}>
                                             <div
                                               className={
                                                 styles.insideAccordianSubHeading
                                               }
                                             >
-                                              <label> {t("Status")}:</label>
-                                              <p>{checklisttask.status}</p>
+                                              <label>{t("Status")}:</label>
+                                              <p>{task.status}</p>
                                             </div>
                                           </Col>
-                                          <Col lg={2} xs="auto">
+
+                                          <Col lg={2}>
                                             <div
                                               className={
                                                 styles.insideAccordianSubHeading
                                               }
                                             >
                                               <label>{t("Completed")}:</label>
-                                              <p>
-                                                {checklisttask.completionStatus}
-                                              </p>
+                                              <p>{task.completionStatus}</p>
                                             </div>
                                           </Col>
                                         </Row>
                                       </div>
-                                    ),
-                                  )
-                                )}
+                                    ))
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ))
-                        )}
-                      </Panel>
-                    ),
-                  )
-                )}
-              </Collapse>
+                            ))
+                          )}
+                        </div>
+                      );
+                    },
+                    rowExpandable: () => true,
+                  }}
+                  className={"Compliance_Table Report_Table  mt-3"}
+                />
+              </div>
             </>
           )}
 
