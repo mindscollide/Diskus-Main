@@ -488,6 +488,7 @@ const SignatureViewer = () => {
           // Disable header tools and elements
           instance.UI.disableTools([Tools.disableTextSelection]);
           instance.UI.disableElements([
+            "toolbarGroup-FillAndSign",
             "colorPalette",
             "underlineToolGroupButton",
             "textSelectButton",
