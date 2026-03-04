@@ -3167,14 +3167,19 @@ const updatePasswordAction = (value, navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword-_01".toLowerCase(),
+                  "ERM_AuthService_AuthManager_PasswordUpdationOnForgetPassword_01".toLowerCase(),
                 )
             ) {
-              dispatch(
-                passwordupdatesuccess(t("Password-updated-successfully")),
-              );
-              localStorage.removeItem("updatePasswordCheck");
-              navigate("/updatepassword");
+              try {
+                dispatch(
+                  passwordupdatesuccess(t("Password-updated-successfully")),
+                );
+                localStorage.removeItem("updatePasswordCheck");
+                navigate("/updatepassword");
+              } catch (error) {
+                
+              }
+         
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

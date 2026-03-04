@@ -67,26 +67,10 @@ import NextModal from "../meetingDetails/NextModal/NextModal";
 import PreviousModal from "../meetingDetails/PreviousModal/PreviousModal";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { meetingStatusUpdateApi } from "../../../../../store/actions/MeetingActions";
 
-const Organizers = ({
-  setAgendaContributors,
-  setmeetingDetails,
-  setorganizers,
-  setParticipants,
-  setAgenda,
-  setMinutes,
-  setactionsPage,
-  setAttendance,
-  setPolls,
-  setMeetingMaterial,
-  setSceduleMeeting,
-  currentMeeting,
-  isEditMeeting,
-  setPublishState,
-  setAdvanceMeetingModalID,
-  setCalendarViewModal,
-  setDataroomMapFolderId,
-}) => {
+const Organizers = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -95,7 +79,14 @@ const Organizers = ({
 
   const UserID = localStorage.getItem("userID");
 
-  console.log(UserID, "recordrecordrecord");
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
+  const {
+    isMeetingCreateOrEdit,
+    setIsMeetingCreateOrEdit,
+    setIsCreateEditMeeting,
+  } = useNewMeetingContext();
   const { editorRole, setEditorRole } = useContext(MeetingContext);
   let currentUserEmail = localStorage.getItem("userEmail");
   let currentUserID = Number(localStorage.getItem("userID"));
@@ -138,7 +129,7 @@ const Organizers = ({
   });
 
   useEffect(() => {
-    let Data = { MeetingID: currentMeeting };
+    let Data = { MeetingID: currentMeetingInfo.meetingID };
     dispatch(GetAllMeetingOrganizers(Data, navigate, t));
     return () => {
       setRowsData([currentOrganizerData]);
@@ -199,12 +190,12 @@ const Organizers = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
             editorRole.role === "Organizer" &&
-            isEditMeeting === true
+            isMeetingCreateOrEdit === 2
           ) {
             return text;
           } else if (
             editorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true
+            isMeetingCreateOrEdit === 2
           ) {
             return text;
           } else {
@@ -225,10 +216,10 @@ const Organizers = ({
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isEditMeeting === true
+                      isMeetingCreateOrEdit === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isEditMeeting === true
+                          isMeetingCreateOrEdit === 2
                         ? true
                         : record.disabledTitle === true
                         ? true
@@ -454,12 +445,12 @@ const Organizers = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
             editorRole.role === "Organizer" &&
-            isEditMeeting === true
+            isMeetingCreateOrEdit === 2
           ) {
             return text;
           } else if (
             editorRole.role === "Agenda Contributor" &&
-            isEditMeeting === true
+            isMeetingCreateOrEdit === 2
           ) {
             return text;
           } else {
@@ -480,10 +471,10 @@ const Organizers = ({
                         Number(editorRole.status) === 8 ||
                         Number(editorRole.status) === 10) &&
                       editorRole.role === "Organizer" &&
-                      isEditMeeting === true
+                      isMeetingCreateOrEdit === 2
                         ? true
                         : editorRole.role === "Agenda Contributor" &&
-                          isEditMeeting === true
+                          isMeetingCreateOrEdit === 2
                         ? true
                         : record.disabledTitle === true
                         ? true
@@ -621,11 +612,11 @@ const Organizers = ({
         Number(editorRole.status) === 8 ||
         Number(editorRole.status) === 10) &&
       editorRole.role === "Organizer" &&
-      isEditMeeting === true
+      isMeetingCreateOrEdit === 2
     ) {
     } else if (
       editorRole.role === "Agenda Contributor" &&
-      isEditMeeting === true
+      isMeetingCreateOrEdit === 2
     ) {
     } else {
       dispatch(sendRecentNotificationOrganizerModal(true));
@@ -658,22 +649,15 @@ const Organizers = ({
   const handlePublishButton = () => {
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
-    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    let Data = { MeetingID: currentMeetingInfo.meetingID, StatusID: 1 };
     console.log("end meeting chaek");
     dispatch(
-      UpdateOrganizersMeeting(
-        false,
-        navigate,
-        t,
-        5,
-        Data,
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal
-      )
+      meetingStatusUpdateApi(navigate, t, Data, "publishMeeting", {
+        isQuickMeeting: false,
+        setEditorRole, // shorthand if variable name matches key
+        setIsMeetingCreateOrEdit, // For update create and update view
+        setIsCreateEditMeeting, // For Create and Update Component
+      })
     );
 
     setRowsData([]);
@@ -682,16 +666,6 @@ const Organizers = ({
   const nextTabOrganizer = () => {
     setviewOrganizers(!viewOrganizers);
     setRowsData([]);
-    setAgendaContributors(true);
-    setmeetingDetails(false);
-    setorganizers(false);
-    setParticipants(false);
-    setAgenda(false);
-    setMinutes(false);
-    setactionsPage(false);
-    setAttendance(false);
-    setPolls(false);
-    setMeetingMaterial(false);
     setRowsData([]);
     dispatch(saveMeetingFlag(false));
     dispatch(editMeetingFlag(false));
@@ -757,7 +731,7 @@ const Organizers = ({
       (data, index) => data.isPrimaryOrganizer === true
     );
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingInfo.meetingID,
       MeetingAttendeRoleID: 1,
       UpdatedUsers: newarry,
     };
@@ -770,7 +744,7 @@ const Organizers = ({
           saveMeetingFlag,
           editMeetingFlag,
           rowsData,
-          currentMeeting,
+          currentMeetingInfo.meetingID,
           isEditValue,
           notificationMessage,
           setIsEdit
@@ -839,7 +813,7 @@ const Organizers = ({
             isDeletable: matchingOrganizer.isDeletable,
             isOrganizerNotified: matchingOrganizer.isOrganizerNotified,
             isPrimaryOrganizer: matchingOrganizer.isPrimaryOrganizer,
-            meetingID: currentMeeting,
+            meetingID: currentMeetingInfo.meetingID,
             organizerTitle: matchingOrganizer.organizerTitle,
             rsvp: matchingOrganizer.rsvp,
             userName: matchingOrganizer.userName,
@@ -864,7 +838,7 @@ const Organizers = ({
             isDeletable: organizer.isDeletable,
             isOrganizerNotified: organizer.isOrganizerNotified,
             isPrimaryOrganizer: organizer.isPrimaryOrganizer,
-            meetingID: currentMeeting,
+            meetingID: currentMeetingInfo.meetingID,
             organizerTitle: organizer.organizerTitle,
             rsvp: organizer.rsvp,
             userName: organizer.userName,
@@ -919,11 +893,6 @@ const Organizers = ({
     dispatch(clearResponseMessage(""));
   }, [MeetingOrganizersReducer.ResponseMessage]);
 
-  console.log(
-    "MeetingOrganizersReducerMeetingOrganizersReducer",
-    MeetingOrganizersReducer
-  );
-
   useEffect(() => {
     dispatch(getAgendaAndVotingInfo_success([], ""));
     dispatch(GetCurrentAgendaDetails([]));
@@ -975,8 +944,9 @@ const Organizers = ({
                     Number(editorRole.status) === 8 ||
                     Number(editorRole.status) === 10) &&
                   editorRole.role === "Organizer" &&
-                  isEditMeeting === true ? null : editorRole.role ===
-                    "Agenda Contributor" && isEditMeeting === true ? null : (
+                  isMeetingCreateOrEdit === 2 ? null : editorRole.role ===
+                    "Agenda Contributor" &&
+                  isMeetingCreateOrEdit === 2 ? null : (
                   <>
                     <Button
                       text={t("Edit")}
@@ -1035,7 +1005,7 @@ const Organizers = ({
                       Number(editorRole.status) === 12 ? (
                         <Button
                           disableBtn={
-                            Number(currentMeeting) === 0 ||
+                            Number(currentMeetingInfo.meetingID) === 0 ||
                             isPublishedState === false
                               ? true
                               : false
@@ -1044,10 +1014,10 @@ const Organizers = ({
                           className={styles["Next_Organization"]}
                           onClick={handlePublishButton}
                         />
-                      ) : isEditMeeting === true ? null : (
+                      ) : isMeetingCreateOrEdit === 2 ? null : (
                         <Button
                           disableBtn={
-                            Number(currentMeeting) === 0 ||
+                            Number(currentMeetingInfo.meetingID) === 0 ||
                             isPublishedState === false
                               ? true
                               : false
@@ -1066,9 +1036,7 @@ const Organizers = ({
         </>
       )}
       <Notification open={open} setOpen={setOpen} />
-      {NewMeetingreducer.adduserModal && (
-        <ModalOrganizor currentMeeting={currentMeeting} />
-      )}
+      {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && (
         <NotifyOrganizers
@@ -1078,39 +1046,41 @@ const Organizers = ({
         />
       )}
       {NewMeetingreducer.sendNotificationOrganizerModal === true ? (
-        <SendNotificationOrganizer currentMeeting={currentMeeting} />
+        <SendNotificationOrganizer />
       ) : null}
       {NewMeetingreducer.cancelModalOrganizer && (
-        <CancelModalOrganizer setSceduleMeeting={setSceduleMeeting} />
+        <CancelModalOrganizer
+        // setSceduleMeeting={setSceduleMeeting}
+        />
       )}
       {NewMeetingreducer.nextConfirmModal && (
         <NextModal
-          setAgendaContributors={setAgendaContributors}
-          setmeetingDetails={setmeetingDetails}
-          setorganizers={setorganizers}
-          setParticipants={setParticipants}
-          setAgenda={setAgenda}
-          setMinutes={setMinutes}
-          setactionsPage={setactionsPage}
-          setAttendance={setAttendance}
-          setPolls={setPolls}
-          setMeetingMaterial={setMeetingMaterial}
+          // setAgendaContributors={setAgendaContributors}
+          // setmeetingDetails={setmeetingDetails}
+          // setorganizers={setorganizers}
+          // setParticipants={setParticipants}
+          // setAgenda={setAgenda}
+          // setMinutes={setMinutes}
+          // setactionsPage={setactionsPage}
+          // setAttendance={setAttendance}
+          // setPolls={setPolls}
+          // setMeetingMaterial={setMeetingMaterial}
           setRowsData={setRowsData}
           flag={flag}
         />
       )}
       {NewMeetingreducer.ShowPreviousModal && (
         <PreviousModal
-          setAgendaContributors={setAgendaContributors}
-          setmeetingDetails={setmeetingDetails}
-          setorganizers={setorganizers}
-          setParticipants={setParticipants}
-          setAgenda={setAgenda}
-          setMinutes={setMinutes}
-          setactionsPage={setactionsPage}
-          setAttendance={setAttendance}
-          setPolls={setPolls}
-          setMeetingMaterial={setMeetingMaterial}
+          // setAgendaContributors={setAgendaContributors}
+          // setmeetingDetails={setmeetingDetails}
+          // setorganizers={setorganizers}
+          // setParticipants={setParticipants}
+          // setAgenda={setAgenda}
+          // setMinutes={setMinutes}
+          // setactionsPage={setactionsPage}
+          // setAttendance={setAttendance}
+          // setPolls={setPolls}
+          // setMeetingMaterial={setMeetingMaterial}
           setRowsData={setRowsData}
           prevFlag={prevFlag}
         />

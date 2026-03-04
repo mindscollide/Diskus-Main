@@ -20,11 +20,15 @@ import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-const ModalOrganizor = ({ currentMeeting }) => {
+const ModalOrganizor = () => {
   const { t } = useTranslation();
   const animatedComponents = makeAnimated();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
 
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
@@ -207,7 +211,7 @@ const ModalOrganizor = ({ currentMeeting }) => {
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: currentMeetingInfo.meetingID,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);

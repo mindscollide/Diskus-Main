@@ -30,25 +30,17 @@ import Actions from "./Actions/Actions";
 import Polls from "./Polls/Polls";
 import Attendence from "./Attendence/Attendence";
 
-const SceduleMeeting = ({
-  setEditMeeting,
-  isEditMeeting,
-  setCurrentMeetingID,
-  currentMeeting,
-  setSceduleMeeting,
-  setDataroomMapFolderId,
-  dataroomMapFolderId,
-}) => {
+const SceduleMeeting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { editorRole, setEditorRole } = useContext(MeetingContext);
 
   const { activeMeetingTab, getALlMeetingTypes } = useSelector(
-    (state) => state.NewMeetingreducer
+    (state) => state.NewMeetingreducer,
   );
   const { meetingID = 0 } = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingInfo
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
   );
   // ===============================
   // API CALLS
@@ -91,8 +83,8 @@ const SceduleMeeting = ({
             setDataroomMapFolderId,
             0,
             1,
-            false
-          )
+            false,
+          ),
         );
       }
 
@@ -102,7 +94,7 @@ const SceduleMeeting = ({
 
       dispatch(setActiveCreateAndEditMeetingTab(tab));
     },
-    [meetingID]
+    [meetingID],
   );
 
   // ===============================
@@ -115,7 +107,7 @@ const SceduleMeeting = ({
 
   return (
     <section>
-      <Row className='mt-2'>
+      <Row className="mt-2">
         <Col lg={12}>
           <span className={styles["Scedule_newMeeting_Heading"]}>
             {isEditMeeting ? t("Edit-meeting") : t("Schedule-new-meeting")}
@@ -124,10 +116,10 @@ const SceduleMeeting = ({
       </Row>
 
       <Row>
-        <Col lg={12} className='mb-4'>
+        <Col lg={12} className="mb-4">
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
-              <Col className='py-2 d-flex gap-2 flex-wrap'>
+              <Col className="py-2 d-flex gap-2 flex-wrap">
                 <Button
                   text={t("Meeting-details")}
                   className={getBtnClass("details")}

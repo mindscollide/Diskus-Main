@@ -18,10 +18,15 @@ import { sendRecentNotificationOrganizerModal } from "../../../../../../store/ac
 import { Col, Row } from "react-bootstrap";
 import { validateInput } from "../../../../../../commen/functions/regex";
 
-const SendNotificationOrganizer = ({ currentMeeting }) => {
+const SendNotificationOrganizer = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  
+  const currentMeetingInfo = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   const { NewMeetingreducer, MeetingOrganizersReducer } = useSelector(
     (state) => state
   );
@@ -87,7 +92,7 @@ const SendNotificationOrganizer = ({ currentMeeting }) => {
       UserID: MeetingOrganizersReducer.NotificationSendData[0].userID,
       Message: notifyOrganizerData.Messege,
       IsAgendaContributor: false,
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(currentMeetingInfo.meetingID),
     };
     dispatch(sendNotificationOrganizer(Data, navigate, t));
     dispatch(notificationUpdateData(membersOrganizers));

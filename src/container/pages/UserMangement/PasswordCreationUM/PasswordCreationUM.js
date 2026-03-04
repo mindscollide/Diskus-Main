@@ -37,7 +37,6 @@ const PasswordCreationUM = () => {
     (state) => state.Authreducer
       .CreatePasswordResponseMessage
   )
-  console.log(passwordCreateResponseMessage, "passwordCreateResponseMessagepasswordCreateResponseMessage")
   const UserManagementModalscreateAdditionalModalsData = useSelector(
     (state) => state.UserManagementModals.createAdditionalModals
   );

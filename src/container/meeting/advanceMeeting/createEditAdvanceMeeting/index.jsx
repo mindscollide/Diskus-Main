@@ -44,31 +44,23 @@ import {
   useMeetingContext,
 } from "../../../../context/MeetingContext";
 import { useNewMeetingContext } from "../../../../context/NewMeetingContext";
+import { GetAllMeetingDetailsApi } from "../../../../store/actions/MeetingActions";
 const CreateEditAdvanceMeeting = (
-  {
-    //   setEditMeeting,
-    //   isEditMeeting,
-    //   setCurrentMeetingID,
-    //   currentMeeting,
-    //   setSceduleMeeting,
-    //   setDataroomMapFolderId,
-    //   dataroomMapFolderId,
-  }
+
 ) => {
   const { t } = useTranslation();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
 
-  const {} = useSelector((state) => state.NewMeetingreducer.currentMeetingInfo);
   const { editorRole, setEditorRole, setCurrentMeetingID, currentMeeting } =
     useMeetingContext();
-    const { meetingID = 0 } = useSelector(
-      (state) => state.NewMeetingreducer.currentMeetingInfo
-    );
-  const { createdMeetingInfo, setCreatedMeetingInfo } = useNewMeetingContext();
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
+  console.log(meetingID, "meetingIDmeetingID");
   //   const [meetingDetails, setmeetingDetails] = useState(
   //     editorRole.role === "Agenda Contributor" ? false : true,
   //   );
@@ -91,40 +83,47 @@ const CreateEditAdvanceMeeting = (
   let userID = localStorage.getItem("userID");
 
   const createEditMeetingDetailsTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingDetailsGlobalFlag
+    (state) => state.NewMeetingreducer.meetingDetailsGlobalFlag,
   );
   const createEditOrganizersTab = useSelector(
-    (state) => state.NewMeetingreducer.organizersGlobalFlag
+    (state) => state.NewMeetingreducer.organizersGlobalFlag,
   );
   const createEditAgendaContributorsTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaContributorsGlobalFlag
+    (state) => state.NewMeetingreducer.agendaContributorsGlobalFlag,
   );
   const createEditParticipantsTab = useSelector(
-    (state) => state.NewMeetingreducer.participantsGlobalFlag
+    (state) => state.NewMeetingreducer.participantsGlobalFlag,
   );
   const createEditAgendaTab = useSelector(
-    (state) => state.NewMeetingreducer.agendaGlobalFlag
+    (state) => state.NewMeetingreducer.agendaGlobalFlag,
   );
   const createEditMeetingMaterialTab = useSelector(
-    (state) => state.NewMeetingreducer.meetingMaterialGlobalFlag
+    (state) => state.NewMeetingreducer.meetingMaterialGlobalFlag,
   );
   const createEditMinutesTab = useSelector(
-    (state) => state.NewMeetingreducer.minutesGlobalFlag
+    (state) => state.NewMeetingreducer.minutesGlobalFlag,
   );
+
   const createEditProposedMeetingDatesTab = useSelector(
-    (state) => state.NewMeetingreducer.proposedMeetingDatesGlobalFlag
+    (state) => state.NewMeetingreducer.proposedMeetingDatesGlobalFlag,
   );
   const createEditActionsPageTab = useSelector(
-    (state) => state.NewMeetingreducer.actionsGlobalFlag
+    (state) => state.NewMeetingreducer.actionsGlobalFlag,
   );
   const createEditPollsTab = useSelector(
-    (state) => state.NewMeetingreducer.pollsGlobalFlag
+    (state) => state.NewMeetingreducer.pollsGlobalFlag,
   );
   const createEditAttendanceTab = useSelector(
-    (state) => state.NewMeetingreducer.attendanceGlobalFlag
+    (state) => state.NewMeetingreducer.attendanceGlobalFlag,
   );
   const createEditUploadTab = useSelector(
-    (state) => state.NewMeetingreducer.uploadGlobalFlag
+    (state) => state.NewMeetingreducer.uploadGlobalFlag,
+  );
+  console.log(
+    createEditMinutesTab,
+    createEditPollsTab,
+    createEditAttendanceTab,
+    "createEditUploadTab",
   );
 
   const dispatch = useDispatch();
@@ -148,7 +147,7 @@ const CreateEditAdvanceMeeting = (
     }
   };
   useEffect(() => {
-    if (createdMeetingInfo.meetingId === 0) {
+    if (meetingID === 0) {
       apiCallsForComponentMound();
     }
     return () => {
@@ -158,14 +157,16 @@ const CreateEditAdvanceMeeting = (
 
   const showMeetingDeitals = () => {
     let Data = {
-      MeetingID: Number(createdMeetingInfo.meetingId),
+      MeetingID: Number(meetingID),
     };
-    if (Data.MeetingID !== 0) {
+    if (meetingID !== 0) {
       dispatch(
-        GetAllMeetingDetailsApiFunc(
+        GetAllMeetingDetailsApi(
           navigate,
           t,
           Data,
+          "viewDetail",
+          {},
           // true,
           // setCurrentMeetingID,
           // //   setSceduleMeeting,
@@ -173,21 +174,8 @@ const CreateEditAdvanceMeeting = (
           // 0,
           // 1,
           // false
-        )
+        ),
       );
-
-      dispatch(meetingDetailsGlobalFlag(true));
-      dispatch(organizersGlobalFlag(false));
-      dispatch(agendaContributorsGlobalFlag(false));
-      dispatch(participantsGlobalFlag(false));
-      dispatch(agendaGlobalFlag(false));
-      dispatch(meetingMaterialGlobalFlag(false));
-      dispatch(minutesGlobalFlag(false));
-      dispatch(proposedMeetingDatesGlobalFlag(false));
-      dispatch(actionsGlobalFlag(false));
-      dispatch(pollsGlobalFlag(false));
-      dispatch(attendanceGlobalFlag(false));
-      dispatch(uploadGlobalFlag(false));
     }
   };
 
@@ -362,7 +350,6 @@ const CreateEditAdvanceMeeting = (
           };
           localStorage.removeItem("folderDataRoomMeeting");
 
-          console.log("chek search meeting");
           dispatch(searchNewUserMeeting(navigate, searchData, t));
         }
       } catch (error) {
@@ -370,7 +357,6 @@ const CreateEditAdvanceMeeting = (
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
-  console.log({ NewMeetingreducer, currentMeeting }, "NewMeetingreducer");
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
@@ -432,14 +418,15 @@ const CreateEditAdvanceMeeting = (
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className='mb-4'>
+        <Col lg={12} md={12} sm={12} className="mb-4">
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='py-2 d-flex gap-2 flex-wrap'>
+                className="py-2 d-flex gap-2 flex-wrap"
+              >
                 <Button
                   text={t("Meeting-details")}
                   className={
@@ -454,9 +441,7 @@ const CreateEditAdvanceMeeting = (
                     {" "}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={
-                          meetingID !== 0 ? true : false
-                        }
+                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Organizers")}
                         className={
                           createEditOrganizersTab === true
@@ -468,9 +453,7 @@ const CreateEditAdvanceMeeting = (
                     )}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={
-                          meetingID !== 0 ? true : false
-                        }
+                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Agenda-contributors")}
                         className={
                           createEditAgendaContributorsTab === true
@@ -482,9 +465,7 @@ const CreateEditAdvanceMeeting = (
                     )}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={
-                          meetingID !== 0 ? true : false
-                        }
+                        disableBtn={meetingID === 0 ? true : false}
                         text={t("Participants")}
                         className={
                           createEditParticipantsTab === true
@@ -495,9 +476,7 @@ const CreateEditAdvanceMeeting = (
                       />
                     )}
                     <Button
-                      disableBtn={
-                        meetingID !== 0 ? true : false
-                      }
+                      disableBtn={meetingID === 0 ? true : false}
                       text={t("Agenda-builder")}
                       className={
                         createEditAgendaTab === true
@@ -507,10 +486,8 @@ const CreateEditAdvanceMeeting = (
                       onClick={showAgenda}
                     />
                     <Button
-                      disableBtn={
-                        meetingID !== 0 ? true : false
-                      }
-                      text={t("Meeting-materials")}
+                      disableBtn={meetingID === 0 ? true : false}
+                      text={t("Meeting-material")}
                       className={
                         createEditMeetingMaterialTab === true
                           ? styles["Schedule_meetings_options_active"]
@@ -573,9 +550,7 @@ const CreateEditAdvanceMeeting = (
                     editorRole.role === "Organizer" &&
                     meetingID !== 0 ? (
                       <Button
-                        disableBtn={
-                          meetingID !== 0 ? true : false
-                        }
+                        disableBtn={meetingID !== 0 ? true : false}
                         text={t("Attendence")}
                         className={
                           createEditAttendanceTab === true
@@ -591,7 +566,6 @@ const CreateEditAdvanceMeeting = (
             </Row>
 
             {createEditMeetingDetailsTab && <MeetingDetails />}
-
             {createEditOrganizersTab && <Organizers />}
             {createEditAgendaContributorsTab && <AgendaContributers />}
             {createEditParticipantsTab && <Participants />}

@@ -27,12 +27,14 @@ const AgendaContributorsModal = ({
   rowsData,
   setRowsData,
   setNotificedMembersData,
-  currentMeeting,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo,
+  );
 
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
@@ -165,7 +167,7 @@ const AgendaContributorsModal = ({
 
   useEffect(() => {
     let Data = {
-      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
+      MeetingID: meetingID,
     };
     dispatch(GetAllCommitteesUsersandGroups(Data, navigate, t));
   }, []);

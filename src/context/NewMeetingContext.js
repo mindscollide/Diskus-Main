@@ -36,43 +36,17 @@ export const NewMeetingProvider = ({ children }) => {
     meetingTitle: "",
   });
   const [meetingMapFolderId, setMeetingMapFolderId] = useState(0);
-  const [isMeetingCreation, setIsMeetingCreation] = useState({
-    isQuickMeeting: false,
-    isAdvanceMeeting: false,
-    isProposedMeeting: false,
-  });
+
   const [currentTab, setCurrentTab] = useState("1");
 
   // --- UI Visibility States ---
   const [isCreateEditMeeting, setIsCreateEditMeeting] = useState(false);
+  // For Meeting we set value 1 and for edit meeting we will set 2
+  const [isMeetingCreateOrEdit, setIsMeetingCreateOrEdit] = useState(1);
   const [isViewMeeting, setIsViewMeeting] = useState(false);
-
-  // --- Tab Visibility States for Create/Edit Mode ---
-  const [isCreateEditMeetingTabs, setIsCreateEditMettingTabs] = useState({
-    isDetailsTab: false,
-    isOrganizerTab: false,
-    isParticipantTab: false,
-    isAgendaContributorTab: false,
-    isAgendaTab: false,
-    isAgendaViewerTab: false,
-    isMinutesTab: false,
-    isTasksTab: false,
-    isPollsTab: false,
-  });
-
-  // --- Tab Visibility States for View Mode ---
-  const [isViewMeetingTabs, setIsViewMeetingTabs] = useState({
-    isDetailsTab: false,
-    isOrganizerTab: false,
-    isParticipantTab: false,
-    isAgendaContributorTab: false,
-    isAgendaTab: false,
-    isAgendaViewerTab: false,
-    isMinutesTab: false,
-    isTasksTab: false,
-    isPollsTab: false,
-    isRecordingTab: false,
-  });
+  const [isQuickMeetingCreate, setIsQuickMeetingCreate] = useState(false);
+  const [isQuickMeetingUpdate, setIsQuickMeetingUpdate] = useState(false);
+  const [isQuickMeetingView, setIsQuickMeetingView] = useState(false);
 
   // --- Published Meeting Tracking ---
   const [publishedMeetingData, setPublishedMeetingData] = useState([]);
@@ -89,32 +63,21 @@ export const NewMeetingProvider = ({ children }) => {
 
   // --- Redux Selectors for Global State ---
   const meetingReminderNotification = useSelector(
-    (state) => state.NewMeetingreducer.meetingReminderNotification
+    (state) => state.NewMeetingreducer.meetingReminderNotification,
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
   );
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings
+    (state) => state.NewMeetingreducer.searchMeetings,
   );
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes
+    (state) => state.NewMeetingreducer.getALlMeetingTypes,
   );
 
   // --- Local Filtering and Data Management ---
   const [isMeetingTypeFilter, setMeetingTypeFilter] = useState([]);
 
-  const [isPublishedMeeting, setIsPublishedMeeting] = useState(true);
-  const [isDraftMeetings, setIsDraftMeetings] = useState(false);
-  const [isProposedMeeting, setIsProposedMeeting] = useState(false);
-  const [meetingData, setMeetingData] = useState([]);
-  const [duplicatedMeetingData, setDuplicatedMeetingData] = useState([]);
-  const [quickMeeting, setQuickMeeting] = useState(false);
-  const [proposedNewMeeting, setProposedNewMeeting] = useState(false);
-  const [isAdvanceMeetingCreate, setIsAdvanceMeetingCreate] = useState(false);
-  const [isProposedMeetingCreate, setIsProposedMeetingCreate] = useState(false);
-  const [totalMeetingRecords, setTotalMeetingRecords] = useState(0);
-  const [meetingsRecords, setMeetingsRecords] = useState([]);
   const [minutesAgo, setMinutesAgo] = useState(0);
   const [startMeetingButton, setStartMeetingButton] = useState([]);
 
@@ -123,8 +86,6 @@ export const NewMeetingProvider = ({ children }) => {
     Date: "",
     Title: "",
     HostName: "",
-    PageNumber: 1,
-    Length: 30,
   });
 
   // --- Active Filter Selections ---
@@ -153,10 +114,10 @@ export const NewMeetingProvider = ({ children }) => {
       try {
         const meetingData = meetingReminderNotification.meetingDetails;
         console.log(meetingData, "meetingDetailsmeetingDetails");
-        setMeetingsRecords((rowsData) => {
+        setPublishedMeetingData((rowsData) => {
           // Find the index of the row that matches the ID
           const rowIndex = rowsData.findIndex(
-            (rowData) => rowData.pK_MDID === meetingData.pK_MDID
+            (rowData) => rowData.pK_MDID === meetingData.pK_MDID,
           );
           console.log(rowIndex, "rowIndexrowIndex");
           // If a matching row is found, create a new array with the updated row
@@ -222,9 +183,9 @@ export const NewMeetingProvider = ({ children }) => {
                   (meeting) => ({
                     ...meeting,
                     meetingAgenda: meeting.meetingAgenda.filter(
-                      (agenda) => agenda.objMeetingAgenda.canView
+                      (agenda) => agenda.objMeetingAgenda.canView,
                     ),
-                  })
+                  }),
                 );
                 // Redundant check for canView to ensure deep filtering
                 copyMeetingData.forEach((data) => {
@@ -256,7 +217,6 @@ export const NewMeetingProvider = ({ children }) => {
           }
         } catch (error) {
           console.log(error);
-          setMeetingsRecords([]);
           setPublishedMeetingData([]);
           setDraftMeetingData([]);
           setProposedMeetingData([]);
@@ -341,10 +301,6 @@ export const NewMeetingProvider = ({ children }) => {
   };
   // Object containing all states and setters to be passed through context value
   const statesData = {
-    meetingData,
-    setMeetingData,
-    duplicatedMeetingData,
-    setDuplicatedMeetingData,
     searchFilters,
     setSearchFilters,
     selectedStatusFilters,
@@ -353,31 +309,14 @@ export const NewMeetingProvider = ({ children }) => {
     setSelectedMeetingTypeFilters,
     isLoading,
     setIsLoading,
-    isPublishedMeeting,
-    setIsPublishedMeeting,
-    isDraftMeetings,
-    setIsDraftMeetings,
-    isProposedMeeting,
-    setIsProposedMeeting,
-    totalMeetingRecords,
-    setTotalMeetingRecords,
-    meetingsRecords,
-    setMeetingsRecords,
+
     isMeetingTypeFilter,
     minutesAgo,
     startMeetingButton,
-    quickMeeting,
-    setQuickMeeting,
-    proposedNewMeeting,
-    setProposedNewMeeting,
-    isAdvanceMeetingCreate,
-    setIsAdvanceMeetingCreate,
     meetingMapFolderId,
     setMeetingMapFolderId,
     createdMeetingInfo,
     setCreatedMeetingInfo,
-    isProposedMeetingCreate,
-    setIsProposedMeetingCreate,
     // New States
     currentTab,
     setCurrentTab,
@@ -397,6 +336,16 @@ export const NewMeetingProvider = ({ children }) => {
     setIsCreateEditMeeting,
     setIsViewMeeting,
     isViewMeeting,
+    isQuickMeetingCreate,
+    setIsQuickMeetingCreate,
+    isQuickMeetingUpdate,
+    setIsQuickMeetingUpdate,
+    isQuickMeetingView,
+    setIsQuickMeetingView,
+    isMeetingCreateOrEdit,
+    setIsMeetingCreateOrEdit,
+    requestData,
+    setRequestData,
   };
 
   // Provide the state data to the context
@@ -418,7 +367,7 @@ export const useNewMeetingContext = () => {
   // Throw an error if the hook is used outside of the NewMeetingProvider
   if (!context) {
     throw new Error(
-      "useNewMeetingContext must be used within a NewMeetingProvider"
+      "useNewMeetingContext must be used within a NewMeetingProvider",
     );
   }
 

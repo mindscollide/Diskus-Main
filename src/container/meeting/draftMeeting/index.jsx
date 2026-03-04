@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useNewMeetingContext } from "../../../context/NewMeetingContext";
 import { useMeetingContext } from "../../../context/MeetingContext";
+import CustomPagination from "@/commen/functions/customPagination/Paginations";
 
 // Icons
 import SortIconAscend from "../../../assets/images/sortingIcons/SorterIconAscend.png";
@@ -41,6 +42,7 @@ import {
   pollsGlobalFlag,
   proposedMeetingDatesGlobalFlag,
   scheduleMeetingPageFlag,
+  searchNewUserMeeting,
   uploadGlobalFlag,
   viewMeetingFlag,
 } from "../../../store/actions/NewMeetingActions";
@@ -48,6 +50,7 @@ import { mqttMeetingData } from "../../../hooks/meetingResponse/response";
 
 // Styles (reuse DraftMeeting styles from existing component)
 import styles from "@/container/meeting/meeting.module.css";
+import { GetAllMeetingDetailsApi } from "../../../store/actions/MeetingActions";
 
 const DraftMeetingList = () => {
   const { t } = useTranslation();
@@ -55,7 +58,15 @@ const DraftMeetingList = () => {
   const navigate = useNavigate();
 
   // ─── Context ───
-  const { isMeetingTypeFilter } = useNewMeetingContext();
+  const {
+    isMeetingTypeFilter,
+    setIsCreateEditMeeting,
+    setIsMeetingCreateOrEdit,
+    draftMeetingDataRecord,
+    setDraftMeetingDataRecord,
+    draftMeetingData,
+    setDraftMeetingData,
+  } = useNewMeetingContext();
   const {
     setViewFlag,
     setAdvanceMeetingModalID,
@@ -66,25 +77,28 @@ const DraftMeetingList = () => {
     setDeleteMeetingConfirmationModal,
     setEditFlag,
     setCurrentMeetingID,
+    setEditorRole,
+    editorRole,
   } = useMeetingContext();
 
   // ─── Redux selectors ───
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
+    (state) => state.NewMeetingreducer.searchMeetings
   );
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
   );
-
+  let meetingpageRow = localStorage.getItem("MeetingPageRows");
+  let meetingPageCurrent = localStorage.getItem("MeetingPageCurrent");
   // ─── Local state ───
   const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
   const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
@@ -106,7 +120,7 @@ const DraftMeetingList = () => {
           let copyMeetingData = searchMeetings.meetings.map((meeting) => ({
             ...meeting,
             meetingAgenda: meeting.meetingAgenda.filter(
-              (agenda) => agenda.objMeetingAgenda.canView,
+              (agenda) => agenda.objMeetingAgenda.canView
             ),
           }));
           copyMeetingData.forEach((data) => {
@@ -155,7 +169,7 @@ const DraftMeetingList = () => {
       let meetingData = mqttMeetingAcRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -196,7 +210,7 @@ const DraftMeetingList = () => {
       let meetingData = mqttMeetingOrgRemoved;
       try {
         const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
+          (obj) => obj.pK_MDID !== meetingData.pK_MDID
         );
         setRow(updatedRows);
         dispatch(meetingAgendaContributorAdded(null));
@@ -237,6 +251,11 @@ const DraftMeetingList = () => {
   const moreButtons = (record) => {
     const handleEdit = async () => {
       let Data = { MeetingID: Number(record.pK_MDID) };
+      let userRole = {
+        status: 11,
+        role: record.isAgendaContributor ? "Agenda Contributor" : "Organizer",
+        isPrimaryOrganizer: record.isPrimaryOrganizer,
+      };
       if (record.isQuickMeeting) {
         await dispatch(
           ViewMeeting(
@@ -246,70 +265,84 @@ const DraftMeetingList = () => {
             setViewFlag,
             setEditFlag,
             setSceduleMeeting,
-            2,
-          ),
+            2
+          )
         );
       } else if (record.isQuickMeeting === false) {
         if (record.isAgendaContributor) {
-          dispatch(scheduleMeetingPageFlag(true));
-          dispatch(viewMeetingFlag(false));
-          dispatch(meetingDetailsGlobalFlag(false));
-          dispatch(organizersGlobalFlag(false));
-          dispatch(agendaContributorsGlobalFlag(false));
-          dispatch(participantsGlobalFlag(false));
-          dispatch(agendaGlobalFlag(true));
-          dispatch(meetingMaterialGlobalFlag(false));
-          dispatch(minutesGlobalFlag(false));
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(actionsGlobalFlag(false));
-          dispatch(pollsGlobalFlag(false));
-          dispatch(attendanceGlobalFlag(false));
-          dispatch(uploadGlobalFlag(false));
+          // dispatch(scheduleMeetingPageFlag(true));
+          // dispatch(viewMeetingFlag(false));
+          // dispatch(meetingDetailsGlobalFlag(false));
+          // dispatch(organizersGlobalFlag(false));
+          // dispatch(agendaContributorsGlobalFlag(false));
+          // dispatch(participantsGlobalFlag(false));
+          // dispatch(agendaGlobalFlag(true));
+          // dispatch(meetingMaterialGlobalFlag(false));
+          // dispatch(minutesGlobalFlag(false));
+          // dispatch(proposedMeetingDatesGlobalFlag(false));
+          // dispatch(actionsGlobalFlag(false));
+          // dispatch(pollsGlobalFlag(false));
+          // dispatch(attendanceGlobalFlag(false));
+          // dispatch(uploadGlobalFlag(false));
           let AgData = { MeetingID: Number(record.pK_MDID) };
           await dispatch(
-            GetAllMeetingDetailsApiFunc(
+            GetAllMeetingDetailsApi(
               navigate,
               t,
               AgData,
-              true,
-              setCurrentMeetingID,
-              setSceduleMeeting,
-              setDataroomMapFolderId,
-              0,
-              1,
-              "Agenda Contributor",
-            ),
+              "editMeeting",
+              {
+                setEditorRole,
+                setIsCreateEditMeeting,
+                setIsMeetingCreateOrEdit,
+                userRole,
+              }
+              // true,
+              // setCurrentMeetingID,
+              // setSceduleMeeting,
+              // setDataroomMapFolderId,
+              // 0,
+              // 1,
+              // "Agenda Contributor",
+            )
           );
         } else {
           let OrgData = { MeetingID: Number(record.pK_MDID) };
           await dispatch(
-            GetAllMeetingDetailsApiFunc(
+            GetAllMeetingDetailsApi(
               navigate,
               t,
               OrgData,
-              true,
-              setCurrentMeetingID,
-              setSceduleMeeting,
-              setDataroomMapFolderId,
-              0,
-              1,
-              "Organizer",
-            ),
+              "editMeeting",
+              {
+                setEditorRole,
+                setIsCreateEditMeeting,
+                setIsMeetingCreateOrEdit,
+                userRole,
+              }
+              // true,
+              // setCurrentMeetingID,
+              // setSceduleMeeting,
+              // setDataroomMapFolderId,
+              // 0,
+              // 1,
+              // "Agenda Contributor",
+            )
           );
-          dispatch(scheduleMeetingPageFlag(true));
-          dispatch(viewMeetingFlag(false));
-          dispatch(meetingDetailsGlobalFlag(true));
-          dispatch(organizersGlobalFlag(false));
-          dispatch(agendaContributorsGlobalFlag(false));
-          dispatch(participantsGlobalFlag(false));
-          dispatch(agendaGlobalFlag(false));
-          dispatch(meetingMaterialGlobalFlag(false));
-          dispatch(minutesGlobalFlag(false));
-          dispatch(proposedMeetingDatesGlobalFlag(false));
-          dispatch(actionsGlobalFlag(false));
-          dispatch(pollsGlobalFlag(false));
-          dispatch(attendanceGlobalFlag(false));
-          dispatch(uploadGlobalFlag(false));
+          // dispatch(scheduleMeetingPageFlag(true));
+          // dispatch(viewMeetingFlag(false));
+          // dispatch(meetingDetailsGlobalFlag(true));
+          // dispatch(organizersGlobalFlag(false));
+          // dispatch(agendaContributorsGlobalFlag(false));
+          // dispatch(participantsGlobalFlag(false));
+          // dispatch(agendaGlobalFlag(false));
+          // dispatch(meetingMaterialGlobalFlag(false));
+          // dispatch(minutesGlobalFlag(false));
+          // dispatch(proposedMeetingDatesGlobalFlag(false));
+          // dispatch(actionsGlobalFlag(false));
+          // dispatch(pollsGlobalFlag(false));
+          // dispatch(attendanceGlobalFlag(false));
+          // dispatch(uploadGlobalFlag(false));
         }
       }
     };
@@ -321,19 +354,36 @@ const DraftMeetingList = () => {
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt="" width="16" height="16" />
+          <img src={EditIcon} alt='' width='16' height='16' />
           <span>{t("Edit-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Delete-meeting")}</span>
         </div>
         <div className={styles.morebtn} onClick={handleCancel}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Publish-meeting")}</span>
         </div>
       </div>
     );
+  };
+
+  const handelChangePagination = async (current, PageSize) => {
+    let searchData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+      UserID: Number(localStorage.getItem("userID")),
+      PageNumber: Number(current),
+      Length: Number(PageSize),
+      PublishedMeetings: false,
+      ProposedMeetings: false,
+    };
+    localStorage.setItem("MeetingPageRows", PageSize);
+    localStorage.setItem("MeetingPageCurrent", current);
+    console.log("chek search meeting");
+    await dispatch(searchNewUserMeeting(navigate, searchData, t));
   };
 
   // ─── Table columns ───
@@ -342,12 +392,12 @@ const DraftMeetingList = () => {
       // Meeting Title
       {
         title: (
-          <div className="d-flex align-items-center gap-2">
+          <div className='d-flex align-items-center gap-2'>
             <span>{t("Meeting-title")}</span>
             {meetingTitleSort === "ascend" ? (
-              <img src={SortIconAscend} alt="SortIconAscend" />
+              <img src={SortIconAscend} alt='SortIconAscend' />
             ) : (
-              <img src={SortIconDescend} alt="SortIconDescend" />
+              <img src={SortIconDescend} alt='SortIconDescend' />
             )}
           </div>
         ),
@@ -363,12 +413,12 @@ const DraftMeetingList = () => {
       // Organizer
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Organizer")}</span>
             {organizerNameSort === "ascend" ? (
-              <img src={SortIconAscend} alt="SortIconAscend" />
+              <img src={SortIconAscend} alt='SortIconAscend' />
             ) : (
-              <img src={SortIconDescend} alt="SortIconDescend" />
+              <img src={SortIconDescend} alt='SortIconDescend' />
             )}
           </div>
         ),
@@ -384,12 +434,12 @@ const DraftMeetingList = () => {
       // Time
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Time")}</span>
             {meetingTimeSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+              <img src={ArrowDownIcon} alt='ArrowUpIcon' />
             ) : (
-              <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+              <img src={ArrowUpIcon} alt='ArrowDownIcon' />
             )}
           </div>
         ),
@@ -405,15 +455,15 @@ const DraftMeetingList = () => {
         sortOrder: meetingTimeSort,
         render: (text, record) => {
           let meetingStartTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
           let meetingEndTime = forRecentActivity(
-            record.dateOfMeeting + record.meetingEndTime,
+            record.dateOfMeeting + record.meetingEndTime
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
             <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime,
+              meetingEndTime
             ).format("hh:mm a")}`}</>
           );
         },
@@ -422,12 +472,12 @@ const DraftMeetingList = () => {
       // Date
       {
         title: (
-          <div className="d-flex align-items-center justify-content-center gap-2">
+          <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Date")}</span>
             {meetingDateSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+              <img src={ArrowDownIcon} alt='ArrowUpIcon' />
             ) : (
-              <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+              <img src={ArrowUpIcon} alt='ArrowDownIcon' />
             )}
           </div>
         ),
@@ -439,19 +489,19 @@ const DraftMeetingList = () => {
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8),
+            a.dateOfMeeting.substring(6, 8)
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8),
+            b.dateOfMeeting.substring(6, 8)
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
@@ -460,7 +510,7 @@ const DraftMeetingList = () => {
       // Meeting Type
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             {t("Meeting-type")}
           </span>
         ),
@@ -486,7 +536,7 @@ const DraftMeetingList = () => {
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType,
+            (f) => Number(f.value) === meetingType
           );
           if (record.isQuickMeeting && meetingType === 1) {
             return t("Quick-meeting");
@@ -502,18 +552,17 @@ const DraftMeetingList = () => {
         width: 140,
         key: "meetingAction",
         render: (text, record) => (
-          <div className="d-flex justify-content-center align-items-center gap-2">
+          <div className='d-flex justify-content-center align-items-center gap-2'>
             <div>
               <Popover
                 content={moreButtons(record)}
-                trigger="click"
-                overlayClassName="MoreButtons_overlay"
+                trigger='click'
+                overlayClassName='MoreButtons_overlay'
                 showArrow={false}
-                placement="bottomRight"
-              >
+                placement='bottomRight'>
                 <CustomButton
                   className={styles.MoreMeetingButton}
-                  text="More"
+                  text='More'
                   icon2={<img src={ChevronDownIcon} width={10} />}
                 />
               </Popover>
@@ -535,15 +584,45 @@ const DraftMeetingList = () => {
       <Col sm={12} md={12} lg={12}>
         <Table
           onChange={handleChangeMeetingTable}
-          className="MeetingTable"
+          className='MeetingTable'
           column={columns}
           size={"small"}
-          rows={rows}
+          rows={draftMeetingData}
           sticky={true}
           pagination={false}
           scroll={{
             y: 450,
           }}
+          footer={() => (
+            <>
+              {draftMeetingData.length > 0 ? (
+                <>
+                  <Row className={styles["PaginationStyle-Committee"]}>
+                    <Col
+                      className={"pagination-groups-table"}
+                      sm={12}
+                      md={12}
+                      lg={12}>
+                      <CustomPagination
+                        current={
+                          meetingPageCurrent !== null
+                            ? Number(meetingPageCurrent)
+                            : 1
+                        }
+                        pageSize={
+                          meetingpageRow !== null ? Number(meetingpageRow) : 50
+                        }
+                        onChange={handelChangePagination}
+                        total={draftMeetingDataRecord}
+                        showSizer={true}
+                        pageSizeOptionsValues={["30", "50", "100", "200"]}
+                      />
+                    </Col>
+                  </Row>
+                </>
+              ) : null}
+            </>
+          )}
         />
       </Col>
     </Row>

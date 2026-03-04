@@ -57,6 +57,9 @@ const AgendaContributers = ({
   setCalendarViewModal,
   setDataroomMapFolderId,
 }) => {
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -103,7 +106,7 @@ const AgendaContributers = ({
     dispatch(showCancelModalAgendaContributor(false));
 
     let getAllData = {
-      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
+      MeetingID: Number(meetingID),
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
   }, []);
@@ -676,7 +679,7 @@ const AgendaContributers = ({
     let removenewData = rowsData.filter((data, index) => data.isEdit === true);
     setRowsData(removenewData);
     let getAllData = {
-      MeetingID: currentMeeting !== null ? Number(currentMeeting) : 0,
+      MeetingID: Number(meetingID),
     };
     dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
     setIsEditClicked(false);
@@ -692,7 +695,7 @@ const AgendaContributers = ({
     });
 
     let Data = {
-      MeetingID: currentMeeting,
+      MeetingID: meetingID,
       MeetingAttendeRoleID: 4,
       UpdatedUsers: newData,
     };
@@ -701,10 +704,17 @@ const AgendaContributers = ({
         navigate,
         Data,
         t,
-        rowsData,
-        currentMeeting,
-        isEditFlag,
-        notifyMessageField
+        "saveAndUpdateAgendaContributor",
+        {
+          currentMeeting: meetingID,
+          rowsData,
+          isEditFlag,
+          notifyMessageField,
+        }
+        // rowsData,
+        // currentMeeting
+        // isEditFlag,
+        // notifyMessageField,
       )
     );
     setNotifyMessageField("");
@@ -954,7 +964,6 @@ const AgendaContributers = ({
           rowsData={rowsData}
           setRowsData={setRowsData}
           setNotificedMembersData={setNotificedMembersData}
-          currentMeeting={currentMeeting}
         />
       )}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}

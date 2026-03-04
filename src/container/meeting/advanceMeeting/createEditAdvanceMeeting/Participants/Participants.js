@@ -50,25 +50,33 @@ import { UpdateOrganizersMeeting } from "../../../../../store/actions/MeetingOrg
 import { Tooltip } from "antd";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { MeetingContext } from "../../../../../context/MeetingContext";
+import { useNewMeetingContext } from "../../../../../context/NewMeetingContext";
+import { meetingStatusUpdateApi } from "../../../../../store/actions/MeetingActions";
 
 const Participants = ({
   setParticipants,
   setAgenda,
-  proposedMeetingDates,
   setSceduleMeeting,
   currentMeeting,
   setAgendaContributors,
-  isEditMeeting,
   setPublishState,
   setAdvanceMeetingModalID,
   setCalendarViewModal,
   setDataroomMapFolderId,
-  setCurrentMeetingID,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const { meetingID = 0 } = useSelector(
+    (state) => state.NewMeetingreducer.currentMeetingInfo
+  );
+
+  const {
+    isMeetingCreateOrEdit,
+    setIsMeetingCreateOrEdit,
+    setIsCreateEditMeeting,
+  } = useNewMeetingContext();
   const [isEditClicked, setIsEditClicked] = useState(false);
   const [isEditable, setIsEditable] = useState(false);
   const [particpantsRole, setParticpantsRole] = useState([]);
@@ -87,7 +95,7 @@ const Participants = ({
   const callApiOnComponentMount = async () => {
     await dispatch(GetAllParticipantsRoleNew(navigate, t));
     let Data = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(meetingID),
     };
     await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, false));
   };
@@ -97,8 +105,7 @@ const Participants = ({
     callApiOnComponentMount();
     return () => {
       dispatch(ParticipantsData());
-
-    }
+    };
   }, []);
 
   //Opens Add more modal
@@ -109,22 +116,14 @@ const Participants = ({
 
   // handling save and next button
   const handleNextButton = () => {
-    let Data = { MeetingID: currentMeeting, StatusID: 1 };
+    let Data = { MeetingID: meetingID, StatusID: 1 };
     console.log("end meeting chaek");
     dispatch(
-      UpdateOrganizersMeeting(
-        false,
-        navigate,
-        t,
-        5,
-        Data,
-        setEditorRole,
-        setAdvanceMeetingModalID,
-        setDataroomMapFolderId,
-        setSceduleMeeting,
-        setPublishState,
-        setCalendarViewModal
-      )
+      meetingStatusUpdateApi(navigate, t, Data, "publishMeeting", {
+        setEditorRole, // shorthand if variable name matches key
+        setIsMeetingCreateOrEdit, // For update create and update view
+        setIsCreateEditMeeting,
+      })
     );
     // setParticipants(false);
     // setAgenda(true);
@@ -208,9 +207,8 @@ const Participants = ({
       });
     });
   };
-  console.log(isEditMeeting, "isEditMeetingisEditMeeting");
   const handleCancelingRow = (record) => {
-    if (isEditMeeting) {
+    if (isMeetingCreateOrEdit === 2) {
       if (rspvRows.length === 1) {
         showMessage(
           t("Please-at-least-one-partcipant-required"),
@@ -275,8 +273,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
             return <p>{record.Title}</p>;
           } else {
@@ -318,8 +317,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
             return <p>{record?.participantRole?.participantRole}</p>;
           } else {
@@ -365,37 +365,37 @@ const Participants = ({
         render: (text, record) => {
           if (record.attendeeAvailability === 1) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Response-awaited")}>
+              <Tooltip placement='bottomLeft' title={t("Response-awaited")}>
                 <img
                   draggable={false}
                   src={AwaitingResponse}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 2) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Accepted")}>
+              <Tooltip placement='bottomLeft' title={t("Accepted")}>
                 <img
                   draggable={false}
                   src={thumbsup}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
           } else if (record.attendeeAvailability === 3) {
             return (
-              <Tooltip placement="bottomLeft" title={t("Rejected")}>
+              <Tooltip placement='bottomLeft' title={t("Rejected")}>
                 <img
                   draggable={false}
                   src={thumbsdown}
-                  height="30px"
-                  width="30px"
-                  alt=""
+                  height='30px'
+                  width='30px'
+                  alt=''
                 />
               </Tooltip>
             );
@@ -404,9 +404,9 @@ const Participants = ({
               <img
                 draggable={false}
                 src={TentativelyAccepted}
-                height="30px"
-                width="30px"
-                alt=""
+                height='30px'
+                width='30px'
+                alt=''
               />
             );
           }
@@ -422,8 +422,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
           } else {
             return (
@@ -433,19 +434,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -495,8 +495,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
             return <p>{record.Title}</p>;
           } else {
@@ -540,8 +541,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
             return <p>{record?.participantRole?.participantRole}</p>;
           } else {
@@ -589,8 +591,9 @@ const Participants = ({
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
-            (editorRole.role === "Agenda Contributor" && isEditMeeting === true)
+              isMeetingCreateOrEdit === 2) ||
+            (editorRole.role === "Agenda Contributor" &&
+              isMeetingCreateOrEdit === 2)
           ) {
           } else {
             return (
@@ -600,19 +603,18 @@ const Participants = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center"
-                  >
+                    className='d-flex justify-content-center'>
                     {record.isComingApi === true ? (
                       ""
                     ) : (
                       <>
                         <img
                           src={redcrossIcon}
-                          className="cursor-pointer "
-                          height="21px"
-                          width="21px"
+                          className='cursor-pointer '
+                          height='21px'
+                          width='21px'
                           onClick={() => handleCancelingRow(record)}
-                          alt=""
+                          alt=''
                         />
                       </>
                     )}
@@ -738,23 +740,23 @@ const Participants = ({
   return (
     <>
       <>
-        <Row className="mt-3">
+        <Row className='mt-3'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
+            className='d-flex justify-content-end gap-2'>
             {((Number(editorRole.status) === 9 ||
               Number(editorRole.status) === 8 ||
               Number(editorRole.status) === 10) &&
               editorRole.role === "Organizer" &&
-              isEditMeeting === true) ||
+              isMeetingCreateOrEdit === 2) ||
             (editorRole.role === "Agenda Contributor" &&
-              isEditMeeting === true) ? null : isEditable || isEditClicked ? (
+              isMeetingCreateOrEdit === 2) ? null : isEditable ||
+              isEditClicked ? (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                  <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
                     <Button
                       text={t("Cancel")}
                       className={styles["Cancel_Organization"]}
@@ -780,9 +782,9 @@ const Participants = ({
                         <img
                           draggable={false}
                           src={EditIcon}
-                          width="11.75px"
-                          height="11.75px"
-                          alt=""
+                          width='11.75px'
+                          height='11.75px'
+                          alt=''
                         />
                       }
                       onClick={handleEditFunction}
@@ -792,7 +794,7 @@ const Participants = ({
 
                 <Button
                   text={t("Add-more")}
-                  icon={<img draggable={false} src={addmore} alt="" />}
+                  icon={<img draggable={false} src={addmore} alt='' />}
                   className={styles["AddMoreBtn"]}
                   onClick={openAddPartcipantModal}
                 />
@@ -815,15 +817,14 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <img
                             draggable={false}
                             src={emptyContributorState}
                             width={200}
-                            className="cursor-pointer"
-                            alt=""
-                            height="230.96px"
+                            className='cursor-pointer'
+                            alt=''
+                            height='230.96px'
                             onClick={handleParticipantEmptyStateIntiate}
                           />
                         </Col>
@@ -833,8 +834,7 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_heading"]}>
                             {t("No-participant")}
                           </span>
@@ -845,8 +845,7 @@ const Participants = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                          className='d-flex justify-content-center'>
                           <span className={styles["Empty_state_Subheading"]}>
                             {t("There-are-no-Participants")}
                           </span>
@@ -855,18 +854,17 @@ const Participants = ({
                     </>
                   ),
                 }}
-                className="Polling_table"
+                className='Polling_table'
                 rows={rspvRows}
               />
             </Col>
           </Row>
-          <Row className="mt-3">
+          <Row className='mt-3'>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
+              className='d-flex justify-content-end gap-2'>
               {isEditable ? (
                 <>
                   <div className={styles["definedHeight"]}></div>
@@ -877,9 +875,9 @@ const Participants = ({
                     Number(editorRole.status) === 8 ||
                     Number(editorRole.status) === 10) &&
                     editorRole.role === "Organizer" &&
-                    isEditMeeting === true) ||
+                    isMeetingCreateOrEdit === 2) ||
                   (editorRole.role === "Agenda Contributor" &&
-                    isEditMeeting === true) ? (
+                    isMeetingCreateOrEdit === 2) ? (
                     <>
                       <Button
                         text={t("Cancel")}
@@ -936,7 +934,7 @@ const Participants = ({
                       className={styles["Next_Organization"]}
                       onClick={handleNextButton}
                     />
-                  ) : isEditMeeting === true || isEditClicked ? null : (
+                  ) : isMeetingCreateOrEdit === 2 || isEditClicked ? null : (
                     <Button
                       disableBtn={
                         Number(currentMeeting) === 0 ||

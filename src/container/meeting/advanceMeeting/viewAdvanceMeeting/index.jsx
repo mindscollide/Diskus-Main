@@ -29,7 +29,7 @@ import {
   searchNewUserMeeting,
   viewAdvanceMeetingPublishPageFlag,
   viewAdvanceMeetingUnpublishPageFlag,
-} from "../../../../store/actions/NewMeetingActions";
+} from "@/store/actions/NewMeetingActions";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 import AgendaViewer from "./AgendaViewer/AgendaViewer";
@@ -50,9 +50,9 @@ import Attendees from "./attendees/Attendees";
 import { MeetingContext, useMeetingContext } from "@/context/MeetingContext";
 import { userLogOutApiFunc } from "@/store/actions/Auth_Sign_Out";
 import { getCurrentDateTimeUTC } from "@/commen/functions/date_formater";
-import VotingPollAgendaIntiminationModal from "../scedulemeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
-import CastVoteAgendaModal from "../viewMeetings/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
-import PollsCastVoteInitimationModal from "../pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
+import VotingPollAgendaIntiminationModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPollAgendaInitimationModal/VotingPollAgendaIntiminationModal";
+import CastVoteAgendaModal from "@/container/meeting/advanceMeeting/createEditAdvanceMeeting/Agenda/VotingPage/CastVoteAgendaModal/CastVoteAgendaModal";
+import PollsCastVoteInitimationModal from "@/container/meeting/commonComponents/pollsCastVoteInitimationModal/pollsCastVoteInitimationModal";
 import { useGroupsContext } from "@/context/GroupsContext";
 import { webnotificationGlobalFlag } from "@/store/actions/UpdateUserNotificationSetting";
 import { useResolutionContext } from "@/context/ResolutionContext";

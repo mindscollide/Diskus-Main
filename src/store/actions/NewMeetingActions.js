@@ -1926,15 +1926,7 @@ const saveAgendaContributors_fail = (message) => {
   };
 };
 
-const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-
-  let getAllData = {
-    MeetingID:
-      currentMeeting !== null && currentMeeting !== undefined
-        ? Number(currentMeeting)
-        : 0,
-  };
+const saveAgendaContributors = (navigate, t, data, route, actions) => {
   return (dispatch) => {
     dispatch(saveAgendaContributors_init());
     let form = new FormData();
@@ -1945,9 +1937,7 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            saveAgendaContributors(navigate, t, data, currentMeeting, flag)
-          );
+          dispatch(saveAgendaContributors(navigate, t, data, route, actions));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1957,23 +1947,31 @@ const saveAgendaContributors = (navigate, t, data, currentMeeting, flag) => {
                   "Meeting_MeetingServiceManager_SaveAgendaContributors_01".toLowerCase()
                 )
             ) {
-              if (flag === 1) {
-                // Update
-                dispatch(
-                  saveAgendaContributors_success(
-                    t("Agenda-contributor-updated")
-                  )
-                );
-              } else if (flag === 0) {
-                // Added
-                dispatch(
-                  saveAgendaContributors_success(t("Agenda-contributor-added"))
-                );
+              switch (route) {
+                case "saveAndUpdateAgendaContributor":
+                  const { currentMeeting, flag } = actions;
+
+                  let getAllData = {
+                    MeetingID:
+                      currentMeeting !== null && currentMeeting !== undefined
+                        ? Number(currentMeeting)
+                        : 0,
+                  };
+
+                  dispatch(
+                    saveAgendaContributors_success(
+                      flag === 1
+                        ? t("Agenda-contributor-updated")
+                        : t("Agenda-contributor-added")
+                    )
+                  );
+
+                  dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
+                  break;
+
+                default:
+                  break;
               }
-              // await dispatch(
-              //   saveAgendaContributors_success(t("Record-Inserted"))
-              // );
-              dispatch(getAllAgendaContributorApi(navigate, t, getAllData));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2306,7 +2304,6 @@ const GetAllMeetingDetailsApiFunc = (
                   "Meeting_MeetingServiceManager_GetAdvanceMeetingDetailsByMeetingID_01".toLowerCase()
                 )
             ) {
-              
               localStorage.setItem(
                 "meetingTitle",
                 response.data.responseResult.advanceMeetingDetails.meetingTitle
@@ -5853,7 +5850,6 @@ const CreateUpdateMeetingDataRoomMapeedApiFunc = (
                   response?.data?.responseResult?.folderID ?? 0,
                 meetingTitle: Data.MeetingTitle,
               }));
-         
 
               let newarry = [];
               members.forEach((data, index) => {
@@ -6731,10 +6727,8 @@ const UpdateMeetingUserForAgendaContributor = (
   navigate,
   Data,
   t,
-  rowsData,
-  currentMeeting,
-  isEditFlag,
-  notifyMessageField
+  route,
+  actions
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -6752,10 +6746,8 @@ const UpdateMeetingUserForAgendaContributor = (
               navigate,
               Data,
               t,
-              rowsData,
-              currentMeeting,
-              isEditFlag,
-              notifyMessageField
+              route,
+              actions
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -6773,62 +6765,47 @@ const UpdateMeetingUserForAgendaContributor = (
                   ""
                 )
               );
-              if (isEditFlag === 1) {
-                let newData = [];
-                let copyData = [...rowsData];
-                copyData.forEach((data, index) => {
-                  newData.push({
-                    UserID: data.userID,
-                    Title: data.Title,
-                    AgendaListRightsAll: data.agendaListRightsAll,
-                    MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 0,
-                    IsContributorNotified: data.isContributorNotified,
-                  });
-                });
-                let Data = {
-                  AgendaContributors: newData,
-                  MeetingID: Number(currentMeeting),
-                  IsAgendaContributorAddFlow: false,
-                  NotificationMessage: notifyMessageField,
-                };
-                dispatch(
-                  saveAgendaContributors(
-                    navigate,
-                    t,
-                    Data,
+
+              switch (route) {
+                case "saveAndUpdateAgendaContributor":
+                  const {
+                    isEditFlag,
                     currentMeeting,
-                    isEditFlag
-                  )
-                );
-              } else {
-                let newData = [];
-                let copyData = [...rowsData];
-                copyData.forEach((data, index) => {
-                  newData.push({
-                    UserID: data.userID,
-                    Title: data.Title,
-                    AgendaListRightsAll: data.agendaListRightsAll,
-                    MeetingID:
-                      currentMeeting !== null ? Number(currentMeeting) : 0,
-                    IsContributorNotified: data.isContributorNotified,
-                  });
-                });
-                let Data = {
-                  AgendaContributors: newData,
-                  MeetingID: Number(currentMeeting),
-                  IsAgendaContributorAddFlow: true,
-                  NotificationMessage: notifyMessageField,
-                };
-                dispatch(
-                  saveAgendaContributors(
-                    navigate,
-                    t,
-                    Data,
-                    currentMeeting,
-                    isEditFlag
-                  )
-                );
+                    notifyMessageField,
+                    rowsData,
+                  } = actions;
+                  {
+                    let newData = [];
+                    let copyData = [...rowsData];
+                    copyData.forEach((data, index) => {
+                      newData.push({
+                        UserID: data.userID,
+                        Title: data.Title,
+                        AgendaListRightsAll: data.agendaListRightsAll,
+                        MeetingID:
+                          currentMeeting !== null ? Number(currentMeeting) : 0,
+                        IsContributorNotified: data.isContributorNotified,
+                      });
+                    });
+                    let Data = {
+                      AgendaContributors: newData,
+                      MeetingID: Number(currentMeeting),
+                      IsAgendaContributorAddFlow:
+                        isEditFlag === 1 ? false : true,
+                      NotificationMessage: notifyMessageField,
+                    };
+                    dispatch(
+                      saveAgendaContributors(navigate, t, Data, route, {
+                        currentMeeting,
+                        isEditFlag,
+                      })
+                    );
+                  }
+
+                  break;
+
+                default:
+                  break;
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -10661,8 +10638,6 @@ const meetingMinutesDownloaded = (response) => {
     payload: response,
   };
 };
-
-
 
 export {
   meetingMinutesDownloaded,
