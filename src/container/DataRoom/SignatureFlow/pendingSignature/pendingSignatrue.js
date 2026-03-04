@@ -100,7 +100,7 @@ const SignatureViewer = () => {
   const hiddenUsersRef = useRef(hiddenUsers);
   const readOnlyUsersRef = useRef(readOnlyUsers);
   const removeXmlAfterFreetextHideDAtaRef = useRef(
-    removeXmlAfterFreetextHideDAta
+    removeXmlAfterFreetextHideDAta,
   );
   const webViewerInitializedRef = useRef(false);
 
@@ -153,7 +153,7 @@ const SignatureViewer = () => {
     if (ResponseMessage) {
       try {
         showMessage(ResponseMessage, "error", setOpen);
-      } catch (error) { }
+      } catch (error) {}
     }
   }, [ResponseMessage]);
 
@@ -206,7 +206,7 @@ const SignatureViewer = () => {
                 actorEmail: fieldsData.actorEmail,
                 actorColor: fieldsData.actorColor,
               });
-            }
+            },
           );
 
           setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers);
@@ -216,18 +216,18 @@ const SignatureViewer = () => {
             return data.map((item) => {
               const xmlField = item.xmlField
                 ? item.xmlField.split("_#_").map((str) => {
-                  try {
-                    return JSON.parse(str);
-                  } catch (error) {
-                    console.error(
-                      "Error parsing JSON:",
-                      error,
-                      "Input:",
-                      str
-                    );
-                    return null;
-                  }
-                })
+                    try {
+                      return JSON.parse(str);
+                    } catch (error) {
+                      console.error(
+                        "Error parsing JSON:",
+                        error,
+                        "Input:",
+                        str,
+                      );
+                      return null;
+                    }
+                  })
                 : [];
               return {
                 actorID: item.actorID,
@@ -241,7 +241,7 @@ const SignatureViewer = () => {
           if (
             containsNull(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             )
           ) {
             let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -262,7 +262,7 @@ const SignatureViewer = () => {
           } else {
             revertedData = revert(
               getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                .listOfFields
+                .listOfFields,
             );
             setUserAnnotations(revertedData);
             setUserAnnotationsCopy(revertedData);
@@ -308,7 +308,7 @@ const SignatureViewer = () => {
             if (
               containsNull(
                 getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails
-                  .listOfFields
+                  .listOfFields,
               )
             ) {
               let bundleModels = getWorkfFlowByFileId.workFlow.bundleModels;
@@ -392,24 +392,24 @@ const SignatureViewer = () => {
 
         let newProcessXmlForReadOnly = processXmlForReadOnly(
           getSignatureFileAnnotationResponse.annotationString,
-          ReadArray
+          ReadArray,
         );
 
         // Process the XML to hide fields
         const { updatedXmlString, removedItems } = processXmlToHideFields(
           newProcessXmlForReadOnly,
-          HideArray
+          HideArray,
         );
         setRemoveXmlAfterHideDAta(removedItems);
         const readonlyFreetextXmlString = readOnlyFreetextElements(
           updatedXmlString,
-          readOnlyUsersRef.current
+          readOnlyUsersRef.current,
         );
 
         const { hideFreetextXmlString, removedHideFreetextElements } =
           hideFreetextElements(
             readonlyFreetextXmlString,
-            hiddenUsersRef.current
+            hiddenUsersRef.current,
           );
 
         setRemoveXmlAfterFreetextHideDAta(removedHideFreetextElements);
@@ -436,10 +436,9 @@ const SignatureViewer = () => {
               path: "/webviewer/lib",
               showLocalFilePicker: true,
               fullAPI: true,
-              licenseKey:
-                process.env.REACT_APP_APRYSEKEY,
+              licenseKey: process.env.REACT_APP_APRYSEKEY,
             },
-            viewer.current
+            viewer.current,
           );
 
           setInstance(instance);
@@ -449,19 +448,18 @@ const SignatureViewer = () => {
             handleBlobFiles(pdfResponceData.attachmentBlob),
             {
               filename: pdfResponceData.title,
-            }
+            },
           );
 
           const { documentViewer, annotationManager, Tools } = instance.Core;
           const { FitMode, setFitMode } = instance.UI;
           documentViewer.addEventListener("documentLoaded", async () => {
             await documentViewer.getAnnotationsLoadedPromise();
-
             if (pdfResponceData.xfdfData !== "" && annotationManager) {
               try {
                 const cleanedXFDF = sanitizeXFDF(
                   pdfResponceDataRef.current,
-                  documentViewer
+                  documentViewer,
                 );
                 await annotationManager.importAnnotations(cleanedXFDF);
                 // ✅ Always fit to width on load
@@ -488,7 +486,13 @@ const SignatureViewer = () => {
           // Disable header tools and elements
           instance.UI.disableTools([Tools.disableTextSelection]);
           instance.UI.disableElements([
+            "groupedLeftHeaderButtons",
             "toolbarGroup-FillAndSign",
+            "signatureListPanel",
+            "insertGroupedItems",
+            "view-controls-toggle-button",
+            "searchPanelToggle",
+            "notesPanelToggle",
             "colorPalette",
             "underlineToolGroupButton",
             "textSelectButton",
@@ -580,50 +584,46 @@ const SignatureViewer = () => {
 
               let newProcessXmlForReadOnly = await revertProcessXmlForReadOnly(
                 xfdfString,
-                ReadArray
+                ReadArray,
               );
 
               const revertedHideFieldsXml = await revertProcessXmlToHideFields(
                 newProcessXmlForReadOnly,
-                removeXmlAfterHideDAtaRef.current
+                removeXmlAfterHideDAtaRef.current,
               );
 
               const afterAddReadOnlyFreetextElements =
                 await revertReadOnlyFreetextElements(
                   revertedHideFieldsXml,
-                  readOnlyUsersRef.current
+                  readOnlyUsersRef.current,
                 );
 
               const doc = new DOMParser().parseFromString(
                 afterAddReadOnlyFreetextElements,
-                "text/xml"
+                "text/xml",
               );
               const annots = doc.getElementsByTagName("annots");
 
               if (annots?.length === 0 || !annots[0].hasChildNodes()) {
-                showMessage(
-                  t("Signature-is-required"),
-                  "warning",
-                  setOpen
-                );
+                showMessage(t("Signature-is-required"), "warning", setOpen);
                 return;
               }
 
               const afterAddRevertHideFreetextElements =
                 await revertHideFreetextElements(
                   afterAddReadOnlyFreetextElements,
-                  removeXmlAfterFreetextHideDAtaRef.current
+                  removeXmlAfterFreetextHideDAtaRef.current,
                 );
 
               const parser = new DOMParser();
               const mainXmlDoc = parser.parseFromString(
                 afterAddRevertHideFreetextElements,
-                "text/xml"
+                "text/xml",
               );
 
               function existsInMainXML(name, type, mainXmlDoc) {
                 const elements = mainXmlDoc.querySelectorAll(
-                  `${type}[name="${name}"]`
+                  `${type}[name="${name}"]`,
                 );
                 return elements.length > 0;
               }
@@ -632,11 +632,11 @@ const SignatureViewer = () => {
                 let filteredXml = user.xml.filter((item) => {
                   const ffieldDoc = parser.parseFromString(
                     item.ffield,
-                    "text/xml"
+                    "text/xml",
                   );
                   const widgetDoc = parser.parseFromString(
                     item.widget,
-                    "text/xml"
+                    "text/xml",
                   );
                   const ffieldName =
                     ffieldDoc.documentElement.getAttribute("name");
@@ -655,7 +655,7 @@ const SignatureViewer = () => {
               let convertData = [];
               covert.forEach((data) => {
                 const xmlListStrings = data.xml.map((xmlObj) =>
-                  JSON.stringify(xmlObj)
+                  JSON.stringify(xmlObj),
                 );
                 convertData.push({
                   ActorID: data.actorID,
@@ -676,7 +676,7 @@ const SignatureViewer = () => {
                   : 0;
 
               let findActionBundleID = FieldsData.find(
-                (actorData) => Number(actorData.userID) === userID
+                (actorData) => Number(actorData.userID) === userID,
               );
 
               // Update Actor Bundle Status APi Call
@@ -699,72 +699,81 @@ const SignatureViewer = () => {
                   "",
                   3,
                   "",
-                  UpdateActorBundle
-                )
+                  UpdateActorBundle,
+                ),
               );
             } catch (error) {
               console.error("Error saving annotations:", error);
             }
           };
+   
 
+          // Then this button should be added to a container's item using the setItems API.
+          // This container can be a modular header or a grouped items container.
+          const header = instance.UI.getModularHeader("default-top-header");
+
+          // Capture existing items ONCE
+          const existingItems = header.getItems();
           let ifUserExist = signerDataRef.current.find(
             (user) =>
-              Number(user.userID) === Number(localStorage.getItem("userID"))
+              Number(user.userID) === Number(localStorage.getItem("userID")),
           );
 
           if (ifUserExist !== undefined) {
-            instance.UI.setHeaderItems((header) => {
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const textBoxButton = document.createElement("button");
-                  textBoxButton.textContent = "Decline";
-                  textBoxButton.style.background = "#fff";
-                  textBoxButton.style.border = "1px solid #e1e1e1";
-                  textBoxButton.style.color = "#5a5a5a";
-                  textBoxButton.style.padding = "8px 30px";
-                  textBoxButton.style.cursor = "pointer";
-                  textBoxButton.style.borderRadius = "4px";
-                  textBoxButton.onclick = handleClickDeclineBtn;
-                  return textBoxButton;
-                },
-              });
+            const declineButton = new instance.UI.Components.CustomButton({
+              dataElement: "declineButton",
+              label: "Decline",
+              title: "Decline",
+              onClick: handleClickDeclineBtn,
+              style: {
+                backgroundColor: "#ffffff",
+                border: "1px solid #e1e1e1",
+                color: "#5a5a5a",
+                padding: "8px 30px",
+                borderRadius: "4px",
+              },
+            });
 
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const SaveButton = document.createElement("button");
-                  SaveButton.textContent = "Submit";
-                  SaveButton.style.background = "#6172d6";
-                  SaveButton.style.color = "#fff";
-                  SaveButton.style.borderRadius = "4px";
-                  SaveButton.style.cursor = "pointer";
-                  SaveButton.style.padding = "8px 30px";
-                  SaveButton.style.margin = "10px 0 10px 10px";
-                  SaveButton.style.border = "1px solid #6172d6";
-                  SaveButton.onclick = handleClickSaveBtn;
-                  return SaveButton;
-                },
-              });
+            const submitButton = new instance.UI.Components.CustomButton({
+              dataElement: "submitButton",
+              label: "Submit",
+              title: "Submit",
+              onClick: handleClickSaveBtn,
+              style: {
+                backgroundColor: "#6172d6",
+                border: "1px solid #6172d6",
+                color: "#fff",
+                padding: "8px 30px",
+                borderRadius: "4px",
+                marginLeft: "10px",
+              },
             });
+            const updatedItems = [
+              ...existingItems,
+              declineButton,
+              submitButton,
+            ];
+            header.setItems(updatedItems);
           } else {
-            instance.UI.setHeaderItems((header) => {
-              header.push({
-                type: "customElement",
-                render: () => {
-                  const textBoxButton = document.createElement("button");
-                  textBoxButton.textContent = "Close";
-                  textBoxButton.style.background = "#fff";
-                  textBoxButton.style.border = "1px solid #e1e1e1";
-                  textBoxButton.style.color = "#5a5a5a";
-                  textBoxButton.style.padding = "8px 30px";
-                  textBoxButton.style.cursor = "pointer";
-                  textBoxButton.style.borderRadius = "4px";
-                  textBoxButton.onclick = handleClickCloseBtn;
-                  return textBoxButton;
-                },
-              });
+    
+            const closeButton = new instance.UI.Components.CustomButton({
+              dataElement: "closeButton",
+              label: "Close",
+              title: "Close",
+              onClick: handleClickCloseBtn,
+              style: {
+                backgroundColor: "#ffffff",
+                border: "1px solid #e1e1e1",
+                color: "#5a5a5a",
+                padding: "8px 30px",
+                borderRadius: "4px",
+              },
             });
+            const updatedItems = [
+              ...existingItems,
+              closeButton,
+            ];
+            header.setItems(updatedItems);
           }
         } catch (error) {
           console.error("Error initializing WebViewer:", error);
@@ -791,7 +800,7 @@ const SignatureViewer = () => {
             if (xml.widget.includes(widgetName)) {
               // Replace the ffield and widget with new values from the main XML
               const ffieldElement = xmlDoc.querySelector(
-                `ffield[name="${ffieldName}"]`
+                `ffield[name="${ffieldName}"]`,
               );
               const widgetElement = widget;
               if (ffieldElement && widgetElement) {
@@ -834,8 +843,8 @@ const SignatureViewer = () => {
       let usersNotInParticipants = lastParticipants.filter(
         (lastParticipant) =>
           !participants.some(
-            (participant) => participant.pk_UID === lastParticipant.pk_UID
-          )
+            (participant) => participant.pk_UID === lastParticipant.pk_UID,
+          ),
       );
       if (usersNotInParticipants.length > 0) {
         setLastParticipants(participants);
@@ -865,12 +874,12 @@ const SignatureViewer = () => {
               action,
               xfdfString,
               selectedUserRef.current,
-              userAnnotationsRef.current
+              userAnnotationsRef.current,
             );
           } catch (error) {
             console.error("Error updating annotations:", error);
           }
-        }
+        },
       );
     }
   }, [Instance]);
@@ -880,7 +889,7 @@ const SignatureViewer = () => {
       let userID = localStorage.getItem("userID");
 
       let findActorID = userAnnotationsRef.current.find(
-        (data) => Number(data.userID) === Number(userID)
+        (data) => Number(data.userID) === Number(userID),
       );
       if (findActorID !== undefined) {
         let Data = {
@@ -894,8 +903,8 @@ const SignatureViewer = () => {
             t,
             Data,
             setReasonModal,
-            setDeclineConfirmationModal
-          )
+            setDeclineConfirmationModal,
+          ),
         );
       }
     } else {
@@ -905,8 +914,8 @@ const SignatureViewer = () => {
 
   return (
     <>
-      <div className='documnetviewer'>
-        <div className='webviewer' ref={viewer}></div>
+      <div className="documnetviewer">
+        <div className="webviewer" ref={viewer}></div>
       </div>
 
       {reasonModal && (
