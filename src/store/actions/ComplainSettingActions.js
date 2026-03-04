@@ -5078,6 +5078,55 @@ const taskMappedChecklistMQTT = (mqttData) => {
   };
 };
 
+//For UpcomingDeadlineManagerDashboard Mqtt for manager
+const UpcomingDeadlineManagerDashboardMqtt = (data) => {
+  return {
+    type: actions.UPCOMING_DEADLINE_DASHBOARD_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+//For UpcomingDeadlineManagerDashboard Mqtt for User
+const UpcomingDeadlineUserDashboardMqtt = (data) => {
+  return {
+    type: actions.UPCOMING_COMPLIANCE_DEADLINE_USER_MQTT,
+    payload: data,
+  };
+};
+
+//For Quarterly Task Dashboard User Mqtt for User
+const QuarterlyTaskDashboardUserMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_TASK_DASHBOARD_FOR_USER_MQTT,
+    payload: data,
+  };
+};
+
+//For Quarterly Task Dashboard User Mqtt for User
+const QuarterlyTaskDashboardManagerMqtt = (data) => {
+  return {
+    type: actions.QUARTERLY_TASK_DASHBOARD_FOR_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
+//ForT ask Dashboard Mqtt for User
+const TasksDashboardForUserMqtt = (data) => {
+  console.log(data, "check Data Occur");
+  return {
+    type: actions.TASK_DASHBOARD_FOR_USER_MQTT,
+    payload: data,
+  };
+};
+
+const TasksDashboardFormManagerMqtt = (data) => {
+  console.log(data, "check Data Occur");
+  return {
+    type: actions.TASK_DASHBOARD_FOR_MANAGER_MQTT,
+    payload: data,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -5139,4 +5188,10 @@ export {
   complianceUpdateMQTT,
   complianceReopenMQTT,
   taskMappedChecklistMQTT,
+  UpcomingDeadlineManagerDashboardMqtt,
+  UpcomingDeadlineUserDashboardMqtt,
+  QuarterlyTaskDashboardUserMqtt,
+  QuarterlyTaskDashboardManagerMqtt,
+  TasksDashboardForUserMqtt,
+  TasksDashboardFormManagerMqtt,
 };

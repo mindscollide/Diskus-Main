@@ -14,7 +14,11 @@ import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import { Button, Notification } from "../../../../../../components/elements";
-import { _justShowDateformatBilling, forRecentActivity, multiDatePickerDateChangIntoUTC } from "../../../../../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  forRecentActivity,
+  multiDatePickerDateChangIntoUTC,
+} from "../../../../../../commen/functions/date_formater";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -31,7 +35,10 @@ import deleteIcon from "../../../../../../assets/images/Icon material-delete.png
 import editIcon from "../../../../../../assets/images/Icon material-edit.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import CustomAccordion from "../../../../../../components/elements/accordian/CustomAccordion";
-import { formatDateToYMD, parseUTCDateString } from "../../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  parseUTCDateString,
+} from "../../../../CommonComponents/commonFunctions";
 import { Check2 } from "react-bootstrap-icons";
 import { showMessage } from "../../../../../../components/elements/snack_bar/utill";
 import ComplianceCloseConfirmationModal from "../../../../CommonComponents/ComplianceCloseConfirmationModal";
@@ -236,16 +243,16 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length,
       );
-      let updateTIme = GetComplianceChecklistsByComplianceId.checklistList.map((data , index) => {
-        return {
-          ...data,
-          checklistDueDate: forRecentActivity(data.dueDate + data.dueTime)
-        }
-      })
+      let updateTIme = GetComplianceChecklistsByComplianceId.checklistList.map(
+        (data, index) => {
+          return {
+            ...data,
+            checklistDueDate: forRecentActivity(data.dueDate + data.dueTime),
+          };
+        },
+      );
 
-      console.log(updateTIme, 
-        "updateTIme"
-      )
+      console.log(updateTIme, "updateTIme");
       setGetCheckListData(updateTIme);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
       setExpandedCheckListIds([]);
@@ -392,6 +399,11 @@ const CreateEditViewComplianceChecklist = () => {
     setCloseConfirmationModal(true);
   };
 
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1); // strictly greater than today
+  tomorrow.setHours(0, 0, 0, 0); // start of day
+
   const isLockedStatus =
     complianceDetailsState?.status?.value === 7 ||
     complianceDetailsState?.status?.value === 9 ||
@@ -462,12 +474,7 @@ const CreateEditViewComplianceChecklist = () => {
                 disabled={isLockedStatus && !isEditTrue}
                 value={checkListData.checklistDueDate}
                 format={"DD/MM/YYYY"}
-                minDate={moment().toDate()}
                 placeholder={t("Due-date")}
-                maxDate={moment(complianceDetailsState.dueDate)
-                  .subtract(1, "day")
-                  .endOf("day")
-                  .toDate()}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
@@ -481,13 +488,12 @@ const CreateEditViewComplianceChecklist = () => {
                 editable={false}
                 className="datePickerTodoCreate2"
                 containerClassName={"Complaince_createEditDueDate"}
-                onOpenPickNewDate={true}
-                inputMode=""
-                calendarPosition="bottom-center"
-                calendar={gregorian}
-                locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
+                calendar={gregorian}
+                locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
+                calendarPosition="bottom-center"
+                minDate={tomorrow}
               />
             </div>
           </Row>
@@ -615,7 +621,9 @@ const CreateEditViewComplianceChecklist = () => {
                             {t("Due-date")}
                           </p>
                           <p className={styles["ViewChecklistDetailStyles"]}>
-                            {moment(forRecentActivity(data.dueDate + data.dueTime)).format("DD MMM YYYY")}
+                            {moment(
+                              forRecentActivity(data.dueDate + data.dueTime),
+                            ).format("DD MMM YYYY")}
                           </p>
                         </div>
                       ) : (

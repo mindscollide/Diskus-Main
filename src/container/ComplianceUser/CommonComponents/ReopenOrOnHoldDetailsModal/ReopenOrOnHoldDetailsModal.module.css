@@ -35,6 +35,11 @@
   font-size: 20px;
   line-height: 100%;
   letter-spacing: 0%;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: 0%;
   font-family: "Montserrat";
   color: #5a5a5a;
 }

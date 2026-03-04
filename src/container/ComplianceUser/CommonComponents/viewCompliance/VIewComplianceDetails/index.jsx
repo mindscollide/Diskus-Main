@@ -212,6 +212,8 @@ const ViewComplianceDetails = () => {
     const tagsArr = complianceDetailsViewState.tags.map(
       (data) => data.tagTitle,
     );
+    const selectedStatusId =
+      tempSelectComplianceStatus?.value || complianceDetailsState.status.value;
     const Data = {
       complianceId: complianceInfo.complianceId,
       complianceTitle: complianceDetailsViewState.complianceTitle,
@@ -222,9 +224,8 @@ const ViewComplianceDetails = () => {
       newStatusId: selectedOption.value,
       tags: tagsArr,
       ReasonToMakeComplianceOnHold:
-        complianceDetailsViewState.status.value === 7 ||
-        complianceDetailsViewState.status.value === 9
-          ? complianceOnHoldReasonState
+        selectedStatusId === 7 || selectedStatusId === 9
+          ? complianceOnHoldReasonState?.trim()
           : "", // On Hold Compliance
       OnHoldAlongWithComplianceCheckListAndTask:
         complianceDetailsViewState.status.value === 7
@@ -348,7 +349,7 @@ const ViewComplianceDetails = () => {
       }
     }
     // Status chnage to In Progress
-  if (event.value === 2) {
+    if (event.value === 2) {
       console.log("herehrer");
       updateCompliance(event);
       resetModalStates();

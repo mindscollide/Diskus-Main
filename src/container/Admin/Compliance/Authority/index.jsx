@@ -466,7 +466,7 @@ const ManageAuthority = () => {
 
         dataIndex: "shortCode",
         key: "shortCode",
-        width: "15%",
+        width: "10%",
         align: "left",
         ellipsis: true,
         sorter: (a, b) =>
@@ -567,7 +567,7 @@ const ManageAuthority = () => {
 
         dataIndex: "sector",
         key: "sector",
-        width: "18%",
+        width: "22%",
         align: "left",
         ellipsis: true,
       },
@@ -585,7 +585,7 @@ const ManageAuthority = () => {
         title: t(""),
         dataIndex: "Delete",
         key: "Delete",
-        width: "18%",
+        width: "15%",
 
         // Action buttons column
         render: (text, record) => {

@@ -43,6 +43,12 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
   );
 
+  const GetUpcomingDealineComplianceDashboard = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetUpcomingDealineComplianceDashboard,
+  );
+
   console.log(
     complianceCreatedMqttData,
     "complianceCreatedMqttDatacomplianceCreatedMqttData",
@@ -103,6 +109,7 @@ export const ComlianceProvider = ({ children }) => {
     showProgressBar: false,
     complianceStatusChangeHistory: [],
   });
+
   const [complianceDetailsViewState, setComplianceDetailsViewState] = useState({
     complianceTitle: "",
     complianceId: 0,
@@ -215,6 +222,9 @@ export const ComlianceProvider = ({ children }) => {
       dueDate: "",
       attachments: [],
     });
+
+  const [upcomingDeadlineDashboard, setUpcomingDeadlineDashboard] =
+    useState(null);
 
   // Delete Checklist Confirmation Modal
   const [
@@ -1009,7 +1019,7 @@ export const ComlianceProvider = ({ children }) => {
         setReopenDashboardList,
         viewComplianceTasksContextData,
         setViewComplianceTasksContextData,
-        criticalityOptions
+        criticalityOptions,
       }}
     >
       {children}

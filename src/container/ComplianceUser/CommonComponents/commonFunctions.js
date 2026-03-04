@@ -55,6 +55,22 @@ export const parseYYYYMMDDToEndOfDay = (dateString) => {
   return new Date(year, month, day, 23, 59, 58);
 };
 
+// 20260316235958 -> Date object
+export const parseYYYYMMDDHHmmssToDate = (dateString) => {
+  if (!dateString) return new Date();
+  // Ensure it's a string
+  dateString = dateString.toString();
+
+  const year = parseInt(dateString.slice(0, 4));
+  const month = parseInt(dateString.slice(4, 6)) - 1; // Month is 0-based
+  const day = parseInt(dateString.slice(6, 8));
+  const hour = parseInt(dateString.slice(8, 10));
+  const minute = parseInt(dateString.slice(10, 12));
+  const second = parseInt(dateString.slice(12, 14));
+
+  return new Date(year, month, day, hour, minute, second);
+};
+
 export const getDueDateTimeNumber = (dueDate, dueTime) => {
   if (!dueDate) return 0;
 
@@ -118,4 +134,35 @@ export const getAllowedStatuses = (currentStatusId) => {
       : null,
     allowedStatuses: allowed,
   };
+};
+
+export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
+  if (!dateStr || !timeStr) return "-";
+
+  // Parse date & time
+  const year = +dateStr.slice(0, 4);
+  const month = +dateStr.slice(4, 6) - 1; // JS months 0-indexed
+  const day = +dateStr.slice(6, 8);
+
+  const hours = +timeStr.slice(0, 2);
+  const minutes = +timeStr.slice(2, 4);
+  const seconds = +timeStr.slice(4, 6);
+
+  const date = new Date(year, month, day, hours, minutes, seconds);
+
+  // Format time as hh:mm AM/PM
+  const time = date.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  // Format date as DD Month YYYY
+  const dayMonthYear = date.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+  return `${time} ${dayMonthYear}`; // Just a space, no "at"
 };

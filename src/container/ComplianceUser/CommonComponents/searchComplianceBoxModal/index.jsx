@@ -180,6 +180,9 @@ const SearchComplianceBoxModal = () => {
       };
       dispatch(SearchComplianceForMeApi(navigate, Data, t));
     }
+
+    setsearchbox(false);
+    setEnterpressed(false);
   };
   const handleResetComplianceButton = () => {
     // setHasReachedBottom(false);

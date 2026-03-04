@@ -53,3 +53,13 @@
 .titleText {
   cursor: pointer;
 }
+
+.viewCompliance_ExapnAllBtn {
+  border-radius: 4px;
+  border: 1px solid #e1e1e1;
+  background-color: white;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 5px 20px;
+  color: #5a5a5a;
+}

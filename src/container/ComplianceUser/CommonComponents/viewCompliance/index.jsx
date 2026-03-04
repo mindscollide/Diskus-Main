@@ -17,7 +17,7 @@ import { clearAuthorityMessage } from "../../../../store/actions/ComplainSetting
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState({
     open: false,
@@ -25,11 +25,11 @@ const ViewCompliance = () => {
     severity: "error",
   });
   const complainceRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
 
   const complainceSeverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
   // const [isViewDetailsBtnActive, setIsViewDetailsBtnActive] = useState(true);
 
@@ -55,7 +55,7 @@ const ViewCompliance = () => {
 
   //   Get Comliance Details
   const viewComplianceByMeDetails = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
 
   console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
@@ -93,7 +93,7 @@ const ViewCompliance = () => {
         // });
         console.log(
           viewComplianceByMeDetails,
-          "complianceDetailscomplianceDetails"
+          "complianceDetailscomplianceDetails",
         );
         setComplianceDetailsState({
           complianceTitle: complianceTitle,
@@ -135,7 +135,7 @@ const ViewCompliance = () => {
                 value: data.statusId,
                 label: data.statusName,
               };
-            }
+            },
           );
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
@@ -164,7 +164,7 @@ const ViewCompliance = () => {
 
     return history.some(
       (item) =>
-        item?.fromStatus?.statusId === 6 || item?.fromStatus?.statusId === 7
+        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
     );
   }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
 
@@ -176,7 +176,11 @@ const ViewCompliance = () => {
       complainceSeverityMessage !== null
     ) {
       try {
-        showMessage(complainceRespnseMessage, complainceSeverityMessage, setOpen);
+        showMessage(
+          complainceRespnseMessage,
+          complainceSeverityMessage,
+          setOpen,
+        );
         setTimeout(() => {
           dispatch(clearAuthorityMessage());
         }, 4000);
@@ -257,7 +261,7 @@ const ViewCompliance = () => {
                     <div className={styles["viewComplianceDetailsArea"]}>
                       <span>
                         {t(
-                          "The-status-of-this-compliance-was-changed-multiple-times."
+                          "The-status-of-this-compliance-was-changed-multiple-times.",
                         )}
                       </span>
                       <Button

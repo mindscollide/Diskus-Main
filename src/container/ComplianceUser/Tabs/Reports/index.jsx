@@ -17,6 +17,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox } from "antd";
 import {
   formatDateToYMD,
+  formatGeneratedOnDateTime,
   getDueDateTimeNumber,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
@@ -28,7 +29,11 @@ import {
   GetQuarterReportAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
-import { formatDateToYYYYMMDD } from "../../../../commen/functions/date_formater";
+import {
+  formatDateToYYYYMMDD,
+  newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
+} from "../../../../commen/functions/date_formater";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -290,13 +295,13 @@ const Reports = () => {
             ) : reportTitleSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
         dataIndex: "reportTitle",
         key: "reportTitle",
-        width: "35%",
+        width: "20%",
         ellipsis: true,
         sorter: (a, b) =>
           reportTitleSort === "descend"
@@ -320,31 +325,52 @@ const Reports = () => {
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Generated-on")}
             {generatedOnSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             ) : generatedOnSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt="" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             )}
           </span>
         ),
         dataIndex: "generatedOn",
         key: "generatedOn",
-        width: "13%",
+        width: "20%",
         ellipsis: true,
         align: "left",
-        render: (_, record) => {
-          return <span>{`${formatDateToYMD(record.generatedOn)}`}</span>;
-        },
+        sortDirections: ["descend", "ascend"],
+        onHeaderCell: () => ({
+          onClick: () => {
+            setGeneratedOnSort((order) => {
+              if (order === "descend") return "ascend";
+              if (order === "ascend") return null;
+              return "descend";
+            });
+          },
+        }),
         sorter: (a, b) => {
-          const aTime = getDueDateTimeNumber(a.generatedOn, a.generatedOnTime);
-          const bTime = getDueDateTimeNumber(b.generatedOn, b.generatedOnTime);
-
-          if (generatedOnSort === "descend") return bTime - aTime;
-          if (generatedOnSort === "ascend") return aTime - bTime;
-
-          return aTime - bTime;
+          const parseDateTime = (d, t) =>
+            Date.parse(
+              `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}, ${t.slice(0, 2)}:${t.slice(2, 4)}:${t.slice(4, 6)}`,
+            );
+          const diff =
+            parseDateTime(a.generatedOn, a.generatedOnTime) -
+            parseDateTime(b.generatedOn, b.generatedOnTime);
+          return generatedOnSort === "descend"
+            ? -diff
+            : generatedOnSort === "ascend"
+              ? diff
+              : 0;
         },
+        render: (_, record) => (
+          <span>
+            {formatGeneratedOnDateTime(
+              record.generatedOn,
+              record.generatedOnTime,
+            )}
+          </span>
+        ),
+        generatedOnSort,
       },
       {
         title: (
@@ -355,7 +381,7 @@ const Reports = () => {
             ) : startDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -384,7 +410,7 @@ const Reports = () => {
             ) : endDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),

@@ -30,6 +30,7 @@ import Select from "react-select";
 import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 import { Checkbox } from "antd";
+import { updateTodoStatusFunc } from "../../../../../store/actions/GetTodos";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
@@ -366,30 +367,28 @@ const ViewComplianceTasks = () => {
 
   // functions
   const handleStatusChange = (taskId, selectedStatus) => {
-    setViewComplianceTasksContextData((prev) =>
-      prev.map((checklist) => ({
-        ...checklist,
-        taskList: checklist.taskList?.map((task) =>
-          task.taskId === taskId
-            ? {
-                ...task,
-                taskStatusId: selectedStatus.value,
-                taskStatus: selectedStatus.label,
-              }
-            : task,
-        ),
-      })),
+    console.log({ selectedStatus, taskId }, "selectedStatusselectedStatus");
+    setViewComplianceTasksContextData(
+      (prev) =>
+        prev.map((checklist) => ({
+          ...checklist,
+          taskList: checklist.taskList?.map((task) =>
+            task.taskId === taskId
+              ? {
+                  ...task,
+                  taskStatusId: selectedStatus.value,
+                  taskStatus: selectedStatus.label,
+                }
+              : task,
+          ),
+        })),
+      // 🔗 Call API after status change
+      statusChangeHandler(selectedStatus.value, taskId),
     );
+  };
 
-    // 🔗 API payload (when you connect backend)
-    /*
-    dispatch(
-      UpdateComplianceTaskStatusAPI(navigate, {
-        taskId,
-        statusId: selectedStatus.value,
-      }, t)
-    );
-    */
+  const statusChangeHandler = (statusId, taskId) => {
+    dispatch(updateTodoStatusFunc(navigate, statusId, taskId, t, false, 1));
   };
 
   const handleClickTitle = (id) => {
@@ -596,7 +595,7 @@ const ViewComplianceTasks = () => {
         };
 
         // 🚫 No transitions allowed → show plain text
-        if (allowedOptions.length === 0) {
+        if (allowedOptions.length === 0) { 
           return (
             <span
               style={{
@@ -668,197 +667,240 @@ const ViewComplianceTasks = () => {
     },
   ];
 
+  const allExpanded =
+    viewComplianceTasksContextData?.length > 0 &&
+    expandedCheckListIds.length === viewComplianceTasksContextData.length;
+
+  const handleExpandBtn = () => {
+    if (!viewComplianceTasksContextData?.length) return;
+
+    if (allExpanded) {
+      setExpandedCheckListIds([]);
+      setAddChecklistCloseState(false);
+    } else {
+      const allIds = viewComplianceTasksContextData.map(
+        (item) => item.checklistId,
+      );
+
+      setExpandedCheckListIds(allIds);
+      setAddChecklistCloseState(true);
+    }
+  };
+
   // Row
   return (
     <>
       {viewComplianceTasksContextData?.length > 0 ? (
-        <Row className="mt-3">
-          <div
-            ref={accordionContainerRef}
-            className={
-              addChecklistCloseState
-                ? styles["taskAccordian_closed"]
-                : styles["taskAccordian"]
-            }
-          >
-            {
-              viewComplianceTasksContextData?.length > 0
-                ? viewComplianceTasksContextData.map((data, index) => {
-                    const isExpanded = expandedCheckListIds.find(
-                      (data2, index) => data2 === data.checklistId,
-                    );
+        <>
+          <Row className="my-2">
+            <Col sm={12} md={6} lg={6} className="d-flex align-items-end" />
 
-                    // const taskData = data.taskList;
-                    const taskData = (data.taskList || []).map(
-                      (task, index) => ({
-                        ...task,
-                        key: task.taskId || `${data.checklistId}-${index}`,
-                      }),
-                    );
+            <Col
+              sm={12}
+              md={6}
+              lg={6}
+              className="d-flex justify-content-end align-items-center"
+            >
+              {viewComplianceTasksContextData?.length > 0 && (
+                <Button
+                  text={allExpanded ? t("Collapse-all") : t("Expand-all")}
+                  className={styles["viewCompliance_ExapnAllBtn"]}
+                  onClick={handleExpandBtn}
+                />
+              )}
+            </Col>
+          </Row>
 
-                    return (
-                      <div key={data.checklistId}>
-                        <CustomAccordion
-                          isExpand={isExpanded}
-                          notesID={data.checklistId}
-                          isCompliance={false}
-                          isComplianceTask={false}
-                          isComplianceTaskView={true}
-                          StartField={
-                            <Row>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className={styles.checklistTitleLabel}
-                              >
-                                {t("Checklist-title")}
-                              </Col>
+          <Row className="mt-3">
+            <div
+              ref={accordionContainerRef}
+              className={
+                addChecklistCloseState
+                  ? styles["taskAccordian_closed"]
+                  : styles["taskAccordian"]
+              }
+            >
+              {
+                viewComplianceTasksContextData?.length > 0
+                  ? viewComplianceTasksContextData.map((data, index) => {
+                      const isExpanded = expandedCheckListIds.find(
+                        (data2, index) => data2 === data.checklistId,
+                      );
 
+                      // const taskData = data.taskList;
+                      const taskData = (data.taskList || []).map(
+                        (task, index) => ({
+                          ...task,
+                          key: task.taskId || `${data.checklistId}-${index}`,
+                        }),
+                      );
+
+                      return (
+                        <div key={data.checklistId}>
+                          <CustomAccordion
+                            isExpand={isExpanded}
+                            notesID={data.checklistId}
+                            isCompliance={false}
+                            isComplianceTask={false}
+                            isComplianceTaskView={true}
+                            StartField={
                               <Row>
                                 <Col
                                   sm={12}
-                                  md={10}
-                                  lg={10}
-                                  className={`m-0 ${styles.checklistTitleValue}`}
+                                  md={12}
+                                  lg={12}
+                                  className={styles.checklistTitleLabel}
                                 >
-                                  {data.checklistTitle}
+                                  {t("Checklist-title")}
                                 </Col>
-                                <Col
-                                  sm={12}
-                                  md={2}
-                                  lg={2}
-                                  className={`d-flex justify-content-end ${styles.noChecklistMsg_subMsg}`}
-                                >
-                                  {`${t("Due-date")} : ${formatDateToYMD(data.dueDate)}`}
-                                </Col>
-                              </Row>
-                            </Row>
-                          }
-                          attachmentsRow={
-                            taskData.length > 0 ? (
-                              <>
-                                <CustomTable
-                                  column={getColumnsTasks(data.checklistId)}
-                                  rows={taskData}
-                                  pagination={false}
-                                  onChange={(pagination, filters, sorter) =>
-                                    handleChangeAuthorityFilerSorter(
-                                      data.checklistId,
-                                      pagination,
-                                      filters,
-                                      sorter,
-                                    )
-                                  }
-                                />
-                              </>
-                            ) : (
-                              <Row className="d-flex align-items-center justify-content-center">
-                                <Row className="">
+
+                                <Row>
                                   <Col
-                                    lg={12}
-                                    ms={12}
                                     sm={12}
-                                    className="d-flex justify-content-center align-items-center"
+                                    md={10}
+                                    lg={10}
+                                    className={`m-0 ${styles.checklistTitleValue}`}
+                                  >
+                                    {data.checklistTitle}
+                                  </Col>
+                                  <Col
+                                    sm={12}
+                                    md={2}
+                                    lg={2}
+                                    className={`d-flex justify-content-end ${styles.noChecklistMsg_subMsg}`}
+                                  >
+                                    {`${t("Due-date")} : ${formatDateToYMD(data.dueDate)}`}
+                                  </Col>
+                                </Row>
+                              </Row>
+                            }
+                            attachmentsRow={
+                              taskData.length > 0 ? (
+                                <>
+                                  <CustomTable
+                                    column={getColumnsTasks(data.checklistId)}
+                                    rows={taskData}
+                                    pagination={false}
+                                    onChange={(pagination, filters, sorter) =>
+                                      handleChangeAuthorityFilerSorter(
+                                        data.checklistId,
+                                        pagination,
+                                        filters,
+                                        sorter,
+                                      )
+                                    }
+                                  />
+                                </>
+                              ) : (
+                                <Row className="d-flex align-items-center justify-content-center">
+                                  <Row className="">
+                                    <Col
+                                      lg={12}
+                                      ms={12}
+                                      sm={12}
+                                      className="d-flex justify-content-center align-items-center"
+                                    >
+                                      <img
+                                        draggable={false}
+                                        src={NoTaskImg}
+                                        alt=""
+                                      />
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      ms={12}
+                                      sm={12}
+                                      className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+                                    >
+                                      {t("No-tasks-available")}
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+                                    >
+                                      {t(
+                                        "You-dont-have-any-tasks-at-the-moment",
+                                      )}
+                                    </Col>
+                                  </Row>
+                                </Row>
+                              )
+                            }
+                            endField={
+                              <>
+                                <Row>
+                                  <Col
+                                    sm={11}
+                                    md={11}
+                                    lg={11}
+                                    className="d-flex justify-content-end align-items-center"
                                   >
                                     <img
-                                      draggable={false}
-                                      src={NoTaskImg}
+                                      src={Accordion_Arrow}
+                                      onClick={() =>
+                                        handleClickExpandCheckList(data)
+                                      }
                                       alt=""
+                                      className={`cursor-pointer ${
+                                        isExpanded
+                                          ? ""
+                                          : styles["AccordionArrowDown"]
+                                      }`}
                                     />
                                   </Col>
                                 </Row>
-                                <Row>
-                                  <Col
-                                    lg={12}
-                                    ms={12}
-                                    sm={12}
-                                    className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
-                                  >
-                                    {t("No-tasks-available")}
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
-                                  >
-                                    {t("You-dont-have-any-tasks-at-the-moment")}
-                                  </Col>
-                                </Row>
-                              </Row>
-                            )
-                          }
-                          endField={
-                            <>
-                              <Row>
-                                <Col
-                                  sm={11}
-                                  md={11}
-                                  lg={11}
-                                  className="d-flex justify-content-end align-items-center"
-                                >
-                                  <img
-                                    src={Accordion_Arrow}
-                                    onClick={() =>
-                                      handleClickExpandCheckList(data)
-                                    }
-                                    alt=""
-                                    className={`cursor-pointer ${
-                                      isExpanded
-                                        ? ""
-                                        : styles["AccordionArrowDown"]
-                                    }`}
-                                  />
-                                </Col>
-                              </Row>
-                            </>
-                          }
-                        />
-                      </div>
-                    );
-                  })
-                : ""
+                              </>
+                            }
+                          />
+                        </div>
+                      );
+                    })
+                  : ""
 
-              // (
-              //   <>
-              //     <Row className="mt-5 ">
-              //       <Col
-              //         lg={12}
-              //         ms={12}
-              //         sm={12}
-              //         className="d-flex justify-content-center align-items-center"
-              //       >
-              //         <img draggable={false} src={NoTaskImg} alt="" />
-              //       </Col>
-              //     </Row>
-              //     <Row>
-              //       <Col
-              //         lg={12}
-              //         ms={12}
-              //         sm={12}
-              //         className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
-              //       >
-              //         {t("No-tasks-available")}
-              //       </Col>
-              //     </Row>
-              //     <Row>
-              //       <Col
-              //         lg={12}
-              //         md={12}
-              //         sm={12}
-              //         className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
-              //       >
-              //         {t("You-dont-have-any-tasks-at-the-moment")}
-              //       </Col>
-              //     </Row>
-              //   </>
-              // )
-            }
-          </div>
-        </Row>
+                // (
+                //   <>
+                //     <Row className="mt-5 ">
+                //       <Col
+                //         lg={12}
+                //         ms={12}
+                //         sm={12}
+                //         className="d-flex justify-content-center align-items-center"
+                //       >
+                //         <img draggable={false} src={NoTaskImg} alt="" />
+                //       </Col>
+                //     </Row>
+                //     <Row>
+                //       <Col
+                //         lg={12}
+                //         ms={12}
+                //         sm={12}
+                //         className={`${styles["noChecklistMsg"]} d-flex justify-content-center`}
+                //       >
+                //         {t("No-tasks-available")}
+                //       </Col>
+                //     </Row>
+                //     <Row>
+                //       <Col
+                //         lg={12}
+                //         md={12}
+                //         sm={12}
+                //         className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
+                //       >
+                //         {t("You-dont-have-any-tasks-at-the-moment")}
+                //       </Col>
+                //     </Row>
+                //   </>
+                // )
+              }
+            </div>
+          </Row>
+        </>
       ) : (
         <Row className="d-flex align-items-center justify-content-center mt-5">
           <Row className="mt-5 ">

@@ -2475,8 +2475,8 @@
   "Attendance-report": "Attendance report",
   "View-agenda": "View agenda",
   "End-of-Compliance-Reports": "End of Compliance Reports",
-  "Quarterly-reports": "Quarterly reports",
-  "Accumulative-reports": "Accumulative reports",
+  "Quarterly-reports": "Quarterly Reports",
+  "Accumulative-reports": "Accumulative Reports",
   "Report-title": "Report Title",
   "Report-type": "Report Type",
   "Generated-on": "Generated on",
@@ -2524,5 +2524,10 @@
   "due-date-range": "Due Date Range",
   "No-fiscal-year": "No fiscal year coming",
   "Reopened-compliances": "Reopened Compliances",
-  "Action-date": "Action date"
+  "Action-date": "Action date",
+  "Compliance-standing": "Compliance Standing",
+  "Starts-dates": "Start Date",
+  "Upcoming-compliance-deadlines": "Upcoming Compliance Deadlines",
+  "Due-this-quarter": "Due This Quarter",
+  "Due-this-week": "Due This Week"
 }

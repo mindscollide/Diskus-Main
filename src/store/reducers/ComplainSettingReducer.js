@@ -1301,6 +1301,48 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       };
     }
 
+    // For Compliance UPCOMING DEADLINE DASHBOARD MANAGER MQTT
+    case actions.UPCOMING_DEADLINE_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetUpcomingDealineComplianceDashboard: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE USER MQTT
+    case actions.UPCOMING_COMPLIANCE_DEADLINE_USER_MQTT:
+      return {
+        ...state,
+        GetUpcomingDealineComplianceDashboard: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE USER MQTT
+    case actions.QUARTERLY_TASK_DASHBOARD_FOR_USER_MQTT:
+      return {
+        ...state,
+        GetComlianceQuarterlyTasksDashboardData: action.payload,
+      };
+
+    // For Compliance UPCOMING COMPLIANCE DEADLINE MANAGER MQTT
+    case actions.QUARTERLY_TASK_DASHBOARD_FOR_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComlianceQuarterlyTasksDashboardData: action.payload,
+      };
+
+    // For Compliance Tasks Dashboard Mqtt User
+    case actions.TASK_DASHBOARD_FOR_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceTasksDashboardData: action.payload,
+      };
+
+    // For Compliance Tasks Dashboard Mqtt Manager
+    case actions.TASK_DASHBOARD_FOR_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceTasksDashboardData: action.payload,
+      };
+
     // ================= DEFAULT =================
     default:
       return state;

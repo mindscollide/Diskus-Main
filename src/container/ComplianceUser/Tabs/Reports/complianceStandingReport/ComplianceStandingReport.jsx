@@ -259,7 +259,7 @@ const ComplianceStandingReport = () => {
                   ? ArrowUpIcon
                   : complianceNameSort === "ascend"
                     ? ArrowDownIcon
-                    : DefaultSortIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -287,7 +287,7 @@ const ComplianceStandingReport = () => {
                   ? ArrowUpIcon
                   : authoritySort === "ascend"
                     ? ArrowDownIcon
-                    : DefaultSortIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -369,7 +369,7 @@ const ComplianceStandingReport = () => {
                   ? ArrowUpIcon
                   : dueDateSort === "ascend"
                     ? ArrowDownIcon
-                    : DefaultSortIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -390,7 +390,7 @@ const ComplianceStandingReport = () => {
             ) : totalCheckListsSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -414,7 +414,7 @@ const ComplianceStandingReport = () => {
             ) : noOfTasksSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -438,7 +438,7 @@ const ComplianceStandingReport = () => {
             ) : overdueTasksSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -462,7 +462,7 @@ const ComplianceStandingReport = () => {
             ) : progressSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -536,8 +536,8 @@ const ComplianceStandingReport = () => {
                 <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
                   <img src={Verification} alt="Verification" />
                   <div>
-                    <label>{t("Report-type ")}:</label>
-                    <p>Compliance Standing</p>
+                    <label>{t("Report-type")}:</label>
+                    <p>{t("Compliance-standing")}</p>
                   </div>
                 </Col>
 
@@ -795,7 +795,7 @@ const ComplianceStandingReport = () => {
                   <img src={Verification} alt="Verification" />
                   <div>
                     <label>{t("Report-type ")}:</label>
-                    <p>Compliance Standing</p>
+                    <p>{t("Compliance-standing")}</p>
                   </div>
                 </Col>
                 <Col className={styles.iconTextWrapperPDF}>

@@ -291,7 +291,7 @@ const ComplianceByMe = () => {
         ? ArrowUpIcon
         : order === "ascend"
           ? ArrowDownIcon
-          : DefaultSortIcon;
+          : ArrowDownIcon;
 
     return (
       <img

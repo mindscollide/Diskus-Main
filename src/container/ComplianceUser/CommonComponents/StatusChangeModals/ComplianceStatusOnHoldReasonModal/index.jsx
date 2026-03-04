@@ -31,11 +31,17 @@ const ComplianceStatusChangeResonReasonModal = ({
   };
   const handleProceedButton = () => {
     console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
-    setComplianceStatusChangeReasonModal(false);
+    if (!complianceOnHoldReasonState?.trim()) return;
+
+    //  First update compliance state INCLUDING reason
     setComplianceDetailsState((prev) => ({
       ...prev,
       status: tempSelectComplianceStatus,
+      reasonToMakeComplianceOnHold: complianceOnHoldReasonState.trim(),
     }));
+
+    // Then close modal
+    setComplianceStatusChangeReasonModal(false);
   };
 
   const handleValueChange = (event) => {

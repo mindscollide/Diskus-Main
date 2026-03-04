@@ -302,7 +302,7 @@ const ComplianceForMe = () => {
         ? ArrowUpIcon
         : order === "ascend"
           ? ArrowDownIcon
-          : DefaultSortIcon;
+          : ArrowDownIcon;
 
     return (
       <img
