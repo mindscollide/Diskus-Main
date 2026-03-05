@@ -81,6 +81,9 @@ const Talk = () => {
     setEndOfComplianceReport,
     setEndOfQuarterReport,
     setAccumulativeReport,
+    setPendingNavigation,
+    createEditCompliance,
+    setCloseConfirmationModal,
   } = useComplianceContext();
   const {
     pendingApprovalsTabCount,
@@ -263,6 +266,14 @@ const Talk = () => {
     dispatch,
   );
   const handleMeetingPendingApprovals = async () => {
+    console.log("Check Publish Scenario's");
+    console.log(createEditCompliance, "Check Publish Scenario's");
+    if (createEditCompliance) {
+      console.log("Check Publish Scenario's");
+      setPendingNavigation("/Diskus/Minutes");
+      setCloseConfirmationModal(true);
+      return true;
+    }
     if (
       Number(editorRole?.status) === 10 &&
       viewAdvanceMeetingModal &&

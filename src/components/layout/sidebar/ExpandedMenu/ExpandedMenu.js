@@ -26,6 +26,7 @@ import {
   searchNewUserMeeting,
   showEndMeetingModal,
 } from "../../../../store/actions/NewMeetingActions";
+import { useComplianceContext } from "../../../../context/ComplianceContext";
 
 const ExpandedMenu = () => {
   const location = useLocation();
@@ -37,7 +38,7 @@ const ExpandedMenu = () => {
   let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
   let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
+    localStorage.getItem("isMeetingVideoHostCheck"),
   );
   const {
     editorRole,
@@ -51,55 +52,62 @@ const ExpandedMenu = () => {
     setSceduleMeeting,
     setGoBackCancelModal,
   } = useMeetingContext();
+
+  const {
+    setCloseConfirmationModal,
+    createEditCompliance,
+    setPendingNavigation,
+  } = useComplianceContext();
+
   const CurrentMeetingStatus = useSelector(
-    (state) => state.NewMeetingreducer.currentMeetingStatus
+    (state) => state.NewMeetingreducer.currentMeetingStatus,
   );
   const scheduleMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
   );
   const viewProposeDateMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag,
   );
   const viewAdvanceMeetingsPublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag,
   );
   const viewAdvanceMeetingsUnpublishPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag,
   );
   const viewProposeOrganizerMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag,
   );
   const proposeNewMeetingsPageFlag = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag,
   );
   const viewMeetingsFlag = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
+    (state) => state.NewMeetingreducer.viewMeetingFlag,
   );
 
   const scheduleMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+    (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
   );
   const viewProposeDateMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeDateMeetingPageFlag,
   );
   const viewAdvanceMeetingPublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingPublishPageFlag,
   );
   const viewAdvanceMeetingUnpublishPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag
+    (state) => state.NewMeetingreducer.viewAdvanceMeetingUnpublishPageFlag,
   );
   const viewProposeOrganizerMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag
+    (state) => state.NewMeetingreducer.viewProposeOrganizerMeetingPageFlag,
   );
   const proposeNewMeetingPageFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag
+    (state) => state.NewMeetingreducer.proposeNewMeetingPageFlag,
   );
   const viewMeetingFlagReducer = useSelector(
-    (state) => state.NewMeetingreducer.viewMeetingFlag
+    (state) => state.NewMeetingreducer.viewMeetingFlag,
   );
 
   const endMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.endMeetingModal
+    (state) => state.NewMeetingreducer.endMeetingModal,
   );
 
   //Groups Sidebar Click
@@ -136,7 +144,7 @@ const ExpandedMenu = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -173,7 +181,7 @@ const ExpandedMenu = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -211,7 +219,7 @@ const ExpandedMenu = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -248,7 +256,7 @@ const ExpandedMenu = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -284,7 +292,7 @@ const ExpandedMenu = () => {
       t,
       sceduleMeeting,
       setSceduleMeeting,
-      setGoBackCancelModal
+      setGoBackCancelModal,
     );
   };
 
@@ -297,6 +305,15 @@ const ExpandedMenu = () => {
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
     console.log("Check Route scenario's");
+    console.log(createEditCompliance, "Check Route scenario's");
+    console.log(targetPath, "Check Route scenario's");
+    if (createEditCompliance) {
+      console.log("createEditComplaince");
+      setPendingNavigation(targetPath);
+      setCloseConfirmationModal(true);
+      return true;
+    }
+
     if (isMeeting) {
       console.log("Check Route scenario's");
       if (location.pathname !== targetPath && !viewAdvanceMeetingModal) {

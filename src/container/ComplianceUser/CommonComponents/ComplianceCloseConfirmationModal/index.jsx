@@ -35,6 +35,7 @@ const ComplianceCloseConfirmationModal = () => {
 
   const handleNoButton = () => {
     setCloseConfirmationModal(false);
+    setPendingNavigation(null);
   };
 
   return (
