@@ -69,6 +69,7 @@ const CreateEditViewComplianceChecklist = () => {
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
+  console.log(isChecklistTitleExist, "isChecklistTitleExist");
 
   const [isEditTrue, setIsEditTrue] = useState(false);
   const {
@@ -473,7 +474,9 @@ const CreateEditViewComplianceChecklist = () => {
                 </span>
               </div>
               <DatePicker
-                disabled={isLockedStatus && !isEditTrue}
+                disabled={
+                  (isLockedStatus && !isEditTrue) || isChecklistTitleExist
+                }
                 value={checkListData.checklistDueDate}
                 format={"DD/MM/YYYY"}
                 placeholder={t("Due-date")}
@@ -481,7 +484,7 @@ const CreateEditViewComplianceChecklist = () => {
                   <InputIcon
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
-                      isLockedStatus && !isEditTrue
+                      (isLockedStatus && !isEditTrue) || isChecklistTitleExist
                         ? styles["disabledInput"]
                         : ""
                     }`}
@@ -502,7 +505,9 @@ const CreateEditViewComplianceChecklist = () => {
           <Row className="mt-2">
             <Col sm={12} md={12} lg={12}>
               <TextAreafieldwithCount
-                disabled={isLockedStatus && !isEditTrue}
+                disabled={
+                  (isLockedStatus && !isEditTrue) || isChecklistTitleExist
+                }
                 label={
                   <>
                     {t("Checklist-description")}
@@ -670,9 +675,7 @@ const CreateEditViewComplianceChecklist = () => {
                               draggable="false"
                               alt=""
                               src={editIcon}
-                              onClick={() =>
-                                handleEditChecklist(data)
-                              }
+                              onClick={() => handleEditChecklist(data)}
                             />
                             <img
                               src={Accordion_Arrow}

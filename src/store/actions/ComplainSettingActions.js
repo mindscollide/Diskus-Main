@@ -1273,7 +1273,12 @@ const AddComplianceChecklistAPI = (
                 )
             ) {
               // The Name is Unique
-              await dispatch(AddComplianceChecklistFail(""));
+              await dispatch(
+                AddComplianceChecklistSuccess(
+                  response.data.responseResult,
+                  t("Checklist-title-already-exists-in-this-compliance"),
+                ),
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -4541,7 +4546,7 @@ const ChangeTaskStatusFail = (message) => {
   };
 };
 
-const ChangeTaskStatusAPI = (navigate, Data, t) => {
+const ChangeTaskStatusAPI = (navigate, Data, complianceId, t) => {
   return (dispatch) => {
     dispatch(ChangeTaskStatusInit());
     let form = new FormData();
@@ -4552,7 +4557,7 @@ const ChangeTaskStatusAPI = (navigate, Data, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+          dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -4568,7 +4573,16 @@ const ChangeTaskStatusAPI = (navigate, Data, t) => {
                   t("Task status changed successfully"),
                 ),
               );
-              
+              const Data_compId = {
+                complianceId: complianceId,
+              };
+              dispatch(
+                GetComplianceChecklistsWithTasksByComplianceIdAPI(
+                  navigate,
+                  Data_compId,
+                  t,
+                ),
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
