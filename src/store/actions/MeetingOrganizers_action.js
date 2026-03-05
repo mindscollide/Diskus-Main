@@ -21,6 +21,7 @@ import {
 import { getCurrentDateTimeUTC } from "../../commen/functions/date_formater";
 import { videoIconOrButtonState } from "./VideoFeature_actions";
 import axiosInstance from "../../commen/functions/axiosInstance";
+import { isFunction } from "../../commen/functions/utils";
 
 const getAllCommitteesUsersandGroups_init = () => {
   return {
@@ -450,7 +451,7 @@ const UpdateOrganizersMeeting = (
                   };
                   console.log("chek search meeting");
                   await dispatch(searchNewUserMeeting(navigate, searchData, t));
-                  setSceduleMeeting(false);
+                 isFunction(setSceduleMeeting) && setSceduleMeeting(false);
                   dispatch(scheduleMeetingPageFlag(false));
                 } else if (route === 6) {
                   console.log("end meeting chaek", leaveMeetingData);

@@ -107,12 +107,7 @@ const UnpublishedProposedMeeting = ({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const {
-    meetingsRecords,
-    totalMeetingRecords,
-    setMeetingsRecords,
-    isMeetingTypeFilter,
-  } = useNewMeetingContext();
+  const { isMeetingTypeFilter } = useNewMeetingContext();
   let currentView = localStorage.getItem("MeetingCurrentView");
   //Current User ID
   let userID = localStorage.getItem("userID");
@@ -133,48 +128,50 @@ const UnpublishedProposedMeeting = ({
     viewAdvanceMeetingModal,
   } = useContext(MeetingContext);
   const searchMeetings = useSelector(
-    (state) => state.NewMeetingreducer.searchMeetings,
+    (state) => state.NewMeetingreducer.searchMeetings
   );
   const sceduleproposedMeeting = useSelector(
-    (state) => state.NewMeetingreducer.sceduleproposedMeeting,
+    (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
   const deleteMeetingModal = useSelector(
-    (state) => state.NewMeetingreducer.deleteMeetingModal,
+    (state) => state.NewMeetingreducer.deleteMeetingModal
   );
   const allMeetingsSocketData = useSelector(
-    (state) => state.meetingIdReducer.allMeetingsSocketData,
+    (state) => state.meetingIdReducer.allMeetingsSocketData
   );
   const meetingStatusProposedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData,
+    (state) => state.NewMeetingreducer.meetingStatusProposedMqttData
   );
   const meetingStatusPublishedMqttData = useSelector(
-    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData,
+    (state) => state.NewMeetingreducer.meetingStatusPublishedMqttData
   );
   const mqttMeetingAcAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingAcAdded
   );
   const mqttMeetingAcRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingAcRemoved
   );
   const mqttMeetingOrgAdded = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgAdded
   );
   const mqttMeetingOrgRemoved = useSelector(
-    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved,
+    (state) => state.NewMeetingreducer.mqttMeetingOrgRemoved
   );
 
-  const [rows, setRow] = useState([]);
   const [dublicatedrows, setDublicatedrows] = useState([]);
   const [publishState, setPublishState] = useState(null);
-  const [meetingOrganizerSort, setMeetingOrganizerSort] = useState(null);
-  const [meetingDateTimeSort, setMeetingDateTimeSort] = useState(null);
+
+  const [proposedMeetingsData, setProposedMeetingsData] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0);
+
+  console.log(proposedMeetingsData, "proposedMeetingsData")
 
   const viewProposeDatePollHandler = (
     isParticipant,
     isAgendaContributor,
     isOrganiser,
     id,
-    responseDeadLine,
+    responseDeadLine
   ) => {
     localStorage.setItem("viewProposeDatePollMeetingID", id);
     if (isParticipant) {
@@ -235,8 +232,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          2,
-        ),
+          2
+        )
       );
       await dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
       await dispatch(GetAllProposedMeetingDateApiFunc(Data, navigate, t, true));
@@ -256,8 +253,8 @@ const UnpublishedProposedMeeting = ({
           setSceduleMeeting,
           setDataroomMapFolderId,
           0,
-          1,
-        ),
+          1
+        )
       );
       dispatch(scheduleMeetingPageFlag(true));
     }
@@ -277,48 +274,6 @@ const UnpublishedProposedMeeting = ({
   };
 
   //Filteration Work Meeting
-  const [visible, setVisible] = useState(false);
-  const [selectedValues, setSelectedValues] = useState(["12", "11"]);
-
-  const filters = [
-    {
-      value: "12",
-      text: t("Proposed"),
-    },
-    {
-      value: "11",
-      text: t("Unpublished"),
-    },
-  ];
-
-  // Menu click handler for selecting filters
-  const handleMenuClick = (filterValue) => {
-    setSelectedValues((prevValues) =>
-      prevValues.includes(filterValue)
-        ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
-    );
-  };
-
-  const handleApplyFilter = () => {
-    const filteredData = dublicatedrows.filter((item) =>
-      selectedValues.includes(item.status.toString()),
-    );
-    console.log(filteredData, "filteredDatafilteredData");
-
-    setRow(filteredData);
-    setVisible(false);
-  };
-
-  const resetFilter = () => {
-    setSelectedValues(["12", "11"]);
-    setRow(dublicatedrows);
-    setVisible(false);
-  };
-
-  const handleClickChevron = () => {
-    setVisible((prevVisible) => !prevVisible);
-  };
 
   const handleClickDeleteMeeting = async (record) => {
     let Data = {
@@ -329,35 +284,6 @@ const UnpublishedProposedMeeting = ({
     setDeleteMeetingRecord(Data);
     setDeleteMeetingConfirmationModal(true);
   };
-
-  const menu = (
-    <Menu>
-      {filters.map((filter) => (
-        <Menu.Item
-          key={filter.value}
-          onClick={() => handleMenuClick(filter.value)}
-        >
-          <Checkbox checked={selectedValues.includes(filter.value)}>
-            {t(filter.text)}
-          </Checkbox>
-        </Menu.Item>
-      ))}
-      <Menu.Divider />
-      <div className="d-flex  align-items-center justify-content-between p-1">
-        <Button
-          text={t("Reset")}
-          className={styles["FilterResetBtn"]}
-          onClick={resetFilter}
-        />
-        <Button
-          text={t("Ok")}
-          disableBtn={selectedValues.length === 0}
-          className={styles["ResetOkBtn"]}
-          onClick={handleApplyFilter}
-        />
-      </div>
-    </Menu>
-  );
 
   // const MeetingColoumns = [
   //   {
@@ -914,10 +840,7 @@ const UnpublishedProposedMeeting = ({
   //   },
   // ];
   const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
-  const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
-  const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
   const [meetingDateSort, setMeetingDateSort] = useState("ascend");
-  const [meetingStatusSort, setMeetingStatusSort] = useState("ascend");
   const [duplicatedRows, setDuplicatedRows] = useState([]);
 
   // Meeting Type Filter State
@@ -933,21 +856,21 @@ const UnpublishedProposedMeeting = ({
     setSelectedMeetingTypeValues((prevValues) =>
       prevValues.includes(filterValue)
         ? prevValues.filter((value) => String(value) !== String(filterValue))
-        : [...prevValues, String(filterValue)],
+        : [...prevValues, String(filterValue)]
     );
   };
 
   const handleApplyMeetingTypeFilter = () => {
     const filteredData = duplicatedRows.filter((item) =>
-      selectedMeetingTypeValues.includes(item.meetingtype?.toString()),
+      selectedMeetingTypeValues.includes(item.meetingtype?.toString())
     );
-    setMeetingsRecords(filteredData);
+    setProposedMeetingsData(filteredData);
     setMeetingTypeFilterVisible(false);
   };
 
   const resetMeetingTypeFilter = () => {
     setSelectedMeetingTypeValues(["1", "2", "3"]);
-    setMeetingsRecords(duplicatedRows);
+    setProposedMeetingsData(duplicatedRows);
     setMeetingTypeFilterVisible(false);
   };
 
@@ -966,15 +889,14 @@ const UnpublishedProposedMeeting = ({
       {meetingTypeFilters.map((filter) => (
         <Menu.Item
           key={filter.value}
-          onClick={() => handleMeetingTypeMenuClick(filter.value)}
-        >
+          onClick={() => handleMeetingTypeMenuClick(filter.value)}>
           <Checkbox checked={selectedMeetingTypeValues.includes(filter.value)}>
             {filter.text}
           </Checkbox>
         </Menu.Item>
       ))}
       <Menu.Divider />
-      <div className="d-flex align-items-center justify-content-between p-1">
+      <div className='d-flex align-items-center justify-content-between p-1'>
         <Button
           text={"Reset"}
           className={"FilterResetBtn"}
@@ -1066,12 +988,12 @@ const UnpublishedProposedMeeting = ({
     return (
       <div className={styles.morebuttons}>
         <div className={styles.morebtn} onClick={handleEdit}>
-          <img src={EditIcon} alt="" width="16" height="16" />
+          <img src={EditIcon} alt='' width='16' height='16' />
           <span>{t("Edit-meeting")}</span>
         </div>
 
         <div className={styles.morebtn} onClick={handleDelete}>
-          <img src={CancelMeetingIcon} alt="" width="16" height="16" />
+          <img src={CancelMeetingIcon} alt='' width='16' height='16' />
           <span>{t("Delete-meeting")}</span>
         </div>
       </div>
@@ -1082,12 +1004,12 @@ const UnpublishedProposedMeeting = ({
       {
         title: (
           <>
-            <div className="d-flex align-items-center gap-2">
+            <div className='d-flex align-items-center gap-2'>
               <span>{t("Meeting-title")}</span>
               {meetingTitleSort === "ascend" ? (
-                <img src={SortIconAscend} alt="SortIconAscend" />
+                <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
-                <img src={SortIconDescend} alt="SortIconDescend" />
+                <img src={SortIconDescend} alt='SortIconDescend' />
               )}
             </div>
           </>
@@ -1117,19 +1039,18 @@ const UnpublishedProposedMeeting = ({
                       setSceduleMeeting,
                       setDataroomMapFolderId,
                       0,
-                      2,
-                    ),
+                      2
+                    )
                   );
                   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
                   dispatch(
-                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true),
+                    GetAllProposedMeetingDateApiFunc(Data, navigate, t, true)
                   );
                 } catch (error) {
                   console.log(error, "apis call Error");
                 }
               }}
-              className={styles.tableRow}
-            >
+              className={styles.tableRow}>
               {text}
             </span>
           );
@@ -1139,12 +1060,12 @@ const UnpublishedProposedMeeting = ({
       {
         title: (
           <>
-            <div className="d-flex align-items-center justify-content-center gap-2">
+            <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Deadline")}</span>
               {meetingDateSort === "ascend" ? (
-                <img src={ArrowDownIcon} alt="ArrowUpIcon" />
+                <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
-                <img src={ArrowUpIcon} alt="ArrowDownIcon" />
+                <img src={ArrowUpIcon} alt='ArrowDownIcon' />
               )}
             </div>
           </>
@@ -1157,26 +1078,26 @@ const UnpublishedProposedMeeting = ({
           const dateA = new Date(
             a.dateOfMeeting.substring(0, 4),
             parseInt(a.dateOfMeeting.substring(4, 6)) - 1,
-            a.dateOfMeeting.substring(6, 8),
+            a.dateOfMeeting.substring(6, 8)
           );
           const dateB = new Date(
             b.dateOfMeeting.substring(0, 4),
             parseInt(b.dateOfMeeting.substring(4, 6)) - 1,
-            b.dateOfMeeting.substring(6, 8),
+            b.dateOfMeeting.substring(6, 8)
           );
           return dateA - dateB;
         },
         sortOrder: meetingDateSort,
         render: (text, record) => {
           let meetingDate = forRecentActivity(
-            record.dateOfMeeting + record.meetingStartTime,
+            record.dateOfMeeting + record.meetingStartTime
           );
           return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
         },
       },
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             {t("Meeting-type")}
           </span>
         ),
@@ -1215,7 +1136,7 @@ const UnpublishedProposedMeeting = ({
         render: (_, record) => {
           const meetingType = Number(record.meetingType);
           const matchedFilter = isMeetingTypeFilter.find(
-            (f) => Number(f.value) === meetingType,
+            (f) => Number(f.value) === meetingType
           );
 
           if (record.isQuickMeeting && meetingType === 1) {
@@ -1228,7 +1149,7 @@ const UnpublishedProposedMeeting = ({
       {
         title: (
           <>
-            <span className="d-flex justify-content-center align-items-center">
+            <span className='d-flex justify-content-center align-items-center'>
               {t("Vote")}
             </span>
           </>
@@ -1253,10 +1174,10 @@ const UnpublishedProposedMeeting = ({
                   {" "}
                   <img
                     src={rspvGreenIcon}
-                    height="17.06px"
-                    width="17.06px"
-                    alt=""
-                    draggable="false"
+                    height='17.06px'
+                    width='17.06px'
+                    alt=''
+                    draggable='false'
                   />
                 </>
               )
@@ -1268,7 +1189,7 @@ const UnpublishedProposedMeeting = ({
       },
       {
         title: (
-          <span className="d-flex justify-content-center align-items-center">
+          <span className='d-flex justify-content-center align-items-center'>
             {t("Poll")}
           </span>
         ),
@@ -1290,10 +1211,10 @@ const UnpublishedProposedMeeting = ({
                 {" "}
                 <img
                   src={rspvGreenIcon}
-                  height="17.06px"
-                  width="17.06px"
-                  alt=""
-                  draggable="false"
+                  height='17.06px'
+                  width='17.06px'
+                  alt=''
+                  draggable='false'
                 />
               </>
             ) : (
@@ -1303,9 +1224,9 @@ const UnpublishedProposedMeeting = ({
                   {currentLanguage === "en"
                     ? `${record.meetingPoll?.totalNoOfDirectorsVoted} / ${record.meetingPoll?.totalNoOfDirectors}`
                     : `${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectorsVoted,
+                        record.meetingPoll?.totalNoOfDirectorsVoted
                       )} / ${convertToArabicNumerals(
-                        record.meetingPoll?.totalNoOfDirectors,
+                        record.meetingPoll?.totalNoOfDirectors
                       )}`}
                 </span>
               </>
@@ -1322,21 +1243,21 @@ const UnpublishedProposedMeeting = ({
         key: "meetingAction",
         render: (text, record) => {
           const isResponseDateGone = forRecentActivity(
-            `${record.responseDeadLine}000000`,
+            `${record.responseDeadLine}000000`
           );
           const currentDateObj = new Date();
 
           const isViewPollShown = getDifferentisDateisPassed(
             currentDateObj,
-            isResponseDateGone,
+            isResponseDateGone
           );
 
           return record.isParticipant ? (
-            <div className="d-flex justify-content-center align-items-center gap-2">
+            <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <CustomButton
                   className={styles.MoreMeetingButton}
-                  text="Send Reply"
+                  text='Send Reply'
                   disableBtn={isViewPollShown ? true : false}
                   onClick={() =>
                     viewProposeDatePollHandler(
@@ -1344,24 +1265,24 @@ const UnpublishedProposedMeeting = ({
                       false,
                       false,
                       record.pK_MDID,
-                      record.responseDeadLine,
+                      record.responseDeadLine
                     )
                   }
                 />
               </div>
             </div>
           ) : record.isOrganizer ? (
-            <div className="d-flex justify-content-center align-items-center gap-2">
+            <div className='d-flex justify-content-center align-items-center gap-2'>
               <div>
                 <CustomButton
                   className={styles.MoreMeetingButton}
-                  text="View Poll"
+                  text={t("View-poll")}
                   onClick={() =>
                     viewProposeDatePollHandler(
                       false,
                       false,
                       true,
-                      record.pK_MDID,
+                      record.pK_MDID
                     )
                   }
                 />
@@ -1380,18 +1301,17 @@ const UnpublishedProposedMeeting = ({
 
           return (
             isOrganizer && (
-              <div className="d-flex justify-content-center align-items-center gap-2">
+              <div className='d-flex justify-content-center align-items-center gap-2'>
                 <div>
                   <Popover
                     content={moreButtons(record)}
-                    trigger="click"
-                    overlayClassName="MoreButtons_overlay"
+                    trigger='click'
+                    overlayClassName='MoreButtons_overlay'
                     showArrow={false}
-                    placement="bottomRight"
-                  >
+                    placement='bottomRight'>
                     <CustomButton
                       className={styles.MoreMeetingButton}
-                      text="More"
+                      text='More'
                       icon2={<img src={ChevronDownIcon} width={10} />}
                     />
                   </Popover>
@@ -1408,28 +1328,6 @@ const UnpublishedProposedMeeting = ({
     selectedMeetingTypeValues,
     isMeetingTypeFilter,
   ]);
-  useEffect(() => {
-    if (allMeetingsSocketData !== null) {
-      let tableRowsData = [...rows];
-      var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_MDID === allMeetingsSocketData.pK_MDID,
-      );
-      if (foundIndex !== -1) {
-        const newState = tableRowsData.map((obj, index) => {
-          // 👇️ if id equals 2 replace object
-          if (foundIndex === index) {
-            return allMeetingsSocketData;
-          }
-
-          // 👇️ otherwise return object as is
-          return obj;
-        });
-        setRow(newState);
-      } else {
-        setRow([allMeetingsSocketData, ...rows]);
-      }
-    }
-  }, [allMeetingsSocketData]);
 
   useEffect(() => {
     try {
@@ -1439,47 +1337,37 @@ const UnpublishedProposedMeeting = ({
           searchMeetings.meetings !== undefined &&
           searchMeetings.meetings.length > 0
         ) {
-          console.log(
-            searchMeetings.meetings,
-            checkFeatureIDAvailability(12),
-            "searchMeetingssearchMeetings",
-          );
-
           if (checkFeatureIDAvailability(12)) {
-            setRow(searchMeetings.meetings);
+            setProposedMeetingsData(searchMeetings.meetings);
             setDublicatedrows(searchMeetings.meetings);
-          } else {
-            let filterOutPropsed = searchMeetings.meetings.filter((data) => {
-              return data.status !== "12";
-            });
-            console.log(filterOutPropsed, "searchMeetingssearchMeetings");
-
-            setRow(filterOutPropsed);
-            setDublicatedrows(filterOutPropsed);
+            setTotalRecords(searchMeetings.totalRecords);
           }
         } else {
-          setRow([]);
+          setProposedMeetingsData([]);
           setDublicatedrows([]);
+          setTotalRecords(0);
         }
       } else {
-        setRow([]);
+        setProposedMeetingsData([]);
         setDublicatedrows([]);
+        setTotalRecords(0);
       }
     } catch (error) {
+      console.log(error, "searchMeetingssearchMeetingsError");
       // Handle errors here
     }
     return () => {
-      setRow([]);
+      setProposedMeetingsData([]);
       setDublicatedrows([]);
+      setTotalRecords(0);
     };
   }, [searchMeetings]);
-  console.log(rows, "searchMeetingssearchMeetings");
   useEffect(() => {
     if (publishState) {
-      const filteredArray = rows.filter(
-        (item) => item.pK_MDID !== publishState,
+      const filteredArray = proposedMeetingsData.filter(
+        (item) => item.pK_MDID !== publishState
       );
-      setRow(filteredArray);
+      setProposedMeetingsData(filteredArray);
       setPublishState(null);
     }
   }, [publishState]);
@@ -1489,50 +1377,34 @@ const UnpublishedProposedMeeting = ({
       meetingStatusProposedMqttData !== null &&
       meetingStatusProposedMqttData !== undefined
     ) {
-      const updateMeetingData = async () => {
-        let meetingData = meetingStatusProposedMqttData;
-        const indexToUpdate = rows.findIndex(
-          (obj) => obj.pK_MDID === meetingData.pK_MDID,
-        );
-
-        // Fetching unpublished meeting data
-        let getMeetingDataArray = await getAllUnpublishedMeetingData(
-          [meetingData],
-          1,
-        );
-
-        // Assuming getMeetingDataArray is an array with a single object
-        const getMeetingData = getMeetingDataArray[0];
-
-        // Check if the meeting exists in the current rows
-        if (indexToUpdate !== -1) {
-          let updatedRows = [...rows];
-          updatedRows[indexToUpdate] = getMeetingData;
-          setRow(updatedRows);
-        } else {
-          let updatedRows = [getMeetingData, ...rows];
-          setRow(updatedRows);
-        }
-      };
-      updateMeetingData();
-      dispatch(meetingStatusProposedMqtt(null));
+      try {
+        const updateMeetingData = async () => {
+          let meetingData = meetingStatusProposedMqttData;
+          const indexToUpdate = proposedMeetingsData.findIndex(
+            (obj) => obj.pK_MDID === meetingData.pK_MDID
+          );
+  
+          // Check if the meeting exists in the current meetingsRecords
+          if (indexToUpdate !== -1) {
+            let updatedRows = [...proposedMeetingsData];
+            console.log(updatedRows, "meetingDatameetingData");
+  
+            updatedRows[indexToUpdate] = meetingData;
+            setProposedMeetingsData(updatedRows);
+          } else {
+            let updatedRows = [meetingData, ...proposedMeetingsData];
+            setProposedMeetingsData(updatedRows);
+            setTotalRecords((prev) => prev + 1);
+          }
+        };
+        updateMeetingData();
+        dispatch(meetingStatusProposedMqtt(null));
+      } catch (error) {
+        console.log(error, "meetingStatusProposedMqttDatameetingStatusProposedMqttData")
+      }
+   
     }
   }, [meetingStatusProposedMqttData]);
-
-  useEffect(() => {
-    if (
-      meetingStatusPublishedMqttData !== null &&
-      meetingStatusPublishedMqttData !== undefined
-    ) {
-      let meetingData = meetingStatusPublishedMqttData;
-      try {
-        const updatedRows = rows.filter(
-          (obj) => obj.pK_MDID !== meetingData.pK_MDID,
-        );
-        setRow(updatedRows);
-      } catch {}
-    }
-  }, [meetingStatusPublishedMqttData]);
 
   useEffect(() => {
     if (MeetingProp !== null) {
@@ -1541,12 +1413,12 @@ const UnpublishedProposedMeeting = ({
           let getApiResponse = await validateStringParticipantProposedApi(
             MeetingProp,
             navigate,
-            t,
+            t
           )(dispatch); // Ensure you're passing dispatch here
           if (getApiResponse) {
             localStorage.setItem(
               "viewProposeDatePollMeetingID",
-              getApiResponse.meetingID,
+              getApiResponse.meetingID
             );
             localStorage.removeItem("meetingprop");
             setResponseByDate(getApiResponse.deadline);
@@ -1584,13 +1456,13 @@ const UnpublishedProposedMeeting = ({
               await validateStringUserMeetingProposedDatesPollsApi(
                 UserMeetPropoDatPoll,
                 navigate,
-                t,
+                t
               )(dispatch); // Ensure you're passing dispatch here
 
             if (getApiResponse) {
               localStorage.setItem(
                 "viewProposeDatePollMeetingID",
-                getApiResponse.meetingID,
+                getApiResponse.meetingID
               );
               localStorage.removeItem("UserMeetPropoDatPoll");
               dispatch(showSceduleProposedMeeting(true));
@@ -1640,15 +1512,18 @@ const UnpublishedProposedMeeting = ({
   return (
     <section>
       <Row>
-        <Col lg={12} md={12} sm={12} className="w-100">
+        <Col lg={12} md={12} sm={12} className='w-100'>
           <Table
             onChange={handleChangeMeetingTable}
-            className="MeetingTable"
+            className='MeetingTable'
             column={columns}
             size={"small"}
-            rows={meetingsRecords}
+            rows={proposedMeetingsData}
             sticky={true}
             pagination={false}
+            scroll={{
+              y: "55vh",
+            }}
             locale={{
               emptyText: <EmptyTableComponent />, // Set your custom empty text here
             }}
@@ -1658,8 +1533,7 @@ const UnpublishedProposedMeeting = ({
                   className={"pagination-groups-table"}
                   sm={12}
                   md={12}
-                  lg={12}
-                >
+                  lg={12}>
                   <CustomPagination
                     current={
                       meetingPageCurrent !== null
@@ -1670,7 +1544,7 @@ const UnpublishedProposedMeeting = ({
                       meetingpageRow !== null ? Number(meetingpageRow) : 50
                     }
                     onChange={handelChangePagination}
-                    total={totalMeetingRecords}
+                    total={totalRecords}
                     showSizer={true}
                     pageSizeOptionsValues={["30", "50", "100", "200"]}
                   />

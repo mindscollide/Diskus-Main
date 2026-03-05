@@ -677,7 +677,9 @@ const ProposedNewMeeting = ({
       UserID: Number(userID),
       PageNumber: meetingPageCurrent !== null ? Number(meetingPageCurrent) : 1,
       Length: meetingpageRow !== null ? Number(meetingpageRow) : 30,
-      PublishedMeetings: Number(currentView) === 1 ? true : false,
+      PublishedMeetings:
+        currentView && Number(currentView) === 1 ? true : false,
+      ProposedMeetings: currentView && Number(currentView) === 2 ? true : false,
     };
     dispatch(searchNewUserMeeting(navigate, searchData, t));
   };

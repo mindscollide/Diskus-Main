@@ -377,6 +377,10 @@ const ManageUsers = () => {
   // opening of the search box
   const handleSearchBoxOpen = () => {
     setsearchbox(!searchbox);
+    setManangeUserSearch({
+      ...manangeUserSearch,
+      searchValue: "",
+    });
   };
 
   //Closing  the search Box
@@ -553,11 +557,19 @@ const ManageUsers = () => {
           ...manangeUserSearch,
           searchValue: value,
         });
+        setsearchDetails((prevState) => ({
+          ...prevState,
+          Name: value.trim(),
+        }));
       } else {
         setManangeUserSearch({
           ...manangeUserSearch,
           searchValue: "",
         });
+        setsearchDetails((prevState) => ({
+          ...prevState,
+          Name: "",
+        }));
       }
     }
   };
@@ -578,8 +590,9 @@ const ManageUsers = () => {
             return matchesName;
           },
         );
-
+      setshowSearches(true);
       setManageUserGrid(filteredData);
+      setsearchbox(false);
     }
   };
 
@@ -589,6 +602,10 @@ const ManageUsers = () => {
       ...manangeUserSearch,
       searchValue: "",
     });
+    setsearchDetails((prevState) => ({
+      ...prevState,
+      Name: "",
+    }));
     let data = {
       OrganizationID: Number(organizationID),
       RequestingUserID: Number(userID),

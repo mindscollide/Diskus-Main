@@ -20,6 +20,7 @@ import {
   getFileExtension,
   getIconSource,
 } from "../../../DataRoom/SearchFunctionality/option";
+import { formatMB } from "../../../../commen/functions/convertFileSizeInMB";
 
 const MeetingRecording = ({ title }) => {
   const {
@@ -216,10 +217,7 @@ const MeetingRecording = ({ title }) => {
         return (
           <>
             <span className={styles["RecordingTable___size"]}>
-              {`${convertToArabicNumerals(
-                text,
-                localStorage.getItem("i18nextLng"),
-              )} MB`}
+              {formatMB(text)}
             </span>
           </>
         );

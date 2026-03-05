@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Nav, Navbar, DropdownButton, Row, Col } from "react-bootstrap";
-import { Tooltip } from "antd";
+import { Tooltip, Upload } from "antd";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
@@ -354,8 +354,15 @@ const Header2 = ({ isVideo }) => {
     }
   }, [ResponseMessageTodoReducer, ResponseMessageAssigneesReducer]);
 
-  const forgotPasswordCheck = () => {
-    localStorage.setItem("globalPassowrdChecker", true);
+  const forgotPasswordCheck = (e) => {
+    e?.preventDefault(); // 🚫 stop auto navigation
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("globalPassowrdChecker", true);
+      navigate("/changePassword"); // ✅ navigate manually
+    }
   };
 
   const dropDownMenuFunction = () => {
@@ -372,18 +379,34 @@ const Header2 = ({ isVideo }) => {
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
-    let userID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(
-      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal),
-    );
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      let userID = localStorage.getItem("userID");
+      let OrganizationID = localStorage.getItem("organizationID");
+      dispatch(
+        getUserDetails(
+          navigate,
+          userID,
+          t,
+          OrganizationID,
+          setUserProfileModal,
+        ),
+      );
+    }
   };
 
   //Customer Information Modal
   const handleModalCustomerInformation = () => {
-    let userID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(getUserDetails(navigate, userID, t, OrganizationID));
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      let userID = localStorage.getItem("userID");
+      let OrganizationID = localStorage.getItem("organizationID");
+      dispatch(getUserDetails(navigate, userID, t, OrganizationID));
+    }
   };
 
   // for modal create  handler
@@ -507,33 +530,63 @@ const Header2 = ({ isVideo }) => {
   };
 
   const openMeetingModal = () => {
-    setCreateMeetingModal(true);
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      setCreateMeetingModal(true);
+    }
   };
 
   const openModalAddNote = () => {
-    setCreateNotesModal(true);
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      setCreateNotesModal(true);
+    }
   };
 
   const openHeaderCreateTaskModal = () => {
-    setShowModalHeader(true);
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      setShowModalHeader(true);
+    }
   };
   const handleUploadFile = async ({ file }) => {
-    navigate("/Diskus/dataroom", { state: file });
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      navigate("/Diskus/dataroom", { state: file });
+    }
   };
 
   const RecentFilesTab = async () => {
-    localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("navigateLocation", "dataroomRecentAddedFiles");
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
     }
   };
 
   const RecentFilesTabNoCall = async () => {
-    localStorage.setItem("setTableView", 4);
-    navigate("/Diskus/dataroom");
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("setTableView", 4);
+      navigate("/Diskus/dataroom");
+    }
   };
 
   const homePageDashboardClick = () => {
@@ -567,46 +620,74 @@ const Header2 = ({ isVideo }) => {
   };
 
   const handleMeetingSidebarSettings = () => {
-    localStorage.setItem("navigateLocation", "setting");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("navigateLocation", "setting");
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
     }
   };
 
   const handleMeetingSidebarSettingsNoCall = () => {
-    navigate("/Diskus/setting");
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      navigate("/Diskus/setting");
+    }
   };
 
   const handleMeetingPendingApprovals = () => {
-    localStorage.setItem("navigateLocation", "Minutes");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("navigateLocation", "Minutes");
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
     }
   };
 
   const handleMeetingPendingApprovalsNoCall = () => {
-    navigate("/Diskus/Minutes");
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      navigate("/Diskus/Minutes");
+    }
   };
 
   const handleMeetingSidebarFAQ = () => {
-    localStorage.setItem("navigateLocation", "faq's");
-    if (CurrentMeetingStatus === 10) {
-      dispatch(LeaveInitmationMessegeVideoMeetAction(true));
-      dispatch(maximizeVideoPanelFlag(false));
-      dispatch(minimizeVideoPanelFlag(true));
-      dispatch(normalizeVideoPanelFlag(false));
+    if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // User is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
+    } else {
+      localStorage.setItem("navigateLocation", "faq's");
+      if (CurrentMeetingStatus === 10) {
+        dispatch(LeaveInitmationMessegeVideoMeetAction(true));
+        dispatch(maximizeVideoPanelFlag(false));
+        dispatch(minimizeVideoPanelFlag(true));
+        dispatch(normalizeVideoPanelFlag(false));
+      }
     }
   };
 
   const handleMeetingSidebarFAQNoCall = () => {
     if (location.pathname.includes("/Admin")) {
       navigate("/Admin/faq's");
+    } else if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
+      // Check if user is in advance meeting modal and meeting is ongoing
+      dispatch(showEndMeetingModal(true));
     } else {
       navigate("/Diskus/faq's");
     }
@@ -838,7 +919,7 @@ const Header2 = ({ isVideo }) => {
                   <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
                       className={`${" text-black"} ${currentLanguage}`}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={(e) => forgotPasswordCheck(e)}
                     >
                       <Nav.Link
                         as={Link}
@@ -851,10 +932,9 @@ const Header2 = ({ isVideo }) => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={(e) => forgotPasswordCheck(e)}
                     >
                       <Nav.Link
-                        as={Link}
                         to="changePassword"
                         disabled={true}
                         className="SignOutOptionMenu text-black"
@@ -889,7 +969,7 @@ const Header2 = ({ isVideo }) => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={(e) => forgotPasswordCheck(e)}
                     >
                       <Nav.Link
                         as={Link}
@@ -931,7 +1011,7 @@ const Header2 = ({ isVideo }) => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
-                      onClick={() => forgotPasswordCheck()}
+                      onClick={(e) => forgotPasswordCheck(e)}
                     >
                       <Nav.Link
                         as={Link}
@@ -1249,10 +1329,34 @@ const Header2 = ({ isVideo }) => {
                                     <div
                                       className="New_folder_shortcutkeys"
                                       onClick={() => {
-                                        dispatch(
-                                          showCancelModalmeetingDeitals(true),
-                                        );
-                                        dispatch(uploadGlobalFlag(true));
+                                        if (
+                                          viewAdvanceMeetingModal &&
+                                          Number(editorRole.status) === 10
+                                        ) {
+                                          // User is in advance meeting modal and meeting is ongoing
+                                          dispatch(showEndMeetingModal(true));
+                                        } else {
+                                          dispatch(
+                                            showCancelModalmeetingDeitals(true),
+                                          );
+                                          dispatch(uploadGlobalFlag(true));
+                                        }
+                                      }}
+                                    >
+                                      {t("Upload-document")}
+                                    </div>
+                                  ) : viewAdvanceMeetingModal &&
+                                    Number(editorRole.status) === 10 ? (
+                                    <div
+                                      className="New_folder_shortcutkeys"
+                                      onClick={() => {
+                                        if (
+                                          viewAdvanceMeetingModal &&
+                                          Number(editorRole.status) === 10
+                                        ) {
+                                          // User is in advance meeting modal and meeting is ongoing
+                                          dispatch(showEndMeetingModal(true));
+                                        }
                                       }}
                                     >
                                       {t("Upload-document")}
@@ -1260,6 +1364,17 @@ const Header2 = ({ isVideo }) => {
                                   ) : (
                                     <UploadTextField
                                       title={t("Upload-document")}
+                                      beforeUpload={(file) => {
+                                        if (
+                                          viewAdvanceMeetingModal &&
+                                          Number(editorRole.status) === 10
+                                        ) {
+                                          // 🚫 Meeting ongoing → block upload
+                                          dispatch(showEndMeetingModal(true));
+                                          return Upload.LIST_IGNORE; // ❌ stop upload
+                                        }
+                                        return true; // ✅ allow upload
+                                      }}
                                       handleFileUploadRequest={handleUploadFile}
                                     />
                                   )}
@@ -1443,10 +1558,9 @@ const Header2 = ({ isVideo }) => {
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}
+                              onClick={(e) => forgotPasswordCheck(e)}
                             >
                               <Nav.Link
-                                as={Link}
                                 to="changePassword"
                                 className="SignOutOptionMenu text-black FontClass"
                               >
@@ -1497,7 +1611,7 @@ const Header2 = ({ isVideo }) => {
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}
+                              onClick={(e) => forgotPasswordCheck(e)}
                             >
                               <Nav.Link
                                 as={Link}
@@ -1542,7 +1656,7 @@ const Header2 = ({ isVideo }) => {
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}
+                              onClick={(e) => forgotPasswordCheck(e)}
                             >
                               <Nav.Link
                                 disabled={checkifMeetingOngoing}
@@ -1588,10 +1702,9 @@ const Header2 = ({ isVideo }) => {
                             </Dropdown.Item>
                             <Dropdown.Item
                               className={" text-black" + " " + currentLanguage}
-                              onClick={() => forgotPasswordCheck()}
+                              onClick={(e) => forgotPasswordCheck(e)}
                             >
                               <Nav.Link
-                                as={Link}
                                 to="changePassword"
                                 className="SignOutOptionMenu d-flex text-black FontClass"
                               >
