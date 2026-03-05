@@ -92,6 +92,18 @@
   color: #2197d7;
   cursor: default !important;
 }
+
+.titleForTaskView {
+  width: 95%;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 16px !important;
+  color: #2197d7;
+  cursor: default !important;
+}
+
 .title-cont_Checklist {
   width: 65%;
   justify-content: flex-start;

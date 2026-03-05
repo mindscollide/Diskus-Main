@@ -4,7 +4,10 @@ import { ComplianceEmptyState } from "../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import { useTranslation } from "react-i18next";
 const UpcomingComplianceDeadline = () => {
+  const { t } = useTranslation();
+
   const { setMainComplianceTabs } = useComplianceContext();
 
   const GetUpcomingDealineComplianceDashboard = useSelector(
@@ -30,7 +33,7 @@ const UpcomingComplianceDeadline = () => {
       {!hasData && (
         <div className={styles.NoUpcomingDeadlineCard}>
           <h2 className={styles.NoDataCardHeading}>
-            Upcoming Compliance Deadlines
+            {t("Upcoming-compliance-deadlines")}
           </h2>
           <ComplianceEmptyState
             type="noUpcomingCompliance"
@@ -48,7 +51,7 @@ const UpcomingComplianceDeadline = () => {
           <Row>
             <Col xs={12}>
               <h2 className={styles.cardHeading}>
-                Upcoming Compliance Deadlines
+                {t("Upcoming-compliance-deadlines")}
               </h2>
             </Col>
           </Row>
@@ -59,14 +62,16 @@ const UpcomingComplianceDeadline = () => {
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
                 </span>{" "}
-                <span className={styles.normalText}>Due This Quarter</span>
+                <span className={styles.normalText}>
+                  {t("Due-this-quarter")}
+                </span>
               </span>
 
               <span className={styles.checkUpcomingCenter}>
                 <span className={styles.boldNumber}>
                   {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
                 </span>{" "}
-                <span className={styles.normalText}>Due This Week</span>
+                <span className={styles.normalText}>{t("Due-this-week")}</span>
               </span>
             </Col>
           </Row>

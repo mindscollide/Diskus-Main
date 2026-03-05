@@ -11,6 +11,7 @@ const CustomAccordion = ({
   handleClickTitleNotes,
   isCompliance = false,
   isComplianceTask = false,
+  isComplianceTaskView = false,
 }) => {
   const expanded = isExpand === notesID;
 
@@ -19,9 +20,9 @@ const CustomAccordion = ({
       className={`${
         isCompliance === true
           ? "accordion-customForChecklist"
-          : isComplianceTask === true
-          ? "accordion-customForTasks"
-          : "accordion-custom"
+          : isComplianceTask === true || isComplianceTaskView
+            ? "accordion-customForTasks"
+            : "accordion-custom"
       } ${expanded ? "expanded" : ""}`}
     >
       <div className={isCompliance ? "FirstRow_Checklist" : "FirstRow"}>
@@ -30,8 +31,10 @@ const CustomAccordion = ({
             isCompliance
               ? "title-cont_Checklist"
               : isComplianceTask
-              ? "titleForTask"
-              : "title-cont"
+                ? "titleForTask"
+                : isComplianceTaskView
+                  ? "titleForTaskView"
+                  : "title-cont"
           }
           onClick={handleClickTitleNotes}
         >
@@ -41,9 +44,9 @@ const CustomAccordion = ({
           className={
             isCompliance
               ? "dateTime_Checklist"
-              : isComplianceTask
-              ? "NodateTime_Task"
-              : "dateTime"
+              : isComplianceTask || isComplianceTaskView
+                ? "NodateTime_Task"
+                : "dateTime"
           }
         >
           {centerField}
@@ -52,9 +55,9 @@ const CustomAccordion = ({
           className={
             isCompliance
               ? "icons_Checklist"
-              : isComplianceTask
-              ? "icons_Task"
-              : "icons"
+              : isComplianceTask || isComplianceTaskView
+                ? "icons_Task"
+                : "icons"
           }
         >
           {endField}

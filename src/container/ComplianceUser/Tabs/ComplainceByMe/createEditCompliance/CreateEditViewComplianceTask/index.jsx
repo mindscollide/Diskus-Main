@@ -38,10 +38,10 @@ const CreateEditViewComplianceTask = () => {
     severity: "error",
   });
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
@@ -73,24 +73,24 @@ const CreateEditViewComplianceTask = () => {
         complianceId: complianceInfo.complianceId,
       };
       dispatch(
-        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+        GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t),
       );
     }
   }, [complianceInfo]);
   console.log(
     ComplianceChecklistData,
-    "ComplianceChecklistDataComplianceChecklistData"
+    "ComplianceChecklistDataComplianceChecklistData",
   );
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsByComplianceId
+        .GetComplianceChecklistsByComplianceId,
   );
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
   // useEffect(() => {
@@ -138,7 +138,7 @@ const CreateEditViewComplianceTask = () => {
       try {
         console.log(
           getAllComplianceChecklistTask,
-          "getAllComplianceChecklistTask"
+          "getAllComplianceChecklistTask",
         );
 
         setComplianceCheckListData(getAllComplianceChecklistTask.checklistList);
@@ -147,13 +147,13 @@ const CreateEditViewComplianceTask = () => {
 
         setExpandedCheckListIds(
           getAllComplianceChecklistTask.checklistList.map(
-            (data, index) => data.checklistId
-          )
+            (data, index) => data.checklistId,
+          ),
         );
 
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
-          0
+          0,
         );
         setTaskCount(totalTaskCount);
       } catch (error) {}
@@ -162,15 +162,16 @@ const CreateEditViewComplianceTask = () => {
 
   console.log(
     GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId"
+    "GetComplianceChecklistsByComplianceId",
   );
   const handleDeleteTask = (TaskId) => {
     console.log(TaskId, "TaskId");
+    let complianceId = complianceInfo?.complianceId;
     const Data = {
       TaskID: TaskId,
       NewStatusID: 6,
     };
-    dispatch(ChangeTaskStatusAPI(navigate, Data, t));
+    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
   };
 
   const handleCloseButton = () => {
@@ -202,8 +203,9 @@ const CreateEditViewComplianceTask = () => {
       <div className={styles["checklistAccordian"]}>
         {ComplianceChecklistData && ComplianceChecklistData?.length > 0
           ? ComplianceChecklistData.map((data, index) => {
+              console.log(data, "Cajhsaksbhab");
               const isExpanded = expandedCheckListIds.find(
-                (data2, index) => data2 === data.checklistId
+                (data2, index) => data2 === data.checklistId,
               );
               return (
                 <div key={index}>
@@ -289,7 +291,7 @@ const CreateEditViewComplianceTask = () => {
                           >
                             <span className={styles["dueDateStyle"]}>
                               {`${t("Due-date")}: ${formatDateToYMD(
-                                data.dueDate
+                                data.dueDate,
                               )}`}{" "}
                               {}
                             </span>

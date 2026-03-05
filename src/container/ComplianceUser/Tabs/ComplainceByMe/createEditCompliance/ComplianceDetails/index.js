@@ -84,26 +84,27 @@ const ComplainceDetails = () => {
     setComlianceCompleteExceptionModal,
     setComlianceStatusReopenedModal,
     complianceReopenDetailsState,
+    criticalityOptions,
   } = useComplianceContext();
 
   console.log(
-    { checkListData, complianceDetailsState },
-    "checkListTabscheckListTabs"
+    { complianceDetailsState, complianceDetailsState },
+    "checkListTabscheckListTabs",
   );
 
   console.log(complianceDetailsState, "complianceDetailsState");
   const complianceDataroomFolderId = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId
+      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
   );
   const complianceReopenedDetail = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails
+    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails,
   );
 
   console.log(
     complianceDataroomFolderId,
     complianceReopenedDetail,
-    "complianceReopenedDetail"
+    "complianceReopenedDetail",
   );
 
   const { t } = useTranslation();
@@ -120,31 +121,31 @@ const ComplainceDetails = () => {
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAllAuthoritiesDropdown
+    (state) => state.ComplainceSettingReducerReducer.GetAllAuthoritiesDropdown,
   );
   const GetAllTagsByOrganizationIDData = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAllTagsByOrganizationID
+    (state) => state.ComplainceSettingReducerReducer.GetAllTagsByOrganizationID,
   );
   const viewComplianceByMeDetails = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsByComplianceId
+        .GetComplianceChecklistsByComplianceId,
   );
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId
+        .GetComplianceChecklistsWithTasksByComplianceId,
   );
   const authorityRespnseMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.ResponseMessage
+    (state) => state.ComplainceSettingReducerReducer.ResponseMessage,
   );
   const authorityseverityMessage = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.severity
+    (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
   const [open, setOpen] = useState({
@@ -153,22 +154,7 @@ const ComplainceDetails = () => {
     severity: "error",
   });
   const [editComplianceData, setEditComplianceData] = useState(null);
-  console.log(tagsOptions, "GetAllTagsByOrganizationIDData");
 
-  const criticalityOptions = [
-    {
-      label: "Low",
-      value: 1,
-    },
-    {
-      label: "Medium",
-      value: 2,
-    },
-    {
-      label: "High",
-      value: 3,
-    },
-  ];
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
     useState(false);
   const [checkAnyTaskOnPendingState, setCheckAnyTaskOnPendingState] =
@@ -195,8 +181,8 @@ const ComplainceDetails = () => {
           1,
           setComplianceAddEditViewState,
           setCreateEditComplaince,
-          setShowViewCompliance
-        )
+          setShowViewCompliance,
+        ),
       );
     }
   }, []);
@@ -229,7 +215,7 @@ const ComplainceDetails = () => {
         });
 
         const selectedCriticality = criticalityOptions.find(
-          (item) => item.label === criticalityLevel
+          (item) => item.label === criticalityLevel,
         );
         setComplianceDetailsState((prev) => ({
           ...prev,
@@ -258,7 +244,7 @@ const ComplainceDetails = () => {
                 value: data.statusId,
                 label: data.statusName,
               };
-            }
+            },
           );
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
@@ -268,14 +254,18 @@ const ComplainceDetails = () => {
           };
           dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
           dispatch(
-            GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
+            GetComplianceChecklistsWithTasksByComplianceIdAPI(
+              navigate,
+              Data,
+              t,
+            ),
           );
         }
 
         // check if any status is Pending to show confirmation modal on submit for approval & Complete
         if (Array.isArray(checklists) && checklists.length > 0) {
           const hasPendingChecklist = checklists.some(
-            (checklist) => checklist?.status?.statusName === "Pending"
+            (checklist) => checklist?.status?.statusName === "Pending",
           );
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
@@ -286,7 +276,7 @@ const ComplainceDetails = () => {
         // Check if any task status in pending the show confirmation modal on Complete
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasPendingTask = checklistTasks.some(
-            (task) => task?.taskStatus?.statusName === "Pending"
+            (task) => task?.taskStatus?.statusName === "Pending",
           );
 
           setCheckAnyTaskOnPendingState(hasPendingTask);
@@ -325,7 +315,7 @@ const ComplainceDetails = () => {
           const hasTaskInProgress =
             Array.isArray(checklistTasks) &&
             checklistTasks.some(
-              (task) => task?.taskStatus?.statusName === "In Progress"
+              (task) => task?.taskStatus?.statusName === "In Progress",
             );
 
           setCheckAnyTaskInProgress(hasTaskInProgress);
@@ -343,7 +333,7 @@ const ComplainceDetails = () => {
       GetComplianceChecklistsByComplianceId !== null
     ) {
       setChecklistCount(
-        GetComplianceChecklistsByComplianceId.checklistList.length
+        GetComplianceChecklistsByComplianceId.checklistList.length,
       );
       // setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
       // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
@@ -362,7 +352,7 @@ const ComplainceDetails = () => {
         const checklistList = getAllComplianceChecklistTask.checklistList;
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
-          0
+          0,
         );
         setTaskCount(totalTaskCount);
       } catch (error) {}
@@ -429,13 +419,13 @@ const ComplainceDetails = () => {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
             dispatch(
-              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles)
-            )
-          )
+              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles),
+            ),
+          ),
         );
         // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
-          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID)
+          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
         // 3️⃣ Build payload AFTER data exists
@@ -457,12 +447,12 @@ const ComplainceDetails = () => {
             t,
             editComplianceData,
             setEditComplianceData,
-            setChecklistTabs
-          )
+            setChecklistTabs,
+          ),
         );
       } else {
         dispatch(
-          EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs)
+          EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs),
         );
       }
 
@@ -548,7 +538,7 @@ const ComplainceDetails = () => {
         authorityId: complianceDetailsState.authority.value,
         criticality: complianceDetailsState.criticality.value,
         dueDate: multiDatePickerDateChangIntoUTC(
-          complianceDetailsState.dueDate
+          complianceDetailsState.dueDate,
         ),
         newStatusId: complianceDetailsState.status.value,
         tags: tagsArr,
@@ -561,8 +551,8 @@ const ComplainceDetails = () => {
           complianceDetailsState.status.value === 7
             ? complianceOnHoldSelectOption
             : complianceDetailsState.status.value === 9
-            ? complianceCancelSelectOption
-            : 0, // On Hold Compliance Including Checklist and Task
+              ? complianceCancelSelectOption
+              : 0, // On Hold Compliance Including Checklist and Task
       };
       if (complianceDetailsState.status.value === 6) {
         // There should we use update with repopend compliancere
@@ -580,7 +570,7 @@ const ComplainceDetails = () => {
           "DataReOpenCompliance",
           reopenDataroomMap,
           complianceReopenDetailsState,
-          DataReOpenCompliance
+          DataReOpenCompliance,
         );
         setEditComplianceData(Data);
         dispatch(
@@ -588,8 +578,8 @@ const ComplainceDetails = () => {
             navigate,
             DataReOpenCompliance,
             t,
-            reopenDataroomMap
-          )
+            reopenDataroomMap,
+          ),
         );
         return;
       }
@@ -605,12 +595,18 @@ const ComplainceDetails = () => {
         authorityId: complianceDetailsState.authority.value,
         criticality: complianceDetailsState.criticality.value,
         dueDate: multiDatePickerDateChangIntoUTC(
-          complianceDetailsState.dueDate
+          complianceDetailsState.dueDate,
         ),
         tags: tagsArr,
       };
       dispatch(
-        AddComplianceAPI(navigate, Data, t, setComplianceInfo, setChecklistTabs)
+        AddComplianceAPI(
+          navigate,
+          Data,
+          t,
+          setComplianceInfo,
+          setChecklistTabs,
+        ),
       );
     }
   };
@@ -653,8 +649,8 @@ const ComplainceDetails = () => {
           Data,
           t,
           setIsChecklistTitleExist,
-          setErrors
-        )
+          setErrors,
+        ),
       );
       return;
     }
@@ -682,8 +678,8 @@ const ComplainceDetails = () => {
           Data,
           t,
           setIsChecklistTitleExist,
-          setErrors
-        )
+          setErrors,
+        ),
       );
     }
   };
@@ -713,8 +709,8 @@ const ComplainceDetails = () => {
           Data,
           t,
           setIsChecklistTitleExist,
-          setErrors
-        )
+          setErrors,
+        ),
       );
     }
   };
@@ -724,7 +720,7 @@ const ComplainceDetails = () => {
     if (inputValue.length < 3) return [];
 
     const tags = await dispatch(
-      GetAllTagsByOrganizationIDAPI(navigate, inputValue, t)
+      GetAllTagsByOrganizationIDAPI(navigate, inputValue, t),
     );
 
     return tags.map((tag) => ({
@@ -738,7 +734,7 @@ const ComplainceDetails = () => {
     if (complianceDetailsState.tags.length >= 5) return;
 
     const exists = complianceDetailsState.tags.some(
-      (tag) => tag.tagTitle.toLowerCase() === option.label.toLowerCase()
+      (tag) => tag.tagTitle.toLowerCase() === option.label.toLowerCase(),
     );
 
     if (exists) return;
@@ -766,8 +762,8 @@ const ComplainceDetails = () => {
         tagsValue.length >= MAX_TAG_LENGTH
           ? "#ff4d4f"
           : state.isFocused
-          ? base.boxShadow
-          : "none",
+            ? base.boxShadow
+            : "none",
       "&:hover": {
         borderColor:
           tagsValue.length >= MAX_TAG_LENGTH ? "#f16b6b" : base.borderColor,
@@ -1121,7 +1117,7 @@ const ComplainceDetails = () => {
                         formatCreateLabel={(input) => `Add "${input}"`}
                         isOptionDisabled={(option) =>
                           complianceDetailsState.tags.some(
-                            (tag) => tag.tagID === option.value
+                            (tag) => tag.tagID === option.value,
                           )
                         }
                         components={{
@@ -1148,7 +1144,7 @@ const ComplainceDetails = () => {
                             setComplianceDetailsState((prev) => ({
                               ...prev,
                               tags: prev.tags.filter(
-                                (t) => t.tagID !== tag.tagID
+                                (t) => t.tagID !== tag.tagID,
                               ),
                             }))
                           }

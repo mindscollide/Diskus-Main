@@ -50,7 +50,7 @@ const AddEditViewAuthorityModal = () => {
   const [selected, setSelected] = useState("US");
 
   const GetAuthorityByAuthorityId = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAuthorityByID
+    (state) => state.ComplainceSettingReducerReducer.GetAuthorityByID,
   );
 
   const [authorityDetails, setAuthorityDetails] = useState({
@@ -85,7 +85,7 @@ const AddEditViewAuthorityModal = () => {
 
   //   let organizationID = localStorage.getItem("organizationID");
   const countryNamesReducerCountryNamesData = useSelector(
-    (state) => state.countryNamesReducer.CountryNamesData
+    (state) => state.countryNamesReducer.CountryNamesData,
   );
   console.log(authorityNameRef, "authorityNameRefauthorityNameRef");
   // Initial useEffect
@@ -114,7 +114,7 @@ const AddEditViewAuthorityModal = () => {
             value: data.pK_WorldCountryID,
             label: data.countryName,
           };
-        }
+        },
       );
       setCountryNames(newCountryMapData);
     }
@@ -144,7 +144,7 @@ const AddEditViewAuthorityModal = () => {
 
           // Find country for flag dropdown
           const countryObj = Object.values(countryNameforPhoneNumber).find(
-            (item) => item.secondary === phoneCode
+            (item) => item.secondary === phoneCode,
           );
 
           if (countryObj) {
@@ -155,7 +155,7 @@ const AddEditViewAuthorityModal = () => {
         setSelected(selectedCountryCode);
 
         let getCountryObj = countryNamesReducerCountryNamesData.find(
-          (country) => country.pK_WorldCountryID === authority.countryId
+          (country) => country.pK_WorldCountryID === authority.countryId,
         );
 
         if (getCountryObj) {
@@ -263,8 +263,8 @@ const AddEditViewAuthorityModal = () => {
           t,
           setAddEditViewAuthoriyModal,
           searchPayload,
-          setSearchPayload
-        )
+          setSearchPayload,
+        ),
       );
     }
   };
@@ -288,8 +288,8 @@ const AddEditViewAuthorityModal = () => {
           authorityDetails.status
             ? 0
             : authorityDetails.status === "Active"
-            ? 1
-            : 2,
+              ? 1
+              : 2,
       };
       console.log(Data, "Update authority");
 
@@ -300,8 +300,8 @@ const AddEditViewAuthorityModal = () => {
           t,
           setAddEditViewAuthoriyModal,
           searchPayload,
-          setSearchPayload
-        )
+          setSearchPayload,
+        ),
       );
     }
   };
@@ -414,8 +414,8 @@ const AddEditViewAuthorityModal = () => {
                 value,
                 t,
                 setErrors,
-                setIsAuthorityExist
-              )
+                setIsAuthorityExist,
+              ),
             );
           }
         } else {
@@ -425,8 +425,8 @@ const AddEditViewAuthorityModal = () => {
               value,
               t,
               setErrors,
-              setIsAuthorityExist
-            )
+              setIsAuthorityExist,
+            ),
           );
         }
       } catch (error) {}
@@ -449,8 +449,8 @@ const AddEditViewAuthorityModal = () => {
                 value,
                 t,
                 setErrors,
-                setIsShortCodeExist
-              )
+                setIsShortCodeExist,
+              ),
             );
           }
         } else {
@@ -460,8 +460,8 @@ const AddEditViewAuthorityModal = () => {
               value,
               t,
               setErrors,
-              setIsShortCodeExist
-            )
+              setIsShortCodeExist,
+            ),
           );
         }
       } catch (error) {}
@@ -481,6 +481,7 @@ const AddEditViewAuthorityModal = () => {
     setAuthorityDetails({
       ...authorityDetails,
       phoneCode: a.secondary,
+      phone: "",
     });
     console.log({ a, shortCode }, "CountryIDCountryID");
   };
@@ -515,10 +516,10 @@ const AddEditViewAuthorityModal = () => {
           !addViewAuthorityDetails
             ? null
             : authorityViewState === 1
-            ? t("Add-authority")
-            : authorityViewState === 2
-            ? t("Edit-authority")
-            : t("View-authority")
+              ? t("Add-authority")
+              : authorityViewState === 2
+                ? t("Edit-authority")
+                : t("View-authority")
         }
         closeButton={true}
         ModalBody={
@@ -560,7 +561,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Authority-name"
+                            "Authority-name",
                           )}:`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.name}
@@ -681,7 +682,7 @@ const AddEditViewAuthorityModal = () => {
                         ) : (
                           <div className="mt-2">
                             <div className={styles["authorityViewLabel"]}>{`${t(
-                              "Short-code"
+                              "Short-code",
                             )}`}</div>
                             <div className={styles["authorityViewValue"]}>
                               {authorityDetails.shortCode}
@@ -760,7 +761,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Sector"
+                            "Sector",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.sector}
@@ -790,7 +791,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Website"
+                            "Website",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.website}
@@ -849,7 +850,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Country"
+                            "Country",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {selectCountry?.label}
@@ -881,7 +882,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Address"
+                            "Address",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.address}
@@ -915,7 +916,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Contact-person-name"
+                            "Contact-person-name",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.contactPersonName}
@@ -946,7 +947,7 @@ const AddEditViewAuthorityModal = () => {
                       ) : (
                         <div className="mt-2">
                           <div className={styles["authorityViewLabel"]}>{`${t(
-                            "Email"
+                            "Email",
                           )}`}</div>
                           <div className={styles["authorityViewValue"]}>
                             {authorityDetails.email}
@@ -1067,7 +1068,7 @@ const AddEditViewAuthorityModal = () => {
                     >
                       <div className={styles["ConfirmationHeading"]}>
                         {t(
-                          "All your changes will be lost. Are you sure you want to discard them?"
+                          "All your changes will be lost. Are you sure you want to discard them?",
                         )}
                       </div>
                     </Col>

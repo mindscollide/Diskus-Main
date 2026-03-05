@@ -50,7 +50,7 @@ import TalkChat from "./talk-chat/Talk-Chat";
 import TalkNew from "./talk-chat/Talk-New";
 import TalkVideo from "./talk-Video/TalkVideo";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
 import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
@@ -69,6 +69,7 @@ const Talk = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [notesModal, setNotesModal] = useState(false);
   const { activeVideoIcon, setActiveVideoIcon } = useTalkContext();
   const {
@@ -80,6 +81,9 @@ const Talk = () => {
     setEndOfComplianceReport,
     setEndOfQuarterReport,
     setAccumulativeReport,
+    setPendingNavigation,
+    createEditCompliance,
+    setCloseConfirmationModal,
   } = useComplianceContext();
   const {
     pendingApprovalsTabCount,
@@ -161,6 +165,8 @@ const Talk = () => {
   let isMeetingVideo = JSON.parse(localStorage.getItem("isMeetingVideo"));
 
   let isWaiting = JSON.parse(localStorage.getItem("isWaiting"));
+
+  const isComplianceActive = location.pathname === "/Diskus/compliance";
 
   // for sub menus Icons
   const [subIcons, setSubIcons] = useState(true);
@@ -260,6 +266,14 @@ const Talk = () => {
     dispatch,
   );
   const handleMeetingPendingApprovals = async () => {
+    console.log("Check Publish Scenario's");
+    console.log(createEditCompliance, "Check Publish Scenario's");
+    if (createEditCompliance) {
+      console.log("Check Publish Scenario's");
+      setPendingNavigation("/Diskus/Minutes");
+      setCloseConfirmationModal(true);
+      return true;
+    }
     if (
       Number(editorRole?.status) === 10 &&
       viewAdvanceMeetingModal &&
@@ -526,7 +540,13 @@ const Talk = () => {
           {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
             <Tooltip placement="leftTop" title={t("Compliance")}>
               <div
-                className={subIcons ? "talk_subIcon" : "talk_subIcon_hidden"}
+                className={
+                  isComplianceActive && subIcons
+                    ? "talk_subIcon with-hover"
+                    : subIcons
+                      ? "talk_subIcon"
+                      : "talk_subIcon_hidden"
+                }
                 onClick={handleClickComplianceIcon}
               >
                 <svg width="28" height="34" viewBox="0 0 28 34" fill="none">

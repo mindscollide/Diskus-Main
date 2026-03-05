@@ -18,7 +18,12 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import CustomUpload from "../../../../../components/elements/upload/Upload";
 import { showMessage } from "../../../../../components/elements/snack_bar/utill";
 import { maxFileSize } from "../../../../../commen/functions/utils";
-import { formatDateToYMD, parseUTCDateString } from "../../commonFunctions";
+import {
+  formatDateToYMD,
+  parseUTCDateString,
+  parseYYYYMMDDHHmmssToDate,
+  parseYYYYMMDDToEndOfDay,
+} from "../../commonFunctions";
 const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   const { t } = useTranslation();
   const [tempDueDateChange, setTempDueDateChange] = useState("");
@@ -54,6 +59,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       resetModalStates();
     }
   };
+
   const handleProceedButton = () => {
     console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
     setComlianceStatusReopenedModal(false);
@@ -77,6 +83,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       }));
     }
   };
+
   const changeComplainceDueDate = (date) => {
     let meetingDateValueFormat2 = new Date(date);
     meetingDateValueFormat2.setHours(23);
@@ -115,14 +122,14 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       }
 
       let fileExists = complianceReopenDetailsState.attachments.some(
-        (oldFileData) => oldFileData.name === fileData.name
+        (oldFileData) => oldFileData.name === fileData.name,
       );
 
       if (!size) {
         showMessage(
           t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
-          setOpen
+          setOpen,
         );
       } else if (!sizezero) {
         showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
@@ -145,6 +152,15 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     }));
   };
   console.log(complianceDetailsState.dueDate, "Current DueDate");
+
+  const currentDueDateObj = parseYYYYMMDDHHmmssToDate(
+    complianceDetailsState?.dueDate,
+  );
+
+  // Make it strictly greater than current due date by adding 1 day
+  const minSelectableDate = new Date(currentDueDateObj);
+  minSelectableDate.setDate(minSelectableDate.getDate() + 1);
+  minSelectableDate.setHours(0, 0, 0, 0); // start of the day
 
   return (
     <Modal
@@ -191,7 +207,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                 value={complianceReopenDetailsState.dueDate}
                 format={"DD/MM/YYYY"}
                 // minDate={moment().toDate()}
-                minDate={complianceDetailsState.dueDate}
+                minDate={minSelectableDate}
                 placeholder={t("Due-date")}
                 render={
                   <InputIcon
@@ -255,7 +271,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                             }}
                           />
                         );
-                      }
+                      },
                     )
                   : null}
               </section>

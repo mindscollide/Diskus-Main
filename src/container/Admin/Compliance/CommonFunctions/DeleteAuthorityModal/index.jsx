@@ -22,9 +22,14 @@ const DeleteAuthorityModal = () => {
   //   let userID = localStorage.getItem("userID");
 
   //   let organizationID = localStorage.getItem("organizationID");
+  const ComplianceListData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ComplianceListData,
+  );
+
+  console.log(ComplianceListData, "ComplianceListDataComplianceListData");
 
   const deleteAuthorityModal = useSelector(
-    (state) => state.ManageAuthorityReducer.deleteAuthorityModal
+    (state) => state.ManageAuthorityReducer.deleteAuthorityModal,
   );
 
   const handleCancelButton = () => {
@@ -42,22 +47,44 @@ const DeleteAuthorityModal = () => {
     <Modal
       show={deleteAuthorityModal}
       setShow={dispatch(showDeleteAuthorityModal)}
+      modalBodyClassName={styles["DeletrAuthorityModal_Body"]}
       modalFooterClassName={"d-block border-0"}
       modalHeaderClassName={"d-block border-0"}
-      size={"md"}
+      size={"xl"}
       onHide={() => {
         dispatch(showDeleteAuthorityModal(false));
       }}
       ModalBody={
         <>
           <Row>
-            <Col lg={12} md={12} sm={12} xs={12} className="text-center">
+            <Col lg={12} md={12} sm={12} xs={12} className="text-start">
               <div className={styles["ConfirmationHeading"]}>
-                {t("Do-you-want-to-delete-this-authority")}
+                {/* {t("Do-you-want-to-delete-this-authority")} */}
+                {t("Are you sure you want to delete this authority code?")}
               </div>
-              <div className={styles["ConfirmationHeading"]}>
-                {t("The-authority-will-be-permanently-deleted")}
+              <div className={styles["subConfirmationHeading"]}>
+                {/* {t("The-authority-will-be-permanently-deleted")} */}
+                {t(
+                  "Once deleted, it cannot be recovered. However, all compliance data already created under this authority will remain preserved and unaffected.",
+                )}
               </div>
+
+              <p className={styles["PsxHeading"]}>
+                {"PSX code-Based Compliance"}
+              </p>
+              {/*  Compliance Titles List */}
+              {ComplianceListData?.complianceList?.length > 0 && (
+                <div className={styles["ComplianceListContainer"]}>
+                  {ComplianceListData.complianceList.map((item) => (
+                    <div
+                      key={item.complianceId}
+                      className={styles["ComplianceItem"]}
+                    >
+                      {item.complianceTitle}
+                    </div>
+                  ))}
+                </div>
+              )}
             </Col>
           </Row>
         </>
@@ -70,16 +97,16 @@ const DeleteAuthorityModal = () => {
               md={12}
               sm={12}
               xs={12}
-              className="d-flex justify-content-center gap-2"
+              className="d-flex justify-content-end gap-2 px-5"
             >
               <Button
                 text={t("Cancel")}
-                className={styles["CancelButton"]}
+                className={styles["ProceedButtonStyles"]}
                 onClick={handleCancelButton}
               />
               <Button
-                text={t("Delete")}
-                className={styles["ProceedButtonStyles"]}
+                text={t("Delete-permanently")}
+                className={styles["CancelButton"]}
                 onClick={handleProceedButton}
               />
             </Col>

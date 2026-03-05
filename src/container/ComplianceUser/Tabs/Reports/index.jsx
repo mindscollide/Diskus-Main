@@ -8,8 +8,8 @@ import styles from "./Report.module.css";
 import CustomButton from "../../../../components/elements/button/Button";
 import { Col, Row } from "react-bootstrap";
 import NoReportImg from "../../../../assets/images/NoReportsImg.png";
-import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
-import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
+import ArrowUpIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
+import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import ComplianceReportLiting from "../../../../assets/images/compliance-report-listing.png";
 import ComplianceStatusReportCheckedIcon from "../../../../assets/images/ComplianceStatusReportCheckedIcon.png";
@@ -17,6 +17,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import { Checkbox } from "antd";
 import {
   formatDateToYMD,
+  formatGeneratedOnDateTime,
   getDueDateTimeNumber,
 } from "../../CommonComponents/commonFunctions";
 import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
@@ -28,7 +29,11 @@ import {
   GetQuarterReportAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useSelector } from "react-redux";
-import { formatDateToYYYYMMDD } from "../../../../commen/functions/date_formater";
+import {
+  formatDateToYYYYMMDD,
+  newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
+} from "../../../../commen/functions/date_formater";
 
 const Reports = () => {
   const { t } = useTranslation();
@@ -36,7 +41,7 @@ const Reports = () => {
   const navigate = useNavigate();
 
   const GetReportListingData = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetReportListingData
+    (state) => state.ComplainceSettingReducerReducer.GetReportListingData,
   );
 
   const [isScroll, setIsScroll] = useState(false);
@@ -72,7 +77,7 @@ const Reports = () => {
   //  Initial Load
   useEffect(() => {
     dispatch(
-      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t)
+      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t),
     );
   }, []);
 
@@ -254,8 +259,8 @@ const Reports = () => {
       GetComplianceStandingReportAPI(
         navigate,
         { startDate: "", endDate: "" },
-        t
-      )
+        t,
+      ),
     );
   };
 
@@ -275,8 +280,8 @@ const Reports = () => {
               {record.reportTypeId === 1
                 ? t("End-of-Compliance-Reports")
                 : record.reportTypeId === 2
-                ? t("Quarterly-reports")
-                : t("Accumulative-reports")}
+                  ? t("Quarterly-reports")
+                  : t("Accumulative-reports")}
             </span>
           );
         },
@@ -290,13 +295,13 @@ const Reports = () => {
             ) : reportTitleSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
         dataIndex: "reportTitle",
         key: "reportTitle",
-        width: "35%",
+        width: "20%",
         ellipsis: true,
         sorter: (a, b) =>
           reportTitleSort === "descend"
@@ -304,12 +309,12 @@ const Reports = () => {
                 ?.toLowerCase()
                 .localeCompare(a.reportTitle?.toLowerCase())
             : reportTitleSort === "ascend"
-            ? a.reportTitle
-                ?.toLowerCase()
-                .localeCompare(b.reportTitle?.toLowerCase())
-            : a.reportTitle
-                ?.toLowerCase()
-                .localeCompare(b.reportTitle?.toLowerCase()),
+              ? a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase())
+              : a.reportTitle
+                  ?.toLowerCase()
+                  .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
           return <span>{text}</span>;
@@ -320,31 +325,52 @@ const Reports = () => {
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Generated-on")}
             {generatedOnSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             ) : generatedOnSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowUpIcon} alt="" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" />
             )}
           </span>
         ),
         dataIndex: "generatedOn",
         key: "generatedOn",
-        width: "13%",
+        width: "20%",
         ellipsis: true,
         align: "left",
-        render: (_, record) => {
-          return <span>{`${formatDateToYMD(record.generatedOn)}`}</span>;
-        },
+        sortDirections: ["descend", "ascend"],
+        onHeaderCell: () => ({
+          onClick: () => {
+            setGeneratedOnSort((order) => {
+              if (order === "descend") return "ascend";
+              if (order === "ascend") return null;
+              return "descend";
+            });
+          },
+        }),
         sorter: (a, b) => {
-          const aTime = getDueDateTimeNumber(a.generatedOn, a.generatedOnTime);
-          const bTime = getDueDateTimeNumber(b.generatedOn, b.generatedOnTime);
-
-          if (generatedOnSort === "descend") return bTime - aTime;
-          if (generatedOnSort === "ascend") return aTime - bTime;
-
-          return aTime - bTime;
+          const parseDateTime = (d, t) =>
+            Date.parse(
+              `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}, ${t.slice(0, 2)}:${t.slice(2, 4)}:${t.slice(4, 6)}`,
+            );
+          const diff =
+            parseDateTime(a.generatedOn, a.generatedOnTime) -
+            parseDateTime(b.generatedOn, b.generatedOnTime);
+          return generatedOnSort === "descend"
+            ? -diff
+            : generatedOnSort === "ascend"
+              ? diff
+              : 0;
         },
+        render: (_, record) => (
+          <span>
+            {formatGeneratedOnDateTime(
+              record.generatedOn,
+              record.generatedOnTime,
+            )}
+          </span>
+        ),
+        generatedOnSort,
       },
       {
         title: (
@@ -355,7 +381,7 @@ const Reports = () => {
             ) : startDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -384,7 +410,7 @@ const Reports = () => {
             ) : endDateSort === "ascend" ? (
               <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             ) : (
-              <img src={DefaultSortIcon} alt="" className="cursor-pointer" />
+              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
             )}
           </span>
         ),
@@ -443,43 +469,38 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
+    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t],
   );
 
   return (
     <>
+      <section className={styles["ComplianceStatusReport_Section"]}>
+        <Row className={styles["ComplianceReport"]}>
+          <Col lg={2} ms={2} sm={2}>
+            <img className="" src={ComplianceReportLiting} alt="" />
+          </Col>
+          <Col lg={7} ms={6} sm={6}>
+            <h4 className={styles["ComplianceStatusReport_heading"]}>
+              {t("Organizations-compliance-status-report-as-of-today.")}
+
+              <span
+                className={styles["ComplianceStatusReportGenerated_heading"]}
+              ></span>
+            </h4>
+          </Col>
+          <Col lg={3} ms={4} sm={4}>
+            <div className="d-flex align-items-center justify-content-center mt-3">
+              <CustomButton
+                className={styles["actionButtons_complianceStatusReport"]}
+                text={"View Report"}
+                onClick={onClickOfViewPort}
+              />
+            </div>
+          </Col>
+        </Row>
+      </section>
       {complianceReportList?.length > 0 ? (
         <>
-          <section className={styles["ComplianceStatusReport_Section"]}>
-            <Row className={styles["ComplianceReport"]}>
-              <Col lg={2} ms={2} sm={2}>
-                <img className="" src={ComplianceReportLiting} alt="" />
-              </Col>
-              <Col lg={7} ms={6} sm={6}>
-                <h4 className={styles["ComplianceStatusReport_heading"]}>
-                  {t("Organizations-compliance-status-report-as-of-today.")}
-
-                  <span
-                    className={
-                      styles["ComplianceStatusReportGenerated_heading"]
-                    }
-                  >
-                    Generated{" "}
-                    <img src={ComplianceStatusReportCheckedIcon} alt="" />
-                  </span>
-                </h4>
-              </Col>
-              <Col lg={3} ms={4} sm={4}>
-                <div className="d-flex align-items-center justify-content-center mt-3">
-                  <CustomButton
-                    className={styles["actionButtons_complianceStatusReport"]}
-                    text={"View Report"}
-                    onClick={onClickOfViewPort}
-                  />
-                </div>
-              </Col>
-            </Row>
-          </section>
           <CustomTable
             rows={complianceReportList}
             column={columns}

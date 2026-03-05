@@ -79,6 +79,8 @@ const SearchComplianceReportModal = () => {
     const data = buildApiPayload();
     setComplianceReportList([]);
     dispatch(ComplianceReportListingAPI(navigate, data, t));
+    setsearchbox(false);
+    setEnterpressed(false);
   };
 
   /* ---------------------------------- */

@@ -226,16 +226,29 @@ import {
 
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 import {
+  ComplianceByManagerMqtt,
+  ComplianceByUserMqtt,
   complianceChecklistAddedMQTT,
   complianceChecklistDeletedMQTT,
   complianceChecklistUpdateMQTT,
   complianceCreatedFromMQTT,
   complianceReopenMQTT,
   complianceUpdateMQTT,
+  QuarterlySubmittedByManagerMqtt,
+  QuarterlySubmittedByUserMqtt,
+  QuarterlyTaskDashboardManagerMqtt,
+  QuarterlyTaskDashboardUserMqtt,
+  ReopenedComplianceManagerMqtt,
+  ReopenedComplianceUserMqtt,
   setInactiveStatusData,
   setOrganizationSettingUpdateData,
   taskMappedChecklistMQTT,
+  TasksDashboardFormManagerMqtt,
+  TasksDashboardForUserMqtt,
+  UpcomingDeadlineManagerDashboardMqtt,
+  UpcomingDeadlineUserDashboardMqtt,
 } from "../../store/actions/ComplainSettingActions";
+import { useComplianceContext } from "../../context/ComplianceContext";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -247,6 +260,7 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
   const {
     editorRole,
     cancelConfirmationModal,
@@ -3028,9 +3042,8 @@ const Dashboard = () => {
               });
               setNotificationID(id);
             }
-
           } catch (error) {
-            console.log(error, "errorerror PUBLISHED_POLL_DELETED")
+            console.log(error, "errorerror PUBLISHED_POLL_DELETED");
           }
         } else if (
           data.payload.message
@@ -4831,6 +4844,8 @@ const Dashboard = () => {
       if (data.action.toLowerCase() === "Authority".toLowerCase()) {
         console.log("AUTHORITY_INACTIVE", data);
       }
+
+      // For  Compliance MQTT
       if (data.action.toLowerCase() === "Compliance".toLowerCase()) {
         //COMPLIANCE CREATED MQTT
         if (
@@ -4883,6 +4898,129 @@ const Dashboard = () => {
         ) {
           console.log(data.payload, "REOPENCOMPLIANCE");
           dispatch(taskMappedChecklistMQTT(data.payload));
+        }
+      }
+
+      // For Dashboard MQTT
+      if (data.action.toLowerCase() === "Dashboard".toLowerCase()) {
+        // UPCOMING DEADLINE MQTT FOR MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "UPCOMING_COMPLIANCE_DEADLINE_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(UpcomingDeadlineManagerDashboardMqtt(data.payload));
+          }
+        }
+
+        // UPCOMING DEADLINE MQTT FOR USERS
+        if (
+          data.message?.toLowerCase() ===
+          "UPCOMING_COMPLIANCE_DEADLINE_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(UpcomingDeadlineUserDashboardMqtt(data.payload));
+          }
+        }
+
+        // QUARTERLY TASK DASHBOARD MQTT USER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_TASK_DASHBOARD_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(QuarterlyTaskDashboardUserMqtt(data.payload));
+          }
+        }
+
+        // QUARTERLY TASK DASHBOARD MQTT MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(QuarterlyTaskDashboardManagerMqtt(data.payload));
+          }
+        }
+
+        // TASK DASHBOARD MQTT USER
+        if (
+          data.message?.toLowerCase() ===
+          "TASK_DASHBOARD_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(TasksDashboardForUserMqtt(data.payload));
+          }
+        }
+
+        // TASK DASHBOARD MQTT MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(TasksDashboardFormManagerMqtt(data.payload));
+          }
+        }
+
+        // Compliance By MQTT FOR USER
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_BY_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(ComplianceByUserMqtt(data.payload));
+          }
+        }
+
+        // Compliance By MQTT FOR MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_BY_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(ComplianceByManagerMqtt(data.payload));
+          }
+        }
+
+        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR USER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(QuarterlySubmittedByUserMqtt(data.payload));
+          }
+        }
+
+        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(QuarterlySubmittedByManagerMqtt(data.payload));
+          }
+        }
+
+        // REOPENED COMPLIANCES MQTT FOR USER
+         if (
+          data.message?.toLowerCase() ===
+          "REOPENED_COMPLIANCES_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(ReopenedComplianceUserMqtt(data.payload));
+          }
+        }
+
+        // REOPENED COMPLIANCES MQTT FOR MANAGER
+         if (
+          data.message?.toLowerCase() ===
+          "REOPENED_COMPLIANCES_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(ReopenedComplianceManagerMqtt(data.payload));
+          }
         }
       }
     } catch (error) {

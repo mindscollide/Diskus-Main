@@ -2410,3 +2410,60 @@ export const getMeetingValues = () => {
   const session = sessionStorage.getItem("isMeeting");
   return { local, session };
 };
+
+
+export const checklistStatusErrorMap = {
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_01:
+    "ChecklistID-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_02:
+    "OrganizationID-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_03:
+    "ComplianceID-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_04:
+    "StatusID-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_05:
+    "StatusChangeBy-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_06:
+    "Invalid-StatusChangeBy-user",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_07:
+    "Invalid-checklist-status",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_08:
+    "UpdatedDueDate-is-required",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_09:
+    "Checklist-not-found",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_11:
+    "Checklist-does-not-belong-to-provided-Compliance",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_12:
+    "Completed-or-Cancelled-checklist-cannot-be-changed",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_13:
+    "Checklist-status-transition-not-allowed",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_14:
+    "Pending-to-InProgress-requires-at-least-one-task",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_15:
+    "Checklist-cannot-be-completed-with-pending-tasks",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_16:
+    "Exception-occurred",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_17:
+    "Reason-required-for-OnHold-or-Cancelled",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_18:
+    "Checklist-update-failed",
+
+  Compliance_ComplianceServiceManager_ChangeChecklistStatus_50:
+    "Something-went-wrong",
+};

@@ -43,6 +43,12 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
   );
 
+  const GetUpcomingDealineComplianceDashboard = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetUpcomingDealineComplianceDashboard,
+  );
+
   console.log(
     complianceCreatedMqttData,
     "complianceCreatedMqttDatacomplianceCreatedMqttData",
@@ -103,6 +109,7 @@ export const ComlianceProvider = ({ children }) => {
     showProgressBar: false,
     complianceStatusChangeHistory: [],
   });
+
   const [complianceDetailsViewState, setComplianceDetailsViewState] = useState({
     complianceTitle: "",
     complianceId: 0,
@@ -215,6 +222,9 @@ export const ComlianceProvider = ({ children }) => {
       dueDate: "",
       attachments: [],
     });
+
+  const [upcomingDeadlineDashboard, setUpcomingDeadlineDashboard] =
+    useState(null);
 
   // Delete Checklist Confirmation Modal
   const [
@@ -338,15 +348,15 @@ export const ComlianceProvider = ({ children }) => {
   };
   const criticalityOptions = [
     {
-      label: "Low",
+      label: t("High"),
       value: 1,
     },
     {
-      label: "Medium",
+      label: t("Medium"),
       value: 2,
     },
     {
-      label: "High",
+      label: t("Low"),
       value: 3,
     },
   ];
@@ -405,6 +415,9 @@ export const ComlianceProvider = ({ children }) => {
 
   //For Reopen dashboard Card Data in COmpliance
   const [reopenDashboardList, setReopenDashboardList] = useState([]);
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
 
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
@@ -1009,6 +1022,9 @@ export const ComlianceProvider = ({ children }) => {
         setReopenDashboardList,
         viewComplianceTasksContextData,
         setViewComplianceTasksContextData,
+        criticalityOptions,
+        pendingNavigation,
+        setPendingNavigation,
       }}
     >
       {children}

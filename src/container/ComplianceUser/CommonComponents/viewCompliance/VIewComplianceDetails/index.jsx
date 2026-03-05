@@ -70,16 +70,16 @@ const ViewComplianceDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log(
-   complianceDetailsState,
-    "complianceReopenDetailsStatecomplianceReopenDetailsState"
+    complianceDetailsState,
+    "complianceReopenDetailsStatecomplianceReopenDetailsState",
   );
 
   const complianceReopenedDetail = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails
+    (state) => state.ComplainceSettingReducerReducer.addReopenComplianceDetails,
   );
   const complianceDataroomFolderId = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId
+      state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
   );
 
   console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
@@ -154,13 +154,13 @@ const ViewComplianceDetails = () => {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
             dispatch(
-              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles)
-            )
-          )
+              uploadDocumentsTaskApi(navigate, t, newData, folderID, saveFiles),
+            ),
+          ),
         );
         // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
-          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID)
+          SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
         // 3️⃣ Build payload AFTER data exists
@@ -181,18 +181,18 @@ const ViewComplianceDetails = () => {
             Data2,
             t,
             editComplianceData,
-            setEditComplianceData
+            setEditComplianceData,
             // setChecklistTabs
-          )
+          ),
         );
       } else {
         dispatch(
           EditComplianceAPI(
             navigate,
             editComplianceData,
-            t
+            t,
             // setChecklistTabs
-          )
+          ),
         );
       }
 
@@ -210,8 +210,10 @@ const ViewComplianceDetails = () => {
 
   const updateCompliance = (selectedOption) => {
     const tagsArr = complianceDetailsViewState.tags.map(
-      (data) => data.tagTitle
+      (data) => data.tagTitle,
     );
+    const selectedStatusId =
+      tempSelectComplianceStatus?.value || complianceDetailsState.status.value;
     const Data = {
       complianceId: complianceInfo.complianceId,
       complianceTitle: complianceDetailsViewState.complianceTitle,
@@ -222,16 +224,15 @@ const ViewComplianceDetails = () => {
       newStatusId: selectedOption.value,
       tags: tagsArr,
       ReasonToMakeComplianceOnHold:
-        complianceDetailsViewState.status.value === 7 ||
-        complianceDetailsViewState.status.value === 9
-          ? complianceOnHoldReasonState
+        selectedStatusId === 7 || selectedStatusId === 9
+          ? complianceOnHoldReasonState?.trim()
           : "", // On Hold Compliance
       OnHoldAlongWithComplianceCheckListAndTask:
         complianceDetailsViewState.status.value === 7
           ? complianceOnHoldSelectOption
           : complianceDetailsViewState.status.value === 9
-          ? complianceCancelSelectOption
-          : 0, // On Hold Compliance Including Checklist and Task
+            ? complianceCancelSelectOption
+            : 0, // On Hold Compliance Including Checklist and Task
     };
 
     setComplianceDetailsViewState((prev) => ({
@@ -258,8 +259,8 @@ const ViewComplianceDetails = () => {
           navigate,
           DataReOpenCompliance,
           t,
-          reopenDataroomMap
-        )
+          reopenDataroomMap,
+        ),
       );
       return;
     }
@@ -348,7 +349,7 @@ const ViewComplianceDetails = () => {
       }
     }
     // Status chnage to In Progress
-    else if (event.value === 2) {
+    if (event.value === 2) {
       console.log("herehrer");
       updateCompliance(event);
       resetModalStates();
@@ -432,7 +433,7 @@ const ViewComplianceDetails = () => {
       <Row className="mt-3">
         <Col sm={12} md={12} lg={12}>
           <div className={styles["complianceViewLabel"]}>{`${t(
-            "Description"
+            "Description",
           )}`}</div>
           <div className={styles["complianceViewValue"]}>
             {complianceDetailsState.description}
@@ -468,6 +469,11 @@ const ViewComplianceDetails = () => {
                 // value={complianceDetailsState.status}
                 // classNamePrefix="Select_status_compliance"
                 className={styles.Select_status_compliance}
+                classNamePrefix={
+                  complianceDetailsState.status?.value === 5
+                    ? "customSelectOfComplianceView"
+                    : ""
+                }
               />
             ) : (
               <div className={styles["complianceViewValue"]}>
@@ -479,7 +485,7 @@ const ViewComplianceDetails = () => {
         <Row className="mt-3">
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Criticality-level"
+              "Criticality-level",
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {complianceDetailsState.criticality.label}
@@ -487,7 +493,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Due-date"
+              "Due-date",
             )}:`}</div>
             <div className={styles["complianceViewValue"]}>
               {formatDateToYMD(complianceDetailsState.dueDate)}
@@ -495,7 +501,7 @@ const ViewComplianceDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8}>
             <div className={styles["complianceViewLabel"]}>{`${t(
-              "Tags"
+              "Tags",
             )}:`}</div>
             {Array.isArray(complianceDetailsState.tags) &&
               complianceDetailsState.tags.length > 0 &&

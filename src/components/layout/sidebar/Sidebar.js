@@ -31,6 +31,7 @@ import {
 import LeaveMeetingModalSideBar from "./LeaveMeetingModalSideBar/LeaveMeetingModalSideBar";
 import { useMeetingContext } from "../../../context/MeetingContext";
 import CancelButtonModal from "../../../container/pages/meeting/closeMeetingTab/CancelModal";
+import { useComplianceContext } from "../../../context/ComplianceContext";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -51,6 +52,15 @@ const Sidebar = () => {
     viewAdvanceMeetingModalUnpublish,
     setViewAdvanceMeetingModalUnpublish,
   } = useMeetingContext();
+
+  const {
+    setCloseConfirmationModal,
+    setCreateEditComplaince,
+    createEditCompliance,
+    pendingNavigation,
+    setPendingNavigation,
+  } = useComplianceContext();
+
   console.log(viewAdvanceMeetingModal, "viewAdvanceMeetingModal");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag,
@@ -109,8 +119,6 @@ const Sidebar = () => {
   const showVideoIntimationMessegeModal = useSelector(
     (state) => state.VideoMainReducer.LeaveVideoIntimationMessegeGlobalState,
   );
-
-  console.log(endMeetingModal, "endMeetingModalendMeetingModal");
 
   const [activateBlur, setActivateBlur] = useState(false);
   const [showMore, setShowMore] = useState(false);
@@ -201,10 +209,6 @@ const Sidebar = () => {
       dispatch(normalizeVideoPanelFlag(false));
     }
   };
-  console.log(
-    { viewAdvanceMeetingModal, editorRole, minutes, actionsPage, polls },
-    "handleMeetingSidebarClickNoCallhandleMeetingSidebarClickNoCall",
-  );
 
   const handleMeetingSidebarClickNoCall = () => {
     dispatch(showEndMeetingModal(true));
@@ -360,6 +364,12 @@ const Sidebar = () => {
     handleWithCall,
     handleNoCall,
   }) => {
+    if (createEditCompliance) {
+      setPendingNavigation(targetPath);
+      setCloseConfirmationModal(true);
+      return true;
+    }
+
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
     localStorage.setItem("navigateLocation", navigateLocationKey);
@@ -468,6 +478,16 @@ const Sidebar = () => {
     handleWithCall,
     handleNoCall,
   }) => {
+    console.log(createEditCompliance, "Checking");
+    console.log(targetPath, "Checking");
+
+    if (createEditCompliance) {
+      console.log("createEditComplaince");
+      setPendingNavigation(targetPath);
+      setCloseConfirmationModal(true);
+      return true;
+    }
+
     const activeCall = JSON.parse(localStorage.getItem("activeCall"));
     const isHost = JSON.parse(localStorage.getItem("isHost"));
     console.log("Check Route scenario's", targetPath);
@@ -535,7 +555,6 @@ const Sidebar = () => {
     return false;
   };
 
-  console.log("activeCall", CurrentMeetingStatus);
   return (
     <>
       {location.pathname.includes("/Admin") ? (
