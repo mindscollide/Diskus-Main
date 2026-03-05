@@ -602,6 +602,8 @@ const SignatureViewer = () => {
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
+          "leftPanelButton",
+          "divider-0.1",
           "underlineToolGroupButton",
           "textSelectButton",
           "textSelectButtonGroup",
@@ -610,6 +612,15 @@ const SignatureViewer = () => {
           "outlinesPanelButton",
           "comboBoxFieldToolGroupButton",
           "listBoxFieldToolGroupButton",
+          "toolbarGroup-FillAndSign",
+          "toolbarGroup-Annotate",
+          "listBoxFieldButton",
+          "comboBoxFieldButton",
+          "formFieldEditButton",
+          "stylePanelToggle",
+          "indexPanelListToggle",
+          "searchPanelToggle",
+          "notesPanelToggle",
           "toolsOverlay",
           "toolbarGroup-Shapes",
           "toolbarGroup-Edit",
@@ -620,6 +631,7 @@ const SignatureViewer = () => {
           "underlineToolGroupButton",
           "freeHandToolGroupButton",
           "stickyToolGroupButton",
+          "indexPanel",
           "squigglyToolGroupButton",
           "strikeoutToolGroupButton",
           "notesPanel",
@@ -967,19 +979,34 @@ const SignatureViewer = () => {
           );
         };
 
-        let myCustomPanel = {
-          tab: {
-            dataElement: "customPanelTab",
-            title: "customPanelTab",
-            img: "/favicon-32x32.png",
-          },
-          panel: {
-            dataElement: "customPanel",
-            render: renderCustomPanel,
-          },
-        };
+        // instance.UI.setCustomPanel(myCustomPanel);
+        // Adding a panel built with JS and DOM elements
+        instance.UI.addPanel({
+          dataElement: "customPanel",
+          location: "left",
+          icon: "/path/to/icon.svg",
+          render: renderCustomPanel,
+        });
 
-        instance.UI.setCustomPanel(myCustomPanel);
+        // You can then add a toggleElement button for this panel
+        // Using the toggle button to open the Thumbnail panel
+        const customPanelToggle =
+          new instance.UI.Components.ToggleElementButton({
+            dataElement: "customPanelToggle",
+            toggleElement: "customPanel",
+            img: "icon-header-sidebar-line",
+            title: "Custom Panel",
+          });
+
+        // Then this button should be added to a container's item using the setItems API.
+        // This container can be a modular header or a grouped items container.
+        const header = instance.UI.getModularHeader("default-top-header");
+
+        // Capture existing items ONCE
+        const existingItems = header.getItems();
+        // OPTIONAL: open panel immediately
+        // instance.UI.setCustomPanel("customPanel");
+
         //======================================== for cutome side bar =====================================//
 
         //======================================== header save button =====================================//
@@ -999,59 +1026,109 @@ const SignatureViewer = () => {
         //     reader.readAsDataURL(blob);
         //   });
         // }
-        const { WidgetFlags } = Annotations;
-        instance.UI.setHeaderItems((header) => {
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Cancel";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.onclick = handleClickCancelBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const textBoxButton = document.createElement("button");
-              textBoxButton.textContent = "Save";
-              textBoxButton.style.background = "#fff";
-              textBoxButton.style.border = "1px solid #e1e1e1";
-              textBoxButton.style.color = "#5a5a5a";
-              textBoxButton.style.padding = "8px 30px";
-              textBoxButton.style.cursor = "pointer";
-              textBoxButton.style.borderRadius = "4px";
-              textBoxButton.style.marginLeft = "10px";
-              textBoxButton.onclick = handleClickSaveBtn;
-              return textBoxButton;
-            },
-          });
-
-          header.push({
-            type: "customElement",
-            render: () => {
-              const publishBtn = document.createElement("button");
-              publishBtn.textContent = "Send";
-              publishBtn.style.background = "#6172d6";
-              publishBtn.style.color = "#fff";
-              publishBtn.style.borderRadius = "4px";
-              publishBtn.style.cursor = "pointer";
-              publishBtn.style.padding = "8px 30px";
-              publishBtn.style.margin = "10px 0 10px 10px";
-              publishBtn.style.border = "1px solid #6172d6";
-              publishBtn.onclick = handleClickPublishBtn;
-              return publishBtn;
-            },
-          });
+        const cancelButton = new instance.UI.Components.CustomButton({
+          dataElement: "cancelButton",
+          label: "Cancel",
+          title: "Cancel",
+          onClick: handleClickCancelBtn,
+          style: {
+            backgroundColor: "#ffffff",
+            border: "1px solid #e1e1e1",
+            color: "#5a5a5a",
+            padding: "8px 30px",
+            borderRadius: "4px",
+          },
         });
 
+        const saveButton = new instance.UI.Components.CustomButton({
+          dataElement: "saveButton",
+          label: "Save",
+          title: "Save",
+          onClick: handleClickSaveBtn,
+          style: {
+            backgroundColor: "#ffffff",
+            border: "1px solid #e1e1e1",
+            color: "#5a5a5a",
+            padding: "8px 30px",
+            borderRadius: "4px",
+            marginLeft: "10px",
+          },
+        });
+
+        const publishButton = new instance.UI.Components.CustomButton({
+          dataElement: "publishButton",
+          label: "Send",
+          title: "Send",
+          onClick: handleClickPublishBtn,
+          style: {
+            backgroundColor: "#6172d6",
+            border: "1px solid #6172d6",
+            color: "#ffffff",
+            padding: "8px 30px",
+            borderRadius: "4px",
+            marginLeft: "10px",
+          },
+        });
+        const { WidgetFlags } = Annotations;
+        // instance.UI.setHeaderItems((header) => {
+        //   header.push({
+        //     type: "customElement",
+        //     render: () => {
+        //       const textBoxButton = document.createElement("button");
+        //       textBoxButton.textContent = "Cancel";
+        //       textBoxButton.style.background = "#fff";
+        //       textBoxButton.style.border = "1px solid #e1e1e1";
+        //       textBoxButton.style.color = "#5a5a5a";
+        //       textBoxButton.style.padding = "8px 30px";
+        //       textBoxButton.style.cursor = "pointer";
+        //       textBoxButton.style.borderRadius = "4px";
+        //       textBoxButton.onclick = handleClickCancelBtn;
+        //       return textBoxButton;
+        //     },
+        //   });
+
+        //   header.push({
+        //     type: "customElement",
+        //     render: () => {
+        //       const textBoxButton = document.createElement("button");
+        //       textBoxButton.textContent = "Save";
+        //       textBoxButton.style.background = "#fff";
+        //       textBoxButton.style.border = "1px solid #e1e1e1";
+        //       textBoxButton.style.color = "#5a5a5a";
+        //       textBoxButton.style.padding = "8px 30px";
+        //       textBoxButton.style.cursor = "pointer";
+        //       textBoxButton.style.borderRadius = "4px";
+        //       textBoxButton.style.marginLeft = "10px";
+        //       textBoxButton.onclick = handleClickSaveBtn;
+        //       return textBoxButton;
+        //     },
+        //   });
+
+        //   header.push({
+        //     type: "customElement",
+        //     render: () => {
+        //       const publishBtn = document.createElement("button");
+        //       publishBtn.textContent = "Send";
+        //       publishBtn.style.background = "#6172d6";
+        //       publishBtn.style.color = "#fff";
+        //       publishBtn.style.borderRadius = "4px";
+        //       publishBtn.style.cursor = "pointer";
+        //       publishBtn.style.padding = "8px 30px";
+        //       publishBtn.style.margin = "10px 0 10px 10px";
+        //       publishBtn.style.border = "1px solid #6172d6";
+        //       publishBtn.onclick = handleClickPublishBtn;
+        //       return publishBtn;
+        //     },
+        //   });
+        // });
+        const updatedItems = [
+          ...existingItems,
+          customPanelToggle,
+          cancelButton,
+          saveButton,
+          publishButton,
+        ];
+        header.setItems(updatedItems);
         //======================================== header save button =====================================//
 
         //======================================== for documentLoaded =====================================//

@@ -8,11 +8,13 @@ const UploadFile = ({
   title,
   multiple,
   className,
+  beforeUpload, // ✅ new prop
 }) => {
   return (
     <Upload
       multiple={multiple}
       showUploadList={false}
+      beforeUpload={beforeUpload}
       onProgress={(onprogress) => setProgress(onprogress.percent)}
       customRequest={handleFileUploadRequest}
       className={className}

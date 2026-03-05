@@ -1611,12 +1611,12 @@ const DataRoom = () => {
     },
     {
       title: t("File-size"),
-      dataIndex: "fileSize",
-      key: "fileSize",
+      dataIndex: "fileSizeOnDisk",
+      key: "fileSizeOnDisk",
       width: "10%",
       align: "center",
       render: (text, record) => {
-        console.log(record, "recordrecordrecordrecord");
+        console.log(record, "File-size");
         if (record.isFolder) {
           return <Dash />;
         } else {
@@ -2011,8 +2011,8 @@ const DataRoom = () => {
     },
     {
       title: t("File-size"),
-      dataIndex: "fileSize",
-      key: "fileSize",
+      dataIndex: "fileSizeOnDisk",
+      key: "fileSizeOnDisk",
       width: "90px",
       align: "center",
       render: (text, record) => {
@@ -2022,11 +2022,7 @@ const DataRoom = () => {
           {
             console.log("File-size", text);
           }
-          return (
-            <span className={styles["ownerName"]}>
-              {`${convertToArabicNumerals(text, CurrentLanguage)} MB`}
-            </span>
-          );
+          return <span className={styles["ownerName"]}>{formatMB(text)}</span>;
         }
       },
     },
@@ -3385,7 +3381,7 @@ const DataRoom = () => {
                 )}
               </Col>
             </Row>
-            <Row >
+            <Row>
               <Col
                 lg={detailView ? 8 : 12}
                 md={detailView ? 8 : 12}
