@@ -43,8 +43,6 @@ import { MeetingContext } from "../../../../context/MeetingContext";
 const SceduleMeeting = ({
   setEditMeeting,
   isEditMeeting,
-  setCurrentMeetingID,
-  currentMeeting,
   setSceduleMeeting,
   setDataroomMapFolderId,
   dataroomMapFolderId,
@@ -53,17 +51,18 @@ const SceduleMeeting = ({
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const getALlMeetingTypes = useSelector(
-    (state) => state.NewMeetingreducer.getALlMeetingTypes,
+    (state) => state.NewMeetingreducer.getALlMeetingTypes
   );
-  const { editorRole, setEditorRole } = useContext(MeetingContext);
+  const { editorRole, setEditorRole, currentMeetingID, setCurrentMeetingID } =
+    useContext(MeetingContext);
   const [meetingDetails, setmeetingDetails] = useState(
-    editorRole.role === "Agenda Contributor" ? false : true,
+    editorRole.role === "Agenda Contributor" ? false : true
   );
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(
-    editorRole.role === "Agenda Contributor" ? true : false,
+    editorRole.role === "Agenda Contributor" ? true : false
   );
   const [meetingMaterial, setMeetingMaterial] = useState(false);
   const [minutes, setMinutes] = useState(false);
@@ -100,7 +99,7 @@ const SceduleMeeting = ({
     }
   };
   useEffect(() => {
-    if (currentMeeting === 0) {
+    if (currentMeetingID === 0) {
       apiCallsForComponentMound();
     }
     return () => {
@@ -113,7 +112,7 @@ const SceduleMeeting = ({
 
   const showMeetingDeitals = () => {
     let Data = {
-      MeetingID: Number(currentMeeting),
+      MeetingID: Number(currentMeetingID),
     };
     if (Data.MeetingID !== 0) {
       dispatch(
@@ -127,8 +126,8 @@ const SceduleMeeting = ({
           setDataroomMapFolderId,
           0,
           1,
-          false,
-        ),
+          false
+        )
       );
       setmeetingDetails(true);
       setorganizers(false);
@@ -398,7 +397,7 @@ const SceduleMeeting = ({
     ) {
       try {
         const { pK_MDID } = NewMeetingreducer.mqttMeetingAcRemoved;
-        if (Number(pK_MDID) === Number(currentMeeting)) {
+        if (Number(pK_MDID) === Number(currentMeetingID)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
           setEditorRole({
@@ -438,7 +437,7 @@ const SceduleMeeting = ({
       }
     }
   }, [NewMeetingreducer.mqttMeetingAcRemoved]);
-  console.log({ NewMeetingreducer, currentMeeting }, "NewMeetingreducer");
+  console.log({ NewMeetingreducer, currentMeetingID }, "NewMeetingreducer");
   useEffect(() => {
     if (
       NewMeetingreducer.mqttMeetingOrgRemoved !== null &&
@@ -446,7 +445,7 @@ const SceduleMeeting = ({
     ) {
       try {
         const { pK_MDID } = NewMeetingreducer.mqttMeetingOrgRemoved;
-        if (Number(pK_MDID) === Number(currentMeeting)) {
+        if (Number(pK_MDID) === Number(currentMeetingID)) {
           setSceduleMeeting(false);
           dispatch(scheduleMeetingPageFlag(false));
           setEditorRole({
@@ -489,7 +488,7 @@ const SceduleMeeting = ({
 
   return (
     <section>
-      <Row className="mt-2">
+      <Row className='mt-2'>
         <Col lg={12} md={12} sm={12}>
           {isEditMeeting ? (
             <span className={styles["Scedule_newMeeting_Heading"]}>
@@ -503,15 +502,14 @@ const SceduleMeeting = ({
         </Col>
       </Row>
       <Row>
-        <Col lg={12} md={12} sm={12} className="mb-4">
+        <Col lg={12} md={12} sm={12} className='mb-4'>
           <span className={styles["Scedule_meeting_paper"]}>
             <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="py-2 d-flex gap-2 flex-wrap"
-              >
+                className='py-2 d-flex gap-2 flex-wrap'>
                 <Button
                   text={t("Meeting-details")}
                   className={
@@ -521,12 +519,12 @@ const SceduleMeeting = ({
                   }
                   onClick={showMeetingDeitals}
                 />
-                {Number(currentMeeting) !== 0 && (
+                {Number(currentMeetingID) !== 0 && (
                   <>
                     {" "}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        disableBtn={Number(currentMeetingID) === 0 ? true : false}
                         text={t("Organizers")}
                         className={
                           organizers === true
@@ -538,7 +536,7 @@ const SceduleMeeting = ({
                     )}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        disableBtn={Number(currentMeetingID) === 0 ? true : false}
                         text={t("Agenda-contributors")}
                         className={
                           agendaContributors === true
@@ -550,7 +548,7 @@ const SceduleMeeting = ({
                     )}
                     {editorRole.role === "Agenda Contributor" ? null : (
                       <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        disableBtn={Number(currentMeetingID) === 0 ? true : false}
                         text={t("Participants")}
                         className={
                           participants === true
@@ -561,7 +559,7 @@ const SceduleMeeting = ({
                       />
                     )}
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={Number(currentMeetingID) === 0 ? true : false}
                       text={t("Agenda-builder")}
                       className={
                         agenda === true
@@ -571,7 +569,7 @@ const SceduleMeeting = ({
                       onClick={showAgenda}
                     />
                     <Button
-                      disableBtn={Number(currentMeeting) === 0 ? true : false}
+                      disableBtn={Number(currentMeetingID) === 0 ? true : false}
                       text={t("Agenda-viewer")}
                       className={
                         meetingMaterial === true
@@ -635,7 +633,7 @@ const SceduleMeeting = ({
                     editorRole.role === "Organizer" &&
                     isEditMeeting === true ? (
                       <Button
-                        disableBtn={Number(currentMeeting) === 0 ? true : false}
+                        disableBtn={Number(currentMeetingID) === 0 ? true : false}
                         text={t("Attendence")}
                         className={
                           attendance === true
@@ -664,7 +662,7 @@ const SceduleMeeting = ({
                 setPolls={setPolls}
                 setMeetingMaterial={setMeetingMaterial}
                 setCurrentMeetingID={setCurrentMeetingID}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
                 editorRole={editorRole}
@@ -685,7 +683,7 @@ const SceduleMeeting = ({
                 setAttendance={setAttendance}
                 setPolls={setPolls}
                 setMeetingMaterial={setMeetingMaterial}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -698,7 +696,7 @@ const SceduleMeeting = ({
                 <AgendaContributers
                   setorganizers={setorganizers}
                   setCurrentMeetingID={setCurrentMeetingID}
-                  currentMeeting={currentMeeting}
+                  currentMeeting={currentMeetingID}
                   setSceduleMeeting={setSceduleMeeting}
                   setAgendaContributors={setAgendaContributors}
                   setParticipants={setParticipants}
@@ -714,7 +712,7 @@ const SceduleMeeting = ({
                 setAgenda={setAgenda}
                 proposedMeetingDates={proposedMeetingDates}
                 setSceduleMeeting={setSceduleMeeting}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setAgendaContributors={setAgendaContributors}
                 setEditMeeting={setEditMeeting}
@@ -726,7 +724,7 @@ const SceduleMeeting = ({
             {agenda && NewMeetingreducer.agendaGlobalFlag && (
               <Agenda
                 setSceduleMeeting={setSceduleMeeting}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -743,7 +741,7 @@ const SceduleMeeting = ({
                 setSceduleMeeting={setSceduleMeeting}
                 setMeetingMaterial={setMeetingMaterial}
                 setMinutes={setMinutes}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setactionsPage={setactionsPage}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
@@ -758,7 +756,7 @@ const SceduleMeeting = ({
                 setMinutes={setMinutes}
                 setMeetingMaterial={setMeetingMaterial}
                 setSceduleMeeting={setSceduleMeeting}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -773,7 +771,7 @@ const SceduleMeeting = ({
                 setSceduleMeeting={setSceduleMeeting}
                 setPolls={setPolls}
                 setactionsPage={setactionsPage}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -788,7 +786,7 @@ const SceduleMeeting = ({
                 setSceduleMeeting={setSceduleMeeting}
                 setPolls={setPolls}
                 setAttendance={setAttendance}
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}
@@ -799,7 +797,7 @@ const SceduleMeeting = ({
             )}
             {attendance && NewMeetingreducer.attendanceGlobalFlag && (
               <Attendence
-                currentMeeting={currentMeeting}
+                currentMeeting={currentMeetingID}
                 setCurrentMeetingID={setCurrentMeetingID}
                 setEditMeeting={setEditMeeting}
                 isEditMeeting={isEditMeeting}

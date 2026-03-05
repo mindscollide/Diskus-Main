@@ -1,12 +1,14 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { mqttMeetingData } from "../hooks/meetingResponse/response";
+import { useTranslation } from "react-i18next";
 
 // Create the Context
 export const NewMeetingContext = createContext();
 
 // Create a Provider component
 export const NewMeetingProvider = ({ children }) => {
+  const {t} = useTranslation()
   const [createdMeetingInfo, setCreatedMeetingInfo] = useState({
     meetingId: 0,
     meetingTitle: "",
@@ -161,7 +163,7 @@ export const NewMeetingProvider = ({ children }) => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {

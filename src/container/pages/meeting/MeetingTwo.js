@@ -197,6 +197,7 @@ const NewMeeting = () => {
     setStepDownloadModal,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
+    currentMeetingID, setCurrentMeetingID
   } = useMeetingContext();
   const {
     totalMeetingRecords,
@@ -372,7 +373,6 @@ const NewMeeting = () => {
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
 
-  const [currentMeetingID, setCurrentMeetingID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -1534,7 +1534,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -4419,7 +4419,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -5101,7 +5101,7 @@ const NewMeeting = () => {
           <SceduleMeeting
             setSceduleMeeting={setSceduleMeeting}
             setCurrentMeetingID={setCurrentMeetingID}
-            currentMeeting={currentMeetingID}
+            currentMeetingID={currentMeetingID}
             setEditMeeting={setEditMeeting}
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
@@ -5434,7 +5434,8 @@ const NewMeeting = () => {
                         md={12}
                         sm={12}
                         className={styles["MainMeetingTablePublished"]}>
-                        <DraftMeeting />
+                        <DraftMeeting    setCurrentMeetingID={setCurrentMeetingID}
+                          currentMeeting={currentMeetingID} />
                       </Col>
                     </Row>
                   ) : Number(currentView) === 1 ? (
