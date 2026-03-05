@@ -375,7 +375,7 @@ const Reports = () => {
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
-            {t("Start-date")}
+            {t("Starts-dates")}
             {startDateSort === "descend" ? (
               <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
             ) : startDateSort === "ascend" ? (
