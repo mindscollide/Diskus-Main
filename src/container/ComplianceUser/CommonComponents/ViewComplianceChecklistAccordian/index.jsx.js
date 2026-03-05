@@ -11,10 +11,16 @@ import Select from "react-select";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import { formatDateToYMD } from "../commonFunctions";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateCheckListStatusApi } from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
+ const {complianceInfo} = useComplianceContext()
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
@@ -40,7 +46,6 @@ const ViewComplianceChecklistAccordian = () => {
   console.log(
     {
       allCheckListByComplianceId,
-      
     },
     "CheckListByComplianceCheckListByCompliance",
   );
@@ -113,9 +118,19 @@ const ViewComplianceChecklistAccordian = () => {
     }
   };
 
-  const handleChecklistStatusChange = (checklistId, selectedStatus) => {
+  const handleChecklistStatusChange = (checklistId, selectedStatus, dueDate) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
+    let Data = {
+      ChecklistID: checklistId,
+      ComplianceID: complianceInfo?.complianceId,
+      NewStatusID: selectedStatus?.value,
+      StatusChangeReason: "",
+      UpdatedDueDate: `${dueDate}185958`,
+      ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
+    };
+
+    dispatch(updateCheckListStatusApi(navigate, t, Data));
 
     // 🔁 Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
@@ -304,6 +319,7 @@ const ViewComplianceChecklistAccordian = () => {
                                 handleChecklistStatusChange(
                                   data.checklistId,
                                   selectedOption,
+                                  data.dueDate
                                 )
                               }
                               styles={statusSelectStyles}

@@ -164,10 +164,10 @@ const CreateEditViewComplianceTask = () => {
     GetComplianceChecklistsByComplianceId,
     "GetComplianceChecklistsByComplianceId"
   );
-  const handleDeleteTask = (TaskId) => {
-    console.log(TaskId, "TaskId");
+  const handleDeleteTask = (data2) => {
+    console.log(data2, "data2data2");
     const Data = {
-      TaskID: TaskId,
+      TaskID: data2?.TaskId,
       NewStatusID: 6,
     };
     dispatch(ChangeTaskStatusAPI(navigate, Data, t));
@@ -244,7 +244,7 @@ const CreateEditViewComplianceTask = () => {
                                         alt=""
                                         className="me-2 cursor-pointer"
                                         onClick={() =>
-                                          handleDeleteTask(data2.taskId)
+                                          handleDeleteTask(data2)
                                         }
                                       />
                                     </Col>

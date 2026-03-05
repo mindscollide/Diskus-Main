@@ -27,6 +27,7 @@ const initialState = {
   ChangeTaskStatus: null,
   ComplianceDataRoomMapFolderId: 0,
   addReopenComplianceDetails: null,
+  changeCheckListStatus: null,
   // MQTT
   SocketAuthorityInactive: null,
   SocketAuthorityActive: null,
@@ -62,6 +63,7 @@ const initialState = {
   complianceUpdateMqttData: null,
   complianceReopenMqttData: null,
   taskMappedCheckListData: null,
+  ComplianceListData: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1341,6 +1343,97 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
       return {
         ...state,
         GetComplianceTasksDashboardData: action.payload,
+      };
+
+    //For Compliance By Dashboard Mqtt User
+    case actions.COMPLIANCE_BY_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceByDashboardData: action.payload,
+      };
+
+    //For Compliance By Dashboard Mqtt Manager
+    case actions.COMPLIANCE_BY_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceByDashboardData: action.payload,
+      };
+
+    // For Quarterly Submitted Dashboard Mqtt For User
+    case actions.QUARTERLY_SUBMITTED_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetQuarterlySubmittedDashboard: action.payload,
+      };
+
+    // For Quarterly Submitted Dashboard Mqtt For Manager
+    case actions.QUARTERLY_SUBMITTED_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetQuarterlySubmittedDashboard: action.payload,
+      };
+
+    // For Reopen Compliance Dashboard Mqtt For User
+    case actions.REOPEN_COMPLIANCE_DASHBOARD_USER_MQTT:
+      return {
+        ...state,
+        GetComplianceReopenDashboardData: action.payload,
+      };
+
+    // For Reopen Compliance Dashboard Mqtt For MANAGER
+    case actions.REOPEN_COMPLIANCE_DASHBOARD_MANAGER_MQTT:
+      return {
+        ...state,
+        GetComplianceReopenDashboardData: action.payload,
+      };
+
+    //GET Compliance By Authorities Api
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_INIT:
+      return {
+        ...state,
+        Loading: true,
+        severity: null,
+      };
+
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        ComplianceListData: action.response,
+        ResponseMessage: action.message,
+        severity: "success",
+      };
+
+    case actions.GET_ALL_COMPLIANCE_AUTHORITIES_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        ComplianceListData: null,
+        ResponseMessage: action.message,
+        severity: "error",
+      };
+
+    case actions.CHANGE_CHECKLIST_STATUS_INIT:
+      return {
+        ...state,
+        Loading: true,
+      };
+
+    case actions.CHANGE_CHECKLIST_STATUS_SUCCESS:
+      return {
+        ...state,
+        Loading: false,
+        changeCheckListStatus: action.response,
+        ResponseMessage: action.message,
+        severity: "succeess",
+      };
+    case actions.CHANGE_CHECKLIST_STATUS_FAIL:
+      return {
+        ...state,
+        Loading: false,
+        changeCheckListStatus: null,
+        ResponseMessage: action.message,
+        severity: "errorF",
       };
 
     // ================= DEFAULT =================

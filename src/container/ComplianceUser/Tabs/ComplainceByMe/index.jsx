@@ -446,7 +446,7 @@ const ComplianceByMe = () => {
     if (complianceByMeList.length < complianceByMeTotal) {
       const nextPayload = {
         ...searchCompliancePayload,
-        pageNumber: searchCompliancePayload.pageNumber + 10,
+        pageNumber: sortedComplianceList.length
       };
       setIsScroll(true);
       setSearchCompliancePayload(nextPayload);

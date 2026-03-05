@@ -416,6 +416,9 @@ export const ComlianceProvider = ({ children }) => {
   //For Reopen dashboard Card Data in COmpliance
   const [reopenDashboardList, setReopenDashboardList] = useState([]);
 
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
+
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
     setComplianceDashboardFilter(1);
@@ -1020,6 +1023,8 @@ export const ComlianceProvider = ({ children }) => {
         viewComplianceTasksContextData,
         setViewComplianceTasksContextData,
         criticalityOptions,
+        pendingNavigation,
+        setPendingNavigation,
       }}
     >
       {children}

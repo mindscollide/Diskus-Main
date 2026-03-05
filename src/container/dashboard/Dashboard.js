@@ -226,17 +226,24 @@ import {
 
 import AlreadyInMeeting from "../../components/elements/alreadyInMeeting/AlreadyInMeeting";
 import {
+  ComplianceByManagerMqtt,
+  ComplianceByUserMqtt,
   complianceChecklistAddedMQTT,
   complianceChecklistDeletedMQTT,
   complianceChecklistUpdateMQTT,
   complianceCreatedFromMQTT,
   complianceReopenMQTT,
   complianceUpdateMQTT,
+  QuarterlySubmittedByManagerMqtt,
+  QuarterlySubmittedByUserMqtt,
   QuarterlyTaskDashboardManagerMqtt,
   QuarterlyTaskDashboardUserMqtt,
+  ReopenedComplianceManagerMqtt,
+  ReopenedComplianceUserMqtt,
   setInactiveStatusData,
   setOrganizationSettingUpdateData,
   taskMappedChecklistMQTT,
+  TasksDashboardFormManagerMqtt,
   TasksDashboardForUserMqtt,
   UpcomingDeadlineManagerDashboardMqtt,
   UpcomingDeadlineUserDashboardMqtt,
@@ -4951,8 +4958,68 @@ const Dashboard = () => {
           data.message?.toLowerCase() ===
           "TASK_DASHBOARD_FOR_MANAGER".toLowerCase()
         ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(TasksDashboardFormManagerMqtt(data.payload));
+          }
+        }
+
+        // Compliance By MQTT FOR USER
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_BY_FOR_USER".toLowerCase()
+        ) {
           if (Number(localStorage.getItem("viewType")) === 2) {
-            dispatch(TasksDashboardForUserMqtt(data.payload));
+            dispatch(ComplianceByUserMqtt(data.payload));
+          }
+        }
+
+        // Compliance By MQTT FOR MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "COMPLIANCE_BY_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(ComplianceByManagerMqtt(data.payload));
+          }
+        }
+
+        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR USER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(QuarterlySubmittedByUserMqtt(data.payload));
+          }
+        }
+
+        // QUATERLY SUBMITTED COMPLIANCE MQTT FOR MANAGER
+        if (
+          data.message?.toLowerCase() ===
+          "QUARTERLY_SUBMITTED_COMPLIANCE_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(QuarterlySubmittedByManagerMqtt(data.payload));
+          }
+        }
+
+        // REOPENED COMPLIANCES MQTT FOR USER
+         if (
+          data.message?.toLowerCase() ===
+          "REOPENED_COMPLIANCES_FOR_USER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 2) {
+            dispatch(ReopenedComplianceUserMqtt(data.payload));
+          }
+        }
+
+        // REOPENED COMPLIANCES MQTT FOR MANAGER
+         if (
+          data.message?.toLowerCase() ===
+          "REOPENED_COMPLIANCES_FOR_MANAGER".toLowerCase()
+        ) {
+          if (Number(localStorage.getItem("viewType")) === 1) {
+            dispatch(ReopenedComplianceManagerMqtt(data.payload));
           }
         }
       }

@@ -191,14 +191,10 @@ const SearchComplianceBoxModal = () => {
     // setComplianceByMeTotal(0);
     // setData([]);
     setSearchCompliancePayload({
-      complianceTitleOutside: "",
       complianceTitle: "",
       dueDateFrom: "",
       dueDateTo: "",
       authorityShortCode: "",
-      tagsCSV: "",
-      criticalityIds: [],
-      statusIds: [],
       pageNumber: 0,
       length: 10,
     });

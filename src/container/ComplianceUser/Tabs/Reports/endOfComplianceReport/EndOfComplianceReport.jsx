@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
 import ReopenOrOnHoldDetailsModal from "../../../CommonComponents/ReopenOrOnHoldDetailsModal";
+import ReopenOrOnHoldDetailsModalECR from "./ReopenOrOnHoldDetailsModalECR";
 
 const { Panel } = Collapse;
 
@@ -33,13 +34,13 @@ const EndOfComplianceReport = () => {
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
   console.log("Check Check Report");
 
   console.log(
     GetEndOfComplianceReport,
-    "GetEndOfComplianceReportGetEndOfComplianceReport"
+    "GetEndOfComplianceReportGetEndOfComplianceReport",
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -82,7 +83,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
       {
-        title: t("assignee"),
+        title: t("Assignee"),
         dataIndex: "assignee",
         key: "assignee",
         width: "35%",
@@ -101,7 +102,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
       {
-        title: t("completed-on"),
+        title: t("Completed-on"),
         dataIndex: "completedOn",
         key: "completedOn",
         width: "13%",
@@ -110,7 +111,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
       {
-        title: t("completed"),
+        title: t("Completed"),
         dataIndex: "completed",
         key: "completed",
         width: "13%",
@@ -119,7 +120,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [reportList, t]
+    [reportList, t],
   );
 
   const mapTasksToRows = (tasks = []) => {
@@ -207,6 +208,19 @@ const EndOfComplianceReport = () => {
       setIsGenerating(false); // spinner OFF
     }
   };
+
+  // To Show Reopen View Detail Bar when Reopen or Hold status coming
+  const shouldShowReopenSection = useMemo(() => {
+    const history = GetEndOfComplianceReport?.complianceStatusChangeHistory;
+
+    if (!Array.isArray(history) || history.length === 0) return false;
+
+    return history.some(
+      (item) =>
+        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
+    );
+  }, [GetEndOfComplianceReport?.complianceStatusChangeHistory]);
+
   const handleOpenReopenModal = () => {
     setIsViewDetailsOpen(true);
   };
@@ -255,7 +269,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn
+                        GetEndOfComplianceReport?.header?.generatedOn,
                       ) || "-"}
                     </p>
                   </div>
@@ -263,16 +277,18 @@ const EndOfComplianceReport = () => {
 
                 {/* ReportDetail Bar */}
                 <Col lg={4} xs={4}>
-                  <div className={styles.reportDetailsBar}>
-                    <span>
-                      {t("This-compliance-was-Re-opened-1-times")}
-                      <CustomButton
-                        text="Reopen Details"
-                        className={styles.reportDetailButton}
-                        onClick={handleOpenReopenModal}
-                      />
-                    </span>
-                  </div>
+                  {shouldShowReopenSection && (
+                    <div className={styles.reportDetailsBar}>
+                      <span>
+                        {t("This-compliance-was-Re-opened-1-times")}
+                        <CustomButton
+                          text="Reopen Details"
+                          className={styles.reportDetailButton}
+                          onClick={handleOpenReopenModal}
+                        />
+                      </span>
+                    </div>
+                  )}
                 </Col>
 
                 {/* Download Button */}
@@ -303,7 +319,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate
+                              ?.complianceCreatedDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -312,7 +328,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate
+                              ?.complianceCompletionDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -321,7 +337,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate
+                              ?.complianceDueDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -508,7 +524,7 @@ const EndOfComplianceReport = () => {
                           <label>{t("Generated-date")}:</label>
                           <p>
                             {formatDateToYMD(
-                              GetEndOfComplianceReport?.header?.generatedOn
+                              GetEndOfComplianceReport?.header?.generatedOn,
                             )}
                           </p>
                         </div>
@@ -558,7 +574,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCreatedDate
+                            ?.complianceCreatedDate,
                         )}
                       </p>
                     </Col>
@@ -567,7 +583,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate
+                            ?.complianceCompletionDate,
                         )}
                       </p>
                     </Col>
@@ -577,7 +593,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate
+                            ?.complianceDueDate,
                         )}
                       </p>
                     </Col>
@@ -664,52 +680,9 @@ const EndOfComplianceReport = () => {
         </Spin>
       </div>
 
-      {isViewDetailsOpen && <ReopenOrOnHoldDetailsModal />}
+      {isViewDetailsOpen && <ReopenOrOnHoldDetailsModalECR />}
     </>
   );
 };
 
 export default EndOfComplianceReport;
-
-{
-  /* <Row
-className={`${styles.iconTextWrapperPDFDownload} mx-1 mt-4`}
->
-<Col
-  lg={4}
-  xs="auto"
-  className={` d-flex align-items-center gap-2 `}
->
-  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-
-  <div>
-    <label>{t("Created-on")}:</label>
-    <p>
-      {formatDateToYMD(
-        GetEndOfComplianceReport?.complianceSummary
-          ?.complianceCreatedDate
-      )}
-    </p>
-  </div>
-</Col>
-<Col lg={3}>
-  <label>{t("Completion-date")}:</label>
-  <p>
-    {formatDateToYMD(
-      GetEndOfComplianceReport?.complianceSummary
-        ?.complianceCompletionDate
-    )}
-  </p>
-</Col>
-<Col lg={3}>
-  <label>{t("Due-date")}:</label>
-  <p>
-    {" "}
-    {formatDateToYMD(
-      GetEndOfComplianceReport?.complianceSummary
-        ?.complianceDueDate
-    )}
-  </p>
-</Col>
-</Row> */
-}

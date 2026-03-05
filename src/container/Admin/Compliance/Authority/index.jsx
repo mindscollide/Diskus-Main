@@ -49,6 +49,7 @@ import {
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
   clearAuthorityMessage,
+  GetComplianceByAuthorityAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -154,6 +155,11 @@ const ManageAuthority = () => {
 
   // Open Delete Authority confirmation modal
   const hanldeDeleteAuthorityModal = (authorityID) => {
+    let Data = {
+      authorityId: Number(authorityID),
+    };
+    dispatch(GetComplianceByAuthorityAPI(navigate, Data, t));
+
     dispatch(showDeleteAuthorityModal(true));
     setAuthorityId(authorityID);
   };

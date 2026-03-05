@@ -73,9 +73,6 @@ const ComplianceForMe = () => {
       dueDateFrom: "",
       dueDateTo: "",
       authorityShortCode: "",
-      //   tagsCSV: "",
-      //   criticalityIds: [],
-      //   statusIds: [],
       sRow: 0,
       length: 10,
     };
@@ -457,8 +454,12 @@ const ComplianceForMe = () => {
   useAntTableScrollBottomVirtual(() => {
     if (complianceForMeList.length < complianceForMeTotal) {
       const nextPayload = {
-        ...searchCompliancePayload,
-        pageNumber: searchCompliancePayload.pageNumber + 10,
+        complianceTitle: searchCompliancePayload.complianceTitle,
+        dueDateFrom: searchCompliancePayload.dueDateFrom,
+        dueDateTo: searchCompliancePayload.dueDateTo,
+        authorityShortCode: searchCompliancePayload.authorityShortCode,
+        sRow: sortedComplianceList.length,
+        length: 10,
       };
       setIsScroll(true);
       setSearchCompliancePayload(nextPayload);

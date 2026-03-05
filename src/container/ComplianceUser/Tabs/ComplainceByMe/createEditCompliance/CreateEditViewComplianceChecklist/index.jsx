@@ -410,6 +410,8 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 2;
 
+  const isReopendCompliance = complianceDetailsState?.status.value === 6;
+
   return (
     <>
       {!addChecklistCloseState ? (
@@ -644,45 +646,49 @@ const CreateEditViewComplianceChecklist = () => {
                     </>
                   }
                   endField={
-                    <>
-                      <Row>
-                        <Col
-                          sm={12}
-                          md={12}
-                          lg={12}
-                          className="d-flex justify-content-end gap-3 align-items-center"
-                        >
-                          <img
-                            className="cursor-pointer"
-                            draggable="false"
-                            alt=""
-                            src={deleteIcon}
-                            onClick={() =>
-                              handleDeleteChecklist(data?.checklistId)
-                            }
-                          />
-                          {/* Edit Checklist */}
-                          <img
-                            className="cursor-pointer"
-                            draggable="false"
-                            alt=""
-                            src={editIcon}
-                            onClick={() => handleEditChecklist(data)}
-                          />
-                          <img
-                            src={Accordion_Arrow}
-                            onClick={() => handleClickExpandCheckList(data)}
-                            alt=""
-                            className={`cursor-pointer
+                    !isReopendCompliance && (
+                      <>
+                        <Row>
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className="d-flex justify-content-end gap-3 align-items-center"
+                          >
+                            <img
+                              className="cursor-pointer"
+                              draggable="false"
+                              alt=""
+                              src={deleteIcon}
+                              onClick={() =>
+                                handleDeleteChecklist(data?.checklistId)
+                              }
+                            />
+                            {/* Edit Checklist */}
+                            <img
+                              className="cursor-pointer"
+                              draggable="false"
+                              alt=""
+                              src={editIcon}
+                              onClick={() =>
+                                handleEditChecklist(data)
+                              }
+                            />
+                            <img
+                              src={Accordion_Arrow}
+                              onClick={() => handleClickExpandCheckList(data)}
+                              alt=""
+                              className={`cursor-pointer
                                   ${
                                     isExpanded
                                       ? null
                                       : styles["AccordionArrowDown"]
                                   }`}
-                          />
-                        </Col>
-                      </Row>
-                    </>
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    )
                   }
                 />
               </div>
