@@ -25,11 +25,11 @@ const RevisionHistory = ({
   const { t } = useTranslation();
 
   const { GetMinuteReviewDetailsForOrganizerbyMinuteId } = useSelector(
-    (state) => state.MinutesReducer
+    (state) => state.MinutesReducer,
   );
 
   const { GetDataForResendMinuteReviewData } = useSelector(
-    (state) => state.MinutesReducer
+    (state) => state.MinutesReducer,
   );
 
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -118,7 +118,7 @@ const RevisionHistory = ({
       IsAgenda: isAgenda,
     };
     dispatch(
-      GetDataForResendMinuteReview(Data, navigate, t, setEditMinute, Editdata)
+      GetDataForResendMinuteReview(Data, navigate, t, setEditMinute, Editdata),
     );
   };
 
@@ -161,12 +161,12 @@ const RevisionHistory = ({
               setResendMinuteForReview(false);
             }
           : confirmationEdit
-          ? () => {
-              setEditMinute(true);
-              setConfirmationEdit(false);
-              setResendMinuteForReview(false);
-            }
-          : () => setShowRevisionHistory(false)
+            ? () => {
+                setEditMinute(true);
+                setConfirmationEdit(false);
+                setResendMinuteForReview(false);
+              }
+            : () => setShowRevisionHistory(false)
       }
       show={true}
       className={
@@ -324,7 +324,7 @@ const RevisionHistory = ({
                                       <span
                                         className={styles["Review-pending"]}
                                       >
-                                        Review Pending:
+                                        {t("Pending")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.pendingUsers?.length >
@@ -337,7 +337,7 @@ const RevisionHistory = ({
                                               ?.length -
                                               1
                                               ? `${userName}`
-                                              : `${userName}, `
+                                              : `${userName}, `,
                                         )}
                                     </p>
                                     <p
@@ -346,7 +346,7 @@ const RevisionHistory = ({
                                       <span
                                         className={styles["Review-accepted"]}
                                       >
-                                        Review Accepted:
+                                        {t("Accepted")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.acceptedByUsers?.length >
@@ -359,7 +359,7 @@ const RevisionHistory = ({
                                               ?.length -
                                               1
                                               ? `${userName}`
-                                              : `${userName}, `
+                                              : `${userName}, `,
                                         )}
                                     </p>
                                     <p
@@ -368,7 +368,7 @@ const RevisionHistory = ({
                                       <span
                                         className={styles["Review-declined"]}
                                       >
-                                        Review Rejected:
+                                        {t("Rejected")}:
                                       </span>{" "}
                                       {revisionHistoryData?.mainMinute
                                         ?.reviewStats?.rejectedByUsers?.length >
@@ -381,7 +381,7 @@ const RevisionHistory = ({
                                               ?.length -
                                               1
                                               ? `${userName}`
-                                              : `${userName}, `
+                                              : `${userName}, `,
                                         )}
                                     </p>
                                   </Col>
@@ -439,7 +439,7 @@ const RevisionHistory = ({
                                                 </Col>
                                               </>
                                             );
-                                          }
+                                          },
                                         )
                                       : null}
                                   </Row>
@@ -469,7 +469,7 @@ const RevisionHistory = ({
                                         alt=""
                                         onClick={() =>
                                           editMinuteFunction(
-                                            revisionHistoryData?.mainMinute
+                                            revisionHistoryData?.mainMinute,
                                           )
                                         }
                                       />
@@ -500,7 +500,7 @@ const RevisionHistory = ({
                                             revisionHistoryData.mainMinute
                                               ?.lastUpdatedDate +
                                               revisionHistoryData.mainMinute
-                                                ?.lastUpdatedTime
+                                                ?.lastUpdatedTime,
                                           )?.TimeVal
                                         }
                                         ,
@@ -511,7 +511,7 @@ const RevisionHistory = ({
                                             revisionHistoryData.mainMinute
                                               ?.lastUpdatedDate +
                                               revisionHistoryData.mainMinute
-                                                ?.lastUpdatedTime
+                                                ?.lastUpdatedTime,
                                           )?.DateVal
                                         }
                                       </p>
@@ -606,7 +606,7 @@ const RevisionHistory = ({
                                               >
                                                 {
                                                   newDateFormatForMinutes(
-                                                    declineReviewData.modifiedOn
+                                                    declineReviewData.modifiedOn,
                                                   )?.TimeVal
                                                 }
                                                 ,
@@ -618,7 +618,7 @@ const RevisionHistory = ({
                                               >
                                                 {
                                                   newDateFormatForMinutes(
-                                                    declineReviewData.modifiedOn
+                                                    declineReviewData.modifiedOn,
                                                   )?.DateVal
                                                 }
                                               </p>
@@ -630,7 +630,7 @@ const RevisionHistory = ({
                                   </Col>
                                 </Row>
                               );
-                            }
+                            },
                           )}
                       </>
                     </div>
@@ -659,7 +659,7 @@ const RevisionHistory = ({
                                           }
                                         >
                                           <p>
-                                            Total:{" "}
+                                            {t("Total")}:{" "}
                                             {
                                               reviewData.reviewStats
                                                 .totalReviews
@@ -667,17 +667,17 @@ const RevisionHistory = ({
                                           </p>
                                           <span>|</span>
                                           <p>
-                                            Pending:{" "}
+                                            {t("Pending")}:{" "}
                                             {reviewData.reviewStats.pending}
                                           </p>
                                           <span>|</span>
                                           <p>
-                                            Accepted:{" "}
+                                            {t("Accepted")}:{" "}
                                             {reviewData.reviewStats.accepted}
                                           </p>
                                           <span>|</span>
                                           <p>
-                                            Rejected:{" "}
+                                            {t("Rejected")}:{" "}
                                             {reviewData.reviewStats.rejected}
                                           </p>
                                         </div>
@@ -717,12 +717,12 @@ const RevisionHistory = ({
                                                 styles["Review-pending"]
                                               }
                                             >
-                                              Review Pending:
+                                              {t("Pending")}:
                                             </span>{" "}
                                             {reviewData.reviewStats.pendingUsers
                                               .length > 0 &&
                                               reviewData.reviewStats.pendingUsers.map(
-                                                (userName) => userName
+                                                (userName) => userName,
                                               )}
                                           </p>
                                           <p
@@ -733,12 +733,12 @@ const RevisionHistory = ({
                                                 styles["Review-accepted"]
                                               }
                                             >
-                                              Review Accepted:
+                                              {t("Accepted")}:
                                             </span>{" "}
                                             {reviewData.reviewStats
                                               .acceptedByUsers.length > 0 &&
                                               reviewData.reviewStats.acceptedByUsers.map(
-                                                (userName) => userName
+                                                (userName) => userName,
                                               )}
                                           </p>
                                           <p
@@ -749,12 +749,12 @@ const RevisionHistory = ({
                                                 styles["Review-declined"]
                                               }
                                             >
-                                              Review Rejected:
+                                              {t("Rejected")}:
                                             </span>{" "}
                                             {reviewData.reviewStats
                                               .rejectedByUsers.length > 0 &&
                                               reviewData.reviewStats.rejectedByUsers.map(
-                                                (userName) => userName
+                                                (userName) => userName,
                                               )}
                                           </p>
                                         </Col>
@@ -859,7 +859,7 @@ const RevisionHistory = ({
                                               {
                                                 newDateFormatForMinutes(
                                                   reviewData.lastUpdatedDate +
-                                                    reviewData.lastUpdatedTime
+                                                    reviewData.lastUpdatedTime,
                                                 )?.TimeVal
                                               }
                                               ,
@@ -872,7 +872,7 @@ const RevisionHistory = ({
                                               {
                                                 newDateFormatForMinutes(
                                                   reviewData.lastUpdatedDate +
-                                                    reviewData.lastUpdatedTime
+                                                    reviewData.lastUpdatedTime,
                                                 )?.DateVal
                                               }
                                             </p>
@@ -987,7 +987,7 @@ const RevisionHistory = ({
                                                     >
                                                       {
                                                         newDateFormatForMinutes(
-                                                          declineReviewData.modifiedOn
+                                                          declineReviewData.modifiedOn,
                                                         )?.TimeVal
                                                       }
                                                       ,
@@ -999,7 +999,7 @@ const RevisionHistory = ({
                                                     >
                                                       {
                                                         newDateFormatForMinutes(
-                                                          declineReviewData.modifiedOn
+                                                          declineReviewData.modifiedOn,
                                                         )?.DateVal
                                                       }
                                                     </p>
@@ -1011,7 +1011,7 @@ const RevisionHistory = ({
                                         </Col>
                                       </Row>
                                     );
-                                  }
+                                  },
                                 )}
                             </>
                           );
