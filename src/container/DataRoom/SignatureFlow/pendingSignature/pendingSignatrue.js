@@ -444,6 +444,10 @@ const SignatureViewer = () => {
           setInstance(instance);
           webViewerInitializedRef.current = true;
 
+          console.log(
+            "signerDataRef",
+            handleBlobFiles(pdfResponceData.attachmentBlob),
+          );
           instance.UI.loadDocument(
             handleBlobFiles(pdfResponceData.attachmentBlob),
             {
@@ -455,24 +459,44 @@ const SignatureViewer = () => {
           const { FitMode, setFitMode } = instance.UI;
           documentViewer.addEventListener("documentLoaded", async () => {
             await documentViewer.getAnnotationsLoadedPromise();
-            if (pdfResponceData.xfdfData !== "" && annotationManager) {
+            if (pdfResponceData.xfdfData && annotationManager) {
               try {
+                console.log("signerDataRef", pdfResponceDataRef.current);
+                console.log("signerDataRef", documentViewer);
                 const cleanedXFDF = sanitizeXFDF(
                   pdfResponceDataRef.current,
                   documentViewer,
                 );
+                console.log("signerDataRef", cleanedXFDF);
+
                 await annotationManager.importAnnotations(cleanedXFDF);
+
                 // ✅ Always fit to width on load
-                setFitMode(FitMode.FitWidth);
+                instance.UI.setFitMode(instance.UI.FitMode.FitWidth);
                 // Lock All Annotations
                 const annotations = annotationManager.getAnnotationsList();
+                console.log("signerDataRefannotations", annotations);
+
+                const currentUserID =
+                  localStorage.getItem("userID") !== null
+                    ? Number(localStorage.getItem("userID"))
+                    : 0;
+
                 annotations.forEach((annot) => {
-                  annot.Locked = true;
-                  annot.ReadOnly = true;
-                  annot.NoResize = true;
-                  annot.NoMove = true;
-                  annot.NoRotate = true;
-                  annotationManager.redrawAnnotation(annot);
+                  console.log("Annotation Subject:", annot.Subject);
+
+                  if (annot.Subject) {
+                    const subjectParts = annot.Subject.split("-");
+                    const annotUserID = Number(subjectParts[1]);
+                    annot.Locked = true;
+                    annot.ReadOnly =
+                      annotUserID === currentUserID ? false : true;
+                    annot.NoResize = true;
+                    annot.NoMove = true;
+                    annot.NoRotate = true;
+
+                    annotationManager.redrawAnnotation(annot);
+                  }
                 });
               } catch (error) {
                 console.error("Error importing annotations:", error);
@@ -486,6 +510,7 @@ const SignatureViewer = () => {
           // Disable header tools and elements
           instance.UI.disableTools([Tools.disableTextSelection]);
           instance.UI.disableElements([
+            "formFieldPanel",
             "groupedLeftHeaderButtons",
             "toolbarGroup-FillAndSign",
             "signatureListPanel",
@@ -706,7 +731,6 @@ const SignatureViewer = () => {
               console.error("Error saving annotations:", error);
             }
           };
-   
 
           // Then this button should be added to a container's item using the setItems API.
           // This container can be a modular header or a grouped items container.
@@ -755,7 +779,6 @@ const SignatureViewer = () => {
             ];
             header.setItems(updatedItems);
           } else {
-    
             const closeButton = new instance.UI.Components.CustomButton({
               dataElement: "closeButton",
               label: "Close",
@@ -769,10 +792,7 @@ const SignatureViewer = () => {
                 borderRadius: "4px",
               },
             });
-            const updatedItems = [
-              ...existingItems,
-              closeButton,
-            ];
+            const updatedItems = [...existingItems, closeButton];
             header.setItems(updatedItems);
           }
         } catch (error) {
