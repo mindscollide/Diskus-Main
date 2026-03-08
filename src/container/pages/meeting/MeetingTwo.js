@@ -368,6 +368,7 @@ const NewMeeting = () => {
     attendeceReport: false,
     video: false,
     Agenda: false,
+    isAgendaAttachments: false
   });
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
