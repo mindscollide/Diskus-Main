@@ -91,8 +91,8 @@ const ComplianceForMe = () => {
       return;
     }
 
-    const list = SearchComplianceForMe.complianceList || [];
-    const total = SearchComplianceForMe.totalCount || 0;
+    const list = SearchComplianceForMe?.complianceList || [];
+    const total = SearchComplianceForMe?.totalCount || 0;
 
     setComplianceForMeTotal(total);
 

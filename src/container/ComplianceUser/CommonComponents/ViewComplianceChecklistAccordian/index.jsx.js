@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
- const {complianceInfo} = useComplianceContext()
+  const { complianceInfo } = useComplianceContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -118,7 +118,11 @@ const ViewComplianceChecklistAccordian = () => {
     }
   };
 
-  const handleChecklistStatusChange = (checklistId, selectedStatus, dueDate) => {
+  const handleChecklistStatusChange = (
+    checklistId,
+    selectedStatus,
+    dueDate,
+  ) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
     let Data = {
@@ -130,7 +134,7 @@ const ViewComplianceChecklistAccordian = () => {
       ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
     };
 
-    dispatch(updateCheckListStatusApi(navigate, t, Data));
+    dispatch(updateCheckListStatusApi(navigate, Data, t));
 
     // 🔁 Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
@@ -319,7 +323,7 @@ const ViewComplianceChecklistAccordian = () => {
                                 handleChecklistStatusChange(
                                   data.checklistId,
                                   selectedOption,
-                                  data.dueDate
+                                  data.dueDate,
                                 )
                               }
                               styles={statusSelectStyles}

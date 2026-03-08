@@ -2414,7 +2414,7 @@ export const getMeetingValues = () => {
 
 export const checklistStatusErrorMap = {
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_01:
-    "ChecklistID-is-required",
+    "Checklist-status-changed-successfully",
 
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_02:
     "OrganizationID-is-required",
@@ -2450,10 +2450,10 @@ export const checklistStatusErrorMap = {
     "Checklist-status-transition-not-allowed",
 
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_14:
-    "Pending-to-InProgress-requires-at-least-one-task",
+    "Pending-to-InProgress-requires-at-least-one-task-in-the-checklist",
 
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_15:
-    "Checklist-cannot-be-completed-with-pending-tasks",
+    "Checklist-cannot-be-marked-completed-while-tasks-are-still-pending",
 
   Compliance_ComplianceServiceManager_ChangeChecklistStatus_16:
     "Exception-occurred",

@@ -66,6 +66,8 @@ const ViewComplianceDetails = () => {
     complianceStatusChangeReasonModal,
     // complianceOnHoldReasonState,
   } = useComplianceContext();
+
+  console.log(complianceReopenDetailsState, "complianceReopenDetailsStatecomplianceReopenDetailsState")
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -427,6 +429,7 @@ const ViewComplianceDetails = () => {
     setComlianceStatusReopenedModal(false);
     resetModalStates();
   }, [tempSelectComplianceStatus, complianceReopenDetailsState]);
+  
 
   return (
     <>
