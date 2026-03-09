@@ -1383,16 +1383,22 @@ const UnpublishedProposedMeeting = ({
           const indexToUpdate = proposedMeetingsData.findIndex(
             (obj) => obj.pK_MDID === meetingData.pK_MDID
           );
-  
+        // Fetching unpublished meeting data
+        let getMeetingDataArray = await getAllUnpublishedMeetingData(
+          [meetingData],
+          1
+        );
+         // Assuming getMeetingDataArray is an array with a single object
+         const getMeetingData = getMeetingDataArray[0];
           // Check if the meeting exists in the current meetingsRecords
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingsData];
             console.log(updatedRows, "meetingDatameetingData");
   
-            updatedRows[indexToUpdate] = meetingData;
+            updatedRows[indexToUpdate] = getMeetingData;
             setProposedMeetingsData(updatedRows);
           } else {
-            let updatedRows = [meetingData, ...proposedMeetingsData];
+            let updatedRows = [getMeetingData, ...proposedMeetingsData];
             setProposedMeetingsData(updatedRows);
             setTotalRecords((prev) => prev + 1);
           }
