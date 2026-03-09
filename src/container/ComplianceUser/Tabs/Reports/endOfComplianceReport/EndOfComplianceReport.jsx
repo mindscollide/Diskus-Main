@@ -58,6 +58,19 @@ const EndOfComplianceReport = () => {
     ["Tasks Completed Late", 0],
   ];
 
+  // const donutOptions = {
+  //   pieHole: 0.7,
+  //   legend: {
+  //     position: "right",
+  //     textStyle: { fontSize: 12 },
+  //   },
+  //   pieSliceText: "none",
+  //   backgroundColor: "transparent",
+  //   chartArea: { width: "100%", height: "100%" },
+  //   colors: ["#6272D6"],
+  //   tooltip: { text: "percentage" },
+  // };
+
   const donutOptions = {
     pieHole: 0.7,
     legend: {
@@ -68,7 +81,14 @@ const EndOfComplianceReport = () => {
     backgroundColor: "transparent",
     chartArea: { width: "100%", height: "100%" },
     colors: ["#6272D6"],
-    tooltip: { text: "percentage" },
+    tooltip: { trigger: "none" },
+
+    pieSliceBorderColor: "transparent",
+    pieSliceTextStyle: { fontSize: 0 },
+    slices: {
+      0: { offset: 0 },
+      1: { offset: 0 },
+    },
   };
 
   const columns = useMemo(
