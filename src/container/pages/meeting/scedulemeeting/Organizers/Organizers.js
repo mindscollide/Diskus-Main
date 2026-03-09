@@ -41,7 +41,6 @@ import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
 import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
 import SendNotificationOrganizer from "./NotifyOrganizers/SendRecentNotification";
-import OrganizersViewPage from "./OrganizerViewPage/OrganizersViewPage";
 import {
   clearResponseMessage,
   UpdateOrganizersMeeting,
@@ -680,7 +679,6 @@ const Organizers = ({
   };
 
   const nextTabOrganizer = () => {
-    setviewOrganizers(!viewOrganizers);
     setRowsData([]);
     setAgendaContributors(true);
     setmeetingDetails(false);
@@ -941,9 +939,7 @@ const Organizers = ({
 
   return (
     <>
-      {viewOrganizers ? (
-        <OrganizersViewPage />
-      ) : (
+  
         <>
           <section className='position-relative'>
             <Row className='mt-4 m-0 p-0'>
@@ -1064,7 +1060,6 @@ const Organizers = ({
             </section>
           </section>
         </>
-      )}
       <Notification open={open} setOpen={setOpen} />
       {NewMeetingreducer.adduserModal && (
         <ModalOrganizor currentMeeting={currentMeeting} />
