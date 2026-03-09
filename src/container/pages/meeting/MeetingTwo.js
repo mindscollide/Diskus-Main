@@ -3351,7 +3351,7 @@ const NewMeeting = () => {
             className={styles.morebtn}
             onClick={() => handleClickDownloadBtn(record)}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
-            <span>{t("Download-view-recording")}</span>
+            <span>{t("Download-video-recording")}</span>
           </div>
         )}
         {canShow.viewMinutes && (
