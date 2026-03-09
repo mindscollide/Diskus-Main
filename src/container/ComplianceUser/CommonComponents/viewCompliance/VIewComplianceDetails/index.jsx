@@ -67,7 +67,10 @@ const ViewComplianceDetails = () => {
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
-  console.log(complianceReopenDetailsState, "complianceReopenDetailsStatecomplianceReopenDetailsState")
+  console.log(
+    complianceReopenDetailsState,
+    "complianceReopenDetailsStatecomplianceReopenDetailsState",
+  );
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -83,6 +86,12 @@ const ViewComplianceDetails = () => {
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
   );
+
+  const complianceReopenMqttData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
+  );
+
+  console.log(complianceReopenMqttData, "complianceReopenMqttData");
 
   console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
 
@@ -222,7 +231,7 @@ const ViewComplianceDetails = () => {
       description: complianceDetailsViewState.description,
       authorityId: complianceDetailsViewState.authority.value,
       criticality: complianceDetailsViewState.criticality.value,
-      dueDate: complianceDetailsViewState.dueDate,
+      dueDate: createConvert(complianceReopenDetailsState.dueDate),
       newStatusId: selectedOption.value,
       tags: tagsArr,
       ReasonToMakeComplianceOnHold:
@@ -429,7 +438,6 @@ const ViewComplianceDetails = () => {
     setComlianceStatusReopenedModal(false);
     resetModalStates();
   }, [tempSelectComplianceStatus, complianceReopenDetailsState]);
-  
 
   return (
     <>

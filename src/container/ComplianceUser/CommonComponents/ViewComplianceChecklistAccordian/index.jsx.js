@@ -35,6 +35,8 @@ const ViewComplianceChecklistAccordian = () => {
     getCheckListData.length > 0 &&
     expandedCheckListIds.length === getCheckListData.length;
 
+  console.log(allExpanded, "selectedChecklistStatus");
+
   // context
   const {
     allCheckListByComplianceId,
@@ -73,35 +75,6 @@ const ViewComplianceChecklistAccordian = () => {
     });
   };
 
-  // const handleExpandBtn = () => {
-  //   if (isExpandBtnClicked) {
-  //     if (getCheckListData?.length > 0) {
-  //       const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //       setAddChecklistCloseState(true);
-  //       setExpandedCheckListIds(allIds);
-  //       setIsExpandBtnClicked(!isExpandBtnClicked);
-  //     }
-  //   }
-  // };
-  // const handleExpandBtn = () => {
-  //   if (getCheckListData?.length === 0) return;
-
-  //   if (!isExpandBtnClicked) {
-  //     // 👉 EXPAND ALL
-  //     const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //     setExpandedCheckListIds(allIds);
-  //     setAddChecklistCloseState(true);
-  //   } else {
-  //     // 👉 COLLAPSE ALL
-  //     setExpandedCheckListIds([]);
-  //     setAddChecklistCloseState(false);
-  //   }
-
-  //   // 🔄 toggle button state
-  //   setIsExpandBtnClicked((prev) => !prev);
-  // };
   const handleExpandBtn = () => {
     if (getCheckListData.length === 0) return;
 
@@ -261,7 +234,7 @@ const ViewComplianceChecklistAccordian = () => {
               (data2, index) => data2 === data.checklistId,
             );
 
-            console.log(isExpanded, data, "isExpandedisExpanded");
+            console.log(isExpanded, data, "selectedChecklistStatus");
             const checklistStatusOptions =
               data.complianceCheckListAllowed?.map((status) => ({
                 value: status.statusId,
@@ -274,6 +247,8 @@ const ViewComplianceChecklistAccordian = () => {
                   label: data.status.statusName,
                 }
               : null;
+
+            console.log(selectedChecklistStatus, "selectedChecklistStatus");
 
             return (
               <div key={index}>

@@ -405,11 +405,22 @@ const CreateEditViewComplianceChecklist = () => {
   tomorrow.setDate(today.getDate() + 1); // strictly greater than today
   tomorrow.setHours(0, 0, 0, 0); // start of day
 
+  let maxChecklistDate = null;
+
+  if (complianceDetailsState?.dueDate) {
+    const complianceDate = new Date(complianceDetailsState.dueDate);
+
+    complianceDate.setHours(0, 0, 0, 0);
+    complianceDate.setDate(complianceDate.getDate() - 1); // one day before
+
+    maxChecklistDate = complianceDate;
+  }
+
   const isLockedStatus =
     complianceDetailsState?.status?.value === 7 ||
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
-    complianceDetailsState?.status?.value === 2;
+    complianceDetailsState?.status?.value === 3;
 
   const isReopendCompliance = complianceDetailsState?.status.value === 6;
 
@@ -495,6 +506,7 @@ const CreateEditViewComplianceChecklist = () => {
                 containerClassName={"Complaince_createEditDueDate"}
                 onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
+                maxDate={maxChecklistDate}
                 calendar={gregorian}
                 locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 calendarPosition="bottom-center"
@@ -661,21 +673,26 @@ const CreateEditViewComplianceChecklist = () => {
                             className="d-flex justify-content-end gap-3 align-items-center"
                           >
                             <img
-                              className="cursor-pointer"
+                              className={`${!isLockedStatus ? "cursor-pointer" : styles["NoCursorAlign"]}`}
                               draggable="false"
                               alt=""
                               src={deleteIcon}
+                              disabled={isLockedStatus}
                               onClick={() =>
+                                !isLockedStatus &&
                                 handleDeleteChecklist(data?.checklistId)
                               }
                             />
                             {/* Edit Checklist */}
                             <img
-                              className="cursor-pointer"
+                              className={`${!isLockedStatus ? "cursor-pointer" : styles["NoCursorAlign"]}`}
                               draggable="false"
                               alt=""
                               src={editIcon}
-                              onClick={() => handleEditChecklist(data)}
+                              disabled={isLockedStatus}
+                              onClick={() =>
+                                !isLockedStatus && handleEditChecklist(data)
+                              }
                             />
                             <img
                               src={Accordion_Arrow}

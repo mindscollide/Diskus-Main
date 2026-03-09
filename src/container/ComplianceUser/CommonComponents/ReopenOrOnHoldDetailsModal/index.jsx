@@ -97,7 +97,7 @@ const ReopenOrOnHoldDetailsModal = () => {
                   <Row>
                     <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
                     <div className={styles.textValue}>
-                      {truncateByWords(item.statusChangeReason) || "-"}
+                      {item.statusChangeReason || "-"}
                       <p></p>
                     </div>
                   </Row>

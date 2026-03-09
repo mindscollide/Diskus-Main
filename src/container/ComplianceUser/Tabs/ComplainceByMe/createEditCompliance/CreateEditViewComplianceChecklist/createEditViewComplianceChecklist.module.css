@@ -241,3 +241,7 @@
   pointer-events: none;
   cursor: default;
 }
+
+.NoCursorAlign {
+  cursor: not-allowed;
+}

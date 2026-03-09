@@ -155,8 +155,8 @@ const SearchComplianceBoxModal = () => {
         dueDateTo: searchCompliancePayload.dueDateTo,
         authorityShortCode: searchCompliancePayload.authorityShortCode,
         tagsCSV:
-          searchCompliancePayload.tagsCSV.length > 0
-            ? searchCompliancePayload.tagsCSV.join(", ")
+          searchCompliancePayload?.tagsCSV?.length > 0
+            ? searchCompliancePayload?.tagsCSV.join(", ")
             : "",
         criticalityIds: [],
         statusIds: [],

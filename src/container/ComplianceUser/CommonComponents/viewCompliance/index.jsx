@@ -158,7 +158,8 @@ const ViewCompliance = () => {
 
   // To Show Reopen View Detail Bar when Reopen or Hold status coming
   const shouldShowReopenSection = useMemo(() => {
-    const history = viewComplianceByMeDetails?.complianceStatusChangeHistory;
+    const history = complianceDetailsState?.complianceStatusChangeHistory;
+    console.log(history, "historyhistory");
 
     if (!Array.isArray(history) || history.length === 0) return false;
 
@@ -166,7 +167,10 @@ const ViewCompliance = () => {
       (item) =>
         item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
     );
-  }, [viewComplianceByMeDetails?.complianceStatusChangeHistory]);
+  }, [complianceDetailsState?.complianceStatusChangeHistory]);
+
+    console.log(shouldShowReopenSection, "historyhistory");
+
 
   useEffect(() => {
     if (

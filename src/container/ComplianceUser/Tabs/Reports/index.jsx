@@ -301,7 +301,7 @@ const Reports = () => {
         ),
         dataIndex: "reportTitle",
         key: "reportTitle",
-        width: "20%",
+        width: "23%",
         ellipsis: true,
         sorter: (a, b) =>
           reportTitleSort === "descend"
@@ -335,7 +335,7 @@ const Reports = () => {
         ),
         dataIndex: "generatedOn",
         key: "generatedOn",
-        width: "20%",
+        width: "17%",
         ellipsis: true,
         align: "left",
         sortDirections: ["descend", "ascend"],
