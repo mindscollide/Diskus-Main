@@ -82,6 +82,16 @@
   color: #5a5a5a;
 }
 
+/* Align only No-of-tasks and Overdue-tasks columns */
+.tableHeader div:nth-child(2),
+.tableHeader div:nth-child(3),
+.tableHeader div:nth-child(4),
+.tableRow div:nth-child(2),
+.tableRow div:nth-child(3),
+.tableRow div:nth-child(4) {
+  text-align: center;
+}
+
 .nameCol {
   font-weight: 500;
 }
@@ -304,6 +314,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
+  pointer-events: none !important;
+}
+
+.google-visualization-tooltip {
+  position: fixed !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
   pointer-events: none;
 }
 

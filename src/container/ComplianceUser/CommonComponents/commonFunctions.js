@@ -139,9 +139,8 @@ export const getAllowedStatuses = (currentStatusId) => {
 export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
   if (!dateStr || !timeStr) return "-";
 
-  // Parse date & time
   const year = +dateStr.slice(0, 4);
-  const month = +dateStr.slice(4, 6) - 1; // JS months 0-indexed
+  const month = +dateStr.slice(4, 6) - 1;
   const day = +dateStr.slice(6, 8);
 
   const hours = +timeStr.slice(0, 2);
@@ -150,19 +149,17 @@ export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
 
   const date = new Date(year, month, day, hours, minutes, seconds);
 
-  // Format time as hh:mm AM/PM
   const time = date.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
   });
 
-  // Format date as DD Month YYYY
   const dayMonthYear = date.toLocaleDateString("en-US", {
     day: "2-digit",
-    month: "long",
+    month: "short",
     year: "numeric",
   });
 
-  return `${time} ${dayMonthYear}`; // Just a space, no "at"
+  return `${time} ${dayMonthYear}`;
 };

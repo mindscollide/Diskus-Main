@@ -253,11 +253,11 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceCancelReasonState(0);
     setComlianceCompleteExceptionModal(false);
     setComlianceStatusReopenedModal(false);
-    setComplianceReopenDetailsState({
-      reason: "",
-      dueDate: "",
-      attachments: [],
-    });
+    // setComplianceReopenDetailsState({
+    //   reason: "",
+    //   dueDate: "",
+    //   attachments: [],
+    // });
     setDeleteChecklistConfirmationModalState(false);
     setDeleteChecklistId(0);
   };

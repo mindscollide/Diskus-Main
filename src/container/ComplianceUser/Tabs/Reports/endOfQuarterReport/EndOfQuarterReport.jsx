@@ -25,7 +25,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
@@ -58,7 +58,7 @@ const EndOfQuarterReport = () => {
     backgroundColor: "transparent",
     chartArea: { width: "100%", height: "100%" },
     colors: ["#4F7CFE", "#F5C542", "#F16B6B"],
-    tooltip: { text: "percentage" },
+    tooltip: { trigger: "none" },
   };
 
   const options = {
@@ -212,7 +212,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -220,7 +220,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -408,7 +408,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate
+                                                    task.taskDueDate,
                                                   )}
                                                 </p>
                                               </div>
@@ -509,7 +509,7 @@ const EndOfQuarterReport = () => {
                         <p>
                           {" "}
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn
+                            GetQuarterReport?.header?.generatedOn,
                           )}
                         </p>
                       </div>
@@ -528,7 +528,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -538,7 +538,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -609,7 +609,7 @@ const EndOfQuarterReport = () => {
                         {checklist.checklistDescription}
                       </Tooltip>
                     </Col>
-                  ))
+                  )),
                 )}
               </Row>
             </div>

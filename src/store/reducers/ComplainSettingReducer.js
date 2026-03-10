@@ -1425,7 +1425,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         Loading: false,
         changeCheckListStatus: action.response,
         ResponseMessage: action.message,
-        severity: "succeess",
+        severity: "success",
       };
     case actions.CHANGE_CHECKLIST_STATUS_FAIL:
       return {
@@ -1433,7 +1433,7 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         Loading: false,
         changeCheckListStatus: null,
         ResponseMessage: action.message,
-        severity: "errorF",
+        severity: "error",
       };
 
     // ================= DEFAULT =================
