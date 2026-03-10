@@ -102,6 +102,7 @@ export function updateLocalUserRoutes(userFeatures, LocalUserRoutes) {
     { id: 17, name: "groups" },
     { id: 48, name: "committee" },
     { id: 18, name: "resolution" },
+
   ];
   try {
     // Iterate through each feature from the API response

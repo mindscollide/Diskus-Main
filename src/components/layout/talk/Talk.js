@@ -52,7 +52,7 @@ import TalkVideo from "./talk-Video/TalkVideo";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import ModalAddNote from "../../../container/notes/modalAddNote/ModalAddNote";
-import { checkFeatureIDAvailability } from "../../../commen/functions/utils";
+import { checkFeatureID, checkFeatureIDAvailability } from "../../../commen/functions/utils";
 import {
   clearPendingApprovalCount,
   GetMinuteReviewPendingApprovalsByReviewerId,
@@ -537,7 +537,7 @@ const Talk = () => {
 
         <div className={subIcons ? "talk-nav-icons" : "border-0"}>
           {/* {checkFeatureIDAvailability(4) ? ( */}
-          {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
+          {checkFeatureID(77) && (
             <Tooltip placement="leftTop" title={t("Compliance")}>
               <div
                 className={
