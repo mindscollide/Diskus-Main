@@ -164,7 +164,7 @@ const UnpublishedProposedMeeting = ({
   const [proposedMeetingsData, setProposedMeetingsData] = useState([]);
   const [totalRecords, setTotalRecords] = useState(0);
 
-  console.log(proposedMeetingsData, "proposedMeetingsData")
+  console.log(proposedMeetingsData, "proposedMeetingsData");
 
   const viewProposeDatePollHandler = (
     isParticipant,
@@ -1380,25 +1380,40 @@ const UnpublishedProposedMeeting = ({
       try {
         const updateMeetingData = async () => {
           let meetingData = meetingStatusProposedMqttData;
+          console.log(meetingData, "meetingDatameetingData");
+
           const indexToUpdate = proposedMeetingsData.findIndex(
             (obj) => obj.pK_MDID === meetingData.pK_MDID
           );
-        // Fetching unpublished meeting data
-        let getMeetingDataArray = await getAllUnpublishedMeetingData(
-          [meetingData],
-          1
-        );
-         // Assuming getMeetingDataArray is an array with a single object
-         const getMeetingData = getMeetingDataArray[0];
+          console.log(indexToUpdate, "meetingDatameetingData");
+
+          // Fetching unpublished meeting data
+          let getMeetingDataArray = await getAllUnpublishedMeetingData(
+            [meetingData],
+            1
+          );
+          console.log(getMeetingDataArray, "meetingDatameetingData");
+
+          // Assuming getMeetingDataArray is an array with a single object
+          const getMeetingData = getMeetingDataArray[0];
           // Check if the meeting exists in the current meetingsRecords
+
+          console.log(getMeetingData, "meetingDatameetingData");
+
           if (indexToUpdate !== -1) {
             let updatedRows = [...proposedMeetingsData];
             console.log(updatedRows, "meetingDatameetingData");
-  
+
             updatedRows[indexToUpdate] = getMeetingData;
+            console.log(updatedRows, "meetingDatameetingData");
+
             setProposedMeetingsData(updatedRows);
           } else {
+            console.log(getMeetingData, "meetingDatameetingData");
+
             let updatedRows = [getMeetingData, ...proposedMeetingsData];
+            console.log(updatedRows, "meetingDatameetingData");
+
             setProposedMeetingsData(updatedRows);
             setTotalRecords((prev) => prev + 1);
           }
@@ -1406,9 +1421,11 @@ const UnpublishedProposedMeeting = ({
         updateMeetingData();
         dispatch(meetingStatusProposedMqtt(null));
       } catch (error) {
-        console.log(error, "meetingStatusProposedMqttDatameetingStatusProposedMqttData")
+        console.log(
+          error,
+          "meetingStatusProposedMqttDatameetingStatusProposedMqttData"
+        );
       }
-   
     }
   }, [meetingStatusProposedMqttData]);
 

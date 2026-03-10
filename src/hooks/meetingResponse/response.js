@@ -92,7 +92,7 @@ export const getAllUnpublishedMeetingData = async (
         meetingType:
           data.meetingTypeID === 1 && data.isQuickMeeting === true
             ? 0
-            : data.meetingTypeID ,
+            : data.meetingTypeID || data.meetingType,
         meetingEndTime: data.meetingEndTime || "",
         meetingStartTime: data.meetingStartTime || "",
         pK_MDID: data.pK_MDID || 0,
