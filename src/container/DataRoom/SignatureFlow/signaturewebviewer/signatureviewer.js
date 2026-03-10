@@ -602,6 +602,7 @@ const SignatureViewer = () => {
         //======================================== disable header =====================================//
         instance.UI.disableTools([Tools.disableTextSelection]);
         instance.UI.disableElements([
+          "stylePanel",
           "leftPanelButton",
           "divider-0.1",
           "underlineToolGroupButton",
@@ -800,6 +801,7 @@ const SignatureViewer = () => {
             );
             return elements.length > 0;
           }
+          console.log("signerDataRef", mainXmlDoc);
 
           let covert = userAnnotationsRef.current.map((user) => {
             let filteredXml = user.xml.filter((item) => {
