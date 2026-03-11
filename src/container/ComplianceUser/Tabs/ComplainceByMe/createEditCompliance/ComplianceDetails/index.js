@@ -594,9 +594,9 @@ const ComplainceDetails = () => {
         description: complianceDetailsState.description,
         authorityId: complianceDetailsState.authority.value,
         criticality: complianceDetailsState.criticality.value,
-        dueDate: multiDatePickerDateChangIntoUTC(
-          complianceDetailsState.dueDate,
-        ),
+        dueDate: complianceDetailsState.dueDate
+          ? multiDatePickerDateChangIntoUTC(complianceDetailsState.dueDate)
+          : null,
         tags: tagsArr,
       };
       dispatch(
@@ -857,6 +857,8 @@ const ComplainceDetails = () => {
     }
   };
 
+  const isFormDisabled = isChecklistTitleExist === true;
+
   return (
     <>
       <Row className="mt-2">
@@ -873,6 +875,7 @@ const ComplainceDetails = () => {
             ) : (
               <Select
                 isSearchable={true}
+                isDisabled={isFormDisabled}
                 options={authorityOptions}
                 labelInValue={t("Authority")}
                 onChange={handleSelectAuthority}
@@ -912,7 +915,9 @@ const ComplainceDetails = () => {
             value={complianceDetailsState.complianceTitle}
             labelClass={styles["labelStyle"]}
             disabled={
-              complianceDetailsState.authority.value === 0 ? true : false
+              complianceDetailsState.authority.value === 0
+                ? true
+                : false || isFormDisabled
             }
             onBlur={handleBlur}
           />
@@ -963,7 +968,9 @@ const ComplainceDetails = () => {
             }
             value={complianceDetailsState.description}
             disabled={
-              complianceDetailsState.authority.value === 0 ? true : false
+              complianceDetailsState.authority.value === 0
+                ? true
+                : false || isFormDisabled
             }
           />
         </Col>
@@ -997,7 +1004,9 @@ const ComplainceDetails = () => {
                 }
                 classNamePrefix="Select_country_Authoriy"
                 isDisabled={
-                  complianceDetailsState.authority.value === 0 ? true : false
+                  complianceDetailsState.authority.value === 0
+                    ? true
+                    : false || isFormDisabled
                 }
               />
             )}
@@ -1020,7 +1029,8 @@ const ComplainceDetails = () => {
                 placeholder={t("Due-date")}
                 className={`${styles["datepicker_input"]} ${
                   complianceDetailsState?.authority?.value === 0 ||
-                  complianceDetailsState?.status?.value === 6
+                  complianceDetailsState?.status?.value === 6 ||
+                  isFormDisabled
                     ? styles["disabledInput"]
                     : ""
                 }`}
@@ -1041,7 +1051,7 @@ const ComplainceDetails = () => {
               complianceDetailsState.authority.value === 0 ||
               complianceDetailsState?.status?.value === 6
                 ? true
-                : false
+                : false || isFormDisabled
             }
           />
         </Col>
@@ -1175,11 +1185,12 @@ const ComplainceDetails = () => {
           className={styles["Compliance_NextButton"]}
           onClick={handleClickNextBtn}
           disableBtn={
-            complianceDetailsState.authority.value !== 0 &&
-            complianceDetailsState.criticality.value !== 0 &&
-            complianceDetailsState.dueDate !== "" &&
-            complianceDetailsState.complianceTitle !== "" &&
-            errors.complianceTitle === ""
+            isFormDisabled ||
+            (complianceDetailsState.authority.value !== 0 &&
+              complianceDetailsState.criticality.value !== 0 &&
+              complianceDetailsState.dueDate !== "" &&
+              complianceDetailsState.complianceTitle !== "" &&
+              errors.complianceTitle === "")
               ? false
               : true
           }

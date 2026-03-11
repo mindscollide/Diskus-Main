@@ -176,3 +176,16 @@ export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
 
   return `${time} ${formattedDate}`;
 };
+
+export const parseBackendDate = (dateStr) => {
+  if (!dateStr) return null;
+
+  const year = +dateStr.slice(0, 4);
+  const month = +dateStr.slice(4, 6) - 1; // JS months are 0-indexed
+  const day = +dateStr.slice(6, 8);
+  const hours = +dateStr.slice(8, 10);
+  const minutes = +dateStr.slice(10, 12);
+  const seconds = +dateStr.slice(12, 14);
+
+  return new Date(year, month, day, hours, minutes, seconds);
+};

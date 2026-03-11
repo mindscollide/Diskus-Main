@@ -504,6 +504,7 @@ const ComplianceStandingReport = () => {
       dueDateSort,
       totalCheckListsSort,
       noOfTasksSort,
+      getCriticalityColumnProps,
       overdueTasksSort,
       progressSort,
       t,
@@ -724,7 +725,9 @@ const ComplianceStandingReport = () => {
                                                 {t("Completed-on")}:
                                               </label>
                                               <p>
-                                                {task.completedOnDate ?? "-"}
+                                                {formatDateToYMD(
+                                                  task.completedOnDate,
+                                                ) ?? "-"}
                                               </p>
                                             </div>
                                           </Col>

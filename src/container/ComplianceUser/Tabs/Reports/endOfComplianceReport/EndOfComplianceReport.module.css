@@ -457,3 +457,8 @@
   justify-content: center;
   align-items: center;
 }
+
+.AlignCenterChecklist {
+  display: flex;
+  justify-content: center;
+}
