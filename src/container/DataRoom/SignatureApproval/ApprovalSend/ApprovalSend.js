@@ -516,6 +516,7 @@ const ApprovalSend = () => {
                     ...data2,
                     status: data.status,
                     workFlowStatusID: data.workFlowStatusID,
+                    sentOn: data.sentOn,
                   }
                 : data2
             )
