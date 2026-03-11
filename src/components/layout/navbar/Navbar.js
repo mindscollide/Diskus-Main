@@ -20,7 +20,7 @@ const NavbarAdmin = () => {
   );
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== null) {
       setActivateBlur(true);
     } else {
       setActivateBlur(false);
@@ -41,7 +41,9 @@ const NavbarAdmin = () => {
                     <Navbar.Toggle aria-controls='responsive-navbar-nav' />
                     <Navbar.Collapse id='responsive-navbar-nav'>
                       <Nav className=' me-auto d-flex justify-content-evenly w-100 py-1'>
-                        {checkFeatureID(77) && (
+                      {/* {checkFeatureID(77) && ( */}
+                        
+                        {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
                           <NavDropdown
                             active={true}
                             title={t("Compliance-settings")}
