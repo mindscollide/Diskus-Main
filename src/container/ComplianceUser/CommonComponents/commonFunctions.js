@@ -155,11 +155,24 @@ export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
     hour12: true,
   });
 
-  const dayMonthYear = date.toLocaleDateString("en-US", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
 
-  return `${time} ${dayMonthYear}`;
+  const formattedDate = `${String(date.getDate()).padStart(2, "0")} ${
+    months[date.getMonth()]
+  } ${date.getFullYear()}`;
+
+  return `${time} ${formattedDate}`;
 };

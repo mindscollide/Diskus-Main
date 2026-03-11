@@ -416,6 +416,11 @@ export const ComlianceProvider = ({ children }) => {
   //For Reopen dashboard Card Data in COmpliance
   const [reopenDashboardList, setReopenDashboardList] = useState([]);
 
+  const [
+    viewAllReopenDashboardButtonFlag,
+    setViewAllReopenDashboardButtonFlag,
+  ] = useState(false);
+
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
 
@@ -1025,6 +1030,8 @@ export const ComlianceProvider = ({ children }) => {
         criticalityOptions,
         pendingNavigation,
         setPendingNavigation,
+        viewAllReopenDashboardButtonFlag,
+        setViewAllReopenDashboardButtonFlag,
       }}
     >
       {children}

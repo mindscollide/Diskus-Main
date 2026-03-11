@@ -197,6 +197,7 @@ const ViewComplianceDetails = () => {
           ),
         );
       } else {
+        console.log("complianceByMeList");
         dispatch(
           EditComplianceAPI(
             navigate,
@@ -231,7 +232,10 @@ const ViewComplianceDetails = () => {
       description: complianceDetailsViewState.description,
       authorityId: complianceDetailsViewState.authority.value,
       criticality: complianceDetailsViewState.criticality.value,
-      dueDate: createConvert(complianceReopenDetailsState.dueDate),
+      dueDate:
+        selectedOption.value === 6
+          ? createConvert(complianceReopenDetailsState.dueDate)
+          : complianceDetailsViewState.dueDate,
       newStatusId: selectedOption.value,
       tags: tagsArr,
       ReasonToMakeComplianceOnHold:
@@ -275,7 +279,7 @@ const ViewComplianceDetails = () => {
       );
       return;
     }
-
+    console.log("complianceByMeList");
     // console.log(Data, "DataDataData");
     dispatch(EditComplianceAPI(navigate, Data, t, null));
   };

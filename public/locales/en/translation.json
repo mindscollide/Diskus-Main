@@ -2744,5 +2744,6 @@
   "ComplianceID-is-required": "ComplianceID is required",
   "OrganizationID-is-required": "OrganizationID is required",
   "Checklist-is-required": "Checklist is required",
-  "Checklist-status-changed-successfully": "Checklist status changed successfully"
+  "Checklist-status-changed-successfully": "Checklist status changed successfully",
+  "Compliance-progress":"Compliance progress"
 }

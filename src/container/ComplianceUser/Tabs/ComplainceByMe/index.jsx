@@ -64,15 +64,29 @@ const ComplianceByMe = () => {
     searchCompliancePayload,
     setSearchCompliancePayload,
     allComplianceStatusForFilter,
+    viewAllReopenDashboardButtonFlag,
+    setViewAllReopenDashboardButtonFlag,
   } = useComplianceContext();
 
   console.log(complianceByMeList, "complianceByMeList");
 
   useEffect(() => {
-    dispatch(
-      listOfComplianceByCreatorApi(navigate, searchCompliancePayload, t),
-    );
-    dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
+    let payload = { ...searchCompliancePayload };
+
+    if (viewAllReopenDashboardButtonFlag) {
+      payload = {
+        ...payload,
+        statusIds: [6], // reopen
+      };
+
+      dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
+
+      // reset flag after using it
+      setViewAllReopenDashboardButtonFlag(false);
+    } else {
+      dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
+      dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
+    }
   }, []);
 
   useEffect(() => {
@@ -446,7 +460,7 @@ const ComplianceByMe = () => {
     if (complianceByMeList.length < complianceByMeTotal) {
       const nextPayload = {
         ...searchCompliancePayload,
-        pageNumber: sortedComplianceList.length
+        pageNumber: sortedComplianceList.length,
       };
       setIsScroll(true);
       setSearchCompliancePayload(nextPayload);
