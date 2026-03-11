@@ -82,7 +82,7 @@
     font-weight: 500;
     font-size: 15px;
     line-height: 10px;
-    margin-top: 20px;
+    margin-top: 30px;
   }
   .ComplianceStatusReportGenerated_heading {
     font-weight: 700;
@@ -97,7 +97,7 @@
   .ComplianceStatusReport_heading {
     font-size: 18px;
     line-height: 10px;
-    margin-top: 22px;
+    margin-top: 30px;
   }
 
   .actionButtons_complianceStatusReport {
@@ -109,7 +109,7 @@
     /* padding: 6px !important;
     margin-right: 8px;
     max-width: 90px; */
-    font-size: 11px;
+    font-size: 12px;
     padding: 7px 18px !important;
     border: 3px solid rgb(241, 11, 11);
   }

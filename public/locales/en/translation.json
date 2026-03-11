@@ -2702,7 +2702,7 @@
   "Quarter": "Quarter",
   "Pending-or-overdue-tasks": "Pending or Overdue Tasks",
   "Compliance-name": "Compliance Name ",
-  "Progress": "Progress",
+  "Progress": "Progress %",
   "Assignee": "Assignee",
   "Completed-on": "Completed on",
   "Date-range": "Date Range",
@@ -2744,5 +2744,7 @@
   "ComplianceID-is-required": "ComplianceID is required",
   "OrganizationID-is-required": "OrganizationID is required",
   "Checklist-is-required": "Checklist is required",
-  "Checklist-status-changed-successfully": "Checklist status changed successfully"
+  "Checklist-status-changed-successfully": "Checklist status changed successfully",
+  "Compliance-progress": "Compliance progress",
+  "Due-date-is-required": "Due date is required"
 }

@@ -287,7 +287,7 @@ const ModalToDoListChecklist = ({
 
     // Step 2: Validate and process task creation date and time
     if (!task.creationDate) {
-      showMessage(t("Creation date is required"), "error", setOpen); // Validate task creation date
+      showMessage(t("Due date is required"), "error", setOpen); // Validate task creation date
       return;
     }
 

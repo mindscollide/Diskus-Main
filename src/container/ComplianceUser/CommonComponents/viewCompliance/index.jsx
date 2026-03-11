@@ -51,6 +51,7 @@ const ViewCompliance = () => {
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(mainComplianceTabs, "mainComplianceTabs");
   console.log(complianceInfo, "complianceInfocomplianceInfo");
 
   //   Get Comliance Details
@@ -169,8 +170,7 @@ const ViewCompliance = () => {
     );
   }, [complianceDetailsState?.complianceStatusChangeHistory]);
 
-    console.log(shouldShowReopenSection, "historyhistory");
-
+  console.log(shouldShowReopenSection, "historyhistory");
 
   useEffect(() => {
     if (
@@ -283,7 +283,11 @@ const ViewCompliance = () => {
                       <div className={styles.ProgressBarDiv}>
                         <div className="d-flex justify-content-between">
                           <span className={styles["progressBarHeading"]}>
-                            {t("My-progress")}
+                            {mainComplianceTabs === 2 ? (
+                              <>{t("Compliance-progress")}</>
+                            ) : (
+                              <> {t("My-progress")}</>
+                            )}
                           </span>
                           <span className={styles["progressBarHeading"]}>
                             {`${complianceDetailsState.progressPercent}%`}

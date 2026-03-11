@@ -171,7 +171,7 @@ const AccumulativeReport = () => {
                 <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
                   <img src={Verification} alt="Verification" />
                   <div>
-                    <label>{t("Report-type ")}:</label>
+                    <label>{t("Report-type")}:</label>
                     <p>
                       {GetAccumulativeReport?.header?.reportTypeName ||
                         "Accumulative"}
@@ -296,7 +296,7 @@ const AccumulativeReport = () => {
                   <div className="text-center">{t("No-of-tasks")}</div>
                   <div className="text-center">{t("Completed-tasks")}</div>
                   <div className="text-center">{t("Overdue-tasks")} </div>
-                  <div className="text-center">{t("Progress")} % </div>
+                  <div className="text-center">{t("Progress")}</div>
                 </div>
 
                 {/* 🔹 COLLAPSE ROWS */}
@@ -539,7 +539,7 @@ const AccumulativeReport = () => {
                     >
                       <img src={ComplianceCalendar} alt="ComplianceCalendar" />
                       <div>
-                        <span>{t("Start-dates")}</span>
+                        <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
                             GetAccumulativeReport?.header?.quarterStartDate,
@@ -623,8 +623,8 @@ const AccumulativeReport = () => {
                       xs="auto"
                       className={styles.checklist_report}
                     >
-                      <Tooltip title={checklist.checklistDescription}>
-                        {checklist.checklistDescription}
+                      <Tooltip title={checklist.checklistTitle}>
+                        {checklist.checklistTitle}
                       </Tooltip>
                     </Col>
                   )),

@@ -94,7 +94,7 @@ const EndOfComplianceReport = () => {
   const columns = useMemo(
     () => [
       {
-        title: t("Task-Name"),
+        title: t("Task-name"),
         dataIndex: "taskName",
         key: "taskName",
         width: "12%",
@@ -363,14 +363,14 @@ const EndOfComplianceReport = () => {
                       </div>
                       <div>
                         <span>{t("Total-checklists")} </span>
-                        <p>
+                        <p className={styles["AlignCenterChecklist"]}>
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.totalChecklists || 0}
                         </p>
                       </div>
                       <div>
                         <span>{t("Total-tasks")}</span>
-                        <p>
+                        <p className={styles["AlignCenterChecklist"]}>
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.totalTasks || 0}
                         </p>
@@ -512,7 +512,7 @@ const EndOfComplianceReport = () => {
                   <Row className="align-items-center">
                     <Col lg={5} xs="auto">
                       <label className={styles.ComplianceReportHeadings}>
-                        {t("Criticalityy")}:
+                        {t("Criticalityy")}: {""}
                         {
                           GetEndOfComplianceReport?.complianceSummary
                             ?.criticality
