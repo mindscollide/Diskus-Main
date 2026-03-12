@@ -166,6 +166,9 @@ const ComplainceDetails = () => {
 
   const [checkAnyTaskInProgress, setCheckAnyTaskInProgress] = useState(false);
 
+  const [hasIncompleteChecklistOrTask, setHasIncompleteChecklistOrTask] =
+    useState(false);
+
   useEffect(() => {
     dispatch(GetAllAuthoritiesWithoutPaginationAPI(navigate, t));
     if (complianceInfo.complianceId !== 0) {
@@ -269,8 +272,20 @@ const ComplainceDetails = () => {
           );
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
+
+          const checklistIncomplete =
+            Array.isArray(checklists) &&
+            checklists.some(
+              (item) =>
+                item?.status?.statusName === "Pending" ||
+                item?.status?.statusName === "In Progress" ||
+                item?.status?.statusName === "On Hold",
+            );
+
+          setHasIncompleteChecklistOrTask(checklistIncomplete);
         } else {
           setCheckAnyChecklistOnPendingState(false);
+          setHasIncompleteChecklistOrTask(false);
         }
 
         // Check if any task status in pending the show confirmation modal on Complete
@@ -280,8 +295,20 @@ const ComplainceDetails = () => {
           );
 
           setCheckAnyTaskOnPendingState(hasPendingTask);
+
+          const taskIncomplete =
+            Array.isArray(checklistTasks) &&
+            checklistTasks.some(
+              (item) =>
+                item?.taskStatus?.statusName === "Pending" ||
+                item?.taskStatus?.statusName === "In Progress" ||
+                item?.taskStatus?.statusName === "On Hold",
+            );
+
+          setHasIncompleteChecklistOrTask(taskIncomplete);
         } else {
           setCheckAnyTaskOnPendingState(false);
+          setHasIncompleteChecklistOrTask(false);
         }
 
         // // Check if any checklist or any task status is In Progress
@@ -394,6 +421,7 @@ const ComplainceDetails = () => {
       setTagsOptions([]);
     }
   }, [GetAllTagsByOrganizationIDData]);
+
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -753,6 +781,7 @@ const ComplainceDetails = () => {
     setTagsValue(""); // clear input
     setTagInputActive(false);
   };
+
   const selectStyles = {
     control: (base, state) => ({
       ...base,
@@ -783,7 +812,8 @@ const ComplainceDetails = () => {
         if (
           // checkAnyChecklistOnPendingState ||
           checkAnyTaskOnPendingState ||
-          checkAnyTaskInProgress
+          checkAnyTaskInProgress ||
+          checkAnyChecklistOnPendingState
         ) {
           resetModalStates();
           setComlianceCompleteExceptionModal(true);
@@ -801,7 +831,13 @@ const ComplainceDetails = () => {
       if (complianceDetailsState.status.value === 5) {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
-        if (checkAnyChecklistOnPendingState) {
+        if (checkAnyChecklistOnPendingState || hasIncompleteChecklistOrTask) {
+          console.log(
+            checkAnyChecklistOnPendingState,
+            checkAnyTaskInProgress,
+            "CompliaceStatusOnHoldModal",
+          );
+
           resetModalStates();
           setTempSelectedComplianceStatus(event);
           setSubmitForApprovalModal(true);

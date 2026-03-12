@@ -1215,6 +1215,7 @@ const AddComplianceChecklistAPI = (
   t,
   complianceInfo,
   setChecklistData,
+  setNewChecklistIds,
 ) => {
   const complianceId = {
     complianceId: complianceInfo.complianceId,
@@ -1236,6 +1237,7 @@ const AddComplianceChecklistAPI = (
               t,
               complianceInfo,
               setChecklistData,
+              setNewChecklistIds,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1247,6 +1249,14 @@ const AddComplianceChecklistAPI = (
                   "Compliance_ComplianceServiceManager_AddComplianceChecklist_01".toLowerCase(),
                 )
             ) {
+              const newChecklistId =
+                response.data.responseResult.checklistId ||
+                response.data.responseResult.data?.checklistId;
+
+              if (newChecklistId) {
+                setNewChecklistIds((prev) => [...prev, newChecklistId]);
+              }
+
               await dispatch(
                 AddComplianceChecklistSuccess(
                   response.data.responseResult,

@@ -13,11 +13,16 @@ import ReopenOrOnHoldDetailsModal from "../ReopenOrOnHoldDetailsModal";
 import ArrowBack from "../../../../assets/images/arrow-left-compliance.png";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 import { useDispatch } from "react-redux";
-import { clearAuthorityMessage } from "../../../../store/actions/ComplainSettingActions";
+import {
+  clearAuthorityMessage,
+  ViewComplianceDetailsByViewTypeAPI,
+} from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
 
 const ViewCompliance = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [open, setOpen] = useState({
     open: false,
@@ -47,6 +52,8 @@ const ViewCompliance = () => {
     isViewDetailsOpen,
     setIsViewDetailsOpen,
     setShowViewCompliance,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
     emptyComplianceState,
   } = useComplianceContext();
 
@@ -192,6 +199,27 @@ const ViewCompliance = () => {
     }
   }, [complainceRespnseMessage, complainceSeverityMessage]);
 
+  const onClickDetailTab = () => {
+    setViewComplianceDetailsTab(1);
+    const getViewType = localStorage.getItem("viewType");
+    const Data = {
+      complianceId: Number(complianceInfo?.complianceId),
+      viewType: Number(getViewType),
+    };
+    console.log(Data, "DataDataDataData");
+    dispatch(
+      ViewComplianceDetailsByViewTypeAPI(
+        navigate,
+        Data,
+        t,
+        2,
+        setComplianceAddEditViewState,
+        setCreateEditComplaince,
+        setShowViewCompliance,
+      ),
+    );
+  };
+
   return (
     <>
       <section className={styles["MainViewCompliance_Container"]}>
@@ -228,9 +256,7 @@ const ViewCompliance = () => {
                     : styles["viewComplianceTabBtn"]
                 }
                 text={t("Details")}
-                onClick={() => {
-                  setViewComplianceDetailsTab(1);
-                }}
+                onClick={onClickDetailTab}
               />
               <CustomButton
                 className={

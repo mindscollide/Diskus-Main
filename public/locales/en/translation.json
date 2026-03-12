@@ -2746,5 +2746,7 @@
   "Checklist-is-required": "Checklist is required",
   "Checklist-status-changed-successfully": "Checklist status changed successfully",
   "Compliance-progress": "Compliance progress",
-  "Due-date-is-required": "Due date is required"
+  "Due-date-is-required": "Due date is required",
+  "List-of-compliances-of-this-authority": "List of Compliances of this Authority",
+  "Are-you-sure-you-want-to-delete-this-authority":"Are you sure you want to delete this authority"
 }

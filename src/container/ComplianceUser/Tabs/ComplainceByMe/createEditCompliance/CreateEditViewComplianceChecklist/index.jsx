@@ -71,6 +71,10 @@ const CreateEditViewComplianceChecklist = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   console.log(isChecklistTitleExist, "isChecklistTitleExist");
 
+  const [newChecklistIds, setNewChecklistIds] = useState([]);
+
+  console.log(newChecklistIds, "newChecklistIdsnewChecklistIds");
+
   const [isEditTrue, setIsEditTrue] = useState(false);
   const {
     complianceAddEditViewState,
@@ -179,6 +183,7 @@ const CreateEditViewComplianceChecklist = () => {
             t,
             complianceInfo,
             setChecklistData,
+            setNewChecklistIds,
           ),
         );
       }
@@ -242,9 +247,9 @@ const CreateEditViewComplianceChecklist = () => {
       GetComplianceChecklistsByComplianceId !== null
     ) {
       setChecklistCount(
-        GetComplianceChecklistsByComplianceId.checklistList.length,
+        GetComplianceChecklistsByComplianceId?.checklistList?.length,
       );
-      let updateTIme = GetComplianceChecklistsByComplianceId.checklistList.map(
+      let updateTIme = GetComplianceChecklistsByComplianceId?.checklistList.map(
         (data, index) => {
           return {
             ...data,
@@ -423,6 +428,7 @@ const CreateEditViewComplianceChecklist = () => {
     complianceDetailsState?.status?.value === 3;
 
   const isReopendCompliance = complianceDetailsState?.status.value === 6;
+  console.log(isReopendCompliance, "isReopendCompliance");
 
   return (
     <>
@@ -663,7 +669,7 @@ const CreateEditViewComplianceChecklist = () => {
                     </>
                   }
                   endField={
-                    !isReopendCompliance && (
+                    newChecklistIds?.includes(data?.checklistId) && (
                       <>
                         <Row>
                           <Col

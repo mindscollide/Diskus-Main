@@ -136,6 +136,7 @@ const ViewComplianceDetails = () => {
       ...provided,
       color: getStatusColor(state.data.label),
       fontWeight: 600,
+      fontSize: "15px",
     }),
 
     control: (provided, state) => ({
@@ -315,6 +316,10 @@ const ViewComplianceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 5) {
         if (checkAnyChecklistOnPendingState) {
+          console.log(
+            checkAnyChecklistOnPendingState,
+            "Check Compliance Coming",
+          );
           resetModalStates();
           setTempSelectedComplianceStatus(event);
           setSubmitForApprovalModal(true);
@@ -501,7 +506,7 @@ const ViewComplianceDetails = () => {
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
               "Criticality-level",
-            )}:`}</div>
+            )}`}</div>
             <div className={styles["complianceViewValue"]}>
               {complianceDetailsState.criticality.label}
             </div>
@@ -509,7 +514,7 @@ const ViewComplianceDetails = () => {
           <Col sm={12} md={2} lg={2}>
             <div className={styles["complianceViewLabel"]}>{`${t(
               "Due-date",
-            )}:`}</div>
+            )}`}</div>
             <div className={styles["complianceViewValue"]}>
               {formatDateToYMD(complianceDetailsState.dueDate)}
             </div>
@@ -517,7 +522,7 @@ const ViewComplianceDetails = () => {
           <Col sm={12} md={8} lg={8}>
             <div className={styles["complianceViewLabel"]}>{`${t(
               "Tags",
-            )}:`}</div>
+            )}`}</div>
             {Array.isArray(complianceDetailsState.tags) &&
               complianceDetailsState.tags.length > 0 &&
               complianceDetailsState.tags.map((tag) => (

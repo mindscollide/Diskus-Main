@@ -291,12 +291,12 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
             >
               <Button
                 text={t("Close")}
-                className={styles["ProceedButtonStyles"]}
+                className={styles["CancelButton"]}
                 onClick={handleCloseButton}
               />
               <Button
                 text={t("Proceed")}
-                className={styles["CancelButton"]}
+                className={styles["ProceedButtonStyles"]}
                 onClick={view ? handleProceedButtonView : handleProceedButton}
                 disableBtn={
                   complianceReopenDetailsState.reason === "" ||

@@ -563,7 +563,7 @@ const EndOfComplianceReport = () => {
                       <div className={`${styles.iconTextWrapperPDFDownload} `}>
                         <div>
                           <label>{t("Total-checklists")}:</label>
-                          <p>
+                          <p className={styles["AlignCenterChecklist"]}>
                             {
                               GetEndOfComplianceReport?.complianceSummary
                                 ?.totalChecklists
@@ -572,7 +572,7 @@ const EndOfComplianceReport = () => {
                         </div>
                         <div>
                           <label>{t("Total-tasks")}:</label>
-                          <p>
+                          <p className={styles["AlignCenterChecklist"]}>
                             {
                               GetEndOfComplianceReport?.complianceSummary
                                 ?.totalTasks

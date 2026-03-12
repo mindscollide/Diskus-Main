@@ -520,7 +520,10 @@ export const ComlianceProvider = ({ children }) => {
         // check if any status is Pending to show confirmation modal on submit for approval & Complete
         if (Array.isArray(checklists) && checklists.length > 0) {
           const hasPendingChecklist = checklists.some(
-            (checklist) => checklist?.status?.statusName === "Pending",
+            (checklist) =>
+              checklist?.status?.statusName === "Pending" ||
+              checklist?.status?.statusName === "In Progress" ||
+              checklist?.status?.statusName === "On Hold",
           );
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
@@ -531,7 +534,10 @@ export const ComlianceProvider = ({ children }) => {
         // Check if any task status in pending the show confirmation modal on Complete
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasPendingTask = checklistTasks.some(
-            (task) => task?.taskStatus?.statusName === "Pending",
+            (task) =>
+              task?.taskStatus?.statusName === "Pending" ||
+              task?.taskStatus?.statusName === "In Progress" ||
+              task?.taskStatus?.statusName === "On Hold",
           );
 
           setCheckAnyTaskOnPendingState(hasPendingTask);

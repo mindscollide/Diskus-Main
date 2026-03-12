@@ -60,7 +60,7 @@ const DeleteAuthorityModal = () => {
             <Col lg={12} md={12} sm={12} xs={12} className="text-start">
               <div className={styles["ConfirmationHeading"]}>
                 {/* {t("Do-you-want-to-delete-this-authority")} */}
-                {t("Are you sure you want to delete this authority code?")}
+                {t("Are-you-sure-you-want-to-delete-this-authority")}
               </div>
               <div className={styles["subConfirmationHeading"]}>
                 {/* {t("The-authority-will-be-permanently-deleted")} */}
@@ -70,7 +70,7 @@ const DeleteAuthorityModal = () => {
               </div>
 
               <p className={styles["PsxHeading"]}>
-                {"PSX code-Based Compliance"}
+                {t("List-of-compliances-of-this-authority")}
               </p>
               {/*  Compliance Titles List */}
               {ComplianceListData?.complianceList?.length > 0 && (

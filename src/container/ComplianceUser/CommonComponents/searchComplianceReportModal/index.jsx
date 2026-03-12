@@ -12,7 +12,8 @@ import { useDispatch } from "react-redux";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import searchicon from "../../../../assets/images/searchicon.svg";
 import styles from "./SearchComplianceReportModal.module.css";
-import { DatePicker, Select } from "antd";
+import { DatePicker } from "antd";
+import Select from "react-select";
 import { useComplianceContext } from "../../../../context/ComplianceContext";
 
 const SearchComplianceReportModal = () => {
@@ -48,12 +49,15 @@ const SearchComplianceReportModal = () => {
   };
 
   const mapReportTypeTextToIds = (text = "") => {
-    if (!text.trim()) return "";
+    if (!text) return "";
 
-    const tokens = text
-      .toLowerCase()
-      .split(",")
-      .map((t) => t.trim());
+    // convert to array safely
+    const tokens = Array.isArray(text)
+      ? text
+      : text
+          .toLowerCase()
+          .split(",")
+          .map((t) => t.trim());
 
     const ids = tokens.map((token) => REPORT_TYPE_MAP[token]).filter(Boolean);
 
@@ -236,14 +240,35 @@ const SearchComplianceReportModal = () => {
                         />
                       </Col>
                       <Col lg={6} md={6} sm={12} xs={12}>
-                        <TextField
-                          labelclass={"d-none"}
+                        <Select
                           placeholder={t("Report-type")}
-                          name={"reportType"}
-                          value={searchComplianceReportPayload?.reportType}
-                          type="text"
-                          applyClass={"usermanagementTextField"}
-                          change={handleChange}
+                          className="usermanagementTextField"
+                          value={
+                            searchComplianceReportPayload?.reportType
+                              ? searchComplianceReportPayload?.reportType
+                              : undefined
+                          }
+                          onChange={(value) =>
+                            setSearchComplianceReportPayload((prev) => ({
+                              ...prev,
+                              reportType: value,
+                            }))
+                          }
+                          options={[
+                            {
+                              label: "End of Compliance",
+                              value: 1,
+                            },
+                            {
+                              label: "Quarterly",
+                              value: 2,
+                            },
+                            {
+                              label: "Accumulative",
+                              value: 3,
+                            },
+                          ]}
+                          allowClear
                         />
                       </Col>
                     </Row>

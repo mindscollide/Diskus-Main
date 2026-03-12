@@ -276,7 +276,7 @@ const ViewComplianceChecklistAccordian = () => {
                           </div>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className="mt-3">
                         <Col sm={12} md={3} lg={3}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Due-date",
@@ -288,7 +288,7 @@ const ViewComplianceChecklistAccordian = () => {
                         <Col sm={12} md={2} lg={2}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Status",
-                          )}:`}</div>
+                          )}`}</div>
                           {complianceViewMode === "byMe" ? (
                             <Select
                               isSearchable={true}
