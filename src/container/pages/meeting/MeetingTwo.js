@@ -197,7 +197,8 @@ const NewMeeting = () => {
     setStepDownloadModal,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
-    currentMeetingID, setCurrentMeetingID
+    currentMeetingID,
+    setCurrentMeetingID,
   } = useMeetingContext();
   const {
     totalMeetingRecords,
@@ -368,7 +369,7 @@ const NewMeeting = () => {
     attendeceReport: false,
     video: false,
     Agenda: false,
-    isAgendaAttachments: false
+    isAgendaAttachments: false,
   });
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
@@ -3563,7 +3564,7 @@ const NewMeeting = () => {
         ),
         dataIndex: "title",
         key: "title",
-        width: 180,
+        width: 300,
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
@@ -3620,7 +3621,7 @@ const NewMeeting = () => {
         defaultFilteredValue: ["10", "1", "9", "8", "4"],
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
-        render: (text) => <div >{StatusValue(t, text)}</div>,
+        render: (text) => <div className={styles.columnValue}>{StatusValue(t, text)}</div>,
       },
 
       // ===== Organizer =====
@@ -3648,6 +3649,7 @@ const NewMeeting = () => {
         sorter: (a, b) =>
           a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
         sortOrder: organizerNameSort,
+        render: (text) => <div className={styles.columnValue}>{text}</div>,
       },
 
       // ===== Meeting Time =====
@@ -3686,9 +3688,9 @@ const NewMeeting = () => {
             record.dateOfMeeting + record.meetingEndTime
           );
           if (!start || !end) return null;
-          return `${moment(start).format("hh:mm a")} - ${moment(end).format(
+          return <span className={styles.columnValue}>{`${moment(start).format("hh:mm a")} - ${moment(end).format(
             "hh:mm a"
-          )}`;
+          )}`}</span>;
         },
       },
 
@@ -3743,7 +3745,7 @@ const NewMeeting = () => {
             record.meetingStartTime.substring(4, 6)
           );
 
-          return <>{moment(meetingDate).format("Do MMM, YYYY")}</>;
+          return <span className={styles.columnValue}>{moment(meetingDate).format("Do MMM, YYYY")}</span>;
         },
       },
 
@@ -3780,7 +3782,7 @@ const NewMeeting = () => {
           );
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? <span className={styles.columnValue}>{t(matchedFilter.text)}</span> : "";
         },
       },
 
@@ -5435,8 +5437,10 @@ const NewMeeting = () => {
                         md={12}
                         sm={12}
                         className={styles["MainMeetingTablePublished"]}>
-                        <DraftMeeting    setCurrentMeetingID={setCurrentMeetingID}
-                          currentMeeting={currentMeetingID} />
+                        <DraftMeeting
+                          setCurrentMeetingID={setCurrentMeetingID}
+                          currentMeeting={currentMeetingID}
+                        />
                       </Col>
                     </Row>
                   ) : Number(currentView) === 1 ? (

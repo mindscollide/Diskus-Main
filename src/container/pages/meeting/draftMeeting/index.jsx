@@ -488,6 +488,9 @@ const DraftMeeting = () => {
         sorter: (a, b) =>
           a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
         sortOrder: organizerNameSort,
+        render: (text, record) => {
+          return <span className={styles.columnValue}>{text}</span>;
+        },
       },
       {
         title: (
@@ -521,9 +524,11 @@ const DraftMeeting = () => {
           );
           if (!meetingStartTime && !meetingEndTime) return;
           return (
-            <>{`${moment(meetingStartTime).format("hh:mm a")} - ${moment(
-              meetingEndTime
-            ).format("hh:mm a")}`}</>
+            <span className={styles.columnValue}>{`${moment(
+              meetingStartTime
+            ).format("hh:mm a")} - ${moment(meetingEndTime).format(
+              "hh:mm a"
+            )}`}</span>
           );
         },
       },
@@ -562,7 +567,11 @@ const DraftMeeting = () => {
           let meetingDate = forRecentActivity(
             record.dateOfMeeting + record.meetingStartTime
           );
-          return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
+          return (
+            <span className={styles.columnValue}>{`${moment(meetingDate).format(
+              "Do MMM, YYYY"
+            )}`}</span>
+          );
         },
       },
       {
@@ -613,7 +622,11 @@ const DraftMeeting = () => {
             return t("Quick-meeting");
           }
 
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? (
+            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
+          ) : (
+            ""
+          );
         },
       },
 

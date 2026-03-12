@@ -39,14 +39,14 @@ const ApprovalSend = () => {
   const { t } = useTranslation();
   let CurrentLanguage = localStorage.getItem("i18nextLng");
   const SignatureWorkFlowReducer = useSelector(
-    (state) => state.SignatureWorkFlowReducer
+    (state) => state.SignatureWorkFlowReducer,
   );
   const workflowsignaturedocumentbyme = useSelector(
-    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocumentbyme
+    (state) => state.SignatureWorkFlowReducer.workflowsignaturedocumentbyme,
   );
   const workflowSignaturedocumentStatusChange = useSelector(
     (state) =>
-      state.SignatureWorkFlowReducer.workflowSignaturedocumentStatusChange
+      state.SignatureWorkFlowReducer.workflowSignaturedocumentStatusChange,
   );
 
   console.log({ workflowsignaturedocumentbyme }, "globalStateglobalState");
@@ -339,10 +339,10 @@ const ApprovalSend = () => {
               status === "Pending Signature"
                 ? styles["pendingStatus"]
                 : status === "Signed"
-                ? styles["signedStatus"]
-                : status === "Declined"
-                ? styles["declineStatus"]
-                : styles["draftStatus"]
+                  ? styles["signedStatus"]
+                  : status === "Declined"
+                    ? styles["declineStatus"]
+                    : styles["draftStatus"]
             }
           >
             {t(status)}
@@ -378,7 +378,7 @@ const ApprovalSend = () => {
     // setSignatoriesList(true);
     let Data = { WorkFlowID: record.workFlowID, FileID: record.fileID };
     dispatch(
-      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList)
+      getAllSignatoriesStatusWise_Api(navigate, t, Data, setSignatoriesList),
     );
   };
 
@@ -388,16 +388,16 @@ const ApprovalSend = () => {
       window.open(
         `/Diskus/signatureviewer?documentID=${encodeURIComponent(reponseData)}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     } else {
       let reponseData = JSON.stringify(record.fileID);
       window.open(
         `/Diskus/viewSignDocument?documentID=${encodeURIComponent(
-          reponseData
+          reponseData,
         )}`,
         "_blank",
-        "noopener noreferrer"
+        "noopener noreferrer",
       );
     }
   };
@@ -436,7 +436,7 @@ const ApprovalSend = () => {
             }
             setPageNo((prev) => prev + 1);
             setDataLength(
-              (prev) => prev + signatureFlowDocumentsForCreator.length
+              (prev) => prev + signatureFlowDocumentsForCreator.length,
             );
           } else {
             if (
@@ -506,7 +506,7 @@ const ApprovalSend = () => {
         const { data } = workflowsignaturedocumentbyme;
         let findIfExist = approvalsData.find(
           (reviewSignatureData, index) =>
-            reviewSignatureData.workFlowID === data.workFlowID
+            reviewSignatureData.workFlowID === data.workFlowID,
         );
         if (findIfExist !== undefined) {
           setApprovalsData((approvalsDataCopy) =>
@@ -516,9 +516,10 @@ const ApprovalSend = () => {
                     ...data2,
                     status: data.status,
                     workFlowStatusID: data.workFlowStatusID,
+                    sentOn: data.sentOn,
                   }
-                : data2
-            )
+                : data2,
+            ),
           );
           setOriginalData((approvalsDataCopy) =>
             approvalsDataCopy.map((data2) =>
@@ -527,9 +528,10 @@ const ApprovalSend = () => {
                     ...data2,
                     status: data.status,
                     workFlowStatusID: data.workFlowStatusID,
+                    sentOn: data.sentOn,
                   }
-                : data2
-            )
+                : data2,
+            ),
           );
         } else {
           setApprovalsData([data, ...approvalsData]);
@@ -552,8 +554,8 @@ const ApprovalSend = () => {
                   status: data.status,
                   workFlowStatusID: data.workFlowStatusID,
                 }
-              : data2
-          )
+              : data2,
+          ),
         );
       }
     } catch (error) {
@@ -573,13 +575,13 @@ const ApprovalSend = () => {
     rowsDataLength <= totalRecords,
     totalRecords,
     rowsDataLength,
-    "handleScrollhandleScroll"
+    "handleScrollhandleScroll",
   );
   useTableScrollBottom(async (hasReachedBottom) => {
     console.log(
       hasReachedBottom,
       approvalsData.length > 0 && rowsDataLength <= totalRecords,
-      "hasReachedBottom"
+      "hasReachedBottom",
     );
 
     if (approvalsData.length > 0 && rowsDataLength !== totalRecords) {
@@ -651,7 +653,7 @@ const ApprovalSend = () => {
                     </span>
                     <span className={styles["emptyState_tagline"]}>
                       {t(
-                        "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission"
+                        "Ready-to-send-a-document-for-approval-this-tab-awaits-your-next-submission",
                       )}
                       !
                     </span>
