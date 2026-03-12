@@ -1016,7 +1016,7 @@ const UnpublishedProposedMeeting = ({
         ),
         dataIndex: "title",
         key: "title",
-        width: 350,
+        width: 300,
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
@@ -1092,7 +1092,11 @@ const UnpublishedProposedMeeting = ({
           let meetingDate = forRecentActivity(
             record.dateOfMeeting + record.meetingStartTime
           );
-          return <>{`${moment(meetingDate).format("Do MMM, YYYY")}`}</>;
+          return (
+            <span className={styles.columnValue}>{`${moment(meetingDate).format(
+              "Do MMM, YYYY"
+            )}`}</span>
+          );
         },
       },
       {
@@ -1143,7 +1147,11 @@ const UnpublishedProposedMeeting = ({
             return t("Quick-meeting");
           }
 
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? (
+            <span className={styles.columnValue}>{t(matchedFilter.text)}</span>
+          ) : (
+            ""
+          );
         },
       },
       {
@@ -1183,7 +1191,7 @@ const UnpublishedProposedMeeting = ({
               )
             );
           } else {
-            return null;
+            return "-";
           }
         },
       },
