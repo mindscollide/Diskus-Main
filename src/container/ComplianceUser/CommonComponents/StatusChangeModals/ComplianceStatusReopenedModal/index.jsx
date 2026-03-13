@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AttachmentViewer,
   Button,
@@ -33,7 +33,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const calendRef = useRef();
   //Upload File States
-
+  const [openCalendarValue, setOpenCalendarValue] = useState(null);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -153,7 +153,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   };
   console.log(complianceDetailsState.dueDate, "Current DueDate");
 
-  const currentDueDateObj = parseYYYYMMDDHHmmssToDate(
+  const currentDueDateObj = parseYYYYMMDDToEndOfDay(
     complianceDetailsState?.dueDate,
   );
 
@@ -204,16 +204,21 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                 <span className={styles["sterick"]}>{" *"}</span>
               </div>
               <DatePicker
-                value={complianceReopenDetailsState.dueDate}
+                value={
+                  openCalendarValue ||
+                  complianceReopenDetailsState?.dueDate ||
+                  ""
+                }
                 format={"DD/MM/YYYY"}
                 // minDate={moment().toDate()}
                 minDate={minSelectableDate}
+                currentDate={minSelectableDate}
                 placeholder={t("Due-date")}
                 render={
                   <InputIcon
                     placeholder={t("Due-date")}
                     className={`${styles["datepicker_input"]} ${
-                      complianceDetailsState.authority.value === 0
+                      complianceDetailsState?.authority?.value === 0
                         ? styles["disabledInput"]
                         : ""
                     }`}
@@ -228,7 +233,12 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
                 calendar={gregorian}
                 locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 ref={calendRef}
-                onFocusedDateChange={changeComplainceDueDate}
+                default
+                onOpen={() => {
+                  setOpenCalendarValue(minSelectableDate); // forces calendar to open on April
+                  setTimeout(() => setOpenCalendarValue(null), 0); // clears field so no date selected
+                }}
+                // onFocusedDateChange={changeComplainceDueDate}
                 onChange={changeComplainceDueDate}
               />
             </Col>

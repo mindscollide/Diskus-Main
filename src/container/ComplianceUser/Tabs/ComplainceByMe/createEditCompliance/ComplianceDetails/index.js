@@ -85,6 +85,7 @@ const ComplainceDetails = () => {
     setComlianceStatusReopenedModal,
     complianceReopenDetailsState,
     criticalityOptions,
+    comlianceStatusReopenedModal,
   } = useComplianceContext();
 
   console.log(
@@ -1149,7 +1150,8 @@ const ComplainceDetails = () => {
                         classNamePrefix="tagInputBoxStyle"
                         isDisabled={
                           complianceDetailsState.tags.length >= 5 ||
-                          complianceDetailsState.authority.value === 0
+                          complianceDetailsState.authority.value === 0 ||
+                          isFormDisabled
                         }
                         maxMenuHeight={150}
                         placeholder="Type at least 3 characters..."
@@ -1238,7 +1240,7 @@ const ComplainceDetails = () => {
       <ComplianceStatusCancelModal />
       <StatusSubmitForApprovalModal />
       <ComplianceStatusCompleteExceptionModal />
-      <ComplianceStatusReopenedModal />
+      {comlianceStatusReopenedModal && <ComplianceStatusReopenedModal />}
     </>
   );
 };

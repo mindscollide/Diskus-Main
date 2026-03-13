@@ -4891,6 +4891,15 @@ const Dashboard = () => {
           dispatch(complianceReopenMQTT(data.payload));
         }
 
+        //Compliance OnHold MQTT
+        if (
+          data.message?.toLowerCase() ===
+          "ONHOLD_COMPLIANCE".toLocaleLowerCase()
+        ) {
+          console.log(data.payload, "REOPENCOMPLIANCE");
+          dispatch(complianceReopenMQTT(data.payload));
+        }
+
         //TASK MAPPED WITH CHECKLIST MQTT
         if (
           data.message?.toLowerCase() ===
@@ -4965,8 +4974,7 @@ const Dashboard = () => {
 
         // Compliance By MQTT FOR USER
         if (
-          data.message?.toLowerCase() ===
-          "COMPLIANCE_BY_FOR_USER".toLowerCase()
+          data.message?.toLowerCase() === "COMPLIANCE_BY_FOR_USER".toLowerCase()
         ) {
           if (Number(localStorage.getItem("viewType")) === 2) {
             dispatch(ComplianceByUserMqtt(data.payload));
@@ -5004,7 +5012,7 @@ const Dashboard = () => {
         }
 
         // REOPENED COMPLIANCES MQTT FOR USER
-         if (
+        if (
           data.message?.toLowerCase() ===
           "REOPENED_COMPLIANCES_FOR_USER".toLowerCase()
         ) {
@@ -5014,7 +5022,7 @@ const Dashboard = () => {
         }
 
         // REOPENED COMPLIANCES MQTT FOR MANAGER
-         if (
+        if (
           data.message?.toLowerCase() ===
           "REOPENED_COMPLIANCES_FOR_MANAGER".toLowerCase()
         ) {
