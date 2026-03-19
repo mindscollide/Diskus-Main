@@ -2367,11 +2367,14 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "USER_PROFILE_EDITED".toLowerCase()
         ) {
-          setNotification({
-            notificationShow: true,
-            message: t("USER_PROFILE_EDITED"),
-          });
-          setNotificationID(id);
+          if(data.viewable) {
+            setNotification({
+              notificationShow: true,
+              message: t("USER_PROFILE_EDITED"),
+            });
+            setNotificationID(id);
+          }
+    
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_TODO_CREATION_RECENT_ACTIVITY".toLowerCase()
