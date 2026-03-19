@@ -70,9 +70,7 @@ const SearchComplianceReportModal = () => {
       searchComplianceReportPayload.reportTitle ||
       searchComplianceReportPayload.reportTitleOutside ||
       "",
-    reportTypeIds: mapReportTypeTextToIds(
-      searchComplianceReportPayload.reportType,
-    ),
+    reportTypeIds: searchComplianceReportPayload.reportType?.value || "",
     generatedOnStartDate: searchComplianceReportPayload.dueDateFrom || "",
     generatedOnEndDate: searchComplianceReportPayload.dueDateTo || "",
     length: searchComplianceReportPayload.length || 10,
@@ -243,11 +241,7 @@ const SearchComplianceReportModal = () => {
                         <Select
                           placeholder={t("Report-type")}
                           className="usermanagementTextField"
-                          value={
-                            searchComplianceReportPayload?.reportType
-                              ? searchComplianceReportPayload?.reportType
-                              : undefined
-                          }
+                          value={searchComplianceReportPayload?.reportType || null}
                           onChange={(value) =>
                             setSearchComplianceReportPayload((prev) => ({
                               ...prev,

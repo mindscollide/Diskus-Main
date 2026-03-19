@@ -1254,6 +1254,7 @@ const AddComplianceChecklistAPI = (
                 response.data.responseResult.data?.checklistId;
 
               if (newChecklistId) {
+                console.log("newChecklistId");
                 setNewChecklistIds((prev) => [...prev, newChecklistId]);
               }
 

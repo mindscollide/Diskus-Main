@@ -63,17 +63,18 @@ const CreateEditViewComplianceChecklist = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
+
+  const getAllComplianceChecklistTask = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetComplianceChecklistsWithTasksByComplianceId,
+  );
   // const [isCloseBtnClicked, setIsCloseBtnClicked] = useState(false);
   const [errors, setErrors] = useState({
     checklistTitle: "",
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
-  console.log(isChecklistTitleExist, "isChecklistTitleExist");
-
-  const [newChecklistIds, setNewChecklistIds] = useState([]);
-
-  console.log(newChecklistIds, "newChecklistIdsnewChecklistIds");
 
   const [isEditTrue, setIsEditTrue] = useState(false);
   const {
@@ -90,9 +91,11 @@ const CreateEditViewComplianceChecklist = () => {
     setCloseConfirmationModal,
     setDeleteChecklistConfirmationModalState,
     setDeleteChecklistId,
+    newChecklistIds,
+    setNewChecklistIds,
   } = useComplianceContext();
   console.log(checkListData, "checkListData");
-
+  console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceDetailsState, "complianceDetailsState");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
@@ -100,16 +103,9 @@ const CreateEditViewComplianceChecklist = () => {
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId,
   );
-  console.log(
-    GetComplianceChecklistsByComplianceId,
-    "GetComplianceChecklistsByComplianceId",
-  );
+
   let currentLanguage = localStorage.getItem("i18nextLng");
-  // const [checkListData, setChecklistData] = useState({
-  //   checklistTitle: "",
-  //   checklistDescription: "",
-  //   checklistDueDate: "",
-  // });
+
   const changeComplainceDueDate = (date) => {
     setChecklistData((prev) => ({
       ...prev,
@@ -402,13 +398,14 @@ const CreateEditViewComplianceChecklist = () => {
     // emptyComplianceState();
     // setChecklistTabs(1);
     // setCreateEditComplaince(false);
+    setNewChecklistIds([]);
     setCloseConfirmationModal(true);
   };
 
   const today = new Date();
-  const tomorrow = new Date(today);
-  tomorrow.setDate(today.getDate() + 1); // strictly greater than today
-  tomorrow.setHours(0, 0, 0, 0); // start of day
+  // const tomorrow = new Date(today);
+  // tomorrow.setDate(today.getDate() + 1); // strictly greater than today
+  today.setHours(0, 0, 0, 0); // start of day
 
   let maxChecklistDate = null;
 
@@ -429,6 +426,45 @@ const CreateEditViewComplianceChecklist = () => {
 
   const isReopendCompliance = complianceDetailsState?.status.value === 6;
   console.log(isReopendCompliance, "isReopendCompliance");
+
+  const getMinChecklistDueDateFromTasks = () => {
+    if (!getAllComplianceChecklistTask?.checklistList) return today;
+
+    let tasks = [];
+
+    // EDIT FLOW
+    if (checkListData.checklistId !== 0) {
+      const checklist = getAllComplianceChecklistTask.checklistList.find(
+        (cl) => cl.checklistId === checkListData.checklistId,
+      );
+
+      tasks = checklist?.taskList || [];
+    }
+
+    // CREATE FLOW
+    else {
+      tasks = getAllComplianceChecklistTask.checklistList.flatMap(
+        (cl) => cl.taskList || [],
+      );
+    }
+
+    // Only active tasks
+    const activeTasks = tasks.filter((task) => task.taskStatusId !== 5);
+
+    if (activeTasks.length === 0) return today;
+
+    const maxTaskDate = activeTasks.reduce((max, task) => {
+      const taskDate = new Date(
+        task.deadLineDate.slice(0, 4),
+        task.deadLineDate.slice(4, 6) - 1,
+        task.deadLineDate.slice(6, 8),
+      );
+
+      return taskDate > max ? taskDate : max;
+    }, new Date(0));
+
+    return maxTaskDate;
+  };
 
   return (
     <>
@@ -516,7 +552,7 @@ const CreateEditViewComplianceChecklist = () => {
                 calendar={gregorian}
                 locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
                 calendarPosition="bottom-center"
-                minDate={tomorrow}
+                minDate={getMinChecklistDueDateFromTasks()}
               />
             </div>
           </Row>
@@ -671,7 +707,7 @@ const CreateEditViewComplianceChecklist = () => {
                   endField={
                     newChecklistIds?.includes(data?.checklistId) && (
                       <>
-                        <Row>
+                        <Row key={data.checklistId}>
                           <Col
                             sm={12}
                             md={12}

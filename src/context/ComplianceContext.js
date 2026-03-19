@@ -416,6 +416,8 @@ export const ComlianceProvider = ({ children }) => {
   //For Reopen dashboard Card Data in COmpliance
   const [reopenDashboardList, setReopenDashboardList] = useState([]);
 
+  const [newChecklistIds, setNewChecklistIds] = useState([]);
+
   const [
     viewAllReopenDashboardButtonFlag,
     setViewAllReopenDashboardButtonFlag,
@@ -710,7 +712,8 @@ export const ComlianceProvider = ({ children }) => {
     if (!complianceUpdateMqttData) return;
     try {
       const data = complianceUpdateMqttData.payload || complianceUpdateMqttData;
-      const { complianceID, requestData } = data || {};
+      const { complianceID, requestData, authorityName, authorityShortCode } =
+        data || {};
       if (!complianceID) return;
       const {
         authorityId,
@@ -766,7 +769,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: authorityId?.toString() || "",
+            label: `${authorityShortCode || ""} - ${authorityName || ""}` || "",
           },
           criticality: selectedCriticality,
           dueDate,
@@ -782,7 +785,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: authorityId?.toString() || "",
+            label: `${authorityShortCode || ""} - ${authorityName || ""}`,
           },
           criticality: selectedCriticality,
           dueDate,
@@ -816,39 +819,6 @@ export const ComlianceProvider = ({ children }) => {
           //   ),
           // );
         }
-
-        // check if any status is Pending to show confirmation modal on submit for approval & Complete
-        // if (Array.isArray(checklists) && checklists.length > 0) {
-        //   const hasPendingChecklist = checklists.some(
-        //     (checklist) => checklist?.status?.statusName === "Pending"
-        //   );
-
-        //   setCheckAnyChecklistOnPendingState(hasPendingChecklist);
-        // } else {
-        //   setCheckAnyChecklistOnPendingState(false);
-        // }
-
-        // Check if any task status in pending the show confirmation modal on Complete
-        // if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-        //   const hasPendingTask = checklistTasks.some(
-        //     (task) => task?.taskStatus?.statusName === "Pending"
-        //   );
-
-        //   setCheckAnyTaskOnPendingState(hasPendingTask);
-        // } else {
-        //   setCheckAnyTaskOnPendingState(false);
-        // }
-        // if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-        //   const hasTaskInProgress =
-        //     Array.isArray(checklistTasks) &&
-        //     checklistTasks.some(
-        //       (task) => task?.taskStatus?.statusName === "In Progress"
-        //     );
-
-        //   setCheckAnyTaskInProgress(hasTaskInProgress);
-        // } else {
-        //   setCheckAnyTaskInProgress(false);
-        // }
       } catch (error) {}
 
       setComplianceByMeList((prev) =>
@@ -1038,6 +1008,8 @@ export const ComlianceProvider = ({ children }) => {
         setPendingNavigation,
         viewAllReopenDashboardButtonFlag,
         setViewAllReopenDashboardButtonFlag,
+        newChecklistIds,
+        setNewChecklistIds,
       }}
     >
       {children}

@@ -474,7 +474,7 @@ const ComplianceStandingReport = () => {
         sorter: (a, b) => (a.progressSort || 0) - (b.progressSort || 0),
         sortOrder: progressSort,
         render: (text) => {
-          return <span>{text}</span>;
+          return <span>{text}%</span>;
         },
       },
       {
@@ -710,7 +710,9 @@ const ComplianceStandingReport = () => {
                                             >
                                               <label>{t("Due-date")}:</label>
                                               <p>
-                                                {formatDateToYMD(task.dueDate)}
+                                                {formatDateToYMD(
+                                                  task.dueDate,
+                                                ) || "-"}
                                               </p>
                                             </div>
                                           </Col>
@@ -727,7 +729,7 @@ const ComplianceStandingReport = () => {
                                               <p>
                                                 {formatDateToYMD(
                                                   task.completedOnDate,
-                                                ) ?? "-"}
+                                                ) || "-"}
                                               </p>
                                             </div>
                                           </Col>
