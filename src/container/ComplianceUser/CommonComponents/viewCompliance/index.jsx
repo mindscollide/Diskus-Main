@@ -111,7 +111,7 @@ const ViewCompliance = () => {
           //   criticality: criticalityLevel,
           authority: {
             value: authority.authorityId,
-            label: `${authority.authorityShortCode} - ${authority.authorityName}`,
+            label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: {
             value: 0,
@@ -201,10 +201,9 @@ const ViewCompliance = () => {
 
   const onClickDetailTab = () => {
     setViewComplianceDetailsTab(1);
-    const getViewType = localStorage.getItem("viewType");
     const Data = {
       complianceId: Number(complianceInfo?.complianceId),
-      viewType: Number(getViewType),
+      viewType: mainComplianceTabs === 2 ? 1 : mainComplianceTabs === 3 ? 2 : 0,
     };
     console.log(Data, "DataDataDataData");
     dispatch(

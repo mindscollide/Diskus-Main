@@ -67,16 +67,18 @@ const ViewComplianceDetails = () => {
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
-  console.log(
-    complianceReopenDetailsState,
-    "complianceReopenDetailsStatecomplianceReopenDetailsState",
-  );
+  console.log(allowedComplianceStatusOptions, "allowedComplianceStatusOptions");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   console.log(
     complianceDetailsState,
     "complianceReopenDetailsStatecomplianceReopenDetailsState",
+  );
+
+  //   Get Comliance Details
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
 
   const complianceReopenedDetail = useSelector(
@@ -92,6 +94,8 @@ const ViewComplianceDetails = () => {
   );
 
   console.log(complianceReopenMqttData, "complianceReopenMqttData");
+
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails3333");
 
   console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
 
@@ -347,7 +351,9 @@ const ViewComplianceDetails = () => {
 
     // status change to On Hold
     if (event.value === 7) {
+      console.log("CompliaceStatusOnHoldModal");
       if (complianceDetailsState.status.value === 7) {
+        console.log("CompliaceStatusOnHoldModal");
         // setTempSelectedComplianceStatus(event);
         // setComplianceOnHoldModal(true);
       } else if (complianceDetailsState.status.value !== 7) {
@@ -448,6 +454,37 @@ const ViewComplianceDetails = () => {
     resetModalStates();
   }, [tempSelectComplianceStatus, complianceReopenDetailsState]);
 
+  // Only show "On Hold" if not all checklists and tasks are completed
+  const filteredAllowedStatusOptions = useMemo(() => {
+    if (!allowedComplianceStatusOptions) return [];
+
+    // Checklists completed?
+    const allChecklistsCompleted =
+      (viewComplianceByMeDetails?.checklists?.length || 0) > 0 &&
+      viewComplianceByMeDetails.checklists.every(
+        (c) => c?.status?.statusId === 4,
+      );
+
+    // Tasks completed?
+    const allTasksCompleted =
+      (viewComplianceByMeDetails?.checklistTasks?.length || 0) > 0 &&
+      viewComplianceByMeDetails.checklistTasks.every(
+        (t) => t?.taskStatus?.statusId === 5,
+      );
+
+    console.log("allChecklistsCompleted", allChecklistsCompleted);
+    console.log("allTasksCompleted", allTasksCompleted);
+
+    // Filter out "On Hold" if everything is completed
+    if (allChecklistsCompleted && allTasksCompleted) {
+      return allowedComplianceStatusOptions.filter(
+        (status) => status.value !== 7, // 7 = On Hold
+      );
+    }
+
+    return allowedComplianceStatusOptions;
+  }, [allowedComplianceStatusOptions, complianceDetailsState]);
+
   return (
     <>
       <Row className="mt-3">
@@ -476,7 +513,7 @@ const ViewComplianceDetails = () => {
             {complianceViewMode === "byMe" ? (
               <Select
                 isSearchable={false}
-                options={allowedComplianceStatusOptions}
+                options={filteredAllowedStatusOptions}
                 onChange={handleChangeComplianceStatus}
                 styles={statusSelectStyles}
                 value={complianceDetailsState.status}

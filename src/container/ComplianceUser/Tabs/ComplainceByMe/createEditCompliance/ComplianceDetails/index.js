@@ -229,7 +229,7 @@ const ComplainceDetails = () => {
           authority: {
             ...authority,
             value: authority.authorityId,
-            label: `${authority.authorityName} (${authority.authorityShortCode})`,
+            label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: selectedCriticality,
           dueDate: parseYYYYMMDDToEndOfDay(dueDate),
@@ -896,6 +896,30 @@ const ComplainceDetails = () => {
 
   const isFormDisabled = isChecklistTitleExist === true;
 
+  // Returns the min allowed Compliance Due Date based on active checklist due dates
+  const getMinComplianceDueDate = () => {
+    if (!GetComplianceChecklistsByComplianceId) return moment().toDate();
+
+    const checklists =
+      GetComplianceChecklistsByComplianceId.checklistList || [];
+
+    // Only consider active checklists
+    const activeChecklists = checklists.filter(
+      (cl) => cl.status?.statusName !== "Inactive" && cl.dueDate,
+    );
+
+    if (activeChecklists.length === 0) return moment().toDate();
+
+    // Get the latest due date among active checklists
+    const maxChecklistDueDate = activeChecklists.reduce((max, cl) => {
+      const clDate = parseYYYYMMDDToEndOfDay(cl.dueDate);
+      return clDate > max ? clDate : max;
+    }, parseYYYYMMDDToEndOfDay(activeChecklists[0].dueDate));
+
+    // Add 1 day because Compliance due date must be after checklist due date
+    return moment(maxChecklistDueDate).add(1, "days").toDate();
+  };
+
   return (
     <>
       <Row className="mt-2">
@@ -1059,7 +1083,7 @@ const ComplainceDetails = () => {
           <DatePicker
             value={complianceDetailsState?.dueDate}
             format={"DD/MM/YYYY"}
-            minDate={moment().toDate()}
+            minDate={getMinComplianceDueDate()}
             placeholder={t("Due-date")}
             render={
               <InputIcon
@@ -1236,7 +1260,7 @@ const ComplainceDetails = () => {
       </div>
       <Notification open={open} setOpen={setOpen} />
       <ComplianceCloseConfirmationModal />
-      <CompliaceStatusOnHoldModal />
+      {complianceOnHoldModal && <CompliaceStatusOnHoldModal />}
       <ComplianceStatusCancelModal />
       <StatusSubmitForApprovalModal />
       <ComplianceStatusCompleteExceptionModal />
