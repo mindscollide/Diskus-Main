@@ -1,10 +1,34 @@
 .ConfirmationHeading {
-  font-size: 16px !important;
-  color: #5a5a5a !important;
+  padding: 5px 60px;
+  font-size: 20px !important;
+  color: #6172d6 !important;
   font-weight: 600 !important;
 }
 
 body[dir="rtl"] .ConfirmationHeading {
+  font-weight: 600 !important;
+}
+
+.subConfirmationHeading {
+  padding: 0px 60px;
+  font-size: 15px !important;
+  color: #5a5a5a !important;
+  font-weight: 600 !important;
+}
+
+body[dir="rtl"] .subConfirmationHeading {
+  font-weight: 600 !important;
+}
+
+.PsxHeading {
+  padding: 5px 60px;
+  font-size: 14px !important;
+  color: #6172d6 !important;
+  font-weight: 600 !important;
+  margin-top: 10px;
+}
+
+body[dir="rtl"] .PsxHeading {
   font-weight: 600 !important;
 }
 
@@ -54,4 +78,39 @@ body[dir="rtl"] .CancelButton {
 
 body[dir="rtl"] .ProceedButtonStyles {
   font-weight: 600 !important;
+}
+
+.DeletrAuthorityModal_Body {
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 75vh !important;
+}
+
+.ComplianceListContainer {
+  padding: 10px 60px !important;
+  margin-top: 12px;
+  max-height: 380px; /* or your preferred max height */
+  overflow-y: auto;
+  /* No border on container now */
+}
+
+.ComplianceItem {
+  border: 1px solid #ddd; /* full border */
+  border-radius: 4px;
+  padding: 10px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  font-size: 14px;
+  color: #4a4a4a;
+  background-color: #fff;
+  margin-bottom: 8px; /* spacing between items */
+  cursor: default;
+  user-select: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* subtle shadow for card effect */
+}
+
+.ComplianceItem:last-child {
+  margin-bottom: 0; /* no margin after last item */
 }

@@ -43,6 +43,12 @@ export const ComlianceProvider = ({ children }) => {
     (state) => state.ComplainceSettingReducerReducer.complianceReopenMqttData,
   );
 
+  const GetUpcomingDealineComplianceDashboard = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer
+        .GetUpcomingDealineComplianceDashboard,
+  );
+
   console.log(
     complianceCreatedMqttData,
     "complianceCreatedMqttDatacomplianceCreatedMqttData",
@@ -103,6 +109,7 @@ export const ComlianceProvider = ({ children }) => {
     showProgressBar: false,
     complianceStatusChangeHistory: [],
   });
+
   const [complianceDetailsViewState, setComplianceDetailsViewState] = useState({
     complianceTitle: "",
     complianceId: 0,
@@ -216,6 +223,9 @@ export const ComlianceProvider = ({ children }) => {
       attachments: [],
     });
 
+  const [upcomingDeadlineDashboard, setUpcomingDeadlineDashboard] =
+    useState(null);
+
   // Delete Checklist Confirmation Modal
   const [
     deleteChecklistConfirmationModalState,
@@ -243,11 +253,11 @@ export const ComlianceProvider = ({ children }) => {
     setComplianceCancelReasonState(0);
     setComlianceCompleteExceptionModal(false);
     setComlianceStatusReopenedModal(false);
-    setComplianceReopenDetailsState({
-      reason: "",
-      dueDate: "",
-      attachments: [],
-    });
+    // setComplianceReopenDetailsState({
+    //   reason: "",
+    //   dueDate: "",
+    //   attachments: [],
+    // });
     setDeleteChecklistConfirmationModalState(false);
     setDeleteChecklistId(0);
   };
@@ -338,15 +348,15 @@ export const ComlianceProvider = ({ children }) => {
   };
   const criticalityOptions = [
     {
-      label: "Low",
+      label: t("High"),
       value: 1,
     },
     {
-      label: "Medium",
+      label: t("Medium"),
       value: 2,
     },
     {
-      label: "High",
+      label: t("Low"),
       value: 3,
     },
   ];
@@ -405,6 +415,16 @@ export const ComlianceProvider = ({ children }) => {
 
   //For Reopen dashboard Card Data in COmpliance
   const [reopenDashboardList, setReopenDashboardList] = useState([]);
+
+  const [newChecklistIds, setNewChecklistIds] = useState([]);
+
+  const [
+    viewAllReopenDashboardButtonFlag,
+    setViewAllReopenDashboardButtonFlag,
+  ] = useState(false);
+
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
 
   //Reset Compliance Dashboard Filter  State
   const resetComplianceDashboardFilter = () => {
@@ -502,7 +522,10 @@ export const ComlianceProvider = ({ children }) => {
         // check if any status is Pending to show confirmation modal on submit for approval & Complete
         if (Array.isArray(checklists) && checklists.length > 0) {
           const hasPendingChecklist = checklists.some(
-            (checklist) => checklist?.status?.statusName === "Pending",
+            (checklist) =>
+              checklist?.status?.statusName === "Pending" ||
+              checklist?.status?.statusName === "In Progress" ||
+              checklist?.status?.statusName === "On Hold",
           );
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
@@ -513,7 +536,10 @@ export const ComlianceProvider = ({ children }) => {
         // Check if any task status in pending the show confirmation modal on Complete
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasPendingTask = checklistTasks.some(
-            (task) => task?.taskStatus?.statusName === "Pending",
+            (task) =>
+              task?.taskStatus?.statusName === "Pending" ||
+              task?.taskStatus?.statusName === "In Progress" ||
+              task?.taskStatus?.statusName === "On Hold",
           );
 
           setCheckAnyTaskOnPendingState(hasPendingTask);
@@ -686,7 +712,8 @@ export const ComlianceProvider = ({ children }) => {
     if (!complianceUpdateMqttData) return;
     try {
       const data = complianceUpdateMqttData.payload || complianceUpdateMqttData;
-      const { complianceID, requestData } = data || {};
+      const { complianceID, requestData, authorityName, authorityShortCode } =
+        data || {};
       if (!complianceID) return;
       const {
         authorityId,
@@ -742,7 +769,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: authorityId?.toString() || "",
+            label: `${authorityShortCode || ""} - ${authorityName || ""}` || "",
           },
           criticality: selectedCriticality,
           dueDate,
@@ -758,7 +785,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: authorityId?.toString() || "",
+            label: `${authorityShortCode || ""} - ${authorityName || ""}`,
           },
           criticality: selectedCriticality,
           dueDate,
@@ -792,39 +819,6 @@ export const ComlianceProvider = ({ children }) => {
           //   ),
           // );
         }
-
-        // check if any status is Pending to show confirmation modal on submit for approval & Complete
-        // if (Array.isArray(checklists) && checklists.length > 0) {
-        //   const hasPendingChecklist = checklists.some(
-        //     (checklist) => checklist?.status?.statusName === "Pending"
-        //   );
-
-        //   setCheckAnyChecklistOnPendingState(hasPendingChecklist);
-        // } else {
-        //   setCheckAnyChecklistOnPendingState(false);
-        // }
-
-        // Check if any task status in pending the show confirmation modal on Complete
-        // if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-        //   const hasPendingTask = checklistTasks.some(
-        //     (task) => task?.taskStatus?.statusName === "Pending"
-        //   );
-
-        //   setCheckAnyTaskOnPendingState(hasPendingTask);
-        // } else {
-        //   setCheckAnyTaskOnPendingState(false);
-        // }
-        // if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-        //   const hasTaskInProgress =
-        //     Array.isArray(checklistTasks) &&
-        //     checklistTasks.some(
-        //       (task) => task?.taskStatus?.statusName === "In Progress"
-        //     );
-
-        //   setCheckAnyTaskInProgress(hasTaskInProgress);
-        // } else {
-        //   setCheckAnyTaskInProgress(false);
-        // }
       } catch (error) {}
 
       setComplianceByMeList((prev) =>
@@ -1009,6 +1003,13 @@ export const ComlianceProvider = ({ children }) => {
         setReopenDashboardList,
         viewComplianceTasksContextData,
         setViewComplianceTasksContextData,
+        criticalityOptions,
+        pendingNavigation,
+        setPendingNavigation,
+        viewAllReopenDashboardButtonFlag,
+        setViewAllReopenDashboardButtonFlag,
+        newChecklistIds,
+        setNewChecklistIds,
       }}
     >
       {children}

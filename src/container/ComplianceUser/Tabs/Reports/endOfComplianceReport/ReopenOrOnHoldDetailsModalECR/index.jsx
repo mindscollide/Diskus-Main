@@ -2,24 +2,23 @@ import React, { useEffect, useMemo, useState } from "react";
 import styles from "./ReopenOrOnHoldDetailsModal.module.css";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
-import { useComplianceContext } from "../../../../context/ComplianceContext";
 import {
   AttachmentViewer,
   Button,
   Modal,
-} from "../../../../components/elements";
-import { formatDateToYMD } from "../commonFunctions";
-import downloadIcon from "../../../../assets/images/download.png";
-const ReopenOrOnHoldDetailsModal = () => {
+} from "../../../../../../components/elements";
+import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
+import { useComplianceContext } from "../../../../../../context/ComplianceContext";
+import { useSelector } from "react-redux";
+const ReopenOrOnHoldDetailsModalECR = () => {
   // ReopenOrOnHoldDetailsModal
   const { t } = useTranslation();
-
-  const { isViewDetailsOpen, setIsViewDetailsOpen, complianceDetailsState } =
-    useComplianceContext();
-  console.log(
-    complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
+  const GetEndOfComplianceReport = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
+
+  const { isViewDetailsOpen, setIsViewDetailsOpen } = useComplianceContext();
+  console.log(GetEndOfComplianceReport, "GetEndOfComplianceReport");
 
   const handleCloseButton = () => {
     setIsViewDetailsOpen(false);
@@ -29,12 +28,12 @@ const ReopenOrOnHoldDetailsModal = () => {
 
   useEffect(() => {
     if (
-      complianceDetailsState &&
-      complianceDetailsState.complianceStatusChangeHistory.length > 0
+      GetEndOfComplianceReport &&
+      GetEndOfComplianceReport?.complianceStatusChangeHistory.length > 0
     ) {
       try {
         const filteredHistory =
-          complianceDetailsState.complianceStatusChangeHistory.filter(
+          GetEndOfComplianceReport?.complianceStatusChangeHistory.filter(
             (item) =>
               item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
           );
@@ -44,7 +43,7 @@ const ReopenOrOnHoldDetailsModal = () => {
     } else {
       setComplianceStatusChangeHistory([]);
     }
-  }, [complianceDetailsState]);
+  }, [GetEndOfComplianceReport]);
   // styling for select:
   const getStatusColor = (status) => {
     switch (status) {
@@ -97,7 +96,7 @@ const ReopenOrOnHoldDetailsModal = () => {
                   <Row>
                     <div className={styles.textLabel}>{`${t("Reason")}:`}</div>
                     <div className={styles.textValue}>
-                      {item.statusChangeReason || "-"}
+                      {truncateByWords(item.statusChangeReason) || "-"}
                       <p></p>
                     </div>
                   </Row>
@@ -168,4 +167,4 @@ const ReopenOrOnHoldDetailsModal = () => {
   );
 };
 
-export default ReopenOrOnHoldDetailsModal;
+export default ReopenOrOnHoldDetailsModalECR;

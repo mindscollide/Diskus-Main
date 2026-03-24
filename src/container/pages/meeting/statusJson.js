@@ -4,118 +4,118 @@ export const StatusValue = (t, statusValue) => {
     case "1":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-upcoming "></span>
-            <p className={"meeting-status-value  my-0 ms-1"}>{t("Upcoming")}</p>
-          </div>
+            <p className={"meeting-status-value m-0 mx-1"}>{t("Upcoming")}</p>
+          </span>
         </>
       );
     case "2":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Start")}</p>
-          </div>
+          </span>
         </>
       );
     case "3":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
 
             <p className={"meeting-status-value  my-0 ms-1"}>
               {t("Completed")}
             </p>
-          </div>
+          </span>
         </>
       );
     case "4":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-cancelled "></span>
             <p className={"meeting-status-value my-0 ms-1"}>{t("Cancelled")}</p>
-          </div>
+          </span>
         </>
       );
     case "5":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>
               {t("Reschedule")}
             </p>
-          </div>
+          </span>
         </>
       );
     case "6":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Close")}</p>
-          </div>
+          </span>
         </>
       );
     case "7":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Delete")}</p>
-          </div>
+          </span>
         </>
       );
     case "8":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-nonConducted"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>
               {t("Not Conducted")}
             </p>
-          </div>
+          </span>
         </>
       );
     case "9":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-end"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Ended")}</p>
-          </div>
+          </span>
         </>
       );
     case "10":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-active"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Active")}</p>
-          </div>
+          </span>
         </>
       );
     case "11":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>
               {t("Unpublished")}
             </p>
-          </div>
+          </span>
         </>
       );
     case "12":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
+          <span className="d-inline-flex align-items-center">
             <span className="status-color-start"></span>
             <p className={"meeting-status-value  my-0 ms-1"}>{t("Proposed")}</p>
-          </div>
+          </span>
         </>
       );
     default:

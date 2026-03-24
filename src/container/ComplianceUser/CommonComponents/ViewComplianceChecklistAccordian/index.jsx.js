@@ -10,18 +10,32 @@ import NoChecklistImg from "../../../../assets/images/NoChecklistImg.png";
 import Select from "react-select";
 import { ProgressLoader } from "../../../../components/elements/ProgressLoader/ProgressLoader";
 import { formatDateToYMD } from "../commonFunctions";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { updateCheckListStatusApi } from "../../../../store/actions/ComplainSettingActions";
+import { useNavigate } from "react-router-dom";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
+  const { complianceInfo } = useComplianceContext();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   // const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
+  const viewComplianceByMeDetails = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
+  );
+
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
 
   const allExpanded =
     getCheckListData.length > 0 &&
     expandedCheckListIds.length === getCheckListData.length;
+
+  console.log(allExpanded, "selectedChecklistStatus");
 
   // context
   const {
@@ -34,9 +48,6 @@ const ViewComplianceChecklistAccordian = () => {
   console.log(
     {
       allCheckListByComplianceId,
-      setExpandChecklistOnTasksPage,
-      setViewComplianceDetailsTab,
-      complianceViewMode,
     },
     "CheckListByComplianceCheckListByCompliance",
   );
@@ -64,35 +75,6 @@ const ViewComplianceChecklistAccordian = () => {
     });
   };
 
-  // const handleExpandBtn = () => {
-  //   if (isExpandBtnClicked) {
-  //     if (getCheckListData?.length > 0) {
-  //       const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //       setAddChecklistCloseState(true);
-  //       setExpandedCheckListIds(allIds);
-  //       setIsExpandBtnClicked(!isExpandBtnClicked);
-  //     }
-  //   }
-  // };
-  // const handleExpandBtn = () => {
-  //   if (getCheckListData?.length === 0) return;
-
-  //   if (!isExpandBtnClicked) {
-  //     // 👉 EXPAND ALL
-  //     const allIds = getCheckListData.map((item) => item.checklistId);
-
-  //     setExpandedCheckListIds(allIds);
-  //     setAddChecklistCloseState(true);
-  //   } else {
-  //     // 👉 COLLAPSE ALL
-  //     setExpandedCheckListIds([]);
-  //     setAddChecklistCloseState(false);
-  //   }
-
-  //   // 🔄 toggle button state
-  //   setIsExpandBtnClicked((prev) => !prev);
-  // };
   const handleExpandBtn = () => {
     if (getCheckListData.length === 0) return;
 
@@ -109,9 +91,23 @@ const ViewComplianceChecklistAccordian = () => {
     }
   };
 
-  const handleChecklistStatusChange = (checklistId, selectedStatus) => {
+  const handleChecklistStatusChange = (
+    checklistId,
+    selectedStatus,
+    dueDate,
+  ) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
+    let Data = {
+      ChecklistID: checklistId,
+      ComplianceID: complianceInfo?.complianceId,
+      NewStatusID: selectedStatus?.value,
+      StatusChangeReason: "",
+      UpdatedDueDate: `${dueDate}185958`,
+      ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
+    };
+
+    dispatch(updateCheckListStatusApi(navigate, Data, t));
 
     // 🔁 Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
@@ -238,7 +234,7 @@ const ViewComplianceChecklistAccordian = () => {
               (data2, index) => data2 === data.checklistId,
             );
 
-            console.log(isExpanded, data, "isExpandedisExpanded");
+            console.log(isExpanded, data, "selectedChecklistStatus");
             const checklistStatusOptions =
               data.complianceCheckListAllowed?.map((status) => ({
                 value: status.statusId,
@@ -251,6 +247,8 @@ const ViewComplianceChecklistAccordian = () => {
                   label: data.status.statusName,
                 }
               : null;
+
+            console.log(selectedChecklistStatus, "selectedChecklistStatus");
 
             return (
               <div key={index}>
@@ -278,7 +276,7 @@ const ViewComplianceChecklistAccordian = () => {
                           </div>
                         </Col>
                       </Row>
-                      <Row className="mt-2">
+                      <Row className="mt-3">
                         <Col sm={12} md={3} lg={3}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Due-date",
@@ -290,7 +288,7 @@ const ViewComplianceChecklistAccordian = () => {
                         <Col sm={12} md={2} lg={2}>
                           <div className={styles["complianceViewLabel"]}>{`${t(
                             "Status",
-                          )}:`}</div>
+                          )}`}</div>
                           {complianceViewMode === "byMe" ? (
                             <Select
                               isSearchable={true}
@@ -300,6 +298,7 @@ const ViewComplianceChecklistAccordian = () => {
                                 handleChecklistStatusChange(
                                   data.checklistId,
                                   selectedOption,
+                                  data.dueDate,
                                 )
                               }
                               styles={statusSelectStyles}

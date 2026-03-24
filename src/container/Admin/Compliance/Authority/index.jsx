@@ -49,6 +49,7 @@ import {
   setAuthorityCreatedData,
   setAuthorityUpdatedData,
   clearAuthorityMessage,
+  GetComplianceByAuthorityAPI,
 } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -154,6 +155,11 @@ const ManageAuthority = () => {
 
   // Open Delete Authority confirmation modal
   const hanldeDeleteAuthorityModal = (authorityID) => {
+    let Data = {
+      authorityId: Number(authorityID),
+    };
+    dispatch(GetComplianceByAuthorityAPI(navigate, Data, t));
+
     dispatch(showDeleteAuthorityModal(true));
     setAuthorityId(authorityID);
   };
@@ -466,7 +472,7 @@ const ManageAuthority = () => {
 
         dataIndex: "shortCode",
         key: "shortCode",
-        width: "15%",
+        width: "10%",
         align: "left",
         ellipsis: true,
         sorter: (a, b) =>
@@ -497,7 +503,7 @@ const ManageAuthority = () => {
         ),
         dataIndex: "authorityName",
         key: "authorityName",
-        width: "25%",
+        width: "20%",
         ellipsis: true,
         align: "left",
         sorter: (a, b) =>
@@ -567,7 +573,7 @@ const ManageAuthority = () => {
 
         dataIndex: "sector",
         key: "sector",
-        width: "18%",
+        width: "22%",
         align: "left",
         ellipsis: true,
       },
@@ -575,7 +581,7 @@ const ManageAuthority = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        width: "10%",
+        width: "5%",
         align: "center",
         ellipsis: true,
         ...getStatusColumnProps(),
@@ -585,7 +591,7 @@ const ManageAuthority = () => {
         title: t(""),
         dataIndex: "Delete",
         key: "Delete",
-        width: "20%",
+        width: "15%",
 
         // Action buttons column
         render: (text, record) => {

@@ -15,6 +15,7 @@ import {
   showSceduleProposedMeeting,
   getUserProposedWiseApi,
   clearProposedWiseData,
+  getUserWiseProposedDatesMainApi,
 } from "../../../../../../../store/actions/NewMeetingActions";
 import BlueTick from "../../../../../../../assets/images/BlueTick.svg";
 import moment from "moment";
@@ -33,6 +34,11 @@ const SceduleProposedmeeting = ({
   setCurrentMeetingID,
   setSceduleMeeting,
 }) => {
+  const [open, setOpen] = useState({
+    open: false,
+    message: "",
+    severity: "error",
+  });
   let viewProposeDatePollMeetingID = Number(
     localStorage.getItem("viewProposeDatePollMeetingID")
   );
@@ -43,22 +49,10 @@ const SceduleProposedmeeting = ({
   const sceduleproposedMeeting = useSelector(
     (state) => state.NewMeetingreducer.sceduleproposedMeeting
   );
-  const [open, setOpen] = useState({
-    open: false,
-    message: "",
-    severity: "error",
-  });
-  // const getUserProposedOrganizerData = useSelector(
-  //   (state) => state.NewMeetingreducer.getUserProposedOrganizerData
-  // );
 
-  // console.log(getUserProposedOrganizerData, "getUserProposedOrganizerData");
-
-  const userWiseMeetingProposed = useSelector(
-    (state) => state.NewMeetingreducer.userWiseMeetingProposed
+  const getUserProposedOrganizerData = useSelector(
+    (state) => state.NewMeetingreducer.getUserProposedOrganizerData
   );
-
-  console.log("Check213123", userWiseMeetingProposed);
 
   const [formattedDates, setFormattedDates] = useState([]);
   const [updateTableRows, setUpdateTableRows] = useState([]);
@@ -68,84 +62,35 @@ const SceduleProposedmeeting = ({
   const [initialOrganizerRows, setInitialOrganizerRows] = useState([]);
   const [proposedDates, setProposedDates] = useState([]);
 
-  const handleCrossIconClass = () => {
-    dispatch(showSceduleProposedMeeting(false));
-  };
-
   // dispatch Api in useEffect
-  //Notificaiton When organizer Click the notification that the response dates has been submitted by the participant
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("ProposedMeetingOrganizer")) === true) {
-      let NotificationClickProposeMeetingID = localStorage.getItem(
-        "ProposedMeetingOrganizerMeetingID"
-      );
-      // let Data = {
-      //   MeetingID: Number(NotificationClickProposeMeetingID),
-      // };
-      // dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
-      let Data = {
-        MeetingID: Number(NotificationClickProposeMeetingID),
-      };
-      dispatch(getUserProposedWiseApi(navigate, t, Data, false));
-    } else {
-      // let Data = {
-      //   MeetingID: Number(viewProposeDatePollMeetingID),
-      // };
-      // dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
-      let Data = {
-        MeetingID: Number(viewProposeDatePollMeetingID),
-      };
-      dispatch(getUserProposedWiseApi(navigate, t, Data, false));
-    }
-
-    return () => {
-      dispatch(clearProposedWiseData())
-      localStorage.removeItem("ProposedMeetingOrganizer");
-      localStorage.removeItem("ProposedMeetingOrganizerMeetingID");
-      localStorage.removeItem("MeetingStatusID");
+    let Data = {
+      MeetingID: Number(viewProposeDatePollMeetingID),
     };
+    dispatch(getUserWiseProposedDatesMainApi(navigate, t, Data));
   }, []);
+
   // for rendering data in table
   useEffect(() => {
     if (
-      userWiseMeetingProposed !== null &&
-      userWiseMeetingProposed !== undefined &&
-      userWiseMeetingProposed.length > 0
+      getUserProposedOrganizerData !== null &&
+      getUserProposedOrganizerData !== undefined &&
+      getUserProposedOrganizerData.length > 0
     ) {
-      const ProposeDates = Array.from(
-        userWiseMeetingProposed
-          .flatMap((datesData) => datesData.selectedProposedDates)
-          .reduce((map, proposedDate) => {
-            // Check if the date already exists in the Map
-            if (map.has(proposedDate.proposedDate)) {
-              const existing = map.get(proposedDate.proposedDate);
+      let ProposeDates;
 
-              // Prioritize `isSelected: true`
-              if (proposedDate.isSelected) {
-                map.set(proposedDate.proposedDate, proposedDate); // Replace if current is true
-              } else if (!existing.isSelected) {
-                map.set(proposedDate.proposedDate, proposedDate); // Keep one if none are true
-              }
-            } else {
-              // Add the proposed date to the Map
-              map.set(proposedDate.proposedDate, proposedDate);
-            }
-            return map;
-          }, new Map())
-          .values() // Extract unique values from the Map
-      );
-
-      console.log(ProposeDates, "Filtered Unique ProposeDates");
-
-      console.log(ProposeDates, "Filtered ProposeDates");
-
+      getUserProposedOrganizerData.forEach((datesData, index) => {
+        const uniqueData = new Set(
+          datesData.selectedProposedDates.map(JSON.stringify)
+        );
+        ProposeDates = Array.from(uniqueData).map(JSON.parse);
+      });
       setProposedDates(ProposeDates);
-
-      setInitialOrganizerRows(userWiseMeetingProposed);
+      setInitialOrganizerRows(getUserProposedOrganizerData);
     } else {
       setInitialOrganizerRows([]);
     }
-  }, [userWiseMeetingProposed]);
+  }, [getUserProposedOrganizerData]);
 
   useEffect(() => {
     const newOrganizerRows = [...initialOrganizerRows];
@@ -160,46 +105,6 @@ const SceduleProposedmeeting = ({
 
     setOrganizerRows(newOrganizerRows);
   }, [initialOrganizerRows]);
-
-  // useEffect(() => {
-  //   if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
-  //     const yourNewObject = {
-  //       userID: 0,
-  //       userName: "Total",
-  //       designation: "",
-  //       userEmail: "",
-  //       title: "",
-  //       selectedProposedDates: Array(proposedDates?.length).fill({
-  //         proposedDateID: 0,
-  //         proposedDate: "",
-  //         startTime: "",
-  //         endTime: "",
-  //         isSelected: false,
-  //         isTotal: 0,
-  //       }),
-  //     };
-  //     const updatedOrganizerRows = [...organizerRows, yourNewObject];
-  //     setUpdateTableRows(updatedOrganizerRows);
-  //     let newDataProposedState = [...proposedDates];
-  //     setProposedDatesData(newDataProposedState);
-  //     const formattedDates = newDataProposedState
-  //       .filter((dates, index) => dates.proposedDate !== "10000101")
-  //       .map((date) => {
-  //         try {
-  //           let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
-  //           const formatetDateTime = utcConvertintoGMT(datetimeVal);
-
-  //           return formatetDateTime;
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       });
-
-  //     if (formattedDates) {
-  //       setFormattedDates(formattedDates);
-  //     }
-  //   }
-  // }, [organizerRows, proposedDates]);
 
   useEffect(() => {
     if (Array.isArray(organizerRows) && Array.isArray(proposedDates)) {
@@ -222,21 +127,18 @@ const SceduleProposedmeeting = ({
       setUpdateTableRows(updatedOrganizerRows);
       let newDataProposedState = [...proposedDates];
       setProposedDatesData(newDataProposedState);
-      const formattedDates = newDataProposedState
-        .filter((dates, index) => dates.proposedDate !== "10000101")
-        .map((date) => {
-          console.log(date, "datedatedate");
-          try {
-            let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
-            const formatetDateTime = utcConvertintoGMT(datetimeVal);
+      const formattedDates = newDataProposedState.map((date) => {
+        try {
+          let datetimeVal = `${date?.proposedDate}${date?.startTime}`;
+          const formatetDateTime = utcConvertintoGMT(datetimeVal);
 
-            return formatetDateTime;
-          } catch (error) {
-            console.log(error);
-          }
-        });
+          return formatetDateTime;
+        } catch (error) {
+          console.log(error);
+        }
+      });
 
-      if (formattedDates.length > 0) {
+      if (formattedDates) {
         setFormattedDates(formattedDates);
       }
     }
@@ -247,7 +149,7 @@ const SceduleProposedmeeting = ({
       setProposedDatesData((newData) =>
         newData.map((proposedData) => ({
           ...proposedData,
-          isChecked:
+          isSelected:
             proposedData.proposedDateID === record.proposedDateID
               ? true
               : false,
@@ -259,13 +161,11 @@ const SceduleProposedmeeting = ({
   // Function to count the selected proposed dates for a row
   const countSelectedProposedDatesForColumn = (columnIndex) => {
     if (organizerRows && Array.isArray(organizerRows)) {
-      console.log(organizerRows, columnIndex, "organizerRowsorganizerRows");
-
       const count = organizerRows.reduce((total, row) => {
         if (
           row &&
           row.selectedProposedDates.length > 0 &&
-          row.selectedProposedDates[columnIndex]?.isSelected
+          row.selectedProposedDates[columnIndex].isSelected
         ) {
           return total + 1;
         }
@@ -273,37 +173,23 @@ const SceduleProposedmeeting = ({
       }, 0);
 
       // Add a zero prefix to the count if it's a single digit
-      const formattedCount = count < 10 ? `0${count}` : `${count}`;
-
-      return convertToArabicNumerals(formattedCount);
+      return count < 10 ? `0${count}` : count;
     } else {
-      return convertToArabicNumerals("00");
+      return "00";
     }
   };
 
   // Api hit for schedule Meeting
   const scheduleHitButton = () => {
-    let NotificationClickOrganizerProposedMeeting = JSON.parse(
-      localStorage.getItem("ProposedMeetingOrganizer")
-    );
-    let NotificationClickOrganizerProposedMeetingID = localStorage.getItem(
-      "ProposedMeetingOrganizerMeetingID"
-    );
     let findIsSelected = proposedDatesData.find(
-      (propsedData, index) => propsedData?.isChecked === true
+      (propsedData, index) => propsedData.isSelected === true
     );
 
     if (findIsSelected) {
       let scheduleMeeting = {
-        MeetingID: NotificationClickOrganizerProposedMeeting
-          ? Number(NotificationClickOrganizerProposedMeetingID)
-          : Number(viewProposeDatePollMeetingID),
+        MeetingID: Number(viewProposeDatePollMeetingID),
         ProposedDateID: findIsSelected.proposedDateID,
       };
-      console.log(
-        NotificationClickOrganizerProposedMeetingID,
-        "MeetingIDMeetingIDMeetingID"
-      );
       dispatch(
         scheduleMeetingMainApi(
           navigate,
@@ -312,18 +198,10 @@ const SceduleProposedmeeting = ({
           setDataroomMapFolderId,
           setCurrentMeetingID,
           setSceduleMeeting,
-          NotificationClickOrganizerProposedMeetingID
+          viewProposeDatePollMeetingID
         )
       );
-    } else {
-      showMessage(t("Please-select-a-date"), "error", setOpen);
     }
-  };
-
-  const getCurrentYYYYMMDD = (dateVal) => {
-    let convertDateTime = convertIntoDateObject(dateVal);
-
-    return moment(convertDateTime).format("YYYYMMDD");
   };
 
   const scheduleColumn = [
@@ -349,40 +227,22 @@ const SceduleProposedmeeting = ({
         </>
       ),
     },
-
     ...formattedDates.map((formattedDate, index) => {
-      let record = proposedDatesData[index + 1];
-      console.log(record, "recordrecord");
-      console.log(formattedDate, "formattedDate");
+      let record = proposedDatesData[index];
 
       let isFind;
       if (record !== null && record !== undefined) {
         let datetimeVal = `${record?.proposedDate}${record?.startTime}`;
-        const formatetDateTime = resolutionResultTable(datetimeVal);
-        console.log(
-          formatetDateTime,
-          String(formatetDateTime) === String(formattedDate),
-          String(formatetDateTime),
-          String(formattedDate),
-          "formatetDateTime"
-        );
+        const formatetDateTime = utcConvertintoGMT(datetimeVal);
         if (String(formatetDateTime) === String(formattedDate)) {
           isFind = record;
         }
       }
-      let checkisPassed =
-        new Date() >
-        resolutionResultTable(record.proposedDate + record.startTime);
-      console.log(isFind, "isFindisFind");
-
-      console.log(checkisPassed, "formatetDateTimeformatetDateTime");
       return {
         title: (
           <span
             className={
-              checkisPassed
-                ? styles["Date-Object-Detail_disabled"]
-                : isFind !== undefined && isFind?.isChecked
+              isFind !== undefined && isFind.isSelected
                 ? styles["Date-Object-Detail_active"]
                 : styles["Date-Object-Detail"]
             }
@@ -396,44 +256,31 @@ const SceduleProposedmeeting = ({
         key: `selectedProposedDates-${index}`,
         align: "center",
         render: (text, record) => {
-          console.log(record, "recordrecordrecord");
           if (record.userName === "Total") {
             const totalDate = record?.selectedProposedDates?.find(
               (date) => date?.isTotal === 0
             );
-            console.log(totalDate, "totalDate");
             if (totalDate) {
               return (
-                <span
-                  className={`${
-                    styles["TotalCount"]
-                  } ${"d-flex justify-content-center"}`}>
-                  {countSelectedProposedDatesForColumn(index + 1)}
+                <span className={styles["TotalCount"]}>
+                  {countSelectedProposedDatesForColumn(index)}
                 </span>
               );
             }
           } else {
             const proposedDate = record?.selectedProposedDates?.find(
               (date) =>
-                getCurrentYYYYMMDD(date.proposedDate + date.startTime) ===
-                moment(formattedDate).format("YYYYMMDD")
-            );
-            console.log(
-              proposedDate,
-              record?.selectedProposedDates,
-              "proposedDateasaddad selectedProposedDates"
+                date.proposedDate === moment(formattedDate).format("YYYYMMDD")
             );
             if (proposedDate?.isSelected) {
               return (
-                <span>
-                  <img
-                    src={BlueTick}
-                    className={styles["TickIconClass"]}
-                    width='20.7px'
-                    height='14.21px'
-                    alt=''
-                  />
-                </span>
+                <img
+                  src={BlueTick}
+                  className={styles["TickIconClass"]}
+                  width='20.7px'
+                  height='14.21px'
+                  alt=''
+                />
               );
             }
           }
@@ -441,70 +288,7 @@ const SceduleProposedmeeting = ({
         },
       };
     }),
-
-    {
-      title: () => {
-        // Check if `proposedDate: "10000101"` is `isSelected: true` in the reducer
-        const isActiveDateSelected = userWiseMeetingProposed?.some((user) =>
-          user.selectedProposedDates?.some(
-            (date) =>
-              date.proposedDate === "10000101" && date.isSelected === true
-          )
-        );
-        console.log(isActiveDateSelected, "isActiveDateSelected");
-
-        return (
-          <span
-            className={
-              isActiveDateSelected
-                ? styles["Date-Object-Detail_active"]
-                : styles["Date-Object-Detail_disabled"]
-            }>
-            {t("None-of-the-above")}
-          </span>
-        );
-      },
-      dataIndex: "NoneOfAbove",
-      align: "center",
-      key: "NoneOfAbove",
-      render: (text, record) => {
-        const counter = record.selectedProposedDates.filter(
-          (date) => date.proposedDate === "10000101" && date.isSelected
-        );
-        const formattedCounter = String(counter).padStart(2, "0");
-        console.log(counter, "countercountercounter");
-
-        if (record?.userName === "Total") {
-          return (
-            <span
-              className={`${
-                styles["TotalCount"]
-              } ${"d-flex justify-content-center align-items-center"}`}>
-              {convertToArabicNumerals(formattedCounter)}
-            </span>
-          );
-        }
-
-        // Check if `proposedDate: "10000101"` is `isSelected: true`
-        const allDatedIsUnSelected = record?.selectedProposedDates?.some(
-          (date) => date.proposedDate === "10000101" && date.isSelected === true
-        );
-
-        return allDatedIsUnSelected ? (
-          <span className='d-flex justify-content-center align-items-center'>
-            <img
-              src={BlueTick}
-              className={styles["TickIconClass"]}
-              width='20.7px'
-              height='14.21px'
-              alt=''
-            />
-          </span>
-        ) : null;
-      },
-    },
   ];
-
   return (
     <section>
       <Modal
@@ -527,13 +311,17 @@ const SceduleProposedmeeting = ({
                   {t("Schedule-proposed-meetings")}
                 </span>
               </Col>
-              <Col lg={1} md={1} sm={1} className='d-flex justify-content-end'>
+              <Col
+                lg={1}
+                md={1}
+                sm={1}
+                onClick={() => dispatch(showSceduleProposedMeeting(false))}
+                className='d-flex justify-content-end'>
                 <img
                   src={BlackCrossIcon}
                   alt=''
                   className='cursor-pointer'
                   width={15}
-                  onClick={handleCrossIconClass}
                 />
               </Col>
             </Row>

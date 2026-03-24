@@ -197,6 +197,8 @@ const NewMeeting = () => {
     setStepDownloadModal,
     downloadVideoRecordingModal,
     setDownloadVideoRecordingModal,
+    currentMeetingID,
+    setCurrentMeetingID,
   } = useMeetingContext();
   const {
     totalMeetingRecords,
@@ -367,12 +369,12 @@ const NewMeeting = () => {
     attendeceReport: false,
     video: false,
     Agenda: false,
+    isAgendaAttachments: false,
   });
   //For Search Field Only
   const [searchText, setSearchText] = useState("");
   const [entereventIcon, setentereventIcon] = useState(false);
 
-  const [currentMeetingID, setCurrentMeetingID] = useState(0);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -1534,7 +1536,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -3350,7 +3352,7 @@ const NewMeeting = () => {
             className={styles.morebtn}
             onClick={() => handleClickDownloadBtn(record)}>
             <img src={DownloadVideoIcon} alt='' width='16' height='16' />
-            <span>{t("Download-view-recording")}</span>
+            <span>{t("Download-video-recording")}</span>
           </div>
         )}
         {canShow.viewMinutes && (
@@ -3562,7 +3564,7 @@ const NewMeeting = () => {
         ),
         dataIndex: "title",
         key: "title",
-        width: 180,
+        width: 300,
         ellipsis: true,
         sorter: (a, b) => a.title.localeCompare(b.title),
         sortOrder: meetingTitleSort,
@@ -3607,8 +3609,8 @@ const NewMeeting = () => {
         title: t("Status"),
         dataIndex: "status",
         key: "status",
-        align: "left",
-        width: 140,
+        align: "center",
+        width:90,
         ellipsis: true,
         filters: statusFilters,
         filterIcon: (filtered) => (
@@ -3619,8 +3621,7 @@ const NewMeeting = () => {
         defaultFilteredValue: ["10", "1", "9", "8", "4"],
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
-        render: (text) => StatusValue(t, text),
-        sorter: (a, b) => a.status - b.status,
+        render: (text) => <div className={styles.columnValueStatus}>{StatusValue(t, text)}</div>,
       },
 
       // ===== Organizer =====
@@ -3648,6 +3649,7 @@ const NewMeeting = () => {
         sorter: (a, b) =>
           a.host.toLowerCase().localeCompare(b.host.toLowerCase()),
         sortOrder: organizerNameSort,
+        render: (text) => <div className={styles.columnValue}>{text}</div>,
       },
 
       // ===== Meeting Time =====
@@ -3686,9 +3688,9 @@ const NewMeeting = () => {
             record.dateOfMeeting + record.meetingEndTime
           );
           if (!start || !end) return null;
-          return `${moment(start).format("hh:mm a")} - ${moment(end).format(
+          return <span className={styles.columnValue}>{`${moment(start).format("hh:mm a")} - ${moment(end).format(
             "hh:mm a"
-          )}`;
+          )}`}</span>;
         },
       },
 
@@ -3743,7 +3745,7 @@ const NewMeeting = () => {
             record.meetingStartTime.substring(4, 6)
           );
 
-          return <>{moment(meetingDate).format("Do MMM, YYYY")}</>;
+          return <span className={styles.columnValue}>{moment(meetingDate).format("Do MMM, YYYY")}</span>;
         },
       },
 
@@ -3780,7 +3782,7 @@ const NewMeeting = () => {
           );
           if (record.isQuickMeeting && meetingType === 1)
             return t("Quick-meeting");
-          return matchedFilter ? t(matchedFilter.text) : "";
+          return matchedFilter ? <span className={styles.columnValue}>{t(matchedFilter.text)}</span> : "";
         },
       },
 
@@ -4420,7 +4422,7 @@ const NewMeeting = () => {
         let meetingtypeFilter = [];
         let byDefault = {
           value: "0",
-          text: "Quick-meeting",
+          text: t("Quick-meeting"),
         };
         meetingtypeFilter.push(byDefault);
         getALlMeetingTypes?.meetingTypes.forEach((data, index) => {
@@ -5102,7 +5104,7 @@ const NewMeeting = () => {
           <SceduleMeeting
             setSceduleMeeting={setSceduleMeeting}
             setCurrentMeetingID={setCurrentMeetingID}
-            currentMeeting={currentMeetingID}
+            currentMeetingID={currentMeetingID}
             setEditMeeting={setEditMeeting}
             isEditMeeting={isEditMeeting}
             setDataroomMapFolderId={setDataroomMapFolderId}
@@ -5435,7 +5437,10 @@ const NewMeeting = () => {
                         md={12}
                         sm={12}
                         className={styles["MainMeetingTablePublished"]}>
-                        <DraftMeeting />
+                        <DraftMeeting
+                          setCurrentMeetingID={setCurrentMeetingID}
+                          currentMeeting={currentMeetingID}
+                        />
                       </Col>
                     </Row>
                   ) : Number(currentView) === 1 ? (
