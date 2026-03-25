@@ -132,8 +132,8 @@ const SearchComplianceReportModal = () => {
           length: 10,
           sRow: 0,
         },
-        t,
-      ),
+        t
+      )
     );
   };
 
@@ -153,7 +153,7 @@ const SearchComplianceReportModal = () => {
           <span ref={searchBoxRef} className="position-relative">
             <TextField
               placeholder={t(
-                "Report-title.click-the-icon-to-view-more-options",
+                "Report-title.click-the-icon-to-view-more-options"
               )}
               name={"reportTitleOutside"}
               disable={searchbox}
@@ -241,7 +241,9 @@ const SearchComplianceReportModal = () => {
                         <Select
                           placeholder={t("Report-type")}
                           className="usermanagementTextField"
-                          value={searchComplianceReportPayload?.reportType || null}
+                          value={
+                            searchComplianceReportPayload?.reportType || null
+                          }
                           onChange={(value) =>
                             setSearchComplianceReportPayload((prev) => ({
                               ...prev,
@@ -268,7 +270,19 @@ const SearchComplianceReportModal = () => {
                     </Row>
 
                     <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12} xs={12}>
+                      <Col lg={6} md={6} sm={6} xs={6}>
+                        <TextField
+                          labelclass={"d-none"}
+                          placeholder={t("generated-on")}
+                          maxLength={100}
+                          name={"generatedOn"}
+                          value={searchComplianceReportPayload?.reportTitle}
+                          type="text"
+                          applyClass={"usermanagementTextField"}
+                          change={handleChange}
+                        />
+                      </Col>
+                      <Col lg={6} md={6} sm={6} xs={6}>
                         <DatePicker.RangePicker
                           format="DD/MM/YYYY"
                           placeholder={["Start Date", "End Date"]}
