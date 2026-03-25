@@ -617,6 +617,14 @@ body[dir="rtl"] .ResetOkBtn {
   font-size: 12px ;
   font-weight: 400;
   color:#505050;
+
+}
+.columnValueStatus{
+  font-size: 12px ;
+  font-weight: 400;
+  color:#505050;
+  text-align: left;
+  
 }
 
 .MainMeetingTablePublished {

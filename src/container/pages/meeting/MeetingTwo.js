@@ -3621,7 +3621,7 @@ const NewMeeting = () => {
         defaultFilteredValue: ["10", "1", "9", "8", "4"],
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
-        render: (text) => <div className={styles.columnValue}>{StatusValue(t, text)}</div>,
+        render: (text) => <div className={styles.columnValueStatus}>{StatusValue(t, text)}</div>,
       },
 
       // ===== Organizer =====

@@ -25,9 +25,7 @@ const BoardDeckModal = ({
   boardDeckMeetingID,
 }) => {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const { editorRole, setStepDownloadModal } = useMeetingContext();
   const boardDeckModalData = useSelector(
@@ -93,6 +91,15 @@ const BoardDeckModal = ({
 
   const onChangeSelectAll = (e) => {
     let value = e.target.checked;
+    if (value) {
+      if (boardDeckpublishedChecks.isAgendaWithAttachmentExist) {
+        setRadioValue(1);
+      } else {
+        setRadioValue(2);
+      }
+    } else {
+      setRadioValue(null);
+    }
     setBoarddeckOptions({
       selectall: value,
       Organizer: value,
@@ -121,6 +128,15 @@ const BoardDeckModal = ({
 
   const onChangeAgenda = (e) => {
     let value = e.target.checked;
+    if (value) {
+      if (boardDeckpublishedChecks.isAgendaWithAttachmentExist) {
+        setRadioValue(1);
+      } else {
+        setRadioValue(2);
+      }
+    } else {
+      setRadioValue(null);
+    }
     setBoarddeckOptions({
       ...boarddeckOptions,
       Agenda: value,
@@ -213,50 +229,28 @@ const BoardDeckModal = ({
     setStepDownloadModal(1);
   };
 
-  console.log(boardDeckpublishedChecks, "boardDeckpublishedChecks");
-
   const handleDownloadButton = () => {
     const data = {
       PK_MDID: Number(boardDeckMeetingID),
-
       fetchOrganizers: boarddeckOptions.Organizer,
-
       fetchAgendaContributors:
         boardDeckpublishedChecks.isAgendaContributorExist &&
         boarddeckOptions.AgendaContributor,
-
       fetchParticipants: boarddeckOptions.Participants,
-
       fetchMinutes:
         boardDeckpublishedChecks.isMinutesPublished && boarddeckOptions.Minutes,
-
       fetchTasks:
         boardDeckpublishedChecks.isTaskAssignedToUser && boarddeckOptions.Task,
-
       fetchPolls:
         boardDeckpublishedChecks.isMeetingPolls && boarddeckOptions.polls,
-
       fetchAttendance: boarddeckOptions.attendeceReport,
-
       fetchVideo:
         boardDeckpublishedChecks.isVideoCall && boarddeckOptions.video,
-
       fetchAgendaWithAttachments: radioValue ? radioValue === 1 : false,
-
       fetchAgenda: boarddeckOptions.Agenda,
     };
 
-    console.log(
-      {
-        data,
-        radioValue,
-        boarddeckOptions,
-        boardDeckModalData,
-        getMinutesPublishedData,
-      },
-      "BoardDeckPDFDownloadApiBoardDeckPDFDownloadApi"
-    );
-    // dispatch(BoardDeckPDFDownloadApi(navigate, t, data, setBoarddeckOptions));
+    dispatch(BoardDeckPDFDownloadApi(navigate, t, data, setBoarddeckOptions));
   };
 
   return (
@@ -436,8 +430,7 @@ const BoardDeckModal = ({
               <Col lg={12} md={12} sm={12}>
                 <Checkbox
                   onChange={onChangeAgenda}
-                  checked={boarddeckOptions.Agenda}
-                  >
+                  checked={boarddeckOptions.Agenda}>
                   <span className={styles["Box_options_Agendaas"]}>
                     <CustomRadioGroup
                       value={radioValue}
