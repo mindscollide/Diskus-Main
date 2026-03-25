@@ -396,7 +396,9 @@ const EndOfQuarterReport = () => {
                                                 }
                                               >
                                                 <label>{t("Assignee")}:</label>
-                                                <p>{task.assigneeName}</p>
+                                                <p>
+                                                  {task.assigneeName || "-"}
+                                                </p>
                                               </div>
                                             </Col>{" "}
                                             <Col lg={2} xs="auto">
@@ -422,7 +424,11 @@ const EndOfQuarterReport = () => {
                                                 <label>
                                                   {t("Completed-on")}:
                                                 </label>
-                                                <p>{task.taskCompletedOn}</p>
+                                                <p>
+                                                  {formatDateToYMD(
+                                                    task.taskCompletedOn,
+                                                  ) || "-"}
+                                                </p>
                                               </div>
                                             </Col>
                                             <Col lg={2} xs="auto">

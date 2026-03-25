@@ -651,7 +651,6 @@ const ViewComplianceTasks = () => {
               {/* Attachment */}
               {hasAttachments > 0 ? (
                 <img
-                  className="cursor-pointer"
                   draggable="false"
                   alt=""
                   src={IconAttachment}

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useComplianceContext } from "../../../../../../context/ComplianceContext";
 import { Col, Row } from "react-bootstrap";
+import IconAttachment from "../../../../../../assets/images/Icon-Attachment.png";
 import deleteIcon from "../../../../../../assets/images/Icon material-delete.png";
 import Accordion_Arrow from "../../../../../../assets/images/Accordion_Arrow.png";
 import { formatDateToYMD } from "../../../../CommonComponents/commonFunctions";
@@ -230,17 +231,28 @@ const CreateEditViewComplianceTask = () => {
                                   // onClick={handleOpenAddChecklist}
                                 >
                                   <Row>
-                                    <Col sm={12} md={11} lg={11}>
+                                    <Col sm={12} md={10} lg={10}>
                                       <div className={styles["TaskTitle"]}>
                                         {data2.taskTitle}
                                       </div>
                                     </Col>
                                     <Col
                                       sm={12}
-                                      md={1}
-                                      lg={1}
-                                      className="d-flex justify-content-end align-items-center "
+                                      md={2}
+                                      lg={2}
+                                      className="d-flex justify-content-end align-items-center gap-4"
                                     >
+                                      {data2.hasAttachments > 0 && (
+                                        <img
+                                          draggable="false"
+                                          width={"13px"}
+                                          height={"13px"}
+                                          alt=""
+                                          src={IconAttachment}
+                                          // onClick={() => handleDeleteTaskModal(record.authorityId)}
+                                        />
+                                      )}
+
                                       <img
                                         src={DeleteIcon}
                                         alt=""

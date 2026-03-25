@@ -147,34 +147,22 @@ export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
   const minutes = +timeStr.slice(2, 4);
   const seconds = +timeStr.slice(4, 6);
 
-  const date = new Date(year, month, day, hours, minutes, seconds);
+  // Treat API time as UTC
+  const date = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
 
-  const time = date.toLocaleTimeString("en-US", {
+  const formattedTime = date.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
   });
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
-  const formattedDate = `${String(date.getDate()).padStart(2, "0")} ${
-    months[date.getMonth()]
-  } ${date.getFullYear()}`;
-
-  return `${time} ${formattedDate}`;
+  return `${formattedTime} ${formattedDate}`;
 };
 
 export const parseBackendDate = (dateStr) => {

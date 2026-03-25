@@ -327,7 +327,9 @@ const ViewComplianceChecklistAccordian = () => {
                             <Col sm={12} md={3} lg={3}>
                               <div className="d-flex justify-content-between align-items-center">
                                 <span className={styles["progressBarHeading"]}>
-                                  {t("Checklist-progress")}
+                                  {complianceViewMode === "byMe"
+                                    ? t("Checklist-progress")
+                                    : t("My-checklist")}
                                 </span>
                                 <span className={styles["progressBarHeading"]}>
                                   {`${data.checklistProgress}%`}

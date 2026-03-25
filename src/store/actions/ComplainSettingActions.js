@@ -5437,7 +5437,10 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
 
               if (action.type === "success") {
                 await dispatch(
-                  updateCheckListStatusSuccess(null, t(action.text)),
+                  updateCheckListStatusSuccess(
+                    response.data.responseResult,
+                    t(action.text),
+                  ),
                 );
               } else {
                 await dispatch(updateCheckListStatusFail(t(action.text)));

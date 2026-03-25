@@ -52,6 +52,8 @@
 }
 .titleText {
   cursor: pointer;
+  color: #6172d6;
+  font-weight: 600;
 }
 
 .viewCompliance_ExapnAllBtn {

@@ -43,8 +43,8 @@ const ComplianceByMe = () => {
 
   // Sort State
   const [sortConfig, setSortConfig] = useState({
-    key: "dueDate", // default sort column (optional)
-    order: "ascend", // default order (optional)
+    key: "dueDate",
+    order: "descend",
   });
   const [complianceTitleSort, setComplianceTitleSort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState("ascend");
@@ -301,11 +301,11 @@ const ComplianceByMe = () => {
     const order = isActive ? sortConfig.order : null;
 
     const icon =
-      order === "descend"
+      order === "ascend"
         ? ArrowUpIcon
-        : order === "ascend"
+        : order === "descend"
           ? ArrowDownIcon
-          : ArrowDownIcon;
+          : DefaultSortIcon;
 
     return (
       <img

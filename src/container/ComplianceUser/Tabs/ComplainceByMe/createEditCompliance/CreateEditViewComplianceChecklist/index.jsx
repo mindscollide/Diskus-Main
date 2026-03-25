@@ -97,6 +97,7 @@ const CreateEditViewComplianceChecklist = () => {
   console.log(checkListData, "checkListData");
   console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
@@ -330,67 +331,30 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleBlur = (event) => {
     setIsChecklistTitleExist(null);
-    setErrors({
-      checklistTitle: "",
-    });
+    setErrors({ checklistTitle: "" });
+
     const { name, value } = event.target;
 
+    // View mode: do nothing
     if (complianceAddEditViewState === 3) return;
-    if (complianceAddEditViewState === 2 || isEditTrue) {
-      let getCheckObj = getCheckListData.find(
-        (data, index) => data.checklistId === checkListData.checklistId,
-      );
-      if (getCheckObj !== undefined) {
-        if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
-          if (complianceInfo.complianceId !== 0) {
-            const Data = {
-              ComplianceID: complianceInfo.complianceId,
-              ChecklistTitle: checkListData.checklistTitle,
-            };
-            dispatch(
-              CheckChecklistTitleExistsAPI(
-                navigate,
-                Data,
-                t,
-                setErrors,
-                setIsChecklistTitleExist,
-              ),
-            );
-          }
-        }
-      }
-      console.log(
-        { getCheckObj, getCheckListData, checkListData },
-        "handleBlur",
-      );
-      return;
-    }
 
-    // Checklist uniqueness (API placeholder)
     if (name === "checklistTitle" && value) {
-      try {
-        // if (complianceAddEditViewState === 2) {
-        if (
-          checkListData.checklistTitle !== null &&
-          complianceInfo.complianceId !== 0
-        ) {
-          const Data = {
-            ComplianceID: complianceInfo.complianceId,
-            ChecklistTitle: checkListData.checklistTitle,
-          };
-          // call API here
-          dispatch(
-            CheckChecklistTitleExistsAPI(
-              navigate,
-              Data,
-              t,
-              setErrors,
-              setIsChecklistTitleExist,
-            ),
-          );
-        }
-        // }
-      } catch (error) {}
+      // Always run uniqueness check in edit or add mode
+      if (complianceInfo.complianceId !== 0) {
+        const Data = {
+          ComplianceID: complianceInfo.complianceId,
+          ChecklistTitle: checkListData.checklistTitle,
+        };
+        dispatch(
+          CheckChecklistTitleExistsAPI(
+            navigate,
+            Data,
+            t,
+            setErrors,
+            setIsChecklistTitleExist,
+          ),
+        );
+      }
     }
   };
 
@@ -419,13 +383,13 @@ const CreateEditViewComplianceChecklist = () => {
   }
 
   const isLockedStatus =
-    complianceDetailsState?.status?.value === 7 ||
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 3;
 
-  const isReopendCompliance = complianceDetailsState?.status.value === 6;
-  console.log(isReopendCompliance, "isReopendCompliance");
+  console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
+
+  const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
   const getMinChecklistDueDateFromTasks = () => {
     if (!getAllComplianceChecklistTask?.checklistList) return today;
@@ -465,6 +429,14 @@ const CreateEditViewComplianceChecklist = () => {
 
     return maxTaskDate;
   };
+
+  const editableStatuses = new Set([1, 2, 4, 7]);
+
+  const isComplianceEditable =
+    complianceAddEditViewState === 2 &&
+    editableStatuses.has(complianceDetailsState?.status?.value);
+
+  console.log(isComplianceEditable, "isComplianceEditable");
 
   return (
     <>
@@ -705,7 +677,8 @@ const CreateEditViewComplianceChecklist = () => {
                     </>
                   }
                   endField={
-                    newChecklistIds?.includes(data?.checklistId) && (
+                    (isComplianceEditable ||
+                      newChecklistIds?.includes(data?.checklistId)) && (
                       <>
                         <Row key={data.checklistId}>
                           <Col

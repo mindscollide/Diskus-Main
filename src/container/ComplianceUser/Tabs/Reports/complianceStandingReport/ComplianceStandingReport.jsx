@@ -312,7 +312,7 @@ const ComplianceStandingReport = () => {
         render: (text) => {
           let style = {};
 
-          if (text === 3) {
+          if (text === 1) {
             // High
             style = {
               fontSize: "13px",
@@ -338,7 +338,7 @@ const ComplianceStandingReport = () => {
               minWidth: "60px",
               textAlign: "center",
             };
-          } else if (text === 1) {
+          } else if (text === 3) {
             // Low
             style = {
               fontSize: "13px",
@@ -354,7 +354,56 @@ const ComplianceStandingReport = () => {
           }
 
           const label =
-            text === 1 ? t("Low") : text === 2 ? t("Medium") : t("High");
+            text === 3 ? t("Low") : text === 2 ? t("Medium") : t("High");
+
+          return <span style={style}>{label}</span>;
+        },
+        render: (text) => {
+          let style = {};
+
+          if (text === 1) {
+            // High
+            style = {
+              fontSize: "13px",
+              color: "#F16B6B",
+              fontWeight: 600,
+              backgroundColor: "#FFDEDE",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          } else if (text === 2) {
+            // Medium
+            style = {
+              fontSize: "13px",
+              color: "#D8A709",
+              fontWeight: 600,
+              backgroundColor: "#FFF8E1",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          } else if (text === 3) {
+            // Low
+            style = {
+              fontSize: "13px",
+              color: "#6172D6",
+              fontWeight: 600,
+              backgroundColor: "#ECEFFF",
+              padding: "3px 6px",
+              borderRadius: "4px",
+              display: "inline-block",
+              minWidth: "60px",
+              textAlign: "center",
+            };
+          }
+
+          const label =
+            text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low");
 
           return <span style={style}>{label}</span>;
         },

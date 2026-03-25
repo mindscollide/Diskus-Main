@@ -16,8 +16,19 @@ export const ComlianceProvider = ({ children }) => {
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
+
+  const changeCheckListStatus = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.changeCheckListStatus,
+  );
+
   const complianceCreatedMqttData = useSelector(
     (state) => state.ComplainceSettingReducerReducer.complianceCreatedMqttData,
+  );
+
+  console.log(
+    changeCheckListStatus,
+    viewComplianceByMeDetails,
+    "Check Compliance Coming",
   );
 
   const complianceCheckListMqttData = useSelector(
@@ -441,6 +452,19 @@ export const ComlianceProvider = ({ children }) => {
     setReopendComplianceDashboardFilter(1);
   };
 
+  //When checklist update to Inprogress From pending then it works in viewDetail of compliance
+  useEffect(() => {
+    if (!changeCheckListStatus) return;
+    const { responseMessage } = changeCheckListStatus;
+    if (
+      responseMessage ===
+      "Compliance_ComplianceServiceManager_ChangeChecklistStatus_01"
+    ) {
+      // Checklist status changed successfully
+      setCheckAnyChecklistOnPendingState(false);
+    }
+  }, [changeCheckListStatus]);
+
   useEffect(() => {
     if (
       viewComplianceByMeDetails !== null &&
@@ -522,10 +546,9 @@ export const ComlianceProvider = ({ children }) => {
         // check if any status is Pending to show confirmation modal on submit for approval & Complete
         if (Array.isArray(checklists) && checklists.length > 0) {
           const hasPendingChecklist = checklists.some(
-            (checklist) =>
-              checklist?.status?.statusName === "Pending" ||
-              checklist?.status?.statusName === "In Progress" ||
-              checklist?.status?.statusName === "On Hold",
+            (checklist) => checklist?.status?.statusName === "Pending",
+            // || checklist?.status?.statusName === "In Progress" ||
+            //   checklist?.status?.statusName === "On Hold",
           );
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
@@ -769,7 +792,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: `${authorityShortCode || ""} - ${authorityName || ""}` || "",
+            label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
           dueDate,
@@ -785,7 +808,7 @@ export const ComlianceProvider = ({ children }) => {
           description,
           authority: {
             value: authorityId,
-            label: `${authorityShortCode || ""} - ${authorityName || ""}`,
+            label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
           dueDate,

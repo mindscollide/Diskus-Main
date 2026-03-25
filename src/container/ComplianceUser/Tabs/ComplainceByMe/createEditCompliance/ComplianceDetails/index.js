@@ -88,12 +88,7 @@ const ComplainceDetails = () => {
     comlianceStatusReopenedModal,
   } = useComplianceContext();
 
-  console.log(
-    { complianceDetailsState, complianceDetailsState },
-    "checkListTabscheckListTabs",
-  );
-
-  console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceDetailsState, "complianceDetailsState121212");
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -119,6 +114,7 @@ const ComplainceDetails = () => {
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [tagInputActive, setTagInputActive] = useState(false);
+  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
