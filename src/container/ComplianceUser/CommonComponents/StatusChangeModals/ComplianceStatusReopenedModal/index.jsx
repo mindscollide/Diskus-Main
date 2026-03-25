@@ -49,8 +49,13 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     complianceDetailsState,
     comlianceStatusReopenedModal,
     setComlianceStatusReopenedModal,
+    complianceAddEditViewState,
   } = useComplianceContext();
-  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
+  console.log(
+    complianceReopenDetailsState,
+    complianceDetailsState,
+    "complianceReopenDetailsState",
+  );
 
   const handleCloseButton = () => {
     if (complianceDetailsState.status.value === 7)
@@ -151,16 +156,41 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       attachments: prev.attachments.filter((file) => file.name !== data.name),
     }));
   };
-  console.log(complianceDetailsState.dueDate, "Current DueDate");
 
-  const currentDueDateObj = parseYYYYMMDDToEndOfDay(
-    complianceDetailsState?.dueDate,
-  );
+  // const currentDueDateObj = parseYYYYMMDDToEndOfDay(
+  //   complianceDetailsState?.dueDate,
+  // );
 
   // Make it strictly greater than current due date by adding 1 day
-  const minSelectableDate = new Date(currentDueDateObj);
-  minSelectableDate.setDate(minSelectableDate.getDate() + 1);
-  minSelectableDate.setHours(0, 0, 0, 0); // start of the day
+  let minSelectableDate;
+
+  if (complianceDetailsState?.dueDate && complianceAddEditViewState === 2) {
+    const currentDueDate = new Date(complianceDetailsState.dueDate);
+
+    // Validate the date
+    if (currentDueDate instanceof Date && !isNaN(currentDueDate.getTime())) {
+      minSelectableDate = new Date(currentDueDate);
+      minSelectableDate.setDate(minSelectableDate.getDate() + 1);
+      minSelectableDate.setHours(0, 0, 0, 0); // start of the day
+    }
+  } else if (
+    complianceAddEditViewState === 3 &&
+    complianceDetailsState?.dueDate
+  ) {
+    const currentDueDateObj = parseYYYYMMDDToEndOfDay(
+      complianceDetailsState?.dueDate,
+    );
+
+    // Validate the parsed date
+    if (
+      currentDueDateObj instanceof Date &&
+      !isNaN(currentDueDateObj.getTime())
+    ) {
+      minSelectableDate = new Date(currentDueDateObj);
+      minSelectableDate.setDate(minSelectableDate.getDate() + 1);
+      minSelectableDate.setHours(0, 0, 0, 0); // start of the day
+    }
+  }
 
   return (
     <Modal

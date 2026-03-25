@@ -245,6 +245,9 @@ export const ComlianceProvider = ({ children }) => {
 
   const [deleteChecklistId, setDeleteChecklistId] = useState(0);
 
+  const [complianceCompleteModalType, setComplianceCompleteModalType] =
+    useState(null);
+
   console.log(
     complianceCreatedMqttData,
     complianceByMeList,
@@ -1033,6 +1036,8 @@ export const ComlianceProvider = ({ children }) => {
         setViewAllReopenDashboardButtonFlag,
         newChecklistIds,
         setNewChecklistIds,
+        complianceCompleteModalType,
+        setComplianceCompleteModalType,
       }}
     >
       {children}
