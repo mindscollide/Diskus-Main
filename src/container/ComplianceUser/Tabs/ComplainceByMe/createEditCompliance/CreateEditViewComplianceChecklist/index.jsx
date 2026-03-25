@@ -77,6 +77,7 @@ const CreateEditViewComplianceChecklist = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
 
   const [isEditTrue, setIsEditTrue] = useState(false);
+
   const {
     complianceAddEditViewState,
     complianceInfo,
@@ -282,6 +283,42 @@ const CreateEditViewComplianceChecklist = () => {
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
+  const parseComplianceDueDate = (dueDate) => {
+    if (!dueDate) return null;
+
+    const dateStr = String(dueDate);
+
+    // ISO format
+    if (dateStr.includes("T")) {
+      return new Date(dateStr);
+    }
+
+    // YYYYMMDDHHMMSS format
+    if (dateStr.length === 14) {
+      const year = dateStr.slice(0, 4);
+      const month = dateStr.slice(4, 6) - 1;
+      const day = dateStr.slice(6, 8);
+      const hour = dateStr.slice(8, 10);
+      const minute = dateStr.slice(10, 12);
+      const second = dateStr.slice(12, 14);
+
+      return new Date(year, month, day, hour, minute, second);
+    }
+
+    return null;
+  };
+
+  const maxChecklistDate = React.useMemo(() => {
+    const parsedDate = parseComplianceDueDate(complianceDetailsState?.dueDate);
+
+    if (!parsedDate) return null;
+
+    parsedDate.setHours(0, 0, 0, 0);
+    parsedDate.setDate(parsedDate.getDate() - 1);
+
+    return parsedDate;
+  }, [complianceDetailsState?.dueDate]);
+
   const handleClickPrevBtn = () => {
     setChecklistData({
       checklistTitle: "",
@@ -327,6 +364,13 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleOpenAddChecklist = () => {
     setAddChecklistCloseState(false);
+    setIsEditTrue(false); // make sure we are in create mode
+    setChecklistData({
+      checklistId: 0,
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "", // set to today by default
+    });
   };
 
   const handleBlur = (event) => {
@@ -366,21 +410,11 @@ const CreateEditViewComplianceChecklist = () => {
     setCloseConfirmationModal(true);
   };
 
-  const today = new Date();
-  // const tomorrow = new Date(today);
-  // tomorrow.setDate(today.getDate() + 1); // strictly greater than today
-  today.setHours(0, 0, 0, 0); // start of day
-
-  let maxChecklistDate = null;
-
-  if (complianceDetailsState?.dueDate) {
-    const complianceDate = new Date(complianceDetailsState.dueDate);
-
-    complianceDate.setHours(0, 0, 0, 0);
-    complianceDate.setDate(complianceDate.getDate() - 1); // one day before
-
-    maxChecklistDate = complianceDate;
-  }
+  const today = React.useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
 
   const isLockedStatus =
     complianceDetailsState?.status?.value === 9 ||
@@ -396,34 +430,29 @@ const CreateEditViewComplianceChecklist = () => {
 
     let tasks = [];
 
-    // EDIT FLOW
     if (checkListData.checklistId !== 0) {
+      // EDIT FLOW: current checklist ke tasks
       const checklist = getAllComplianceChecklistTask.checklistList.find(
         (cl) => cl.checklistId === checkListData.checklistId,
       );
-
       tasks = checklist?.taskList || [];
+    } else {
+      // CREATE FLOW: new checklist ke tasks
+      tasks = checkListData?.taskList || [];
     }
 
-    // CREATE FLOW
-    else {
-      tasks = getAllComplianceChecklistTask.checklistList.flatMap(
-        (cl) => cl.taskList || [],
-      );
-    }
-
-    // Only active tasks
+    // Sirf active tasks
     const activeTasks = tasks.filter((task) => task.taskStatusId !== 5);
 
     if (activeTasks.length === 0) return today;
 
+    // Maximum due date among active tasks
     const maxTaskDate = activeTasks.reduce((max, task) => {
       const taskDate = new Date(
         task.deadLineDate.slice(0, 4),
         task.deadLineDate.slice(4, 6) - 1,
         task.deadLineDate.slice(6, 8),
       );
-
       return taskDate > max ? taskDate : max;
     }, new Date(0));
 
@@ -502,7 +531,7 @@ const CreateEditViewComplianceChecklist = () => {
                 disabled={
                   (isLockedStatus && !isEditTrue) || isChecklistTitleExist
                 }
-                value={checkListData.checklistDueDate}
+                value={checkListData.checklistDueDate || ""}
                 format={"DD/MM/YYYY"}
                 placeholder={t("Due-date")}
                 render={

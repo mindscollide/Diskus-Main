@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./checklistAccordian.module.css";
 import CustomAccordion from "../../../../components/elements/accordian/CustomAccordion";
 import { useTranslation } from "react-i18next";
@@ -14,36 +14,57 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { updateCheckListStatusApi } from "../../../../store/actions/ComplainSettingActions";
 import { useNavigate } from "react-router-dom";
+import CompliaceStatusOnHoldModal from "../StatusChangeModals/ComplianceStatusOnHoldModal";
+import ComplianceStatusCompleteExceptionModal from "../StatusChangeModals/ComplianceStatusCompleteModal";
+import ComplianceStatusCancelModal from "../StatusChangeModals/ComplianceStatusCancel";
 
 const ViewComplianceChecklistAccordian = () => {
   const accordionContainerRef = useRef();
-  const { complianceInfo } = useComplianceContext();
+  const {
+    complianceInfo,
+    complianceOnHoldModal,
+    comlianceCompleteExceptionModal,
+    complianceCancelModal,
+    viewComplianceTasksContextData,
+    resetModalStates,
+    setComlianceCompleteExceptionModal,
+    setComplianceCompleteModalType,
+    allCheckListByComplianceId,
+    setExpandChecklistOnTasksPage,
+    setViewComplianceDetailsTab,
+    complianceViewMode,
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+    setComplianceStatusChangeReasonModal,
+    setComplianceOnHoldModal,
+    complianceCancelSelectOption,
+    setComplianceCancelModal,
+    
+  } = useComplianceContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
+
+  //To show Checklist label on Different Modal
+  const [isChecklistTrue, setIsChecklistTrue] = useState(false);
   // const [isExpandBtnClicked, setIsExpandBtnClicked] = useState(false);
   const viewComplianceByMeDetails = useSelector(
     (state) => state.ComplainceSettingReducerReducer.ViewComplianceByMeDetails,
   );
-
   console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+  console.log(tempSelectComplianceStatus, "tempSelectComplianceStatus");
+
+  console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
 
   const allExpanded =
     getCheckListData.length > 0 &&
     expandedCheckListIds.length === getCheckListData.length;
 
   console.log(allExpanded, "selectedChecklistStatus");
-
-  // context
-  const {
-    allCheckListByComplianceId,
-    setExpandChecklistOnTasksPage,
-    setViewComplianceDetailsTab,
-    complianceViewMode,
-  } = useComplianceContext();
 
   console.log(
     {
@@ -59,6 +80,21 @@ const ViewComplianceChecklistAccordian = () => {
       setExpandedCheckListIds([]);
     }
   }, [allCheckListByComplianceId]);
+
+  const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
+
+  const canChecklistBeCompleted = (checklistId) => {
+    const checklistTasks =
+      viewComplianceByMeDetails?.checklistTasks?.filter(
+        (task) => task.checklistId === checklistId,
+      ) || [];
+
+    const hasBlockedTask = checklistTasks.some((task) =>
+      BLOCKED_TASK_STATUSES.includes(task.taskStatus.statusName),
+    );
+
+    return !hasBlockedTask; // ✅ true if no blocked tasks, false otherwise
+  };
 
   // functions
   const handleClickExpandCheckList = (data) => {
@@ -98,6 +134,25 @@ const ViewComplianceChecklistAccordian = () => {
   ) => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
+
+    // 🚫 PREVENT COMPLETED IF TASKS ARE BLOCKED
+    if (selectedStatus.label === "Completed") {
+      const allowed = canChecklistBeCompleted(checklistId);
+      console.log(allowed, "allowedallowed");
+      if (!allowed) {
+        setComlianceCompleteExceptionModal(true);
+        setComplianceCompleteModalType("checklist");
+        return;
+      }
+    }
+
+    // ✅ NEW: Handle On Hold selection
+    if (selectedStatus.label === "On Hold") {
+      setComplianceOnHoldModal(true); // Open On Hold modal
+      setComplianceCompleteModalType("checklist"); // Set type
+      return; // Stop here to prevent API call
+    }
+
     let Data = {
       ChecklistID: checklistId,
       ComplianceID: complianceInfo?.complianceId,
@@ -109,7 +164,7 @@ const ViewComplianceChecklistAccordian = () => {
 
     dispatch(updateCheckListStatusApi(navigate, Data, t));
 
-    // 🔁 Update local UI immediately (optional but recommended)
+    // Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
       prev.map((item) =>
         item.checklistId === checklistId
@@ -130,6 +185,7 @@ const ViewComplianceChecklistAccordian = () => {
     //   statusId: selectedStatus.value,
     // });
   };
+
   // styling for select:
   const getStatusColor = (status) => {
     switch (status) {
@@ -153,6 +209,7 @@ const ViewComplianceChecklistAccordian = () => {
         return "#000";
     }
   };
+
   const statusSelectStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -188,6 +245,35 @@ const ViewComplianceChecklistAccordian = () => {
     }),
   };
 
+  const handleClickOnHoldModal = useCallback(() => {
+    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
+    setComplianceOnHoldModal(false);
+    setComplianceStatusChangeReasonModal(true);
+
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceOnHoldSelectOption,
+    complianceOnHoldReasonState,
+  ]);
+
+  const handleClickCancelModal = useCallback(() => {
+    // console.log(handleProceedButtonView, "handleProceedButtonView");
+    setComplianceCancelModal(false);
+    setComplianceStatusChangeReasonModal(true);
+    // if (tempSelectComplianceStatus) {
+    //   updateCompliance(tempSelectComplianceStatus);
+    // }
+    // resetModalStates();
+  }, [
+    tempSelectComplianceStatus,
+    complianceCancelSelectOption,
+    complianceOnHoldReasonState,
+  ]);
+
   return (
     <>
       <Row className="my-2">
@@ -206,11 +292,6 @@ const ViewComplianceChecklistAccordian = () => {
           className="d-flex justify-content-end align-items-center"
         >
           {getCheckListData?.length > 0 && (
-            // <Button
-            //   text={!isExpandBtnClicked ? t("Expand-all") : t("Collapse-all")}
-            //   className={styles["viewCompliance_ExapnAllBtn"]}
-            //   onClick={handleExpandBtn}
-            // />
             <Button
               text={allExpanded ? t("Collapse-all") : t("Expand-all")}
               className={styles["viewCompliance_ExapnAllBtn"]}
@@ -329,7 +410,7 @@ const ViewComplianceChecklistAccordian = () => {
                                 <span className={styles["progressBarHeading"]}>
                                   {complianceViewMode === "byMe"
                                     ? t("Checklist-progress")
-                                    : t("My-checklist")}
+                                    : t("My-progress")}
                                 </span>
                                 <span className={styles["progressBarHeading"]}>
                                   {`${data.checklistProgress}%`}
@@ -430,6 +511,27 @@ const ViewComplianceChecklistAccordian = () => {
           </>
         )}
       </div>
+
+      {/* This is For On Hold Modal */}
+      {complianceOnHoldModal && (
+        <CompliaceStatusOnHoldModal
+          view={true}
+          handleProceedButtonView={handleClickOnHoldModal}
+        />
+      )}
+
+      {/* This is for completion Modal */}
+      {comlianceCompleteExceptionModal && (
+        <ComplianceStatusCompleteExceptionModal />
+      )}
+
+      {/* This is For Cancel Modal */}
+      {complianceCancelModal && (
+        <ComplianceStatusCancelModal
+          view={true}
+          handleProceedButtonView={handleClickCancelModal}
+        />
+      )}
     </>
   );
 };

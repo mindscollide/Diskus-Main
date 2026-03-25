@@ -10,10 +10,17 @@ const ComplianceStatusCompleteExceptionModal = () => {
   const {
     comlianceCompleteExceptionModal,
     setComlianceCompleteExceptionModal,
+    complianceCompleteModalType,
+    setComplianceCompleteModalType,
   } = useComplianceContext();
+
+  const isChecklistModal = complianceCompleteModalType === "checklist";
 
   const handleCloseButton = () => {
     setComlianceCompleteExceptionModal(false);
+    if (complianceCompleteModalType) {
+      setComplianceCompleteModalType(null);
+    }
   };
 
   return (
@@ -28,9 +35,13 @@ const ComplianceStatusCompleteExceptionModal = () => {
           <Row>
             <Col lg={12} md={12} sm={12} xs={12}>
               <div className={styles.ConfirmationText}>
-                {t(
-                  "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed"
-                )}
+                {isChecklistModal
+                  ? t(
+                      "Some-tasks-are-still-pending-Complete-them-before-making-the-checklist-Completed",
+                    )
+                  : t(
+                      "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed",
+                    )}
               </div>
             </Col>
           </Row>
