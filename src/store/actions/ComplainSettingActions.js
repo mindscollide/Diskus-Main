@@ -3734,7 +3734,7 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               await dispatch(
                 EditComplianceFail(
                   t(
-                    "This Compliance cannot be marked as Completed because some tasks are still not completed",
+                    "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed",
                   ),
                 ),
               );

@@ -25,7 +25,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
@@ -102,7 +102,7 @@ const EndOfQuarterReport = () => {
 
   const handleAutoDownload = async () => {
     try {
-      setIsGenerating(false);
+      setIsGenerating(true);
       setShowPdfLayout(true);
 
       await new Promise((r) => setTimeout(r, 300));
@@ -143,7 +143,7 @@ const EndOfQuarterReport = () => {
         <Spin
           spinning={isGenerating}
           size="large"
-          tip="Generating PDF..."
+          tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
           {!showPdfLayout && (
@@ -212,7 +212,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
+                            GetQuarterReport?.header?.quarterStartDate
                           ) || "-"}
                         </p>
                       </div>
@@ -220,7 +220,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
+                            GetQuarterReport?.header?.quarterEndDate
                           ) || "-"}
                         </p>
                       </div>
@@ -254,20 +254,24 @@ const EndOfQuarterReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
                         {t("Tasks-completed-on-time")} (
                         {GetQuarterReport?.header?.tasksCompletedOnTime || 0})
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetQuarterReport?.header?.tasksCompletedLate || 0})
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {GetQuarterReport?.header?.tasksCompletedLate || 0})
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetQuarterReport?.header?.tasksPending || 0})
+                        <span className={styles.legendText}>
+                          {t("Pending-or-overdue-tasks")} (
+                          {GetQuarterReport?.header?.tasksPending || 0})
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -409,7 +413,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate,
+                                                    task.taskDueDate
                                                   )}
                                                 </p>
                                               </div>
@@ -425,7 +429,7 @@ const EndOfQuarterReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn,
+                                                    task.taskCompletedOn
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -469,6 +473,7 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
+
           {showPdfLayout && (
             <div id="content-id">
               <Row>
@@ -513,7 +518,7 @@ const EndOfQuarterReport = () => {
                         </label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn,
+                            GetQuarterReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -532,7 +537,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
+                            GetQuarterReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -542,7 +547,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
+                            GetQuarterReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>

@@ -83,7 +83,7 @@ const CreateEditCompliance = () => {
   //     document.removeEventListener("click", handleOutsideClick);
   //   };
   // }, [complianceAddEditViewState]);
-
+  console.log("createEditComplicance");
   return (
     <>
       <section

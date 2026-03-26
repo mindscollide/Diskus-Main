@@ -24,12 +24,12 @@ const AccumulativeReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
   );
 
   console.log(
     GetAccumulativeReport,
-    "GetAccumulativeReportGetAccumulativeReport",
+    "GetAccumulativeReportGetAccumulativeReport"
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -190,7 +190,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn,
+                        GetAccumulativeReport?.header?.generatedOn
                       ) || "-"}
                     </p>
                   </div>
@@ -221,7 +221,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           ) || "-"}
                         </p>
                       </div>
@@ -229,7 +229,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           ) || "-"}
                         </p>
                       </div>
@@ -263,23 +263,30 @@ const AccumulativeReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetAccumulativeReport?.header?.tasksCompletedOnTime ||
-                          0}
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")} (
+                          {GetAccumulativeReport?.header
+                            ?.tasksCompletedOnTime || 0}
+                          )
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetAccumulativeReport?.header?.tasksCompletedLate || 0}
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {GetAccumulativeReport?.header?.tasksCompletedLate ||
+                            0}
+                          )
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetAccumulativeReport?.header?.tasksPending || 0})
+                        <span className={styles.legendText}>
+                          {t("Pending-or-overdue-tasks")} (
+                          {GetAccumulativeReport?.header?.tasksPending || 0})
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -423,7 +430,7 @@ const AccumulativeReport = () => {
                                             <p>
                                               {" "}
                                               {formatDateToYMD(
-                                                taskItem.taskDueDate,
+                                                taskItem.taskDueDate
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -523,7 +530,7 @@ const AccumulativeReport = () => {
                         <label>{t("Generated-date")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.generatedOn,
+                            GetAccumulativeReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -542,7 +549,7 @@ const AccumulativeReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -552,7 +559,7 @@ const AccumulativeReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -627,7 +634,7 @@ const AccumulativeReport = () => {
                         {checklist.checklistTitle}
                       </Tooltip>
                     </Col>
-                  )),
+                  ))
                 )}
               </Row>
             </div>
