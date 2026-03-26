@@ -40,7 +40,9 @@ const ViewComplianceChecklistAccordian = () => {
     setComplianceOnHoldModal,
     complianceCancelSelectOption,
     setComplianceCancelModal,
-    
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
   } = useComplianceContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -48,6 +50,8 @@ const ViewComplianceChecklistAccordian = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
+
+  console.log(getCheckListData, "Local state AFTER update");
 
   //To show Checklist label on Different Modal
   const [isChecklistTrue, setIsChecklistTrue] = useState(false);
@@ -162,7 +166,17 @@ const ViewComplianceChecklistAccordian = () => {
       ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
     };
 
-    dispatch(updateCheckListStatusApi(navigate, Data, t));
+    dispatch(
+      updateCheckListStatusApi(
+        navigate,
+        Data,
+        t,
+        1,
+        setComplianceAddEditViewState,
+        setCreateEditComplaince,
+        setShowViewCompliance,
+      ),
+    );
 
     // Update local UI immediately (optional but recommended)
     setGetCheckListData((prev) =>
@@ -315,12 +329,13 @@ const ViewComplianceChecklistAccordian = () => {
               (data2, index) => data2 === data.checklistId,
             );
 
-            console.log(isExpanded, data, "selectedChecklistStatus");
+            console.log(data, "selectedChecklistStatus5555");
             const checklistStatusOptions =
               data.complianceCheckListAllowed?.map((status) => ({
                 value: status.statusId,
                 label: status.statusName,
               })) || [];
+            console.log(data.complianceCheckListAllowed, "Allowed BEFORE");
 
             const selectedChecklistStatus = data.status
               ? {
@@ -329,7 +344,10 @@ const ViewComplianceChecklistAccordian = () => {
                 }
               : null;
 
-            console.log(selectedChecklistStatus, "selectedChecklistStatus");
+            console.log(
+              selectedChecklistStatus,
+              "selectedChecklistStatusChecklistvee",
+            );
 
             return (
               <div key={index}>

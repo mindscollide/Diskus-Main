@@ -13,6 +13,7 @@ import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  ChangeTaskStatusAPI,
   GetComplianceChecklistsWithTasksByComplianceIdAPI,
   GetComplianceChecklistsWithTasksByComplianceIdForMeAPI,
 } from "../../../../../store/actions/ComplainSettingActions";
@@ -222,60 +223,6 @@ const ViewComplianceTasks = () => {
     });
   };
 
-  // const handleStatusChange = async (taskId, newStatus) => {
-  //   let previousStatus = null;
-
-  //   // 🔎 Find current task + status
-  //   viewComplianceTasksData.forEach((checklist) => {
-  //     checklist.taskList?.forEach((task) => {
-  //       if (task.taskId === taskId) {
-  //         previousStatus = task.taskStatus;
-  //       }
-  //     });
-  //   });
-
-  //   // ❌ Safety check (UI should already block this)
-  //   const allowedTransitions = TASK_STATUS_TRANSITIONS[previousStatus] || [];
-
-  //   if (!allowedTransitions.includes(newStatus)) {
-  //     console.warn(`Invalid transition: ${previousStatus} → ${newStatus}`);
-  //     return;
-  //   }
-
-  //   // ✅ Optimistic UI update
-  //   setViewComplianceTasksData((prev) =>
-  //     prev.map((checklist) => ({
-  //       ...checklist,
-  //       taskList: checklist.taskList?.map((task) =>
-  //         task.taskId === taskId ? { ...task, taskStatus: newStatus } : task
-  //       ),
-  //     }))
-  //   );
-
-  //   try {
-  //     // 🚀 API payload
-  //     const payload = {
-  //       taskId,
-  //       status: newStatus,
-  //     };
-
-  //     // await dispatch(
-  //     //   UpdateComplianceTaskStatusAPI(navigate, payload, t)
-  //     // );
-  //   } catch (error) {
-  //     // 🔁 Rollback on failure
-  //     setViewComplianceTasksData((prev) =>
-  //       prev.map((checklist) => ({
-  //         ...checklist,
-  //         taskList: checklist.taskList?.map((task) =>
-  //           task.taskId === taskId
-  //             ? { ...task, taskStatus: previousStatus }
-  //             : task
-  //         ),
-  //       }))
-  //     );
-  //   }
-  // };
   const resetAllSorts = () => {
     setTaskTitleSort(null);
     setAssignedToSort(null);
@@ -388,7 +335,14 @@ const ViewComplianceTasks = () => {
   };
 
   const statusChangeHandler = (statusId, taskId) => {
-    dispatch(updateTodoStatusFunc(navigate, statusId, taskId, t, false, 1));
+    console.log(statusId, taskId, "statusIdtaskId");
+    let complianceId = complianceDetailsState?.complianceId;
+    const Data = {
+      TaskID: taskId,
+      NewStatusID: statusId,
+    };
+    dispatch(ChangeTaskStatusAPI(navigate, Data, complianceId, t));
+    // dispatch(updateTodoStatusFunc(navigate, statusId, taskId, t, false, 1));
   };
 
   const handleClickTitle = (id) => {
@@ -595,7 +549,7 @@ const ViewComplianceTasks = () => {
         };
 
         // 🚫 No transitions allowed → show plain text
-        if (allowedOptions.length === 0) { 
+        if (allowedOptions.length === 0) {
           return (
             <span
               style={{

@@ -5310,158 +5310,195 @@ const updateCheckListStatusFail = (message) => {
   };
 };
 
-const updateCheckListStatusApi = (navigate, Data, t) => {
+const updateCheckListStatusApi = (
+  navigate,
+  Data,
+  t,
+  value,
+  setComplianceAddEditViewState,
+  setCreateEditComplaince,
+  setShowViewCompliance,
+) => {
   return (dispatch) => {
-    dispatch(updateCheckListStatusInit());
+    return new Promise((resolve, reject) => {
+      // ✅ Promise added
 
-    let form = new FormData();
-    form.append(
-      "RequestMethod",
-      ChangeChecklistAllowedTransactionStatusRM.RequestMethod,
-    );
-    form.append("RequestData", JSON.stringify(Data));
+      dispatch(updateCheckListStatusInit());
 
-    axiosInstance
-      .post(complainceApi, form)
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(updateCheckListStatusApi(navigate, Data, t));
-        } else if (response.data.responseCode === 200) {
-          const message =
-            response.data.responseResult.responseMessage?.toLowerCase() || "";
+      let form = new FormData();
+      form.append(
+        "RequestMethod",
+        ChangeChecklistAllowedTransactionStatusRM.RequestMethod,
+      );
+      form.append("RequestData", JSON.stringify(Data));
 
-          const messageMap = {
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_01: {
-              type: "success",
-              text: "Checklist-status-changed-successfully",
-            },
+      axiosInstance
+        .post(complainceApi, form)
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
 
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_02: {
-              type: "success",
-              text: "Checklist-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_03: {
-              type: "success",
-              text: "OrganizationID-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_04: {
-              type: "success",
-              text: "ComplianceID-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_05: {
-              type: "success",
-              text: "StatusID-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_06: {
-              type: "success",
-              text: "StatusChangeBy-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_07: {
-              type: "success",
-              text: "Invalid-StatusChangeBy-user",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_08: {
-              type: "success",
-              text: "Invalid-checklist-status",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_09: {
-              type: "success",
-              text: "UpdatedDueDate-is-required",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_11: {
-              type: "success",
-              text: "Checklist-not-found-for-this-Compliance",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_12: {
-              type: "success",
-              text: "Checklist-does-not-belong-to-provided-Compliance",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_13: {
-              type: "success",
-              text: "Completed-or-Cancelled-checklist-cannot-be-changed",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_14: {
-              type: "success",
-              text: "Transition-not-allowed",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_15: {
-              type: "success",
-              text: "Pending-to-InProgress-requires-at-least-one-task-in-the-checklist",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_16: {
-              type: "success",
-              text: "Checklist-update-failed",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_17: {
-              type: "success",
-              text: "Checklist-cannot-be-marked-completed-while-tasks-are-still-pending",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_18: {
-              type: "success",
-              text: "Reason-required-for-OnHold-or-Cancelled",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_19: {
-              type: "success",
-              text: "Already-in-requested-status",
-            },
-
-            Compliance_ComplianceServiceManager_ChangeChecklistStatus_50: {
-              type: "fail",
-              text: "Something-went-wrong",
-            },
-          };
-
-          let handled = false;
-
-          for (const key of Object.keys(messageMap)) {
-            if (message.includes(key.toLowerCase())) {
-              handled = true;
-              const action = messageMap[key];
-
-              if (action.type === "success") {
-                await dispatch(
-                  updateCheckListStatusSuccess(
-                    response.data.responseResult,
-                    t(action.text),
-                  ),
-                );
-              } else {
-                await dispatch(updateCheckListStatusFail(t(action.text)));
-              }
-
-              break;
-            }
-          }
-
-          if (!handled) {
-            await dispatch(
-              updateCheckListStatusFail(t("Something-went-wrong")),
+            dispatch(
+              updateCheckListStatusApi(navigate, Data, t, 1, null, null, null),
             );
+
+            return reject("Token refreshed");
+          } else if (response.data.responseCode === 200) {
+            const message =
+              response.data.responseResult.responseMessage?.toLowerCase() || "";
+
+            const messageMap = {
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_01: {
+                type: "success",
+                text: "Checklist-status-changed-successfully",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_02: {
+                type: "success",
+                text: "Checklist-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_03: {
+                type: "success",
+                text: "OrganizationID-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_04: {
+                type: "success",
+                text: "ComplianceID-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_05: {
+                type: "success",
+                text: "StatusID-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_06: {
+                type: "success",
+                text: "StatusChangeBy-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_07: {
+                type: "success",
+                text: "Invalid-StatusChangeBy-user",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_08: {
+                type: "success",
+                text: "Invalid-checklist-status",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_09: {
+                type: "success",
+                text: "UpdatedDueDate-is-required",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_11: {
+                type: "success",
+                text: "Checklist-not-found-for-this-Compliance",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_12: {
+                type: "success",
+                text: "Checklist-does-not-belong-to-provided-Compliance",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_13: {
+                type: "success",
+                text: "Completed-or-Cancelled-checklist-cannot-be-changed",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_14: {
+                type: "success",
+                text: "Transition-not-allowed",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_15: {
+                type: "success",
+                text: "Pending-to-InProgress-requires-at-least-one-task-in-the-checklist",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_16: {
+                type: "success",
+                text: "Checklist-update-failed",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_17: {
+                type: "success",
+                text: "Checklist-cannot-be-marked-completed-while-tasks-are-still-pending",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_18: {
+                type: "success",
+                text: "Reason-required-for-OnHold-or-Cancelled",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_19: {
+                type: "success",
+                text: "Already-in-requested-status",
+              },
+
+              Compliance_ComplianceServiceManager_ChangeChecklistStatus_50: {
+                type: "fail",
+                text: "Something-went-wrong",
+              },
+            };
+
+            let handled = false;
+
+            for (const key of Object.keys(messageMap)) {
+              if (message.includes(key.toLowerCase())) {
+                handled = true;
+                const action = messageMap[key];
+
+                if (action.type === "success") {
+                  await dispatch(
+                    updateCheckListStatusSuccess(
+                      response.data.responseResult,
+                      t(action.text),
+                    ),
+                  );
+                  let datass = {
+                    complianceId: Data.ComplianceID,
+                    viewType: 1,
+                  };
+                  // 🔥 REFRESH CHECKLIST DATA
+                  dispatch(
+                    ViewComplianceDetailsByViewTypeAPI(
+                      navigate,
+                      datass,
+                      t,
+                      1,
+                      null,
+                      null,
+                      null,
+                    ),
+                  );
+
+                  resolve(response.data.responseResult); // ✅ FIXED
+                } else {
+                  await dispatch(updateCheckListStatusFail(t(action.text)));
+                  reject(action.text);
+                }
+
+                break;
+              }
+            }
+
+            if (!handled) {
+              dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+              reject("Unhandled response");
+            }
+          } else {
+            dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+            reject("Invalid response");
           }
-        } else {
-          await dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
-        }
-      })
-      .catch(() => {
-        dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
-      });
+        })
+        .catch((error) => {
+          dispatch(updateCheckListStatusFail(t("Something-went-wrong")));
+          reject(error);
+        });
+    }); // ✅ Promise closed
   };
 };
 

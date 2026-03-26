@@ -378,7 +378,6 @@ const EndOfQuarterReport = () => {
                                                   styles.insideAccordianMainHeading
                                                 }
                                               >
-                                                {" "}
                                                 <label>
                                                   {t("Task-title")}:
                                                 </label>
@@ -513,7 +512,6 @@ const EndOfQuarterReport = () => {
                           {t("Generated-date")}:{" "}
                         </label>
                         <p>
-                          {" "}
                           {formatDateToYMD(
                             GetQuarterReport?.header?.generatedOn,
                           )}
@@ -598,25 +596,46 @@ const EndOfQuarterReport = () => {
                 <Col
                   lg={12}
                   xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
+                  className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
                 >
                   <p>{t("Compliances-in-this-report")}:</p>
                 </Col>
 
-                {GetQuarterReport?.compliances?.map((compliance) =>
-                  compliance?.checklists?.map((checklist, index) => (
-                    <Col
-                      key={checklist.checklistID}
-                      lg={12}
-                      xs="auto"
-                      className={styles.checklist_report}
-                    >
-                      <Tooltip title={checklist.checklistTitle}>
-                        {checklist.checklistTitle}
-                      </Tooltip>
-                    </Col>
-                  )),
-                )}
+                {GetQuarterReport?.compliances?.map((compliance) => (
+                  <div
+                    key={compliance.id}
+                    className={styles.pdfComplianceBlock}
+                  >
+                    {/* Compliance Title */}
+                    <h2 className={styles.pdfComplianceTitle}>
+                      {compliance.complianceTitle}
+                    </h2>
+
+                    {/* Checklists */}
+                    {compliance?.checklists?.map((checklist) => (
+                      <div
+                        key={checklist.checklistID}
+                        className={styles.pdfChecklistBlock}
+                      >
+                        <h3 className={styles.pdfChecklistTitle}>
+                          {checklist.checklistTitle}
+                        </h3>
+
+                        {/* Tasks */}
+                        {checklist?.tasks?.map((task) => (
+                          <p key={task.taskID} className={styles.pdfTask}>
+                            • {task.taskTitle}{" "}
+                            {task.taskDueDate && (
+                              <span className={styles.pdfTaskDate}>
+                                (Due: {formatDateToYMD(task.taskDueDate)})
+                              </span>
+                            )}
+                          </p>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </Row>
             </div>
           )}

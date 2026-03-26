@@ -68,6 +68,8 @@ const CreateEditViewComplianceTask = () => {
     complianceDetailsState,
   } = useComplianceContext();
 
+  console.log(complianceDetailsState, "complianceDetailsState");
+
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
       let Data = {
@@ -274,6 +276,7 @@ const CreateEditViewComplianceTask = () => {
                               className={
                                 complianceDetailsState.status.value === 7 ||
                                 complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 6 ||
                                 complianceDetailsState.status.value === 5
                                   ? styles["createNewTaskBtnStyleDisabled"]
                                   : styles["createNewTaskBtnStyle"]
@@ -281,6 +284,7 @@ const CreateEditViewComplianceTask = () => {
                               onClick={
                                 complianceDetailsState.status.value === 7 ||
                                 complianceDetailsState.status.value === 9 ||
+                                complianceDetailsState.status.value === 6 ||
                                 complianceDetailsState.status.value === 5
                                   ? undefined
                                   : () => handleAddTaskInCheckList(data)
