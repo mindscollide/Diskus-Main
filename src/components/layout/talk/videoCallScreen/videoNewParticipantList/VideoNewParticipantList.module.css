@@ -1,214 +1,480 @@
+/* =============================================================================
+   VideoNewParticipantList.module.css
+   ===================================
+   Styles for the participant-list sidebar panel used across:
+     • Regular video call (host view)
+     • Presenter / group call (presenter-host and presenter-join views)
+     • Normalised video layout (compact mode)
+
+   Sections
+   ────────
+   1.  CSS Custom Properties (design tokens)
+   2.  Panel containers — four layout variants
+   3.  Panel header — title + close icon row
+   4.  Section tabs — "Host", "Participants", "Waiting for entry" labels
+   5.  Name lists — host name, participant rows, waiting rows
+   6.  Participant row elements — name, avatar, status icons
+   7.  Action buttons — Mute All, Accept/Deny (bulk + per-row)
+   8.  Status text — mic / video disabled labels inside dropdown
+   9.  Responsive — breakpoints for all viewport widths
+   ============================================================================= */
+
+
+/* ─── 1. CSS CUSTOM PROPERTIES ─────────────────────────────────────────────── */
+/*
+ * All magic numbers live here. Update a token to propagate the change across
+ * every rule that references it.
+ */
+:root {
+  /* Brand */
+  --vp-purple:          #6127d6;
+  --vp-green-admit:     #55ce5c;
+
+  /* Neutral palette */
+  --vp-text-dark:       #5a5a5a;
+  --vp-text-title:      #5a5a5a;
+  --vp-bg-section:      #f6f9fc;
+  --vp-border:          #e1e1e1;
+
+  /* Panel */
+  --vp-shadow:          0 0 16px 0 rgba(0, 0, 0, 0.2);
+  --vp-radius-panel:    4px;
+  --vp-radius-section:  8px;
+  --vp-padding-panel:   20px;
+
+  /* Typography */
+  --vp-font-title:      12px;
+  --vp-font-name:       16px;
+  --vp-font-small:      12px;
+  --vp-font-badge:      9px;
+  --vp-font-badge-sm:   8px;
+
+  /* Avatar */
+  --vp-avatar-size:     23px;
+}
+
+
+/* ─── 2. PANEL CONTAINERS ───────────────────────────────────────────────────── */
+/*
+ * All four variants share the same base layout — only their height differs.
+ * FIX: the original had four blocks each repeating width, border, border-radius,
+ * box-shadow, padding, max-height, and overflow. All shared properties are now
+ * in .panelBase and each variant only declares its unique height.
+ *
+ * overflow: hidden + overflow-y: scroll is intentional — it clips any horizontal
+ * overflow while still allowing vertical scrolling inside the panel.
+ */
+
+/* Shared base — applied to every panel variant via composition */
+.panelBase {
+  width: 100%;
+  max-height: 100%;
+  padding: var(--vp-padding-panel);
+  border: 1px solid var(--vp-border);
+  border-radius: var(--vp-radius-panel);
+  box-shadow: var(--vp-shadow);
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+/* Standard host view — waiting room is visible, so panel is slightly shorter */
 .Waiting-New-Participant-List {
-  width: 100%;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  height: 91% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
-  overflow-y: scroll !important;
+  composes: panelBase;
+  height: 91%;
 }
 
+/* Host view when no one is waiting — extra height since waiting section is absent */
 .Waiting-New-Participant-List-when-no-participantwaiting {
-  width: 100%;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  height: 99% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
-  overflow-y: scroll !important;
+  composes: panelBase;
+  height: 99%;
 }
 
+/* Presenter / group-call view — always full height */
 .Waiting-New-Participant-List-For-Presenter {
-  width: 100%;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  height: 100% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
-  overflow-y: scroll !important;
+  composes: panelBase;
+  height: 100%;
 }
 
+/* Compact / normalised layout (NormalizeVideoFlag = true) */
 .WaitingParticipantBoxNorm {
-  width: 100%;
-  border: 1px solid #e1e1e1;
-  border-radius: 4px;
-  box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.2);
-  padding: 20px;
-  height: 64% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
-  overflow-y: scroll !important;
+  composes: panelBase;
+  height: 64%;
 }
 
+
+/* ─── 3. PANEL HEADER ───────────────────────────────────────────────────────── */
+
+/* "People" title displayed at the top of the panel */
 .Waiting-New-Participant-List_box_title {
-  font-size: 12px;
+  font-size: var(--vp-font-title);
   font-weight: 600;
-  color: #6127d6;
+  color: var(--vp-purple);
   line-height: 14.63px;
 }
 
-.Waiting-New-Participant-Hosts-Title {
-  background-color: #f6f9fc;
-  color: #6127d6;
-  font-size: 12px;
-  font-weight: 600;
-  margin: 0px !important;
-}
 
-.Waiting-New-Participant-HostsList-Name {
-  background-color: #f6f9fc;
-  color: #5a5a5a;
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0px !important;
-}
+/* ─── 4. SECTION TABS ───────────────────────────────────────────────────────── */
+/*
+ * Thin pill-shaped bar labelling each sub-section.
+ * Has a top-rounded shape because the matching name-list section below it
+ * has bottom-rounded corners, together forming a complete card.
+ */
+
+/* Tab bar — "Host", "Participants", "Waiting for entry" */
 .Waiting-New-Participant-hosttab {
-  background-color: #f6f9fc;
-  margin: 15px 0 5px 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
+  background-color: var(--vp-bg-section);
+  margin: 15px 0 5px;
   padding: 10px 15px;
+  border-top-left-radius: var(--vp-radius-section);
+  border-top-right-radius: var(--vp-radius-section);
 }
 
+/* Section heading text inside the tab bar */
+.Waiting-New-Participant-Hosts-Title {
+  margin: 0;
+  font-size: var(--vp-font-title);
+  font-weight: 600;
+  color: var(--vp-purple);
+  background-color: var(--vp-bg-section);
+}
+
+
+/* ─── 5. NAME LISTS ─────────────────────────────────────────────────────────── */
+
+/*
+ * All list containers share the same background and bottom-rounded corners;
+ * they differ only in their height so the section fits the available space.
+ * FIX: original had three separate blocks each repeating background-color,
+ * border-radius, and padding. Composed from a shared base below.
+ */
+
+/* Shared base for all list containers */
+.listBase {
+  background-color: var(--vp-bg-section);
+  border-bottom-left-radius: var(--vp-radius-section);
+  border-bottom-right-radius: var(--vp-radius-section);
+  padding: 10px 15px;
+  overflow-y: auto;
+}
+
+/* Host name display — no scroll needed (always one entry) */
 .Waiting-New-Participant-HostNameList {
-  background-color: #f6f9fc;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 10px 15px;
+  composes: listBase;
 }
 
+/* Host name text */
+.Waiting-New-Participant-HostsList-Name {
+  margin: 0;
+  font-size: var(--vp-font-name);
+  font-weight: 600;
+  color: var(--vp-text-dark);
+  background-color: var(--vp-bg-section);
+}
+
+/* Participant rows — fixed viewport-relative height with internal scroll */
 .Waiting-New-ParticipantNameList {
-  background-color: #f6f9fc;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 10px 15px;
-  height: 15vh !important;
+  composes: listBase;
+  height: 15vh;
   max-height: 20vh;
-  overflow-y: auto;
 }
 
+/* Participant rows when nobody is waiting — can use more vertical space */
 .Waiting-New-ParticipantNameList-when-nowaiting-data {
-  background-color: #f6f9fc;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 10px 15px;
-  height: 25vh !important;
-  overflow-y: auto;
+  composes: listBase;
+  height: 25vh;
 }
 
-.Waiting-New-Participant-AcceptAndDeniedBtns {
-  background-color: #f6f9fc;
-  margin: 15px 0 10px 0;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  padding: 10px 15px;
-}
+/* Waiting-room list — scrollable fixed-height container */
 .AcceptAndDeniedManual {
-  background-color: rgba(246, 249, 252, 1);
+  background-color: var(--vp-bg-section);
   padding: 5px 15px;
   height: 23vh;
-  max-height: 25vh !important;
+  max-height: 25vh;
   overflow-y: scroll;
-  /* padding: 10px 15px;
-  max-height: 49vh;
-  overflow-y: auto; */
 }
+
+/* Waiting-room list in compact/normalised layout */
 .AcceptAndDeniedManual_Nor {
-  background-color: rgba(246, 249, 252, 1);
-  margin: 0 0 10px 0;
+  background-color: var(--vp-bg-section);
+  margin: 0 0 10px;
   padding: 10px 15px;
   max-height: 25vh;
   overflow-y: auto;
 }
-.Waiting-New-Participant-denyAllBtn {
-  background: transparent !important;
-  color: #5a5a5a !important;
-  font-size: 9px !important;
-  font-weight: 600 !important;
-  padding: 3px 40px;
-  border: 1px solid #e1e1e1 !important;
-  white-space: nowrap !important;
-  border-radius: 4px !important;
-}
-.Waiting-New-Participant-AcceptAllBtn {
-  background: #55ce5c !important;
-  color: #fff !important;
-  font-size: 9px !important;
-  font-weight: 600 !important;
-  padding: 3px 40px;
-  border: 1px solid #e1e1e1 !important;
-  white-space: nowrap !important;
-  border-radius: 4px !important;
-}
-.Waiting-New-Participant-denyAllBtn-small {
-  background: transparent !important;
-  color: #5a5a5a !important;
-  font-size: 9px !important;
-  font-weight: 600 !important;
-  padding: 4px 20px;
-  width: 100% !important;
-  border: 1px solid #e1e1e1 !important;
-  white-space: nowrap !important;
-}
-.Waiting-New-Participant-AcceptAllBtn-small {
-  background: #55ce5c !important;
-  color: #fff !important;
-  font-size: 9px !important;
-  font-weight: 600;
-  padding: 4px 20px;
-  border: none !important;
-  width: 100% !important;
-  white-space: nowrap !important;
-}
+
+
+/* ─── 6. PARTICIPANT ROW ELEMENTS ───────────────────────────────────────────── */
+
+/* Circular avatar thumbnail in the waiting-room row */
 .participantImage {
-  width: 23px;
-  height: 23px;
+  width: var(--vp-avatar-size);
+  height: var(--vp-avatar-size);
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;     /* prevent squashing in a flex row */
 }
+
+/* Participant name in the waiting-room row */
 .participant_name {
-  font-size: 12px;
-  color: #5a5a5a;
+  font-size: var(--vp-font-small);
   font-weight: 600;
+  color: var(--vp-text-dark);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.Waiting-New-Participant-muteAll {
-  background: transparent !important;
-  color: #6127d6 !important;
-  font-size: 8px !important;
-  font-weight: 600 !important;
-  padding: 2px 20px !important;
-  border: 1px solid #6127d6 !important;
-  border-radius: 4px !important;
-  white-space: nowrap !important;
+/* Participant name in the active-participant list */
+.New-ParticipantList-Name {
+  width: 100%;
+  font-size: var(--vp-font-name);
+  font-weight: 600;
+  color: var(--vp-text-dark);
+  background-color: var(--vp-bg-section);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-.New-ParticipantList-Name {
-  background-color: #f6f9fc;
-  color: #5a5a5a;
-  font-size: 16px;
-  font-weight: 600;
-  width: 100%;
-  overflow: hidden !important;
-  white-space: nowrap !important;
-  text-overflow: ellipsis !important;
+/* "(Host)" / "(Presenter)" inline label next to a participant name */
+.Host-name {
+  margin: 0;
 }
 
 .Host-title-name {
-  color: #6127d6 !important;
-  font-weight: 600 !important;
-  margin-left: 3px !important;
+  margin-left: 3px;
+  font-weight: 600;
+  color: var(--vp-purple);
 }
 
-span.status-muted.d-block {
-  font-size: 12px;
+
+/* ─── 7. ACTION BUTTONS ─────────────────────────────────────────────────────── */
+/*
+ * FIX: original had four button variants each repeating font-size, font-weight,
+ * border-radius, and white-space. Shared properties extracted to .btnBase.
+ * Bulk (Deny-all / Allow-all) and per-row (Deny / Allow) buttons only differ
+ * in padding, width, and colour — declared in their own class.
+ */
+
+/* Shared base for all action buttons in this panel */
+.btnBase {
+  font-size: var(--vp-font-badge);
+  font-weight: 600;
+  white-space: nowrap;
+  border-radius: var(--vp-radius-panel);
+}
+
+/* "Mute All" / "Unmute All" — shown beside the Participants tab heading.
+   Hidden automatically by React when only 1 non-self participant is present. */
+.Waiting-New-Participant-muteAll {
+  composes: btnBase;
+  padding: 2px 20px;
+  font-size: var(--vp-font-badge-sm);
+  color: var(--vp-purple);
+  background: transparent;
+  border: 1px solid var(--vp-purple);
+}
+
+/*
+ * Bulk admit / deny buttons — full-width, tall padding.
+ * FIX: original repeated all shared properties in both classes.
+ */
+
+/* "Deny all" — ghost style */
+.Waiting-New-Participant-denyAllBtn {
+  composes: btnBase;
+  padding: 3px 40px;
+  color: var(--vp-text-dark);
+  background: transparent;
+  border: 1px solid var(--vp-border);
+}
+
+/* "Allow all" — filled green */
+.Waiting-New-Participant-AcceptAllBtn {
+  composes: btnBase;
+  padding: 3px 40px;
+  color: #fff;
+  background: var(--vp-green-admit);
+  border: 1px solid var(--vp-border);
+}
+
+/*
+ * Per-participant admit / deny buttons — same pattern, tighter padding, full width.
+ * FIX: original repeated font-size, font-weight, white-space in both classes.
+ */
+
+/* "Deny" per-row — ghost style */
+.Waiting-New-Participant-denyAllBtn-small {
+  composes: btnBase;
+  width: 100%;
+  padding: 4px 20px;
+  color: var(--vp-text-dark);
+  background: transparent;
+  border: 1px solid var(--vp-border);
+}
+
+/* "Allow" per-row — filled green, no border needed on filled button */
+.Waiting-New-Participant-AcceptAllBtn-small {
+  composes: btnBase;
+  width: 100%;
+  padding: 4px 20px;
+  color: #fff;
+  background: var(--vp-green-admit);
+  border: none;
+}
+
+
+/* ─── 8. STATUS TEXT ────────────────────────────────────────────────────────── */
+
+/* "Mic Disabled" / "Video Hidden" labels inside the presenter dropdown */
+.status-muted,
+.status-hidden {
+  font-size: var(--vp-font-small);
+  color: var(--vp-text-dark);
+}
+
+
+/* ─── 9. RESPONSIVE ─────────────────────────────────────────────────────────── */
+/*
+ * The panel is rendered inside a fixed-width sidebar so Bootstrap's grid
+ * handles the macro layout. These rules handle the internals — typography,
+ * heights, and padding — as the sidebar shrinks or the device is small.
+ *
+ * Breakpoints
+ * ────────────
+ *   < 1400px — standard desktop / laptop
+ *   < 1200px — small laptop / large tablet landscape
+ *   < 992px  — tablet landscape
+ *   < 768px  — tablet portrait
+ *   < 576px  — mobile
+ */
+
+/* ── Standard desktop (< 1400px) ────────────────────────────────────────────── */
+@media screen and (max-width: 1400px) {
+  :root {
+    --vp-padding-panel: 16px;
+  }
+
+  .Waiting-New-ParticipantNameList {
+    height: 16vh;
+    max-height: 22vh;
+  }
+}
+
+/* ── Small laptop / large tablet landscape (< 1200px) ──────────────────────── */
+@media screen and (max-width: 1200px) {
+  :root {
+    --vp-font-name: 14px;
+  }
+
+  .AcceptAndDeniedManual {
+    height: 20vh;
+  }
+
+  .Waiting-New-Participant-denyAllBtn,
+  .Waiting-New-Participant-AcceptAllBtn {
+    padding: 3px 24px;
+  }
+}
+
+/* ── Tablet landscape (< 992px) ─────────────────────────────────────────────── */
+@media screen and (max-width: 992px) {
+  :root {
+    --vp-padding-panel: 12px;
+    --vp-font-name:     13px;
+  }
+
+  /* Tighten the panel heights so content is visible without excessive scrolling */
+  .Waiting-New-Participant-List {
+    height: 88%;
+  }
+
+  .WaitingParticipantBoxNorm {
+    height: 58%;
+  }
+
+  .Waiting-New-ParticipantNameList {
+    height: 14vh;
+    max-height: 18vh;
+  }
+
+  .Waiting-New-ParticipantNameList-when-nowaiting-data {
+    height: 22vh;
+  }
+
+  .AcceptAndDeniedManual {
+    height: 18vh;
+    max-height: 22vh;
+  }
+}
+
+/* ── Tablet portrait (< 768px) ──────────────────────────────────────────────── */
+@media screen and (max-width: 768px) {
+  :root {
+    --vp-padding-panel: 10px;
+    --vp-font-name:     13px;
+    --vp-avatar-size:   20px;
+  }
+
+  /* Allow panels to grow naturally so content isn't cut off */
+  .Waiting-New-Participant-List,
+  .Waiting-New-Participant-List-when-no-participantwaiting,
+  .Waiting-New-Participant-List-For-Presenter,
+  .WaitingParticipantBoxNorm {
+    height: auto;
+    max-height: 95vh;
+  }
+
+  /* Stack admit/deny buttons vertically on narrow screens */
+  .Waiting-New-Participant-denyAllBtn,
+  .Waiting-New-Participant-AcceptAllBtn {
+    width: 100%;
+    padding: 4px 10px;
+  }
+
+  .Waiting-New-Participant-hosttab {
+    padding: 8px 10px;
+  }
+}
+
+/* ── Mobile (< 576px) ────────────────────────────────────────────────────────── */
+@media screen and (max-width: 576px) {
+  :root {
+    --vp-padding-panel:  8px;
+    --vp-font-title:     11px;
+    --vp-font-name:      12px;
+    --vp-font-badge:     8px;
+    --vp-font-badge-sm:  7px;
+    --vp-avatar-size:    18px;
+  }
+
+  .Waiting-New-Participant-List_box_title {
+    font-size: var(--vp-font-title);
+  }
+
+  .Waiting-New-ParticipantNameList {
+    height: 12vh;
+    max-height: 16vh;
+  }
+
+  .AcceptAndDeniedManual {
+    height: 15vh;
+    max-height: 18vh;
+  }
+
+  /* Reduce mute-all button padding on very small screens */
+  .Waiting-New-Participant-muteAll {
+    padding: 2px 10px;
+  }
+
+  /* Tighten per-participant button padding */
+  .Waiting-New-Participant-denyAllBtn-small,
+  .Waiting-New-Participant-AcceptAllBtn-small {
+    padding: 4px 10px;
+  }
+
+  .Waiting-New-Participant-hosttab {
+    margin: 10px 0 4px;
+    padding: 6px 8px;
+  }
 }
