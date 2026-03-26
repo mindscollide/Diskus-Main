@@ -276,7 +276,7 @@ const SearchComplianceReportModal = () => {
                           placeholder={t("generated-on")}
                           maxLength={100}
                           name={"generatedOn"}
-                          value={searchComplianceReportPayload?.reportTitle}
+                          value={searchComplianceReportPayload?.generatedOn}
                           type="text"
                           applyClass={"usermanagementTextField"}
                           change={handleChange}

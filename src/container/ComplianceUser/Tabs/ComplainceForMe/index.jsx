@@ -34,7 +34,7 @@ const ComplianceForMe = () => {
   const { criticalityOptions } = useComplianceContext();
 
   const SearchComplianceForMe = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe,
+    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
   );
   // const [totalRecords, setTotalRecords] = useState(0);
 
@@ -64,7 +64,7 @@ const ComplianceForMe = () => {
   } = useComplianceContext();
   console.log(
     { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "setComplianceForMeList",
+    "setComplianceForMeList"
   );
 
   useEffect(() => {
@@ -128,8 +128,8 @@ const ComplianceForMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -233,7 +233,7 @@ const ComplianceForMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle,
+                  (s) => s.statusTitle
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -298,8 +298,8 @@ const ComplianceForMe = () => {
       order === "ascend"
         ? ArrowUpIcon
         : order === "descend"
-          ? ArrowDownIcon
-          : ArrowDownIcon;
+        ? ArrowDownIcon
+        : ArrowDownIcon;
 
     return (
       <img
@@ -353,15 +353,14 @@ const ComplianceForMe = () => {
         ellipsis: true,
         align: "center",
         ...getCriticalityColumnProps(),
-
         render: (text) => (
           <span className="d-flex justify-content-center">
             {text === 1 ? (
-              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
+              <Tooltip title={t("High")}>{t("High")}</Tooltip>
             ) : text === 2 ? (
               <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
             ) : (
-              <Tooltip title={t("High")}>{t("High")}</Tooltip>
+              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
             )}
           </span>
         ),
@@ -448,7 +447,7 @@ const ComplianceForMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ],
+    ]
   );
 
   useAntTableScrollBottomVirtual(() => {

@@ -68,7 +68,7 @@ const ViewComplianceTasks = () => {
     const allowedStatusIds = TASK_STATUS_TRANSITIONS[record.taskStatusId] || [];
 
     return taskStatus.filter((status) =>
-      allowedStatusIds.includes(status.value),
+      allowedStatusIds.includes(status.value)
     );
   };
   // context
@@ -83,7 +83,7 @@ const ViewComplianceTasks = () => {
   } = useComplianceContext();
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState",
+    "complianceDetailsStatecomplianceDetailsState"
   );
   console.log(expandChecklistOnTasksPage, "expandChecklistOnTasksPage");
   console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
@@ -91,18 +91,18 @@ const ViewComplianceTasks = () => {
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceId,
+        .GetComplianceChecklistsWithTasksByComplianceId
   );
 
   const getAllComplianceChecklistTaskForMe = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
-        .GetComplianceChecklistsWithTasksByComplianceIdForMe,
+        .GetComplianceChecklistsWithTasksByComplianceIdForMe
   );
 
   console.log(
     getAllComplianceChecklistTask,
-    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask",
+    "getAllComplianceChecklistTaskgetAllComplianceChecklistTask"
   );
 
   // Status for All tasks
@@ -149,22 +149,22 @@ const ViewComplianceTasks = () => {
     if (complianceDetailsState.complianceId !== 0) {
       console.log(
         complianceDetailsState.complianceId,
-        "complianceDetailsState.complianceIdcomplianceDetailsState.complianceId",
+        "complianceDetailsState.complianceIdcomplianceDetailsState.complianceId"
       );
       let Data = {
         complianceId: complianceDetailsState.complianceId,
       };
       if (complianceViewMode === "byMe") {
         dispatch(
-          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t),
+          GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t)
         );
       } else if (complianceViewMode === "forMe") {
         dispatch(
           GetComplianceChecklistsWithTasksByComplianceIdForMeAPI(
             navigate,
             Data,
-            t,
-          ),
+            t
+          )
         );
       }
     }
@@ -285,7 +285,7 @@ const ViewComplianceTasks = () => {
     checklistId,
     pagination,
     filters,
-    sorter,
+    sorter
   ) => {
     setActiveSortedChecklistId(checklistId);
 
@@ -379,11 +379,11 @@ const ViewComplianceTasks = () => {
                   taskStatusId: selectedStatus.value,
                   taskStatus: selectedStatus.label,
                 }
-              : task,
+              : task
           ),
         })),
       // 🔗 Call API after status change
-      statusChangeHandler(selectedStatus.value, taskId),
+      statusChangeHandler(selectedStatus.value, taskId)
     );
   };
 
@@ -484,12 +484,10 @@ const ViewComplianceTasks = () => {
         taskTitleSort === "descend"
           ? b.taskTitle?.toLowerCase().localeCompare(a.taskTitle?.toLowerCase())
           : taskTitleSort === "ascend"
-            ? a.taskTitle
-                ?.toLowerCase()
-                .localeCompare(b.taskTitle?.toLowerCase())
-            : a.taskTitle
-                ?.toLowerCase()
-                .localeCompare(b.taskTitle?.toLowerCase()),
+          ? a.taskTitle?.toLowerCase().localeCompare(b.taskTitle?.toLowerCase())
+          : a.taskTitle
+              ?.toLowerCase()
+              .localeCompare(b.taskTitle?.toLowerCase()),
     },
 
     {
@@ -531,12 +529,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.assignedUsers[0]?.name?.toLowerCase())
           : assignedToSort === "ascend"
-            ? a.assignedUsers[0]?.name
-                ?.toLowerCase()
-                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
-            : a.assignedUsers[0]?.name
-                ?.toLowerCase()
-                .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
+          ? a.assignedUsers[0]?.name
+              ?.toLowerCase()
+              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase())
+          : a.assignedUsers[0]?.name
+              ?.toLowerCase()
+              .localeCompare(b.assignedUsers[0]?.name?.toLowerCase()),
     },
     {
       title: (
@@ -561,12 +559,12 @@ const ViewComplianceTasks = () => {
               ?.toLowerCase()
               .localeCompare(a.deadLineDate?.toLowerCase())
           : dueDateSort === "ascend"
-            ? a.deadLineDate
-                ?.toLowerCase()
-                .localeCompare(b.deadLineDate?.toLowerCase())
-            : a.deadLineDate
-                ?.toLowerCase()
-                .localeCompare(b.deadLineDate?.toLowerCase()),
+          ? a.deadLineDate
+              ?.toLowerCase()
+              .localeCompare(b.deadLineDate?.toLowerCase())
+          : a.deadLineDate
+              ?.toLowerCase()
+              .localeCompare(b.deadLineDate?.toLowerCase()),
 
       dataIndex: "deadLineDate",
       key: "deadLineDate",
@@ -595,7 +593,7 @@ const ViewComplianceTasks = () => {
         };
 
         // 🚫 No transitions allowed → show plain text
-        if (allowedOptions.length === 0) { 
+        if (allowedOptions.length === 0) {
           return (
             <span
               style={{
@@ -678,7 +676,7 @@ const ViewComplianceTasks = () => {
       setAddChecklistCloseState(false);
     } else {
       const allIds = viewComplianceTasksContextData.map(
-        (item) => item.checklistId,
+        (item) => item.checklistId
       );
 
       setExpandedCheckListIds(allIds);
@@ -723,7 +721,7 @@ const ViewComplianceTasks = () => {
                 viewComplianceTasksContextData?.length > 0
                   ? viewComplianceTasksContextData.map((data, index) => {
                       const isExpanded = expandedCheckListIds.find(
-                        (data2, index) => data2 === data.checklistId,
+                        (data2, index) => data2 === data.checklistId
                       );
 
                       // const taskData = data.taskList;
@@ -731,7 +729,7 @@ const ViewComplianceTasks = () => {
                         (task, index) => ({
                           ...task,
                           key: task.taskId || `${data.checklistId}-${index}`,
-                        }),
+                        })
                       );
 
                       return (
@@ -752,7 +750,6 @@ const ViewComplianceTasks = () => {
                                 >
                                   {t("Checklist-title")}
                                 </Col>
-
                                 <Row>
                                   <Col
                                     sm={12}
@@ -768,7 +765,9 @@ const ViewComplianceTasks = () => {
                                     lg={2}
                                     className={`d-flex justify-content-end ${styles.noChecklistMsg_subMsg}`}
                                   >
-                                    {`${t("Due-date")} : ${formatDateToYMD(data.dueDate)}`}
+                                    {`${t("Due-date")} : ${formatDateToYMD(
+                                      data.dueDate
+                                    )}`}
                                   </Col>
                                 </Row>
                               </Row>
@@ -785,7 +784,7 @@ const ViewComplianceTasks = () => {
                                         data.checklistId,
                                         pagination,
                                         filters,
-                                        sorter,
+                                        sorter
                                       )
                                     }
                                   />
@@ -824,7 +823,7 @@ const ViewComplianceTasks = () => {
                                       className={`${styles["noChecklistMsg_subMsg"]} d-flex justify-content-center`}
                                     >
                                       {t(
-                                        "You-dont-have-any-tasks-at-the-moment",
+                                        "You-dont-have-any-tasks-at-the-moment"
                                       )}
                                     </Col>
                                   </Row>
