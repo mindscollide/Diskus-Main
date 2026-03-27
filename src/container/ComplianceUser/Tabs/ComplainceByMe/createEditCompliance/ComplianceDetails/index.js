@@ -114,7 +114,6 @@ const ComplainceDetails = () => {
   });
   const [isChecklistTitleExist, setIsChecklistTitleExist] = useState(null);
   const [tagInputActive, setTagInputActive] = useState(false);
-  
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const getAllAuthorities = useSelector(
@@ -145,6 +144,8 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -152,14 +153,13 @@ const ComplainceDetails = () => {
   });
   const [editComplianceData, setEditComplianceData] = useState(null);
 
+  //   tags Selection
+  const [tagsValue, setTagsValue] = useState("");
+
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
     useState(false);
   const [checkAnyTaskOnPendingState, setCheckAnyTaskOnPendingState] =
     useState(false);
-  // const [
-  //   checkAnyChecklistOrTaskInProgress,
-  //   setCheckAnyChecklistOrTaskInProgress,
-  // ] = useState(false);
 
   const [checkAnyTaskInProgress, setCheckAnyTaskInProgress] = useState(false);
 
@@ -493,6 +493,10 @@ const ComplainceDetails = () => {
     }
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
+  useEffect(() => {
+    console.log("dueDate changed:", complianceDetailsState.dueDate);
+  }, [complianceDetailsState.dueDate]);
+
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
@@ -508,22 +512,16 @@ const ComplainceDetails = () => {
     }));
   };
 
-  //   tags Selection
-  const [tagsValue, setTagsValue] = useState("");
-
   const MAX_TAG_LENGTH = 25;
 
   const handleInputChange = (newValue, actionMeta) => {
     if (actionMeta.action !== "input-change") return newValue;
-
     // remove leading spaces
     let trimmed = newValue.replace(/^\s+/, "");
-
     // enforce max length
     if (trimmed.length > MAX_TAG_LENGTH) {
       trimmed = trimmed.slice(0, MAX_TAG_LENGTH);
     }
-
     setTagsValue(trimmed);
     return trimmed;
   };
@@ -652,15 +650,11 @@ const ComplainceDetails = () => {
 
   const handleBlur = (event) => {
     if (complianceAddEditViewState === 3) return;
-
     const { name, value } = event.target;
     if (name !== "complianceTitle" || !value) return;
-
     const authorityId = complianceDetailsState.authority.value;
     if (!authorityId) return;
-
     const title = complianceDetailsState.complianceTitle;
-
     // 🆕 CREATE MODE → always check
     if (complianceAddEditViewState === 1) {
       const Data = {
@@ -800,7 +794,6 @@ const ComplainceDetails = () => {
   // Status
   const handleChangeComplianceStatus = (event) => {
     console.log(event, "CompliaceStatusOnHoldModal");
-
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
       if (complianceDetailsState.status.value === 3) {
@@ -1102,7 +1095,7 @@ const ComplainceDetails = () => {
             calendar={gregorian}
             locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
             ref={calendRef}
-            onFocusedDateChange={changeComplainceDueDate}
+            // onFocusedDateChange={changeComplainceDueDate}
             onChange={changeComplainceDueDate}
             disabled={
               complianceDetailsState.authority.value === 0 ||

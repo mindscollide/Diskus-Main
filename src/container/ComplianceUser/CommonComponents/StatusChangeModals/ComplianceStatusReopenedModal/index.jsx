@@ -57,12 +57,40 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     "complianceReopenDetailsState",
   );
 
+  console.log(
+    { tempDueDateChange, complianceReopenDetailsState, openCalendarValue },
+    "openCalendarValueopenCalendarValue",
+  );
+
+  useEffect(() => {
+    if (comlianceStatusReopenedModal) {
+      setComplianceReopenDetailsState({
+        reason: "",
+        dueDate: "",
+        attachments: [],
+      });
+
+      setTempDueDateChange("");
+      setOpenCalendarValue(null);
+    }
+  }, [comlianceStatusReopenedModal]);
+
   const handleCloseButton = () => {
     if (complianceDetailsState.status.value === 7)
       setComlianceStatusReopenedModal(false);
     else {
       resetModalStates();
     }
+
+    // RESET HERE ALSO
+    setComplianceReopenDetailsState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+
+    setTempDueDateChange("");
+    setOpenCalendarValue(null);
   };
 
   const handleProceedButton = () => {
@@ -73,6 +101,16 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       status: tempSelectComplianceStatus,
       dueDate: tempDueDateChange,
     }));
+
+    // RESET STATE
+    setComplianceReopenDetailsState({
+      reason: "",
+      dueDate: "",
+      attachments: [],
+    });
+
+    setTempDueDateChange("");
+    setOpenCalendarValue(null);
   };
 
   const handleValueChange = (event) => {

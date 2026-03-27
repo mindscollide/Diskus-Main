@@ -79,9 +79,9 @@
 
 .ComplianceMainHeading {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  flex-direction: column; /* ✅ IMPORTANT */
+  align-items: flex-start; /* align left */
+  gap: 4px;
   padding: 0px 30px;
 }
 
@@ -98,6 +98,12 @@
   font-family: "Montserrat";
   margin: 0;
   font-weight: 600;
+
+  /* ✅ Ellipsis */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tableWrapper {
