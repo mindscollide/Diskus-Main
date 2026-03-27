@@ -515,7 +515,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authority.authorityName} (${authority.authorityShortCode})`,
           },
           criticality: selectedCriticality,
-          dueDate: `${dueDate}235958`,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -796,7 +798,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
-          dueDate,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags,
           status: currentStatus, // value & label format expected by UI
         }));
@@ -812,7 +816,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
-          dueDate,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags,
           status: currentStatus,
         }));
