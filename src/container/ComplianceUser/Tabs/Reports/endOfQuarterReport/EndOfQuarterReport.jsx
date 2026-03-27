@@ -25,7 +25,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
@@ -212,7 +212,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
+                            GetQuarterReport?.header?.quarterStartDate
                           ) || "-"}
                         </p>
                       </div>
@@ -220,7 +220,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
+                            GetQuarterReport?.header?.quarterEndDate
                           ) || "-"}
                         </p>
                       </div>
@@ -413,7 +413,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate,
+                                                    task.taskDueDate
                                                   )}
                                                 </p>
                                               </div>
@@ -429,7 +429,7 @@ const EndOfQuarterReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn,
+                                                    task.taskCompletedOn
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -471,154 +471,6 @@ const EndOfQuarterReport = () => {
               </div>
             </div>
           )}
-
-          {/*End of quarter Report Download     */}
-
-          {showPdfLayout && (
-            <div id="content-id">
-              <Row>
-                <Col
-                  lg={12}
-                  xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
-                >
-                  <div>
-                    <label>{t("Quarter")}:</label>
-                    <p className={styles.longTitle}>
-                      {GetQuarterReport?.header?.reportTitle}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row className={`${styles.ComplianceSection} mt-4 `}>
-                <Col lg={8}>
-                  <Row className="align-items-center justify-content-between mx-2 ">
-                    <Col
-                      lg={6}
-                      xs="auto"
-                      className={`${styles.iconTextWrapperDownload}   `}
-                    >
-                      <img src={Verification} alt="Verification" />
-                      <div>
-                        <label>{t("Report-type")}:</label>
-                        <p>{GetQuarterReport?.header?.reportTypeName}</p>
-                      </div>
-                    </Col>
-
-                    <Col
-                      lg={5}
-                      xs="auto"
-                      className={`${styles.iconTextWrapperDownload}  `}
-                    >
-                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-                      <div>
-                        <label className={styles.ComplianceReportHeadings}>
-                          {t("Generated-date")}:{" "}
-                        </label>
-                        <p>
-                          {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn,
-                          )}
-                        </p>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row
-                    className={`${styles.iconTextWrapperDownload}   mx-2 mt-4`}
-                  >
-                    <Col
-                      lg={5}
-                      xs="auto"
-                      className={`${styles.iconTextWrapperDownload} d-flex gap-2  `}
-                    >
-                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-                      <div>
-                        <label>{t("Start-dates")}</label>
-                        <p>
-                          {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
-                          )}
-                        </p>
-                      </div>
-                    </Col>
-                    <Col lg={5} xs="auto">
-                      <div>
-                        <label>{t("End-dates")}</label>
-                        <p>
-                          {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
-                          )}
-                        </p>
-                      </div>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col lg={4} className={styles.chartCol}>
-                  <div className={styles.chartFlex}>
-                    {/* Donut */}
-                    <div className={styles.chartBox}>
-                      <Chart
-                        chartType="PieChart"
-                        width="100%"
-                        height="200px"
-                        data={donutData}
-                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
-                      />
-
-                      {/* Center Label */}
-                      <div className={styles.centerLabel}>
-                        <h2>
-                          {GetQuarterReport?.header?.overallCompletionPercent}%
-                        </h2>
-                        <p>{t("Complete ")}</p>
-                      </div>
-                    </div>
-
-                    {/* Custom Legend (VERTICALLY CENTERED) */}
-                    <div className={styles.customLegend}>
-                      <div>
-                        <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetQuarterReport?.header?.tasksCompletedOnTime})
-                      </div>
-                      <div>
-                        <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetQuarterReport?.header?.tasksCompletedLate})
-                      </div>
-                      <div>
-                        <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetQuarterReport?.header?.tasksPending})
-                      </div>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col
-                  lg={12}
-                  xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
-                >
-                  <p>{t("Compliances-in-this-report")}:</p>
-                </Col>
-
-                {GetQuarterReport?.compliances?.map((compliance) => (
-                  <div>
-                    {/* Compliance Title */}
-                    <h2 className={styles.pdfComplianceTitle}>
-                      {compliance.complianceTitle}
-                    </h2>
-                  </div>
-                ))}
-              </Row>
-            </div>
-          )}
-
-          {/*End of quarter Report Download     */}
         </Spin>
       </div>
     </>
