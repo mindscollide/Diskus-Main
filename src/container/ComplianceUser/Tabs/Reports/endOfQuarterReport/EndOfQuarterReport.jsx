@@ -25,7 +25,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
   );
 
   console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
@@ -212,7 +212,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -220,7 +220,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           ) || "-"}
                         </p>
                       </div>
@@ -413,7 +413,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate
+                                                    task.taskDueDate,
                                                   )}
                                                 </p>
                                               </div>
@@ -429,7 +429,7 @@ const EndOfQuarterReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn
+                                                    task.taskCompletedOn,
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -518,7 +518,7 @@ const EndOfQuarterReport = () => {
                         </label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn
+                            GetQuarterReport?.header?.generatedOn,
                           )}
                         </p>
                       </div>
@@ -537,7 +537,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate
+                            GetQuarterReport?.header?.quarterStartDate,
                           )}
                         </p>
                       </div>
@@ -547,7 +547,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate
+                            GetQuarterReport?.header?.quarterEndDate,
                           )}
                         </p>
                       </div>
@@ -607,38 +607,11 @@ const EndOfQuarterReport = () => {
                 </Col>
 
                 {GetQuarterReport?.compliances?.map((compliance) => (
-                  <div
-                    key={compliance.id}
-                    className={styles.pdfComplianceBlock}
-                  >
+                  <div>
                     {/* Compliance Title */}
                     <h2 className={styles.pdfComplianceTitle}>
                       {compliance.complianceTitle}
                     </h2>
-
-                    {/* Checklists */}
-                    {compliance?.checklists?.map((checklist) => (
-                      <div
-                        key={checklist.checklistID}
-                        className={styles.pdfChecklistBlock}
-                      >
-                        <h3 className={styles.pdfChecklistTitle}>
-                          {checklist.checklistTitle}
-                        </h3>
-
-                        {/* Tasks */}
-                        {checklist?.tasks?.map((task) => (
-                          <p key={task.taskID} className={styles.pdfTask}>
-                            • {task.taskTitle}{" "}
-                            {task.taskDueDate && (
-                              <span className={styles.pdfTaskDate}>
-                                (Due: {formatDateToYMD(task.taskDueDate)})
-                              </span>
-                            )}
-                          </p>
-                        ))}
-                      </div>
-                    ))}
                   </div>
                 ))}
               </Row>
