@@ -1,277 +1,311 @@
-p.todolist-title-col {
-  cursor: pointer;
-  margin: 0px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* =============================================================================
+   TodoList.css
+   ============
+   Styles for the TodoList feature module.
+
+   Sections
+   ────────
+   1.  CSS Custom Properties (design tokens)
+   2.  Layout — page container & main section
+   3.  Header — heading, create-task button
+   4.  Search bar — expandable search row
+   5.  Table overrides — Ant Design table cells, sorting, placeholder
+   6.  Status badges — colour coding per task status
+   7.  Status filter — dropdown, chevron icon
+   8.  Date picker — calendar icon integration
+   9.  Pagination — bottom bar
+   10. Utility — shared helpers
+   11. RTL overrides — right-to-left (Arabic) layout corrections
+   12. Responsive — breakpoints for all viewport widths
+   ============================================================================= */
+
+/* ─── 1. CSS CUSTOM PROPERTIES ─────────────────────────────────────────────── */
+/*
+ * Central token file. Update here to propagate across the whole component.
+ * Gradient direction is flipped in RTL via the [dir="rtl"] override block.
+ */
+:root {
+  /* Brand */
+  --todo-purple: #6172d6;
+  --todo-teal: #49dbdb;
+  --todo-blue-link: #2197d7;
+
+  /* Status colours */
+  --status-in-progress: #d8a709;
+  --status-pending: #5f78d6;
+  --status-upcoming: #f68732;
+  --status-cancelled: #f16b6b;
+  --status-completed: #81db86;
+
+  /* Borders & backgrounds */
+  --todo-border: #e1e1e1;
+  --todo-cell-text: #505050;
+  --todo-empty-text: #e4e4e4;
+  --todo-shadow: 0 0 5px #ccc;
+
+  /* Primary gradient — left direction (overridden to "right" in RTL) */
+  --todo-gradient: linear-gradient(
+    to left,
+    var(--todo-teal) 0%,
+    var(--todo-purple) 100%
+  );
+
+  /* Typography */
+  --todo-font-base: 14px;
+  --todo-font-heading: calc(38px - 50%); /* ≈ 19 px */
+  --todo-font-sm: calc(var(--todo-font-base) - 20%); /* ≈ 11.2 px */
+  --todo-font-badge: 10px;
+
+  /* Spacing */
+  --todo-btn-h: 31px;
+  --todo-btn-w: 131px;
+  --todo-radius: 4px;
+}
+
+/* ─── 2. LAYOUT ─────────────────────────────────────────────────────────────── */
+
+/* Full-width, viewport-height wrapper for the page */
+.todolistContainer {
+  width: 100%;
+  height: 85vh;
+  margin: 0 auto;
+}
+
+/*
+ * Main content area below the header row.
+ * Uses flex-column + space-between so the pagination always sits at the bottom,
+ * regardless of how many rows the table contains.
+ */
+.todolist_main_section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 20vh);
   overflow: hidden;
-  font-size: 14px;
-  font-weight: 600 !important;
-  color: #2197d7 !important;
 }
 
-body[dir="rtl"] .todolist-title-col {
-  font-weight: 600 !important;
-  color: #2197d7 !important;
+/* ─── 3. HEADER ─────────────────────────────────────────────────────────────── */
+
+/* "Tasks" page title */
+.todolist-heading-size {
+  font-size: var(--todo-font-heading);
+  font-weight: 600;
+  color: var(--todo-purple);
 }
 
-.blue {
-  color: #6172d6;
-  font-weight: 600 !important;
-}
-
-.orange {
-  color: #d8a709;
-  font-weight: 600 !important;
-}
-
-.yellow {
-  color: yellow;
-  font-weight: 600 !important;
-}
-
-.gray {
-  color: gray;
-  font-weight: 600 !important;
-}
-
-.green {
-  color: green;
-  font-weight: 600 !important;
-}
-
+/* Column containing the Create-a-task button */
 .todolist-create-btn {
-  width: 145px !important;
+  width: 145px;
 }
 
-body[dir="rtl"] .todolist-create-btn {
-  width: 160px !important;
-}
-
+/* Create-a-task button */
 .todolist-create-btn button {
-  width: 131px;
-  height: 31px;
-  font-size: calc(14px - 20%) !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  border-radius: 4px !important;
-  font-weight: 600 !important;
-  border: none !important;
-  position: relative;
-}
-
-body[dir="rtl"] .todolist-create-btn button {
-  font-weight: 400 !important;
+  width: var(--todo-btn-w);
+  height: var(--todo-btn-h);
+  font-size: var(--todo-font-sm);
+  font-weight: 600;
+  color: #fff;
+  background: var(--todo-gradient);
+  border: none;
+  border-radius: var(--todo-radius);
 }
 
 .todolist-create-btn button:focus-visible {
-  box-shadow: none !important;
+  box-shadow: none;
 }
 
-body[dir="rtl"] .todolist-create-btn button {
-  background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
+/* ─── 4. SEARCH BAR ─────────────────────────────────────────────────────────── */
+
+/* Aligns the search row content */
+.todo-list-field.todolist-search-row {
+  display: flex;
+  align-items: center;
 }
 
+/* Animated container that slides in when the search icon is clicked */
+.expandableMenuSearch {
+  display: flex;
+  flex-wrap: wrap; /* wraps to next line on narrow viewports */
+  gap: 8px;
+  align-items: center;
+}
+
+/* Arrow/submit button inside the search form */
+button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
+  margin-top: -3px;
+}
+
+/* ─── 5. TABLE OVERRIDES ─────────────────────────────────────────────────────── */
+
+/* Allow the table body to scroll vertically */
 .ToDo {
   overflow-y: auto;
 }
 
+/* Body cell — uniform padding, border, and text colour */
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
-  padding: 3px 3px !important;
-  border-top: 1px solid #e1e1e1 !important;
-  border-bottom: 1px solid #e1e1e1 !important;
-  color: #505050 !important;
+  padding: 3px !important;
+  color: var(--todo-cell-text) !important;
+  border-top: 1px solid var(--todo-border) !important;
+  border-bottom: 1px solid var(--todo-border) !important;
 }
 
+/* Left edge of each row (first cell) */
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
-  border-left: 1px solid #e1e1e1 !important;
-  border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important;
+  border-left: 1px solid var(--todo-border) !important;
+  border-top-left-radius: var(--todo-radius) !important;
+  border-bottom-left-radius: var(--todo-radius) !important;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(1) {
-  border-right: 1px solid #e1e1e1 !important;
-  border-top-right-radius: 4px !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-  border-bottom-right-radius: 4px !important;
-  border-left: 0px !important;
-}
-
+/* Right edge of each row (sixth / last cell) */
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
-  border-right: 1px solid #e1e1e1 !important;
-  border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
+  border-right: 1px solid var(--todo-border) !important;
+  border-top-right-radius: var(--todo-radius) !important;
+  border-bottom-right-radius: var(--todo-radius) !important;
   text-align: center;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(6) {
-  border-left: 1px solid #e1e1e1 !important;
-  border-top-left-radius: 4px !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-  border-bottom-left-radius: 4px !important;
-  border-right: 0px !important;
+/* Centred header — Assigned-by column (4th) */
+.ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
+  text-align: center !important;
+}
+
+/* Centred cells — Assigned-by (4th) and Status (5th) columns */
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(4),
+.ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+  text-align: center !important;
+}
+
+/* Prevent sorted columns from showing a background tint */
+td.ant-table-column-sort {
+  background: transparent;
+}
+
+/* Horizontal scroll padding on the table body */
+.ToDo .ant-table .ant-table-body {
+  padding-right: 10px;
+}
+
+/* Remove border/background from the "no data" placeholder row */
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder
+  > td,
+.ToDo
+  .ant-table
+  .ant-table-body
+  .ant-table-tbody
+  > tr.ant-table-placeholder:hover
+  > td {
+  border: none;
+  background: none;
+}
+
+/* Keep the filter icon inline with the header text */
+.ant-table-filter-column {
+  display: inline-flex !important;
+}
+
+/* Prevent the z-index on column titles from covering dropdowns */
+.ant-table-column-title {
+  z-index: 0 !important;
+}
+
+/* "Empty" message shown when there are no tasks */
+.NotaskTodolist {
+  color: var(--todo-empty-text);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.8;
   text-align: center;
+  margin-top: 20px;
 }
 
-/* for todo pagination focus color */
-
-.ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
-  background-color: #e9e9e9 !important;
-  font-size: 14px;
-  font-weight: bold;
+/* Clickable task title cell */
+p.todolist-title-col {
+  margin: 0;
+  cursor: pointer;
+  font-size: var(--todo-font-base);
+  font-weight: 600;
+  color: var(--todo-blue-link);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+/* ─── 6. STATUS BADGES ───────────────────────────────────────────────────────── */
+/*
+ * Shared weight applied by .custom-class; colours are status-specific.
+ * Adding font-weight here removes the need to repeat it per-status.
+ */
+.custom-class {
+  font-weight: 600;
+}
+
+.InProgress {
+  color: var(--status-in-progress);
+}
+.Pending {
+  color: var(--status-pending);
+}
+.Upcoming {
+  color: var(--status-upcoming);
+}
+.Cancelled {
+  color: var(--status-cancelled);
+}
+.Completed {
+  color: var(--status-completed);
+}
+
+/*
+ * Legacy colour helpers — kept for backwards compatibility with any
+ * non-status uses elsewhere in the codebase. Prefer the status classes above
+ * for new code.
+ */
+.blue {
+  color: var(--todo-purple);
+  font-weight: 600;
+}
+.orange {
+  color: var(--status-in-progress);
+  font-weight: 600;
+}
+.yellow {
+  color: yellow;
+  font-weight: 600;
+}
+.gray {
+  color: gray;
+  font-weight: 600;
+}
+.green {
+  color: green;
+  font-weight: 600;
+}
+
+/* ─── 7. STATUS FILTER ───────────────────────────────────────────────────────── */
+
+/* Chevron icon that opens the status filter dropdown */
+.filter-chevron-icon-todolist {
+  color: #1890ff;
+  float: left;
+}
+
+/* Constrain the status select dropdown width */
 .Status-Todo .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft {
   width: 100px !important;
   min-width: 100px !important;
 }
 
-/* .ant-tooltip.ant-tooltip-placement-top {
-  display: none !important;
-} */
-
-.ant-table-filter-column {
-  display: inline-flex !important;
-}
-
-.ant-radio-input {
-  opacity: 1 !important;
-}
-
-.filter-chevron-icon-todolist {
-  color: #1890ff !important;
-  float: left !important;
-}
-
-.ant-table-column-title {
-  z-index: 0 !important;
-}
-
-.todolistContainer {
-  height: 85vh;
-  width: 100% !important;
-  margin: 0 auto !important;
-}
-
-.ant-table-wrapper.ToDo table thead tr th:nth-child(4) {
-  text-align: center !important;
-}
-
-.ant-table-wrapper.ToDo table tbody tr td:nth-child(4) {
-  text-align: center !important;
-}
-
-.ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
-  text-align: center !important;
-}
-
-.todolist-heading-size {
-  font-size: calc(38px - 50%) !important;
-  color: #6172d6 !important;
-  font-weight: 600 !important;
-}
-
-@media screen and (max-width: 900px) {
-  .row-scroll-todolist {
-    position: relative !important;
-    overflow: auto !important;
-    padding: 20px !important;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .todolist-heading-size {
-    font-size: 15px !important;
-    color: #6172d6 !important;
-    font-weight: 600 !important;
-    margin-top: 2px !important;
-  }
-
-  .todolist-create-btn button {
-    font-size: calc(14px - 20%) !important;
-    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    color: #fff !important;
-    border-radius: 4px !important;
-    font-weight: 600 !important;
-    border: none !important;
-  }
-}
-
-.iconForDatePicker.margin-right-20 svg.DatePickerIcon {
-  height: 36px !important;
-  width: 33px !important;
-  margin-top: 1px !important;
-}
-
-.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
-  left: 5px !important;
-}
-
-button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
-  margin-top: -3px;
-}
-
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-thead
-  > tr
-  > th.deadLineTodo {
-  text-align: center !important;
-  padding-right: 0 !important;
-}
-
-body[dir="rtl"] .ArabicStatus {
-  font-weight: 600 !important;
-}
-
-.InProgress {
-  color: #d8a709;
-}
-
-body[dir="rtl"] .InProgress {
-  font-weight: 600 !important;
-}
-
-.Pending {
-  color: #5f78d6;
-}
-
-body[dir="rtl"] .Pending {
-  font-weight: 600 !important;
-}
-
-.Upcoming {
-  color: #f68732;
-}
-
-body[dir="rtl"] .Upcoming {
-  font-weight: 600 !important;
-}
-
-.Cancelled {
-  color: #f16b6b;
-}
-
-body[dir="rtl"] .Cancelled {
-  font-weight: 600 !important;
-}
-
-.Completed {
-  color: #81db86;
-}
-
-body[dir="rtl"] .Completed {
-  font-weight: 600 !important;
-}
-
+/* Force the virtual list items to stack vertically */
+.Status-Todo
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  .rc-virtual-list-holder-inner,
 .filterValues-dropdown
   div
   .rc-virtual-list
@@ -282,115 +316,321 @@ body[dir="rtl"] .Completed {
   width: auto;
 }
 
-.PaginationStyle-TodoList {
-  background-color: #fff !important;
-  width: auto !important;
-  display: flex !important;
-  justify-content: center !important;
-  padding: 12px 40px !important;
-  height: 54px !important;
-  box-shadow: 0px 0px 5px #ccc !important;
-  border-radius: 4px !important;
-  align-items: center;
+/* Highlight the selected option in the status dropdown */
+.ToDo .ant-select-item.ant-select-item-option.ant-select-item-option-selected {
+  background-color: #e9e9e9 !important;
+  font-size: var(--todo-font-base);
+  font-weight: 700;
 }
 
-body[dir="rtl"] .PaginationStyle-TodoList {
-  width: auto !important;
-  padding: 8px 10px !important;
-}
-
-.Status-Todo
-  div
-  .rc-virtual-list
-  .rc-virtual-list-holder
-  .rc-virtual-list-holder-inner {
-  display: block !important;
-}
-
-td.ant-table-column-sort {
-  background: transparent;
-}
-
-.ToDo .ant-table .ant-table-body {
-  padding-right: 10px;
-}
-
-.ToDo
-  .ant-table
-  .ant-table-body
-  .ant-table-tbody
-  > tr.ant-table-placeholder:hover
-  > td {
-  background: none;
-  border: none;
-}
-
-.ToDo
-  .ant-table
-  .ant-table-body
-  .ant-table-tbody
-  > tr.ant-table-placeholder
-  > td {
-  border: none;
-}
-
-.NotaskTodolist {
-  color: #e4e4e4;
-  font-size: 24px;
-  line-height: 1.8;
-  text-align: center;
-  font-weight: 600;
-  margin-top: 20px;
-}
-
-.todolist_main_section {
-  min-height: calc(100vh - 20vh);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  overflow: hidden !important;
-}
-
-.custom-class {
-  font-weight: 600;
-}
-
-.FilterResetBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
-.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: #6172d6 !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
-}
-
+/* Filter panel reset/apply buttons — shared structure */
+.FilterResetBtn,
 .ResetOkBtn {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
+  padding: 8px 10px;
+  font-size: var(--todo-font-badge);
+  font-weight: 600;
+  color: #fff;
+  border: none;
+  border-radius: var(--todo-radius);
 }
 
-body[dir="rtl"] .ResetOkBtn {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+/* Reset button — solid purple */
+.FilterResetBtn {
+  background: var(--todo-purple);
+}
+
+/* Apply / Ok button — brand gradient */
+.ResetOkBtn {
+  background: var(--todo-gradient);
+}
+
+/* Keep hover/focus/active states visually consistent — no flash or colour jump */
+.FilterResetBtn:is(:hover, :active, :focus, :focus-visible) {
+  background: var(--todo-purple);
+  color: #fff;
+  border: none;
 }
 
 .ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
-  padding: 8px 10px !important;
-  border-radius: 4px !important;
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  border: none !important;
+  background: var(--todo-gradient);
+  color: #fff;
+  border: none;
+}
+
+/* ─── 8. DATE PICKER ─────────────────────────────────────────────────────────── */
+
+/* Calendar icon sizing inside the custom render slot */
+.iconForDatePicker.margin-right-20 svg.DatePickerIcon {
+  width: 33px;
+  height: 36px;
+  margin-top: 1px;
+}
+
+/* Align the datepicker triangle with the icon rather than the input edge */
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  left: 5px !important;
+}
+
+/* ─── 9. PAGINATION ──────────────────────────────────────────────────────────── */
+
+/* Pill-shaped pagination bar at the bottom of the list */
+.PaginationStyle-TodoList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 54px;
+  padding: 12px 40px;
+  background-color: #fff;
+  border-radius: var(--todo-radius);
+  box-shadow: var(--todo-shadow);
+}
+
+/* Ant Design radio inputs — ensure they are visually present */
+.ant-radio-input {
+  opacity: 1 !important;
+}
+
+/* ─── 10. UTILITY ────────────────────────────────────────────────────────────── */
+
+/* Deadline header/cell alignment — used by the Ant Design RTL deadline column */
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
+  text-align: center !important;
+  padding-right: 0 !important;
+}
+
+/* ─── 11. RTL OVERRIDES ──────────────────────────────────────────────────────── */
+/*
+ * All [dir="rtl"] rules in one place so they are easy to audit.
+ * Key changes:
+ *   - Gradient direction flips from "to left" → "to right"
+ *   - Border-radius corners swap (left ↔ right)
+ *   - Border sides swap (left ↔ right)
+ *   - Widths adjusted to fit Arabic text metrics
+ */
+
+/* Heading */
+body[dir="rtl"] .todolist-title-col {
+  font-weight: 600;
+  color: var(--todo-blue-link);
+}
+
+/* Create button column width — Arabic text is wider */
+body[dir="rtl"] .todolist-create-btn {
+  width: 160px;
+}
+
+/* Create button — gradient direction */
+body[dir="rtl"] .todolist-create-btn button {
+  font-weight: 400; /* Arabic script looks better at regular weight */
+  background: linear-gradient(
+    to right,
+    var(--todo-teal) 0%,
+    var(--todo-purple) 100%
+  );
+}
+
+/* Table — left edge becomes right edge in RTL (first cell) */
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
+  border-right: 1px solid var(--todo-border) !important;
+  border-left: none !important;
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  border-top-right-radius: var(--todo-radius) !important;
+  border-bottom-right-radius: var(--todo-radius) !important;
+}
+
+/* Table — right edge becomes left edge in RTL (sixth cell) */
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
+  border-left: 1px solid var(--todo-border) !important;
+  border-right: none !important;
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-top-left-radius: var(--todo-radius) !important;
+  border-bottom-left-radius: var(--todo-radius) !important;
+}
+
+/* Status badge — boost weight for Arabic script readability */
+body[dir="rtl"] .InProgress,
+body[dir="rtl"] .Pending,
+body[dir="rtl"] .Upcoming,
+body[dir="rtl"] .Cancelled,
+body[dir="rtl"] .Completed,
+body[dir="rtl"] .ArabicStatus {
+  font-weight: 600;
+}
+
+/* Ok/gradient button — direction flip */
+body[dir="rtl"] .ResetOkBtn,
+body[dir="rtl"] .ResetOkBtn:is(:hover, :active, :focus, :focus-visible) {
+  background: linear-gradient(
+    to right,
+    var(--todo-teal) 0%,
+    var(--todo-purple) 100%
+  );
+}
+
+/* Pagination — tighter padding; Arabic numerals fit well at this size */
+body[dir="rtl"] .PaginationStyle-TodoList {
+  padding: 8px 10px;
+}
+
+/* ─── 12. RESPONSIVE ─────────────────────────────────────────────────────────── */
+/*
+ * Strategy — fluid first, breakpoints as fallback:
+ *   - The layout uses Bootstrap's grid (Col + Row), so most reflow is automatic.
+ *   - We only override typography, explicit widths, and hard-coded pixel values
+ *     that don't scale on their own.
+ *
+ * Breakpoints used
+ * ────────────────
+ *   ≥ 1600px  — large desktop (original design target)
+ *   < 1400px  — standard desktop / laptop
+ *   < 1200px  — small laptop / large tablet landscape
+ *   < 992px   — tablet landscape / small laptop
+ *   < 768px   — tablet portrait
+ *   < 576px   — mobile
+ */
+
+/* ── Large desktop (≥ 1600px) ── nothing to override; base styles apply ── */
+
+/* ── Standard desktop / laptop  (< 1400px) ─────────────────────────────────── */
+@media screen and (max-width: 1400px) {
+  .todolist-heading-size {
+    font-size: 18px;
+  }
+
+  .PaginationStyle-TodoList {
+    padding: 10px 24px;
+  }
+}
+
+/* ── Small laptop / large tablet landscape (< 1200px) ──────────────────────── */
+@media screen and (max-width: 1200px) {
+  .todolist-heading-size {
+    font-size: 15px;
+    margin-top: 2px;
+  }
+
+  /*
+   * Button font-size / border / colour are already set correctly by the base
+   * styles, so only width is adjusted here.
+   * FIX: original block duplicated every button property unnecessarily.
+   */
+  .todolist-create-btn button {
+    width: 120px;
+  }
+
+  .todolist-create-btn {
+    width: 130px;
+  }
+}
+
+/* ── Tablet landscape / small laptop (< 992px) ──────────────────────────────── */
+@media screen and (max-width: 992px) {
+  :root {
+    --todo-font-heading: 14px;
+  }
+
+  .todolistContainer {
+    height: auto; /* let container grow naturally on tablets */
+  }
+
+  .todolist_main_section {
+    min-height: unset;
+  }
+
+  /* Search form wraps inputs below the icon row */
+  .expandableMenuSearch {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  /* Full-width inputs in stacked search form */
+  .expandableMenuSearch .form-control2,
+  .expandableMenuSearch .datePickerTodoCreate2 {
+    width: 100% !important;
+  }
+
+  .PaginationStyle-TodoList {
+    height: auto;
+    padding: 10px 16px;
+  }
+}
+
+/* ── Tablet portrait (< 768px) ──────────────────────────────────────────────── */
+@media screen and (max-width: 768px) {
+  .todolist-heading-size {
+    font-size: 13px;
+  }
+
+  .todolist-create-btn,
+  body[dir="rtl"] .todolist-create-btn {
+    width: auto; /* shrink to content; Bootstrap col handles alignment */
+  }
+
+  .todolist-create-btn button {
+    width: auto;
+    padding: 4px 10px;
+  }
+
+  /* Allow the table to scroll horizontally on narrow screens */
+  .row-scroll-todolist {
+    position: relative;
+    overflow-x: auto;
+    padding: 10px;
+  }
+
+  /* Reduce "no tasks" illustration on smaller screens */
+  .NotaskTodolist {
+    font-size: 18px;
+  }
+
+  .PaginationStyle-TodoList {
+    padding: 8px 12px;
+  }
+}
+
+/* ── Mobile (< 576px) ────────────────────────────────────────────────────────── */
+@media screen and (max-width: 576px) {
+  :root {
+    --todo-font-base: 12px;
+    --todo-font-badge: 9px;
+  }
+
+  .todolist-heading-size {
+    font-size: 12px;
+  }
+
+  /* Reduce table cell padding on very small screens */
+  .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
+    padding: 2px !important;
+  }
+
+  /* Shrink the calendar icon slightly */
+  .iconForDatePicker.margin-right-20 svg.DatePickerIcon {
+    width: 26px;
+    height: 28px;
+  }
+
+  .PaginationStyle-TodoList {
+    padding: 6px 8px;
+    height: auto;
+  }
+
+  .NotaskTodolist {
+    font-size: 16px;
+  }
 }

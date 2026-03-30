@@ -1,10 +1,52 @@
-import React, { useContext, useEffect, useState } from "react";
+/**
+ * VideoNewParticipantList.jsx
+ * ============================
+ * Sidebar panel shown during a video call, presenter session, or group call.
+ * Renders three sections:
+ *   1. Host / Presenter row (always visible, non-interactive)
+ *   2. Participant list — with per-row mic / camera status icons and a
+ *      context-menu for host actions (mute, hide video, remove, make host)
+ *   3. Waiting-room queue — shown only to the meeting host; allows
+ *      admitting or denying participants who are waiting to join
+ *
+ * View modes (driven by Redux flags)
+ * ────────────────────────────────────
+ * presenterViewFlag + presenterViewHostFlag  → Presenter host seeing participants
+ * presenterViewFlag + presenterViewJoinFlag  → Joined presenter seeing participants
+ * isMeetingVideoHostCheck                    → Regular meeting host
+ * default                                   → Regular participant (limited actions)
+ *
+ * Mute-All / Unmute-All visibility rule
+ * ──────────────────────────────────────
+ * The button is only shown when there are at LEAST 2 other participants
+ * (excluding the current user). With only 1 other participant, the
+ * per-row mute icon already covers the use-case, so "mute all" is redundant
+ * and hidden.
+ *
+ * TODO
+ * ─────
+ * - Replace inline localStorage reads with a shared session-context hook
+ *   so values don't need to be re-parsed on every render.
+ * - Add error boundaries around the iframe postMessage call.
+ */
+
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
-import styles from "./VideoNewParticipantList.module.css";
 import { Col, Row, Dropdown } from "react-bootstrap";
-import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCallParticipantWaiting.png";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import styles from "./VideoNewParticipantList.module.css";
 import { Button, TextField } from "../../../../elements";
-import UserImage from "../../../../../assets/images/user.png";
+import { MeetingContext } from "../../../../../context/MeetingContext";
+
+// ── Actions ──────────────────────────────────────────────────────────────────
 import {
   hideUnHideParticipantGuestMainApi,
   muteUnMuteParticipantMainApi,
@@ -14,14 +56,16 @@ import {
   presenterNewParticipantJoin,
   updatedParticipantListForPresenter,
 } from "../../../../../store/actions/VideoFeature_actions";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   admitRejectAttendeeMainApi,
   raiseUnRaisedHandMainApi,
   removeParticipantMeetingMainApi,
   transferMeetingHostMainApi,
 } from "../../../../../store/actions/Guest_Video";
+
+// ── Assets ───────────────────────────────────────────────────────────────────
+import CrossIcon from "../../../../../assets/images/VideoCall/Cross_icon_videoCallParticipantWaiting.png";
+import UserImage from "../../../../../assets/images/user.png";
 import Menu from "./../../talk-Video/video-images/Menu.png";
 import GoldenHandRaised from "./../../talk-Video/video-images/GoldenHandRaised.png";
 import MenuRaiseHand from "./../../talk-Video/video-images/Menu-RaiseHand.png";
@@ -29,221 +73,233 @@ import VideoDisable from "./../../talk-Video/video-images/Video Disabled Purple.
 import VideoOn from "./../../talk-Video/video-images/Video Enabled Purple.svg";
 import MicDisabled from "../../talk-Video/video-images/MicOffDisabled.png";
 import MicOnEnabled from "../../talk-Video/video-images/MicOnEnabled.png";
-import { js2xml } from "xml-js";
-import { MeetingContext } from "../../../../../context/MeetingContext";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Reads a boolean-encoded JSON value from localStorage.
+ * Returns `null` safely if the key is missing.
+ */
+const getStoredBool = (key) => {
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Derives the effective RoomID string for API calls depending on the
+ * current view mode. Centralised here to avoid repeating the same
+ * ternary chain across every handler.
+ *
+ * @param {object} flags - View mode booleans from Redux / localStorage
+ * @returns {string} The room ID to send with API requests
+ */
+const resolveRoomID = ({
+  presenterViewFlag,
+  presenterViewHostFlag,
+  presenterViewJoinFlag,
+  isMeetingVideoHostCheck,
+  acceptedRoomID,
+  newRoomID,
+  participantRoomId,
+}) => {
+  if (presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)) {
+    return acceptedRoomID;
+  }
+  return isMeetingVideoHostCheck ? newRoomID : participantRoomId;
+};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// COMPONENT
+// ─────────────────────────────────────────────────────────────────────────────
 
 const VideoNewParticipantList = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const dispatch = useDispatch();
+  // ── Context ────────────────────────────────────────────────────────────────
+  // Only iframeRef is consumed from context; the recording/screen-share
+  // setters are managed by sibling components and not needed here.
+  const { iframeRef } = useContext(MeetingContext);
 
-  const {
-    editorRole,
-    presenterParticipantList,
-    setPresenterParticipantList,
-    setShareScreenTrue,
-    setToggleMicMinimizeNonMeeting,
-    setToggleVideoMinimizeNonMeeting,
-    setStartRecordingState,
-    setPauseRecordingState,
-    setResumeRecordingState,
-    startRecordingState,
-    pauseRecordingState,
-    resumeRecordingState,
-    stopRecordingState,
-    setStopRecordingState,
-    iframeRef,
-  } = useContext(MeetingContext);
+  // ── Session constants — read once on mount ─────────────────────────────────
+  // FIX: original code read localStorage on every render (top-level let declarations
+  // inside the component body). Moved to useMemo with [] deps so they are
+  // parsed exactly once and held as stable references.
+  const session = useMemo(() => {
+    const isMeetingVideoHostCheck = getStoredBool("isMeetingVideoHostCheck");
+    const isZoomEnabled = getStoredBool("isZoomEnabled");
+    const meetinHostInfo = getStoredBool("meetinHostInfo") ?? {};
 
-  let roomID = localStorage.getItem("newRoomId");
-  let currentMeetingID = Number(localStorage.getItem("currentMeetingID"));
-  let meetinHostInfo = JSON.parse(localStorage.getItem("meetinHostInfo"));
-  let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
-  let isMeetingVideoHostCheck = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck")
-  );
-  let participantUID = localStorage.getItem("participantUID");
-  let newroomID = localStorage.getItem("acceptedRoomID");
-  let isGuid = localStorage.getItem("isGuid");
-  let newRoomID = localStorage.getItem("newRoomId");
-  let participantRoomId = localStorage.getItem("participantRoomId");
-  let HostName = localStorage.getItem("name");
-  let PresenterHostuserID = Number(localStorage.getItem("userID"));
+    return {
+      roomID: localStorage.getItem("newRoomId"), // meeting room
+      acceptedRoomID: localStorage.getItem("acceptedRoomID"), // presenter accepted room
+      participantRoomId: localStorage.getItem("participantRoomId"),
+      currentMeetingID: Number(localStorage.getItem("currentMeetingID")),
+      isMeetingVideoHostCheck,
+      isZoomEnabled,
+      meetinHostInfo,
+      participantUID: localStorage.getItem("participantUID"),
+      isGuid: localStorage.getItem("isGuid"),
+      hostName: localStorage.getItem("name"),
+      presenterHostUserID: Number(localStorage.getItem("userID")),
+    };
+  }, []); // stable for the lifetime of the component
 
+  // ── Redux selectors ────────────────────────────────────────────────────────
   const getAllParticipantMain = useSelector(
-    (state) => state.videoFeatureReducer.getAllParticipantMain
+    (s) => s.videoFeatureReducer.getAllParticipantMain,
   );
-
-  console.log(getAllParticipantMain, "AllPartcicipantChecker");
   const waitingParticipants = useSelector(
-    (state) => state.videoFeatureReducer.waitingParticipantsList
+    (s) => s.videoFeatureReducer.waitingParticipantsList,
   );
-
   const NormalizeVideoFlag = useSelector(
-    (state) => state.videoFeatureReducer.NormalizeVideoFlag
+    (s) => s.videoFeatureReducer.NormalizeVideoFlag,
   );
-
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag
+    (s) => s.videoFeatureReducer.presenterViewHostFlag,
   );
-
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag
+    (s) => s.videoFeatureReducer.presenterViewJoinFlag,
   );
-
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag
+    (s) => s.videoFeatureReducer.presenterViewFlag,
   );
-
   const newJoinPresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.newJoinPresenterParticipant
+    (s) => s.videoFeatureReducer.newJoinPresenterParticipant,
   );
-
   const leavePresenterParticipant = useSelector(
-    (state) => state.videoFeatureReducer.leavePresenterParticipant
+    (s) => s.videoFeatureReducer.leavePresenterParticipant,
   );
-
   const disableBeforeJoinZoom = useSelector(
-    (state) => state.videoFeatureReducer.disableBeforeJoinZoom
+    (s) => s.videoFeatureReducer.disableBeforeJoinZoom,
   );
-
   const raisedUnRaisedParticipant = useSelector(
-    (state) => state.videoFeatureReducer.raisedUnRaisedParticipant
+    (s) => s.videoFeatureReducer.raisedUnRaisedParticipant,
   );
 
-  let RoomID = presenterViewFlag
-    ? newroomID
-    : isMeetingVideoHostCheck
-    ? newRoomID
-    : participantRoomId;
-  let UID = isMeetingVideoHostCheck ? isGuid : participantUID;
+  // ── Derived room/uid values ────────────────────────────────────────────────
+  /**
+   * The effective room ID and UID for this client in the current view mode.
+   * Kept as a memoised object so handlers can reference stable values.
+   */
+  const roomContext = useMemo(
+    () => ({
+      RoomID: resolveRoomID({
+        presenterViewFlag,
+        presenterViewHostFlag,
+        presenterViewJoinFlag,
+        isMeetingVideoHostCheck: session.isMeetingVideoHostCheck,
+        acceptedRoomID: session.acceptedRoomID,
+        newRoomID: session.roomID,
+        participantRoomId: session.participantRoomId,
+      }),
+      UID: session.isMeetingVideoHostCheck
+        ? session.isGuid
+        : session.participantUID,
+    }),
+    [presenterViewFlag, presenterViewHostFlag, presenterViewJoinFlag, session],
+  );
 
+  // ── Local state ────────────────────────────────────────────────────────────
+  /** Displayed participant rows; filtered by the search input */
   const [filteredParticipants, setFilteredParticipants] = useState([]);
-
+  /** De-duplicated waiting-room entries */
   const [filteredWaitingParticipants, setFilteredWaitingParticipants] =
     useState([]);
-
-  console.log(filteredWaitingParticipants, "filteredWaitingParticipants");
-
   const [searchValue, setSearchValue] = useState("");
-
+  /**
+   * true  → at least one non-self participant is muted → button shows "Unmute All"
+   * false → all non-self participants are unmuted      → button shows "Mute All"
+   */
   const [isForAll, setIsForAll] = useState(false);
 
-  const handleChangeSearchParticipant = (e) => {
-    const { value } = e.target;
-    setSearchValue(value);
-    let dublicateData = [...getAllParticipantMain];
-
-    // Filter participants based on the search value
-    const filtered = dublicateData.filter((participant) =>
-      participant.name.toLowerCase().includes(value.toLowerCase())
-    );
-    console.log("getAllParticipantMain");
-
-    setFilteredParticipants(filtered);
-  };
-
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: Sync participant list from Redux
+  // FIX: original used Object.keys(array).length which is always > 0 for
+  // arrays; replaced with Array.isArray + length check.
+  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    if (Object.keys(getAllParticipantMain).length) {
-      console.log("getAllParticipantMain");
+    if (Array.isArray(getAllParticipantMain) && getAllParticipantMain.length) {
       setFilteredParticipants(getAllParticipantMain);
     } else {
-      console.log("getAllParticipantMain");
       setFilteredParticipants([]);
     }
+    // Reset search whenever the underlying list changes
+    setSearchValue("");
   }, [getAllParticipantMain]);
 
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: Remove a participant who left (presenter view only)
+  // FIX: original read `filteredParticipants` from the outer closure which
+  // could be stale. Using the functional updater form ensures we always
+  // operate on the latest state.
+  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (
-      Object.keys(leavePresenterParticipant).length > 0 &&
-      presenterViewFlag &&
-      presenterViewHostFlag
-    ) {
-      // Remove the participant whose guid matches the uid
-      const updatedParticipants = filteredParticipants.filter(
-        (participant) => participant.guid !== leavePresenterParticipant.uid
-      );
-      // Update the state with the filtered list
-      setFilteredParticipants(updatedParticipants);
-      console.log("getAllParticipantMain");
-      console.log("filteredParticipants", leavePresenterParticipant);
-      dispatch(presenterLeaveParticipant([]));
-    }
-  }, [leavePresenterParticipant]);
+      !leavePresenterParticipant ||
+      !Object.keys(leavePresenterParticipant).length ||
+      !presenterViewFlag ||
+      !presenterViewHostFlag
+    )
+      return;
 
+    setFilteredParticipants((prev) =>
+      prev.filter((p) => p.guid !== leavePresenterParticipant.uid),
+    );
+    dispatch(presenterLeaveParticipant([]));
+  }, [
+    leavePresenterParticipant,
+    presenterViewFlag,
+    presenterViewHostFlag,
+    dispatch,
+  ]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: Add / replace a participant who just joined (presenter view only)
+  // FIX: original used [...filteredParticipants] which captured a stale
+  // closure. Using the functional updater form instead.
+  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
-    console.log("getAllParticipantMain");
-    console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
     if (
-      Object.keys(newJoinPresenterParticipant).length > 0 &&
-      presenterViewFlag &&
-      presenterViewHostFlag
-    ) {
-      console.log("PRESENTER_JOIN_PARTICIPANT_VIDEO");
-      // Step 1: Remove any existing participant with the same userID or guid
-      let dublicateData = [...filteredParticipants];
-      const updatedParticipants = dublicateData.filter(
-        (participant) =>
-          participant.userID !== newJoinPresenterParticipant.userID &&
-          participant.guid !== newJoinPresenterParticipant.guid
+      !newJoinPresenterParticipant ||
+      !Object.keys(newJoinPresenterParticipant).length ||
+      !presenterViewFlag ||
+      !presenterViewHostFlag
+    )
+      return;
+
+    setFilteredParticipants((prev) => {
+      // Remove stale entry for the same user (reconnect / tab-switch scenario)
+      const withoutStale = prev.filter(
+        (p) =>
+          p.userID !== newJoinPresenterParticipant.userID &&
+          p.guid !== newJoinPresenterParticipant.guid,
       );
-
-      // Step 2: Add the new participant
-      updatedParticipants.push(newJoinPresenterParticipant);
-
-      // Step 3: Update the state
-      console.log("getAllParticipantMain");
-      dispatch(updatedParticipantListForPresenter(updatedParticipants));
-      dispatch(presenterNewParticipantJoin([]));
-
-      console.log(updatedParticipants);
-    }
-  }, [newJoinPresenterParticipant]);
-
-  // Ensure it listens to participantList updates
-  function isEveryoneUnmuted(participants) {
-    const localUserID = parseInt(localStorage.getItem("userID"));
-    const isHost = JSON.parse(localStorage.getItem("isHost"));
-    const isGuid = isHost
-      ? localStorage.getItem("isGuid")
-      : localStorage.getItem("participantUID");
-
-    return !participants.some((participant) => {
-      if (presenterViewHostFlag) {
-        // Skip if host & matched user
-        return (
-          participant.userID !== localUserID &&
-          participant.guid !== isGuid &&
-          participant.mute === true
-        );
-      } else {
-        // Check if any non-host participant is muted
-        console.log(
-          "isEveryoneUnmuted",
-          !participant.isHost && participant.mute === true
-        );
-        return !participant.isHost && participant.mute === true;
-      }
+      const updated = [...withoutStale, newJoinPresenterParticipant];
+      // Keep Redux in sync so other selectors that depend on this list are accurate
+      dispatch(updatedParticipantListForPresenter(updated));
+      return updated;
     });
-  }
 
-  useEffect(() => {
-    if (filteredParticipants?.length) {
-      if (isEveryoneUnmuted(filteredParticipants)) {
-        if (isForAll === true) {
-          setIsForAll(false);
-        }
-      } else {
-        if (isForAll === false) {
-          setIsForAll(true);
-        }
-      }
-    }
-  }, [filteredParticipants]);
+    dispatch(presenterNewParticipantJoin([]));
+  }, [
+    newJoinPresenterParticipant,
+    presenterViewFlag,
+    presenterViewHostFlag,
+    dispatch,
+  ]);
 
-  // Update filteredWaitingParticipants based on waitingParticipants
+  // ─────────────────────────────────────────────────────────────────────────
+  // EFFECT: De-duplicate the waiting-room list
+  // Waiting participants can arrive via multiple socket events for the same
+  // person. A Map keyed on `meetingID_userID` keeps only the first arrival.
+  // ─────────────────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!waitingParticipants?.length) {
       setFilteredWaitingParticipants([]);
@@ -251,307 +307,465 @@ const VideoNewParticipantList = () => {
     }
 
     const map = new Map();
-
     waitingParticipants.forEach((item) => {
       const key = `${item.meetingID}_${item.userID}`;
       if (!map.has(key)) map.set(key, item);
     });
-    console.log(waitingParticipants, "Filtered unique participants");
 
     setFilteredWaitingParticipants(Array.from(map.values()));
-    console.log(Array.from(map.values()), "Filtered unique participants");
   }, [waitingParticipants]);
 
-  const makeHostOnClick = async (usersData) => {
-    console.log("HostTransferEvent");
-    let newRoomId = localStorage.getItem("newRoomId");
+  // ─────────────────────────────────────────────────────────────────────────
+  // DERIVED: Mute-All button visibility and label
+  //
+  // Business rule (SRS):
+  //   The "Mute All / Unmute All" button is shown ONLY when there are at
+  //   least 2 participants EXCLUDING the current host/presenter. With fewer
+  //   than 2 others the per-row icon is sufficient and the bulk button
+  //   adds no value.
+  //
+  // Why useMemo instead of a useEffect+state pair:
+  //   Both `nonSelfCount` and `shouldMuteAll` are pure derivations of
+  //   existing state. Computing them inline avoids a second render cycle
+  //   that the original useEffect/setIsForAll pattern caused.
+  // ─────────────────────────────────────────────────────────────────────────
+  const { nonSelfParticipants, showMuteAllButton, shouldMuteAll } =
+    useMemo(() => {
+      const nonSelf = filteredParticipants.filter((p) => {
+        // In presenter-host view, exclude the presenter themselves by userID
+        if (presenterViewFlag && presenterViewHostFlag) {
+          return p.userID !== session.presenterHostUserID;
+        }
+        // In regular host view, exclude host-flagged participants
+        return !p.isHost;
+      });
 
-    if (raisedUnRaisedParticipant) {
-      console.log("maximizeParticipantVideoFlag");
-      if (!isZoomEnabled || !disableBeforeJoinZoom) {
-        console.log("maximizeParticipantVideoFlag");
-        let data = {
-          RoomID: String(RoomID),
-          UID: String(UID),
-          IsHandRaised: false,
-        };
-        await dispatch(raiseUnRaisedHandMainApi(navigate, t, data));
-      }
-    }
+      // At least one non-self participant is muted → show "Unmute All"
+      const anyMuted = nonSelf.some((p) => p.mute === true);
 
-    // --------------------------------------------------------------------
-    // 2. Send HostTransferEvent to iframe
-    if (isZoomEnabled) {
-      const iframe = iframeRef.current;
-      console.log("HostTransferEvent", usersData);
-      if (iframe && iframe.contentWindow) {
-        const msg = `HostTransferEvent_#_${usersData.guid}`;
-        setTimeout(() => {
-          iframe.contentWindow.postMessage(msg, "*");
-          console.log("HostTransferEvent", msg);
-        }, 1000);
-      }
-    } else {
-    }
-    let data = {
-      RoomID: String(newRoomId),
-      UID: usersData.guid,
-      UserID: usersData.userID,
-      MeetingID: currentMeetingID,
-    };
-    dispatch(transferMeetingHostMainApi(navigate, t, data, 1));
-  };
-
-  const muteUnmuteByHost = (usersData, flag) => {
-    if (usersData) {
-      let roomID = localStorage.getItem("acceptedRoomID");
-      let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck")
-      );
-      let newRoomID = localStorage.getItem("newRoomId");
-      let participantRoomId = localStorage.getItem("participantRoomId");
-      let RoomID =
-        presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
-          ? roomID
-          : isMeetingVideoHostCheck
-          ? newRoomID
-          : participantRoomId;
-      // Mute/Unmute a specific participant
-      console.log("filteredParticipants");
-      console.log("getAllParticipantMain");
-      setFilteredParticipants((prev) =>
-        prev.map((participant) =>
-          participant.guid === usersData.guid
-            ? { ...participant, mute: flag }
-            : participant
-        )
-      );
-      if (
-        presenterViewFlag &&
-        (presenterViewHostFlag || presenterViewJoinFlag)
-      ) {
-        // Exclude hosts from muting
-        const data = {
-          RoomID: RoomID,
-          IsMuted: flag,
-          isForAll: false,
-          MuteUnMuteList: [
-            {
-              UID: usersData.guid, // The participant's UID
-            },
-          ],
-          MeetingID: currentMeetingID,
-        };
-        dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      } else if (!usersData.isHost) {
-        // Exclude hosts from muting
-        const data = {
-          RoomID: RoomID,
-          IsMuted: flag,
-          isForAll: false,
-          MuteUnMuteList: [
-            {
-              UID: usersData.guid, // The participant's UID
-            },
-          ],
-          MeetingID: currentMeetingID,
-        };
-
-        dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-      }
-    }
-  };
-
-  const muteUnmuteAllByHost = (flag) => {
-    // Update the isForAll state
-    let duplicatesData = [...filteredParticipants];
-    // Exclude hosts from the mute/unmute list
-    let allUids = [];
-    let isHost = JSON.parse(localStorage.getItem("isHost"));
-    let isGuid = localStorage.getItem("isGuid");
-    let participantUID = localStorage.getItem("participantUID");
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
-    let newRoomID = localStorage.getItem("newRoomId");
-    let participantRoomId = localStorage.getItem("participantRoomId");
-    let callAcceptedRoomID = localStorage.getItem("acceptedRoomID");
-    if (presenterViewFlag && presenterViewHostFlag) {
-      console.log("isEveryoneUnmuted");
-      let currentUserId = isHost ? isGuid : participantUID;
-      allUids = duplicatesData
-        .filter((participant) => participant.guid !== currentUserId) // Filter out hosts
-        .map((participant) => ({
-          UID: participant.guid,
-        }));
-    } else {
-      allUids = duplicatesData
-        .filter((participant) => !participant.isHost) // Filter out hosts
-        .map((participant) => ({
-          UID: participant.guid,
-        }));
-    }
-
-    console.log(allUids, "allUids after excluding hosts");
-    let RoomID = presenterViewFlag
-      ? roomID
-        ? roomID
-        : callAcceptedRoomID
-      : isMeetingVideoHostCheck
-      ? newRoomID
-      : participantRoomId;
-    console.log(presenterViewFlag, "allUids after excluding hosts");
-    console.log(roomID, "allUids after excluding hosts");
-    console.log(callAcceptedRoomID, "allUids after excluding hosts");
-    console.log(isMeetingVideoHostCheck, "allUids after excluding hosts");
-    console.log(newRoomID, "allUids after excluding hosts");
-    console.log(participantRoomId, "allUids after excluding hosts");
-    const data = {
-      RoomID: RoomID,
-      IsMuted: !flag,
-      isForAll: true, // Pass the current flag
-      MuteUnMuteList: allUids,
-      MeetingID: currentMeetingID,
-    };
-    dispatch(muteUnMuteParticipantMainApi(navigate, t, data));
-  };
-
-  const hideUnHideVideoParticipantByHost = (usersData, flag) => {
-    let roomID = localStorage.getItem("acceptedRoomID");
-    let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck")
-    );
-    let newRoomID = localStorage.getItem("newRoomId");
-    let participantRoomId = localStorage.getItem("participantRoomId");
-    let RoomID =
-      presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag)
-        ? roomID
-        : isMeetingVideoHostCheck
-        ? newRoomID
-        : participantRoomId;
-
-    let data = {
-      RoomID: RoomID,
-      HideVideo: flag,
-      UIDList: [usersData.guid],
-      MeetingID: currentMeetingID,
-    };
-
-    // Update the specific participant's hideCamera state in `newParticipants`
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
-    setFilteredParticipants((prev) =>
-      prev.map((participant) =>
-        participant.guid === usersData.guid
-          ? { ...participant, hideCamera: flag }
-          : participant
-      )
-    );
-
-    dispatch(hideUnHideParticipantGuestMainApi(navigate, t, data));
-  };
-
-  const removeParticipantMeetingOnClick = (usersData) => {
-    let data = {
-      RoomID: String(roomID),
-      UID: usersData.guid,
-      Name: usersData.name,
-      MeetingID: currentMeetingID,
-    };
-
-    console.log("getAllParticipantMain");
-    console.log("filteredParticipants");
-    setFilteredParticipants((prev) =>
-      prev.filter((participant) => participant.guid !== usersData.guid)
-    );
-
-    dispatch(removeParticipantMeetingMainApi(navigate, t, data));
-  };
-
-  const handleClickAllAcceptAndReject = (flag) => {
-    if (!presenterViewFlag) {
-      const participantsToProcess = filteredWaitingParticipants;
-
-      if (!participantsToProcess.length) return;
-      console.log(
-        participantsToProcess,
-        "participantsToProcessparticipantsToProcess"
-      );
-      let Data = {
-        MeetingId: participantsToProcess[0]?.meetingID,
-        RoomId: String(roomID),
-        IsRequestAccepted: flag === 1,
-        AttendeeResponseList: participantsToProcess.map((p) => ({
-          IsGuest: p.isGuest,
-          UID: p.guid,
-          UserID: p.userID,
-        })),
+      return {
+        nonSelfParticipants: nonSelf,
+        // Only render the button when there are 2+ non-self participants
+        showMuteAllButton: nonSelf.length > 1,
+        shouldMuteAll: anyMuted,
       };
+    }, [
+      filteredParticipants,
+      presenterViewFlag,
+      presenterViewHostFlag,
+      session.presenterHostUserID,
+    ]);
+
+  // Keep isForAll state in sync with the derived value so existing
+  // handler logic that reads `isForAll` still works correctly
+  useEffect(() => {
+    setIsForAll(shouldMuteAll);
+  }, [shouldMuteAll]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // HANDLERS
+  // Wrapped in useCallback to give stable references to the memoised list
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /** Filter visible rows by the typed search string (client-side only) */
+  const handleChangeSearchParticipant = useCallback(
+    (e) => {
+      const { value } = e.target;
+      setSearchValue(value);
+      const lower = value.toLowerCase();
+      setFilteredParticipants(
+        getAllParticipantMain.filter((p) =>
+          p.name.toLowerCase().includes(lower),
+        ),
+      );
+    },
+    [getAllParticipantMain],
+  );
+
+  /**
+   * Transfer host role to another participant.
+   * If the current user has their hand raised it is lowered first (protocol
+   * requirement), then a HostTransferEvent is posted to the Zoom iframe before
+   * the API call so the iframe UI updates atomically with the server state.
+   */
+  const makeHostOnClick = useCallback(
+    async (usersData) => {
+      // Lower raised hand before transferring host
+      if (
+        raisedUnRaisedParticipant &&
+        (!session.isZoomEnabled || !disableBeforeJoinZoom)
+      ) {
+        await dispatch(
+          raiseUnRaisedHandMainApi(navigate, t, {
+            RoomID: String(roomContext.RoomID),
+            UID: String(roomContext.UID),
+            IsHandRaised: false,
+          }),
+        );
+      }
+
+      // Notify Zoom iframe of the host transfer (Zoom-specific path only)
+      if (session.isZoomEnabled) {
+        const iframe = iframeRef.current;
+        if (iframe?.contentWindow) {
+          setTimeout(() => {
+            iframe.contentWindow.postMessage(
+              `HostTransferEvent_#_${usersData.guid}`,
+              "*",
+            );
+          }, 1000);
+        }
+      }
+
+      dispatch(
+        transferMeetingHostMainApi(
+          navigate,
+          t,
+          {
+            RoomID: String(session.roomID),
+            UID: usersData.guid,
+            UserID: usersData.userID,
+            MeetingID: session.currentMeetingID,
+          },
+          1,
+        ),
+      );
+    },
+    [
+      dispatch,
+      navigate,
+      t,
+      raisedUnRaisedParticipant,
+      disableBeforeJoinZoom,
+      session,
+      roomContext,
+      iframeRef,
+    ],
+  );
+
+  /**
+   * Mute or unmute a single participant.
+   * Optimistically updates the local list so the icon flips immediately
+   * without waiting for the socket echo.
+   */
+  const muteUnmuteByHost = useCallback(
+    (usersData, flag) => {
+      if (!usersData) return;
+
+      // Optimistic local update — avoids a visible lag on the icon
+      setFilteredParticipants((prev) =>
+        prev.map((p) => (p.guid === usersData.guid ? { ...p, mute: flag } : p)),
+      );
+
+      // Only dispatch if this is a presenter context OR the target is not the host
+      const isPresenterContext =
+        presenterViewFlag && (presenterViewHostFlag || presenterViewJoinFlag);
+      if (isPresenterContext || !usersData.isHost) {
+        dispatch(
+          muteUnMuteParticipantMainApi(navigate, t, {
+            RoomID: roomContext.RoomID,
+            IsMuted: flag,
+            isForAll: false,
+            MuteUnMuteList: [{ UID: usersData.guid }],
+            MeetingID: session.currentMeetingID,
+          }),
+        );
+      }
+    },
+    [
+      dispatch,
+      navigate,
+      t,
+      roomContext,
+      session.currentMeetingID,
+      presenterViewFlag,
+      presenterViewHostFlag,
+      presenterViewJoinFlag,
+    ],
+  );
+
+  /**
+   * Mute or unmute all non-self participants at once.
+   * Excludes the current user from the UID list so they never accidentally
+   * mute themselves via this action.
+   *
+   * FIX: original had 6+ repeated console.logs and re-read localStorage
+   * inside the function. Now uses the memoised `nonSelfParticipants` list
+   * and `roomContext` derived above.
+   */
+  const muteUnmuteAllByHost = useCallback(
+    (currentlyMuted) => {
+      const allUids = nonSelfParticipants.map((p) => ({ UID: p.guid }));
+
+      // Resolve RoomID for the "mute all" context (presenter path uses acceptedRoomID)
+      const RoomID = presenterViewFlag
+        ? session.acceptedRoomID || session.roomID
+        : session.isMeetingVideoHostCheck
+          ? session.roomID
+          : session.participantRoomId;
+
+      dispatch(
+        muteUnMuteParticipantMainApi(navigate, t, {
+          RoomID,
+          IsMuted: !currentlyMuted, // toggle
+          isForAll: true,
+          MuteUnMuteList: allUids,
+          MeetingID: session.currentMeetingID,
+        }),
+      );
+    },
+    [dispatch, navigate, t, nonSelfParticipants, presenterViewFlag, session],
+  );
+
+  /**
+   * Show or hide a participant's camera feed.
+   * Optimistically patches `hideCamera` on the local row.
+   */
+  const hideUnHideVideoParticipantByHost = useCallback(
+    (usersData, flag) => {
+      // Optimistic local update
+      setFilteredParticipants((prev) =>
+        prev.map((p) =>
+          p.guid === usersData.guid ? { ...p, hideCamera: flag } : p,
+        ),
+      );
+
+      dispatch(
+        hideUnHideParticipantGuestMainApi(navigate, t, {
+          RoomID: roomContext.RoomID,
+          HideVideo: flag,
+          UIDList: [usersData.guid],
+          MeetingID: session.currentMeetingID,
+        }),
+      );
+    },
+    [dispatch, navigate, t, roomContext, session.currentMeetingID],
+  );
+
+  /**
+   * Remove a participant from the meeting entirely.
+   * Optimistically removes their row before the API call completes.
+   */
+  const removeParticipantMeetingOnClick = useCallback(
+    (usersData) => {
+      setFilteredParticipants((prev) =>
+        prev.filter((p) => p.guid !== usersData.guid),
+      );
+      dispatch(
+        removeParticipantMeetingMainApi(navigate, t, {
+          RoomID: String(session.roomID),
+          UID: usersData.guid,
+          Name: usersData.name,
+          MeetingID: session.currentMeetingID,
+        }),
+      );
+    },
+    [dispatch, navigate, t, session.roomID, session.currentMeetingID],
+  );
+
+  /**
+   * Admit or deny all participants currently in the waiting room at once.
+   * flag === 1 → admit all, flag === 2 → deny all.
+   */
+  const handleClickAllAcceptAndReject = useCallback(
+    (flag) => {
+      // Waiting-room bulk actions are not available in presenter view
+      if (presenterViewFlag || !filteredWaitingParticipants.length) return;
 
       dispatch(
         admitRejectAttendeeMainApi(
-          Data,
+          {
+            MeetingId: filteredWaitingParticipants[0]?.meetingID,
+            RoomId: String(session.roomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: filteredWaitingParticipants.map((p) => ({
+              IsGuest: p.isGuest,
+              UID: p.guid,
+              UserID: p.userID,
+            })),
+          },
           navigate,
           t,
           true,
-          filteredParticipants
-        )
+          filteredParticipants,
+        ),
       );
 
-      // ✅ Remove all from waiting list
+      // Remove all from the local waiting list immediately
       dispatch(
         participantAcceptandReject(
-          participantsToProcess.map((p) => ({
+          filteredWaitingParticipants.map((p) => ({
             meetingID: p.meetingID,
             userID: p.userID,
-          }))
-        )
+          })),
+        ),
       );
-    }
-  };
+    },
+    [
+      dispatch,
+      navigate,
+      t,
+      presenterViewFlag,
+      filteredWaitingParticipants,
+      filteredParticipants,
+      session.roomID,
+    ],
+  );
 
-  const handleClickAcceptAndReject = (participantInfo, flag) => {
-    let Data = {
-      MeetingId: currentMeetingID,
-      RoomId: String(roomID),
-      IsRequestAccepted: flag === 1 ? true : false,
-      AttendeeResponseList: [
-        {
-          IsGuest: participantInfo.isGuest,
-          UID: participantInfo.guid,
-          UserID: participantInfo.userID,
-        },
-      ],
-    };
-    dispatch(
-      admitRejectAttendeeMainApi(Data, navigate, t, false, filteredParticipants)
-    );
+  /**
+   * Admit or deny a single waiting participant.
+   * flag === 1 → admit, flag === 2 → deny.
+   * In both cases the participant is removed from the waiting list.
+   */
+  const handleClickAcceptAndReject = useCallback(
+    (participantInfo, flag) => {
+      dispatch(
+        admitRejectAttendeeMainApi(
+          {
+            MeetingId: session.currentMeetingID,
+            RoomId: String(session.roomID),
+            IsRequestAccepted: flag === 1,
+            AttendeeResponseList: [
+              {
+                IsGuest: participantInfo.isGuest,
+                UID: participantInfo.guid,
+                UserID: participantInfo.userID,
+              },
+            ],
+          },
+          navigate,
+          t,
+          false,
+          filteredParticipants,
+        ),
+      );
 
-    // ✅ REMOVE FROM WAITING LIST (accept OR deny)
-    dispatch(
-      participantAcceptandReject([
-        {
-          meetingID: participantInfo.meetingID,
-          userID: participantInfo.userID,
-        },
-      ])
-    );
-  };
+      dispatch(
+        participantAcceptandReject([
+          {
+            meetingID: participantInfo.meetingID,
+            userID: participantInfo.userID,
+          },
+        ]),
+      );
+    },
+    [
+      dispatch,
+      navigate,
+      t,
+      session.currentMeetingID,
+      session.roomID,
+      filteredParticipants,
+    ],
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // DERIVED: container class for the outer section element
+  // ─────────────────────────────────────────────────────────────────────────
+  const sectionClass = useMemo(() => {
+    if (presenterViewFlag)
+      return styles["Waiting-New-Participant-List-For-Presenter"];
+    if (NormalizeVideoFlag) return styles["WaitingParticipantBoxNorm"];
+    if (filteredWaitingParticipants.length === 0)
+      return styles["Waiting-New-Participant-List-when-no-participantwaiting"];
+    return styles["Waiting-New-Participant-List"];
+  }, [
+    presenterViewFlag,
+    NormalizeVideoFlag,
+    filteredWaitingParticipants.length,
+  ]);
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // RENDER HELPERS
+  // Extracted to avoid duplicating the mic / camera icon ternary chains
+  // ─────────────────────────────────────────────────────────────────────────
+
+  /**
+   * Returns the correct camera icon for a participant row.
+   * Self (host / presenter) reads from localStorage because their own
+   * camera state is tracked locally, not in the participant list.
+   */
+  const renderCameraIcon = useCallback(
+    (usersData) => {
+      const isSelfHostRow =
+        (!presenterViewHostFlag &&
+          !presenterViewJoinFlag &&
+          usersData.isHost) ||
+        (presenterViewHostFlag &&
+          session.presenterHostUserID === usersData.userID);
+
+      const isWebCamEnabled = getStoredBool("isWebCamEnabled");
+      const cameraOff = isSelfHostRow ? isWebCamEnabled : usersData.hideCamera;
+
+      return cameraOff ? (
+        <img
+          draggable="false"
+          src={VideoDisable}
+          width="18px"
+          height="18px"
+          alt="Video Disabled"
+          className="handraised-participant"
+        />
+      ) : (
+        <img
+          draggable="false"
+          src={VideoOn}
+          width="18px"
+          height="18px"
+          alt="Video On"
+          className="handraised-participant"
+        />
+      );
+    },
+    [presenterViewHostFlag, presenterViewJoinFlag, session.presenterHostUserID],
+  );
+
+  /**
+   * Returns the correct microphone icon for a participant row.
+   * Same self-vs-others logic as renderCameraIcon.
+   */
+  const renderMicIcon = useCallback(
+    (usersData) => {
+      const isSelfHostRow =
+        (!presenterViewHostFlag &&
+          !presenterViewJoinFlag &&
+          usersData.isHost) ||
+        (presenterViewHostFlag &&
+          session.presenterHostUserID === usersData.userID);
+
+      const isMicEnabled = getStoredBool("isMicEnabled");
+      const micOff = isSelfHostRow ? isMicEnabled : usersData.mute;
+
+      return micOff ? (
+        <img
+          draggable="false"
+          src={MicDisabled}
+          width="19px"
+          height="19px"
+          alt="Microphone Disabled"
+        />
+      ) : (
+        <img
+          draggable="false"
+          src={MicOnEnabled}
+          width="15px"
+          height="19px"
+          alt="Microphone Enabled"
+        />
+      );
+    },
+    [presenterViewHostFlag, presenterViewJoinFlag, session.presenterHostUserID],
+  );
+
+  // ─────────────────────────────────────────────────────────────────────────
+  // RENDER
+  // ─────────────────────────────────────────────────────────────────────────
 
   return (
-    <section
-      className={
-        presenterViewFlag
-          ? styles["Waiting-New-Participant-List-For-Presenter"]
-          : NormalizeVideoFlag
-          ? styles["WaitingParticipantBoxNorm"]
-          : filteredWaitingParticipants.length === 0
-          ? styles["Waiting-New-Participant-List-when-no-participantwaiting"]
-          : styles["Waiting-New-Participant-List"]
-      }
-    >
+    <section className={sectionClass}>
+      {/* ── Header: title + close button ── */}
       <Row>
-        <Col sm={12} md={12} lg={12} className="d-flex justify-content-between">
+        <Col sm={12} className="d-flex justify-content-between">
           <span className={styles["Waiting-New-Participant-List_box_title"]}>
             {t("People")}
           </span>
@@ -560,60 +774,58 @@ const VideoNewParticipantList = () => {
             src={CrossIcon}
             onClick={() => dispatch(participantWaitingListBox(false))}
             style={{ display: "block", objectFit: "cover", cursor: "pointer" }}
-            alt=""
+            alt="Close participant panel"
           />
         </Col>
       </Row>
+
+      {/* ── Search field ── */}
       <Row>
-        <Col sm={12} md={12} lg={12}>
+        <Col sm={12}>
           <TextField
-            placeholder={"Search"}
-            applyClass={"waitingParticipantsSearchField"}
-            // className={styles["text-field-searchclass"]}
+            placeholder="Search"
+            applyClass="waitingParticipantsSearchField"
             change={handleChangeSearchParticipant}
             value={searchValue}
           />
         </Col>
       </Row>
-      {/* Hosts Title Tab  */}
-      <Col sm={12} md={12} lg={12}>
+
+      {/* ── Host / Presenter label row ── */}
+      <Col sm={12}>
         <div className={styles["Waiting-New-Participant-hosttab"]}>
-          <Row>
-            <Col sm={12} md={12} lg={12}>
-              <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
-                {presenterViewFlag && presenterViewHostFlag
-                  ? t("Presenter")
-                  : t("Host")}
-              </p>
-            </Col>
-          </Row>
+          <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+            {presenterViewFlag && presenterViewHostFlag
+              ? t("Presenter")
+              : t("Host")}
+          </p>
         </div>
       </Col>
 
-      {/* Host Name List */}
-      <Col sm={12} md={12} lg={12}>
+      {/* ── Host / Presenter name ── */}
+      <Col sm={12}>
         <div className={styles["Waiting-New-Participant-HostNameList"]}>
-          <Row>
-            <Col sm={12} md={12} lg={12}>
-              <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
-                {HostName}
-              </p>
-            </Col>
-          </Row>
+          <p className={styles["Waiting-New-Participant-HostsList-Name"]}>
+            {session.hostName}
+          </p>
         </div>
       </Col>
 
-      {/* Participant Mute All */}
-      <Col sm={12} md={12} lg={12}>
+      {/* ── Participants header + conditional Mute All / Unmute All button ──
+           Business rule: button is hidden when there are fewer than 2 non-self
+           participants. With only one other person the individual row mic
+           toggle is sufficient and the bulk button adds no value.
+      ── */}
+      <Col sm={12}>
         <div className={styles["Waiting-New-Participant-hosttab"]}>
           <Row>
-            <Col sm={6} md={6} lg={6} className="d-flex justify-content-start">
+            <Col sm={6} className="d-flex justify-content-start">
               <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
                 {t("Participants")}
               </p>
             </Col>
-            <Col sm={6} md={6} lg={6} className="d-flex justify-content-end">
-              {filteredParticipants.length > 1 && (
+            <Col sm={6} className="d-flex justify-content-end">
+              {showMuteAllButton && (
                 <Button
                   text={isForAll ? t("Unmute-all") : t("Mute-all")}
                   className={styles["Waiting-New-Participant-muteAll"]}
@@ -625,8 +837,8 @@ const VideoNewParticipantList = () => {
         </div>
       </Col>
 
-      {/* Participants Name List */}
-      <Col sm={12} md={12} lg={12}>
+      {/* ── Participant rows ── */}
+      <Col sm={12}>
         <div
           className={
             filteredWaitingParticipants.length === 0
@@ -635,493 +847,292 @@ const VideoNewParticipantList = () => {
           }
         >
           {filteredParticipants.length > 0 ? (
-            filteredParticipants.map((usersData, index) => {
-              const isSelfHost = usersData.isHost && meetinHostInfo.isHost; // ⭐ MAIN CONDITION
+            filteredParticipants.map((usersData) => {
+              /**
+               * isSelfHost: the current meeting user is a host AND this row
+               * represents them. We hide action controls for this row because
+               * hosts cannot act on themselves.
+               */
+              const isSelfHost =
+                usersData.isHost && session.meetinHostInfo?.isHost;
 
-              const isTargetUser = PresenterHostuserID !== usersData.userID;
+              /** true when this row represents a different user from the current host */
+              const isTargetUser =
+                session.presenterHostUserID !== usersData.userID;
 
-              // NEW FLAGS
               const canMute = !usersData.mute;
               const canHideVideo = !usersData.hideCamera;
 
-              // Dropdown visibility
+              /**
+               * Whether the three-dot dropdown should render for this row.
+               * In presenter view: only show for non-self participants.
+               * In regular host view: hide for the host row (they can't act on themselves).
+               */
               const canShowDropdown = presenterViewFlag
-                ? PresenterHostuserID !== usersData.userID
+                ? isTargetUser
                 : !usersData.isHost;
 
-              // Presenter default locked state
-              const isPresenterLocked =
-                presenterViewFlag &&
-                usersData.mute === true &&
-                usersData.hideCamera === true;
-
-              console.log(usersData, "usersDatausersData");
               return (
-                <>
-                  <Row className="hostBorder m-0">
-                    <Col
-                      className="p-0 d-flex align-items-center mt-1"
-                      lg={8}
-                      md={8}
-                      sm={12}
-                    >
-                      {!isSelfHost && (
-                        <>
-                          <p className="participant-name">{usersData?.name}</p>
-                          {presenterViewFlag ? (
+                <Row className="hostBorder m-0" key={usersData.guid}>
+                  {/* Left column: name + raise-hand + camera icon */}
+                  <Col
+                    className="p-0 d-flex align-items-center mt-1"
+                    lg={8}
+                    md={8}
+                    sm={12}
+                  >
+                    {!isSelfHost && (
+                      <>
+                        <p className="participant-name">{usersData.name}</p>
+
+                        {/* "(Presenter)" or "(Host)" label */}
+                        {presenterViewFlag &&
+                          presenterViewHostFlag &&
+                          session.presenterHostUserID === usersData.userID && (
+                            <p className={styles["Host-name"]}>
+                              <span className={styles["Host-title-name"]}>
+                                {t("(Presenter)")}
+                              </span>
+                            </p>
+                          )}
+                        {presenterViewFlag &&
+                          !presenterViewJoinFlag &&
+                          usersData.isHost &&
+                          session.presenterHostUserID !== usersData.userID && (
+                            <p className={styles["Host-name"]}>
+                              <span className={styles["Host-title-name"]}>
+                                {t("(Host)")}
+                              </span>
+                            </p>
+                          )}
+
+                        {/* Raised-hand icon */}
+                        {((presenterViewHostFlag && presenterViewFlag) ||
+                          session.meetinHostInfo?.isHost) &&
+                        usersData.raiseHand ? (
+                          <img
+                            draggable="false"
+                            src={GoldenHandRaised}
+                            alt="Hand raised"
+                            width="22px"
+                            height="22px"
+                            className="handraised-participant"
+                          />
+                        ) : (
+                          /* MenuRaiseHand placeholder — shown unless the row is
+                             the current presenter themselves */
+                          !(
+                            presenterViewFlag &&
                             presenterViewHostFlag &&
-                            PresenterHostuserID === usersData.userID ? (
-                              <>
-                                <p className={styles["Host-name"]}>
-                                  <span className={styles["Host-title-name"]}>
-                                    {t("(Presenter)")}
-                                  </span>
-                                </p>
-                              </>
-                            ) : (
-                              presenterViewJoinFlag === false &&
-                              usersData.isHost && (
-                                <>
-                                  <p className={styles["Host-name"]}>
-                                    <span className={styles["Host-title-name"]}>
-                                      {t("(Host)")}
-                                    </span>
-                                  </p>
-                                </>
-                              )
-                            )
-                          ) : null}
-                        </>
-                      )}
-
-                      {!isSelfHost && (
-                        <>
-                          {((presenterViewHostFlag && presenterViewFlag) ||
-                            meetinHostInfo.isHost) &&
-                          usersData.raiseHand ? (
+                            session.presenterHostUserID === usersData.userID
+                          ) && (
                             <img
                               draggable="false"
-                              src={GoldenHandRaised}
+                              src={MenuRaiseHand}
                               alt=""
-                              width={"22px"}
-                              height={"22px"}
                               className="handraised-participant"
                             />
-                          ) : (
-                            <img
-                              draggable="false"
-                              src={
-                                isMeetingVideoHostCheck
-                                  ? presenterViewFlag
-                                    ? !usersData.isHost
-                                      ? MenuRaiseHand
-                                      : null
-                                    : usersData
-                                    ? MenuRaiseHand
-                                    : null
-                                  : presenterViewFlag
-                                  ? presenterViewHostFlag &&
-                                    PresenterHostuserID === usersData?.userID
-                                    ? null
-                                    : MenuRaiseHand
-                                  : usersData
-                                  ? MenuRaiseHand
-                                  : null
+                          )
+                        )}
+
+                        {/* Camera status icon */}
+                        {renderCameraIcon(usersData)}
+                      </>
+                    )}
+                  </Col>
+
+                  {/* Right column: mic icon + action dropdown */}
+                  <Col
+                    className="d-flex justify-content-end align-items-baseline gap-2 p-0 right-col-icons"
+                    lg={4}
+                    md={4}
+                    sm={12}
+                  >
+                    {!isSelfHost && renderMicIcon(usersData)}
+
+                    {/* Action dropdown — presenter view */}
+                    {presenterViewFlag && isTargetUser && (
+                      <Dropdown>
+                        <Dropdown.Toggle className="participant-toggle">
+                          <img draggable="false" src={Menu} alt="Actions" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {/* Status-only block when both mic and video are already disabled */}
+                          {usersData.mute && usersData.hideCamera && (
+                            <div className="presenter-status-text px-3 py-2">
+                              <span className="status-muted d-block">
+                                {t("Mic Disabled")}
+                              </span>
+                              <span className="status-hidden d-block">
+                                {t("Video Hidden")}
+                              </span>
+                            </div>
+                          )}
+                          {canMute && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() => muteUnmuteByHost(usersData, true)}
+                            >
+                              {t("Mute")}
+                            </Dropdown.Item>
+                          )}
+                          {canHideVideo && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() =>
+                                hideUnHideVideoParticipantByHost(
+                                  usersData,
+                                  true,
+                                )
                               }
-                              alt=""
-                              className="handraised-participant"
-                            />
+                            >
+                              {t("Hide-video")}
+                            </Dropdown.Item>
                           )}
-                          {!presenterViewHostFlag &&
-                          !presenterViewJoinFlag &&
-                          usersData.isHost ? (
-                            JSON.parse(
-                              localStorage.getItem("isWebCamEnabled")
-                            ) ? (
-                              <img
-                                draggable="false"
-                                src={VideoDisable}
-                                width="18px"
-                                height="18px"
-                                alt="Video Disabled"
-                                className="handraised-participant"
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={VideoOn}
-                                width="18px"
-                                height="18px"
-                                alt="Video On"
-                                className="handraised-participant"
-                              />
-                            )
-                          ) : presenterViewHostFlag &&
-                            PresenterHostuserID === usersData.userID ? (
-                            JSON.parse(
-                              localStorage.getItem("isWebCamEnabled")
-                            ) ? (
-                              <img
-                                draggable="false"
-                                src={VideoDisable}
-                                width="18px"
-                                height="18px"
-                                alt="Video Disabled"
-                                className="handraised-participant"
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={VideoOn}
-                                width="18px"
-                                height="18px"
-                                alt="Video On"
-                                className="handraised-participant"
-                              />
-                            )
-                          ) : usersData.hideCamera ? (
-                            <img
-                              draggable="false"
-                              src={VideoDisable}
-                              width="18px"
-                              height="18px"
-                              alt="Video Disabled"
-                              className="handraised-participant"
-                            />
-                          ) : (
-                            <img
-                              draggable="false"
-                              src={VideoOn}
-                              width="18px"
-                              height="18px"
-                              alt="Video On"
-                              className="handraised-participant"
-                            />
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+
+                    {/* Action dropdown — regular host view */}
+                    {!presenterViewFlag && canShowDropdown && (
+                      <Dropdown>
+                        <Dropdown.Toggle className="participant-toggle">
+                          <img draggable="false" src={Menu} alt="Actions" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {/* Make Host — only for non-guest participants */}
+                          {!usersData.isGuest && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() => makeHostOnClick(usersData)}
+                            >
+                              {t("Make-host")}
+                            </Dropdown.Item>
                           )}
-                        </>
-                      )}
-                    </Col>
-
-                    <Col
-                      className="
-                       d-flex justify-content-end align-items-baseline gap-2 p-0 right-col-icons"
-                      lg={4}
-                      md={4}
-                      sm={12}
-                    >
-                      {!isSelfHost && (
-                        <>
-                          {!presenterViewHostFlag &&
-                          !presenterViewJoinFlag &&
-                          usersData.isHost ? (
-                            JSON.parse(localStorage.getItem("isMicEnabled")) ? (
-                              <img
-                                draggable="false"
-                                src={MicDisabled}
-                                width="19px"
-                                height="19px"
-                                alt="Microphone Disabled"
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={MicOnEnabled}
-                                width="15px"
-                                height="19px"
-                                alt="Microphone Enabled"
-                              />
-                            )
-                          ) : presenterViewHostFlag &&
-                            PresenterHostuserID === usersData.userID ? (
-                            JSON.parse(localStorage.getItem("isMicEnabled")) ? (
-                              <img
-                                draggable="false"
-                                src={MicDisabled}
-                                width="19px"
-                                height="19px"
-                                alt="Microphone Disabled"
-                              />
-                            ) : (
-                              <img
-                                draggable="false"
-                                src={MicOnEnabled}
-                                width="15px"
-                                height="19px"
-                                alt="Microphone Enabled"
-                              />
-                            )
-                          ) : usersData.mute ? (
-                            <img
-                              draggable="false"
-                              src={MicDisabled}
-                              width="19px"
-                              height="19px"
-                              alt="Microphone Disabled"
-                            />
-                          ) : (
-                            <img
-                              draggable="false"
-                              src={MicOnEnabled}
-                              width="15px"
-                              height="19px"
-                              alt="Microphone Enabled"
-                            />
+                          {/* Remove — only for non-host participants */}
+                          {!usersData.isHost && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() =>
+                                removeParticipantMeetingOnClick(usersData)
+                              }
+                            >
+                              {t("Remove")}
+                            </Dropdown.Item>
                           )}
-                        </>
-                      )}
-
-                      {presenterViewFlag ? (
-                        isTargetUser ? (
-                          <>
-                            {/* DEFAULT: Show status text, NO dropdown */}
-
-                            <Dropdown>
-                              <Dropdown.Toggle className="participant-toggle">
-                                <img draggable="false" src={Menu} alt="" />
-                              </Dropdown.Toggle>
-
-                              <Dropdown.Menu>
-                                {/* STATUS ONLY (when already muted + video hidden) */}
-                                {usersData.mute && usersData.hideCamera && (
-                                  <div
-                                    className={
-                                      "presenter-status-text px-3 py-2"
-                                    }
-                                  >
-                                    <span className="status-muted d-block">
-                                      {t("Mic Disabled")}
-                                    </span>
-                                    <span className="status-hidden d-block">
-                                      {t("Video Hidden")}
-                                    </span>
-                                  </div>
-                                )}
-
-                                {/* Mute (only if NOT muted) */}
-                                {canMute && (
-                                  <Dropdown.Item
-                                    className="participant-dropdown-item"
-                                    onClick={() =>
-                                      muteUnmuteByHost(usersData, true)
-                                    }
-                                  >
-                                    {t("Mute")}
-                                  </Dropdown.Item>
-                                )}
-
-                                {/* Hide Video (only if video is visible) */}
-                                {canHideVideo && (
-                                  <Dropdown.Item
-                                    className="participant-dropdown-item"
-                                    onClick={() =>
-                                      hideUnHideVideoParticipantByHost(
-                                        usersData,
-                                        true
-                                      )
-                                    }
-                                  >
-                                    {t("Hide-video")}
-                                  </Dropdown.Item>
-                                )}
-                              </Dropdown.Menu>
-                            </Dropdown>
-                          </>
-                        ) : null
-                      ) : (
-                        canShowDropdown && (
-                          <Dropdown>
-                            <Dropdown.Toggle className="participant-toggle">
-                              <img draggable="false" src={Menu} alt="" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              {!presenterViewFlag && !presenterViewHostFlag && (
-                                <>
-                                  {usersData.isGuest === false ? (
-                                    <Dropdown.Item
-                                      className="participant-dropdown-item"
-                                      onClick={() => makeHostOnClick(usersData)}
-                                    >
-                                      {t("Make-host")}
-                                    </Dropdown.Item>
-                                  ) : null}
-                                </>
-                              )}
-
-                              {!presenterViewFlag && !presenterViewHostFlag && (
-                                <>
-                                  {usersData.isHost === false ? (
-                                    <Dropdown.Item
-                                      className="participant-dropdown-item"
-                                      onClick={() =>
-                                        removeParticipantMeetingOnClick(
-                                          usersData
-                                        )
-                                      }
-                                    >
-                                      {t("Remove")}
-                                    </Dropdown.Item>
-                                  ) : null}
-                                </>
-                              )}
-                              <>
-                                {/* Mute (ONLY if participant is unmuted) */}
-                                {canMute && (
-                                  <Dropdown.Item
-                                    className="participant-dropdown-item"
-                                    onClick={() =>
-                                      muteUnmuteByHost(usersData, true)
-                                    }
-                                  >
-                                    {t("Mute")}
-                                  </Dropdown.Item>
-                                )}
-                              </>
-                              <>
-                                {/* Hide Video (ONLY if video is visible) */}
-                                {canHideVideo && (
-                                  <Dropdown.Item
-                                    className="participant-dropdown-item"
-                                    onClick={() =>
-                                      hideUnHideVideoParticipantByHost(
-                                        usersData,
-                                        true
-                                      )
-                                    }
-                                  >
-                                    {t("Hide-video")}
-                                  </Dropdown.Item>
-                                )}
-                              </>
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        )
-                      )}
-                    </Col>
-                  </Row>
-                </>
+                          {canMute && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() => muteUnmuteByHost(usersData, true)}
+                            >
+                              {t("Mute")}
+                            </Dropdown.Item>
+                          )}
+                          {canHideVideo && (
+                            <Dropdown.Item
+                              className="participant-dropdown-item"
+                              onClick={() =>
+                                hideUnHideVideoParticipantByHost(
+                                  usersData,
+                                  true,
+                                )
+                              }
+                            >
+                              {t("Hide-video")}
+                            </Dropdown.Item>
+                          )}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+                  </Col>
+                </Row>
               );
             })
           ) : (
-            <>
-              <Row>
-                <Col className="d-flex justify-content-center align-item-center">
-                  <p>{t("No-participant")}</p>
-                </Col>
-              </Row>
-            </>
+            <Row>
+              <Col className="d-flex justify-content-center align-items-center">
+                <p>{t("No-participant")}</p>
+              </Col>
+            </Row>
           )}
         </div>
       </Col>
 
-      {!presenterViewFlag && !presenterViewHostFlag ? (
-        <>
-          {filteredWaitingParticipants.length > 0 && (
-            <>
-              {/* Waiting For Entry Title Tab  */}
-              <Col sm={12} md={12} lg={12}>
-                <div className={styles["Waiting-New-Participant-hosttab"]}>
-                  <Row>
-                    <Col sm={12} md={12} lg={12}>
-                      <p
+      {/* ── Waiting-room section — host-only, hidden in presenter view ── */}
+      {!presenterViewFlag &&
+        !presenterViewHostFlag &&
+        filteredWaitingParticipants.length > 0 && (
+          <>
+            <Col sm={12}>
+              <div className={styles["Waiting-New-Participant-hosttab"]}>
+                <p className={styles["Waiting-New-Participant-Hosts-Title"]}>
+                  {t("Waiting-for-entry")}
+                </p>
+              </div>
+            </Col>
+
+            <Col sm={12}>
+              <div
+                className={
+                  NormalizeVideoFlag
+                    ? styles["AcceptAndDeniedManual_Nor"]
+                    : styles["AcceptAndDeniedManual"]
+                }
+              >
+                {/* Bulk admit / deny */}
+                <Row className="mb-3">
+                  <Col sm={6}>
+                    <Button
+                      className={styles["Waiting-New-Participant-denyAllBtn"]}
+                      text={t("Deny-all")}
+                      onClick={() => handleClickAllAcceptAndReject(2)}
+                    />
+                  </Col>
+                  <Col sm={6}>
+                    <Button
+                      className={styles["Waiting-New-Participant-AcceptAllBtn"]}
+                      text={t("Allow-all")}
+                      onClick={() => handleClickAllAcceptAndReject(1)}
+                    />
+                  </Col>
+                </Row>
+
+                {/* Per-participant admit / deny rows */}
+                {filteredWaitingParticipants.map((data) => (
+                  <Row className="mb-2" key={data.guid}>
+                    <Col sm={5} className="d-flex align-items-center gap-2">
+                      <img
+                        draggable="false"
+                        src={UserImage}
+                        className={styles["participantImage"]}
+                        alt=""
+                      />
+                      <span className={styles["participant_name"]}>
+                        {data.name}
+                      </span>
+                    </Col>
+                    <Col sm={7} className="d-flex align-items-center gap-2">
+                      <Button
                         className={
-                          styles["Waiting-New-Participant-Hosts-Title"]
+                          styles["Waiting-New-Participant-denyAllBtn-small"]
                         }
-                      >
-                        {t("Waiting-for-entry")}
-                      </p>
+                        text={t("Deny")}
+                        onClick={() => handleClickAcceptAndReject(data, 2)}
+                      />
+                      <Button
+                        className={
+                          styles["Waiting-New-Participant-AcceptAllBtn-small"]
+                        }
+                        text={t("Allow")}
+                        onClick={() => handleClickAcceptAndReject(data, 1)}
+                      />
                     </Col>
                   </Row>
-                </div>
-              </Col>
-
-              <Col sm={12} md={12} lg={12}>
-                <div
-                  className={
-                    NormalizeVideoFlag
-                      ? styles["AcceptAndDeniedManual_Nor"]
-                      : styles["AcceptAndDeniedManual"]
-                  }
-                >
-                  {filteredWaitingParticipants.length > 0 && (
-                    <>
-                      <Row className="mb-3">
-                        <Col sm={6} md={6} lg={6}>
-                          <Button
-                            className={
-                              styles["Waiting-New-Participant-denyAllBtn"]
-                            }
-                            text={t("Deny-all")}
-                            onClick={() => handleClickAllAcceptAndReject(2)}
-                          />
-                        </Col>
-                        <Col sm={6} md={6} lg={6}>
-                          <Button
-                            className={
-                              styles["Waiting-New-Participant-AcceptAllBtn"]
-                            }
-                            text={t("Allow-all")}
-                            onClick={() => handleClickAllAcceptAndReject(1)}
-                          />
-                        </Col>
-                      </Row>
-
-                      {filteredWaitingParticipants.map((data, index) => (
-                        <Row className="mb-2" key={data.guid}>
-                          <Col
-                            sm={5}
-                            md={5}
-                            lg={5}
-                            className="d-flex align-items-center gap-2"
-                          >
-                            <img
-                              draggable="false"
-                              src={UserImage}
-                              className={styles["participantImage"]}
-                              alt=""
-                            />
-                            <span className={styles["participant_name"]}>
-                              {data.name}
-                            </span>
-                          </Col>
-                          <Col
-                            sm={7}
-                            md={7}
-                            lg={7}
-                            className="d-flex align-items-center gap-2"
-                          >
-                            <Button
-                              className={
-                                styles[
-                                  "Waiting-New-Participant-denyAllBtn-small"
-                                ]
-                              }
-                              text={t("Deny")}
-                              onClick={() =>
-                                handleClickAcceptAndReject(data, 2)
-                              }
-                            />
-                            <Button
-                              className={
-                                styles[
-                                  "Waiting-New-Participant-AcceptAllBtn-small"
-                                ]
-                              }
-                              text={t("Allow")}
-                              onClick={() =>
-                                handleClickAcceptAndReject(data, 1)
-                              }
-                            />
-                          </Col>
-                        </Row>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </Col>
-            </>
-          )}
-        </>
-      ) : null}
+                ))}
+              </div>
+            </Col>
+          </>
+        )}
     </section>
   );
 };
