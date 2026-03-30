@@ -515,9 +515,7 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authority.authorityName} (${authority.authorityShortCode})`,
           },
           criticality: selectedCriticality,
-          dueDate: prev.dueDate
-            ? prev.dueDate
-            : parseYYYYMMDDToEndOfDay(dueDate),
+          dueDate: `${dueDate}235958`,
           tags: tags,
           status: {
             value: complianceStatus.statusId,

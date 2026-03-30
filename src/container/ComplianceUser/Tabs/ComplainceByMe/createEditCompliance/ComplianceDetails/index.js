@@ -228,7 +228,9 @@ const ComplainceDetails = () => {
             label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: selectedCriticality,
-          dueDate: parseYYYYMMDDToEndOfDay(dueDate),
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -476,6 +478,7 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
+        console.log("complianceByMeList");
         dispatch(
           EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs),
         );
@@ -606,6 +609,7 @@ const ComplainceDetails = () => {
         );
         return;
       }
+      console.log("complianceByMeList");
       dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
       console.log("complianceReopenDetailsState", complianceReopenDetailsState);
       console.log(Data, "complianceReopenDetailsState");

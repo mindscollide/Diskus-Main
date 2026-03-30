@@ -47,6 +47,7 @@ const ViewComplianceChecklistAccordian = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isStatusUpdateRef = useRef(false);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
@@ -80,8 +81,13 @@ const ViewComplianceChecklistAccordian = () => {
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
       setGetCheckListData(allCheckListByComplianceId);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      setExpandedCheckListIds([]);
+
+      // Only collapse all if this is NOT a status update refresh
+      if (!isStatusUpdateRef.current) {
+        setExpandedCheckListIds([]);
+      }
+      // Reset the ref
+      isStatusUpdateRef.current = false;
     }
   }, [allCheckListByComplianceId]);
 
@@ -165,6 +171,9 @@ const ViewComplianceChecklistAccordian = () => {
       UpdatedDueDate: `${dueDate}185958`,
       ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
     };
+
+    // Set flag BEFORE API call to prevent collapse on refresh
+    isStatusUpdateRef.current = true;
 
     dispatch(
       updateCheckListStatusApi(
@@ -531,25 +540,25 @@ const ViewComplianceChecklistAccordian = () => {
       </div>
 
       {/* This is For On Hold Modal */}
-      {complianceOnHoldModal && (
+      {/* {complianceOnHoldModal && (
         <CompliaceStatusOnHoldModal
           view={true}
           handleProceedButtonView={handleClickOnHoldModal}
         />
-      )}
+      )} */}
 
       {/* This is for completion Modal */}
-      {comlianceCompleteExceptionModal && (
+      {/* {comlianceCompleteExceptionModal && (
         <ComplianceStatusCompleteExceptionModal />
-      )}
+      )} */}
 
       {/* This is For Cancel Modal */}
-      {complianceCancelModal && (
+      {/* {complianceCancelModal && (
         <ComplianceStatusCancelModal
           view={true}
           handleProceedButtonView={handleClickCancelModal}
         />
-      )}
+      )} */}
     </>
   );
 };
