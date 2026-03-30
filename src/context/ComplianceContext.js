@@ -456,23 +456,24 @@ export const ComlianceProvider = ({ children }) => {
   };
 
   //When checklist update to Inprogress From pending then it works in viewDetail of compliance
-  useEffect(() => {
-    if (!changeCheckListStatus) return;
-    const { responseMessage } = changeCheckListStatus;
-    if (
-      responseMessage ===
-      "Compliance_ComplianceServiceManager_ChangeChecklistStatus_01"
-    ) {
-      // Checklist status changed successfully
-      setCheckAnyChecklistOnPendingState(false);
-    }
-  }, [changeCheckListStatus]);
+  // useEffect(() => {
+  //   if (!changeCheckListStatus) return;
+  //   const { responseMessage } = changeCheckListStatus;
+  //   if (
+  //     responseMessage ===
+  //     "Compliance_ComplianceServiceManager_ChangeChecklistStatus_01"
+  //   ) {
+  //     // Checklist status changed successfully
+  //     setCheckAnyChecklistOnPendingState(false);
+  //   }
+  // }, [changeCheckListStatus]);
 
   useEffect(() => {
     if (
       viewComplianceByMeDetails !== null &&
       complianceAddEditViewState === 3
     ) {
+      console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
       try {
         const {
           allowedComplianceStatuses,
@@ -493,6 +494,7 @@ export const ComlianceProvider = ({ children }) => {
           tags,
           totalTasks,
         } = viewComplianceByMeDetails;
+
         setComplianceInfo({
           complianceId: complianceId,
           complianceName: complianceTitle,
@@ -501,6 +503,7 @@ export const ComlianceProvider = ({ children }) => {
         const selectedCriticality = criticalityOptions.find(
           (item) => item.label === criticalityLevel,
         );
+
         setComplianceDetailsViewState((prev) => ({
           ...prev,
           complianceTitle: complianceTitle,
@@ -512,7 +515,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authority.authorityName} (${authority.authorityShortCode})`,
           },
           criticality: selectedCriticality,
-          dueDate: `${dueDate}235958`,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -521,69 +526,64 @@ export const ComlianceProvider = ({ children }) => {
         }));
 
         if (allowedComplianceStatuses && allowedComplianceStatuses.length > 0) {
-          const allowedStatuses = allowedComplianceStatuses.map(
-            (data, index) => {
-              return {
-                ...data,
-                value: data.statusId,
-                label: data.statusName,
-              };
-            },
-          );
+          const allowedStatuses = allowedComplianceStatuses.map((data) => ({
+            ...data,
+            value: data.statusId,
+            label: data.statusName,
+          }));
           setAllowedComplianceStatusOptions(allowedStatuses);
         }
+
         if (complianceId !== 0) {
-          let Data = {
-            complianceId: complianceId,
-          };
+          let Data = { complianceId: complianceId };
           // dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
-          // dispatch(
-          //   GetComplianceChecklistsWithTasksByComplianceIdAPI(
-          //     navigate,
-          //     Data,
-          //     t,
-          //   ),
-          // );
+          // dispatch(GetComplianceChecklistsWithTasksByComplianceIdAPI(navigate, Data, t));
         }
 
-        // check if any status is Pending to show confirmation modal on submit for approval & Complete
-        if (Array.isArray(checklists) && checklists.length > 0) {
-          const hasPendingChecklist = checklists.some(
-            (checklist) => checklist?.status?.statusName === "Pending",
-            // || checklist?.status?.statusName === "In Progress" ||
-            //   checklist?.status?.statusName === "On Hold",
-          );
+        // ✅ Updated: check if any checklist or checklistTask status is Pending/In Progress/On Hold
+        if (
+          (Array.isArray(checklists) && checklists.length > 0) ||
+          (Array.isArray(checklistTasks) && checklistTasks.length > 0)
+        ) {
+          const hasPendingChecklist =
+            (Array.isArray(checklists) &&
+              checklists.some((cl) =>
+                ["Pending", "In Progress", "On Hold"].includes(
+                  cl.status.statusName,
+                ),
+              )) ||
+            (Array.isArray(checklistTasks) &&
+              checklistTasks.some((task) =>
+                ["Pending", "In Progress", "On Hold"].includes(
+                  task.taskStatus.statusName,
+                ),
+              ));
 
           setCheckAnyChecklistOnPendingState(hasPendingChecklist);
         } else {
           setCheckAnyChecklistOnPendingState(false);
         }
 
-        // Check if any task status in pending the show confirmation modal on Complete
+        // Check if any task status is Pending/In Progress/On Hold (for other modals)
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-          const hasPendingTask = checklistTasks.some(
-            (task) =>
-              task?.taskStatus?.statusName === "Pending" ||
-              task?.taskStatus?.statusName === "In Progress" ||
-              task?.taskStatus?.statusName === "On Hold",
+          const hasPendingTask = checklistTasks.some((task) =>
+            ["Pending", "In Progress", "On Hold"].includes(
+              task.taskStatus.statusName,
+            ),
           );
-
           setCheckAnyTaskOnPendingState(hasPendingTask);
-        } else {
-          setCheckAnyTaskOnPendingState(false);
-        }
-        if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
-          const hasTaskInProgress =
-            Array.isArray(checklistTasks) &&
-            checklistTasks.some(
-              (task) => task?.taskStatus?.statusName === "In Progress",
-            );
 
+          const hasTaskInProgress = checklistTasks.some(
+            (task) => task.taskStatus.statusName === "In Progress",
+          );
           setCheckAnyTaskInProgress(hasTaskInProgress);
         } else {
+          setCheckAnyTaskOnPendingState(false);
           setCheckAnyTaskInProgress(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error("Error in useEffect:", error);
+      }
     }
   }, [viewComplianceByMeDetails, complianceAddEditViewState]);
 
@@ -798,7 +798,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
-          dueDate,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags,
           status: currentStatus, // value & label format expected by UI
         }));
@@ -814,7 +816,9 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authorityName || ""} ${authorityShortCode || ""}` || "",
           },
           criticality: selectedCriticality,
-          dueDate,
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags,
           status: currentStatus,
         }));

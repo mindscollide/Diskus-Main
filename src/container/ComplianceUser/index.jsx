@@ -34,12 +34,12 @@ const MainCompliance = () => {
   const navigate = useNavigate();
   const AllComplianceStatus = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses,
+      state.ComplainceSettingReducerReducer.GetComplianceAndTaskStatuses
   );
 
   const MqttOrganizationSettingUpdated = useSelector(
     (state) =>
-      state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated,
+      state.ComplainceSettingReducerReducer.MqttOrganizationSettingUpdated
   );
 
   console.log(MqttOrganizationSettingUpdated, "MqttOrganizationSettingUpdated");
@@ -202,8 +202,10 @@ const MainCompliance = () => {
                 {mainComplianceTabs === 2
                   ? t("Compliances-by-me")
                   : mainComplianceTabs === 4
-                    ? t("Reports")
-                    : "Compliance Dashboard"}
+                  ? t("Reports")
+                  : mainComplianceTabs === 3
+                  ? t("Compliances-for-me")
+                  : "Compliance Dashboard"}
               </span>
               {mainComplianceTabs === 2 && (
                 <Button
@@ -291,7 +293,9 @@ const MainCompliance = () => {
             >
               <img src={FiscalYearCalendar_Icon} alt="" />
               <span className={styles["Fiscalyear_text"]}>
-                {`Fiscal Year: ${fiscalYearRange ? fiscalYearRange : t("No-fiscal-year")}`}
+                {`Fiscal Year: ${
+                  fiscalYearRange ? fiscalYearRange : t("No-fiscal-year")
+                }`}
               </span>
             </Col>
           </Row>

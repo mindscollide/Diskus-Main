@@ -331,6 +331,15 @@
   gap: 10px;
   font-size: 13px;
 }
+.legendItem {
+  display: flex;
+
+  align-items: center;
+  gap: 8px;
+}
+.legendText {
+  font-weight: 500;
+}
 
 .legendDotBlue,
 .legendDotYellow {

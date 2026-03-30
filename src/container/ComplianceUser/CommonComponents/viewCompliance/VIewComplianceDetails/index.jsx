@@ -298,7 +298,7 @@ const ViewComplianceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 3) {
         if (
-          // checkAnyChecklistOnPendingState ||
+          checkAnyChecklistOnPendingState ||
           checkAnyTaskOnPendingState ||
           checkAnyTaskInProgress
         ) {

@@ -317,7 +317,11 @@ const Reports = () => {
                 .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
-          return <span>{text}</span>;
+          const complianceTitle = text?.includes(" - ")
+            ? text.split(" - ")[1]
+            : text;
+
+          return <span>{complianceTitle}</span>;
         },
       },
       {

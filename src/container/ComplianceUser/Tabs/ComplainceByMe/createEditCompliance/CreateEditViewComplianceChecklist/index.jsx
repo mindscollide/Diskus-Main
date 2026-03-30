@@ -528,9 +528,7 @@ const CreateEditViewComplianceChecklist = () => {
                 </span>
               </div>
               <DatePicker
-                disabled={
-                  (isLockedStatus && !isEditTrue) || isChecklistTitleExist
-                }
+                disabled={isLockedStatus && !isEditTrue}
                 value={checkListData.checklistDueDate || ""}
                 format={"DD/MM/YYYY"}
                 placeholder={t("Due-date")}
