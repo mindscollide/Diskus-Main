@@ -248,6 +248,9 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceCompleteModalType, setComplianceCompleteModalType] =
     useState(null);
 
+  const [isEditComplianceTrue, setIsEditComplianceTrue] = useState(false);
+  const [isComplianceCreatOrEdit, setIsComplianceCreateOrEdit] = useState(0);
+
   console.log(
     complianceCreatedMqttData,
     complianceByMeList,
@@ -515,9 +518,7 @@ export const ComlianceProvider = ({ children }) => {
             label: `${authority.authorityName} (${authority.authorityShortCode})`,
           },
           criticality: selectedCriticality,
-          dueDate: prev.dueDate
-            ? prev.dueDate
-            : parseYYYYMMDDToEndOfDay(dueDate),
+          dueDate: `${dueDate}235958`,
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -1042,6 +1043,10 @@ export const ComlianceProvider = ({ children }) => {
         setNewChecklistIds,
         complianceCompleteModalType,
         setComplianceCompleteModalType,
+        isEditComplianceTrue,
+        setIsEditComplianceTrue,
+        isComplianceCreatOrEdit,
+        setIsComplianceCreateOrEdit,
       }}
     >
       {children}

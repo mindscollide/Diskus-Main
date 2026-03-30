@@ -67,6 +67,11 @@ const ViewComplianceDetails = () => {
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
+  console.log(
+    { complianceDetailsViewState, complianceReopenDetailsState },
+    "complianceDetailsViewState",
+  );
+
   console.log(allowedComplianceStatusOptions, "allowedComplianceStatusOptions");
   const { t } = useTranslation();
   const navigate = useNavigate();

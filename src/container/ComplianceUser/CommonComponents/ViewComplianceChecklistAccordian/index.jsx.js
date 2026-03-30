@@ -47,6 +47,7 @@ const ViewComplianceChecklistAccordian = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isStatusUpdateRef = useRef(false);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
@@ -80,24 +81,38 @@ const ViewComplianceChecklistAccordian = () => {
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
       setGetCheckListData(allCheckListByComplianceId);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      setExpandedCheckListIds([]);
+
+      // Only collapse all if this is NOT a status update refresh
+      if (!isStatusUpdateRef.current) {
+        setExpandedCheckListIds([]);
+      }
+      // Reset the ref
+      isStatusUpdateRef.current = false;
     }
   }, [allCheckListByComplianceId]);
 
   const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
 
   const canChecklistBeCompleted = (checklistId) => {
-    const checklistTasks =
-      viewComplianceByMeDetails?.checklistTasks?.filter(
-        (task) => task.checklistId === checklistId,
-      ) || [];
+    // ❗ STEP 1: If data not loaded → BLOCK
+    if (!viewComplianceByMeDetails?.checklistTasks?.length) {
+      console.log("⛔ Data not loaded yet");
+      return false; // treat as NOT allowed
+    }
 
-    const hasBlockedTask = checklistTasks.some((task) =>
-      BLOCKED_TASK_STATUSES.includes(task.taskStatus.statusName),
+    const checklistTasks = viewComplianceByMeDetails.checklistTasks.filter(
+      (task) => task.checklistId === checklistId,
     );
 
-    return !hasBlockedTask; // ✅ true if no blocked tasks, false otherwise
+    console.log("Checklist Tasks:", checklistTasks);
+
+    const hasBlockedTask = checklistTasks.some((task) =>
+      BLOCKED_TASK_STATUSES.includes(task.taskStatus?.statusName),
+    );
+
+    console.log("Has Blocked Task:", hasBlockedTask);
+
+    return !hasBlockedTask;
   };
 
   // functions
@@ -165,6 +180,9 @@ const ViewComplianceChecklistAccordian = () => {
       UpdatedDueDate: `${dueDate}185958`,
       ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
     };
+
+    // Set flag BEFORE API call to prevent collapse on refresh
+    isStatusUpdateRef.current = true;
 
     dispatch(
       updateCheckListStatusApi(
@@ -531,12 +549,12 @@ const ViewComplianceChecklistAccordian = () => {
       </div>
 
       {/* This is For On Hold Modal */}
-      {complianceOnHoldModal && (
+      {/* {complianceOnHoldModal && (
         <CompliaceStatusOnHoldModal
           view={true}
           handleProceedButtonView={handleClickOnHoldModal}
         />
-      )}
+      )} */}
 
       {/* This is for completion Modal */}
       {comlianceCompleteExceptionModal && (
@@ -544,12 +562,12 @@ const ViewComplianceChecklistAccordian = () => {
       )}
 
       {/* This is For Cancel Modal */}
-      {complianceCancelModal && (
+      {/* {complianceCancelModal && (
         <ComplianceStatusCancelModal
           view={true}
           handleProceedButtonView={handleClickCancelModal}
         />
-      )}
+      )} */}
     </>
   );
 };

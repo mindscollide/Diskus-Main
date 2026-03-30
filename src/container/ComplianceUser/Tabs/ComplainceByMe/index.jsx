@@ -32,7 +32,7 @@ const ComplianceByMe = () => {
   const { t } = useTranslation();
   const [isScroll, setIsScroll] = useState(false);
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const { criticalityOptions } = useComplianceContext();
+  const { criticalityOptions,setIsComplianceCreateOrEdit } = useComplianceContext();
 
   const getCompliancesForCreator = useSelector(
     (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
@@ -123,6 +123,7 @@ const ComplianceByMe = () => {
   }, [allComplianceStatusForFilter]);
 
   const handleEditCompliance = (record) => {
+    setIsComplianceCreateOrEdit(2)
     const Data = {
       complianceId: record.complianceId,
       viewType: 1,

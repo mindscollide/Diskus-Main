@@ -65,6 +65,7 @@ const MainCompliance = () => {
     endOfComplianceReport,
     endOfQuarterReport,
     accumulativeReport,
+    setIsComplianceCreateOrEdit
   } = useComplianceContext();
   // Pass the fiscal info from the MQTT payload to the hook
   const fiscalYearRange = useFiscalYearRange({
@@ -126,6 +127,7 @@ const MainCompliance = () => {
   const handleOpenCreateEditCompliance = () => {
     setCreateEditComplaince(true);
     setComplianceAddEditViewState(1);
+    setIsComplianceCreateOrEdit(1)
   };
   const handleClickComplianceMode = (mode) => {
     if (mode === 2) {
