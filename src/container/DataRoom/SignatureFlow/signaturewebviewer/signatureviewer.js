@@ -1,4 +1,10 @@
-import React, { useRef, useEffect, useState, useCallback } from "react";
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +35,7 @@ import { getActorColorByUserID } from "../../../../commen/functions/converthexto
 import { generateBase64FromBlob } from "../../../../commen/functions/generateBase64FromBlob";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
+// ─── Pure helpers (no component state) ──────────────────────────────────────
 
 const containsNull = (arr) => arr.some((el) => el === null);
 
@@ -178,7 +184,54 @@ const convertAnnotationsForApi = (filtered) =>
     xmlList: u.xml.map((x) => JSON.stringify(x)),
   }));
 
-// ─── Component ──────────────────────────────────────────────────────────────
+// ─── Disabled UI elements list (static, defined once outside component) ─────
+
+const DISABLED_ELEMENTS = [
+  "freeTextToolButton",
+  "stylePanel",
+  "leftPanelButton",
+  "underlineToolGroupButton",
+  "textSelectButton",
+  "toolbarGroup-FillAndSign",
+  "toolbarGroup-Annotate",
+  "toolbarGroup-Shapes",
+  "toolbarGroup-Edit",
+  "toolbarGroup-Insert",
+  "shapeToolGroupButton",
+  "menuButton",
+  "freeHandHighlightToolGroupButton",
+  "freeHandToolGroupButton",
+  "stickyToolGroupButton",
+  "squigglyToolGroupButton",
+  "strikeoutToolGroupButton",
+  "notesPanel",
+  "viewControlsButton",
+  "selectToolButton",
+  "searchButton",
+  "freeTextToolGroupButton",
+  "rubberStampToolGroupButton",
+  "dateFreeTextToolButton",
+  "eraserToolButton",
+  "panToolButton",
+  "signatureToolGroupButton",
+  "signaturePanelButton",
+  "contextMenuPopup",
+  "colorPalette",
+  "formFieldEditButton",
+  "stylePanelToggle",
+  "comboBoxFieldToolGroupButton",
+  "listBoxFieldToolGroupButton",
+  "outlinesPanelButton",
+  "listBoxFieldButton",
+  "comboBoxFieldButton",
+  "indexPanelListToggle",
+  "divider-0.8",
+  "divider-0.7",
+  "notesPanelToggle",
+  "searchPanelToggle",
+];
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 const SignatureViewer = () => {
   const location = useLocation();
@@ -196,15 +249,29 @@ const SignatureViewer = () => {
     getDataroomAnnotation,
   } = useSelector((s) => s.SignatureWorkFlowReducer);
 
-  const docWorkflowID = new URLSearchParams(location.search).get("documentID");
+  // Stable — only computed once
+  const docWorkflowID = useMemo(
+    () => new URLSearchParams(location.search).get("documentID"),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
+  // ─── Viewer DOM ref ──────────────────────────────────────────────────────
   const viewerRef = useRef(null);
+
+  /**
+   * Guard: prevents WebViewer from being initialised more than once.
+   * This is the root cause of the "stop re-rendering" issue — React strict-mode
+   * and dependency-array changes were firing the effect multiple times.
+   */
+  const viewerInitialized = useRef(false);
+
+  // ─── State ───────────────────────────────────────────────────────────────
   const [instance, setInstance] = useState(null);
 
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [signerData, setSignerData] = useState([]);
-  const [fieldsData, setFieldsData] = useState([]);
   const [userList, setUserList] = useState([]);
 
   const [userAnnotations, setUserAnnotations] = useState([]);
@@ -249,6 +316,7 @@ const SignatureViewer = () => {
     isCreator: 0,
   });
 
+  // ─── Mutable refs (read by WebViewer callbacks, never cause re-renders) ──
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
@@ -258,6 +326,14 @@ const SignatureViewer = () => {
   const orderCheckedRef = useRef(orderCheckBox);
   const pdfDataRef = useRef(pdfData);
 
+  /**
+   * Ref to the <select> element rendered inside the custom left panel.
+   * We update it imperatively so we never have to tear down and recreate
+   * the entire WebViewer panel when participants change.
+   */
+  const panelSelectRef = useRef(null);
+
+  // ─── Sync state → refs ───────────────────────────────────────────────────
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
@@ -283,6 +359,7 @@ const SignatureViewer = () => {
     pdfDataRef.current = pdfData;
   }, [pdfData]);
 
+  // ─── Initial data fetch (runs once) ─────────────────────────────────────
   useEffect(() => {
     if (!docWorkflowID) return;
     dispatch(
@@ -293,8 +370,10 @@ const SignatureViewer = () => {
       ),
     );
     dispatch(allAssignessList(navigate, t, false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ─── getAllFieldsByWorkflowID ─────────────────────────────────────────────
   useEffect(() => {
     if (!getAllFieldsByWorkflowID) return;
     try {
@@ -302,22 +381,22 @@ const SignatureViewer = () => {
         getAllFieldsByWorkflowID.signatureWorkFlowFieldDetails;
       if (!bundleDetails.length) return;
 
-      setFieldsData(
-        bundleDetails.map((f) => ({
-          pK_WorkFlowActionableBundle_ID: f.pK_WorkFlowActionableBundle_ID,
-          titles: f.titles,
-          bundleDeadline: f.bundleDeadline,
-          fK_ActionAbleBundleStatusState: f.fK_ActionAbleBundleStatusState,
-          bundleAssignedDate: f.bundleAssignedDate,
-          bundleDependenceID: f.bundleDependenceID,
-          actor_ID: f.actor_ID,
-          userID: f.userID,
-          actorName: f.actorName,
-          actorDesignation: f.actorDesignation,
-          actorEmail: f.actorEmail,
-          actorColor: f.actorColor,
-        })),
-      );
+      const mappedFields = bundleDetails.map((f) => ({
+        pK_WorkFlowActionableBundle_ID: f.pK_WorkFlowActionableBundle_ID,
+        titles: f.titles,
+        bundleDeadline: f.bundleDeadline,
+        fK_ActionAbleBundleStatusState: f.fK_ActionAbleBundleStatusState,
+        bundleAssignedDate: f.bundleAssignedDate,
+        bundleDependenceID: f.bundleDependenceID,
+        actor_ID: f.actor_ID,
+        userID: f.userID,
+        actorName: f.actorName,
+        actorDesignation: f.actorDesignation,
+        actorEmail: f.actorEmail,
+        actorColor: f.actorColor,
+      }));
+      // fieldsData is only used externally — keep setter if needed downstream
+      // setFieldsData(mappedFields);
 
       if (containsNull(listOfFields)) {
         const bundles = getWorkfFlowByFileId?.workFlow?.bundleModels ?? [];
@@ -337,8 +416,9 @@ const SignatureViewer = () => {
     } catch (err) {
       console.error("getAllFieldsByWorkflowID handler:", err);
     }
-  }, [getAllFieldsByWorkflowID]);
+  }, [getAllFieldsByWorkflowID, getWorkfFlowByFileId]);
 
+  // ─── getWorkfFlowByFileId ────────────────────────────────────────────────
   useEffect(() => {
     if (!getWorkfFlowByFileId) return;
     try {
@@ -364,7 +444,7 @@ const SignatureViewer = () => {
         setSignerData(signersArr);
         setParticipants(listOfUsers);
         setLastParticipants(listOfUsers);
-        setSelectedUser(listOfUsers[0]?.pk_UID);
+        setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
 
         const { listOfFields } =
           getAllFieldsByWorkflowID?.signatureWorkFlowFieldDetails ?? {};
@@ -381,6 +461,7 @@ const SignatureViewer = () => {
           );
         }
       } else {
+        // No participants yet — open the modal immediately
         setOpenAddParticipentModal(true);
       }
 
@@ -400,8 +481,10 @@ const SignatureViewer = () => {
     } catch (err) {
       console.error("getWorkfFlowByFileId handler:", err);
     }
-  }, [getWorkfFlowByFileId, fieldsData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getWorkfFlowByFileId]);
 
+  // ─── getDataroomAnnotation ───────────────────────────────────────────────
   useEffect(() => {
     if (!getDataroomAnnotation) return;
     const { annotationString, attachmentBlob } = getDataroomAnnotation;
@@ -419,6 +502,7 @@ const SignatureViewer = () => {
     }
   }, [getDataroomAnnotation]);
 
+  // ─── saveWorkFlowResponse ────────────────────────────────────────────────
   useEffect(() => {
     if (!saveWorkFlowResponse) return;
     try {
@@ -451,18 +535,107 @@ const SignatureViewer = () => {
       );
       setSignerData(signersArr);
       setParticipants(listOfUsers);
-      setSelectedUser(listOfUsers[0]?.pk_UID);
+      setSelectedUser(listOfUsers[0]?.pk_UID ?? null);
       setUserAnnotations(selectedList);
     } catch (err) {
       console.error("saveWorkFlowResponse handler:", err);
     }
   }, [saveWorkFlowResponse]);
 
+  // ─── Notification from ResponseMessage ──────────────────────────────────
   useEffect(() => {
     if (ResponseMessage)
       showMessage(ResponseMessage, "success", setNotification);
   }, [ResponseMessage]);
 
+  // ─── Assignees → Select options ──────────────────────────────────────────
+  useEffect(() => {
+    if (!assignees.user?.length) return;
+    setUserList(
+      assignees.user.map((u) => ({
+        label: (
+          <Row>
+            <Col lg={12} className="d-flex gap-2 align-items-center">
+              <img
+                src={`data:image/jpeg;base64,${u.displayProfilePictureName}`}
+                height="16px"
+                width="18px"
+                draggable="false"
+                alt=""
+              />
+              <span>{u.name}</span>
+            </Col>
+          </Row>
+        ),
+        value: u.pK_UID,
+        name: u.name,
+        email: u.emailAddress,
+      })),
+    );
+  }, [assignees.user]);
+
+  // ─── Imperatively update the panel <select> when participants change ─────
+  //
+  // Instead of destroying/recreating the WebViewer panel (which caused the
+  // re-render problem), we hold a DOM ref to the <select> and patch it directly.
+  //
+  useEffect(() => {
+    const select = panelSelectRef.current;
+    if (!select || !participants.length) return;
+
+    const previousValue = select.value;
+
+    // Rebuild options
+    select.innerHTML = "";
+    participants.forEach((u) => {
+      const opt = document.createElement("option");
+      opt.value = String(u.pk_UID);
+      opt.textContent = u.name;
+      select.appendChild(opt);
+    });
+
+    // Keep the previously selected user if still in the list
+    const stillPresent = participants.some(
+      (p) => String(p.pk_UID) === previousValue,
+    );
+    if (stillPresent) {
+      select.value = previousValue;
+    } else {
+      const firstId = participants[0].pk_UID;
+      select.value = String(firstId);
+      setSelectedUser(firstId);
+      selectedUserRef.current = firstId;
+    }
+  }, [participants]);
+
+  // ─── Handle deleted participants — strip their annotations from the doc ──
+  useEffect(() => {
+    if (!instance || !participants.length) return;
+
+    const removed = lastParticipants.filter(
+      (lp) => !participants.some((p) => p.pk_UID === lp.pk_UID),
+    );
+    setLastParticipants(participants);
+    if (!removed.length) return;
+
+    (async () => {
+      const { annotationManager } = instance.Core;
+      const xfdf = await annotationManager.exportAnnotations();
+      const modified = removeDeletedAnnotations(xfdf, deletedDataTemp);
+      annotationManager.deleteAnnotations(
+        annotationManager.getAnnotationsList(),
+      );
+      try {
+        await annotationManager.importAnnotations(modified);
+        annotationManager.redrawAnnotation();
+      } catch (err) {
+        console.error("removeDeletedAnnotations:", err);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [participants]);
+
+  // ─── Build API payload (reads only from refs — no state reads) ───────────
   const collectPayload = useCallback(async () => {
     if (!instance) return null;
     const { annotationManager, documentViewer } = instance.Core;
@@ -507,10 +680,78 @@ const SignatureViewer = () => {
     };
   }, [instance, docWorkflowID]);
 
-  // ─── WebViewer init ───────────────────────────────────────────────────────
+  // ─── Validation: every participant must have ≥ 1 annotation for Send ─────
+  const validateBeforeSend = useCallback(() => {
+    const annotations = userAnnotationsRef.current;
+    if (!annotations.length) return false;
+    return annotations.every((u) => u.xml && u.xml.length > 0);
+  }, []);
 
+  // ─── Action handlers ─────────────────────────────────────────────────────
+
+  const handleSave = useCallback(async () => {
+    const payload = await collectPayload();
+    if (!payload) return;
+    dispatch(
+      saveWorkflowApi(
+        payload.saveWorkFlowData,
+        navigate,
+        t,
+        setOpenAddParticipentModal,
+        1,
+        payload.newData,
+        payload.addAnnotationPayload,
+        payload.saveSignatureDocPayload,
+        1,
+      ),
+    );
+  }, [collectPayload, dispatch, navigate, t]);
+
+  const handleSendClick = useCallback(() => {
+    if (!validateBeforeSend()) {
+      showMessage(
+        t("All-participants-must-have-at-least-one-field-assigned"),
+        "error",
+        setNotification,
+      );
+      return;
+    }
+    setSendModal(true);
+  }, [validateBeforeSend, t]);
+
+  const handlePublish = useCallback(async () => {
+    const payload = await collectPayload();
+    if (!payload) return;
+    dispatch(
+      saveWorkflowApi(
+        payload.saveWorkFlowData,
+        navigate,
+        t,
+        setOpenAddParticipentModal,
+        1,
+        payload.newData,
+        payload.addAnnotationPayload,
+        payload.saveSignatureDocPayload,
+        2,
+        {
+          PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
+          FinalDocumentName: pdfDataRef.current.title,
+          Message: sendMessage,
+          ListOfViewers: [],
+        },
+      ),
+    );
+  }, [collectPayload, dispatch, navigate, sendMessage, t]);
+
+  // ─── WebViewer initialisation ────────────────────────────────────────────
+  //
+  // Guarded by `viewerInitialized` ref so this block runs EXACTLY ONCE even
+  // if React re-renders or StrictMode double-invokes effects.
+  //
   useEffect(() => {
     if (!pdfData.attachmentBlob || !viewerRef.current) return;
+    if (viewerInitialized.current) return; // ← the key guard
+    viewerInitialized.current = true;
 
     WebViewer(
       {
@@ -519,7 +760,7 @@ const SignatureViewer = () => {
         licenseKey: process.env.REACT_APP_APRYSEKEY,
       },
       viewerRef.current,
-    ).then(async (inst) => {
+    ).then((inst) => {
       setInstance(inst);
       const { UI, Core } = inst;
       const { documentViewer, annotationManager, Annotations } = Core;
@@ -527,78 +768,18 @@ const SignatureViewer = () => {
       UI.loadDocument(base64ToBlob(pdfData.attachmentBlob), {
         filename: pdfData.title,
       });
+      UI.disableElements(DISABLED_ELEMENTS);
 
-      UI.disableElements([
-        "freeTextToolButton",
-        "stylePanel",
-        "leftPanelButton",
-        "underlineToolGroupButton",
-        "textSelectButton",
-        "toolbarGroup-FillAndSign",
-        "toolbarGroup-Annotate",
-        "toolbarGroup-Shapes",
-        "toolbarGroup-Edit",
-        "toolbarGroup-Insert",
-        "shapeToolGroupButton",
-        "menuButton",
-        "freeHandHighlightToolGroupButton",
-        "freeHandToolGroupButton",
-        "stickyToolGroupButton",
-        "squigglyToolGroupButton",
-        "strikeoutToolGroupButton",
-        "notesPanel",
-        "viewControlsButton",
-        "selectToolButton",
-        "searchButton",
-        "freeTextToolGroupButton",
-        "rubberStampToolGroupButton",
-        "dateFreeTextToolButton",
-        "eraserToolButton",
-        "panToolButton",
-        "signatureToolGroupButton",
-        "signaturePanelButton",
-        "contextMenuPopup",
-        "colorPalette",
-        "formFieldEditButton",
-        "stylePanelToggle",
-        "comboBoxFieldToolGroupButton",
-        "listBoxFieldToolGroupButton",
-        "outlinesPanelButton",
-        "listBoxFieldButton",
-        "comboBoxFieldButton",
-        "indexPanelListToggle",
-        "divider-0.8",
-        "divider-0.7",
-        "notesPanelToggle",
-        "searchPanelToggle",
-      ]);
-
-      // ─── Colour helper ────────────────────────────────────────────────────
-      //
-      // Apryse stores colour differently per annotation type:
-      //
-      //  FreeTextAnnotation  (Title / Name / Email labels)
-      //    → StrokeColor controls the visible border
-      //
-      //  WidgetAnnotation  (text box, checkbox, radio, signature field)
-      //    → StrokeColor  sets the outer border colour on the annotation object
-      //    → Color        is used by some widget subtypes as a fallback
-      //    → field.Border writes the colour into the underlying PDF field so
-      //      it survives export/import and shows correctly when the XFDF is
-      //      re-loaded.  Without this the border reverts to black on reload.
-      //
+      // ─── Color helper ──────────────────────────────────────────────────
       const applyActorColour = (ann, r, g, b) => {
         const color = new Annotations.Color(r, g, b);
-
         if (ann instanceof Annotations.FreeTextAnnotation) {
           ann.StrokeColor = color;
           ann.StrokeThickness = 2;
         } else if (ann instanceof Annotations.WidgetAnnotation) {
-          ann.StrokeColor = color; // visible border on the annotation layer
-          ann.Color = color; // fallback used by some widget subtypes
+          ann.StrokeColor = color;
+          ann.Color = color;
           ann.StrokeThickness = 1.5;
-
-          // Persist colour into the PDF field's Border so it round-trips through XFDF
           const field = ann.getField?.();
           if (field) {
             if (!field.Border) field.Border = {};
@@ -607,18 +788,15 @@ const SignatureViewer = () => {
             field.Border.width = 1.5;
           }
         } else {
-          // Any other annotation type (safety fallback)
           ann.StrokeColor = color;
           ann.Color = color;
         }
-
         ann.isNew = false;
         annotationManager.updateAnnotation(ann);
         annotationManager.redrawAnnotation(ann);
       };
 
-      // ─── Header buttons ───────────────────────────────────────────────────
-
+      // ─── Header buttons ────────────────────────────────────────────────
       const cancelButton = new UI.Components.CustomButton({
         dataElement: "cancelButton",
         label: t("Cancel"),
@@ -637,23 +815,8 @@ const SignatureViewer = () => {
         dataElement: "saveButton",
         label: t("Save"),
         title: t("Save"),
-        onClick: async () => {
-          const payload = await collectPayload();
-          if (!payload) return;
-          dispatch(
-            saveWorkflowApi(
-              payload.saveWorkFlowData,
-              navigate,
-              t,
-              setOpenAddParticipentModal,
-              1,
-              payload.newData,
-              payload.addAnnotationPayload,
-              payload.saveSignatureDocPayload,
-              1,
-            ),
-          );
-        },
+        // Reads handleSave through a stable closure — no re-init needed
+        onClick: () => handleSave(),
         style: {
           background: "#fff",
           border: "1px solid #e1e1e1",
@@ -668,7 +831,8 @@ const SignatureViewer = () => {
         dataElement: "publishButton",
         label: t("Send"),
         title: t("Send"),
-        onClick: () => setSendModal(true),
+        // Reads handleSendClick through a stable closure — validation runs at call time
+        onClick: () => handleSendClick(),
         style: {
           background: "#6172d6",
           border: "1px solid #6172d6",
@@ -679,8 +843,11 @@ const SignatureViewer = () => {
         },
       });
 
-      // ─── Custom left panel ────────────────────────────────────────────────
-
+      // ─── Custom left panel ─────────────────────────────────────────────
+      //
+      // The panel is built ONCE.  Participant changes later are handled by
+      // patching the <select> via panelSelectRef — no panel teardown needed.
+      //
       const customPanelToggle = new UI.Components.ToggleElementButton({
         dataElement: "customPanelToggle",
         toggleElement: "customPanel",
@@ -713,30 +880,39 @@ const SignatureViewer = () => {
 
       const renderCustomPanel = () => {
         const wrapper = document.createElement("div");
-        wrapper.style.cssText = "padding: 12px; font-family: sans-serif;";
+        wrapper.style.cssText = "padding:12px; font-family:sans-serif;";
 
+        // Participant label
         const label = document.createElement("label");
         label.textContent = t("Participant");
         label.style.cssText =
           "display:block; margin-bottom:4px; font-size:13px; font-weight:600;";
         wrapper.appendChild(label);
 
+        // Participant <select>
         const select = document.createElement("select");
         select.style.cssText =
           "width:100%; padding:10px 6px; margin-bottom:10px; border:1px solid #ddd; border-radius:4px;";
+
+        // Seed with current participants (may be empty on first render)
         participantsRef.current.forEach((u) => {
           const opt = document.createElement("option");
-          opt.value = u.pk_UID;
+          opt.value = String(u.pk_UID);
           opt.textContent = u.name;
           select.appendChild(opt);
         });
+
         select.addEventListener("change", (e) => {
           const id = Number(e.target.value);
           setSelectedUser(id);
           selectedUserRef.current = id;
         });
+
+        // Store ref so we can update participants without rebuilding the panel
+        panelSelectRef.current = select;
         wrapper.appendChild(select);
 
+        // Add signatories button
         const addBtn = document.createElement("button");
         addBtn.textContent = t("Add-Signaturies");
         addBtn.style.cssText =
@@ -746,6 +922,7 @@ const SignatureViewer = () => {
         );
         wrapper.appendChild(addBtn);
 
+        // Label field buttons
         const row = document.createElement("div");
         row.style.cssText = "display:flex; gap:8px;";
         ["Title", "Name", "Email"].forEach((lbl) => {
@@ -757,6 +934,7 @@ const SignatureViewer = () => {
           row.appendChild(btn);
         });
         wrapper.appendChild(row);
+
         return wrapper;
       };
 
@@ -766,8 +944,7 @@ const SignatureViewer = () => {
         render: renderCustomPanel,
       });
 
-      // ─── Header layout ────────────────────────────────────────────────────
-
+      // ─── Header layout ─────────────────────────────────────────────────
       const topHeader = UI.getModularHeader("default-top-header");
       const existingItems = topHeader.getItems();
 
@@ -787,9 +964,7 @@ const SignatureViewer = () => {
       ]);
       UI.setActiveLeftPanel("customPanel");
 
-      // ─── Document loaded ──────────────────────────────────────────────────
-
-      await documentViewer.getAnnotationsLoadedPromise();
+      // ─── Document loaded ───────────────────────────────────────────────
       documentViewer.addEventListener("documentLoaded", async () => {
         UI.setFitMode(UI.FitMode.FitWidth);
         if (pdfXfdfRef.current) {
@@ -801,17 +976,7 @@ const SignatureViewer = () => {
         }
       });
 
-      // ─── Annotation changed ───────────────────────────────────────────────
-      //
-      // On every add/modify we:
-      //  1. Look up the active actor's colour.
-      //  2. Apply it to the annotation using applyActorColour, which handles
-      //     FreeText, Widget (textbox / checkbox / radio / signature) and
-      //     any other type uniformly.
-      //  3. Track the field name so we don't re-colour on subsequent modify
-      //     events (avoids overwriting a colour the user intentionally changed).
-      //  4. Snapshot the current XFDF into userAnnotations for save/publish.
-      //
+      // ─── Annotation changed ────────────────────────────────────────────
       annotationManager.addEventListener(
         "annotationChanged",
         async (annotations, action, { imported }) => {
@@ -825,11 +990,7 @@ const SignatureViewer = () => {
             );
 
             annotations.forEach((ann) => {
-              // Widget annotations expose their PDF field name via `ij`
               const fieldName = ann.ij?.["trn-form-field-name"];
-
-              // Only colour on first encounter of this field name (add),
-              // or always colour freetexts (they have no fieldName)
               const alreadyColoured =
                 fieldName && annotationsColorRef.current.includes(fieldName);
 
@@ -838,6 +999,9 @@ const SignatureViewer = () => {
                   setAnnotationsColorRecord((prev) => [
                     ...new Set([...prev, fieldName]),
                   ]);
+                  annotationsColorRef.current = [
+                    ...new Set([...annotationsColorRef.current, fieldName]),
+                  ];
                 }
                 applyActorColour(ann, r, g, b);
               }
@@ -861,77 +1025,31 @@ const SignatureViewer = () => {
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pdfData.attachmentBlob]);
+  }, [pdfData.attachmentBlob]); // init once — guard ref prevents double run
 
-  // ─── Re-render panel when participants change ─────────────────────────────
+  // ─── Modal helpers ────────────────────────────────────────────────────────
 
-  useEffect(() => {
-    if (!instance || !participants.length) return;
+  const filterFunc = useCallback(
+    (option, searchText) =>
+      option.data.name.toLowerCase().includes(searchText.toLowerCase()),
+    [],
+  );
 
-    instance.UI.disableElement("customPanel");
-    instance.UI.enableElement("customPanel");
-    instance.UI.setActiveLeftPanel("customPanel");
+  const resetSignerForm = useCallback(() => {
+    setSignerForm({ Name: "", EmailAddress: "", UserID: 0 });
+    setSignerDropdown({ value: 0, label: "", name: "" });
+  }, []);
 
-    const removed = lastParticipants.filter(
-      (lp) => !participants.some((p) => p.pk_UID === lp.pk_UID),
-    );
-    setLastParticipants(participants);
-    if (!removed.length) return;
-
-    (async () => {
-      const { annotationManager } = instance.Core;
-      const xfdf = await annotationManager.exportAnnotations();
-      const modified = removeDeletedAnnotations(xfdf, deletedDataTemp);
-      annotationManager.deleteAnnotations(
-        annotationManager.getAnnotationsList(),
-      );
-      await annotationManager.importAnnotations(modified);
-      annotationManager.redrawAnnotation();
-    })();
-  }, [participants]);
-
-  // ─── Assignees → dropdown options ─────────────────────────────────────────
-
-  useEffect(() => {
-    if (!assignees.user?.length) return;
-    setUserList(
-      assignees.user.map((u) => ({
-        label: (
-          <Row>
-            <Col lg={12} className="d-flex gap-2 align-items-center">
-              <img
-                src={`data:image/jpeg;base64,${u.displayProfilePictureName}`}
-                height="16px"
-                width="18px"
-                draggable="false"
-                alt=""
-              />
-              <span>{u.name}</span>
-            </Col>
-          </Row>
-        ),
-        value: u.pK_UID,
-        name: u.name,
-        email: u.emailAddress,
-      })),
-    );
-  }, [assignees.user]);
-
-  // ─── Modal handlers ───────────────────────────────────────────────────────
-
-  const filterFunc = (option, searchText) =>
-    option.data.name.toLowerCase().includes(searchText.toLowerCase());
-
-  const handleSignerDropdownChange = (val) => {
+  const handleSignerDropdownChange = useCallback((val) => {
     setSignerDropdown(val);
     setSignerForm({
       Name: val.name,
       EmailAddress: val.email,
       UserID: val.value,
     });
-  };
+  }, []);
 
-  const handleAddSigner = () => {
+  const handleAddSigner = useCallback(() => {
     const { EmailAddress, Name, UserID } = signerForm;
     if (!EmailAddress || !Name) return;
     const alreadyExists = signerData.some(
@@ -945,36 +1063,34 @@ const SignatureViewer = () => {
         { Name, EmailAddress, userID: UserID },
       ]);
     }
-    setSignerDropdown({ value: 0, label: "", name: "" });
-    setSignerForm({ Name: "", EmailAddress: "", UserID: 0 });
-  };
+    resetSignerForm();
+  }, [signerForm, signerData, t, resetSignerForm]);
 
-  const handleRemoveSigner = (index) =>
-    setSignerData((prev) => prev.filter((_, i) => i !== index));
+  const handleRemoveSigner = useCallback(
+    (index) => setSignerData((prev) => prev.filter((_, i) => i !== index)),
+    [],
+  );
 
-  const handleDragEnd = (result) => {
+  const handleDragEnd = useCallback((result) => {
     if (!result.destination) return;
-    const items = [...signerData];
-    const [moved] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, moved);
-    setSignerData(items);
-  };
+    setSignerData((prev) => {
+      const items = [...prev];
+      const [moved] = items.splice(result.source.index, 1);
+      items.splice(result.destination.index, 0, moved);
+      return items;
+    });
+  }, []);
 
-  const resetSignerForm = () => {
-    setSignerForm({ Name: "", EmailAddress: "", UserID: 0 });
-    setSignerDropdown({ value: 0, label: "", name: "" });
-  };
-
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     if (participantsRef.current?.length > 0) {
       setOpenAddParticipentModal(false);
       resetSignerForm();
     } else {
       window.close();
     }
-  };
+  }, [resetSignerForm]);
 
-  const handleSaveSigners = async () => {
+  const handleSaveSigners = useCallback(async () => {
     if (!signerData.length) {
       showMessage(
         t("Atleast-one-signatory-is-required"),
@@ -1000,40 +1116,18 @@ const SignatureViewer = () => {
     };
     resetSignerForm();
     dispatch(saveWorkflowApi(payload, navigate, t, setOpenAddParticipentModal));
-  };
-
-  const handlePublish = async () => {
-    const payload = await collectPayload();
-    if (!payload) return;
-    dispatch(
-      saveWorkflowApi(
-        payload.saveWorkFlowData,
-        navigate,
-        t,
-        setOpenAddParticipentModal,
-        1,
-        payload.newData,
-        payload.addAnnotationPayload,
-        payload.saveSignatureDocPayload,
-        2,
-        {
-          PK_WorkFlow_ID: pdfDataRef.current.workFlowID,
-          FinalDocumentName: pdfDataRef.current.title,
-          Message: sendMessage,
-          ListOfViewers: [],
-        },
-      ),
-    );
-  };
+  }, [signerData, orderCheckBox, dispatch, navigate, t, resetSignerForm]);
 
   // ─── Render ───────────────────────────────────────────────────────────────
 
   return (
     <>
+      {/* WebViewer container — must never unmount */}
       <div style={{ height: "100vh", width: "100%" }}>
         <div ref={viewerRef} style={{ height: "100%", width: "100%" }} />
       </div>
 
+      {/* Add/Edit participants modal */}
       <Modal
         show={openAddParticipentModal}
         onHide={handleModalClose}
@@ -1054,6 +1148,8 @@ const SignatureViewer = () => {
                 {t("Add-the-people-who-need-to-sign-this-document")}
               </span>
             </Col>
+
+            {/* Add new signer row */}
             <Col lg={12}>
               <Row>
                 <Col sm={6}>
@@ -1081,6 +1177,7 @@ const SignatureViewer = () => {
                 </Col>
               </Row>
 
+              {/* Draggable signer list */}
               <Row className="d-flex align-items-center">
                 <Col sm={12} className="signersList">
                   <DragDropContext onDragEnd={handleDragEnd}>
@@ -1164,15 +1261,16 @@ const SignatureViewer = () => {
                   </DragDropContext>
                 </Col>
               </Row>
-            </Col>
 
-            <Col lg={12}>
-              <Button
-                className="addOther_field"
-                text={t("Add-another-signer")}
-                onClick={handleAddSigner}
-                icon={<img src={PlusSignSignatureFlow} alt="" />}
-              />
+              {/* Add another signer */}
+              <Col lg={12}>
+                <Button
+                  className="addOther_field"
+                  text={t("Add-another-signer")}
+                  onClick={handleAddSigner}
+                  icon={<img src={PlusSignSignatureFlow} alt="" />}
+                />
+              </Col>
             </Col>
           </Row>
         }
