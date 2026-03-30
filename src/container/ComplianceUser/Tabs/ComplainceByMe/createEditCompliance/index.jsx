@@ -29,6 +29,8 @@ const CreateEditCompliance = () => {
     complianceDetailsState,
     showViewCompliance,
     setShowViewCompliance,
+    isComplianceCreatOrEdit,
+    setIsComplianceCreateOrEdit,
   } = useComplianceContext();
   // Tracking all Loading States
   const modeRef = useRef(complianceAddEditViewState);
@@ -72,16 +74,22 @@ const CreateEditCompliance = () => {
   );
 
   const getTitle = () => {
-    if (!complianceInfo?.complianceName) return t("Create-new-compliance");
-
-    if (
-      complianceAddEditViewState === 2 &&
-      complianceInfo?.complianceId !== 0
-    ) {
-      return `Edit: ${complianceInfo.complianceName}`;
+    // ✅ Default (including 0, undefined, initial state)
+    if (isComplianceCreatOrEdit !== 1 && isComplianceCreatOrEdit !== 2) {
+      return t("Create-new-compliance");
     }
 
-    return complianceInfo.complianceName;
+    // ✅ When user starts creating & name exists
+    if (isComplianceCreatOrEdit === 1) {
+      return complianceInfo?.complianceName || t("Create-new-compliance");
+    }
+
+    // ✅ Edit mode
+    if (isComplianceCreatOrEdit === 2) {
+      return `Edit: ${complianceInfo?.complianceName || ""}`;
+    }
+
+    return "";
   };
 
   console.log("createEditComplicance");

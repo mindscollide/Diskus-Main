@@ -313,32 +313,6 @@ const ComplainceDetails = () => {
           setHasIncompleteChecklistOrTask(false);
         }
 
-        // // Check if any checklist or any task status is In Progress
-        // if (
-        //   (Array.isArray(checklists) && checklists.length > 0) ||
-        //   (Array.isArray(checklistTasks) && checklistTasks.length > 0)
-        // ) {
-        //   const hasChecklistInProgress =
-        //     Array.isArray(checklists) &&
-        //     checklists.some(
-        //       (checklist) => checklist?.status?.statusName === "In Progress"
-        //     );
-
-        //   const hasTaskInProgress =
-        //     Array.isArray(checklistTasks) &&
-        //     checklistTasks.some(
-        //       (task) => task?.taskStatus?.statusName === "In Progress"
-        //     );
-
-        //   setCheckAnyChecklistOrTaskInProgress(
-        //     hasChecklistInProgress ||
-
-        //     hasTaskInProgress
-        //   );
-        // } else {
-        //   setCheckAnyChecklistOrTaskInProgress(false);
-        // }
-
         // Check if any checklist or any task status is In Progress
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasTaskInProgress =
@@ -364,9 +338,6 @@ const ComplainceDetails = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length,
       );
-      // setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      // setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
     }
@@ -444,7 +415,7 @@ const ComplainceDetails = () => {
     try {
       let saveFiles = [];
       let uploadedFiles;
-      // 1️⃣ Upload individual documents
+      //  Upload individual documents
       if (complianceReopenDetailsState.attachments.length > 0) {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
@@ -453,12 +424,12 @@ const ComplainceDetails = () => {
             ),
           ),
         );
-        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        //  Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
-        // 3️⃣ Build payload AFTER data exists
+        // Build payload AFTER data exists
         const Data2 = {
           complianceId: editComplianceData.complianceId,
           complianceStatusChangeHistoryID: complianceReopenedDetail,
@@ -469,7 +440,7 @@ const ComplainceDetails = () => {
             : [],
         };
 
-        // 4️⃣ Final mapping API
+        //  Final mapping API
         dispatch(
           SaveComplianceDocumentsAndMappingsAPI(
             navigate,
