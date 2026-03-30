@@ -626,11 +626,11 @@ const SignatureViewer = () => {
         annotationManager.getAnnotationsList(),
       );
       try {
+        await annotationManager.importAnnotations(modified);
+        annotationManager.redrawAnnotation();
       } catch (err) {
         console.error("removeDeletedAnnotations:", err);
       }
-      await annotationManager.importAnnotations(modified);
-      annotationManager.redrawAnnotation();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participants]);
