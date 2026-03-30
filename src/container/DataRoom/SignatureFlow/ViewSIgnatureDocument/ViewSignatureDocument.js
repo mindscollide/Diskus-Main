@@ -383,6 +383,10 @@ const ViewSignatureDocument = () => {
 
         const { documentViewer, annotationManager, Tools } = instance.Core;
         const { FitMode, setFitMode } = instance.UI;
+
+        // Viewer-level read-only — disables all tool interactions globally
+        instance.UI.setReadOnly(true);
+
         // Add event listener for when the document is loaded
         documentViewer.addEventListener("documentLoaded", async () => {
           // Ensure the annotations are fully loaded
@@ -391,22 +395,29 @@ const ViewSignatureDocument = () => {
           setFitMode(FitMode.FitWidth);
 
           // If XFDF data exists, import it
-          if (pdfResponceData.xfdfData !== "" && annotationManager) {
+          if (pdfResponceDataRef.current && annotationManager) {
             try {
               await annotationManager.importAnnotations(
                 pdfResponceDataRef.current
               );
-              // Lock All Annotations
+
+              // Lock every annotation object (freetext, stamps, widgets…)
               const annotations = annotationManager.getAnnotationsList();
               annotations.forEach((annot) => {
-                annot.Locked = true; // Prevent any modifications
-                annot.ReadOnly = true; // Prevent editing
-                annot.NoResize = true; // No resizing
-                annot.NoMove = true; // No moving
-                annot.NoRotate = true; // No rotating
+                annot.Locked = true;
+                annot.ReadOnly = true;
+                annot.NoResize = true;
+                annot.NoMove = true;
+                annot.NoRotate = true;
+                annotationManager.updateAnnotation(annot); // persist flags
               });
 
-              annotationManager.redrawAnnotation(annotations);
+              // Lock every PDF form field (Sig / Tx / Btn / Ch)
+              // Without this, form widgets remain clickable/typeable
+              annotationManager.getFieldManager().forEachField((field) => {
+                field.flags.set("ReadOnly", true);
+              });
+
             } catch (error) {
               console.error("Error importing annotations:", error);
             }

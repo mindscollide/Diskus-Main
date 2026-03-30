@@ -27,7 +27,7 @@ import {
 } from "./pendingSIgnatureFunctions";
 import { showMessage } from "../../../../components/elements/snack_bar/utill";
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Pure helpers ─────────────────────────────────────────────────────────────
 
 const containsNull = (arr) => arr.some((el) => el === null);
 
@@ -59,26 +59,59 @@ const revertXmlField = (data) =>
     };
   });
 
-const buildHideReadArrays = (
-  annotations,
-  hiddenUsers,
-  readOnlyUsers,
-  currentUserID,
-) => {
+/**
+ * Extract the Set of ffield names assigned to a specific user.
+ * Used to determine widget annotation ownership without relying on Subject.
+ */
+const getUserFieldNames = (userAnnotations, userID) => {
+  const entry = userAnnotations.find((u) => u.userID === userID);
+  if (!entry) return new Set();
+  const names = new Set();
+  entry.xml.forEach(({ ffield }) => {
+    if (!ffield) return;
+    try {
+      const doc = new DOMParser().parseFromString(ffield, "text/xml");
+      const name = doc.documentElement.getAttribute("name");
+      if (name) names.add(name);
+    } catch {
+      /* ignore malformed ffield */
+    }
+  });
+  return names;
+};
+
+/**
+ * Build HideArray / ReadArray from userAnnotations.
+ *
+ * HideArray — field names whose owner is in hiddenUsers
+ *             (their turn hasn't arrived yet in an ordered workflow).
+ *
+ * ReadArray — field names of EVERY other non-current user that is NOT hidden.
+ *             This covers already-signed users so their data stays visible
+ *             but fully locked.
+ */
+const buildHideReadArrays = (annotations, hiddenUsers, currentUserID) => {
   const HideArray = [];
   const ReadArray = [];
+
   annotations.forEach((obj) => {
-    if (obj.userID === currentUserID) return;
+    if (obj.userID === currentUserID) return; // own fields stay editable
+
     obj.xml.forEach(({ ffield }) => {
       const matches = ffield?.match(/<ffield[^>]*\sname="([^"]+)"/g) ?? [];
       matches.forEach((match) => {
         const name = match.match(/name="([^"]+)"/)?.[1];
         if (!name) return;
-        if (hiddenUsers.includes(obj.userID)) HideArray.push(name);
-        else if (readOnlyUsers.includes(obj.userID)) ReadArray.push(name);
+
+        if (hiddenUsers.includes(obj.userID)) {
+          HideArray.push(name); // hide entirely
+        } else {
+          ReadArray.push(name); // show but lock — signed or pending
+        }
       });
     });
   });
+
   return { HideArray, ReadArray };
 };
 
@@ -149,7 +182,11 @@ const convertAnnotationsForApi = (filtered) =>
     xmlList: u.xml.map((x) => JSON.stringify(x)),
   }));
 
-const getAnnotationOwnerID = (annot) => {
+/**
+ * Parse the owner userID from a FreeText annotation's Subject.
+ * Subject format: "<label>-<userID>"  e.g. "Title-42"
+ */
+const getAnnotationOwnerIDFromSubject = (annot) => {
   if (!annot.Subject) return null;
   const parts = annot.Subject.split("-");
   const lastPart = parts[parts.length - 1];
@@ -158,94 +195,157 @@ const getAnnotationOwnerID = (annot) => {
 };
 
 /**
- * Apply lock/readOnly rules.
- * Own annotations → fully editable.
- * Others' annotations → locked + read-only.
+ * Lock / unlock annotations based on who the current user is.
  *
- * For WidgetAnnotations that belong to the current user we ALSO
- * call field.resetValue() + clear the flags Apryse sets internally
- * when a signature field has been "committed", so the user can
- * click it again to replace their signature.
+ * Widget annotations  → ownership is determined by comparing the widget's
+ *                       field name against currentUserFieldNames (a Set).
+ * FreeText annotations → ownership is determined via the Subject attribute.
+ *
+ * Non-owner annotations:
+ *   • annotation-level  Locked = true, ReadOnly = true
+ *   • no resize / move / rotate
+ * Owner widget annotations:
+ *   • clear PDF field-level ReadOnly so the widget is clickable (re-sign support)
+ *   • annotation-level flags left unlocked
  */
 const applyAnnotationLocks = (
   annotationManager,
   annotations,
   currentUserID,
+  currentUserFieldNames, // Set<string>
 ) => {
   annotations.forEach((annot) => {
-    const ownerID = getAnnotationOwnerID(annot);
-    const isOwner = ownerID === currentUserID;
+    const isWidget =
+      typeof annot.getField === "function" ||
+      annot.constructor?.name?.includes("Widget");
 
-    // annot.Locked = !isOwner;
-    // annot.ReadOnly = !isOwner;
+    let isOwner = false;
+
+    if (isWidget) {
+      try {
+        const field = annot.getField?.();
+        const fieldName = field?.name;
+        isOwner = fieldName ? currentUserFieldNames.has(fieldName) : false;
+      } catch {
+        isOwner = false;
+      }
+    } else {
+      // FreeText or other annotation types — use Subject
+      const ownerID = getAnnotationOwnerIDFromSubject(annot);
+      isOwner = ownerID === currentUserID;
+    }
+
+    // Apply annotation-level lock state
+    annot.Locked = !isOwner;
+    annot.ReadOnly = !isOwner;
     annot.NoResize = true;
     annot.NoMove = true;
     annot.NoRotate = true;
 
-    // ── Re-sign fix ──────────────────────────────────────────────────────────
-    // After Apryse "commits" a signature widget it sets the field to ReadOnly
-    // at the PDF-field level (separate from the annotation-level flags above).
-    // We must clear that field-level lock so clicking the widget opens the
-    // signature panel again instead of doing nothing.
-    if (isOwner) {
-      // Check annotation type via constructor name — works without importing
-      // the Annotations namespace outside the WebViewer promise scope.
-      const isWidget =
-        annot.constructor?.name?.includes("Widget") ||
-        annot.Subject?.includes("Widget") ||
-        typeof annot.getField === "function";
-
-      if (isWidget) {
-        try {
-          const field = annot.getField?.();
-          if (field) {
-            // Clear PDF-field-level read-only so the widget is clickable again
-            field.flags.set("ReadOnly", false);
-            // If this is a signature field that has been filled, mark it as
-            // not-yet-signed so Apryse will open the signing dialog on click.
-            if (typeof field.setValue === "function") {
-              // Passing undefined / empty string clears the drawn signature
-              // without removing the widget placeholder from the document.
-              // We only do this if the field is already filled.
-              if (
-                field.getValue?.() !== "" &&
-                field.getValue?.() !== undefined
-              ) {
-                // DON'T clear the value here — we want to KEEP the existing
-                // signature visible. We only need to make the field clickable.
-                // Clearing the PDF ReadOnly flag is sufficient.
-              }
-            }
-          }
-        } catch (_) {
-          // getField not available on all annotation subtypes — safe to ignore
-        }
+    // For the owner's widget fields clear the PDF field-level ReadOnly flag
+    // so clicking opens the appropriate tool (signature panel, text editor…)
+    if (isOwner && isWidget) {
+      try {
+        const field = annot.getField?.();
+        if (field) field.flags.set("ReadOnly", false);
+      } catch {
+        /* getField not available on every subtype */
       }
     }
-    // ── End re-sign fix ──────────────────────────────────────────────────────
 
+    annotationManager.updateAnnotation(annot);
     annotationManager.redrawAnnotation(annot);
   });
 };
 
 /**
- * After a signature is placed Apryse fires annotationChanged with action="modify".
- * At that point the widget is already "committed" and its field is set to ReadOnly
- * by the SDK internally. We re-unlock it immediately so the user can click to change.
+ * Validate that all fields assigned to the current user are filled.
+ * Called synchronously at submit time with the already-exported xfdfString.
+ *
+ * Field type is read from the stored `ffield` XML in userAnnotations — the
+ * same data Apryse wrote when the designer created the fields.
+ *
+ * Per-type strategy
+ * ─────────────────
+ * Btn (checkbox / radio)
+ *   Always valid — any state (checked or unchecked) is acceptable.
+ *
+ * Sig (signature)
+ *   Apryse NEVER writes signature values into <fields><value>; they are
+ *   stored as appearance streams.  Instead we inspect the widget element
+ *   inside Apryse's proprietary <pdf-info> section:
+ *     • unsigned widget  → self-closing or has 0 child elements
+ *     • signed   widget  → has ≥ 1 child (apref / ap / inline appearance)
+ *   As a belt-and-suspenders fallback we also check <fields><value> in case
+ *   a future Apryse version writes the value there.
+ *
+ * Tx / Ch (text / choice)
+ *   Reliably stored in <fields><field name="…"><value>.
  */
-const unlockSignatureWidgetForResign = (annot, annotationManager) => {
-  try {
-    const field = annot.getField?.();
-    if (!field) return;
-    field.flags.set("ReadOnly", false);
-    annot.Locked = false;
-    annot.ReadOnly = false;
-    annot.NoResize = false;
-    annot.NoMove = false;
-    annot.NoRotate = false;
-    annotationManager.updateAnnotation(annot);
-    annotationManager.redrawAnnotation(annot);
-  } catch (_) {}
+const validateViaXFDF = (
+  xfdfString,
+  currentUserFieldNames,
+  userAnnotations,
+  currentUserID,
+) => {
+  if (currentUserFieldNames.size === 0)
+    return { valid: true, unfilledCount: 0 };
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(xfdfString, "text/xml");
+
+  // Build field-type map from stored ffield XML (designer-time metadata)
+  const fieldTypeMap = new Map();
+  const userEntry = userAnnotations.find((u) => u.userID === currentUserID);
+  userEntry?.xml.forEach(({ ffield }) => {
+    if (!ffield) return;
+    try {
+      const d = parser.parseFromString(ffield, "text/xml");
+      const name = d.documentElement.getAttribute("name");
+      const type = d.documentElement.getAttribute("type") || "";
+      if (name) fieldTypeMap.set(name, type);
+    } catch {
+      /* malformed ffield string — skip */
+    }
+  });
+
+  let unfilledCount = 0;
+
+  for (const fieldName of currentUserFieldNames) {
+    const fieldType = fieldTypeMap.get(fieldName) || "";
+
+    // ── Btn ──────────────────────────────────────────────────────────────────
+    if (fieldType === "Btn") continue; // checkbox / radio always valid
+
+    // ── Sig ──────────────────────────────────────────────────────────────────
+    if (fieldType === "Sig") {
+      // Belt-and-suspenders check 1: <fields> value (works in some Apryse builds)
+      const fieldEl =
+        doc.querySelector(`fields field[name="${CSS.escape(fieldName)}"]`) ??
+        doc.querySelector(`fields field[name="${fieldName}"]`);
+      const fieldValue = (
+        fieldEl?.querySelector("value")?.textContent ?? ""
+      ).trim();
+      if (fieldValue) continue; // value present → signed
+
+      // Belt-and-suspenders check 2: widget element children in <pdf-info>
+      // Apryse adds an apref / ap child to the widget after applying a signature.
+      const widget = doc.querySelector(`widget[field="${fieldName}"]`);
+      if (widget && widget.childElementCount > 0) continue; // has appearance → signed
+
+      unfilledCount++; // widget found but no evidence of signing
+      continue;
+    }
+
+    // ── Tx / Ch (text, choice) ────────────────────────────────────────────────
+    const fieldEl =
+      doc.querySelector(`fields field[name="${CSS.escape(fieldName)}"]`) ??
+      doc.querySelector(`fields field[name="${fieldName}"]`);
+    const value = (fieldEl?.querySelector("value")?.textContent ?? "").trim();
+    if (!value) unfilledCount++;
+  }
+
+  return { valid: unfilledCount === 0, unfilledCount };
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -266,29 +366,28 @@ const PendingSignatureViewer = () => {
 
   const docWorkflowID = new URLSearchParams(location.search).get("documentID");
 
-  // ── WebViewer ──
+  // ── WebViewer ──────────────────────────────────────────────────────────────
   const viewerRef = useRef(null);
   const webViewerInitialized = useRef(false);
   const [instance, setInstance] = useState(null);
 
-  // ── Data state ──
+  // ── Data state ─────────────────────────────────────────────────────────────
   const [fieldsData, setFieldsData] = useState([]);
   const [signerData, setSignerData] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [lastParticipants, setLastParticipants] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
 
-  // ── Annotation state ──
+  // ── Annotation state ───────────────────────────────────────────────────────
   const [userAnnotations, setUserAnnotations] = useState([]);
   const [userAnnotationsCopy, setUserAnnotationsCopy] = useState([]);
   const [hiddenUsers, setHiddenUsers] = useState([]);
-  const [readOnlyUsers, setReadOnlyUsers] = useState([]);
 
   const [removeXmlAfterHideData, setRemoveXmlAfterHideData] = useState("");
   const [removeXmlAfterFreetextHideData, setRemoveXmlAfterFreetextHideData] =
     useState([]);
 
-  // ── PDF data ──
+  // ── PDF data ───────────────────────────────────────────────────────────────
   const [pdfData, setPdfData] = useState({
     xfdfData: "",
     attachmentBlob: "",
@@ -303,7 +402,7 @@ const PendingSignatureViewer = () => {
     isCreator: 0,
   });
 
-  // ── UI state ──
+  // ── UI state ───────────────────────────────────────────────────────────────
   const [notification, setNotification] = useState({
     open: false,
     message: "",
@@ -315,7 +414,7 @@ const PendingSignatureViewer = () => {
   const [declineReasonMessage, setDeclineReasonMessage] = useState("");
   const [declineErrorMessage, setDeclineErrorMessage] = useState(false);
 
-  // ── Stable refs ──
+  // ── Stable refs ────────────────────────────────────────────────────────────
   const selectedUserRef = useRef(selectedUser);
   const signerDataRef = useRef(signerData);
   const userAnnotationsRef = useRef(userAnnotations);
@@ -323,21 +422,44 @@ const PendingSignatureViewer = () => {
   const pdfXfdfRef = useRef(pdfData.xfdfData);
   const participantsRef = useRef(participants);
   const hiddenUsersRef = useRef(hiddenUsers);
-  const readOnlyUsersRef = useRef(readOnlyUsers);
   const removeXmlAfterHideDataRef = useRef(removeXmlAfterHideData);
   const removeXmlAfterFreetextHideRef = useRef(removeXmlAfterFreetextHideData);
   const fieldsDataRef = useRef(fieldsData);
   const pdfDataRef = useRef(pdfData);
 
+  /**
+   * Set of ffield names that belong to the current user.
+   * Kept in a ref so WebViewer event callbacks can always read the latest value
+   * without needing the effect to re-run.
+   */
+  const currentUserFieldNamesRef = useRef(new Set());
+
+  /**
+   * Set of field names that the current user has already filled / signed during
+   * this session.  Populated exclusively via the `fieldChanged` event — the only
+   * reliable signal that Apryse provides for signature fields (Apryse stores
+   * signature data as an appearance stream, NOT as an XFDF field value, so
+   * XFDF parsing always returns empty for signature fields even after signing).
+   */
+  const filledFieldsRef = useRef(new Set());
+
+  // ── Sync state → refs ──────────────────────────────────────────────────────
   useEffect(() => {
     selectedUserRef.current = selectedUser;
   }, [selectedUser]);
   useEffect(() => {
     signerDataRef.current = signerData;
   }, [signerData]);
+
   useEffect(() => {
     userAnnotationsRef.current = userAnnotations;
+    // Recompute the current user's field names whenever annotations update
+    currentUserFieldNamesRef.current = getUserFieldNames(
+      userAnnotations,
+      getCurrentUserID(),
+    );
   }, [userAnnotations]);
+
   useEffect(() => {
     userAnnotationsCopyRef.current = userAnnotationsCopy;
   }, [userAnnotationsCopy]);
@@ -351,9 +473,6 @@ const PendingSignatureViewer = () => {
     hiddenUsersRef.current = hiddenUsers;
   }, [hiddenUsers]);
   useEffect(() => {
-    readOnlyUsersRef.current = readOnlyUsers;
-  }, [readOnlyUsers]);
-  useEffect(() => {
     removeXmlAfterHideDataRef.current = removeXmlAfterHideData;
   }, [removeXmlAfterHideData]);
   useEffect(() => {
@@ -366,7 +485,7 @@ const PendingSignatureViewer = () => {
     pdfDataRef.current = pdfData;
   }, [pdfData]);
 
-  // ── Initial API calls ──
+  // ── Initial API calls ──────────────────────────────────────────────────────
   useEffect(() => {
     if (!docWorkflowID) return;
     dispatch(
@@ -378,13 +497,14 @@ const PendingSignatureViewer = () => {
       ),
     );
     dispatch(allAssignessList(navigate, t, false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [docWorkflowID]);
 
   useEffect(() => {
     if (ResponseMessage) showMessage(ResponseMessage, "error", setNotification);
   }, [ResponseMessage]);
 
-  // ── getAllFieldsByWorkflowID ──
+  // ── getAllFieldsByWorkflowID ────────────────────────────────────────────────
   useEffect(() => {
     if (!getAllFieldsByWorkflowID) return;
     try {
@@ -409,8 +529,8 @@ const PendingSignatureViewer = () => {
         })),
       );
 
+      // hiddenUsers come from the API (future signers in ordered workflows)
       setHiddenUsers(getAllFieldsByWorkflowID.hiddenUsers ?? []);
-      setReadOnlyUsers(getAllFieldsByWorkflowID.readOnlyUsers ?? []);
 
       if (containsNull(listOfFields)) {
         const bundles = getWorkfFlowByFileId?.workFlow?.bundleModels ?? [];
@@ -434,7 +554,7 @@ const PendingSignatureViewer = () => {
     }
   }, [getAllFieldsByWorkflowID]);
 
-  // ── getWorkfFlowByFileId ──
+  // ── getWorkfFlowByFileId ───────────────────────────────────────────────────
   useEffect(() => {
     if (!getWorkfFlowByFileId) return;
     try {
@@ -494,7 +614,14 @@ const PendingSignatureViewer = () => {
     }
   }, [getWorkfFlowByFileId, fieldsData]);
 
-  // ── getSignatureFileAnnotationResponse ──
+  // ── getSignatureFileAnnotationResponse ────────────────────────────────────
+  //
+  // Pre-processes the XFDF before it is loaded into the viewer:
+  //   • Hidden users   → their ffield / widget / freetext elements are stripped
+  //   • All other non-current users → their ffield elements get ReadOnly flag
+  //     and their freetext annotations get print+locked flags
+  //   This ensures already-signed data is visible but not editable.
+  //
   useEffect(() => {
     if (!getSignatureFileAnnotationResponse) return;
     try {
@@ -502,24 +629,38 @@ const PendingSignatureViewer = () => {
       const { HideArray, ReadArray } = buildHideReadArrays(
         userAnnotationsRef.current,
         hiddenUsersRef.current,
-        readOnlyUsersRef.current,
         currentUserID,
       );
 
+      // 1. Mark non-hidden other users' widget fields as ReadOnly in XFDF
       const withReadOnly = processXmlForReadOnly(
         getSignatureFileAnnotationResponse.annotationString,
         ReadArray,
       );
+
+      // 2. Strip widget / ffield entries for hidden users (ordered workflow)
       const { updatedXmlString, removedItems } = processXmlToHideFields(
         withReadOnly,
         HideArray,
       );
       setRemoveXmlAfterHideData(removedItems);
 
+      // All non-current, non-hidden users → their freetext labels are read-only
+      const readOnlyUserIDs = userAnnotationsRef.current
+        .filter(
+          (u) =>
+            u.userID !== currentUserID &&
+            !hiddenUsersRef.current.includes(u.userID),
+        )
+        .map((u) => u.userID);
+
+      // 3. Lock freetext (label) annotations belonging to readOnly users
       const withReadOnlyFreetext = readOnlyFreetextElements(
         updatedXmlString,
-        readOnlyUsersRef.current,
+        readOnlyUserIDs,
       );
+
+      // 4. Remove freetext annotations belonging to hidden users
       const { hideFreetextXmlString, removedHideFreetextElements } =
         hideFreetextElements(withReadOnlyFreetext, hiddenUsersRef.current);
       setRemoveXmlAfterFreetextHideData(removedHideFreetextElements);
@@ -534,20 +675,52 @@ const PendingSignatureViewer = () => {
     }
   }, [getSignatureFileAnnotationResponse]);
 
-  // ─── Save handler ─────────────────────────────────────────────────────────
+  // ─── Save / submit handler ────────────────────────────────────────────────
 
   const handleSave = useCallback(
     async (annotationManager) => {
       try {
         const currentUserID = getCurrentUserID();
+        const currentUserFieldNames = currentUserFieldNamesRef.current;
+
+        // Export XFDF once — used for both validation and API payload
         const xfdfString = await annotationManager.exportAnnotations();
 
+        // ── Validation: every assigned field must be filled ──────────────────
+        // validateViaXFDF inspects the exported XFDF synchronously:
+        //   • Sig fields  → widget.childElementCount > 0 (appearance stream present)
+        //   • Tx/Ch fields → <fields><field><value> non-empty
+        //   • Btn fields   → always considered filled
+        const { valid } = validateViaXFDF(
+          xfdfString,
+          currentUserFieldNames,
+          userAnnotationsRef.current,
+          currentUserID,
+        );
+
+        if (!valid) {
+          showMessage(
+            t("Please-fill-all-required-fields-before-submitting"),
+            "warning",
+            setNotification,
+          );
+          return;
+        }
+
+        // ── Revert XFDF transformations before sending to API ────────────────
         const { HideArray, ReadArray } = buildHideReadArrays(
           userAnnotationsRef.current,
           hiddenUsersRef.current,
-          readOnlyUsersRef.current,
           currentUserID,
         );
+
+        const readOnlyUserIDs = userAnnotationsRef.current
+          .filter(
+            (u) =>
+              u.userID !== currentUserID &&
+              !hiddenUsersRef.current.includes(u.userID),
+          )
+          .map((u) => u.userID);
 
         let reverted = await revertProcessXmlForReadOnly(xfdfString, ReadArray);
         reverted = await revertProcessXmlToHideFields(
@@ -556,34 +729,14 @@ const PendingSignatureViewer = () => {
         );
         reverted = await revertReadOnlyFreetextElements(
           reverted,
-          readOnlyUsersRef.current,
+          readOnlyUserIDs,
         );
-
-        // Validate current user has signed
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(reverted, "text/xml");
-        const annotsEl = doc.getElementsByTagName("annots")[0];
-        const pattern = new RegExp(`-${currentUserID}$`);
-        const hasSigned = annotsEl
-          ? Array.from(annotsEl.children).some((node) => {
-              const subj =
-                node.getAttribute("subject") ||
-                node.getAttribute("Subject") ||
-                "";
-              return pattern.test(subj);
-            })
-          : false;
-
-        if (!hasSigned) {
-          showMessage(t("Signature-is-required"), "warning", setNotification);
-          return;
-        }
-
         reverted = await revertHideFreetextElements(
           reverted,
           removeXmlAfterFreetextHideRef.current,
         );
 
+        // ── Build API payload ────────────────────────────────────────────────
         const filtered = filterAnnotationsAgainstXFDF(
           userAnnotationsRef.current,
           reverted,
@@ -653,6 +806,7 @@ const PendingSignatureViewer = () => {
           filename: pdfData.title,
         });
 
+        // Disable all authoring / editing toolbar elements
         UI.disableElements([
           "linkButton",
           "annotationStyleEditButton",
@@ -723,20 +877,14 @@ const PendingSignatureViewer = () => {
               );
               await annotationManager.importAnnotations(cleanedXFDF);
 
+              // Apply locks immediately after import so the UI reflects
+              // the correct editable / read-only state from the start.
               const currentUserID = getCurrentUserID();
-              const allAnnotations = annotationManager.getAnnotationsList();
               applyAnnotationLocks(
                 annotationManager,
-                allAnnotations,
+                annotationManager.getAnnotationsList(),
                 currentUserID,
-              );
-              console.log(
-                "importAnnotations:",
-                applyAnnotationLocks(
-                  annotationManager,
-                  allAnnotations,
-                  currentUserID,
-                ),
+                currentUserFieldNamesRef.current,
               );
             } catch (err) {
               console.error("importAnnotations:", err);
@@ -747,7 +895,7 @@ const PendingSignatureViewer = () => {
           documentViewer.updateView();
         });
 
-        // ── Header ────────────────────────────────────────────────────────────
+        // ── Header buttons ─────────────────────────────────────────────────────
         const topHeader = UI.getModularHeader("default-top-header");
         const existingItems = topHeader.getItems();
         const currentUserID = getCurrentUserID();
@@ -776,6 +924,7 @@ const PendingSignatureViewer = () => {
             dataElement: "submitButton",
             label: t("Submit"),
             title: t("Submit"),
+            // handleSave reads from refs — always uses latest data
             onClick: () => handleSave(annotationManager),
             style: {
               background: "#6172d6",
@@ -796,6 +945,7 @@ const PendingSignatureViewer = () => {
             items: [declineButton, submitButton],
           });
         } else {
+          // Non-signatory viewers get a read-only Close button
           const closeButton = new UI.Components.CustomButton({
             dataElement: "closeButton",
             label: t("Close"),
@@ -827,28 +977,27 @@ const PendingSignatureViewer = () => {
     };
 
     init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pdfData.attachmentBlob]);
 
-  // ── annotationChanged + fieldChanged ─────────────────────────────────────
+  // ── annotationChanged + fieldChanged event listeners ──────────────────────
   //
-  // Re-sign fix explanation:
-  //   After the user applies a signature Apryse fires annotationChanged first,
-  //   then immediately sets field.flags ReadOnly = true in its own post-commit
-  //   code. So clearing ReadOnly inside annotationChanged (even with setTimeout)
-  //   gets overwritten.
+  // annotationChanged: syncs the userAnnotations XFDF snapshot and re-applies
+  //   locks in case Apryse resets any flags internally.
   //
-  //   `fieldChanged` fires AFTER Apryse finishes all its internal field updates.
-  //   That is the only reliable place to clear the field-level ReadOnly and
-  //   keep the widget clickable for re-signing.
+  // fieldChanged: fires AFTER Apryse finishes its own post-commit processing.
+  //   This is the only reliable place to clear the field-level ReadOnly that
+  //   Apryse sets after a signature is committed, so the user can re-sign.
   //
   useEffect(() => {
     if (!instance) return;
     const { annotationManager } = instance.Core;
     const currentUserID = getCurrentUserID();
 
-    // Sync XFDF snapshot + re-apply annotation-level locks
     const annotHandler = async (annotations, action, { imported }) => {
       if (imported) return;
+
+      // ── Sync XFDF snapshot ────────────────────────────────────────────────
       try {
         const xfdfString = await annotationManager.exportAnnotations();
         const snapshot = userAnnotationsRef.current.map((u) => ({
@@ -860,31 +1009,66 @@ const PendingSignatureViewer = () => {
       } catch (err) {
         console.error("annotationChanged snapshot:", err);
       }
-      applyAnnotationLocks(annotationManager, annotations, currentUserID);
+
+      // Re-apply locks after every change in case Apryse overwrites them
+      applyAnnotationLocks(
+        annotationManager,
+        annotations,
+        currentUserID,
+        currentUserFieldNamesRef.current,
+      );
     };
 
-    // Clear the field-level ReadOnly Apryse sets after committing a signature
-    const fieldHandler = (field) => {
+    // fieldChanged fires AFTER Apryse finishes all internal post-commit work.
+    // It receives (field, newValue) — the only reliable hook for two jobs:
+    //
+    //  1. Track filled state in filledFieldsRef so validation works correctly.
+    //     Apryse stores signature appearances as PDF streams, NOT as XFDF values,
+    //     so XFDF parsing always returns "" for signed signature fields.
+    //     Instead we trust fieldChanged: if it fired for a Sig field, it was signed.
+    //
+    //  2. Clear the field-level ReadOnly flag that Apryse sets after committing
+    //     a signature, so the widget stays clickable for re-signing.
+    const fieldHandler = (field, newValue) => {
       try {
-        const widgets = field.widgets ?? [];
-        widgets.forEach((annot) => {
-          const ownerID = getAnnotationOwnerID(annot);
-          if (ownerID !== currentUserID) return;
+        const fieldName = field.name;
+        if (!currentUserFieldNamesRef.current.has(fieldName)) return;
 
-          // This is the key line — clears Apryse's post-commit field lock
-          field.flags.set("ReadOnly", false);
+        // ── 1. Track filled state ───────────────────────────────────────────
+        const fieldType = field.type || "";
 
+        if (fieldType === "Sig") {
+          // Any fieldChanged on a signature field = the user completed signing.
+          // Do NOT check newValue — Apryse passes "" for appearance-based sigs.
+          filledFieldsRef.current.add(fieldName);
+        } else if (fieldType === "Btn") {
+          // Checkbox / radio — always valid; mark filled unconditionally.
+          filledFieldsRef.current.add(fieldName);
+        } else {
+          // Text / Choice fields: filled only when the value is non-empty.
+          const strValue = String(newValue ?? "").trim();
+          if (strValue) {
+            filledFieldsRef.current.add(fieldName);
+          } else {
+            filledFieldsRef.current.delete(fieldName);
+          }
+        }
+
+        // ── 2. Re-sign unlock ───────────────────────────────────────────────
+        // Clear the PDF field-level ReadOnly that Apryse applies post-commit.
+        field.flags.set("ReadOnly", false);
+
+        field.widgets?.forEach((annot) => {
           annot.Locked = false;
           annot.ReadOnly = false;
           annot.NoResize = false;
           annot.NoMove = false;
           annot.NoRotate = false;
-
           annotationManager.updateAnnotation(annot);
           annotationManager.redrawAnnotation(annot);
         });
       } catch (err) {
-        console.error("fieldChanged re-sign unlock:", err);
+        console.error("fieldChanged:", err);
       }
     };
 
@@ -897,7 +1081,7 @@ const PendingSignatureViewer = () => {
     };
   }, [instance]);
 
-  // ── Participants change → refresh panel ──
+  // ── Participants change ────────────────────────────────────────────────────
   useEffect(() => {
     if (!instance || !participants.length) return;
     instance.UI.disableElement("customPanel");
