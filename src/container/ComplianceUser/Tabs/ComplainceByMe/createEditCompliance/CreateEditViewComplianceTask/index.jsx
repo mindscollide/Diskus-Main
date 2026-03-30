@@ -76,6 +76,7 @@ const CreateEditViewComplianceTask = () => {
   } = useComplianceContext();
 
   console.log(newChecklistIds, "newChecklistIds");
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {

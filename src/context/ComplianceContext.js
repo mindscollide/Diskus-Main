@@ -248,6 +248,8 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceCompleteModalType, setComplianceCompleteModalType] =
     useState(null);
 
+  const [isEditComplianceTrue, setIsEditComplianceTrue] = useState(false);
+
   console.log(
     complianceCreatedMqttData,
     complianceByMeList,
@@ -1040,6 +1042,8 @@ export const ComlianceProvider = ({ children }) => {
         setNewChecklistIds,
         complianceCompleteModalType,
         setComplianceCompleteModalType,
+        isEditComplianceTrue,
+        setIsEditComplianceTrue,
       }}
     >
       {children}

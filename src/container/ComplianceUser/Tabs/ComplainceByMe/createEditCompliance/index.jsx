@@ -42,6 +42,8 @@ const CreateEditCompliance = () => {
     "complianceAddEditViewState",
   );
 
+  console.log(complianceInfo, "complianceInfo");
+
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
       try {
@@ -69,7 +71,18 @@ const CreateEditCompliance = () => {
     "complianceDetailsStatecomplianceDetailsState",
   );
 
-  const ComplianceMain = useRef();
+  const getTitle = () => {
+    if (!complianceInfo?.complianceName) return t("Create-new-compliance");
+
+    if (
+      complianceAddEditViewState === 2 &&
+      complianceInfo?.complianceId !== 0
+    ) {
+      return `Edit: ${complianceInfo.complianceName}`;
+    }
+
+    return complianceInfo.complianceName;
+  };
 
   console.log("createEditComplicance");
   return (
@@ -80,11 +93,7 @@ const CreateEditCompliance = () => {
       >
         <Row className="my-2 ">
           <Col sm={12} md={9} lg={9} className={styles["mainHeading"]}>
-            {modeRef.current === 2
-              ? `Edit: ${complianceInfo.complianceName}`
-              : modeRef.current === 1
-                ? t("Create-new-compliance")
-                : complianceInfo.complianceName}
+            {getTitle()}
           </Col>
 
           {}

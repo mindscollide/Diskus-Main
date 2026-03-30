@@ -1100,6 +1100,7 @@ const AddComplianceAPI = (
   t,
   setComplianceInfo,
   setChecklistTabs,
+  setComplianceAddEditViewState,
 ) => {
   return (dispatch) => {
     dispatch(AddComplianceInit());
@@ -1118,6 +1119,7 @@ const AddComplianceAPI = (
               t,
               setComplianceInfo,
               setChecklistTabs,
+              setComplianceAddEditViewState,
             ),
           );
         } else if (response.data.responseCode === 200) {
@@ -1156,6 +1158,7 @@ const AddComplianceAPI = (
                 ),
               );
               setChecklistTabs(2);
+              setComplianceAddEditViewState(1);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2237,6 +2240,7 @@ const ViewComplianceDetailsByViewTypeAPI = (
   setComplianceAddEditViewState,
   setCreateEditComplaince,
   setShowViewCompliance,
+  complianceInfo,
 ) => {
   // Value 1 is when User Perform Edit Operation
   // Value 2 is when User Perform View Operation
@@ -2262,6 +2266,7 @@ const ViewComplianceDetailsByViewTypeAPI = (
               setComplianceAddEditViewState,
               setCreateEditComplaince,
               setShowViewCompliance,
+              complianceInfo,
             ),
           );
         } else if (response.data.responseCode === 200) {

@@ -94,16 +94,25 @@ const ViewComplianceChecklistAccordian = () => {
   const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
 
   const canChecklistBeCompleted = (checklistId) => {
-    const checklistTasks =
-      viewComplianceByMeDetails?.checklistTasks?.filter(
-        (task) => task.checklistId === checklistId,
-      ) || [];
+    // ❗ STEP 1: If data not loaded → BLOCK
+    if (!viewComplianceByMeDetails?.checklistTasks?.length) {
+      console.log("⛔ Data not loaded yet");
+      return false; // treat as NOT allowed
+    }
 
-    const hasBlockedTask = checklistTasks.some((task) =>
-      BLOCKED_TASK_STATUSES.includes(task.taskStatus.statusName),
+    const checklistTasks = viewComplianceByMeDetails.checklistTasks.filter(
+      (task) => task.checklistId === checklistId,
     );
 
-    return !hasBlockedTask; // ✅ true if no blocked tasks, false otherwise
+    console.log("Checklist Tasks:", checklistTasks);
+
+    const hasBlockedTask = checklistTasks.some((task) =>
+      BLOCKED_TASK_STATUSES.includes(task.taskStatus?.statusName),
+    );
+
+    console.log("Has Blocked Task:", hasBlockedTask);
+
+    return !hasBlockedTask;
   };
 
   // functions
@@ -548,9 +557,9 @@ const ViewComplianceChecklistAccordian = () => {
       )} */}
 
       {/* This is for completion Modal */}
-      {/* {comlianceCompleteExceptionModal && (
+      {comlianceCompleteExceptionModal && (
         <ComplianceStatusCompleteExceptionModal />
-      )} */}
+      )}
 
       {/* This is For Cancel Modal */}
       {/* {complianceCancelModal && (

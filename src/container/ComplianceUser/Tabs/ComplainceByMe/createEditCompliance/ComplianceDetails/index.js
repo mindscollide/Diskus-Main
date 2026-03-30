@@ -86,6 +86,7 @@ const ComplainceDetails = () => {
     complianceReopenDetailsState,
     criticalityOptions,
     comlianceStatusReopenedModal,
+    setIsEditComplianceTrue,
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState121212");
@@ -102,6 +103,8 @@ const ComplainceDetails = () => {
     complianceReopenedDetail,
     "complianceReopenedDetail",
   );
+
+  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -585,7 +588,7 @@ const ComplainceDetails = () => {
 
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
-          updatedDueDate: createConvert(complianceReopenDetailsState.dueDate),
+          updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
           reason: complianceReopenDetailsState.reason,
         };
         let reopenDataroomMap = {
@@ -633,6 +636,7 @@ const ComplainceDetails = () => {
           t,
           setComplianceInfo,
           setChecklistTabs,
+          setComplianceAddEditViewState,
         ),
       );
     }
