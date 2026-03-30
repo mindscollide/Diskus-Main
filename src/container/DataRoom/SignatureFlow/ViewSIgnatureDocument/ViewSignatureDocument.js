@@ -374,46 +374,93 @@ const ViewSignatureDocument = () => {
         viewer.current
       ).then(async (instance) => {
         setInstance(instance);
-        instance.UI.loadDocument(
-          handleBlobFiles(pdfResponceData.attachmentBlob),
-          {
-            filename: pdfResponceData.title,
-          }
-        );
+        const UI = instance.UI;
 
-        const { documentViewer, annotationManager, Tools } = instance.Core;
-        const { FitMode, setFitMode } = instance.UI;
+        UI.loadDocument(handleBlobFiles(pdfResponceData.attachmentBlob), {
+          filename: pdfResponceData.title,
+        });
 
-        // Viewer-level read-only — disables all tool interactions globally
-        instance.UI.setReadOnly(true);
+        const { documentViewer, annotationManager } = instance.Core;
 
-        // Add event listener for when the document is loaded
+        // ── Custom close button (same pattern as signatureviewer.js) ──────
+        const closeButton = new UI.Components.CustomButton({
+          dataElement: "closeTabButton",
+          label: t("Close"),
+          title: t("Close"),
+          onClick: () => window.close(),
+          style: {
+            background: "#dc2626",
+            color: "#ffffff",
+            border: "none",
+            borderRadius: "4px",
+            padding: "8px 30px",
+            cursor: "pointer",
+            fontWeight: "600",
+          },
+        });
+
+        const closeButtonGroup = new UI.Components.GroupedItems({
+          dataElement: "closeButtonGroup",
+          grow: 0,
+          gap: 8,
+          position: "end",
+          alwaysVisible: true,
+          items: [closeButton],
+        });
+
+        // Replace entire header with only the close button
+        const topHeader = UI.getModularHeader("default-top-header");
+        topHeader.setItems([closeButtonGroup]);
+
+        // ── Hide all toolbar groups and UI panels ─────────────────────────
+        UI.disableElements([
+          "toolbarGroup-Annotate",
+          "toolbarGroup-Shapes",
+          "toolbarGroup-Edit",
+          "toolbarGroup-Insert",
+          "toolbarGroup-Forms",
+          "toolbarGroup-FillAndSign",
+          "toolbarGroup-Measure",
+          "toolbarGroup-Redact",
+          "toolbarGroup-View",
+          "toolsOverlay",
+          "menuButton",
+          "leftPanelButton",
+          "searchButton",
+          "toggleNotesButton",
+          "viewControlsButton",
+          "viewControlsOverlay",
+          "signaturePanelButton",
+          "notesPanel",
+          "outlinesPanelButton",
+          "annotationPopup",
+          "contextMenuPopup",
+          "richTextPopup",
+          "textPopup",
+        ]);
+
+        // ── Document loaded ───────────────────────────────────────────────
         documentViewer.addEventListener("documentLoaded", async () => {
-          // Ensure the annotations are fully loaded
           await documentViewer.getAnnotationsLoadedPromise();
+          UI.setFitMode(UI.FitMode.FitWidth);
 
-          setFitMode(FitMode.FitWidth);
-
-          // If XFDF data exists, import it
           if (pdfResponceDataRef.current && annotationManager) {
             try {
               await annotationManager.importAnnotations(
                 pdfResponceDataRef.current
               );
 
-              // Lock every annotation object (freetext, stamps, widgets…)
-              const annotations = annotationManager.getAnnotationsList();
-              annotations.forEach((annot) => {
+              // Lock every annotation object
+              annotationManager.getAnnotationsList().forEach((annot) => {
                 annot.Locked = true;
                 annot.ReadOnly = true;
                 annot.NoResize = true;
                 annot.NoMove = true;
                 annot.NoRotate = true;
-                annotationManager.updateAnnotation(annot); // persist flags
+                annotationManager.updateAnnotation(annot);
               });
 
               // Lock every PDF form field (Sig / Tx / Btn / Ch)
-              // Without this, form widgets remain clickable/typeable
               annotationManager.getFieldManager().forEachField((field) => {
                 field.flags.set("ReadOnly", true);
               });
@@ -423,60 +470,9 @@ const ViewSignatureDocument = () => {
             }
           }
 
-          // Refresh to apply the changes
           documentViewer.refreshAll();
           documentViewer.updateView();
         });
-
-        // Disable header tools and elements
-        instance.UI.disableTools([Tools.disableTextSelection]);
-        instance.UI.disableElements([
-          "underlineToolGroupButton",
-          "textSelectButton",
-          "textSelectButtonGroup",
-          "textSelectButtonGroupButton",
-          "textPopup",
-          "outlinesPanelButton",
-          "comboBoxFieldToolGroupButton",
-          "listBoxFieldToolGroupButton",
-          "toolsOverlay",
-          "toolbarGroup-Shapes",
-          "toolbarGroup-Edit",
-          "toolbarGroup-Insert",
-          "shapeToolGroupButton",
-          "menuButton",
-          "freeHandHighlightToolGroupButton",
-          "underlineToolGroupButton",
-          "freeHandToolGroupButton",
-          "stickyToolGroupButton",
-          "squigglyToolGroupButton",
-          "strikeoutToolGroupButton",
-          "notesPanel",
-          "viewControlsButton",
-          "selectToolButton",
-          "toggleNotesButton",
-          "searchButton",
-          "freeTextToolGroupButton",
-          "crossStampToolButton",
-          "checkStampToolButton",
-          "dotStampToolButton",
-          "rubberStampToolGroupButton",
-          "dateFreeTextToolButton",
-          "eraserToolButton",
-          "panToolButton",
-          "signatureToolGroupButton",
-          "viewControlsOverlay",
-          "contextMenuPopup",
-          "signaturePanelButton",
-          "annotationPopup",
-          "textPopup",
-          "richTextPopup",
-          "toolbarGroup-Annotate",
-          "leftPanelButton",
-          "zoomOverlayButton",
-          "toolbarGroup-Forms",
-          "header",
-        ]);
       });
     }
   }, [pdfResponceData.attachmentBlob]);
