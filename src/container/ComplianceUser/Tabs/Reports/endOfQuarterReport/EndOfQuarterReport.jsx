@@ -71,7 +71,7 @@ const EndOfQuarterReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetQuarterReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport,
+    (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -219,7 +219,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("Start-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
+                            GetQuarterReport?.header?.quarterStartDate
                           ) || "-"}
                         </p>
                       </div>
@@ -227,7 +227,7 @@ const EndOfQuarterReport = () => {
                         <span>{t("End-dates")}</span>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
+                            GetQuarterReport?.header?.quarterEndDate
                           ) || "-"}
                         </p>
                       </div>
@@ -420,7 +420,7 @@ const EndOfQuarterReport = () => {
                                                 <label>{t("Due-date")}:</label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskDueDate,
+                                                    task.taskDueDate
                                                   )}
                                                 </p>
                                               </div>
@@ -436,7 +436,7 @@ const EndOfQuarterReport = () => {
                                                 </label>
                                                 <p>
                                                   {formatDateToYMD(
-                                                    task.taskCompletedOn,
+                                                    task.taskCompletedOn
                                                   ) || "-"}
                                                 </p>
                                               </div>
@@ -480,7 +480,6 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
-
           {showPdfLayout && (
             <div id="content-id">
               <Row>
@@ -525,7 +524,7 @@ const EndOfQuarterReport = () => {
                         </label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.generatedOn,
+                            GetQuarterReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -544,7 +543,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("Start-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterStartDate,
+                            GetQuarterReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -554,7 +553,7 @@ const EndOfQuarterReport = () => {
                         <label>{t("End-dates")}</label>
                         <p>
                           {formatDateToYMD(
-                            GetQuarterReport?.header?.quarterEndDate,
+                            GetQuarterReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -612,19 +611,159 @@ const EndOfQuarterReport = () => {
                 >
                   <p>{t("Compliances-in-this-report")}:</p>
                 </Col>
+                {GetQuarterReport?.compliances?.map((compliance, index) => (
+                  <Col
+                    key={compliance.complianceID}
+                    lg={12}
+                    xs="auto"
+                    className={styles.checklist_report}
+                  >
+                    <div className={styles.titleSection}>
+                      <label>{t("Compliance-title")}:</label>
+                      <p className={styles.longTitle}>
+                        {compliance.complianceTitle || "No Compliance Title"}
+                      </p>
+                    </div>
+                    <div className={`${styles.dueDate} `}>
+                      <label>{t("Due-date")}:</label>
+                      <p>
+                        {formatDateToYMD(compliance?.complianceDueDate) || "-"}
+                      </p>
+                    </div>
 
-                {GetQuarterReport?.compliances?.map((compliance) => (
-                  <div>
-                    {/* Compliance Title */}
-                    <h2 className={styles.pdfComplianceTitle}>
-                      {compliance.complianceTitle}
-                    </h2>
-                  </div>
+                    <Row className={styles.TextDownloadWrapper}>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.progressPercent || "0"}%</p>
+                          <label>{t("Completed")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.totalChecklists}</p>
+                          <label>{t("Total-checklists")}</label>
+                        </div>
+                      </Col>
+                      <Col className={`${styles.TextDownload} `}>
+                        <div>
+                          <p>{compliance?.totalTasks}</p>
+                          <label>{t("Total-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.completedTasks}</p>
+                          <label>{t("Completed-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.tasksOverdue}</p>
+                          <label>{t("Overdue-tasks")}</label>
+                        </div>
+                      </Col>
+                    </Row>
+
+                    <div>
+                      {compliance?.checklists.map((checklist) => (
+                        <div className={styles.panelContent}>
+                          <div className={styles.titleSection}>
+                            <label className={styles.ChecklistTitle}>
+                              {t("Checklists-title")}:
+                            </label>
+                            <p className={styles.longTitleHeading}>
+                              {checklist.checklistTitle}
+                            </p>
+                          </div>
+
+                          <div key={checklist.checklistID}>
+                            {checklist?.tasks?.map((task) => (
+                              <div key={task.taskID}>
+                                <div className={styles.insideAccordianTable}>
+                                  <Row>
+                                    <Col lg={12} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Task-title")}:</label>
+                                        <Tooltip title={task.taskTitle}>
+                                          <p>{task.taskTitle}</p>
+                                        </Tooltip>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={4} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Assignee")}:</label>
+                                        <p>{task.assigneeName || "-"}</p>
+                                      </div>
+                                    </Col>{" "}
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Due-date")}:</label>
+                                        <p>
+                                          {formatDateToYMD(task.taskDueDate)}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Completed-on")}:</label>
+                                        <p>
+                                          {formatDateToYMD(
+                                            task.taskCompletedOn
+                                          ) || "-"}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Completed")}:</label>
+                                        <p>{task.taskStatus}</p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Status")}:</label>
+                                        <p>{task.taskStatus}</p>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Col>
                 ))}
               </Row>
             </div>
           )}
-
           {/*End of quarter Report Download     */}
         </Spin>
       </div>
