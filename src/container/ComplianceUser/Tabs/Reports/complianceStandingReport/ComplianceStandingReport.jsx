@@ -28,7 +28,7 @@ const { Panel } = Collapse;
  */
 const pdfOptions = {
   method: "save",
-  filename: "Compliance Standing Report.pdf",
+  filename: "Compliance-Standing-Report.pdf",
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
