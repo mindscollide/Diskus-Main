@@ -1,59 +1,55 @@
-import React, { useMemo, useState, useEffect } from "react";
-import CustomTable from "../../../../components/elements/table/Table";
-import CustomButton from "../../../../components/elements/button/Button";
-import styles from "./complianceByMe.module.css";
-import { useComplianceContext } from "../../../../context/ComplianceContext";
-import { useDispatch } from "react-redux";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Checkbox, Tooltip } from "antd";
+import { ChevronDown } from "react-bootstrap-icons";
+
+import CustomTable from "../../../../components/elements/table/Table";
+import CustomButton from "../../../../components/elements/button/Button";
+import { useComplianceContext } from "../../../../context/ComplianceContext";
 import {
   GetComplianceAndTaskStatusesAPI,
   listOfComplianceByCreatorApi,
-  // ViewComplianceByMeDetailsAPI,
   ViewComplianceDetailsByViewTypeAPI,
 } from "../../../../store/actions/ComplainSettingActions";
-import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
   getDueDateTimeNumber,
 } from "../../CommonComponents/commonFunctions";
+import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
+
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAscend.png";
-import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
-import { Col, Row } from "react-bootstrap";
-import { useAntTableScrollBottomVirtual } from "../../../Admin/Compliance/CommonFunctions/reusableFunctions";
-import { ChevronDown } from "react-bootstrap-icons";
-import { Checkbox, Tooltip } from "antd";
+import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
+import styles from "./complianceByMe.module.css";
 
+/**
+ * ComplianceByMe
+ *
+ * Displays the list of compliances created by the current user (Manager view).
+ * Features:
+ *  - Infinite scroll via useAntTableScrollBottomVirtual (appends on scroll bottom)
+ *  - Manual client-side sorting on title, due date, and authority columns
+ *  - Client-side filtering on criticality and status columns via Ant Design
+ *    filter dropdowns (data is already fully loaded page-by-page)
+ *  - Launches Create / Edit / View full-page flows via context flags
+ */
 const ComplianceByMe = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [isScroll, setIsScroll] = useState(false);
-  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const { criticalityOptions } = useComplianceContext();
 
+  // ── Redux ─────────────────────────────────────────────────────────────────
   const getCompliancesForCreator = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
+    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator,
   );
 
-  // const [complianceList, setComplianceList] = useState([]);
-  // const [totalRecords, setTotalRecords] = useState(0);
-
-  // Sort State
-  const [sortConfig, setSortConfig] = useState({
-    key: "dueDate",
-    order: "descend",
-  });
-  const [complianceTitleSort, setComplianceTitleSort] = useState(null);
-  const [dueDateSort, setDueDateSort] = useState("ascend");
-  const [authoritySort, setAuthority] = useState(null);
-
-  // Status Filter
-  const [statusFilter, setStatusFilter] = useState([]);
-
+  // ── Context ───────────────────────────────────────────────────────────────
   const {
+    criticalityOptions,
     setComplianceAddEditViewState,
     setCreateEditComplaince,
     setShowViewCompliance,
@@ -68,29 +64,49 @@ const ComplianceByMe = () => {
     setViewAllReopenDashboardButtonFlag,
   } = useComplianceContext();
 
-  console.log(complianceByMeList, "complianceByMeList");
+  // ── Local state ───────────────────────────────────────────────────────────
 
+  /** True while the next page is being appended (infinite scroll). */
+  const [isScroll, setIsScroll] = useState(false);
+
+  /** Active sort column and direction. Null key/order means unsorted. */
+  const [sortConfig, setSortConfig] = useState({ key: "dueDate", order: "descend" });
+
+  /** Controlled filter values for the Criticality column (1=High, 2=Med, 3=Low). */
+  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+
+  /** Controlled filter values for the Status column (array of statusTitle strings). */
+  const [statusFilter, setStatusFilter] = useState([]);
+
+  // ── Mount effect ──────────────────────────────────────────────────────────
+
+  /**
+   * On mount: fetch the initial compliance list.
+   * If the "View All Reopened" dashboard button was clicked, pre-filter by
+   * statusId 6 (Reopened) and then clear the flag so subsequent visits are clean.
+   */
   useEffect(() => {
-    let payload = { ...searchCompliancePayload };
+    const payload = { ...searchCompliancePayload };
 
     if (viewAllReopenDashboardButtonFlag) {
-      payload = {
-        ...payload,
-        statusIds: [6], // reopen
-      };
-
-      dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
-
-      // reset flag after using it
+      const reopenPayload = { ...payload, statusIds: [6] };
+      dispatch(listOfComplianceByCreatorApi(navigate, reopenPayload, t));
       setViewAllReopenDashboardButtonFlag(false);
     } else {
       dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
       dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ── Data sync effects ─────────────────────────────────────────────────────
+
+  /**
+   * Sync Redux response into context list.
+   * isScroll intentionally omitted from deps — including it would cause an
+   * infinite loop since this effect resets it to false.
+   */
   useEffect(() => {
-    // API not called yet
     if (getCompliancesForCreator === null) {
       if (!isScroll) {
         setComplianceByMeList([]);
@@ -105,87 +121,163 @@ const ComplianceByMe = () => {
     setComplianceByMeTotal(total);
 
     if (isScroll) {
-      // Lazy load → append
-      setComplianceByMeList((prev) => [...prev, ...list]);
+      setComplianceByMeList((prev) => [...prev, ...list]); // append (lazy load)
     } else {
-      // Fresh load → replace
-      setComplianceByMeList(list);
+      setComplianceByMeList(list); // replace (fresh load)
     }
 
-    // reset scroll flag after handling
     setIsScroll(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCompliancesForCreator]);
 
+  /** Initialise status filter options once the status list arrives. */
   useEffect(() => {
     if (allComplianceStatusForFilter?.length > 0) {
       setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
     }
   }, [allComplianceStatusForFilter]);
 
-  const handleEditCompliance = (record) => {
-    const Data = {
-      complianceId: record.complianceId,
-      viewType: 1,
-    };
-    dispatch(
-      ViewComplianceDetailsByViewTypeAPI(
-        navigate,
-        Data,
-        t,
-        1,
-        setComplianceAddEditViewState,
-        setCreateEditComplaince,
-        setShowViewCompliance
-      )
-    );
-  };
+  // ── Handlers ──────────────────────────────────────────────────────────────
 
-  const handleViewCompliance = (record) => {
-    console.log("reached here");
-    const Data = {
-      complianceId: record.complianceId,
-      viewType: 1,
-    };
-    dispatch(
-      ViewComplianceDetailsByViewTypeAPI(
-        navigate,
-        Data,
-        t,
-        2,
-        setComplianceAddEditViewState,
-        setCreateEditComplaince,
-        setShowViewCompliance
-      )
-    );
-  };
+  /** Opens the Edit flow (mode 1) for the given compliance record. */
+  const handleEditCompliance = useCallback(
+    (record) => {
+      const data = { complianceId: record.complianceId, viewType: 1 };
+      dispatch(
+        ViewComplianceDetailsByViewTypeAPI(
+          navigate, data, t, 1,
+          setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance,
+        ),
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance],
+  );
 
-  // Function
-  const resetAllSorts = () => {
-    setComplianceTitleSort(null);
-    setDueDateSort(null);
-    setAuthority(null);
-  };
+  /** Opens the View-only flow (mode 2) for the given compliance record. */
+  const handleViewCompliance = useCallback(
+    (record) => {
+      const data = { complianceId: record.complianceId, viewType: 1 };
+      dispatch(
+        ViewComplianceDetailsByViewTypeAPI(
+          navigate, data, t, 2,
+          setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance,
+        ),
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance],
+  );
 
-  const getCriticalityColumnProps = () => ({
-    filteredValue: criticalityFilter, // controlled filter
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      // default: select all
+  /**
+   * Handles Ant Design table filter/sort change events.
+   * We do not use Ant Design's built-in sort (manual sort is applied via
+   * sortedComplianceList), so only filter state is updated here.
+   */
+  const handleTableChange = useCallback((_, filters) => {
+    if (filters?.criticality) setCriticalityFilter(filters.criticality || [1, 2, 3]);
+    if (filters?.complianceStatusTitle) setStatusFilter(filters.complianceStatusTitle);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Infinite scroll ───────────────────────────────────────────────────────
+
+  /**
+   * Called by useAntTableScrollBottomVirtual when the user scrolls to the
+   * bottom of the table. Loads the next page and appends it to the list.
+   */
+  const handleScrollBottom = useCallback(() => {
+    if (complianceByMeList.length < complianceByMeTotal) {
+      const nextPayload = {
+        ...searchCompliancePayload,
+        pageNumber: sortedComplianceList.length,
+      };
+      setIsScroll(true);
+      setSearchCompliancePayload(nextPayload);
+      dispatch(listOfComplianceByCreatorApi(navigate, nextPayload, t));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [complianceByMeList.length, complianceByMeTotal, searchCompliancePayload]);
+
+  useAntTableScrollBottomVirtual(handleScrollBottom, 10);
+
+  // ── Sorting ───────────────────────────────────────────────────────────────
+
+  /**
+   * Client-side sort applied over the full loaded list.
+   * Manual sort is used instead of Ant Design's built-in sorter because the
+   * built-in sorter only activates on the header text, not the sort icon area.
+   */
+  const sortedComplianceList = useMemo(() => {
+    if (!sortConfig.key || !sortConfig.order) return complianceByMeList;
+
+    const sorted = [...complianceByMeList].sort((a, b) => {
+      switch (sortConfig.key) {
+        case "complianceTitle":
+          return a.complianceTitle?.toLowerCase().localeCompare(b.complianceTitle?.toLowerCase());
+        case "authorityShortCode":
+          return a.authorityShortCode?.toLowerCase().localeCompare(b.authorityShortCode?.toLowerCase());
+        case "dueDate":
+          return getDueDateTimeNumber(a.dueDate, a.dueTime) - getDueDateTimeNumber(b.dueDate, b.dueTime);
+        default:
+          return 0;
+      }
+    });
+
+    return sortConfig.order === "ascend" ? sorted : sorted.reverse();
+  }, [complianceByMeList, sortConfig]);
+
+  /**
+   * Renders the sort icon for a column header.
+   * Clicking cycles: unsorted → ascend → descend → unsorted.
+   */
+  const renderSortIcon = useCallback(
+    (columnKey) => {
+      const isActive = sortConfig.key === columnKey;
+      const order = isActive ? sortConfig.order : null;
+      const icon =
+        order === "ascend" ? ArrowUpIcon :
+        order === "descend" ? ArrowDownIcon :
+        DefaultSortIcon;
 
       return (
+        <img
+          src={icon}
+          alt=""
+          className="cursor-pointer"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSortConfig((prev) => {
+              if (prev.key !== columnKey) return { key: columnKey, order: "ascend" };
+              if (prev.order === "ascend") return { key: columnKey, order: "descend" };
+              if (prev.order === "descend") return { key: null, order: null };
+              return { key: columnKey, order: "ascend" };
+            });
+          }}
+        />
+      );
+    },
+    [sortConfig],
+  );
+
+  // ── Column filter props ───────────────────────────────────────────────────
+
+  /**
+   * Ant Design column props for the Criticality filter dropdown.
+   * All criticality values are selected by default (Reset restores all).
+   */
+  const criticalityColumnProps = useMemo(
+    () => ({
+      filteredValue: criticalityFilter,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
             options={criticalityOptions}
             value={selectedKeys}
-            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              marginBottom: 8,
-            }}
+            onChange={(values) => setSelectedKeys(values)}
+            style={{ display: "flex", flexDirection: "column", marginBottom: 8 }}
           />
-
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            {/* Reset */}
             <CustomButton
               text={t("Reset")}
               className={styles["ResetButtonFilter"]}
@@ -196,8 +288,6 @@ const ComplianceByMe = () => {
                 confirm();
               }}
             />
-
-            {/* OK */}
             <CustomButton
               text={t("Ok")}
               className={styles["ResetButtonFilter"]}
@@ -208,19 +298,21 @@ const ComplianceByMe = () => {
             />
           </div>
         </div>
-      );
-    },
-    onFilter: (value, record) => value === record.criticality,
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  });
+      ),
+      onFilter: (value, record) => value === record.criticality,
+      filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+    }),
+    [criticalityFilter, criticalityOptions, t],
+  );
 
-  const getStatusColumnProps = () => ({
-    filteredValue: statusFilter,
-
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      console.log(selectedKeys, "selectedKeys");
-
-      return (
+  /**
+   * Ant Design column props for the Status filter dropdown.
+   * Options are built from allComplianceStatusForFilter (loaded from API).
+   */
+  const statusColumnProps = useMemo(
+    () => ({
+      filteredValue: statusFilter,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
             options={allComplianceStatusForFilter.map((s) => ({
@@ -231,23 +323,17 @@ const ComplianceByMe = () => {
             onChange={(values) => setSelectedKeys(values)}
             style={{ display: "flex", flexDirection: "column" }}
           />
-
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            {/* Reset */}
             <CustomButton
               text={t("Reset")}
               className={styles["ResetButtonFilter"]}
               onClick={() => {
-                const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle
-                );
+                const all = allComplianceStatusForFilter.map((s) => s.statusTitle);
                 setSelectedKeys(all);
                 setStatusFilter(all);
                 confirm();
               }}
             />
-
-            {/* OK */}
             <CustomButton
               text={t("Ok")}
               className={styles["ResetButtonFilter"]}
@@ -258,93 +344,24 @@ const ComplianceByMe = () => {
             />
           </div>
         </div>
-      );
-    },
+      ),
+      onFilter: (value, record) => value === record.complianceStatusTitle,
+      filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+    }),
+    [statusFilter, allComplianceStatusForFilter, t],
+  );
 
-    onFilter: (value, record) => value === record.complianceStatusTitle,
-
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  });
-
-  //Implemented Manual SOrting because ant design allow sorting on whole column width
-  const sortedComplianceList = useMemo(() => {
-    if (!sortConfig.key || !sortConfig.order) return complianceByMeList;
-
-    const sorted = [...complianceByMeList].sort((a, b) => {
-      switch (sortConfig.key) {
-        case "complianceTitle":
-          return a.complianceTitle
-            ?.toLowerCase()
-            .localeCompare(b.complianceTitle?.toLowerCase());
-
-        case "authorityShortCode":
-          return a.authorityShortCode
-            ?.toLowerCase()
-            .localeCompare(b.authorityShortCode?.toLowerCase());
-
-        case "dueDate":
-          return (
-            getDueDateTimeNumber(a.dueDate, a.dueTime) -
-            getDueDateTimeNumber(b.dueDate, b.dueTime)
-          );
-
-        default:
-          return 0;
-      }
-    });
-
-    return sortConfig.order === "ascend" ? sorted : sorted.reverse();
-  }, [complianceByMeList, sortConfig]);
-
-  const renderSortIcon = (columnKey) => {
-    const isActive = sortConfig.key === columnKey;
-    const order = isActive ? sortConfig.order : null;
-
-    const icon =
-      order === "ascend"
-        ? ArrowUpIcon
-        : order === "descend"
-        ? ArrowDownIcon
-        : DefaultSortIcon;
-
-    return (
-      <img
-        src={icon}
-        alt=""
-        className="cursor-pointer"
-        onClick={(e) => {
-          e.stopPropagation();
-
-          setSortConfig((prev) => {
-            if (prev.key !== columnKey) {
-              return { key: columnKey, order: "ascend" };
-            }
-
-            if (prev.order === "ascend") {
-              return { key: columnKey, order: "descend" };
-            }
-
-            if (prev.order === "descend") {
-              return { key: null, order: null };
-            }
-
-            return { key: columnKey, order: "ascend" };
-          });
-        }}
-      />
-    );
-  };
+  // ── Columns ───────────────────────────────────────────────────────────────
 
   const columns = useMemo(
     () => [
       {
         title: (
-          <span className={`d-flex gap-2 align-items-center `}>
+          <span className="d-flex gap-2 align-items-center">
             {t("Compliance-title")}
             {renderSortIcon("complianceTitle")}
           </span>
         ),
-
         dataIndex: "complianceTitle",
         key: "complianceTitle",
         width: "43%",
@@ -365,17 +382,12 @@ const ComplianceByMe = () => {
         width: "10%",
         ellipsis: true,
         align: "center",
-        ...getCriticalityColumnProps(),
-
+        ...criticalityColumnProps,
         render: (text) => (
           <span className="d-flex justify-content-center">
-            {text === 1 ? (
-              <Tooltip title={t("High")}>{t("High")}</Tooltip>
-            ) : text === 2 ? (
-              <Tooltip title={t("Medium")}>{t("Medium")}</Tooltip>
-            ) : (
-              <Tooltip title={t("Low")}>{t("Low")}</Tooltip>
-            )}
+            <Tooltip title={text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}>
+              {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
+            </Tooltip>
           </span>
         ),
       },
@@ -386,14 +398,8 @@ const ComplianceByMe = () => {
         width: "13%",
         ellipsis: true,
         align: "center",
-        ...getStatusColumnProps(),
-        render: (text) => {
-          return (
-            <span>
-              <Tooltip title={text}>{text}</Tooltip>
-            </span>
-          );
-        },
+        ...statusColumnProps,
+        render: (text) => <Tooltip title={text}>{text}</Tooltip>,
       },
       {
         title: (
@@ -402,8 +408,8 @@ const ComplianceByMe = () => {
             {renderSortIcon("dueDate")}
           </span>
         ),
-        dataIndex: "DueDate",
-        key: "DueDate",
+        dataIndex: "dueDate",
+        key: "dueDate",
         width: "10%",
         ellipsis: true,
         align: "center",
@@ -430,133 +436,76 @@ const ComplianceByMe = () => {
       {
         title: "",
         dataIndex: "",
-        key: "",
+        key: "actions",
         width: "20%",
         ellipsis: true,
         align: "center",
-
-        render: (_, record) => {
-          return (
-            <div className="d-flex align-item-center justify-content-center gap-2">
-              <CustomButton
-                className={styles["actionButtons_complianceList"]}
-                text={"Edit"}
-                onClick={() => handleEditCompliance(record)}
-              />
-              <CustomButton
-                className={styles["actionButtons_complianceList"]}
-                text={"View Details"}
-                onClick={() => handleViewCompliance(record)}
-              />
-            </div>
-          );
-        },
+        render: (_, record) => (
+          <div className="d-flex align-items-center justify-content-center gap-2">
+            <CustomButton
+              className={styles["actionButtons_complianceList"]}
+              text="Edit"
+              onClick={() => handleEditCompliance(record)}
+            />
+            <CustomButton
+              className={styles["actionButtons_complianceList"]}
+              text="View Details"
+              onClick={() => handleViewCompliance(record)}
+            />
+          </div>
+        ),
       },
     ],
     [
-      complianceByMeList,
       t,
-      authoritySort,
-      dueDateSort,
-      complianceTitleSort,
-      getCriticalityColumnProps,
-      getStatusColumnProps,
-    ]
+      renderSortIcon,
+      criticalityColumnProps,
+      statusColumnProps,
+      handleViewCompliance,
+      handleEditCompliance,
+    ],
   );
-  useAntTableScrollBottomVirtual(() => {
-    if (complianceByMeList.length < complianceByMeTotal) {
-      const nextPayload = {
-        ...searchCompliancePayload,
-        pageNumber: sortedComplianceList.length,
-      };
-      setIsScroll(true);
-      setSearchCompliancePayload(nextPayload);
-      dispatch(listOfComplianceByCreatorApi(navigate, nextPayload, t));
-    }
-  }, 10);
+
+  // ── Render ────────────────────────────────────────────────────────────────
+
+  if (complianceByMeList.length > 0) {
+    return (
+      <CustomTable
+        rows={sortedComplianceList}
+        column={columns}
+        className="Compliance_Table mt-3"
+        scroll={{ x: "scroll", y: 520 }}
+        pagination={false}
+        onChange={handleTableChange}
+      />
+    );
+  }
+
   return (
-    <>
-      {complianceByMeList.length > 0 ? (
-        <CustomTable
-          rows={sortedComplianceList}
-          column={columns}
-          className={"Compliance_Table mt-3"}
-          scroll={{ x: "scroll", y: 520 }}
-          pagination={false}
-          onChange={(pagination, filters) => {
-            if (filters?.criticality) {
-              setCriticalityFilter(filters.criticality || [1, 2, 3]);
-            }
-
-            if (filters?.complianceStatusTitle) {
-              setStatusFilter(filters.complianceStatusTitle);
-            }
-          }}
-        />
-      ) : (
-        <>
-          <section
-            style={{
-              minHeight: "500px",
-            }}
-            className="w-100  d-flex justify-content-center align-items-center flex-column"
-          >
-            <Row className="mt-3 ">
-              <Col
-                lg={12}
-                ms={12}
-                sm={12}
-                className="d-flex justify-content-center align-items-center"
-              >
-                <img draggable={false} src={NoComplianceImg} alt="" />
-              </Col>
-            </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={styles["EmptyComplianceState_heading"]}>
-                  {/* {searchPayload.shortCode !== "" ||
-                  searchPayload.authorityName !== "" ||
-                  searchPayload.countryId !== 0 ||
-                  searchPayload.sector !== "" ||
-                  searchPayload.authorityTitle !== "" */}
-                  {/* ? t("No-matching-records") */}
-                  {/* :  */}
-                  {t("No-compliance-records")}
-                  {/* } */}
-                </span>
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-center"
-              >
-                <span className={styles["EmptyAuthorityState_subHeading"]}>
-                  {/* {searchPayload.shortCode !== "" ||
-                  searchPayload.authorityName !== "" ||
-                  searchPayload.countryId !== 0 ||
-                  searchPayload.sector !== "" ||
-                  searchPayload.authorityTitle !== ""
-                    ? 
-                    null */}
-                  {/* :  */}
-                  {t("You-haven't-created-any-compliance-items")}
-
-                  {/* } */}
-                </span>
-              </Col>
-            </Row>
-          </section>
-        </>
-      )}
-    </>
+    <section
+      style={{ minHeight: "500px" }}
+      className="w-100 d-flex justify-content-center align-items-center flex-column"
+    >
+      <Row className="mt-3">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center align-items-center">
+          <img draggable={false} src={NoComplianceImg} alt="" />
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+          <span className={styles["EmptyComplianceState_heading"]}>
+            {t("No-compliance-records")}
+          </span>
+        </Col>
+      </Row>
+      <Row className="mt-2">
+        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+          <span className={styles["EmptyAuthorityState_subHeading"]}>
+            {t("You-haven't-created-any-compliance-items")}
+          </span>
+        </Col>
+      </Row>
+    </section>
   );
 };
 
