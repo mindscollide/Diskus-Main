@@ -593,20 +593,26 @@ const AccumulativeReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetAccumulativeReport?.header?.tasksCompletedOnTime})
+                        <span className={styles.legendItem}>
+                          {t("Tasks-completed-on-time")} (
+                          {GetAccumulativeReport?.header?.tasksCompletedOnTime})
+                        </span>
                       </div>
-                      <div>
-                        <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetAccumulativeReport?.header?.tasksCompletedLate})
+                      <div className={styles.legendItem}>
+                        <span className={styles.legendDotYellow}></span>{" "}
+                        <span className={styles.legendItem}>
+                          {t("Tasks-completed-late")} (
+                          {GetAccumulativeReport?.header?.tasksCompletedLate})
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetAccumulativeReport?.header?.tasksPending})
+                        <span className={styles.legendItem}>
+                          {t("Pending-or-overdue-tasks")} (
+                          {GetAccumulativeReport?.header?.tasksPending})
+                        </span>
                       </div>
                     </div>
                   </div>

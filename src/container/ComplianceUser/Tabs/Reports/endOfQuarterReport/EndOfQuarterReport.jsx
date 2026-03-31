@@ -256,8 +256,10 @@ const EndOfQuarterReport = () => {
                     <div className={styles.customLegend}>
                       <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetQuarterReport?.header?.tasksCompletedOnTime || 0})
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")} (
+                          {GetQuarterReport?.header?.tasksCompletedOnTime || 0})
+                        </span>
                       </div>
                       <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
@@ -576,20 +578,26 @@ const EndOfQuarterReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetQuarterReport?.header?.tasksCompletedOnTime})
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")} (
+                          {GetQuarterReport?.header?.tasksCompletedOnTime})
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetQuarterReport?.header?.tasksCompletedLate})
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {GetQuarterReport?.header?.tasksCompletedLate})
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetQuarterReport?.header?.tasksPending})
+                        <span className={styles.legendText}>
+                          {t("Pending-or-overdue-tasks")} (
+                          {GetQuarterReport?.header?.tasksPending})
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -614,7 +622,9 @@ const EndOfQuarterReport = () => {
                     <div className={styles.titleSection}>
                       <label>{t("Compliance-title")}:</label>
                       <p className={styles.longTitle}>
-                        {compliance.complianceTitle || "No Compliance Title"}
+                        {`${index + 1}. ${
+                          compliance.complianceTitle || "No Compliance Title"
+                        }`}
                       </p>
                     </div>
                     <div className={`${styles.dueDate} `}>
