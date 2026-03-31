@@ -49,7 +49,7 @@ const donutOptions = {
 /** Static PDF generation options hoisted to module level. */
 const pdfOptions = {
   method: "save",
-  filename: "End-Of-Compliance.pdf",
+  filename: "End Of Compliance.pdf",
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
