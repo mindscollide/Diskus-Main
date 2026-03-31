@@ -4,6 +4,18 @@ import { Container, Row, Col, Card } from "react-bootstrap";
 import { Button } from "../../elements";
 import "./../../../i18n";
 import { useTranslation } from "react-i18next";
+/**
+ * @component UpgradePackageCard
+ * @description Renders a promotional card encouraging the user to upgrade to the Gold
+ * subscription plan. The card is split into three columns: package name and description,
+ * feature list with pricing (with a strikethrough price when the annual toggle is active),
+ * and a monthly/annual billing toggle alongside a discount price panel and an Upgrade button.
+ *
+ * @param {Function} onClick - Callback invoked when the "Upgrade" button is clicked.
+ *
+ * @example
+ * <UpgradePackageCard onClick={() => handleUpgrade()} />
+ */
 const UpgradePackageCard = ({ onClick }) => {
   //for translation
   const { t } = useTranslation();

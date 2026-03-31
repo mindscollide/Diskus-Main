@@ -8,6 +8,32 @@ import "./../../../i18n";
 
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component PackageCards
+ * @description Displays a subscription package card with pricing, subscription/expiry dates,
+ * and allowed user counts. Adapts its layout based on the current route: on the
+ * `/packageselection` route it shows monthly/annual toggle pricing, while on other
+ * routes (e.g. selected package view) it shows the active subscription amount and
+ * subscription count. On PackageDetail and CancelSub routes it renders progress bars
+ * showing executive and board-member usage instead of action buttons.
+ *
+ * @param {string} packageTitle - The display name of the package (e.g. "Gold", "Premium").
+ * @param {number|string} actualAmount - The regular monthly price shown in the price box.
+ * @param {string} para - Descriptive paragraph text rendered at the bottom of the card.
+ * @param {number|string} discountAmount - The discounted monthly price shown when the annual toggle is active.
+ * @param {number|string} selectedPackageAmount - The current package price shown on non-selection routes.
+ * @param {number|string} SelectedPackgeSubscription - The number of active subscriptions shown on non-selection routes.
+ *
+ * @example
+ * <PackageCards
+ *   packageTitle="Gold"
+ *   actualAmount={40}
+ *   para="Ideal for growing boards."
+ *   discountAmount={30}
+ *   selectedPackageAmount={40}
+ *   SelectedPackgeSubscription={5}
+ * />
+ */
 const PackageCards = ({
   packageTitle,
   actualAmount,

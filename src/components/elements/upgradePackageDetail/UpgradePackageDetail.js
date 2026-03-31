@@ -5,6 +5,18 @@ import "./../../../i18n";
 import { useTranslation } from "react-i18next";
 import Button from "../../elements/button/Button";
 import { useLocation } from "react-router-dom";
+/**
+ * @component UpgradePackageDetail
+ * @description Displays the full detail view for the Premium upgrade package, including
+ * pricing, allowed user counts (board members and executives), a feature list, and a
+ * "Proceed to payment" button. The left column layout adapts based on the current route:
+ * on the `/UpgradePackageDetail` route it shows a compact pricing summary with package
+ * description, while on other routes it renders a bordered price box with the allowed-user
+ * breakdown in a grid. This component uses i18n for all displayed strings.
+ *
+ * @example
+ * <UpgradePackageDetail />
+ */
 const UpgradePackageDetail = () => {
   // for translation
   const { t } = useTranslation();

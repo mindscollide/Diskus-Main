@@ -6,6 +6,28 @@ import { useTranslation } from "react-i18next";
 import Button from "../../elements/button/Button";
 import { Link } from "react-router-dom";
 import WarningMessageBox from "../warning_message/WarningMessageBox";
+/**
+ * @component ConfirmationCancelPackage
+ * @description Renders a subscription cancellation confirmation card. The left column shows
+ * the current Premium plan summary (price, billing cycle, and progress bars for executive and
+ * board-member seat usage). The right column presents a warning message, a checklist of
+ * cancellation reasons, and action buttons. Button layout adapts based on the `forrevokeCancel`
+ * flag: when true it shows a single "Proceed with cancellation" button and a "Go Back" link;
+ * when false it shows separate "Cancel" and "Proceed" buttons.
+ *
+ * @param {Function} onClickCancelNowBtn - Callback for the cancel/revoke action button.
+ * @param {Function} onClickProceedBtn - Callback for the "Proceed" confirmation button
+ *   (used only when `forrevokeCancel` is false).
+ * @param {boolean} forrevokeCancel - When `true`, renders the single-button revoke-cancel
+ *   layout; when `false`, renders the two-button cancel/proceed layout.
+ *
+ * @example
+ * <ConfirmationCancelPackage
+ *   onClickCancelNowBtn={() => handleCancel()}
+ *   onClickProceedBtn={() => handleProceed()}
+ *   forrevokeCancel={false}
+ * />
+ */
 const ConfirmationCancelPackage = ({
   onClickCancelNowBtn,
   onClickProceedBtn,

@@ -8,6 +8,41 @@ import {
   parseYYYYMMDDToEndOfDay,
 } from "../container/ComplianceUser/CommonComponents/commonFunctions";
 
+/**
+ * @context ComplianceContext
+ * @description Provides comprehensive state management for the Compliance module,
+ * covering compliance item creation/editing, checklist management, search/filter
+ * payloads, paginated list data (by-me and for-me), reporting, real-time MQTT
+ * update handling via Redux selectors, and status/modal UI state.
+ *
+ * @provides {boolean}  createEditCompliance            - Whether the create/edit compliance form is open
+ * @provides {Object}   complianceInfo                  - Basic info (id, name) of the compliance being edited
+ * @provides {Object}   checkListData                   - Active checklist item data (id, title, description, due date)
+ * @provides {number}   complianceAddEditViewState      - Current step/view index within the add/edit flow (0 = create, 1 = edit, 2 = view)
+ * @provides {boolean}  closeConfirmationModal          - Whether the discard-changes confirmation modal is open
+ * @provides {number}   mainComplianceTabs              - Active tab index on the main compliance page
+ * @provides {number}   checkListTabs                   - Active tab index within the checklist panel
+ * @provides {Object}   complianceDetailsState          - Full form state of the compliance being created/edited
+ * @provides {Object}   complianceDetailsViewState      - Read-only snapshot of compliance details for the view panel
+ * @provides {Object}   searchCompliancePayload         - Search/filter payload for the "by me" compliance list
+ * @provides {Array}    complianceByMeList              - Paginated list of compliances created by the current user
+ * @provides {number}   complianceByMeTotal             - Total record count for the "by me" list
+ * @provides {Array}    complianceForMeList             - Paginated list of compliances assigned to the current user
+ * @provides {number}   complianceForMeTotal            - Total record count for the "for me" list
+ * @provides {boolean}  isViewDetailsOpen               - Whether the compliance details side-panel is open
+ * @provides {string}   complianceViewMode              - Current view mode ("byMe" | "forMe")
+ * @provides {Array}    allComplianceStatusForFilter    - Available status options for the compliance filter
+ * @provides {Object}   searchComplianceReportPayload   - Search payload for compliance reports
+ * @provides {Array}    complianceReportList            - Paginated compliance report records
+ * @provides {number}   complianceReportTotal           - Total record count for compliance reports
+ * @provides {number}   checklistCount                  - Number of checklist items on the active compliance
+ * @provides {number}   taskCount                       - Number of tasks on the active compliance
+ *
+ * Usage:
+ *   import { useComplianceContext } from '../context/ComplianceContext';
+ *   const { createEditCompliance, setCreateEditComplaince } = useComplianceContext();
+ */
+
 const ComplianceContext = createContext();
 
 export const ComlianceProvider = ({ children }) => {
@@ -1060,6 +1095,12 @@ export const ComlianceProvider = ({ children }) => {
   );
 };
 
+/**
+ * @hook useComplianceContext
+ * @description Consumes ComplianceContext and returns all compliance state values
+ *   and setters. Throws an error if called outside of ComlianceProvider.
+ * @returns {Object} All compliance state values and setter functions from ComlianceProvider
+ */
 export const useComplianceContext = () => {
   const context = useContext(ComplianceContext);
 

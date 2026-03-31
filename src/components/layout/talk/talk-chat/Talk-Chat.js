@@ -99,6 +99,16 @@ import { filesUrlTalk } from "../../../../commen/apis/Api_ends_points";
 import PrintPage from "./printScript";
 import MainWindow from "./talkMain/mainChatWindow";
 
+/**
+ * @component TalkChat
+ * @description The primary Talk module chat component. Renders the full chat
+ * interface including the sidebar chat list, active message thread, message
+ * composer, emoji picker, file upload, message search, flagged messages,
+ * group management, shout-all broadcasts, and blocked-users handling. Connects
+ * to Redux for all Talk state and dispatches Socket.io-backed actions for
+ * real-time messaging across one-to-one (O), group (G), and broadcast (B)
+ * conversation types.
+ */
 const TalkChat = () => {
   //Use Navigate
   const navigate = useNavigate();

@@ -4,6 +4,19 @@ import styles from "./Loader.module.css";
 import { useTranslation } from "react-i18next";
 import DikusGIF from "../../../assets/images/Loader.gif";
 
+/**
+ * @component LoaderPanelVideoScreen
+ * @description Variant of the panel loader specifically sized and styled for
+ * video/screen-sharing views. Displays the Diskus branded animated GIF with an
+ * optional message, using a larger image class (`LoadderImageVideoScreenclass`)
+ * compared to the standard `LoaderPanel`. Supports i18n via react-i18next.
+ *
+ * @param {string} message - Text displayed below the loading GIF to describe the
+ *                           in-progress operation.
+ *
+ * @example
+ * {isBuffering && <LoaderPanelVideoScreen message={t("Loading-video")} />}
+ */
 const LoaderPanelVideoScreen = ({ message }) => {
   const { t } = useTranslation();
 

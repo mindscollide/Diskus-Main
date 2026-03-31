@@ -11,6 +11,38 @@ import { useNavigate } from "react-router-dom";
 import { NewJoinCurrentMeeting } from "../store/actions/NewMeetingActions";
 import { UpdateMeetingStatus } from "../store/actions/MeetingOrganizers_action";
 
+/**
+ * @context MeetingContext
+ * @description Central context for the meeting module. Manages the full lifecycle
+ * state of a meeting session including tab visibility, editor roles, video/audio
+ * controls, presenter view, group/one-to-one calls, recording, polls, confirmation
+ * modals, notification counts, and pending approval counters.
+ *
+ * @provides {Function} startMeetingFunction          - Initiates the start-meeting flow
+ * @provides {Function} joinMeetingFunction           - Initiates the join-meeting flow
+ * @provides {Function} leaveMeetingFunction          - Handles leaving the current meeting
+ * @provides {Function} leaveMeetingVideoFunction     - Handles leaving the meeting video call
+ * @provides {Object}   editorRole                    - Current user's editor role and primary-organizer flag
+ * @provides {boolean}  isAgendaUpdateWhenMeetingActive - Whether email alerts for agenda updates are enabled
+ * @provides {boolean}  cancelConfirmationModal       - Visibility state for the cancel confirmation modal
+ * @provides {boolean}  endMeetingConfirmationModal   - Visibility state for the end-meeting confirmation modal
+ * @provides {string|null} currentMeetingStatus       - Status string of the active meeting
+ * @provides {Object}   videoTalk                     - Chat/video-call flags and talk group ID
+ * @provides {boolean}  isMeeting                     - Whether the user is currently in a meeting
+ * @provides {boolean}  isMeetingVideo                - Whether the meeting video overlay is active
+ * @provides {boolean}  isRecording                   - Whether the meeting is being recorded
+ * @provides {boolean}  presenterViewFlag             - Whether presenter view is active
+ * @provides {number}   unReadCountNotification       - Count of unread web notifications
+ * @provides {number}   pendingApprovalCount          - Total pending workflow approval count
+ * @provides {Object}   pendingApprovalsTabCount      - Per-tab pending counts (minutes, signature)
+ * @provides {React.RefObject} iframeRef              - Ref attached to the meeting iframe element
+ * (and many more state/setter pairs for polls, modals, recording controls, participant lists, etc.)
+ *
+ * Usage:
+ *   import { useMeetingContext } from '../context/MeetingContext';
+ *   const { isMeeting, setIsMeeting } = useMeetingContext();
+ */
+
 // Create the Context
 export const MeetingContext = createContext();
 
@@ -490,6 +522,12 @@ export const MeetingProvider = ({ children }) => {
   );
 };
 
+/**
+ * @hook useMeetingContext
+ * @description Consumes MeetingContext and returns the full meeting state object.
+ *   Throws an error if called outside of MeetingProvider.
+ * @returns {Object} All meeting state values and setter functions from MeetingProvider
+ */
 // Custom Hook to consume the context
 export const useMeetingContext = () => {
   // Access the context

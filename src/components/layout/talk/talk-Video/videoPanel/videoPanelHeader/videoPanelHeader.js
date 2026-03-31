@@ -10,6 +10,16 @@ import { Select } from "antd";
 import SearchIcon from "../../../../../../assets/images/Search-Icon.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component VideoPanelHeader
+ * @description Header bar for the Talk module's video panel. Displays the
+ * "Video" section title alongside an Ant Design `Select` dropdown that
+ * switches the panel body between "Recent" (call history) and "Contact"
+ * (contact list for initiating calls) views by dispatching
+ * `recentVideoFlag` and `contactVideoFlag` Redux actions. Also provides a
+ * search icon button that toggles `videoChatSearchFlag` to show or hide the
+ * search input within the panel body.
+ */
 const VideoPanelHeader = () => {
   const { t } = useTranslation();
   const { videoFeatureReducer } = useSelector((state) => state);
