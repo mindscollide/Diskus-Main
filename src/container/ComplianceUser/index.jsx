@@ -108,6 +108,7 @@ const MainCompliance = () => {
     endOfComplianceReport,
     endOfQuarterReport,
     accumulativeReport,
+    setIsComplianceCreateOrEdit,
   } = useComplianceContext();
 
   // ── Fiscal year (driven by MQTT org settings) ─────────────────────────────
@@ -180,6 +181,7 @@ const MainCompliance = () => {
   const handleOpenCreateCompliance = useCallback(() => {
     setCreateEditComplaince(true);
     setComplianceAddEditViewState(1);
+    setIsComplianceCreateOrEdit(1);
   }, [setCreateEditComplaince, setComplianceAddEditViewState]);
 
   /**

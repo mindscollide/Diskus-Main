@@ -64,6 +64,7 @@ const ComplianceByMe = () => {
     setViewAllReopenDashboardButtonFlag,
     upcomingDeadlineFilterFlag,
     setUpcomingDeadlineFilterFlag,
+    setIsComplianceCreateOrEdit,
   } = useComplianceContext();
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -158,6 +159,7 @@ const ComplianceByMe = () => {
   /** Opens the Edit flow (mode 1) for the given compliance record. */
   const handleEditCompliance = useCallback(
     (record) => {
+      setIsComplianceCreateOrEdit(2);
       const data = { complianceId: record.complianceId, viewType: 1 };
       dispatch(
         ViewComplianceDetailsByViewTypeAPI(

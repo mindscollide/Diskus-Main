@@ -93,6 +93,7 @@ const EndOfComplianceReport = () => {
   const GetEndOfComplianceReport = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
+  const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -286,7 +287,7 @@ const EndOfComplianceReport = () => {
                   {shouldShowReopenSection && (
                     <div className={styles.reportDetailsBar}>
                       <span>
-                        {t("This-compliance-was-Re-opened-1-times")}
+                        {t("This-compliance-was-Re-opened", { count })}
                         <CustomButton
                           text="Reopen Details"
                           className={styles.reportDetailButton}
