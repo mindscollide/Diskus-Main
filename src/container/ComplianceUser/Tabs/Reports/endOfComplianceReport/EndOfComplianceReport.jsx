@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./EndOfComplianceReport.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Tooltip } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import BackButton from "./../../../../../assets/images/backbutton.svg";
 import Verification from "./../../../../../assets/images/Verification.png";
@@ -637,23 +637,27 @@ const EndOfComplianceReport = () => {
                     </div>
 
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.tasksCompletedOnTime
-                        }
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")} (
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.tasksCompletedOnTime
+                          }
+                          )
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.tasksCompletedLate
-                        }
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.tasksCompletedLate
+                          }
+                          )
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -669,18 +673,88 @@ const EndOfComplianceReport = () => {
                   <p>{t("Checklists-in-this-report")}:</p>
                 </Col>
 
-                {GetEndOfComplianceReport?.checklists.map(
-                  (checklist, index) => (
-                    <Col
-                      key={checklist.checklistID}
-                      lg={12}
-                      xs="auto"
-                      className={styles.checklist_report}
-                    >
-                      {index + 1}. {checklist.checklistTitle}
-                    </Col>
-                  ),
-                )}
+                {GetEndOfComplianceReport?.checklists.map((checklist) => (
+                  <Col
+                    key={checklist.checklistID}
+                    lg={12}
+                    xs="auto"
+                    className={styles.checklist_report}
+                  >
+                    <div className={styles.panelContent}>
+                      <div className={styles.titleSection}>
+                        <label className={styles.ChecklistTitle}>
+                          {t("Checklists-title")}:
+                        </label>
+                        <p className={styles.longTitleHeading}>
+                          {checklist.checklistTitle}
+                        </p>
+                      </div>
+
+                      {checklist?.tasks?.map((task) => (
+                        <div key={task.taskID}>
+                          <div className={styles.insideAccordianTable}>
+                            <Row>
+                              <Col lg={12} xs="auto">
+                                <div
+                                  className={styles.insideAccordianMainHeading}
+                                >
+                                  <label>{t("Task-title")}:</label>
+
+                                  <p>{task.taskTitle}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={4} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Assignee")}:</label>
+                                  <p>{task.assigneeName || "-"}</p>
+                                </div>
+                              </Col>{" "}
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Due-date")}:</label>
+                                  <p>{formatDateToYMD(task.taskDueDate)}</p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Completed-on")}:</label>
+                                  <p>
+                                    {formatDateToYMD(task.taskCompletedOn) ||
+                                      "-"}
+                                  </p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Completed")}:</label>
+                                  <p>{task.taskStatus}</p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Status")}:</label>
+                                  <p>{task.taskStatus}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Col>
+                ))}
               </Row>
             </div>
           )}
