@@ -16,7 +16,7 @@ import styles from "./upcomingComplianceDeadline.module.css";
  */
 const UpcomingComplianceDeadline = () => {
   const { t } = useTranslation();
-  const { setMainComplianceTabs } = useComplianceContext();
+  const { setMainComplianceTabs, setUpcomingDeadlineFilterFlag } = useComplianceContext();
 
   const upcomingData = useSelector(
     (state) =>
@@ -24,10 +24,13 @@ const UpcomingComplianceDeadline = () => {
         .GetUpcomingDealineComplianceDashboard,
   );
 
-  /** Navigate to the Compliances-By-Me tab when the card is clicked. */
+  /** Navigate to the Compliances-By-Me tab when the card is clicked.
+   *  Sets upcomingDeadlineFilterFlag so ComplainceByMe pre-selects
+   *  active statuses (Not Started, In Progress, On Hold, Reopened). */
   const handleCardClick = useCallback(() => {
+    setUpcomingDeadlineFilterFlag(true);
     setMainComplianceTabs(2);
-  }, [setMainComplianceTabs]);
+  }, [setUpcomingDeadlineFilterFlag, setMainComplianceTabs]);
 
   if (!upcomingData) {
     return (

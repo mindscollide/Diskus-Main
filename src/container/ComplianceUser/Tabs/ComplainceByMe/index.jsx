@@ -62,6 +62,8 @@ const ComplianceByMe = () => {
     allComplianceStatusForFilter,
     viewAllReopenDashboardButtonFlag,
     setViewAllReopenDashboardButtonFlag,
+    upcomingDeadlineFilterFlag,
+    setUpcomingDeadlineFilterFlag,
   } = useComplianceContext();
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -70,7 +72,10 @@ const ComplianceByMe = () => {
   const [isScroll, setIsScroll] = useState(false);
 
   /** Active sort column and direction. Null key/order means unsorted. */
-  const [sortConfig, setSortConfig] = useState({ key: "dueDate", order: "descend" });
+  const [sortConfig, setSortConfig] = useState({
+    key: "dueDate",
+    order: "descend",
+  });
 
   /** Controlled filter values for the Criticality column (1=High, 2=Med, 3=Low). */
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
@@ -130,11 +135,22 @@ const ComplianceByMe = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getCompliancesForCreator]);
 
-  /** Initialise status filter options once the status list arrives. */
+  /**
+   * Initialise the status filter dropdown.
+   * If upcomingDeadlineFilterFlag is true (user arrived from the Upcoming
+   * Deadline dashboard card), pre-select only active statuses and reset
+   * the flag. Otherwise select all statuses (default behaviour).
+   */
   useEffect(() => {
-    if (allComplianceStatusForFilter?.length > 0) {
-      setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
+    if (statusFilter.length === 0) {
+      if (upcomingDeadlineFilterFlag) {
+        setStatusFilter(["Not Started", "In Progress", "On Hold", "Reopened"]);
+        setUpcomingDeadlineFilterFlag(false);
+      } else if (allComplianceStatusForFilter?.length > 0) {
+        setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
+      }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allComplianceStatusForFilter]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────
@@ -145,13 +161,22 @@ const ComplianceByMe = () => {
       const data = { complianceId: record.complianceId, viewType: 1 };
       dispatch(
         ViewComplianceDetailsByViewTypeAPI(
-          navigate, data, t, 1,
-          setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance,
+          navigate,
+          data,
+          t,
+          1,
+          setComplianceAddEditViewState,
+          setCreateEditComplaince,
+          setShowViewCompliance,
         ),
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance],
+    [
+      setComplianceAddEditViewState,
+      setCreateEditComplaince,
+      setShowViewCompliance,
+    ],
   );
 
   /** Opens the View-only flow (mode 2) for the given compliance record. */
@@ -160,13 +185,22 @@ const ComplianceByMe = () => {
       const data = { complianceId: record.complianceId, viewType: 1 };
       dispatch(
         ViewComplianceDetailsByViewTypeAPI(
-          navigate, data, t, 2,
-          setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance,
+          navigate,
+          data,
+          t,
+          2,
+          setComplianceAddEditViewState,
+          setCreateEditComplaince,
+          setShowViewCompliance,
         ),
       );
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setComplianceAddEditViewState, setCreateEditComplaince, setShowViewCompliance],
+    [
+      setComplianceAddEditViewState,
+      setCreateEditComplaince,
+      setShowViewCompliance,
+    ],
   );
 
   /**
@@ -175,8 +209,10 @@ const ComplianceByMe = () => {
    * sortedComplianceList), so only filter state is updated here.
    */
   const handleTableChange = useCallback((_, filters) => {
-    if (filters?.criticality) setCriticalityFilter(filters.criticality || [1, 2, 3]);
-    if (filters?.complianceStatusTitle) setStatusFilter(filters.complianceStatusTitle);
+    if (filters?.criticality)
+      setCriticalityFilter(filters.criticality || [1, 2, 3]);
+    if (filters?.complianceStatusTitle)
+      setStatusFilter(filters.complianceStatusTitle);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -214,11 +250,18 @@ const ComplianceByMe = () => {
     const sorted = [...complianceByMeList].sort((a, b) => {
       switch (sortConfig.key) {
         case "complianceTitle":
-          return a.complianceTitle?.toLowerCase().localeCompare(b.complianceTitle?.toLowerCase());
+          return a.complianceTitle
+            ?.toLowerCase()
+            .localeCompare(b.complianceTitle?.toLowerCase());
         case "authorityShortCode":
-          return a.authorityShortCode?.toLowerCase().localeCompare(b.authorityShortCode?.toLowerCase());
+          return a.authorityShortCode
+            ?.toLowerCase()
+            .localeCompare(b.authorityShortCode?.toLowerCase());
         case "dueDate":
-          return getDueDateTimeNumber(a.dueDate, a.dueTime) - getDueDateTimeNumber(b.dueDate, b.dueTime);
+          return (
+            getDueDateTimeNumber(a.dueDate, a.dueTime) -
+            getDueDateTimeNumber(b.dueDate, b.dueTime)
+          );
         default:
           return 0;
       }
@@ -236,9 +279,11 @@ const ComplianceByMe = () => {
       const isActive = sortConfig.key === columnKey;
       const order = isActive ? sortConfig.order : null;
       const icon =
-        order === "ascend" ? ArrowUpIcon :
-        order === "descend" ? ArrowDownIcon :
-        DefaultSortIcon;
+        order === "ascend"
+          ? ArrowUpIcon
+          : order === "descend"
+            ? ArrowDownIcon
+            : DefaultSortIcon;
 
       return (
         <img
@@ -248,8 +293,10 @@ const ComplianceByMe = () => {
           onClick={(e) => {
             e.stopPropagation();
             setSortConfig((prev) => {
-              if (prev.key !== columnKey) return { key: columnKey, order: "ascend" };
-              if (prev.order === "ascend") return { key: columnKey, order: "descend" };
+              if (prev.key !== columnKey)
+                return { key: columnKey, order: "ascend" };
+              if (prev.order === "ascend")
+                return { key: columnKey, order: "descend" };
               if (prev.order === "descend") return { key: null, order: null };
               return { key: columnKey, order: "ascend" };
             });
@@ -275,7 +322,11 @@ const ComplianceByMe = () => {
             options={criticalityOptions}
             value={selectedKeys}
             onChange={(values) => setSelectedKeys(values)}
-            style={{ display: "flex", flexDirection: "column", marginBottom: 8 }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
+            }}
           />
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
             <CustomButton
@@ -300,7 +351,9 @@ const ComplianceByMe = () => {
         </div>
       ),
       onFilter: (value, record) => value === record.criticality,
-      filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
     }),
     [criticalityFilter, criticalityOptions, t],
   );
@@ -328,7 +381,9 @@ const ComplianceByMe = () => {
               text={t("Reset")}
               className={styles["ResetButtonFilter"]}
               onClick={() => {
-                const all = allComplianceStatusForFilter.map((s) => s.statusTitle);
+                const all = allComplianceStatusForFilter.map(
+                  (s) => s.statusTitle,
+                );
                 setSelectedKeys(all);
                 setStatusFilter(all);
                 confirm();
@@ -346,7 +401,9 @@ const ComplianceByMe = () => {
         </div>
       ),
       onFilter: (value, record) => value === record.complianceStatusTitle,
-      filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
     }),
     [statusFilter, allComplianceStatusForFilter, t],
   );
@@ -385,7 +442,11 @@ const ComplianceByMe = () => {
         ...criticalityColumnProps,
         render: (text) => (
           <span className="d-flex justify-content-center">
-            <Tooltip title={text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}>
+            <Tooltip
+              title={
+                text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")
+              }
+            >
               {text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low")}
             </Tooltip>
           </span>
@@ -487,7 +548,12 @@ const ComplianceByMe = () => {
       className="w-100 d-flex justify-content-center align-items-center flex-column"
     >
       <Row className="mt-3">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-center align-items-center">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-center align-items-center"
+        >
           <img draggable={false} src={NoComplianceImg} alt="" />
         </Col>
       </Row>
