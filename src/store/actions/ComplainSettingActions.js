@@ -5439,6 +5439,21 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
                 await dispatch(
                   updateCheckListStatusSuccess(null, t(action.text)),
                 );
+
+                await dispatch(
+                  ViewComplianceDetailsByViewTypeAPI(
+                    navigate,
+                    {
+                      complianceId: Data.ComplianceID, // 🔥 from your payload
+                      viewType: 1,
+                    },
+                    t,
+                    0,
+                    null,
+                    null,
+                    null,
+                  ),
+                );
               } else {
                 await dispatch(updateCheckListStatusFail(t(action.text)));
               }

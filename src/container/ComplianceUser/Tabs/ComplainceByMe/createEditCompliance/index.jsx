@@ -84,7 +84,7 @@ const CreateEditCompliance = () => {
       return complianceInfo?.complianceName || t("Create-new-compliance");
     }
 
-    // ✅ Edit mode
+    // Edit mode
     if (isComplianceCreatOrEdit === 2) {
       return `Edit: ${complianceInfo?.complianceName || ""}`;
     }

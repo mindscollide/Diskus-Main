@@ -94,9 +94,9 @@ const ViewComplianceChecklistAccordian = () => {
   const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
 
   const canChecklistBeCompleted = (checklistId) => {
-    // ❗ STEP 1: If data not loaded → BLOCK
+    //  STEP 1: If data not loaded → BLOCK
     if (!viewComplianceByMeDetails?.checklistTasks?.length) {
-      console.log("⛔ Data not loaded yet");
+      console.log(" Data not loaded yet");
       return false; // treat as NOT allowed
     }
 
@@ -154,7 +154,7 @@ const ViewComplianceChecklistAccordian = () => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
 
-    // 🚫 PREVENT COMPLETED IF TASKS ARE BLOCKED
+    //  PREVENT COMPLETED IF TASKS ARE BLOCKED
     if (selectedStatus.label === "Completed") {
       const allowed = canChecklistBeCompleted(checklistId);
       console.log(allowed, "allowedallowed");
@@ -165,7 +165,7 @@ const ViewComplianceChecklistAccordian = () => {
       }
     }
 
-    // ✅ NEW: Handle On Hold selection
+    //  NEW: Handle On Hold selection
     if (selectedStatus.label === "On Hold") {
       setComplianceOnHoldModal(true); // Open On Hold modal
       setComplianceCompleteModalType("checklist"); // Set type
