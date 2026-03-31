@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import styles from "./ComplianceStandingReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -9,8 +9,7 @@ import { DatePicker, Collapse, Progress, Spin, Tooltip, Checkbox } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetComplianceStandingReportAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { useTranslation } from "react-i18next";
@@ -20,8 +19,52 @@ import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconA
 import DefaultSortIcon from "../../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
+
 const { Panel } = Collapse;
 
+/**
+ * PDF generation options — hoisted to module level because they do not
+ * depend on any component state or props.
+ */
+const pdfOptions = {
+  method: "save",
+  filename: "Compliance-Standing-Report.pdf",
+  resolution: Resolution.HIGH,
+  page: {
+    margin: Margin.SMALL,
+    format: "A4",
+    orientation: "landscape",
+  },
+  canvas: {
+    mimeType: "image/png",
+    qualityRatio: 1,
+  },
+  overrides: {
+    pdf: {
+      compress: true,
+    },
+    canvas: {
+      useCORS: true,
+    },
+  },
+};
+
+/**
+ * Returns the DOM element used as the PDF capture target.
+ * Hoisted to module level — no dependency on component state.
+ *
+ * @returns {HTMLElement|null}
+ */
+const getTargetElement = () => document.getElementById("content-id");
+
+/**
+ * ComplianceStandingReport
+ *
+ * Renders a full-page compliance standing report with sortable columns,
+ * a criticality filter, expandable rows, and a PDF-download capability.
+ *
+ * @returns {JSX.Element}
+ */
 const ComplianceStandingReport = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,7 +72,7 @@ const ComplianceStandingReport = () => {
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
   const { criticalityOptions } = useComplianceContext();
 
-  //Sorting Table
+  // Sorting state per column
   const [complianceNameSort, setComplianceNameSort] = useState(null);
   const [authoritySort, setAuthoritySort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState(null);
@@ -42,9 +85,9 @@ const ComplianceStandingReport = () => {
     useComplianceContext();
 
   const GetComplianceStandingReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetComplianceStandingReport
+    (state) =>
+      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
   );
-  console.log(GetComplianceStandingReport, "GetComplianceStandingReport");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -53,87 +96,66 @@ const ComplianceStandingReport = () => {
 
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
-  const options = {
-    // default is `save`
-    method: "save",
-    filename: "Compliance Standing Report.pdf",
-    // default is Resolution.MEDIUM = 3, which should be enough, higher values
-    // increases the image quality but also the size of the PDF, so be careful
-    // using values higher than 10 when having multiple pages generated, it
-    // might cause the page to crash or hang.
-    resolution: Resolution.HIGH,
-    page: {
-      // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.SMALL,
-      // default is 'A4'
-      format: "A4",
-      // default is 'portrait'
-      orientation: "landscape",
-    },
-    canvas: {
-      // default is 'image/jpeg' for better size performance
-      mimeType: "image/png",
-      qualityRatio: 1,
-    },
-    // Customize any value passed to the jsPDF instance and html2canvas
-    // function. You probably will not need this and things can break,
-    // so use with caution.
-    overrides: {
-      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-      pdf: {
-        compress: true,
-      },
-      // see https://html2canvas.hertzen.com/configuration for more options
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
-
-  const getTargetElement = () => document.getElementById("content-id");
-
-  const handleClickGenerateODF = async () => {
+  /**
+   * Triggers PDF generation: shows the print layout, waits for fonts,
+   * generates the PDF, then restores the normal layout.
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleClickGenerateODF = useCallback(async () => {
     try {
-      setIsGenerating(true); // spinner ON
-      setShowPdfLayout(true); // show PDF layout
-      await new Promise((r) => setTimeout(r, 100)); // allow DOM render
-
+      setIsGenerating(true);
+      setShowPdfLayout(true);
+      await new Promise((r) => setTimeout(r, 100));
       await document.fonts.ready;
-      await generatePDF(getTargetElement, options);
+      await generatePDF(getTargetElement, pdfOptions);
     } catch (err) {
       console.error("PDF generation failed:", err);
     } finally {
-      setShowPdfLayout(false); // hide PDF layout
-      setIsGenerating(false); // spinner OFF
+      setShowPdfLayout(false);
+      setIsGenerating(false);
     }
-  };
+  }, []);
 
-  const handleDateRangeChange = (dates) => {
-    if (!dates) {
-      // 🔹 Clear clicked
-      setDateRange(null);
+  /**
+   * Handles date-range picker changes. Dispatches the API call with the
+   * selected start/end dates, or clears the filter when the picker is cleared.
+   *
+   * @param {import("dayjs").Dayjs[]|null} dates
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleDateRangeChange = useCallback(
+    (dates) => {
+      if (!dates) {
+        setDateRange(null);
+        dispatch(
+          GetComplianceStandingReportAPI(
+            navigate,
+            { startDate: "", endDate: null },
+            t,
+          ),
+        );
+        return;
+      }
+
+      const startDate = dates[0].format("YYYYMMDD");
+      const endDate = dates[1].format("YYYYMMDD");
+
+      setDateRange(dates);
 
       dispatch(
         GetComplianceStandingReportAPI(
           navigate,
-          { startDate: "", endDate: null },
-          t
-        )
+          { startDate, endDate: null },
+          t,
+        ),
       );
-      return;
-    }
+    },
+    [setDateRange],
+  );
 
-    const startDate = dates[0].format("YYYYMMDD");
-    const endDate = dates[1].format("YYYYMMDD");
-
-    setDateRange(dates);
-
-    dispatch(
-      GetComplianceStandingReportAPI(navigate, { startDate, endDate: null }, t)
-    );
-  };
-
-  // Sort Reset Function
+  /**
+   * Resets all column sort states to null.
+   */
   const resetAllSorts = () => {
     setComplianceNameSort(null);
     setAuthoritySort(null);
@@ -144,40 +166,50 @@ const ComplianceStandingReport = () => {
     setProgressSort(null);
   };
 
-  const handleChangeStandingReportSorter = (pagination, filters, sorter) => {
-    resetAllSorts();
+  /**
+   * Handles Ant Design Table onChange events — updates the active sort
+   * column and synchronises the criticality filter state.
+   *
+   * @param {object} pagination
+   * @param {object} filters
+   * @param {object} sorter
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleChangeStandingReportSorter = useCallback(
+    (pagination, filters, sorter) => {
+      resetAllSorts();
 
-    if (sorter.columnKey === "ComplianceName") {
-      setComplianceNameSort(sorter.order);
-    } else if (sorter.columnKey === "Authority") {
-      setAuthoritySort(sorter.order);
-    } else if (sorter.columnKey === "dueDate") {
-      setDueDateSort(sorter.order);
-    } else if (sorter.columnKey === "totalChecklists") {
-      setTotalCheckListsSort(sorter.order);
-    } else if (sorter.columnKey === "NoOfTasks") {
-      setNoOfTasksSort(sorter.order);
-    } else if (sorter.columnKey === "overdueTasks") {
-      setOverdueTasksSort(sorter.order);
-    } else if (sorter.columnKey === "Progress") {
-      setProgressSort(sorter.order);
-    }
+      if (sorter.columnKey === "ComplianceName") {
+        setComplianceNameSort(sorter.order);
+      } else if (sorter.columnKey === "Authority") {
+        setAuthoritySort(sorter.order);
+      } else if (sorter.columnKey === "dueDate") {
+        setDueDateSort(sorter.order);
+      } else if (sorter.columnKey === "totalChecklists") {
+        setTotalCheckListsSort(sorter.order);
+      } else if (sorter.columnKey === "NoOfTasks") {
+        setNoOfTasksSort(sorter.order);
+      } else if (sorter.columnKey === "overdueTasks") {
+        setOverdueTasksSort(sorter.order);
+      } else if (sorter.columnKey === "Progress") {
+        setProgressSort(sorter.order);
+      }
 
-    // ✅ Criticality filter
-    if (filters?.criticality) {
-      setCriticalityFilter(filters.criticality || [1, 2, 3]);
-    }
-  };
+      if (filters?.criticality) {
+        setCriticalityFilter(filters.criticality || [1, 2, 3]);
+      }
+    },
+    [],
+  );
 
-  const getCriticalityColumnProps = () => ({
-    filteredValue: criticalityFilter, // controlled filter
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => {
-      // default: select all
-      // if (selectedKeys.length === 0) {
-      //   setSelectedKeys(criticalityOptions.map((c) => c.value));
-      // }
-
-      return (
+  /**
+   * Returns the Ant Design column props for the Criticality filter dropdown.
+   * Memoised so the columns useMemo can list it as a stable dependency.
+   */
+  const criticalityColumnProps = useMemo(
+    () => ({
+      filteredValue: criticalityFilter,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
         <div style={{ padding: 8 }}>
           <Checkbox.Group
             options={criticalityOptions}
@@ -191,7 +223,6 @@ const ComplianceStandingReport = () => {
           />
 
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-            {/* Reset */}
             <CustomButton
               text={t("Reset")}
               className={styles["ResetButtonFilter"]}
@@ -202,8 +233,6 @@ const ComplianceStandingReport = () => {
                 confirm();
               }}
             />
-
-            {/* OK */}
             <CustomButton
               text={t("Ok")}
               className={styles["ResetButtonFilter"]}
@@ -214,11 +243,14 @@ const ComplianceStandingReport = () => {
             />
           </div>
         </div>
-      );
-    },
-    onFilter: (value, record) => value === record.criticality,
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  });
+      ),
+      onFilter: (value, record) => value === record.criticality,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+    }),
+    [criticalityFilter, criticalityOptions, t],
+  );
 
   const tableData =
     GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
@@ -232,19 +264,20 @@ const ComplianceStandingReport = () => {
         NoOfTasks: item.totalTasks,
         overdueTasks: item.overdueTasks,
         Progress: item.progressPercentage,
-        originalData: item, // keep full object for collapse usage
-      })
+        originalData: item,
+      }),
     ) || [];
 
-  // 2️⃣ Toggle function
-  const toggleRowExpand = (key) => {
-    setExpandedRowKeys(
-      (prev) =>
-        prev.includes(key)
-          ? prev.filter((k) => k !== key) // collapse
-          : [...prev, key] // expand
+  /**
+   * Toggles the expanded state of a table row identified by key.
+   *
+   * @param {string|number} key - The row key to toggle.
+   */
+  const toggleRowExpand = useCallback((key) => {
+    setExpandedRowKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
     );
-  };
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -257,8 +290,8 @@ const ComplianceStandingReport = () => {
                 complianceNameSort === "descend"
                   ? ArrowUpIcon
                   : complianceNameSort === "ascend"
-                  ? ArrowDownIcon
-                  : ArrowDownIcon
+                    ? ArrowDownIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -269,7 +302,7 @@ const ComplianceStandingReport = () => {
         width: "25%",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
-            b.ComplianceName?.toLowerCase()
+            b.ComplianceName?.toLowerCase(),
           ),
         sortOrder: complianceNameSort,
         render: (text) => {
@@ -285,8 +318,8 @@ const ComplianceStandingReport = () => {
                 authoritySort === "descend"
                   ? ArrowUpIcon
                   : authoritySort === "ascend"
-                  ? ArrowDownIcon
-                  : ArrowDownIcon
+                    ? ArrowDownIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -307,12 +340,11 @@ const ComplianceStandingReport = () => {
         key: "criticality",
         ellipsis: true,
         align: "center",
-        ...getCriticalityColumnProps(),
+        ...criticalityColumnProps,
         render: (text) => {
           let style = {};
 
           if (text === 1) {
-            // High
             style = {
               fontSize: "13px",
               color: "#F16B6B",
@@ -325,7 +357,6 @@ const ComplianceStandingReport = () => {
               textAlign: "center",
             };
           } else if (text === 2) {
-            // Medium
             style = {
               fontSize: "13px",
               color: "#D8A709",
@@ -338,56 +369,6 @@ const ComplianceStandingReport = () => {
               textAlign: "center",
             };
           } else if (text === 3) {
-            // Low
-            style = {
-              fontSize: "13px",
-              color: "#6172D6",
-              fontWeight: 600,
-              backgroundColor: "#ECEFFF",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          }
-
-          const label =
-            text === 3 ? t("Low") : text === 2 ? t("Medium") : t("High");
-
-          return <span style={style}>{label}</span>;
-        },
-        render: (text) => {
-          let style = {};
-
-          if (text === 1) {
-            // High
-            style = {
-              fontSize: "13px",
-              color: "#F16B6B",
-              fontWeight: 600,
-              backgroundColor: "#FFDEDE",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          } else if (text === 2) {
-            // Medium
-            style = {
-              fontSize: "13px",
-              color: "#D8A709",
-              fontWeight: 600,
-              backgroundColor: "#FFF8E1",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          } else if (text === 3) {
-            // Low
             style = {
               fontSize: "13px",
               color: "#6172D6",
@@ -416,8 +397,8 @@ const ComplianceStandingReport = () => {
                 dueDateSort === "descend"
                   ? ArrowUpIcon
                   : dueDateSort === "ascend"
-                  ? ArrowDownIcon
-                  : ArrowDownIcon
+                    ? ArrowDownIcon
+                    : ArrowDownIcon
               }
               alt=""
             />
@@ -535,7 +516,7 @@ const ComplianceStandingReport = () => {
           return (
             <span
               onClick={(e) => {
-                e.stopPropagation(); // prevent row click from toggling
+                e.stopPropagation();
                 toggleRowExpand(record.key);
               }}
               style={{ cursor: "pointer", fontSize: "16px" }}
@@ -552,353 +533,324 @@ const ComplianceStandingReport = () => {
       dueDateSort,
       totalCheckListsSort,
       noOfTasksSort,
-      getCriticalityColumnProps,
+      criticalityColumnProps,
       overdueTasksSort,
       progressSort,
+      expandedRowKeys,
       t,
-    ]
+    ],
   );
 
   return (
-    <>
-      <div className={styles.mainDivComplianceStanding}>
-        <Spin
-          spinning={isGenerating}
-          size="large"
-          tip="Generating PDF..."
-          className="d-flex justify-content-center align-items-center"
-        >
-          {!showPdfLayout && (
-            <>
-              <Row className="align-items-center">
-                {/* Back Button */}
-                <Col xs="auto">
-                  <img
-                    src={BackButton}
-                    alt="BackButton"
-                    className={styles.goBackButton}
-                    onClick={() => setComplianceStandingReport(false)}
-                  />
-                </Col>
+    <div className={styles.mainDivComplianceStanding}>
+      <Spin
+        spinning={isGenerating}
+        size="large"
+        tip="Generating PDF..."
+        className="d-flex justify-content-center align-items-center"
+      >
+        {!showPdfLayout && (
+          <>
+            <Row className="align-items-center">
+              <Col xs="auto">
+                <img
+                  src={BackButton}
+                  alt="BackButton"
+                  className={styles.goBackButton}
+                  onClick={() => setComplianceStandingReport(false)}
+                />
+              </Col>
 
-                {/* Report Type */}
-                <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
-                  <img src={Verification} alt="Verification" />
-                  <div>
-                    <label>{t("Report-type")}:</label>
-                    <p>{t("Compliance-standing")}</p>
-                  </div>
-                </Col>
+              <Col lg={2} xs="auto" className={styles.iconTextWrapper}>
+                <img src={Verification} alt="Verification" />
+                <div>
+                  <label>{t("Report-type")}:</label>
+                  <p>{t("Compliance-standing")}</p>
+                </div>
+              </Col>
 
-                {/* Generated Date */}
-                <Col
-                  lg={5}
-                  xs="auto"
-                  className={`${styles.iconTextWrapper} d-flex justify-content-center`}
-                >
-                  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-                  <div>
-                    <label>{t("Generated-date")}:</label>
-                    <p>
-                      {" "}
-                      {formatDateToYMD(
-                        GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate
-                      ) || "-"}
-                    </p>
-                  </div>
-                </Col>
+              <Col
+                lg={5}
+                xs="auto"
+                className={`${styles.iconTextWrapper} d-flex justify-content-center`}
+              >
+                <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                <div>
+                  <label>{t("Generated-date")}:</label>
+                  <p>
+                    {" "}
+                    {formatDateToYMD(
+                      GetComplianceStandingReport?.complianceStandingReport
+                        ?.generatedDate,
+                    ) || "-"}
+                  </p>
+                </div>
+              </Col>
 
-                {/* Date Range Picker */}
-                <Col lg={3} xs={4}>
-                  <label className={styles.dueDateRange}>
-                    {t("due-date-range")}
-                  </label>
-                  <DatePicker.RangePicker
-                    format="DD/MM/YYYY"
-                    placeholder={["Start Date", "End Date"]}
-                    className="custom-range-picker"
-                    separator="-"
-                    inputReadOnly
-                    allowClear
-                    value={dateRange}
-                    onChange={handleDateRangeChange}
-                  />
-                </Col>
+              <Col lg={3} xs={4}>
+                <label className={styles.dueDateRange}>
+                  {t("due-date-range")}
+                </label>
+                <DatePicker.RangePicker
+                  format="DD/MM/YYYY"
+                  placeholder={["Start Date", "End Date"]}
+                  className="custom-range-picker"
+                  separator="-"
+                  inputReadOnly
+                  allowClear
+                  value={dateRange}
+                  onChange={handleDateRangeChange}
+                />
+              </Col>
 
-                {/* Download Button */}
-                <Col lg={1} xs="auto">
-                  <CustomButton
-                    text="Download"
-                    loading={isGenerating}
-                    onClick={handleClickGenerateODF}
-                    className={styles.complianceDownloadBtn}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
-                >
-                  <div>
-                    <label>{t("Report-title")}:</label>
-                    <p>
-                      {" "}
-                      {GetComplianceStandingReport?.complianceStandingReport
-                        ?.reportTitle || "No Compliance Standing Report Title"}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-              {/* Compliance Table */}
-              <div className={styles.tableWrapper}>
-                {/* 🔹 STATIC HEADER */}
-                {/* <div className={styles.tableHeader}>
-                  <div>{t("Compliance-name")}↓</div>
-                  <div>{t("Authority")} ↓</div>
-                  <div>{t("Criticalityy")}↓ </div>
-                  <div>{t("Due-date")} ↓</div>
-                  <div>{t("Total-checklists")} ↓</div>
-                  <div>{t("No-of-tasks")} ↓</div>
-                  <div>{t("Overdue-tasks")} ↓</div>
-                  <div>{t("Progress")} % ↓</div>
-                </div> */}
+              <Col lg={1} xs="auto">
+                <CustomButton
+                  text="Download"
+                  loading={isGenerating}
+                  onClick={handleClickGenerateODF}
+                  className={styles.complianceDownloadBtn}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                xs="auto"
+                className={`${styles.ComplianceMainHeading} mt-4`}
+              >
+                <div>
+                  <label>{t("Report-title")}:</label>
+                  <p>
+                    {" "}
+                    {GetComplianceStandingReport?.complianceStandingReport
+                      ?.reportTitle || "No Compliance Standing Report Title"}
+                  </p>
+                </div>
+              </Col>
+            </Row>
+            <div className={styles.tableWrapper}>
+              <CustomTable
+                rows={tableData}
+                column={columns}
+                pagination={false}
+                rowKey="key"
+                onChange={handleChangeStandingReportSorter}
+                expandable={{
+                  showExpandColumn: false,
+                  expandedRowKeys: expandedRowKeys,
+                  onExpandedRowsChange: setExpandedRowKeys,
+                  expandedRowRender: (record) => {
+                    const item = record.originalData;
 
-                <CustomTable
-                  rows={tableData}
-                  column={columns}
-                  pagination={false}
-                  rowKey="key"
-                  onChange={handleChangeStandingReportSorter}
-                  expandable={{
-                    showExpandColumn: false,
-                    expandedRowKeys: expandedRowKeys,
-                    onExpandedRowsChange: setExpandedRowKeys,
-                    expandedRowRender: (record) => {
-                      const item = record.originalData;
+                    if (!item) return null;
 
-                      if (!item) return null;
+                    return (
+                      <div className="p-3">
+                        {!item?.checklistData?.length ? (
+                          <div className={styles.NoDataFoundTable}>
+                            <div className={styles.nodatafound_subHeading}>
+                              {t("No-Checklist-Found")}
+                            </div>
+                          </div>
+                        ) : (
+                          item.checklistData.map((checklist) => (
+                            <div
+                              className={styles.panelContent}
+                              key={checklist.checklistId}
+                            >
+                              <Row>
+                                <Col lg={12}>
+                                  <div className={styles.ComplianceMainHeading}>
+                                    <label>{t("Checklist-title")}:</label>
+                                    <p>{checklist.checklistTitle}</p>
+                                  </div>
+                                </Col>
+                              </Row>
 
-                      return (
-                        <div className="p-3">
-                          {!item?.checklistData?.length ? (
-                            <div className={styles.NoDataFoundTable}>
-                              <div className={styles.nodatafound_subHeading}>
-                                {t("No-Checklist-Found")}
+                              <div className={styles.MainAccordianTable}>
+                                {!checklist?.checklistTasks?.length ? (
+                                  <div className={styles.NoDataFoundTable}>
+                                    <div
+                                      className={styles.nodatafound_subHeading}
+                                    >
+                                      {t("No-Checklist-Task")}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  checklist.checklistTasks.map((task) => (
+                                    <div
+                                      className={styles.insideAccordianTable}
+                                      key={task.taskId}
+                                    >
+                                      <Row>
+                                        <Col lg={12}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianMainHeading
+                                            }
+                                          >
+                                            <label>{t("Task-title")}:</label>
+                                            <p>{task.taskTitle}</p>
+                                          </div>
+                                        </Col>
+                                      </Row>
+
+                                      <Row>
+                                        <Col lg={4}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianSubHeading
+                                            }
+                                          >
+                                            <label>{t("Assignee")}:</label>
+                                            <p>{task.taskAssignee}</p>
+                                          </div>
+                                        </Col>
+
+                                        <Col lg={2}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianSubHeading
+                                            }
+                                          >
+                                            <label>{t("Due-date")}:</label>
+                                            <p>
+                                              {formatDateToYMD(task.dueDate) ||
+                                                "-"}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col lg={2}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianSubHeading
+                                            }
+                                          >
+                                            <label>{t("Completed-on")}:</label>
+                                            <p>
+                                              {formatDateToYMD(
+                                                task.completedOnDate,
+                                              ) || "-"}
+                                            </p>
+                                          </div>
+                                        </Col>
+
+                                        <Col lg={2}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianSubHeading
+                                            }
+                                          >
+                                            <label>{t("Status")}:</label>
+                                            <p>{task.status}</p>
+                                          </div>
+                                        </Col>
+
+                                        <Col lg={2}>
+                                          <div
+                                            className={
+                                              styles.insideAccordianSubHeading
+                                            }
+                                          >
+                                            <label>{t("Completed")}:</label>
+                                            <p>{task.completionStatus}</p>
+                                          </div>
+                                        </Col>
+                                      </Row>
+                                    </div>
+                                  ))
+                                )}
                               </div>
                             </div>
-                          ) : (
-                            item.checklistData.map((checklist) => (
-                              <div
-                                className={styles.panelContent}
-                                key={checklist.checklistId}
-                              >
-                                {/* Checklist Title */}
-                                <Row>
-                                  <Col lg={12}>
-                                    <div
-                                      className={styles.ComplianceMainHeading}
-                                    >
-                                      <label>{t("Checklist-title")}:</label>
-                                      <p>{checklist.checklistTitle}</p>
-                                    </div>
-                                  </Col>
-                                </Row>
-
-                                {/* Checklist Tasks */}
-                                <div className={styles.MainAccordianTable}>
-                                  {!checklist?.checklistTasks?.length ? (
-                                    <div className={styles.NoDataFoundTable}>
-                                      <div
-                                        className={
-                                          styles.nodatafound_subHeading
-                                        }
-                                      >
-                                        {t("No-Checklist-Task")}
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    checklist.checklistTasks.map((task) => (
-                                      <div
-                                        className={styles.insideAccordianTable}
-                                        key={task.taskId}
-                                      >
-                                        <Row>
-                                          <Col lg={12}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianMainHeading
-                                              }
-                                            >
-                                              <label>{t("Task-title")}:</label>
-                                              <p>{task.taskTitle}</p>
-                                            </div>
-                                          </Col>
-                                        </Row>
-
-                                        <Row>
-                                          <Col lg={4}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianSubHeading
-                                              }
-                                            >
-                                              <label>{t("Assignee")}:</label>
-                                              <p>{task.taskAssignee}</p>
-                                            </div>
-                                          </Col>
-
-                                          <Col lg={2}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianSubHeading
-                                              }
-                                            >
-                                              <label>{t("Due-date")}:</label>
-                                              <p>
-                                                {formatDateToYMD(
-                                                  task.dueDate
-                                                ) || "-"}
-                                              </p>
-                                            </div>
-                                          </Col>
-
-                                          <Col lg={2}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianSubHeading
-                                              }
-                                            >
-                                              <label>
-                                                {t("Completed-on")}:
-                                              </label>
-                                              <p>
-                                                {formatDateToYMD(
-                                                  task.completedOnDate
-                                                ) || "-"}
-                                              </p>
-                                            </div>
-                                          </Col>
-
-                                          <Col lg={2}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianSubHeading
-                                              }
-                                            >
-                                              <label>{t("Status")}:</label>
-                                              <p>{task.status}</p>
-                                            </div>
-                                          </Col>
-
-                                          <Col lg={2}>
-                                            <div
-                                              className={
-                                                styles.insideAccordianSubHeading
-                                              }
-                                            >
-                                              <label>{t("Completed")}:</label>
-                                              <p>{task.completionStatus}</p>
-                                            </div>
-                                          </Col>
-                                        </Row>
-                                      </div>
-                                    ))
-                                  )}
-                                </div>
-                              </div>
-                            ))
-                          )}
-                        </div>
-                      );
-                    },
-                    rowExpandable: () => true,
-                  }}
-                  className={"Compliance_Table Report_Table  mt-3"}
-                />
-              </div>
-            </>
-          )}
-
-          {showPdfLayout && (
-            <div id="content-id">
-              {/* Compliance Standing report */}
-              <Row>
-                <Col
-                  lg={12}
-                  xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
-                >
-                  <div>
-                    <label>{t("Report-title")}:</label>
-                    <p>
-                      {" "}
-                      {
-                        GetComplianceStandingReport?.complianceStandingReport
-                          ?.reportTitle
-                      }
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-              <Row className={`${styles.ComplianceSection} gap-3 mx-1 mt-4`}>
-                <Col className={styles.iconTextWrapperPDF}>
-                  <img src={Verification} alt="Verification" />
-                  <div>
-                    <label>{t("Report-type ")}:</label>
-                    <p>{t("Compliance-standing")}</p>
-                  </div>
-                </Col>
-                <Col className={styles.iconTextWrapperPDF}>
-                  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-                  <div>
-                    <label>{t("Generated-date")}:</label>
-                    <p>
-                      {" "}
-                      {formatDateToYMD(
-                        GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate
-                      )}
-                    </p>
-                  </div>
-                </Col>
-                <Col className={styles.iconTextWrapperPDF}>
-                  <img src={ComplianceCalendar} alt="ComplianceCalendar" />
-                  <div>
-                    <label>{t("Date-range")}:</label>
-                    <p>1 January 2025 - 31 March 2025</p>
-                  </div>
-                </Col>
-              </Row>
-
-              <Row>
-                <Col
-                  lg={12}
-                  xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-3`}
-                >
-                  <p>{t("Compliances-in-this-report")}:</p>
-                </Col>
-                {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
-                  (item, index) => (
-                    <Col
-                      key={item?.complianceId}
-                      lg={12}
-                      xs="auto"
-                      className={`${styles.checklist_report}  `}
-                    >
-                      {index + 1}.{item?.complianceTitle}
-                    </Col>
-                  )
-                )}
-              </Row>
+                          ))
+                        )}
+                      </div>
+                    );
+                  },
+                  rowExpandable: () => true,
+                }}
+                className={"Compliance_Table Report_Table  mt-3"}
+              />
             </div>
-          )}
-        </Spin>
-      </div>
-    </>
+          </>
+        )}
+
+        {showPdfLayout && (
+          <div id="content-id">
+            <Row>
+              <Col
+                lg={12}
+                xs="auto"
+                className={`${styles.ComplianceMainHeading} mt-4`}
+              >
+                <div>
+                  <label>{t("Report-title")}:</label>
+                  <p>
+                    {" "}
+                    {
+                      GetComplianceStandingReport?.complianceStandingReport
+                        ?.reportTitle
+                    }
+                  </p>
+                </div>
+              </Col>
+            </Row>
+            <Row className={`${styles.ComplianceSection} gap-3 mx-1 mt-4`}>
+              <Col className={styles.iconTextWrapperPDF}>
+                <img src={Verification} alt="Verification" />
+                <div>
+                  <label>{t("Report-type ")}:</label>
+                  <p>{t("Compliance-standing")}</p>
+                </div>
+              </Col>
+              <Col className={styles.iconTextWrapperPDF}>
+                <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                <div>
+                  <label>{t("Generated-date")}:</label>
+                  <p>
+                    {" "}
+                    {formatDateToYMD(
+                      GetComplianceStandingReport?.complianceStandingReport
+                        ?.generatedDate,
+                    )}
+                  </p>
+                </div>
+              </Col>
+              <Col className={styles.iconTextWrapperPDF}>
+                <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                <div>
+                  <label>{t("Date-range")}:</label>
+                  <p>1 January 2025 - 31 March 2025</p>
+                </div>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col
+                lg={12}
+                xs="auto"
+                className={`${styles.ComplianceMainHeading} mt-3`}
+              >
+                <p>{t("Compliances-in-this-report")}:</p>
+              </Col>
+              {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
+                (item, index) => (
+                  <Col
+                    key={item?.complianceId}
+                    lg={12}
+                    xs="auto"
+                    className={`${styles.checklist_report}  `}
+                  >
+                    {index + 1}.{item?.complianceTitle}
+                  </Col>
+                ),
+              )}
+            </Row>
+          </div>
+        )}
+      </Spin>
+    </div>
   );
 };
 

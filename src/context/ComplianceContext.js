@@ -440,6 +440,10 @@ export const ComlianceProvider = ({ children }) => {
     setViewAllReopenDashboardButtonFlag,
   ] = useState(false);
 
+  // True when user clicks the Upcoming Compliance Deadline dashboard card.
+  // ComplainceByMe reads this on mount to pre-select active statuses, then resets it.
+  const [upcomingDeadlineFilterFlag, setUpcomingDeadlineFilterFlag] = useState(false);
+
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
 
@@ -1039,6 +1043,8 @@ export const ComlianceProvider = ({ children }) => {
         setPendingNavigation,
         viewAllReopenDashboardButtonFlag,
         setViewAllReopenDashboardButtonFlag,
+        upcomingDeadlineFilterFlag,
+        setUpcomingDeadlineFilterFlag,
         newChecklistIds,
         setNewChecklistIds,
         complianceCompleteModalType,
