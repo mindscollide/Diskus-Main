@@ -42,8 +42,7 @@ const ComplianceStandingReport = () => {
     useComplianceContext();
 
   const GetComplianceStandingReport = useSelector(
-    (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
+    (state) => state.ComplainceSettingReducerReducer.GetComplianceStandingReport
   );
   console.log(GetComplianceStandingReport, "GetComplianceStandingReport");
 
@@ -57,7 +56,7 @@ const ComplianceStandingReport = () => {
   const options = {
     // default is `save`
     method: "save",
-    filename: "Compliance-Standing-Report.pdf",
+    filename: "Compliance Standing Report.pdf",
     // default is Resolution.MEDIUM = 3, which should be enough, higher values
     // increases the image quality but also the size of the PDF, so be careful
     // using values higher than 10 when having multiple pages generated, it
@@ -118,8 +117,8 @@ const ComplianceStandingReport = () => {
         GetComplianceStandingReportAPI(
           navigate,
           { startDate: "", endDate: null },
-          t,
-        ),
+          t
+        )
       );
       return;
     }
@@ -130,7 +129,7 @@ const ComplianceStandingReport = () => {
     setDateRange(dates);
 
     dispatch(
-      GetComplianceStandingReportAPI(navigate, { startDate, endDate: null }, t),
+      GetComplianceStandingReportAPI(navigate, { startDate, endDate: null }, t)
     );
   };
 
@@ -234,7 +233,7 @@ const ComplianceStandingReport = () => {
         overdueTasks: item.overdueTasks,
         Progress: item.progressPercentage,
         originalData: item, // keep full object for collapse usage
-      }),
+      })
     ) || [];
 
   // 2️⃣ Toggle function
@@ -243,7 +242,7 @@ const ComplianceStandingReport = () => {
       (prev) =>
         prev.includes(key)
           ? prev.filter((k) => k !== key) // collapse
-          : [...prev, key], // expand
+          : [...prev, key] // expand
     );
   };
 
@@ -258,8 +257,8 @@ const ComplianceStandingReport = () => {
                 complianceNameSort === "descend"
                   ? ArrowUpIcon
                   : complianceNameSort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
+                  ? ArrowDownIcon
+                  : ArrowDownIcon
               }
               alt=""
             />
@@ -270,7 +269,7 @@ const ComplianceStandingReport = () => {
         width: "25%",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
-            b.ComplianceName?.toLowerCase(),
+            b.ComplianceName?.toLowerCase()
           ),
         sortOrder: complianceNameSort,
         render: (text) => {
@@ -286,8 +285,8 @@ const ComplianceStandingReport = () => {
                 authoritySort === "descend"
                   ? ArrowUpIcon
                   : authoritySort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
+                  ? ArrowDownIcon
+                  : ArrowDownIcon
               }
               alt=""
             />
@@ -417,8 +416,8 @@ const ComplianceStandingReport = () => {
                 dueDateSort === "descend"
                   ? ArrowUpIcon
                   : dueDateSort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
+                  ? ArrowDownIcon
+                  : ArrowDownIcon
               }
               alt=""
             />
@@ -557,7 +556,7 @@ const ComplianceStandingReport = () => {
       overdueTasksSort,
       progressSort,
       t,
-    ],
+    ]
   );
 
   return (
@@ -604,7 +603,7 @@ const ComplianceStandingReport = () => {
                       {" "}
                       {formatDateToYMD(
                         GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate,
+                          ?.generatedDate
                       ) || "-"}
                     </p>
                   </div>
@@ -760,7 +759,7 @@ const ComplianceStandingReport = () => {
                                               <label>{t("Due-date")}:</label>
                                               <p>
                                                 {formatDateToYMD(
-                                                  task.dueDate,
+                                                  task.dueDate
                                                 ) || "-"}
                                               </p>
                                             </div>
@@ -777,7 +776,7 @@ const ComplianceStandingReport = () => {
                                               </label>
                                               <p>
                                                 {formatDateToYMD(
-                                                  task.completedOnDate,
+                                                  task.completedOnDate
                                                 ) || "-"}
                                               </p>
                                             </div>
@@ -860,7 +859,7 @@ const ComplianceStandingReport = () => {
                       {" "}
                       {formatDateToYMD(
                         GetComplianceStandingReport?.complianceStandingReport
-                          ?.generatedDate,
+                          ?.generatedDate
                       )}
                     </p>
                   </div>
@@ -892,7 +891,7 @@ const ComplianceStandingReport = () => {
                     >
                       {index + 1}.{item?.complianceTitle}
                     </Col>
-                  ),
+                  )
                 )}
               </Row>
             </div>

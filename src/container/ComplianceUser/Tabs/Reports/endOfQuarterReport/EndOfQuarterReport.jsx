@@ -471,6 +471,293 @@ const EndOfQuarterReport = () => {
               </div>
             </div>
           )}
+
+          {/*End of quarter Report Download     */}
+          {showPdfLayout && (
+            <div id="content-id">
+              <Row>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-4`}
+                >
+                  <div>
+                    <label>{t("Quarter")}:</label>
+                    <p className={styles.longTitle}>
+                      {GetQuarterReport?.header?.reportTitle}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row className={`${styles.ComplianceSection} mt-4 `}>
+                <Col lg={8}>
+                  <Row className="align-items-center justify-content-between mx-2 ">
+                    <Col
+                      lg={6}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload}   `}
+                    >
+                      <img src={Verification} alt="Verification" />
+                      <div>
+                        <label>{t("Report-type")}:</label>
+                        <p>{GetQuarterReport?.header?.reportTypeName}</p>
+                      </div>
+                    </Col>
+
+                    <Col
+                      lg={5}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload}  `}
+                    >
+                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                      <div>
+                        <label className={styles.ComplianceReportHeadings}>
+                          {t("Generated-date")}:{" "}
+                        </label>
+                        <p>
+                          {formatDateToYMD(
+                            GetQuarterReport?.header?.generatedOn
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row
+                    className={`${styles.iconTextWrapperDownload}   mx-2 mt-4`}
+                  >
+                    <Col
+                      lg={5}
+                      xs="auto"
+                      className={`${styles.iconTextWrapperDownload} d-flex gap-2  `}
+                    >
+                      <img src={ComplianceCalendar} alt="ComplianceCalendar" />
+                      <div>
+                        <label>{t("Start-dates")}</label>
+                        <p>
+                          {formatDateToYMD(
+                            GetQuarterReport?.header?.quarterStartDate
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                    <Col lg={5} xs="auto">
+                      <div>
+                        <label>{t("End-dates")}</label>
+                        <p>
+                          {formatDateToYMD(
+                            GetQuarterReport?.header?.quarterEndDate
+                          )}
+                        </p>
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+                <Col lg={4} className={styles.chartCol}>
+                  <div className={styles.chartFlex}>
+                    {/* Donut */}
+                    <div className={styles.chartBox}>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="200px"
+                        data={donutData}
+                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                      />
+
+                      {/* Center Label */}
+                      <div className={styles.centerLabel}>
+                        <h2>
+                          {GetQuarterReport?.header?.overallCompletionPercent}%
+                        </h2>
+                        <p>{t("Complete ")}</p>
+                      </div>
+                    </div>
+
+                    {/* Custom Legend (VERTICALLY CENTERED) */}
+                    <div className={styles.customLegend}>
+                      <div>
+                        <span className={styles.legendDotBlue}></span>
+                        {t("Tasks-completed-on-time")} (
+                        {GetQuarterReport?.header?.tasksCompletedOnTime})
+                      </div>
+                      <div>
+                        <span className={styles.legendDotYellow}></span>
+                        {t("Tasks-completed-late")} (
+                        {GetQuarterReport?.header?.tasksCompletedLate})
+                      </div>
+                      <div>
+                        <span className={styles.legendOrange}></span>
+                        {t("Pending-or-overdue-tasks")} (
+                        {GetQuarterReport?.header?.tasksPending})
+                      </div>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
+                >
+                  <p>{t("Compliances-in-this-report")}:</p>
+                </Col>
+                {GetQuarterReport?.compliances?.map((compliance, index) => (
+                  <Col
+                    key={compliance.complianceID}
+                    lg={12}
+                    xs="auto"
+                    className={styles.checklist_report}
+                  >
+                    <div className={styles.titleSection}>
+                      <label>{t("Compliance-title")}:</label>
+                      <p className={styles.longTitle}>
+                        {compliance.complianceTitle || "No Compliance Title"}
+                      </p>
+                    </div>
+                    <div className={`${styles.dueDate} `}>
+                      <label>{t("Due-date")}:</label>
+                      <p>
+                        {formatDateToYMD(compliance?.complianceDueDate) || "-"}
+                      </p>
+                    </div>
+
+                    <Row className={styles.TextDownloadWrapper}>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.progressPercent || "0"}%</p>
+                          <label>{t("Completed")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.totalChecklists}</p>
+                          <label>{t("Total-checklists")}</label>
+                        </div>
+                      </Col>
+                      <Col className={`${styles.TextDownload} `}>
+                        <div>
+                          <p>{compliance?.totalTasks}</p>
+                          <label>{t("Total-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.completedTasks}</p>
+                          <label>{t("Completed-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.tasksOverdue}</p>
+                          <label>{t("Overdue-tasks")}</label>
+                        </div>
+                      </Col>
+                    </Row>
+
+                    <div>
+                      {compliance?.checklists.map((checklist) => (
+                        <div className={styles.panelContent}>
+                          <div className={styles.titleSection}>
+                            <label className={styles.ChecklistTitle}>
+                              {t("Checklists-title")}:
+                            </label>
+                            <p className={styles.longTitleHeading}>
+                              {checklist.checklistTitle}
+                            </p>
+                          </div>
+
+                          <div key={checklist.checklistID}>
+                            {checklist?.tasks?.map((task) => (
+                              <div key={task.taskID}>
+                                <div className={styles.insideAccordianTable}>
+                                  <Row>
+                                    <Col lg={12} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Task-title")}:</label>
+                                        <Tooltip title={task.taskTitle}>
+                                          <p>{task.taskTitle}</p>
+                                        </Tooltip>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                  <Row>
+                                    <Col lg={4} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Assignee")}:</label>
+                                        <p>{task.assigneeName || "-"}</p>
+                                      </div>
+                                    </Col>{" "}
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Due-date")}:</label>
+                                        <p>
+                                          {formatDateToYMD(task.taskDueDate)}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Completed-on")}:</label>
+                                        <p>
+                                          {formatDateToYMD(
+                                            task.taskCompletedOn
+                                          ) || "-"}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Completed")}:</label>
+                                        <p>{task.taskStatus}</p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianSubHeading
+                                        }
+                                      >
+                                        <label>{t("Status")}:</label>
+                                        <p>{task.taskStatus}</p>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </div>
+          )}
+          {/*End of quarter Report Download     */}
         </Spin>
       </div>
     </>

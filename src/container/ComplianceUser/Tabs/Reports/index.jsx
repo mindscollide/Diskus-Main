@@ -490,12 +490,12 @@ const Reports = () => {
             <h4 className={styles["ComplianceStatusReport_heading"]}>
               {t("Organizations-compliance-status-report-as-of-today.")}
 
-              <span
+              {/* <span
                 className={styles["ComplianceStatusReportGenerated_heading"]}
               >
                 {t("Generated")}
                 <img src={ComplianceStatusReportCheckedIcon} alt="" />
-              </span>
+              </span> */}
             </h4>
           </Col>
           <Col lg={3} ms={4} sm={4}>
