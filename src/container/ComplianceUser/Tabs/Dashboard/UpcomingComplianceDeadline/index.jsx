@@ -16,7 +16,8 @@ import styles from "./upcomingComplianceDeadline.module.css";
  */
 const UpcomingComplianceDeadline = () => {
   const { t } = useTranslation();
-  const { setMainComplianceTabs, setUpcomingDeadlineFilterFlag } = useComplianceContext();
+  const { setMainComplianceTabs, setUpcomingDeadlineFilterFlag } =
+    useComplianceContext();
 
   const upcomingData = useSelector(
     (state) =>

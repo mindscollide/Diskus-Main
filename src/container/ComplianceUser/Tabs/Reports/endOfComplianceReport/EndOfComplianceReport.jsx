@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./EndOfComplianceReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -9,7 +9,6 @@ import { DatePicker, Collapse, Progress, Spin } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
-import { t } from "i18next";
 import CustomTable from "../../../../../components/elements/table/Table";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
 import { useSelector } from "react-redux";
@@ -20,6 +19,65 @@ import ReopenOrOnHoldDetailsModalECR from "./ReopenOrOnHoldDetailsModalECR";
 
 const { Panel } = Collapse;
 
+/** Static donut chart data — values are fixed and do not depend on any state. */
+const donutData = [
+  ["Task Status", "Count"],
+  ["Tasks Completed On Time", 100],
+  ["Tasks Completed Late", 0],
+];
+
+/** Static donut chart display options hoisted to module level. */
+const donutOptions = {
+  pieHole: 0.7,
+  legend: {
+    position: "right",
+    textStyle: { fontSize: 12 },
+  },
+  pieSliceText: "none",
+  backgroundColor: "transparent",
+  chartArea: { width: "100%", height: "100%" },
+  colors: ["#6272D6"],
+  tooltip: { trigger: "none" },
+  pieSliceBorderColor: "transparent",
+  pieSliceTextStyle: { fontSize: 0 },
+  slices: {
+    0: { offset: 0 },
+    1: { offset: 0 },
+  },
+};
+
+/** Static PDF generation options hoisted to module level. */
+const pdfOptions = {
+  method: "save",
+  filename: "End-Of-Compliance.pdf",
+  resolution: Resolution.HIGH,
+  page: {
+    margin: Margin.SMALL,
+    format: "A4",
+    orientation: "landscape",
+  },
+  canvas: {
+    mimeType: "image/png",
+    qualityRatio: 1,
+  },
+  overrides: {
+    pdf: {
+      compress: true,
+    },
+    canvas: {
+      useCORS: true,
+    },
+  },
+};
+
+/** Returns the DOM element used as the PDF render target. */
+const getTargetElement = () => document.getElementById("content-id");
+
+/**
+ * EndOfComplianceReport component.
+ * Renders a detailed end-of-compliance report with chart, checklist table,
+ * and PDF download capability.
+ */
 const EndOfComplianceReport = () => {
   const { t } = useTranslation();
   const {
@@ -28,19 +86,12 @@ const EndOfComplianceReport = () => {
     isViewDetailsOpen,
     setIsViewDetailsOpen,
     setEndOfComplianceReport,
-    reportList,
     autoPdfDownload,
     setAutoPdfDownload,
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
-  );
-  console.log("Check Check Report");
-
-  console.log(
-    GetEndOfComplianceReport,
-    "GetEndOfComplianceReportGetEndOfComplianceReport",
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -51,45 +102,6 @@ const EndOfComplianceReport = () => {
       handleAutoDownload();
     }
   }, [autoPdfDownload, GetEndOfComplianceReport]);
-
-  const donutData = [
-    ["Task Status", "Count"],
-    ["Tasks Completed On Time", 100],
-    ["Tasks Completed Late", 0],
-  ];
-
-  // const donutOptions = {
-  //   pieHole: 0.7,
-  //   legend: {
-  //     position: "right",
-  //     textStyle: { fontSize: 12 },
-  //   },
-  //   pieSliceText: "none",
-  //   backgroundColor: "transparent",
-  //   chartArea: { width: "100%", height: "100%" },
-  //   colors: ["#6272D6"],
-  //   tooltip: { text: "percentage" },
-  // };
-
-  const donutOptions = {
-    pieHole: 0.7,
-    legend: {
-      position: "right",
-      textStyle: { fontSize: 12 },
-    },
-    pieSliceText: "none",
-    backgroundColor: "transparent",
-    chartArea: { width: "100%", height: "100%" },
-    colors: ["#6272D6"],
-    tooltip: { trigger: "none" },
-
-    pieSliceBorderColor: "transparent",
-    pieSliceTextStyle: { fontSize: 0 },
-    slices: {
-      0: { offset: 0 },
-      1: { offset: 0 },
-    },
-  };
 
   const columns = useMemo(
     () => [
@@ -140,10 +152,15 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [reportList, t],
+    [t],
   );
 
-  const mapTasksToRows = (tasks = []) => {
+  /**
+   * Maps raw task objects from the API into table row shape.
+   * @param {Array} tasks - Array of task objects from the compliance report.
+   * @returns {Array} Rows formatted for CustomTable.
+   */
+  const mapTasksToRows = useCallback((tasks = []) => {
     return tasks.map((task) => ({
       taskName: task.taskTitle,
       assignee: task.assigneeName,
@@ -151,46 +168,7 @@ const EndOfComplianceReport = () => {
       completedOn: formatDateToYMD(task.taskCompletedOn),
       completed: task.completionStatus,
     }));
-  };
-
-  const options = {
-    // default is `save`
-    method: "save",
-    filename: "End-Of-Compliance.pdf",
-    // default is Resolution.MEDIUM = 3, which should be enough, higher values
-    // increases the image quality but also the size of the PDF, so be careful
-    // using values higher than 10 when having multiple pages generated, it
-    // might cause the page to crash or hang.
-    resolution: Resolution.HIGH,
-    page: {
-      // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.SMALL,
-      // default is 'A4'
-      format: "A4",
-      // default is 'portrait'
-      orientation: "landscape",
-    },
-    canvas: {
-      // default is 'image/jpeg' for better size performance
-      mimeType: "image/png",
-      qualityRatio: 1,
-    },
-    // Customize any value passed to the jsPDF instance and html2canvas
-    // function. You probably will not need this and things can break,
-    // so use with caution.
-    overrides: {
-      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-      pdf: {
-        compress: true,
-      },
-      // see https://html2canvas.hertzen.com/configuration for more options
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
-
-  const getTargetElement = () => document.getElementById("content-id");
+  }, []);
 
   const handleAutoDownload = async () => {
     try {
@@ -200,9 +178,9 @@ const EndOfComplianceReport = () => {
       await new Promise((r) => setTimeout(r, 300));
       await document.fonts.ready;
 
-      await generatePDF(getTargetElement, options);
+      await generatePDF(getTargetElement, pdfOptions);
 
-      // 👇 After Download Close Report
+      // After Download Close Report
       setEndOfComplianceReport(false);
       setAutoPdfDownload(false);
     } catch (error) {
@@ -213,21 +191,25 @@ const EndOfComplianceReport = () => {
     }
   };
 
-  const handleClickGenerateODF = async () => {
+  /**
+   * Triggers PDF generation and download when the user clicks the Download button.
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleClickGenerateODF = useCallback(async () => {
     try {
       setIsGenerating(true); // spinner ON
       setShowPdfLayout(true); // show PDF layout
       await new Promise((r) => setTimeout(r, 100)); // allow DOM render
 
       await document.fonts.ready;
-      await generatePDF(getTargetElement, options);
+      await generatePDF(getTargetElement, pdfOptions);
     } catch (err) {
       console.error("PDF generation failed:", err);
     } finally {
       setShowPdfLayout(false); // hide PDF layout
       setIsGenerating(false); // spinner OFF
     }
-  };
+  }, []);
 
   // To Show Reopen View Detail Bar when Reopen or Hold status coming
   const shouldShowReopenSection = useMemo(() => {
@@ -241,9 +223,13 @@ const EndOfComplianceReport = () => {
     );
   }, [GetEndOfComplianceReport?.complianceStatusChangeHistory]);
 
-  const handleOpenReopenModal = () => {
+  /**
+   * Opens the reopen/on-hold details modal.
+   */
+  const handleOpenReopenModal = useCallback(() => {
     setIsViewDetailsOpen(true);
-  };
+  }, [setIsViewDetailsOpen]);
+
   return (
     <>
       <div className={styles.mainDivComplianceStanding}>
@@ -389,7 +375,7 @@ const EndOfComplianceReport = () => {
                         width="100%"
                         height="200px"
                         data={donutData}
-                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                        options={{ ...donutOptions, legend: "none" }}
                       />
 
                       {/* Center Label */}
@@ -434,7 +420,7 @@ const EndOfComplianceReport = () => {
 
               {/* Compliance Table */}
               <div className={styles.tableWrapper}>
-                {/* 🔹 STATIC HEADER */}
+                {/* STATIC HEADER */}
                 <div className={styles.tableHeader}>
                   <div>{t("Checklist-name")}</div>
                   <div> {t("Due-date")}</div>
@@ -442,7 +428,7 @@ const EndOfComplianceReport = () => {
                   <div> {t("Overdue-tasks")}</div>
                 </div>
 
-                {/* 🔹 COLLAPSE ROWS */}
+                {/* COLLAPSE ROWS */}
                 <Collapse
                   bordered={false}
                   expandIconPosition="end"
@@ -478,9 +464,7 @@ const EndOfComplianceReport = () => {
                             <CustomTable
                               rows={mapTasksToRows(item?.tasks)}
                               column={columns}
-                              // scroll={{ x: "scroll", y: 550 }}
                               pagination={false}
-                              // onChange={handleChangeReportSorter}
                             />
                           </div>
                         </div>
