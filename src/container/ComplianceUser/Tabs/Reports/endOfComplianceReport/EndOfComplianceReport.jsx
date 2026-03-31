@@ -189,7 +189,7 @@ const EndOfComplianceReport = () => {
       },
     },
   };
-
+  const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
   const getTargetElement = () => document.getElementById("content-id");
 
   const handleAutoDownload = async () => {
@@ -299,7 +299,7 @@ const EndOfComplianceReport = () => {
                   {shouldShowReopenSection && (
                     <div className={styles.reportDetailsBar}>
                       <span>
-                        {t("This-compliance-was-Re-opened-1-times")}
+                        {t("This-compliance-was-Re-opened", { count })}
                         <CustomButton
                           text="Reopen Details"
                           className={styles.reportDetailButton}

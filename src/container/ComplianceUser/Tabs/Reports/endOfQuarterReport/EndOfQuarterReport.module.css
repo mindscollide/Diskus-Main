@@ -339,6 +339,21 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+.legendItem {
+  display: flex;
+
+  align-items: center;
+  gap: 8px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 2%;
+  color: #5a5a5a;
+}
+.legendText {
+  font-weight: 500;
+}
 .legendDotBlue,
 .legendDotYellow,
 .legendOrange {
