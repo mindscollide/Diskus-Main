@@ -74,12 +74,12 @@ const CreateEditCompliance = () => {
   );
 
   const getTitle = () => {
-    // ✅ Default (including 0, undefined, initial state)
+    //  Default (including 0, undefined, initial state)
     if (isComplianceCreatOrEdit !== 1 && isComplianceCreatOrEdit !== 2) {
       return t("Create-new-compliance");
     }
 
-    // ✅ When user starts creating & name exists
+    //  When user starts creating & name exists
     if (isComplianceCreatOrEdit === 1) {
       return complianceInfo?.complianceName || t("Create-new-compliance");
     }
