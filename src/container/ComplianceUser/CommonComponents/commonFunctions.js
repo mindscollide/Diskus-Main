@@ -14,7 +14,7 @@ export const parseUTCDateString = (dateStr) => {
     Number(day),
     Number(hour),
     Number(minute),
-    Number(second),
+    Number(second)
   );
 };
 
@@ -40,7 +40,7 @@ export const formatDateToYMD = (value) => {
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
-    month:"short",
+    month: "short",
     year: "numeric",
   });
 };
@@ -180,4 +180,14 @@ export const parseBackendDate = (dateStr) => {
   const seconds = +dateStr.slice(12, 14);
 
   return new Date(year, month, day, hours, minutes, seconds);
+};
+
+export const getDynamicFileName = (name) => {
+  const now = new Date();
+
+  const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
+  // const time = now.toTimeString().slice(0, 8).replace(/:/g, "-"); // HH-MM-SS
+
+  // return `Compliance Standing Report ${date} ${time}.pdf`;
+  return `${name} (${date}).pdf`;
 };
