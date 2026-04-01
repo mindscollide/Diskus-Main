@@ -86,14 +86,10 @@ const ComplainceDetails = () => {
     complianceReopenDetailsState,
     criticalityOptions,
     comlianceStatusReopenedModal,
+    setIsEditComplianceTrue,
   } = useComplianceContext();
 
-  console.log(
-    { complianceDetailsState, complianceDetailsState },
-    "checkListTabscheckListTabs",
-  );
-
-  console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceDetailsState, "complianceDetailsState121212");
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -107,6 +103,8 @@ const ComplainceDetails = () => {
     complianceReopenedDetail,
     "complianceReopenedDetail",
   );
+
+  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -149,6 +147,8 @@ const ComplainceDetails = () => {
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
 
+  console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -156,14 +156,13 @@ const ComplainceDetails = () => {
   });
   const [editComplianceData, setEditComplianceData] = useState(null);
 
+  //   tags Selection
+  const [tagsValue, setTagsValue] = useState("");
+
   const [checkAnyChecklistOnPendingState, setCheckAnyChecklistOnPendingState] =
     useState(false);
   const [checkAnyTaskOnPendingState, setCheckAnyTaskOnPendingState] =
     useState(false);
-  // const [
-  //   checkAnyChecklistOrTaskInProgress,
-  //   setCheckAnyChecklistOrTaskInProgress,
-  // ] = useState(false);
 
   const [checkAnyTaskInProgress, setCheckAnyTaskInProgress] = useState(false);
 
@@ -232,7 +231,9 @@ const ComplainceDetails = () => {
             label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: selectedCriticality,
-          dueDate: parseYYYYMMDDToEndOfDay(dueDate),
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -312,32 +313,6 @@ const ComplainceDetails = () => {
           setHasIncompleteChecklistOrTask(false);
         }
 
-        // // Check if any checklist or any task status is In Progress
-        // if (
-        //   (Array.isArray(checklists) && checklists.length > 0) ||
-        //   (Array.isArray(checklistTasks) && checklistTasks.length > 0)
-        // ) {
-        //   const hasChecklistInProgress =
-        //     Array.isArray(checklists) &&
-        //     checklists.some(
-        //       (checklist) => checklist?.status?.statusName === "In Progress"
-        //     );
-
-        //   const hasTaskInProgress =
-        //     Array.isArray(checklistTasks) &&
-        //     checklistTasks.some(
-        //       (task) => task?.taskStatus?.statusName === "In Progress"
-        //     );
-
-        //   setCheckAnyChecklistOrTaskInProgress(
-        //     hasChecklistInProgress ||
-
-        //     hasTaskInProgress
-        //   );
-        // } else {
-        //   setCheckAnyChecklistOrTaskInProgress(false);
-        // }
-
         // Check if any checklist or any task status is In Progress
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasTaskInProgress =
@@ -363,9 +338,6 @@ const ComplainceDetails = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length,
       );
-      // setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      // setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
     }
@@ -443,7 +415,7 @@ const ComplainceDetails = () => {
     try {
       let saveFiles = [];
       let uploadedFiles;
-      // 1️⃣ Upload individual documents
+      //  Upload individual documents
       if (complianceReopenDetailsState.attachments.length > 0) {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
@@ -452,12 +424,12 @@ const ComplainceDetails = () => {
             ),
           ),
         );
-        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        //  Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
-        // 3️⃣ Build payload AFTER data exists
+        // Build payload AFTER data exists
         const Data2 = {
           complianceId: editComplianceData.complianceId,
           complianceStatusChangeHistoryID: complianceReopenedDetail,
@@ -468,7 +440,7 @@ const ComplainceDetails = () => {
             : [],
         };
 
-        // 4️⃣ Final mapping API
+        //  Final mapping API
         dispatch(
           SaveComplianceDocumentsAndMappingsAPI(
             navigate,
@@ -480,6 +452,7 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
+        console.log("complianceByMeList");
         dispatch(
           EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs),
         );
@@ -497,6 +470,10 @@ const ComplainceDetails = () => {
     }
   }, [complianceDataroomFolderId, complianceReopenedDetail]);
 
+  useEffect(() => {
+    console.log("dueDate changed:", complianceDetailsState.dueDate);
+  }, [complianceDetailsState.dueDate]);
+
   const handleValueChange = (event) => {
     const { name, value } = event.target;
     let error = "";
@@ -512,22 +489,16 @@ const ComplainceDetails = () => {
     }));
   };
 
-  //   tags Selection
-  const [tagsValue, setTagsValue] = useState("");
-
   const MAX_TAG_LENGTH = 25;
 
   const handleInputChange = (newValue, actionMeta) => {
     if (actionMeta.action !== "input-change") return newValue;
-
     // remove leading spaces
     let trimmed = newValue.replace(/^\s+/, "");
-
     // enforce max length
     if (trimmed.length > MAX_TAG_LENGTH) {
       trimmed = trimmed.slice(0, MAX_TAG_LENGTH);
     }
-
     setTagsValue(trimmed);
     return trimmed;
   };
@@ -588,7 +559,7 @@ const ComplainceDetails = () => {
 
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
-          updatedDueDate: createConvert(complianceReopenDetailsState.dueDate),
+          updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
           reason: complianceReopenDetailsState.reason,
         };
         let reopenDataroomMap = {
@@ -612,6 +583,7 @@ const ComplainceDetails = () => {
         );
         return;
       }
+      console.log("complianceByMeList");
       dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
       console.log("complianceReopenDetailsState", complianceReopenDetailsState);
       console.log(Data, "complianceReopenDetailsState");
@@ -635,6 +607,7 @@ const ComplainceDetails = () => {
           t,
           setComplianceInfo,
           setChecklistTabs,
+          setComplianceAddEditViewState,
         ),
       );
     }
@@ -656,15 +629,11 @@ const ComplainceDetails = () => {
 
   const handleBlur = (event) => {
     if (complianceAddEditViewState === 3) return;
-
     const { name, value } = event.target;
     if (name !== "complianceTitle" || !value) return;
-
     const authorityId = complianceDetailsState.authority.value;
     if (!authorityId) return;
-
     const title = complianceDetailsState.complianceTitle;
-
     // 🆕 CREATE MODE → always check
     if (complianceAddEditViewState === 1) {
       const Data = {
@@ -804,7 +773,6 @@ const ComplainceDetails = () => {
   // Status
   const handleChangeComplianceStatus = (event) => {
     console.log(event, "CompliaceStatusOnHoldModal");
-
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
       if (complianceDetailsState.status.value === 3) {
@@ -1106,7 +1074,7 @@ const ComplainceDetails = () => {
             calendar={gregorian}
             locale={currentLanguage === "en" ? gregorian_en : gregorian_ar}
             ref={calendRef}
-            onFocusedDateChange={changeComplainceDueDate}
+            // onFocusedDateChange={changeComplainceDueDate}
             onChange={changeComplainceDueDate}
             disabled={
               complianceDetailsState.authority.value === 0 ||

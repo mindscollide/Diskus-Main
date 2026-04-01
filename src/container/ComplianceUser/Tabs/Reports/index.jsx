@@ -41,7 +41,7 @@ const Reports = () => {
   const navigate = useNavigate();
 
   const GetReportListingData = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetReportListingData,
+    (state) => state.ComplainceSettingReducerReducer.GetReportListingData
   );
 
   const [isScroll, setIsScroll] = useState(false);
@@ -77,7 +77,7 @@ const Reports = () => {
   //  Initial Load
   useEffect(() => {
     dispatch(
-      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t),
+      ComplianceReportListingAPI(navigate, searchComplianceReportPayload, t)
     );
   }, []);
 
@@ -259,8 +259,8 @@ const Reports = () => {
       GetComplianceStandingReportAPI(
         navigate,
         { startDate: "", endDate: "" },
-        t,
-      ),
+        t
+      )
     );
   };
 
@@ -280,8 +280,8 @@ const Reports = () => {
               {record.reportTypeId === 1
                 ? t("End-of-Compliance-Reports")
                 : record.reportTypeId === 2
-                  ? t("Quarterly-reports")
-                  : t("Accumulative-reports")}
+                ? t("Quarterly-reports")
+                : t("Accumulative-reports")}
             </span>
           );
         },
@@ -309,15 +309,19 @@ const Reports = () => {
                 ?.toLowerCase()
                 .localeCompare(a.reportTitle?.toLowerCase())
             : reportTitleSort === "ascend"
-              ? a.reportTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.reportTitle?.toLowerCase())
-              : a.reportTitle
-                  ?.toLowerCase()
-                  .localeCompare(b.reportTitle?.toLowerCase()),
+            ? a.reportTitle
+                ?.toLowerCase()
+                .localeCompare(b.reportTitle?.toLowerCase())
+            : a.reportTitle
+                ?.toLowerCase()
+                .localeCompare(b.reportTitle?.toLowerCase()),
         align: "start",
         render: (text) => {
-          return <span>{text}</span>;
+          const complianceTitle = text?.includes(" - ")
+            ? text.split(" - ")[1]
+            : text;
+
+          return <span>{complianceTitle}</span>;
         },
       },
       {
@@ -351,7 +355,10 @@ const Reports = () => {
         sorter: (a, b) => {
           const parseDateTime = (d, t) =>
             Date.parse(
-              `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}, ${t.slice(0, 2)}:${t.slice(2, 4)}:${t.slice(4, 6)}`,
+              `${d.slice(0, 4)}-${d.slice(4, 6)}-${d.slice(6, 8)}, ${t.slice(
+                0,
+                2
+              )}:${t.slice(2, 4)}:${t.slice(4, 6)}`
             );
           const diff =
             parseDateTime(a.generatedOn, a.generatedOnTime) -
@@ -359,14 +366,14 @@ const Reports = () => {
           return generatedOnSort === "descend"
             ? -diff
             : generatedOnSort === "ascend"
-              ? diff
-              : 0;
+            ? diff
+            : 0;
         },
         render: (_, record) => (
           <span>
             {formatGeneratedOnDateTime(
               record.generatedOn,
-              record.generatedOnTime,
+              record.generatedOnTime
             )}
           </span>
         ),
@@ -469,7 +476,7 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t],
+    [reportTitleSort, getReportTypeColumnProps, generatedOnSort, t]
   );
 
   return (
@@ -477,7 +484,7 @@ const Reports = () => {
       <section className={styles["ComplianceStatusReport_Section"]}>
         <Row className={styles["ComplianceReport"]}>
           <Col lg={2} ms={2} sm={2}>
-            <img className="" src={ComplianceReportLiting} alt="" />
+            <img className=" " src={ComplianceReportLiting} alt="" />
           </Col>
           <Col lg={7} ms={6} sm={6}>
             <h4 className={styles["ComplianceStatusReport_heading"]}>
@@ -485,11 +492,14 @@ const Reports = () => {
 
               <span
                 className={styles["ComplianceStatusReportGenerated_heading"]}
-              ></span>
+              >
+                {t("Generated")}
+                <img src={ComplianceStatusReportCheckedIcon} alt="" />
+              </span>
             </h4>
           </Col>
           <Col lg={3} ms={4} sm={4}>
-            <div className="d-flex align-items-center justify-content-center mt-3">
+            <div className="d-flex align-items-center justify-content-center  mt-3">
               <CustomButton
                 className={styles["actionButtons_complianceStatusReport"]}
                 text={"View Report"}

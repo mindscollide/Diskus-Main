@@ -40,19 +40,23 @@ export const formatDateToYMD = (value) => {
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
-    month: "short",
+    month:"short",
     year: "numeric",
   });
 };
 
 export const parseYYYYMMDDToEndOfDay = (dateString) => {
-  if (!dateString || dateString.length < 8) return null;
+  try {
+    if (!dateString || dateString.length < 8) return null;
 
-  const year = dateString?.slice(0, 4);
-  const month = dateString?.slice(4, 6) - 1; // JS months are 0-based
-  const day = dateString?.slice(6, 8);
+    const year = dateString?.slice(0, 4);
+    const month = dateString?.slice(4, 6) - 1; // JS months are 0-based
+    const day = dateString?.slice(6, 8);
 
-  return new Date(year, month, day, 23, 59, 58);
+    return new Date(year, month, day, 23, 59, 58);
+  } catch (error) {
+    console.log(error, dateString);
+  }
 };
 
 // 20260316235958 -> Date object
@@ -147,34 +151,22 @@ export const formatGeneratedOnDateTime = (dateStr, timeStr) => {
   const minutes = +timeStr.slice(2, 4);
   const seconds = +timeStr.slice(4, 6);
 
-  const date = new Date(year, month, day, hours, minutes, seconds);
+  // Treat API time as UTC
+  const date = new Date(Date.UTC(year, month, day, hours, minutes, seconds));
 
-  const time = date.toLocaleTimeString("en-US", {
+  const formattedTime = date.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
   });
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const formattedDate = date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
-  const formattedDate = `${String(date.getDate()).padStart(2, "0")} ${
-    months[date.getMonth()]
-  } ${date.getFullYear()}`;
-
-  return `${time} ${formattedDate}`;
+  return `${formattedTime} ${formattedDate}`;
 };
 
 export const parseBackendDate = (dateStr) => {

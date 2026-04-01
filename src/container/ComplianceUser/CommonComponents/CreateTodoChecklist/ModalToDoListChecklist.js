@@ -56,11 +56,11 @@ const ModalToDoListChecklist = ({
   const [fileForSend, setFileForSend] = useState([]);
 
   const AllAssigneesData = useSelector(
-    (state) => state.toDoListReducer.AllAssigneesData,
+    (state) => state.toDoListReducer.AllAssigneesData
   );
 
   const todoDocumentsMapping = useSelector(
-    (state) => state.toDoListReducer.todoDocumentsMapping,
+    (state) => state.toDoListReducer.todoDocumentsMapping
   );
 
   console.log(AllAssigneesData, "toDoListReducerCommitteeReducer");
@@ -162,7 +162,7 @@ const ModalToDoListChecklist = ({
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName,
+      (newData, index) => newData.name === data.DisplayAttachmentName
     );
     setFileForSend(fileForSend);
     setFileSize(fileSizefound);
@@ -228,14 +228,14 @@ const ModalToDoListChecklist = ({
       }
 
       let fileExists = tasksAttachments.TasksAttachments.some(
-        (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name,
+        (oldFileData) => oldFileData.DisplayAttachmentName === fileData.name
       );
 
       if (!size) {
         showMessage(
           t("File-size-should-not-be-greater-than-1-5GB"),
           "error",
-          setOpen,
+          setOpen
         );
       } else if (!sizezero) {
         showMessage(t("File-size-should-not-be-zero"), "error", setOpen);
@@ -293,11 +293,11 @@ const ModalToDoListChecklist = ({
 
     let newDate = multiDatePickerDateChangIntoUTC(task.creationDate).slice(
       0,
-      8,
+      8
     ); // Extract UTC date
     let newTime = multiDatePickerDateChangIntoUTC(task.creationDate).slice(
       8,
-      14,
+      14
     ); // Extract UTC time
 
     // Step 3: Validate task properties
@@ -338,13 +338,13 @@ const ModalToDoListChecklist = ({
       if (fileForSend.length > 0) {
         const uploadPromises = fileForSend.map(async (newData) => {
           await dispatch(
-            uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile),
+            uploadDocumentsTaskApi(navigate, t, newData, folderID, newfile)
           );
         });
         // Wait for all promises to resolve
         await Promise.all(uploadPromises); //till here the files get upload
         await dispatch(
-          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder),
+          saveFilesTaskApi(navigate, t, newfile, folderID, newFolder)
         );
       }
 
@@ -375,8 +375,8 @@ const ModalToDoListChecklist = ({
           7,
           setShow,
           checkListData.checklistId,
-          complianceInfo.complianceId,
-        ),
+          complianceInfo.complianceId
+        )
       );
     } catch (error) {
       console.log(error, "errorerrorerrorerrorerror");
@@ -575,7 +575,7 @@ const ModalToDoListChecklist = ({
                     className="todolist-modal-fields"
                   >
                     <span className="createTask_label">{`${t(
-                      "Task-title",
+                      "Task-title"
                     )}*`}</span>
                     <TextField
                       change={taskHandler}
@@ -593,7 +593,7 @@ const ModalToDoListChecklist = ({
                 <Row className="my-3">
                   <Col lg={5} md={5} sm={12} xs={12}>
                     <span className="createTask_label">{`${t(
-                      "Add-assignee",
+                      "assignee"
                     )}*`}</span>
                     <Select
                       isSearchable={true}
@@ -614,14 +614,14 @@ const ModalToDoListChecklist = ({
                     className="d-flex flex-column"
                   >
                     <span className="createTask_label">{`${t(
-                      "Deadline",
+                      "Deadline"
                     )}*`}</span>
                     <DatePicker
                       onFocusedDateChange={toDoDateHandler}
                       format={"DD/MM/YYYY"}
                       value={task.creationDate}
                       maxDate={moment(
-                        parseYYYYMMDDToEndOfDay(checkListData.dueDate),
+                        parseYYYYMMDDToEndOfDay(checkListData.dueDate)
                       )
                         .subtract(1, "day")
                         .endOf("day")
@@ -684,7 +684,7 @@ const ModalToDoListChecklist = ({
                 <Row>
                   <Col lg={12} md={12} xs={12} className="FontArabicRegular">
                     <span className="createTask_label">{`${t(
-                      "Description",
+                      "Description"
                     )}`}</span>
                     <TextField
                       change={taskHandler}
@@ -730,7 +730,7 @@ const ModalToDoListChecklist = ({
                                   }}
                                 />
                               );
-                            },
+                            }
                           )
                         : null}
                     </section>
@@ -748,7 +748,7 @@ const ModalToDoListChecklist = ({
                   className={"Confirmationmodal_body_text"}
                 >
                   {t(
-                    "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close",
+                    "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
                   )}
                 </Col>
               </Row>

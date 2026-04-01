@@ -67,6 +67,11 @@ const ViewComplianceDetails = () => {
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
+  console.log(
+    { complianceDetailsViewState, complianceReopenDetailsState },
+    "complianceDetailsViewState",
+  );
+
   console.log(allowedComplianceStatusOptions, "allowedComplianceStatusOptions");
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -298,7 +303,7 @@ const ViewComplianceDetails = () => {
         // do nothing
       } else if (complianceDetailsState.status.value !== 3) {
         if (
-          // checkAnyChecklistOnPendingState ||
+          checkAnyChecklistOnPendingState ||
           checkAnyTaskOnPendingState ||
           checkAnyTaskInProgress
         ) {

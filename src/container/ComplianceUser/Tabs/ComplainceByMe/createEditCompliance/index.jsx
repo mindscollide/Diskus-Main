@@ -29,20 +29,29 @@ const CreateEditCompliance = () => {
     complianceDetailsState,
     showViewCompliance,
     setShowViewCompliance,
+    isComplianceCreatOrEdit,
+    setIsComplianceCreateOrEdit,
   } = useComplianceContext();
   // Tracking all Loading States
-
+  const modeRef = useRef(complianceAddEditViewState);
   console.log(
     { checkListData, complianceDetailsState },
-    "checkListTabscheckListTabs"
+    "checkListTabscheckListTabs",
   );
+
+  console.log(
+    { complianceAddEditViewState, showViewCompliance },
+    "complianceAddEditViewState",
+  );
+
+  console.log(complianceInfo, "complianceInfo");
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
         );
       } catch (error) {}
     }
@@ -53,7 +62,7 @@ const CreateEditCompliance = () => {
       try {
         const complianceId = { complianceId: complianceInfo.complianceId };
         dispatch(
-          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t)
+          GetComplianceChecklistsByComplianceIdAPI(navigate, complianceId, t),
         );
       } catch (error) {}
     }
@@ -61,29 +70,29 @@ const CreateEditCompliance = () => {
 
   console.log(
     complianceDetailsState,
-    "complianceDetailsStatecomplianceDetailsState"
+    "complianceDetailsStatecomplianceDetailsState",
   );
 
-  const ComplianceMain = useRef();
+  const getTitle = () => {
+    // ✅ Default (including 0, undefined, initial state)
+    if (isComplianceCreatOrEdit !== 1 && isComplianceCreatOrEdit !== 2) {
+      return t("Create-new-compliance");
+    }
 
-  // const handleOutsideClick = (event) => {
-  //   if (
-  //     ComplianceMain.current &&
-  //     !ComplianceMain.current.contains(event.target) &&
-  //     (complianceAddEditViewState === 2 || complianceAddEditViewState === 1)
-  //   ) {
-  //     // setShowWebNotification(false);
-  //     alert("All changes will bw lost");
-  //   }
-  // };
-  //Event Handler for Outside Click of Web Notification Window
-  // useEffect(() => {
-  //   document.addEventListener("click", handleOutsideClick);
-  //   return () => {
-  //     document.removeEventListener("click", handleOutsideClick);
-  //   };
-  // }, [complianceAddEditViewState]);
+    // ✅ When user starts creating & name exists
+    if (isComplianceCreatOrEdit === 1) {
+      return complianceInfo?.complianceName || t("Create-new-compliance");
+    }
 
+    // ✅ Edit mode
+    if (isComplianceCreatOrEdit === 2) {
+      return `Edit: ${complianceInfo?.complianceName || ""}`;
+    }
+
+    return "";
+  };
+
+  console.log("createEditComplicance");
   return (
     <>
       <section
@@ -91,18 +100,8 @@ const CreateEditCompliance = () => {
         // ref={ComplianceMain}
       >
         <Row className="my-2 ">
-          {/* <Col sm={12} md={12} lg={12} className={styles["mainHeading"]}>
-            {complianceInfo.complianceId !== 0
-              ? complianceInfo.complianceName
-              : t("Create-new-compliance")}
-          </Col> */}
-
           <Col sm={12} md={9} lg={9} className={styles["mainHeading"]}>
-            {complianceAddEditViewState === 2
-              ? `Edit: ${complianceInfo.complianceName}`
-              : complianceInfo.complianceId !== 0
-              ? complianceInfo.complianceName
-              : t("Create-new-compliance")}
+            {getTitle()}
           </Col>
 
           {}
@@ -162,8 +161,8 @@ const CreateEditCompliance = () => {
                   complianceInfo.complianceId !== 0
                     ? false
                     : complianceAddEditViewState === 2
-                    ? false
-                    : true
+                      ? false
+                      : true
                 }
                 text={`${checklistCount} ${t("Checklists")}`}
                 onClick={() => {
@@ -180,10 +179,10 @@ const CreateEditCompliance = () => {
                   complianceAddEditViewState === 2
                     ? false
                     : complianceInfo.complianceId === 0
-                    ? true
-                    : checklistCount === 0
-                    ? true
-                    : false
+                      ? true
+                      : checklistCount === 0
+                        ? true
+                        : false
                 }
                 text={`${taskCount} ${t("Tasks")}`}
                 onClick={() => {

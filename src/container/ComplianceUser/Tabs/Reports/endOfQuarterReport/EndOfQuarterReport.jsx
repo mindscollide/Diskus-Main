@@ -102,7 +102,7 @@ const EndOfQuarterReport = () => {
 
   const handleAutoDownload = async () => {
     try {
-      setIsGenerating(false);
+      setIsGenerating(true);
       setShowPdfLayout(true);
 
       await new Promise((r) => setTimeout(r, 300));
@@ -143,7 +143,7 @@ const EndOfQuarterReport = () => {
         <Spin
           spinning={isGenerating}
           size="large"
-          tip="Generating PDF..."
+          tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
           {!showPdfLayout && (
@@ -254,20 +254,24 @@ const EndOfQuarterReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
                         {t("Tasks-completed-on-time")} (
                         {GetQuarterReport?.header?.tasksCompletedOnTime || 0})
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetQuarterReport?.header?.tasksCompletedLate || 0})
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {GetQuarterReport?.header?.tasksCompletedLate || 0})
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendOrange}></span>
-                        {t("Pending-or-overdue-tasks")} (
-                        {GetQuarterReport?.header?.tasksPending || 0})
+                        <span className={styles.legendText}>
+                          {t("Pending-or-overdue-tasks")} (
+                          {GetQuarterReport?.header?.tasksPending || 0})
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -378,7 +382,6 @@ const EndOfQuarterReport = () => {
                                                   styles.insideAccordianMainHeading
                                                 }
                                               >
-                                                {" "}
                                                 <label>
                                                   {t("Task-title")}:
                                                 </label>
@@ -396,7 +399,9 @@ const EndOfQuarterReport = () => {
                                                 }
                                               >
                                                 <label>{t("Assignee")}:</label>
-                                                <p>{task.assigneeName}</p>
+                                                <p>
+                                                  {task.assigneeName || "-"}
+                                                </p>
                                               </div>
                                             </Col>{" "}
                                             <Col lg={2} xs="auto">
@@ -422,7 +427,11 @@ const EndOfQuarterReport = () => {
                                                 <label>
                                                   {t("Completed-on")}:
                                                 </label>
-                                                <p>{task.taskCompletedOn}</p>
+                                                <p>
+                                                  {formatDateToYMD(
+                                                    task.taskCompletedOn,
+                                                  ) || "-"}
+                                                </p>
                                               </div>
                                             </Col>
                                             <Col lg={2} xs="auto">
@@ -464,6 +473,7 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
+
           {showPdfLayout && (
             <div id="content-id">
               <Row>
@@ -507,7 +517,6 @@ const EndOfQuarterReport = () => {
                           {t("Generated-date")}:{" "}
                         </label>
                         <p>
-                          {" "}
                           {formatDateToYMD(
                             GetQuarterReport?.header?.generatedOn,
                           )}
@@ -592,25 +601,19 @@ const EndOfQuarterReport = () => {
                 <Col
                   lg={12}
                   xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
+                  className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
                 >
                   <p>{t("Compliances-in-this-report")}:</p>
                 </Col>
 
-                {GetQuarterReport?.compliances?.map((compliance) =>
-                  compliance?.checklists?.map((checklist, index) => (
-                    <Col
-                      key={checklist.checklistID}
-                      lg={12}
-                      xs="auto"
-                      className={styles.checklist_report}
-                    >
-                      <Tooltip title={checklist.checklistTitle}>
-                        {checklist.checklistTitle}
-                      </Tooltip>
-                    </Col>
-                  )),
-                )}
+                {GetQuarterReport?.compliances?.map((compliance) => (
+                  <div>
+                    {/* Compliance Title */}
+                    <h2 className={styles.pdfComplianceTitle}>
+                      {compliance.complianceTitle}
+                    </h2>
+                  </div>
+                ))}
               </Row>
             </div>
           )}

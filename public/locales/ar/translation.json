@@ -2553,5 +2553,11 @@
   "Compliance-progress": "Compliance progress",
   "Due-date-is-required": "Due date is required",
   "List-of-compliances-of-this-authority": "List of Compliances of this Authority",
-  "Are-you-sure-you-want-to-delete-this-authority": "Are you sure you want to delete this authority ?"
+  "Are-you-sure-you-want-to-delete-this-authority": "Are you sure you want to delete this authority ?",
+  "Checklist-progress": "Checklist Progress",
+  "My-checklist": "My Checklist",
+  "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed": "This Compliance cannot be marked as Completed because some tasks are still not completed",
+  "Some-tasks-are-still-pending-Complete-them-before-making-the-checklist-Completed": "Some tasks are still pending Complete them before making the checklist Completed",
+  "Mark-checklist-only":"Mark checklist only",
+  "Mark-checklist-with-associated-items":"Mark Fchecklist with associated items"
 }

@@ -731,7 +731,7 @@ const ManageAuthority = () => {
     setHasReachedBottom(false);
     setData([]);
     setRecordLength(0);
-
+    setsearchbox(false);
     setSearchPayload({
       ...searchPayload,
       sRow: 0,

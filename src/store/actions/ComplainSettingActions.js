@@ -2281,7 +2281,7 @@ const ViewComplianceDetailsByViewTypeAPI = (
               );
               switch (value) {
                 case 1:
-                  setComplianceAddEditViewState(2);
+                  setComplianceAddEditViewState(1);
                   setCreateEditComplaince(true);
                   setShowViewCompliance(false);
                   break;

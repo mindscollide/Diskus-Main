@@ -32,10 +32,10 @@ const ComplianceByMe = () => {
   const { t } = useTranslation();
   const [isScroll, setIsScroll] = useState(false);
   const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const { criticalityOptions } = useComplianceContext();
+  const { criticalityOptions,setIsComplianceCreateOrEdit } = useComplianceContext();
 
   const getCompliancesForCreator = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator,
+    (state) => state.ComplainceSettingReducerReducer.listOfComplianceByCreator
   );
 
   // const [complianceList, setComplianceList] = useState([]);
@@ -43,8 +43,8 @@ const ComplianceByMe = () => {
 
   // Sort State
   const [sortConfig, setSortConfig] = useState({
-    key: "dueDate", // default sort column (optional)
-    order: "ascend", // default order (optional)
+    key: "dueDate",
+    order: "descend",
   });
   const [complianceTitleSort, setComplianceTitleSort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState("ascend");
@@ -123,6 +123,7 @@ const ComplianceByMe = () => {
   }, [allComplianceStatusForFilter]);
 
   const handleEditCompliance = (record) => {
+    setIsComplianceCreateOrEdit(2)
     const Data = {
       complianceId: record.complianceId,
       viewType: 1,
@@ -135,8 +136,8 @@ const ComplianceByMe = () => {
         1,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -154,8 +155,8 @@ const ComplianceByMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance,
-      ),
+        setShowViewCompliance
+      )
     );
   };
 
@@ -239,7 +240,7 @@ const ComplianceByMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle,
+                  (s) => s.statusTitle
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -301,11 +302,11 @@ const ComplianceByMe = () => {
     const order = isActive ? sortConfig.order : null;
 
     const icon =
-      order === "descend"
+      order === "ascend"
         ? ArrowUpIcon
-        : order === "ascend"
-          ? ArrowDownIcon
-          : ArrowDownIcon;
+        : order === "descend"
+        ? ArrowDownIcon
+        : DefaultSortIcon;
 
     return (
       <img
@@ -339,17 +340,24 @@ const ComplianceByMe = () => {
     () => [
       {
         title: (
-          <span className="d-flex gap-2 align-items-center">
+          <span className={`d-flex gap-2 align-items-center `}>
             {t("Compliance-title")}
             {renderSortIcon("complianceTitle")}
           </span>
         ),
+
         dataIndex: "complianceTitle",
         key: "complianceTitle",
         width: "43%",
         ellipsis: true,
         align: "left",
-        render: (text) => <Tooltip title={text}>{text}</Tooltip>,
+        render: (text, record) => (
+          <span onClick={() => handleViewCompliance(record)}>
+            <Tooltip className="cursor-pointer" title={text}>
+              {text}
+            </Tooltip>
+          </span>
+        ),
       },
       {
         title: t("Criticality"),
@@ -454,7 +462,7 @@ const ComplianceByMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ],
+    ]
   );
   useAntTableScrollBottomVirtual(() => {
     if (complianceByMeList.length < complianceByMeTotal) {

@@ -409,19 +409,23 @@ const EndOfComplianceReport = () => {
 
                     {/* Custom Legend (VERTICALLY CENTERED) */}
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {GetEndOfComplianceReport?.complianceSummary
-                          ?.tasksCompletedOnTime || 0}
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")}(
+                          {GetEndOfComplianceReport?.complianceSummary
+                            ?.tasksCompletedOnTime || 0}
+                          )
+                        </span>{" "}
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {GetEndOfComplianceReport?.complianceSummary
-                          ?.tasksCompletedLate || 0}
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")}(
+                          {GetEndOfComplianceReport?.complianceSummary
+                            ?.tasksCompletedLate || 0}
+                          )
+                        </span>{" "}
                       </div>
                     </div>
                   </div>
@@ -680,20 +684,18 @@ const EndOfComplianceReport = () => {
                   <p>{t("Checklists-in-this-report")}:</p>
                 </Col>
 
-                {GetEndOfComplianceReport?.checklists.map((checklist) => (
-                  <div key={checklist.checklistID}>
-                    {checklist?.tasks?.map((task, index) => (
-                      <Col
-                        key={task.taskID}
-                        lg={12}
-                        xs="auto"
-                        className={`${styles.checklist_report}  `}
-                      >
-                        {index + 1}.{task.taskDescription}
-                      </Col>
-                    ))}
-                  </div>
-                ))}
+                {GetEndOfComplianceReport?.checklists.map(
+                  (checklist, index) => (
+                    <Col
+                      key={checklist.checklistID}
+                      lg={12}
+                      xs="auto"
+                      className={styles.checklist_report}
+                    >
+                      {index + 1}. {checklist.checklistTitle}
+                    </Col>
+                  ),
+                )}
               </Row>
             </div>
           )}

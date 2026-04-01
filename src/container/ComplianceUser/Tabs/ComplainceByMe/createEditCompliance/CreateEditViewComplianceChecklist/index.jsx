@@ -77,6 +77,9 @@ const CreateEditViewComplianceChecklist = () => {
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
 
   const [isEditTrue, setIsEditTrue] = useState(false);
+
+  const [getCheckListData, setGetCheckListData] = useState([]);
+
   const {
     complianceAddEditViewState,
     complianceInfo,
@@ -97,6 +100,9 @@ const CreateEditViewComplianceChecklist = () => {
   console.log(checkListData, "checkListData");
   console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceDetailsState, "complianceDetailsState");
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
+  console.log(isChecklistTitleExist, "isChecklistTitleExist");
+
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
@@ -235,8 +241,6 @@ const CreateEditViewComplianceChecklist = () => {
     }
   }, [complianceInfo]);
 
-  const [getCheckListData, setGetCheckListData] = useState([]);
-
   useEffect(() => {
     if (
       GetComplianceChecklistsByComplianceId &&
@@ -280,6 +284,42 @@ const CreateEditViewComplianceChecklist = () => {
       } catch (error) {}
     }
   }, [authorityRespnseMessage, authorityseverityMessage]);
+
+  const parseComplianceDueDate = (dueDate) => {
+    if (!dueDate) return null;
+
+    const dateStr = String(dueDate);
+
+    // ISO format
+    if (dateStr.includes("T")) {
+      return new Date(dateStr);
+    }
+
+    // YYYYMMDDHHMMSS format
+    if (dateStr.length === 14) {
+      const year = dateStr.slice(0, 4);
+      const month = dateStr.slice(4, 6) - 1;
+      const day = dateStr.slice(6, 8);
+      const hour = dateStr.slice(8, 10);
+      const minute = dateStr.slice(10, 12);
+      const second = dateStr.slice(12, 14);
+
+      return new Date(year, month, day, hour, minute, second);
+    }
+
+    return null;
+  };
+
+  const maxChecklistDate = React.useMemo(() => {
+    const parsedDate = parseComplianceDueDate(complianceDetailsState?.dueDate);
+
+    if (!parsedDate) return null;
+
+    parsedDate.setHours(0, 0, 0, 0);
+    parsedDate.setDate(parsedDate.getDate() - 1);
+
+    return parsedDate;
+  }, [complianceDetailsState?.dueDate]);
 
   const handleClickPrevBtn = () => {
     setChecklistData({
@@ -326,71 +366,41 @@ const CreateEditViewComplianceChecklist = () => {
 
   const handleOpenAddChecklist = () => {
     setAddChecklistCloseState(false);
+    setIsEditTrue(false); // make sure we are in create mode
+    setChecklistData({
+      checklistId: 0,
+      checklistTitle: "",
+      checklistDescription: "",
+      checklistDueDate: "", // set to today by default
+    });
   };
 
   const handleBlur = (event) => {
     setIsChecklistTitleExist(null);
-    setErrors({
-      checklistTitle: "",
-    });
+    setErrors({ checklistTitle: "" });
+
     const { name, value } = event.target;
 
+    // View mode: do nothing
     if (complianceAddEditViewState === 3) return;
-    if (complianceAddEditViewState === 2 || isEditTrue) {
-      let getCheckObj = getCheckListData.find(
-        (data, index) => data.checklistId === checkListData.checklistId,
-      );
-      if (getCheckObj !== undefined) {
-        if (getCheckObj.checklistTitle !== checkListData.checklistTitle) {
-          if (complianceInfo.complianceId !== 0) {
-            const Data = {
-              ComplianceID: complianceInfo.complianceId,
-              ChecklistTitle: checkListData.checklistTitle,
-            };
-            dispatch(
-              CheckChecklistTitleExistsAPI(
-                navigate,
-                Data,
-                t,
-                setErrors,
-                setIsChecklistTitleExist,
-              ),
-            );
-          }
-        }
-      }
-      console.log(
-        { getCheckObj, getCheckListData, checkListData },
-        "handleBlur",
-      );
-      return;
-    }
 
-    // Checklist uniqueness (API placeholder)
     if (name === "checklistTitle" && value) {
-      try {
-        // if (complianceAddEditViewState === 2) {
-        if (
-          checkListData.checklistTitle !== null &&
-          complianceInfo.complianceId !== 0
-        ) {
-          const Data = {
-            ComplianceID: complianceInfo.complianceId,
-            ChecklistTitle: checkListData.checklistTitle,
-          };
-          // call API here
-          dispatch(
-            CheckChecklistTitleExistsAPI(
-              navigate,
-              Data,
-              t,
-              setErrors,
-              setIsChecklistTitleExist,
-            ),
-          );
-        }
-        // }
-      } catch (error) {}
+      // Always run uniqueness check in edit or add mode
+      if (complianceInfo.complianceId !== 0) {
+        const Data = {
+          ComplianceID: complianceInfo.complianceId,
+          ChecklistTitle: checkListData.checklistTitle,
+        };
+        dispatch(
+          CheckChecklistTitleExistsAPI(
+            navigate,
+            Data,
+            t,
+            setErrors,
+            setIsChecklistTitleExist,
+          ),
+        );
+      }
     }
   };
 
@@ -402,69 +412,62 @@ const CreateEditViewComplianceChecklist = () => {
     setCloseConfirmationModal(true);
   };
 
-  const today = new Date();
-  // const tomorrow = new Date(today);
-  // tomorrow.setDate(today.getDate() + 1); // strictly greater than today
-  today.setHours(0, 0, 0, 0); // start of day
-
-  let maxChecklistDate = null;
-
-  if (complianceDetailsState?.dueDate) {
-    const complianceDate = new Date(complianceDetailsState.dueDate);
-
-    complianceDate.setHours(0, 0, 0, 0);
-    complianceDate.setDate(complianceDate.getDate() - 1); // one day before
-
-    maxChecklistDate = complianceDate;
-  }
+  const today = React.useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
 
   const isLockedStatus =
-    complianceDetailsState?.status?.value === 7 ||
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
     complianceDetailsState?.status?.value === 3;
 
-  const isReopendCompliance = complianceDetailsState?.status.value === 6;
-  console.log(isReopendCompliance, "isReopendCompliance");
+  console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
+
+  const isReopendCompliance = complianceDetailsState?.status?.value === 6;
 
   const getMinChecklistDueDateFromTasks = () => {
     if (!getAllComplianceChecklistTask?.checklistList) return today;
 
     let tasks = [];
 
-    // EDIT FLOW
     if (checkListData.checklistId !== 0) {
+      // EDIT FLOW: current checklist ke tasks
       const checklist = getAllComplianceChecklistTask.checklistList.find(
         (cl) => cl.checklistId === checkListData.checklistId,
       );
-
       tasks = checklist?.taskList || [];
+    } else {
+      // CREATE FLOW: new checklist ke tasks
+      tasks = checkListData?.taskList || [];
     }
 
-    // CREATE FLOW
-    else {
-      tasks = getAllComplianceChecklistTask.checklistList.flatMap(
-        (cl) => cl.taskList || [],
-      );
-    }
-
-    // Only active tasks
+    // Sirf active tasks
     const activeTasks = tasks.filter((task) => task.taskStatusId !== 5);
 
     if (activeTasks.length === 0) return today;
 
+    // Maximum due date among active tasks
     const maxTaskDate = activeTasks.reduce((max, task) => {
       const taskDate = new Date(
         task.deadLineDate.slice(0, 4),
         task.deadLineDate.slice(4, 6) - 1,
         task.deadLineDate.slice(6, 8),
       );
-
       return taskDate > max ? taskDate : max;
     }, new Date(0));
 
     return maxTaskDate;
   };
+
+  const editableStatuses = new Set([1, 2, 4, 7]);
+
+  const isComplianceEditable =
+    complianceAddEditViewState === 2 &&
+    editableStatuses.has(complianceDetailsState?.status?.value);
+
+  console.log(isComplianceEditable, "isComplianceEditable");
 
   return (
     <>
@@ -527,10 +530,8 @@ const CreateEditViewComplianceChecklist = () => {
                 </span>
               </div>
               <DatePicker
-                disabled={
-                  (isLockedStatus && !isEditTrue) || isChecklistTitleExist
-                }
-                value={checkListData.checklistDueDate}
+                disabled={isLockedStatus && !isEditTrue}
+                value={checkListData.checklistDueDate || ""}
                 format={"DD/MM/YYYY"}
                 placeholder={t("Due-date")}
                 render={
@@ -705,7 +706,8 @@ const CreateEditViewComplianceChecklist = () => {
                     </>
                   }
                   endField={
-                    newChecklistIds?.includes(data?.checklistId) && (
+                    (isComplianceEditable ||
+                      newChecklistIds?.includes(data?.checklistId)) && (
                       <>
                         <Row key={data.checklistId}>
                           <Col
