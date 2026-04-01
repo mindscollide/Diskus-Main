@@ -20,6 +20,26 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 
+/**
+ * @component GuestJoinVideo
+ * @description Pre-join lobby screen for unauthenticated guest participants
+ * entering a video call. Allows the guest to enter their display name,
+ * preview their local webcam feed, and toggle microphone/camera on or off
+ * before requesting to join. On submission the component dispatches
+ * `joinGuestVideoMainApi` which places the guest in the host's waiting room.
+ * Handles the rejoin flow (re-populates name from sessionStorage when
+ * `isRejoining` flag is set) and responds to Redux stream-stop signals that
+ * can redirect the guest to the approved (screen 2) or rejected (screen 3)
+ * navigation state.
+ *
+ * @param {number} extractMeetingId - Numeric ID of the target meeting,
+ *   extracted from the validated encrypted URL and passed to the join API.
+ * @param {string} extractMeetingTitle - Human-readable title of the meeting
+ *   displayed on the lobby UI.
+ * @param {Function} onJoinNameChange - Callback invoked with the guest's
+ *   entered display name so the parent component can store and pass it to
+ *   subsequent screens.
+ */
 const GuestJoinVideo = ({
   extractMeetingId,
   extractMeetingTitle,

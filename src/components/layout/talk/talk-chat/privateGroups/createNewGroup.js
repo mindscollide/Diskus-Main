@@ -18,6 +18,15 @@ import {
 } from '../../../../../store/actions/Talk_Feature_actions'
 import CloseChatIcon from '../../../../../assets/images/Cross-Chat-Icon.png'
 
+/**
+ * @component CreateNewGroup
+ * @description Renders the "Create a Group" screen within the Talk module.
+ * Fetches all organisation users from Redux/API on mount, allows the user to
+ * enter a group name, search for participants by name, and select members via
+ * checkboxes. On submission, dispatches the CreatePrivateGroup action and
+ * resets the Talk UI back to the private groups list view. Displays a
+ * validation warning when no participants are selected.
+ */
 const CreateNewGroup = () => {
   const { talkStateData } = useSelector((state) => state)
 

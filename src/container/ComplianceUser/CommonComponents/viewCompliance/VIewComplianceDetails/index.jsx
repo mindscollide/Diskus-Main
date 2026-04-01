@@ -64,6 +64,8 @@ const ViewComplianceDetails = () => {
     complianceReopenDetailsState,
     setComplianceStatusChangeReasonModal,
     complianceStatusChangeReasonModal,
+    complianceAddEditViewState,
+    ViewComplianceDetailsByViewTypeAPI,
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
@@ -73,6 +75,9 @@ const ViewComplianceDetails = () => {
   );
 
   console.log(allowedComplianceStatusOptions, "allowedComplianceStatusOptions");
+
+  console.log(complianceAddEditViewState, "complianceAddEditViewState");
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -207,12 +212,13 @@ const ViewComplianceDetails = () => {
           ),
         );
       } else {
-        console.log("complianceByMeList");
+        console.log("complianceByMeLissst");
         dispatch(
           EditComplianceAPI(
             navigate,
             editComplianceData,
             t,
+            ViewComplianceDetailsByViewTypeAPI,
             // setChecklistTabs
           ),
         );
@@ -236,6 +242,12 @@ const ViewComplianceDetails = () => {
     );
     const selectedStatusId =
       tempSelectComplianceStatus?.value || complianceDetailsState.status.value;
+    console.log(tempSelectComplianceStatus, "DataDataDataDataData");
+
+    // For On Hold status (7) and Cancel status (9), use the stored options
+    const isOnHoldOrCancel =
+      selectedOption?.value === 7 || selectedOption?.value === 9;
+
     const Data = {
       complianceId: complianceInfo.complianceId,
       complianceTitle: complianceDetailsViewState.complianceTitle,
@@ -252,13 +264,17 @@ const ViewComplianceDetails = () => {
         selectedStatusId === 7 || selectedStatusId === 9
           ? complianceOnHoldReasonState?.trim()
           : "", // On Hold Compliance
-      OnHoldAlongWithComplianceCheckListAndTask:
-        complianceDetailsViewState.status.value === 7
+      OnHoldAlongWithComplianceCheckListAndTask: isOnHoldOrCancel
+        ? selectedOption.value === 7
           ? complianceOnHoldSelectOption
-          : complianceDetailsViewState.status.value === 9
+          : selectedOption.value === 9
             ? complianceCancelSelectOption
-            : 0, // On Hold Compliance Including Checklist and Task
+            : 0
+        : 0, // On Hold Compliance Including Checklist and Task
     };
+
+    console.log(Data, "DataDataDataDataData");
+    console.log(complianceOnHoldReasonState, "DataDataDataDataData");
 
     setComplianceDetailsViewState((prev) => ({
       ...prev,
@@ -291,7 +307,7 @@ const ViewComplianceDetails = () => {
     }
     console.log("complianceByMeList");
     // console.log(Data, "DataDataData");
-    dispatch(EditComplianceAPI(navigate, Data, t, null));
+    dispatch(EditComplianceAPI(navigate, Data, t, null, 3));
   };
 
   const handleChangeComplianceStatus = (event) => {
@@ -425,7 +441,7 @@ const ViewComplianceDetails = () => {
     setComplianceStatusChangeReasonModal(false);
 
     if (tempSelectComplianceStatus) {
-      updateCompliance(tempSelectComplianceStatus);
+      updateCompliance(tempSelectComplianceStatus, true);
     }
     resetModalStates();
   }, [

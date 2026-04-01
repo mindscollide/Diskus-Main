@@ -8,6 +8,42 @@ import {
   DateSendingFormat,
 } from "../../../commen/functions/date_formater";
 
+/**
+ * @component ChatModal
+ * @description A modal dialog for performing actions on chat messages (Save, Print,
+ * or Email). Only one action mode is active at a time, determined by which boolean
+ * prop is true. In "Save" mode the user picks a date scope — Today, All, or Custom —
+ * with mutually exclusive checkboxes. Selecting "Custom" reveals a date-range picker
+ * (Start Date / End Date). The End Date field is disabled until a Start Date is chosen,
+ * preventing invalid ranges. "Print" and "Email" modes currently render placeholder
+ * headings and are not yet fully implemented.
+ *
+ * @param {Function} props.setShow - Setter function that controls the modal's visibility
+ *   state in the parent component.
+ * @param {boolean} props.show - Whether the modal is currently visible.
+ * @param {boolean} [props.save] - When true, renders the Save Messages UI with date
+ *   scope selection checkboxes and an optional custom date range picker.
+ * @param {boolean} [props.print] - When true, renders the Print modal placeholder.
+ * @param {boolean} [props.email] - When true, renders the Email modal placeholder.
+ *
+ * @state {boolean} todayCheckState - Tracks whether the "Today" checkbox is selected.
+ * @state {boolean} allCheckState - Tracks whether the "All" checkbox is selected.
+ * @state {boolean} customCheckState - Tracks whether the "Custom" checkbox is selected.
+ *   When true, the custom date range inputs are revealed.
+ * @state {boolean} endDatedisable - Controls whether the End Date picker is interactive.
+ *   Disabled until a Start Date has been entered.
+ * @state {{ StartDate: string, EndDate: string }} chatDateState - Holds the selected
+ *   date range values formatted for the API via DateSendingFormat.
+ *
+ * @example
+ * <ChatModal
+ *   show={isModalOpen}
+ *   setShow={setIsModalOpen}
+ *   save={true}
+ *   print={false}
+ *   email={false}
+ * />
+ */
 const ChatModal = ({ setShow, show, save, print, email }) => {
   const [todayCheckState, setTodayCheckState] = useState(false);
   const [allCheckState, setAllCheckState] = useState(false);

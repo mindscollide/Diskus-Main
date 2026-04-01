@@ -1,3 +1,24 @@
+/**
+ * @file routes.js
+ * @description Application route definitions using React Router v6.
+ *
+ * Uses `createBrowserRouter` (HTML5 history API).
+ *
+ * Route categories:
+ *  - Public routes: accessible without authentication (login, signup, password reset, etc.)
+ *  - Private user routes: wrapped in <PrivateRoutes>, nested under /Diskus/
+ *  - Private admin routes: wrapped in <PrivateAdminRoute>, nested under /Admin/
+ *  - Private video route: wrapped in <PrivateVideoMeeting>, at /Diskus/video
+ *
+ * Every route element is wrapped in:
+ *  - <RouteWrapperUser> or <RouteWrapperAdmin> — page-level concerns (title, layout)
+ *  - <ErrorBoundary> — catches render errors and shows <ErrorFallback>
+ *
+ * Some routes inject additional scoped Context providers:
+ *  - <NewMeetingProvider> on /Diskus/Meeting
+ *  - <AuthorityProvider> on /Admin/manageAuthority
+ *  - <ComlianceProvider> on /Diskus/compliance (local scope)
+ */
 import {
   Route,
   createRoutesFromElements,
@@ -146,7 +167,6 @@ export const router = createBrowserRouter(
           </ErrorBoundary>
         }
       />
-      {/* <Route path="/signuporganization" element={<Signup />} /> */}
       <Route
         path='/forgotpasswordVerification'
         element={
@@ -163,7 +183,6 @@ export const router = createBrowserRouter(
           </ErrorBoundary>
         }
       />
-      Ï
       <Route
         path='/PaymentFormUserManagement'
         element={
@@ -313,7 +332,6 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
-          {/* <Route path="forgotpassword" element={<ForgotPassword />} /> */}
           <Route
             path='calendar'
             element={
@@ -412,19 +430,6 @@ export const router = createBrowserRouter(
               </RouteWrapperUser>
             }
           />
-          {/* <Route
-            path="AlreadyInGroupAndOtoCall"
-            element={
-              <RouteWrapperUser name="">
-                <ErrorBoundary
-                  FallbackComponent={ErrorFallback}
-                  onError={logErrors}
-                >
-                  <AlreadyInGroupAndOtoCall />
-                </ErrorBoundary>
-              </RouteWrapperUser>
-            }
-          /> */}
           <Route
             path='committee'
             element={

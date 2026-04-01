@@ -21,6 +21,16 @@ import TimerIcon from "../../../../../assets/images/Timer-Icon.png";
 import PrivateMessagesIcon from "../../../../../assets/images/Private-Messages.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component PrivateChats
+ * @description Renders the list of one-to-one (private) chat conversations in
+ * the Talk sidebar. Filters all user chats from Redux state to show only
+ * message type 'O' (one-to-one) entries. Supports inline search/filtering,
+ * displays the last message preview with delivery status tick icons (timer,
+ * single-tick, double-tick delivered, double-tick seen), and formats message
+ * timestamps relative to today and yesterday. Clicking a row dispatches
+ * actions to load the full OTO message history and open the chat box.
+ */
 const PrivateChats = () => {
   const dispatch = useDispatch();
 

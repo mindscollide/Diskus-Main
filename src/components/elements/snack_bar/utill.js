@@ -1,3 +1,25 @@
+/**
+ * @module snackBarUtil
+ * @description Utility functions for the Diskus snack-bar (toast) notification system.
+ *
+ * Exports:
+ *  - `showMessage`        - Triggers a snack-bar notification and automatically
+ *                           dismisses it after 3 seconds.
+ *  - `getCurrentDateTime` - Returns the current date-time as a compact numeric
+ *                           string in `YYYYMMDDHHmmss` format, suitable for use
+ *                           as a filename suffix or audit-log timestamp.
+ */
+
+/**
+ * Displays a snack-bar notification by updating the provided state setter, then
+ * automatically closes it after 3 000 ms.
+ *
+ * @param {string}   message  - The text content to display in the notification.
+ * @param {string}   severity - Severity level that controls the visual style
+ *                              (e.g. "success", "error", "warning", "info").
+ * @param {Function} setOpen  - React state setter expecting an object with the
+ *                              shape `{ open: boolean, message: string, severity: string }`.
+ */
 export const showMessage = (message, severity, setOpen) => {
   console.log("openopen", message);
   console.log("Showing severity:", severity);
@@ -16,7 +38,14 @@ export const showMessage = (message, severity, setOpen) => {
   }
 };
 
-//Getting Current Date Time in the Required Format
+/**
+ * Returns the current local date and time as a 14-character numeric string in
+ * `YYYYMMDDHHmmss` format (e.g. "20260331143022"). Month and day values are
+ * zero-padded to two digits.
+ *
+ * @returns {string} Compact date-time string suitable for filenames or timestamps.
+ */
+// Getting Current Date Time in the Required Format
 export const getCurrentDateTime = () => {
   const now = new Date();
 

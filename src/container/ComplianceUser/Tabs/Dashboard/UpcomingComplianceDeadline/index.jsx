@@ -1,83 +1,81 @@
-import React from "react";
-import styles from "./upcomingComplianceDeadline.module.css";
-import { ComplianceEmptyState } from "../../../../../components/elements";
+import React, { useCallback } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import { useTranslation } from "react-i18next";
+
+import { ComplianceEmptyState } from "../../../../../components/elements";
+import { useComplianceContext } from "../../../../../context/ComplianceContext";
+import styles from "./upcomingComplianceDeadline.module.css";
+
+/**
+ * UpcomingComplianceDeadline
+ *
+ * Dashboard tile showing how many compliances are due this week and this
+ * quarter. Clicking the card navigates to the Compliances-By-Me tab (tab 2).
+ * Renders an empty state when no data has loaded yet.
+ */
 const UpcomingComplianceDeadline = () => {
   const { t } = useTranslation();
+  const { setMainComplianceTabs, setUpcomingDeadlineFilterFlag } =
+    useComplianceContext();
 
-  const { setMainComplianceTabs } = useComplianceContext();
-
-  const GetUpcomingDealineComplianceDashboard = useSelector(
+  const upcomingData = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetUpcomingDealineComplianceDashboard,
   );
 
-  console.log(
-    GetUpcomingDealineComplianceDashboard,
-    "GetUpcomingDealineComplianceDashboard",
-  );
+  /** Navigate to the Compliances-By-Me tab when the card is clicked.
+   *  Sets upcomingDeadlineFilterFlag so ComplainceByMe pre-selects
+   *  active statuses (Not Started, In Progress, On Hold, Reopened). */
+  const handleCardClick = useCallback(() => {
+    setUpcomingDeadlineFilterFlag(true);
+    setMainComplianceTabs(2);
+  }, [setUpcomingDeadlineFilterFlag, setMainComplianceTabs]);
 
-  // Check if data is null or undefined
-  const hasData =
-    GetUpcomingDealineComplianceDashboard &&
-    GetUpcomingDealineComplianceDashboard !== undefined &&
-    GetUpcomingDealineComplianceDashboard !== null;
+  if (!upcomingData) {
+    return (
+      <div className={styles.NoUpcomingDeadlineCard}>
+        <h2 className={styles.NoDataCardHeading}>
+          {t("Upcoming-compliance-deadlines")}
+        </h2>
+        <ComplianceEmptyState
+          type="noUpcomingCompliance"
+          title="No upcoming deadlines"
+          layout="imageRight"
+        />
+      </div>
+    );
+  }
 
   return (
-    <>
-      {/* Show empty state when no data */}
-      {!hasData && (
-        <div className={styles.NoUpcomingDeadlineCard}>
-          <h2 className={styles.NoDataCardHeading}>
+    <div className={styles.upcomingComplianceCard} onClick={handleCardClick}>
+      <Row>
+        <Col xs={12}>
+          <h2 className={styles.cardHeading}>
             {t("Upcoming-compliance-deadlines")}
           </h2>
-          <ComplianceEmptyState
-            type="noUpcomingCompliance"
-            title="No upcoming deadlines"
-            layout="imageRight"
-          />
-        </div>
-      )}
+        </Col>
+      </Row>
 
-      {hasData && (
-        <div
-          className={styles.upcomingComplianceCard}
-          onClick={() => setMainComplianceTabs(2)}
-        >
-          <Row>
-            <Col xs={12}>
-              <h2 className={styles.cardHeading}>
-                {t("Upcoming-compliance-deadlines")}
-              </h2>
-            </Col>
-          </Row>
+      <Row>
+        <Col xs={12} className={styles.deadlineRow}>
+          <span className={styles.checkUpcomingCenter}>
+            <span className={styles.boldNumber}>
+              {upcomingData.dueThisQuarter}
+            </span>{" "}
+            <span className={styles.normalText}>{t("Due-this-quarter")}</span>
+          </span>
 
-          <Row>
-            <Col xs={12} className={styles.deadlineRow}>
-              <span className={styles.checkUpcomingCenter}>
-                <span className={styles.boldNumber}>
-                  {GetUpcomingDealineComplianceDashboard?.dueThisQuarter}
-                </span>{" "}
-                <span className={styles.normalText}>
-                  {t("Due-this-quarter")}
-                </span>
-              </span>
-
-              <span className={styles.checkUpcomingCenter}>
-                <span className={styles.boldNumber}>
-                  {GetUpcomingDealineComplianceDashboard?.dueThisWeek}
-                </span>{" "}
-                <span className={styles.normalText}>{t("Due-this-week")}</span>
-              </span>
-            </Col>
-          </Row>
-        </div>
-      )}
-    </>
+          <span className={styles.checkUpcomingCenter}>
+            <span className={styles.boldNumber}>
+              {upcomingData.dueThisWeek}
+            </span>{" "}
+            <span className={styles.normalText}>{t("Due-this-week")}</span>
+          </span>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

@@ -7,6 +7,39 @@ import {
 } from "../../../../store/actions/Talk_action";
 import moment from "moment";
 import { useDispatch } from "react-redux";
+/**
+ * @module sendChat
+ * @description Provides the sendChatFunction utility that handles outbound
+ * message dispatch for all Talk conversation types (one-to-one, group, and
+ * broadcast/shout-all). It optimistically updates local state while
+ * dispatching the appropriate Redux action to persist the message via the API.
+ */
+
+/**
+ * Sends a chat message for the active conversation. Dispatches the correct
+ * Redux action based on the conversation type ('O' = one-to-one, 'G' = group,
+ * 'B' = broadcast/shout-all), optimistically appends the new message to local
+ * state, moves the chat to the top of the chat list, and resets the message
+ * composer fields.
+ *
+ * @param {Object} params - Named parameter object.
+ * @param {Function} params.dispatch - Redux dispatch function.
+ * @param {Function} params.t - i18next translation function.
+ * @param {Function} params.setAllChatData - React state setter for the chat list.
+ * @param {Array<Object>} params.allChatData - Current full chat list.
+ * @param {Object} params.messageSendData - Payload object describing the outbound message.
+ * @param {Function} params.setMessageSendData - React state setter for the message composer payload.
+ * @param {Array<Object>} params.allBroadcastMessages - Current broadcast messages array.
+ * @param {Function} params.setAllBroadcastMessages - React state setter for broadcast messages.
+ * @param {Object} params.chatClickData - Metadata of the currently active chat/contact.
+ * @param {Array<Object>} params.allGroupMessages - Current group messages array.
+ * @param {Function} params.setAllGroupMessages - React state setter for group messages.
+ * @param {Array<Object>} params.allOtoMessages - Current one-to-one messages array.
+ * @param {Function} params.setAllOtoMessages - React state setter for OTO messages.
+ * @param {string|null} params.uploadFileTalk - File upload reference passed to the OTO insert action.
+ * @param {Object} params.activeChat - The active chat record (currently unused, reserved).
+ * @returns {void}
+ */
 export const sendChatFunction = ({
   dispatch,
   t,

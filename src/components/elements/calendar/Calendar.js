@@ -1,3 +1,12 @@
+/**
+ * @module Calendar
+ * @description Provides the CustomCalendar component — a full-featured monthly
+ * calendar built on top of react-big-calendar. Supports multi-language / RTL
+ * rendering (English, French, Arabic, Hijri), lazy-loads event data when the
+ * user navigates to previous or future months, and renders a custom toolbar
+ * with a month-picker and a "Today" shortcut button.
+ */
+
 import { DatePicker } from "antd";
 import { Row, Col } from "react-bootstrap";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
@@ -72,6 +81,28 @@ const lang = {
   },
 };
 
+/**
+ * @component CustomCalendar
+ * @description A localised, multi-language calendar view for the Diskus
+ * platform. Wraps react-big-calendar with a custom toolbar, RTL support,
+ * and automatic data fetching when navigating to months outside the already-
+ * loaded date range.
+ *
+ * @param {Array}    events              - Array of event objects to display on the calendar.
+ * @param {string}   startDataUpdate     - ISO date string marking the start of the currently loaded data window.
+ * @param {Function} setStartDataUpdate  - Setter to update the start of the loaded data window.
+ * @param {string}   endDataUpdate       - ISO date string marking the end of the currently loaded data window.
+ * @param {Function} setEndDataUpdate    - Setter to update the end of the loaded data window.
+ * @param {Function} handleEventSelect   - Callback fired when the user clicks an event.
+ * @param {string}   className           - Optional CSS class name applied to the calendar element.
+ * @param {Function} onChange            - Callback fired when the user picks a date in the month-picker.
+ * @param {Function} handleAddEvent      - Callback fired when the user clicks the month/year label to add a new event.
+ * @param {Function} setCalendarView     - Setter that controls whether the inline DatePicker panel is open.
+ * @param {boolean}  calendarView        - Controls the open state of the inline DatePicker panel.
+ * @param {Date|string} defaultValue     - The currently displayed date (controls which month is visible).
+ * @param {Function} setDefaultValue     - Setter to change the currently displayed date.
+ * @returns {JSX.Element} The rendered calendar UI.
+ */
 function CustomCalendar({
   events,
   startDataUpdate,

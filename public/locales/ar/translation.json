@@ -2487,7 +2487,7 @@
   "You-don't-have-any-report-at-the-moment": "You don't have any report at the moment",
   "Contribute-agenda": "Contribute Agenda",
   "Generated-date": "Generated Date",
-  "This-compliance-was-Re-opened-1-times": "This compliance was Re-opened 1 times",
+  "This-compliance-was-Re-opened": "تم إعادة فتح الامتثال {{count}} مرات",
   "Compliance-title": "Compliance Title",
   "Completion-date": "Completion date",
   "Total-checklists": "Total Checklists",
@@ -2558,6 +2558,7 @@
   "My-checklist": "My Checklist",
   "This-Compliance-cannot-be-marked-as-Completed-because-some-tasks-are-still-not-completed": "This Compliance cannot be marked as Completed because some tasks are still not completed",
   "Some-tasks-are-still-pending-Complete-them-before-making-the-checklist-Completed": "Some tasks are still pending Complete them before making the checklist Completed",
-  "Mark-checklist-only":"Mark checklist only",
-  "Mark-checklist-with-associated-items":"Mark Fchecklist with associated items"
+  "Mark-checklist-only": "Mark checklist only",
+  "Mark-checklist-with-associated-items": "Mark Fchecklist with associated items",
+  "times": "مرات"
 }
