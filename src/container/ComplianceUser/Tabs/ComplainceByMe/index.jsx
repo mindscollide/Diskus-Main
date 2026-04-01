@@ -255,21 +255,34 @@ const ComplianceByMe = () => {
           return a.complianceTitle
             ?.toLowerCase()
             .localeCompare(b.complianceTitle?.toLowerCase());
+
         case "authorityShortCode":
           return a.authorityShortCode
             ?.toLowerCase()
             .localeCompare(b.authorityShortCode?.toLowerCase());
-        case "dueDate":
-          return (
-            getDueDateTimeNumber(a.dueDate, a.dueTime) -
-            getDueDateTimeNumber(b.dueDate, b.dueTime)
-          );
+
+        case "dueDate": {
+          const dateA = getDueDateTimeNumber(a.dueDate, a.dueTime);
+          const dateB = getDueDateTimeNumber(b.dueDate, b.dueTime);
+
+          // Primary: Due Date
+          if (dateA !== dateB) {
+            return sortConfig.order === "ascend"
+              ? dateA - dateB
+              : dateB - dateA;
+          }
+
+          // Secondary: Criticality (High → Medium → Low)
+          return sortConfig.order === "ascend"
+            ? a.criticality - b.criticality
+            : b.criticality - a.criticality;
+        }
+
         default:
           return 0;
       }
     });
-
-    return sortConfig.order === "ascend" ? sorted : sorted.reverse();
+    return sorted;
   }, [complianceByMeList, sortConfig]);
 
   /**
