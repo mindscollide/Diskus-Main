@@ -3049,18 +3049,18 @@ const NewMeeting = () => {
 
   // Status Filter Options
   const statusFilters = [
-    { value: "10", text: "Active" },
-    { value: "1", text: "Upcoming" },
-    { value: "9", text: "Ended" },
-    { value: "8", text: "Not-conducted" },
-    { value: "4", text: "Cancelled" },
+    { value: "1", text: t("Upcoming") },
+    { value: "10", text: t("Active") },
+    { value: "9", text: t("Ended") },
+    { value: "4", text: t("Cancelled") },
+    { value: "8", text: t("Not-conducted") },
   ];
 
   // Meeting Type Filter Options
   const meetingTypeFilters = [
-    { value: "1", text: "Board Meeting" },
-    { value: "2", text: "Committee Meeting" },
-    { value: "3", text: "Group Meeting" },
+    { value: "1", text: t("Board-meeting") },
+    { value: "2", text: t("Committee-meeting") },
+    { value: "3", text: t("Group-meeting") },
   ];
   // Status Filter Handlers
   const handleStatusMenuClick = (filterValue) => {
@@ -3622,7 +3622,11 @@ const NewMeeting = () => {
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
         render: (text) => (
-          <div className={styles.columnValueStatus}>{StatusValue(t, text)}</div>
+          <div className='d-flex justify-content-start'>
+            <span className={styles.columnValueStatus}>
+              {StatusValue(t, text)}
+            </span>
+          </div>
         ),
       },
 
@@ -3643,7 +3647,7 @@ const NewMeeting = () => {
         ),
         dataIndex: "host",
         key: "host",
-        width: 105,
+        width: 120,
         align: "center",
         ellipsis: true,
         sorter: (a, b) =>
@@ -3995,6 +3999,7 @@ const NewMeeting = () => {
     DoubleArrowIcon,
     SortIconAscend,
     SortIconDescend,
+    startMeetingButton
   ]);
 
   // Handle table sorting and filtering changes
@@ -5026,17 +5031,6 @@ const NewMeeting = () => {
                 ...startMeetingButton,
                 { meetingID: Number(meetingData.pK_MDID), showButton: true },
               ]);
-              setStartMeetingData({
-                ...startMeetingData,
-                meetingID: Number(meetingData.pK_MDID),
-                showButton: true,
-              });
-            } else {
-              setStartMeetingData({
-                ...startMeetingData,
-                meetingID: null,
-                showButton: false,
-              });
             }
 
             return updatedRowsData;
@@ -5489,7 +5483,9 @@ const NewMeeting = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={`${styles["PublishMeeting_Pagination"]} ${"d-flex justify-content-center "} `}>
+                              className={`${
+                                styles["PublishMeeting_Pagination"]
+                              } ${"d-flex justify-content-center "} `}>
                               <Row
                                 className={styles["PaginationStyle-Committee"]}>
                                 <Col
