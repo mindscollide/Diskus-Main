@@ -5478,55 +5478,18 @@ const NewMeeting = () => {
                                 emptyText: <EmptyTableComponent />, // Set your custom empty text here
                               }}
                               scroll={{
-                                y: "55vh",
+                                y: 400,
                               }}
-                              // footer={() => (
-                              //   <Row
-                              //     className={styles["PaginationStyle-Committee"]}
-                              //   >
-                              //     <Col
-                              //       className={"pagination-groups-table"}
-                              //       sm={12}
-                              //       md={12}
-                              //       lg={12}
-                              //     >
-                              //       <CustomPagination
-                              //         current={
-                              //           meetingPageCurrent !== null
-                              //             ? Number(meetingPageCurrent)
-                              //             : 1
-                              //         }
-                              //         pageSize={
-                              //           meetingpageRow !== null
-                              //             ? Number(meetingpageRow)
-                              //             : 50
-                              //         }
-                              //         onChange={handelChangePagination}
-                              //         total={totalRecords}
-                              //         showSizer={true}
-                              //         pageSizeOptionsValues={[
-                              //           "30",
-                              //           "50",
-                              //           "100",
-                              //           "200",
-                              //         ]}
-                              //       />
-                              //     </Col>
-                              //   </Row>
-                              // )}
                             />
                           </>
                         </Col>
-                      </Row>
-
-                      {rows.length > 0 ? (
-                        <>
-                          <Row>
+                        {rows.length > 0 ? (
+                          <>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className='d-flex justify-content-center mt-2 '>
+                              className={`${styles["PublishMeeting_Pagination"]} ${"d-flex justify-content-center "} `}>
                               <Row
                                 className={styles["PaginationStyle-Committee"]}>
                                 <Col
@@ -5558,9 +5521,9 @@ const NewMeeting = () => {
                                 </Col>
                               </Row>
                             </Col>
-                          </Row>
-                        </>
-                      ) : null}
+                          </>
+                        ) : null}
+                      </Row>
                     </>
                   ) : null}
                 </span>
