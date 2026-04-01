@@ -4,6 +4,14 @@ import { useTranslation } from "react-i18next";
 import RejectImage from "../../../../../assets/images/Recent Activity Icons/Video/RejectImage.png";
 import "./GuestVideoReject.css";
 
+/**
+ * @component GuestVideoReject
+ * @description Static informational screen shown to a guest participant when
+ * the meeting organizer denies their request to join the video call. Displays
+ * a rejection illustration, an "Entry denied" heading, and a localized
+ * explanatory sub-message. No interactive actions or navigation options are
+ * provided on this screen.
+ */
 const GuestVideoReject = () => {
   const { t } = useTranslation();
 

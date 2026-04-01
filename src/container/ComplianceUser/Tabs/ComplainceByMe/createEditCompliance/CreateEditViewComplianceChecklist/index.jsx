@@ -78,6 +78,8 @@ const CreateEditViewComplianceChecklist = () => {
 
   const [isEditTrue, setIsEditTrue] = useState(false);
 
+  const [getCheckListData, setGetCheckListData] = useState([]);
+
   const {
     complianceAddEditViewState,
     complianceInfo,
@@ -99,6 +101,8 @@ const CreateEditViewComplianceChecklist = () => {
   console.log(newChecklistIds, "newChecklistIds");
   console.log(complianceDetailsState, "complianceDetailsState");
   console.log(complianceAddEditViewState, "complianceAddEditViewState");
+  console.log(isChecklistTitleExist, "isChecklistTitleExist");
+
 
   const GetComplianceChecklistsByComplianceId = useSelector(
     (state) =>
@@ -236,8 +240,6 @@ const CreateEditViewComplianceChecklist = () => {
       dispatch(GetComplianceChecklistsByComplianceIdAPI(navigate, Data, t));
     }
   }, [complianceInfo]);
-
-  const [getCheckListData, setGetCheckListData] = useState([]);
 
   useEffect(() => {
     if (
@@ -419,6 +421,7 @@ const CreateEditViewComplianceChecklist = () => {
   const isLockedStatus =
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
+    complianceDetailsState?.status?.value === 6 ||
     complianceDetailsState?.status?.value === 3;
 
   console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
@@ -462,7 +465,6 @@ const CreateEditViewComplianceChecklist = () => {
   const editableStatuses = new Set([1, 2, 4, 7]);
 
   const isComplianceEditable =
-    complianceAddEditViewState === 2 &&
     editableStatuses.has(complianceDetailsState?.status?.value);
 
   console.log(isComplianceEditable, "isComplianceEditable");

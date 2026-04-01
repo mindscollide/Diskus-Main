@@ -86,6 +86,7 @@ const ComplainceDetails = () => {
     complianceReopenDetailsState,
     criticalityOptions,
     comlianceStatusReopenedModal,
+    setIsEditComplianceTrue,
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState121212");
@@ -102,6 +103,8 @@ const ComplainceDetails = () => {
     complianceReopenedDetail,
     "complianceReopenedDetail",
   );
+
+  console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -228,7 +231,9 @@ const ComplainceDetails = () => {
             label: `${authority.authorityName} ${authority.authorityShortCode}`,
           },
           criticality: selectedCriticality,
-          dueDate: parseYYYYMMDDToEndOfDay(dueDate),
+          dueDate: prev.dueDate
+            ? prev.dueDate
+            : parseYYYYMMDDToEndOfDay(dueDate),
           tags: tags,
           status: {
             value: complianceStatus.statusId,
@@ -308,32 +313,6 @@ const ComplainceDetails = () => {
           setHasIncompleteChecklistOrTask(false);
         }
 
-        // // Check if any checklist or any task status is In Progress
-        // if (
-        //   (Array.isArray(checklists) && checklists.length > 0) ||
-        //   (Array.isArray(checklistTasks) && checklistTasks.length > 0)
-        // ) {
-        //   const hasChecklistInProgress =
-        //     Array.isArray(checklists) &&
-        //     checklists.some(
-        //       (checklist) => checklist?.status?.statusName === "In Progress"
-        //     );
-
-        //   const hasTaskInProgress =
-        //     Array.isArray(checklistTasks) &&
-        //     checklistTasks.some(
-        //       (task) => task?.taskStatus?.statusName === "In Progress"
-        //     );
-
-        //   setCheckAnyChecklistOrTaskInProgress(
-        //     hasChecklistInProgress ||
-
-        //     hasTaskInProgress
-        //   );
-        // } else {
-        //   setCheckAnyChecklistOrTaskInProgress(false);
-        // }
-
         // Check if any checklist or any task status is In Progress
         if (Array.isArray(checklistTasks) && checklistTasks.length > 0) {
           const hasTaskInProgress =
@@ -359,9 +338,6 @@ const ComplainceDetails = () => {
       setChecklistCount(
         GetComplianceChecklistsByComplianceId.checklistList.length,
       );
-      // setGetCheckListData(GetComplianceChecklistsByComplianceId.checklistList);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      // setExpandedCheckListIds([]);
     } else {
       setChecklistCount(0);
     }
@@ -439,7 +415,7 @@ const ComplainceDetails = () => {
     try {
       let saveFiles = [];
       let uploadedFiles;
-      // 1️⃣ Upload individual documents
+      //  Upload individual documents
       if (complianceReopenDetailsState.attachments.length > 0) {
         await Promise.all(
           complianceReopenDetailsState.attachments.map((newData) =>
@@ -448,12 +424,12 @@ const ComplainceDetails = () => {
             ),
           ),
         );
-        // 2️⃣ Save files & CAPTURE RETURNED FILE IDS
+        //  Save files & CAPTURE RETURNED FILE IDS
         uploadedFiles = await dispatch(
           SaveComplianceFilesAPI(navigate, saveFiles, t, folderID),
         );
 
-        // 3️⃣ Build payload AFTER data exists
+        // Build payload AFTER data exists
         const Data2 = {
           complianceId: editComplianceData.complianceId,
           complianceStatusChangeHistoryID: complianceReopenedDetail,
@@ -464,7 +440,7 @@ const ComplainceDetails = () => {
             : [],
         };
 
-        // 4️⃣ Final mapping API
+        //  Final mapping API
         dispatch(
           SaveComplianceDocumentsAndMappingsAPI(
             navigate,
@@ -476,8 +452,15 @@ const ComplainceDetails = () => {
           ),
         );
       } else {
+        console.log("complianceByMeList");
         dispatch(
-          EditComplianceAPI(navigate, editComplianceData, t, setChecklistTabs),
+          EditComplianceAPI(
+            navigate,
+            editComplianceData,
+            t,
+            setChecklistTabs,
+            ViewComplianceDetailsByViewTypeAPI,
+          ),
         );
       }
 
@@ -582,7 +565,7 @@ const ComplainceDetails = () => {
 
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
-          updatedDueDate: createConvert(complianceReopenDetailsState.dueDate),
+          updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
           reason: complianceReopenDetailsState.reason,
         };
         let reopenDataroomMap = {
@@ -606,7 +589,16 @@ const ComplainceDetails = () => {
         );
         return;
       }
-      dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+      console.log("complianceByMeList");
+      dispatch(
+        EditComplianceAPI(
+          navigate,
+          Data,
+          t,
+          setChecklistTabs,
+          ViewComplianceDetailsByViewTypeAPI,
+        ),
+      );
       console.log("complianceReopenDetailsState", complianceReopenDetailsState);
       console.log(Data, "complianceReopenDetailsState");
       // dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
@@ -629,6 +621,7 @@ const ComplainceDetails = () => {
           t,
           setComplianceInfo,
           setChecklistTabs,
+          setComplianceAddEditViewState,
         ),
       );
     }

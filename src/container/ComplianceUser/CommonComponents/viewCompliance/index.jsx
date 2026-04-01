@@ -55,6 +55,7 @@ const ViewCompliance = () => {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
     emptyComplianceState,
+    setViewComplianceTasksContextData,
   } = useComplianceContext();
 
   console.log(complianceDetailsState, "complianceDetailsState");
@@ -162,6 +163,9 @@ const ViewCompliance = () => {
     setShowViewCompliance(false);
     setViewComplianceDetailsTab(1);
     emptyComplianceState();
+
+    // 🔥 ADD THIS
+    setViewComplianceTasksContextData([]);
   };
 
   // To Show Reopen View Detail Bar when Reopen or Hold status coming

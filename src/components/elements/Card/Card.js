@@ -12,6 +12,56 @@ import doticon from "../../../assets/images/Dsvg.svg";
 import img6 from "../../../assets/images/DropdownSIX.svg";
 import { Tooltip } from "antd";
 import { convertToArabicNumerals } from "../../../commen/functions/regex";
+
+/**
+ * @component Card
+ * @description Displays a committee or group card in the Diskus governance platform.
+ * The card shows the entity's status badge, icon, heading, associated tags, up to four
+ * member profile pictures (with a "+N" overflow indicator), and an action button.
+ * An edit-status dropdown (In-active / Archive / Active) and a "three-dots" context menu
+ * (Documents, Discussion, Meetings, Polls, Tasks) are toggled via icon clicks.
+ * Only the creator of the entity sees the edit icon; the "More" dots icon is visible to all.
+ * Language-aware numerals are rendered via `convertToArabicNumerals` when the UI is in Arabic.
+ *
+ * @param {string}    CardHeading                  - Title displayed on the card.
+ * @param {Array}     profile                      - Array of member objects with `userName` and `userProfilePicture.displayProfilePictureName` (base64).
+ * @param {number}    StatusID                     - Entity status: 1 = In-active, 2 = Archived, 3 = Active.
+ * @param {Function}  onClickFunction              - Handler for the "Update committee / group" button.
+ * @param {boolean}   flag                         - When true the card represents a committee; false means a group.
+ * @param {Function}  changeHandleStatus           - Handler called when a status item is selected from the edit dropdown.
+ * @param {number}    CardID                       - Unique identifier for this card, used to control which dropdown is open.
+ * @param {Function}  assignGroupBtn               - Callback for assigning a group (passed through, not directly invoked in JSX).
+ * @param {Function}  setUniqCardID                - Setter that tracks which card's dropdown is currently active.
+ * @param {number}    uniqCardID                   - The currently active card ID; controls dropdown visibility.
+ * @param {ReactNode} Icon                         - Icon element rendered in the card header area.
+ * @param {boolean}   groupState                   - Determines whether associated tags are shown as committees (true) or groups (false).
+ * @param {Array}     associatedTags               - Array of associated committee/group objects with `committeeTitle` or `groupTitle`.
+ * @param {number}    creatorId                    - ID of the user who created this entity; controls edit-icon visibility.
+ * @param {Function}  titleOnCLick                 - Handler invoked when the card heading text is clicked.
+ * @param {Function}  handleClickDiscussion        - Handler for the "Discussion" context-menu option.
+ * @param {string}    discussionMenuClass          - CSS class applied to the Discussion menu item wrapper.
+ * @param {Function}  handleMeetingClickOption     - Handler for the "Meetings" context-menu option.
+ * @param {Function}  handlePollsClickOption       - Handler for the "Polls" context-menu option.
+ * @param {Function}  handleTasksClickOption       - Handler for the "Tasks" context-menu option.
+ * @param {Function}  handleClickDocumentOption    - Handler for the "Documents" context-menu option.
+ *
+ * @example
+ * <Card
+ *   CardHeading="Finance Committee"
+ *   StatusID={3}
+ *   flag={true}
+ *   CardID={42}
+ *   creatorId={7}
+ *   profile={members}
+ *   associatedTags={tags}
+ *   groupState={true}
+ *   onClickFunction={handleUpdate}
+ *   setUniqCardID={setActiveCard}
+ *   uniqCardID={activeCard}
+ *   changeHandleStatus={handleStatusChange}
+ *   titleOnCLick={handleTitleClick}
+ * />
+ */
 const Card = ({
   CardHeading,
   profile,
@@ -49,22 +99,31 @@ const Card = ({
 
   useEffect(() => {
     try {
+      // Global click listener that closes whichever dropdown is open when the
+      // user clicks outside of it. CSS class names follow the pattern
+      // "<prefix>_dot" or "<prefix>_Edit" — the segment after the underscore
+      // determines which dropdown was targeted.
       window.addEventListener("click", function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
           let arr = clsname.split("_");
           if (arr !== undefined) {
             if (arr[1] === "dot" && dropdownthreedots === true) {
+              // Second click on the dots icon — collapse the three-dots menu.
               setdropdownthreedots(false);
             } else if (arr[1] === "dot" && dropdownthreedots === false) {
+              // First click on the dots icon — close edit dropdown and open three-dots menu.
               setEditdropdown(false);
               setdropdownthreedots(true);
             } else if (arr[1] === "Edit" && editdropdown === true) {
+              // Second click on the edit icon — collapse the edit dropdown.
               setEditdropdown(false);
             } else if (arr[1] === "Edit" && editdropdown === false) {
+              // First click on the edit icon — close three-dots menu and open edit dropdown.
               setdropdownthreedots(false);
               setEditdropdown(true);
             } else {
+              // Click landed outside both menus — close everything and deselect the card.
               setEditdropdown(false);
               setdropdownthreedots(false);
               setUniqCardID(0);
@@ -79,6 +138,8 @@ const Card = ({
       console.log("error", error);
     }
   }, []);
+  // Sort member profiles alphabetically by userName (case-insensitive) so the
+  // first four displayed avatars are always in a deterministic order.
   let sortedArraay =
     profile !== null &&
     profile !== undefined &&

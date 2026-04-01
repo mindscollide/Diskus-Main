@@ -31,6 +31,26 @@ import {
 } from "../../../../../store/actions/Guest_Video";
 import { useSelector } from "react-redux";
 
+/**
+ * @component GuestVideoHeader
+ * @description In-call control bar and embedded video frame for an active
+ * guest video session. Renders the meeting title alongside a toolbar of
+ * call controls (microphone, camera, screen share, raise hand, layout toggle,
+ * participants panel, and end call), and embeds the third-party video
+ * provider via an `<iframe>`. Communicates with the iframe using
+ * `postMessage` to toggle mic/camera state in response to both local user
+ * actions and host-initiated remote commands received via Redux state
+ * (mute-by-host, hide-video-by-host, mute-all). Also displays a real-time
+ * participant list with per-participant mute, video-off, and raised-hand
+ * status indicators.
+ *
+ * @param {string} extractMeetingTitle - Title of the meeting shown in the
+ *   header bar above the video iframe.
+ * @param {string} roomId - The video room identifier used when dispatching
+ *   API calls (mute self, hide self, raise hand, end call).
+ * @param {string} videoUrlName - The fully resolved URL of the third-party
+ *   video provider iframe that contains the actual video stream.
+ */
 const GuestVideoHeader = ({ extractMeetingTitle, roomId, videoUrlName }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();

@@ -47,6 +47,10 @@ const ViewComplianceChecklistAccordian = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  // Add a ref to store the expanded state when data refreshes
+  const previousExpandedIdsRef = useRef([]);
+
+  const isStatusUpdateRef = useRef(false);
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
   const [getCheckListData, setGetCheckListData] = useState([]);
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
@@ -80,38 +84,78 @@ const ViewComplianceChecklistAccordian = () => {
   useEffect(() => {
     if (allCheckListByComplianceId && allCheckListByComplianceId.length !== 0) {
       setGetCheckListData(allCheckListByComplianceId);
-      // 🔑 COLLAPSE ALL ACCORDIONS AFTER ADD
-      setExpandedCheckListIds([]);
+
+      // 🔥 CRITICAL: Preserve expanded state when data refreshes
+      if (!isStatusUpdateRef.current) {
+        // Only collapse all on initial load, not on refresh
+        if (previousExpandedIdsRef.current.length === 0) {
+          // This is initial load
+          setExpandedCheckListIds([]);
+        } else {
+          // This is a refresh - restore previous expanded state
+          setExpandedCheckListIds(previousExpandedIdsRef.current);
+        }
+      }
+
+      // Reset the ref after preserving the state
+      setTimeout(() => {
+        isStatusUpdateRef.current = false;
+      }, 0);
     }
   }, [allCheckListByComplianceId]);
+
+  // Save expanded state before it gets cleared
+  useEffect(() => {
+    // Store current expanded IDs before they might be cleared
+    if (expandedCheckListIds.length > 0) {
+      previousExpandedIdsRef.current = [...expandedCheckListIds];
+    }
+
+    // Update addChecklistCloseState based on expanded state
+    setAddChecklistCloseState(expandedCheckListIds.length > 0);
+  }, [expandedCheckListIds]);
 
   const BLOCKED_TASK_STATUSES = ["In Progress", "On Hold", "Pending"];
 
   const canChecklistBeCompleted = (checklistId) => {
-    const checklistTasks =
-      viewComplianceByMeDetails?.checklistTasks?.filter(
-        (task) => task.checklistId === checklistId,
-      ) || [];
+    //  STEP 1: If data not loaded → BLOCK
+    if (!viewComplianceByMeDetails?.checklistTasks?.length) {
+      console.log(" Data not loaded yet");
+      return false; // treat as NOT allowed
+    }
 
-    const hasBlockedTask = checklistTasks.some((task) =>
-      BLOCKED_TASK_STATUSES.includes(task.taskStatus.statusName),
+    const checklistTasks = viewComplianceByMeDetails.checklistTasks.filter(
+      (task) => task.checklistId === checklistId,
     );
 
-    return !hasBlockedTask; // ✅ true if no blocked tasks, false otherwise
+    console.log("Checklist Tasks:", checklistTasks);
+
+    const hasBlockedTask = checklistTasks.some((task) =>
+      BLOCKED_TASK_STATUSES.includes(task.taskStatus?.statusName),
+    );
+
+    console.log("Has Blocked Task:", hasBlockedTask);
+
+    return !hasBlockedTask;
   };
 
   // functions
   const handleClickExpandCheckList = (data) => {
     setExpandedCheckListIds((prev) => {
+      let newExpanded;
       if (prev.includes(data.checklistId)) {
         // collapse
-
-        return prev.filter((id) => id !== data.checklistId);
+        newExpanded = prev.filter((id) => id !== data.checklistId);
       } else {
         setAddChecklistCloseState(true);
         // expand
-        return [...prev, data.checklistId];
+        newExpanded = [...prev, data.checklistId];
       }
+
+      // Store in ref for persistence across refreshes
+      previousExpandedIdsRef.current = [...newExpanded];
+
+      return newExpanded;
     });
   };
 
@@ -121,12 +165,14 @@ const ViewComplianceChecklistAccordian = () => {
     if (allExpanded) {
       // 👉 COLLAPSE ALL
       setExpandedCheckListIds([]);
+      previousExpandedIdsRef.current = [];
       setAddChecklistCloseState(false);
     } else {
       // 👉 EXPAND ALL
       const allIds = getCheckListData.map((item) => item.checklistId);
 
       setExpandedCheckListIds(allIds);
+      previousExpandedIdsRef.current = [...allIds];
       setAddChecklistCloseState(true);
     }
   };
@@ -139,7 +185,7 @@ const ViewComplianceChecklistAccordian = () => {
     console.log("Checklist ID:", checklistId);
     console.log("Selected Status:", selectedStatus);
 
-    // 🚫 PREVENT COMPLETED IF TASKS ARE BLOCKED
+    //  PREVENT COMPLETED IF TASKS ARE BLOCKED
     if (selectedStatus.label === "Completed") {
       const allowed = canChecklistBeCompleted(checklistId);
       console.log(allowed, "allowedallowed");
@@ -150,7 +196,7 @@ const ViewComplianceChecklistAccordian = () => {
       }
     }
 
-    // ✅ NEW: Handle On Hold selection
+    //  NEW: Handle On Hold selection
     if (selectedStatus.label === "On Hold") {
       setComplianceOnHoldModal(true); // Open On Hold modal
       setComplianceCompleteModalType("checklist"); // Set type
@@ -165,6 +211,11 @@ const ViewComplianceChecklistAccordian = () => {
       UpdatedDueDate: `${dueDate}185958`,
       ApplyToAssociatedItems: 0, // if not have associated things  // 1 if have associated things
     };
+
+    // Set flag BEFORE API call to prevent collapse on refresh
+    isStatusUpdateRef.current = true;
+
+    previousExpandedIdsRef.current = [...expandedCheckListIds];
 
     dispatch(
       updateCheckListStatusApi(
@@ -531,12 +582,12 @@ const ViewComplianceChecklistAccordian = () => {
       </div>
 
       {/* This is For On Hold Modal */}
-      {complianceOnHoldModal && (
+      {/* {complianceOnHoldModal && (
         <CompliaceStatusOnHoldModal
           view={true}
           handleProceedButtonView={handleClickOnHoldModal}
         />
-      )}
+      )} */}
 
       {/* This is for completion Modal */}
       {comlianceCompleteExceptionModal && (
@@ -544,12 +595,12 @@ const ViewComplianceChecklistAccordian = () => {
       )}
 
       {/* This is For Cancel Modal */}
-      {complianceCancelModal && (
+      {/* {complianceCancelModal && (
         <ComplianceStatusCancelModal
           view={true}
           handleProceedButtonView={handleClickCancelModal}
         />
-      )}
+      )} */}
     </>
   );
 };

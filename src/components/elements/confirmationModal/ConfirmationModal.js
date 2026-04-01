@@ -5,6 +5,29 @@ import { Row, Col } from "react-bootstrap";
 import Button from "../../elements/button/Button";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component ConfirmationModal
+ * @description A generic confirmation dialog used throughout the Diskus platform to
+ * warn users that closing a form will discard unsaved data. It renders inside the
+ * shared `CustomModal` wrapper and exposes two actions: "Cancel" (stay on the form)
+ * and "Close" (confirm dismissal and reset state). All visible strings are translated
+ * via react-i18next.
+ *
+ * @param {boolean}  showModal      - Controls whether the modal is visible.
+ * @param {Function} setShowModal   - State setter passed to the modal so it can close itself.
+ * @param {Function} onHide         - Callback invoked when the modal backdrop is clicked or the ESC key is pressed.
+ * @param {Function} closeBtnClick  - Callback invoked when the user confirms closing ("Close" button).
+ * @param {Function} cancelBtnClick - Callback invoked when the user cancels and returns to the form ("Cancel" button).
+ *
+ * @example
+ * <ConfirmationModal
+ *   showModal={showConfirm}
+ *   setShowModal={setShowConfirm}
+ *   onHide={() => setShowConfirm(false)}
+ *   closeBtnClick={handleClose}
+ *   cancelBtnClick={() => setShowConfirm(false)}
+ * />
+ */
 const ConfirmationModal = ({
   showModal,
   setShowModal,

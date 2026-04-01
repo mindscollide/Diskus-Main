@@ -29,6 +29,8 @@ const CreateEditCompliance = () => {
     complianceDetailsState,
     showViewCompliance,
     setShowViewCompliance,
+    isComplianceCreatOrEdit,
+    setIsComplianceCreateOrEdit,
   } = useComplianceContext();
   // Tracking all Loading States
   const modeRef = useRef(complianceAddEditViewState);
@@ -41,6 +43,8 @@ const CreateEditCompliance = () => {
     { complianceAddEditViewState, showViewCompliance },
     "complianceAddEditViewState",
   );
+
+  console.log(complianceInfo, "complianceInfo");
 
   useEffect(() => {
     if (complianceInfo.complianceId !== 0) {
@@ -69,7 +73,24 @@ const CreateEditCompliance = () => {
     "complianceDetailsStatecomplianceDetailsState",
   );
 
-  const ComplianceMain = useRef();
+  const getTitle = () => {
+    //  Default (including 0, undefined, initial state)
+    if (isComplianceCreatOrEdit !== 1 && isComplianceCreatOrEdit !== 2) {
+      return t("Create-new-compliance");
+    }
+
+    //  When user starts creating & name exists
+    if (isComplianceCreatOrEdit === 1) {
+      return complianceInfo?.complianceName || t("Create-new-compliance");
+    }
+
+    // Edit mode
+    if (isComplianceCreatOrEdit === 2) {
+      return `Edit: ${complianceInfo?.complianceName || ""}`;
+    }
+
+    return "";
+  };
 
   console.log("createEditComplicance");
   return (
@@ -80,11 +101,7 @@ const CreateEditCompliance = () => {
       >
         <Row className="my-2 ">
           <Col sm={12} md={9} lg={9} className={styles["mainHeading"]}>
-            {modeRef.current === 2
-              ? `Edit: ${complianceInfo.complianceName}`
-              : modeRef.current === 1
-                ? t("Create-new-compliance")
-                : complianceInfo.complianceName}
+            {getTitle()}
           </Col>
 
           {}

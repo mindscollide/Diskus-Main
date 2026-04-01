@@ -1,3 +1,20 @@
+/**
+ * @component MeetingDocumentViewer
+ * @description A full-screen document viewer powered by PDFTron WebViewer.
+ * It reads `pdfData` from the URL query string (base-64-encoded JSON) to
+ * determine which attachment to load and from which context it was opened
+ * (To-Do = 1, Notes = 2, Resolution = 3, DataRoom = 4). On mount it fetches
+ * the attachment blob and any saved XFDF annotations from the Redux store,
+ * renders the document, and lets the user add/edit annotations. A custom
+ * save button exports the XFDF string and dispatches the appropriate Redux
+ * action to persist it. The viewer also:
+ *   - Warns the user before closing the tab when there are unsaved annotation changes.
+ *   - Closes the tab automatically when the file is deleted via MQTT.
+ *   - Disables editing UI elements when the user has read-only permissions.
+ *   - Displays a Notification snackbar for API success/error messages.
+ *
+ * @returns {JSX.Element} The WebViewer container div and a Notification component.
+ */
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import WebViewer from "@pdftron/webviewer";
 import { useLocation, useNavigate } from "react-router-dom";

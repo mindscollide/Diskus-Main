@@ -1,6 +1,36 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+/**
+ * @context AuthorityContext
+ * @description Provides state management for the Authority (regulatory body) module,
+ * including the add/edit/view modal flow, column sort orders, status and country
+ * filters, a paginated search payload, and a country names lookup list populated
+ * from the Redux store.
+ *
+ * @provides {boolean}  addEditViewAuthoriyModal  - Whether the authority add/edit/view modal is open
+ * @provides {number}   authorityViewState        - Current modal mode (0 = add, 1 = edit, 2 = view)
+ * @provides {Object}   searchPayload             - Paginated search/filter payload sent to the API
+ * @provides {boolean}  searchbox                 - Whether the search input bar is visible
+ * @provides {string|null} authorityNameSort      - Sort direction for the authority-name column ("ascend" | "descend" | null)
+ * @provides {string|null} shortCodeSort          - Sort direction for the short-code column
+ * @provides {string|null} countrySort            - Sort direction for the country column
+ * @provides {string|null} sectorSort             - Sort direction for the sector column
+ * @provides {Array}    statusOptions             - Available status dropdown options
+ * @provides {boolean}  visible                   - Whether the status filter popover is visible
+ * @provides {string}   authorityId               - ID of the authority currently selected for edit/view
+ * @provides {boolean}  closeConfirmationModal    - Whether the discard-changes confirmation modal is open
+ * @provides {Array<string>} statusFilter         - Active status filter values (default: ["Active", "Inactive"])
+ * @provides {Object}   searchCountryId           - Selected country filter option ({ label, value })
+ * @provides {Array}    countryNames              - Country name options mapped from Redux (value = pK_WorldCountryID, label = countryName)
+ * @provides {Object|null} selectCountry          - Currently selected country object in the filter
+ * @provides {boolean}  dataAfterSearch           - Whether the table is showing post-search results
+ *
+ * Usage:
+ *   import { useAuthorityContext } from '../context/AuthorityContext';
+ *   const { addEditViewAuthoriyModal, setAddEditViewAuthoriyModal } = useAuthorityContext();
+ */
+
 // Create the Context
 const AuthorityContext = createContext();
 // Create a Provider component
@@ -110,6 +140,12 @@ export const AuthorityProvider = ({ children }) => {
   );
 };
 
+/**
+ * @hook useAuthorityContext
+ * @description Consumes AuthorityContext and returns all authority UI state values
+ *   and setters. Throws an error if called outside of AuthorityProvider.
+ * @returns {Object} All authority state values and setter functions from AuthorityProvider
+ */
 // Custom Hook to consume the context
 export const useAuthorityContext = () => {
   const context = useContext(AuthorityContext);

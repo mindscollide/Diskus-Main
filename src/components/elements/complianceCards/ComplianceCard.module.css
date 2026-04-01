@@ -17,6 +17,13 @@
   font-weight: 600;
   font-family: "Montserrat";
   color: #6172d6;
+  /* Allow the title to shrink inside the flex row so the icon is never hidden */
+  flex: 1;
+  min-width: 0;
+  /* Wrap long text rather than overflowing */
+  word-break: break-word;
+  overflow-wrap: break-word;
+  margin: 0;
 }
 
 .metaRow {
@@ -108,6 +115,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Prevent icon from shrinking when title text is long */
+  flex-shrink: 0;
 }
 
 .iconContainer:hover {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./EndOfQuarterReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
@@ -16,6 +16,52 @@ import generatePDF, { Margin, Resolution } from "react-to-pdf";
 
 const { Panel } = Collapse;
 
+/** Static donut chart display options hoisted to module level. */
+const donutOptions = {
+  pieHole: 0.7,
+  legend: {
+    position: "right",
+    textStyle: { fontSize: 12 },
+  },
+  pieSliceText: "none",
+  backgroundColor: "transparent",
+  chartArea: { width: "100%", height: "100%" },
+  colors: ["#4F7CFE", "#F5C542", "#F16B6B"],
+  tooltip: { trigger: "none" },
+};
+
+/** Static PDF generation options hoisted to module level. */
+const pdfOptions = {
+  method: "save",
+  filename: "End of Quarter Report.pdf",
+  resolution: Resolution.HIGH,
+  page: {
+    margin: Margin.SMALL,
+    format: "A4",
+    orientation: "landscape",
+  },
+  canvas: {
+    mimeType: "image/png",
+    qualityRatio: 1,
+  },
+  overrides: {
+    pdf: {
+      compress: true,
+    },
+    canvas: {
+      useCORS: true,
+    },
+  },
+};
+
+/** Returns the DOM element used as the PDF render target. */
+const getTargetElement = () => document.getElementById("content-id");
+
+/**
+ * EndOfQuarterReport component.
+ * Renders a quarterly compliance report with chart, compliance table,
+ * and PDF download capability.
+ */
 const EndOfQuarterReport = () => {
   const { t } = useTranslation();
   const {
@@ -28,7 +74,6 @@ const EndOfQuarterReport = () => {
     (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
 
-  console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
 
@@ -38,67 +83,25 @@ const EndOfQuarterReport = () => {
     }
   }, [autoPdfDownload, GetQuarterReport]);
 
-  const donutData = [
-    ["Task Status", "Count"],
-    [
-      "Tasks Completed On Time",
-      GetQuarterReport?.header?.tasksCompletedOnTime || 0,
+  /**
+   * Donut chart data derived from the quarter report API response.
+   */
+  const donutData = useMemo(
+    () => [
+      ["Task Status", "Count"],
+      [
+        "Tasks Completed On Time",
+        GetQuarterReport?.header?.tasksCompletedOnTime || 0,
+      ],
+      ["Tasks Completed Late", GetQuarterReport?.header?.tasksCompletedLate || 0],
+      ["Pending or Overdue Tasks", GetQuarterReport?.header?.tasksPending || 0],
     ],
-    ["Tasks Completed Late", GetQuarterReport?.header?.tasksCompletedLate || 0],
-    ["Pending or Overdue Tasks", GetQuarterReport?.header?.tasksPending || 0],
-  ];
-
-  const donutOptions = {
-    pieHole: 0.7,
-    legend: {
-      position: "right",
-      textStyle: { fontSize: 12 },
-    },
-    pieSliceText: "none",
-    backgroundColor: "transparent",
-    chartArea: { width: "100%", height: "100%" },
-    colors: ["#4F7CFE", "#F5C542", "#F16B6B"],
-    tooltip: { trigger: "none" },
-  };
-
-  const options = {
-    // default is `save`
-    method: "save",
-    filename: "End of Quarter Report.pdf",
-    // default is Resolution.MEDIUM = 3, which should be enough, higher values
-    // increases the image quality but also the size of the PDF, so be careful
-    // using values higher than 10 when having multiple pages generated, it
-    // might cause the page to crash or hang.
-    resolution: Resolution.HIGH,
-    page: {
-      // margin is in MM, default is Margin.NONE = 0
-      margin: Margin.SMALL,
-      // default is 'A4'
-      format: "A4",
-      // default is 'portrait'
-      orientation: "landscape",
-    },
-    canvas: {
-      // default is 'image/jpeg' for better size performance
-      mimeType: "image/png",
-      qualityRatio: 1,
-    },
-    // Customize any value passed to the jsPDF instance and html2canvas
-    // function. You probably will not need this and things can break,
-    // so use with caution.
-    overrides: {
-      // see https://artskydj.github.io/jsPDF/docs/jsPDF.html for more options
-      pdf: {
-        compress: true,
-      },
-      // see https://html2canvas.hertzen.com/configuration for more options
-      canvas: {
-        useCORS: true,
-      },
-    },
-  };
-
-  const getTargetElement = () => document.getElementById("content-id");
+    [
+      GetQuarterReport?.header?.tasksCompletedOnTime,
+      GetQuarterReport?.header?.tasksCompletedLate,
+      GetQuarterReport?.header?.tasksPending,
+    ],
+  );
 
   const handleAutoDownload = async () => {
     try {
@@ -108,9 +111,9 @@ const EndOfQuarterReport = () => {
       await new Promise((r) => setTimeout(r, 300));
       await document.fonts.ready;
 
-      await generatePDF(getTargetElement, options);
+      await generatePDF(getTargetElement, pdfOptions);
 
-      // 👇 After Download Close Report
+      // After Download Close Report
       setEndOfQuarterReport(false);
       setAutoPdfDownload(false);
     } catch (error) {
@@ -121,21 +124,25 @@ const EndOfQuarterReport = () => {
     }
   };
 
-  const handleClickGenerateODF = async () => {
+  /**
+   * Triggers PDF generation and download when the user clicks the Download button.
+   */
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleClickGenerateODF = useCallback(async () => {
     try {
       setIsGenerating(true); // spinner ON
       setShowPdfLayout(true); // show PDF layout
       await new Promise((r) => setTimeout(r, 100)); // allow DOM render
 
       await document.fonts.ready;
-      await generatePDF(getTargetElement, options);
+      await generatePDF(getTargetElement, pdfOptions);
     } catch (err) {
       console.error("PDF generation failed:", err);
     } finally {
       setShowPdfLayout(false); // hide PDF layout
       setIsGenerating(false); // spinner OFF
     }
-  };
+  }, []);
 
   return (
     <>
@@ -238,7 +245,7 @@ const EndOfQuarterReport = () => {
                         width="100%"
                         height="200px"
                         data={donutData}
-                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                        options={{ ...donutOptions, legend: "none" }}
                       />
 
                       {/* Center Label */}
@@ -282,7 +289,7 @@ const EndOfQuarterReport = () => {
 
               {/* Compliance Table */}
               <div className={styles.tableWrapper}>
-                {/* 🔹 STATIC HEADER */}
+                {/* STATIC HEADER */}
                 <div className={styles.tableHeader}>
                   <div>{t("Compliance-name")}</div>
                   <div className="text-center">{t("Due-date")}</div>
@@ -293,7 +300,7 @@ const EndOfQuarterReport = () => {
                   <div className="text-center">{t("Progress")} </div>
                 </div>
 
-                {/* 🔹 COLLAPSE ROWS */}
+                {/* COLLAPSE ROWS */}
                 <Collapse
                   bordered={false}
                   expandIconPosition="end"
@@ -562,7 +569,7 @@ const EndOfQuarterReport = () => {
                         width="100%"
                         height="200px"
                         data={donutData}
-                        options={{ ...donutOptions, legend: "none" }} // ❌ hide default legend
+                        options={{ ...donutOptions, legend: "none" }}
                       />
 
                       {/* Center Label */}

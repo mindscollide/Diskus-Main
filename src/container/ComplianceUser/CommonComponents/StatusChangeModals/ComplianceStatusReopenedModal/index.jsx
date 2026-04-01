@@ -102,15 +102,15 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
       dueDate: tempDueDateChange,
     }));
 
-    // RESET STATE
-    setComplianceReopenDetailsState({
-      reason: "",
-      dueDate: "",
-      attachments: [],
-    });
+    // // RESET STATE
+    // setComplianceReopenDetailsState({
+    //   reason: "",
+    //   dueDate: "",
+    //   attachments: [],
+    // });
 
-    setTempDueDateChange("");
-    setOpenCalendarValue(null);
+    // setTempDueDateChange("");
+    // setOpenCalendarValue(null);
   };
 
   const handleValueChange = (event) => {

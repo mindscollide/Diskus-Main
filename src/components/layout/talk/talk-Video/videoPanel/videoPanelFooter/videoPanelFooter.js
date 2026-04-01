@@ -7,6 +7,24 @@ import VideoCallWhiteIcon from "./../../../../../../assets/images/Video-White-Ic
 import { X } from "react-bootstrap-icons";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component VideoPanelFooter
+ * @description Footer action bar for the Talk module's video panel contact
+ * view. Renders a call-initiation button (with a video icon) on the right
+ * side of the row. The button is hidden while `VideoMainReducer.Loading` is
+ * `true` to prevent duplicate call requests. A "Deselect all" control
+ * (currently commented out) was intended for clearing multi-user selections.
+ *
+ * @param {Function} groupCallClick - Handler invoked when the call button is
+ *   clicked to initiate a group or direct video call.
+ * @param {string} groupbtnClassName - CSS class name applied to the call
+ *   button for styling.
+ * @param {string} buttonText - Label text rendered inside the call button.
+ * @param {Function} deselectAllUsers - Handler to clear all selected
+ *   participants (currently unused/commented out in the UI).
+ * @param {Array} groupCallUsers - Array of currently selected users, used to
+ *   conditionally show the deselect control (currently commented out).
+ */
 const VideoPanelFooter = ({
   groupCallClick,
   groupbtnClassName,

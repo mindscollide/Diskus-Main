@@ -1,108 +1,418 @@
+/* =============================================================================
+   SignatureViewer / PendingSignatureViewer — Component Styles
+   -----------------------------------------------------------------------------
+   Naming convention : BEM-style class names scoped to this feature.
+   Breakpoints used  :
+     xs  < 480px   (small phones)
+     sm  480–767px (large phones / small tablets)
+     md  768–1023px (tablets / small laptops)
+     lg  1024–1439px (laptops / desktops)
+     xl  ≥ 1440px  (large screens)
+   ============================================================================= */
+
+/* =============================================================================
+   1. DOCUMENT / WEBVIEWER CONTAINERS
+   ============================================================================= */
+
+/**
+ * Outer shell that fills the viewport and centres the viewer.
+ * `flex-direction`, `justify-content`, `align-items` are enabled here instead
+ * of being commented-out so the container works both as a flex parent (when
+ * child elements need centring) and as a plain block wrapper.
+ */
 .documnetviewer {
-    width: 91vw;
-    margin: 0 auto;
-    height: 91vh;
-    /* display: flex; */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  width: 91vw;
+  height: 91vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/**
+ * Apryse WebViewer iframe container.
+ * Height is slightly shorter than the outer shell to leave room for any
+ * toolbar/header above it.
+ */
+.webviewer {
+  width: 100%;
+  height: 87vh;
+}
+
+/* ── Responsive: shrink viewer on smaller screens ── */
+@media (max-width: 1023px) {
+  .documnetviewer {
+    width: 100vw; /* use full width on tablets and below */
+    height: 100vh; /* fill full viewport so nothing is clipped */
   }
-  
+
   .webviewer {
-    height: 87vh;
+    height: 82vh; /* slightly shorter to avoid scroll on tablets */
   }
+}
+
+@media (max-width: 767px) {
+  .documnetviewer {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .webviewer {
+    height: 78vh; /* extra room for mobile browser chrome (address bar) */
+  }
+}
+
+@media (max-width: 479px) {
+  .webviewer {
+    height: 72vh; /* accommodate large mobile browser toolbars */
+  }
+}
+
+/* =============================================================================
+   2. SIGNERS MODAL — LAYOUT
+   ============================================================================= */
+
+/**
+ * Modal body padding.
+ * Horizontal padding gives the form room to breathe without touching edges.
+ */
+.Signers_modal_body {
+  padding: 5px 20px;
+}
+
+/**
+ * Modal header is intentionally zero-height so only the body content shows,
+ * giving a cleaner look while keeping the close-button slot available.
+ */
+.Signers_modal_header {
+  height: 0;
+  overflow: visible; /* keep the close button accessible */
+  border: none;
+}
+
+/* ── Responsive: add a little top padding inside the body on small screens ── */
+@media (max-width: 767px) {
   .Signers_modal_body {
-    padding: 5px 20px;
+    padding: 10px 14px;
   }
-  .Signers_modal_header {
-    height: 0px;
+}
+
+@media (max-width: 479px) {
+  .Signers_modal_body {
+    padding: 10px 10px;
   }
-  .Signers_heading {
-    color: #6172d6;
-    font-size: 1.25rem;
+}
+
+/* =============================================================================
+   3. SIGNERS MODAL — TYPOGRAPHY
+   ============================================================================= */
+
+/**
+ * Modal main heading ("Signers").
+ * Brand-purple, semi-bold, slightly larger than body copy.
+ */
+.Signers_heading {
+  display: block;
+  color: #6172d6;
+  font-size: 1.25rem; /* 20px at default 16px root */
   font-weight: 600;
+  line-height: 1.3;
+}
+
+/**
+ * Subtitle / call-to-action line below the heading.
+ */
+.Signers_tagLine {
+  display: block;
+  font-size: 1rem; /* 16px */
+  font-weight: 600;
+  color: #5a5a5a !important; /* override Bootstrap utility if applied */
+  line-height: 1.4;
+}
+
+/* ── Responsive: slightly tighten font sizes on small screens ── */
+@media (max-width: 767px) {
+  .Signers_heading {
+    font-size: 1.1rem;
   }
+
   .Signers_tagLine {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 479px) {
+  .Signers_heading {
     font-size: 1rem;
-    font-weight: 600;
-    color: #5a5a5a !important;
   }
-  
+
+  .Signers_tagLine {
+    font-size: 0.85rem;
+  }
+}
+
+/* =============================================================================
+   4. FORM FIELD LABELS
+   ============================================================================= */
+
+/**
+ * Small coloured label above each input field (Name, Email, etc.).
+ * `!important` overrides Bootstrap `.form-label` specificity.
+ */
+.inputlabel_style {
+  color: #6172d6 !important;
+  font-size: 0.625rem !important; /* 10px — deliberately tiny for density */
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  margin-bottom: 2px !important;
+  display: block;
+}
+
+/* ── Responsive: bump up label size on very small screens for legibility ── */
+@media (max-width: 479px) {
   .inputlabel_style {
-    color: #6172d6 !important;
-    font-size: 0.625rem !important;
-    font-weight: 600 !important;
+    font-size: 0.7rem !important; /* 11.2px */
   }
-  .addOther_field {
-    color: #5a5a5a !important;
-    padding: 12px 10px !important;
-    display: flex !important;
-    width: 100% !important;
-    background: #fff !important;
-    font-weight: 500;
-  
-    justify-content: center !important;
-    align-items: center !important;
-    border: 1px dashed #ccc !important;
-    border-radius: 4px;
-    margin: 5px 0;
-    cursor: pointer;
-    outline: none !important;
-    gap: 5px;
-  }
+}
+
+/* =============================================================================
+   5. "ADD ANOTHER SIGNER" DASHED BUTTON
+   ============================================================================= */
+
+/**
+ * Full-width dashed-border action button used to append another signer row.
+ * `!important` flags override the shared <Button> component's inline styles.
+ */
+.addOther_field {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 5px !important;
+
+  width: 100% !important;
+  padding: 12px 10px !important;
+  margin: 5px 0;
+
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem;
+
+  border: 1px dashed #ccc !important;
+  border-radius: 4px !important;
+
+  cursor: pointer;
+  outline: none !important;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.addOther_field:hover {
+  background: #f8f8fb !important;
+  border-color: #6172d6 !important;
+  color: #6172d6 !important;
+}
+
+.addOther_field:focus-visible {
+  outline: 2px solid #6172d6 !important;
+  outline-offset: 2px;
+}
+
+/* =============================================================================
+   6. SCROLLABLE SIGNERS LIST
+   ============================================================================= */
+
+/**
+ * Wraps the drag-and-drop signer rows.
+ * Fixed max-height with scroll prevents the modal from growing too tall when
+ * many signers are added.
+ */
+.signersList {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Custom thin scrollbar for modern browsers */
+  scrollbar-width: thin;
+  scrollbar-color: #d0d0d0 transparent;
+}
+
+.signersList::-webkit-scrollbar {
+  width: 4px;
+}
+
+.signersList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.signersList::-webkit-scrollbar-thumb {
+  background-color: #d0d0d0;
+  border-radius: 4px;
+}
+
+/* ── Responsive: allow slightly more visible rows on larger screens ── */
+@media (min-width: 1024px) {
   .signersList {
-    max-height: 200px;
-    overflow-y: auto;
+    max-height: 260px;
   }
-  .CancelBtn {
-    color: #5a5a5a !important;
-    background-color: #fff !important;
-    border: 1px solid #e1e1e1 !important;
-    padding: 8px 30px !important;
-    border-radius: 4px !important;
-    font-size: 0.75rem;
-    font-weight: 600;
+}
+
+@media (max-width: 479px) {
+  .signersList {
+    max-height: 160px; /* keep modal usable on very small viewports */
   }
+}
+
+/* =============================================================================
+   7. MODAL FOOTER BUTTONS
+   ============================================================================= */
+
+/**
+ * Cancel / secondary action button.
+ * White background with a light border — neutral, non-destructive appearance.
+ */
+.CancelBtn {
+  color: #5a5a5a !important;
+  background-color: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 8px 30px !important;
+  font-size: 0.75rem !important; /* 12px */
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.CancelBtn:hover {
+  background-color: #f5f5f5 !important;
+  border-color: #c8c8c8 !important;
+}
+
+.CancelBtn:focus-visible {
+  outline: 2px solid #6172d6;
+  outline-offset: 2px;
+}
+
+/**
+ * Save / primary action button.
+ * Brand-purple fill — clearly the main call-to-action.
+ */
+.Add {
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: 1px solid #6172d6 !important;
+  border-radius: 4px !important;
+  padding: 8px 30px !important;
+  font-size: 0.75rem !important; /* 12px */
+  font-weight: 600 !important;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.Add:hover {
+  background: #4f5ec0 !important;
+  border-color: #4f5ec0 !important;
+}
+
+.Add:focus-visible {
+  outline: 2px solid #6172d6;
+  outline-offset: 2px;
+}
+
+/* ── Responsive: reduce horizontal padding on small screens ── */
+@media (max-width: 479px) {
+  .CancelBtn,
   .Add {
-    background: #6172d6 !important;
-    color: #fff !important;
-    border-radius: 4px !important;
-    font-size: 0.75rem;
-  
-    padding: 8px 30px !important;
-    font-weight: 600;
+    padding: 8px 16px !important;
   }
-  /* .CancelSignature_Btn {
-    color: #5a5a5a !important;
-    background-color: #fff !important;
-    border: 1px solid #e1e1e1 !important;
-    padding: 8px 30px !important;
-  }
-  .SaveSignature_Btn {
-    color: #5a5a5a !important;
-    background-color: #fff !important;
-    border: 1px solid #e1e1e1 !important;
-    padding: 8px 30px !important;
-    border-radius: 4px !important;
-  } */
+}
+
+/* =============================================================================
+   8. SEND DOCUMENT BUTTON (used in header / SendDocumentModal)
+   ============================================================================= */
+
+/**
+ * Distinct from `.Add` — slightly larger padding for a header-level CTA.
+ */
+.SendSignature_Btn {
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: 1px solid #6172d6 !important;
+  border-radius: 4px !important;
+  padding: 8px 30px !important;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  white-space: nowrap;
+}
+
+.SendSignature_Btn:hover {
+  background: #4f5ec0 !important;
+  border-color: #4f5ec0 !important;
+}
+
+.SendSignature_Btn:focus-visible {
+  outline: 2px solid #6172d6;
+  outline-offset: 2px;
+}
+
+@media (max-width: 479px) {
   .SendSignature_Btn {
-    background: #6172d6 !important;
-    color: #fff !important;
-    border-radius: 4px !important;
-    padding: 8px 30px !important;
+    padding: 8px 16px !important;
   }
-  
-  .MainHeader {
-    padding: 10px 0 !important;
-  }
-  .App .buttons_tab button {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-  }
-  .delete_icon_signatureFlow {
-    opacity: 50% !important;
-  }
-  
+}
+
+/* =============================================================================
+   9. MAIN HEADER BAR
+   ============================================================================= */
+
+/**
+ * Top bar that wraps the document title / workflow metadata.
+ * Small vertical padding keeps it compact without feeling cramped.
+ */
+.MainHeader {
+  padding: 10px 0 !important;
+}
+
+/* =============================================================================
+   10. TOOLBAR TAB BUTTONS (left/action panel)
+   ============================================================================= */
+
+/**
+ * Each tab button inside `.buttons_tab` stretches full width and centres its
+ * icon + label horizontally with a consistent gap.
+ */
+.App .buttons_tab button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+/* =============================================================================
+   11. DELETE ICON IN SIGNER ROW
+   ============================================================================= */
+
+/**
+ * Muted opacity draws less attention than the drag handle or fields,
+ * but the icon becomes fully opaque on hover for clear affordance.
+ */
+.delete_icon_signatureFlow {
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.delete_icon_signatureFlow:hover {
+  opacity: 1;
+}

@@ -36,6 +36,25 @@ import {
 } from "../../../../../store/actions/VideoFeature_actions";
 import GuestRemoveByHost from "../GuestRemoveByHost/GuestRemoveByHost";
 
+/**
+ * @component GuestVideoCall
+ * @description Root orchestrator component for the guest video call flow.
+ * Manages the complete guest lifecycle: validating the encrypted invite URL,
+ * establishing and maintaining the MQTT Socket.io connection for real-time
+ * events, and routing between the five navigation screens based on
+ * `GuestVideoReducer.guestVideoNavigationData`:
+ *  - 1: Join lobby (`GuestJoinVideo`)
+ *  - 2: Active call (`GuestVideoScreen`)
+ *  - 3: Entry rejected (`GuestVideoReject`)
+ *  - 4: Meeting ended (`GuestVideoEnded`)
+ *  - 5: Removed by host (`GuestRemoveByHost`)
+ *
+ * Handles all inbound MQTT messages (approval, rejection, mute/unmute,
+ * video hide/show, raise/lower hand, participant join/leave, host-ended call,
+ * and forced guest leave), dispatching the appropriate Redux actions to keep
+ * guest and participant state in sync. Also performs a cleanup leave-call API
+ * call when the page is reloaded mid-session.
+ */
 const GuestVideoCall = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
