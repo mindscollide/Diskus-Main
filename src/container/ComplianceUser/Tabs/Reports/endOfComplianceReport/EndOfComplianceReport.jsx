@@ -684,7 +684,9 @@ const EndOfComplianceReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p>{t("Checklists-in-this-report")}</p>
+                  <p className={styles.complianceInThisReportTitleDownload}>
+                    {t("Checklists-in-this-report")}
+                  </p>
                 </Col>
 
                 <Col
