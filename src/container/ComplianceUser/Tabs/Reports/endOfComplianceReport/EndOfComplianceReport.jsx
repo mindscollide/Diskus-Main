@@ -12,7 +12,10 @@ import { Chart } from "react-google-charts";
 import CustomTable from "../../../../../components/elements/table/Table";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
 import { useSelector } from "react-redux";
-import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  getDynamicFileName,
+} from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
 import ReopenOrOnHoldDetailsModal from "../../../CommonComponents/ReopenOrOnHoldDetailsModal";
 import ReopenOrOnHoldDetailsModalECR from "./ReopenOrOnHoldDetailsModalECR";
@@ -49,7 +52,8 @@ const donutOptions = {
 /** Static PDF generation options hoisted to module level. */
 const pdfOptions = {
   method: "save",
-  filename: "End Of Compliance.pdf",
+  filename: getDynamicFileName("End Of Compliance"),
+
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
@@ -91,7 +95,7 @@ const EndOfComplianceReport = () => {
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
   );
   const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
 
@@ -153,7 +157,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [t],
+    [t]
   );
 
   /**
@@ -219,8 +223,7 @@ const EndOfComplianceReport = () => {
     if (!Array.isArray(history) || history.length === 0) return false;
 
     return history.some(
-      (item) =>
-        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
+      (item) => item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7
     );
   }, [GetEndOfComplianceReport?.complianceStatusChangeHistory]);
 
@@ -276,7 +279,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn,
+                        GetEndOfComplianceReport?.header?.generatedOn
                       ) || "-"}
                     </p>
                   </div>
@@ -326,7 +329,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate,
+                              ?.complianceCreatedDate
                           ) || "-"}
                         </p>
                       </div>
@@ -335,7 +338,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate,
+                              ?.complianceCompletionDate
                           ) || "-"}
                         </p>
                       </div>
@@ -344,7 +347,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate,
+                              ?.complianceDueDate
                           ) || "-"}
                         </p>
                       </div>
@@ -399,7 +402,7 @@ const EndOfComplianceReport = () => {
                       <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
                         <span className={styles.legendText}>
-                          {t("Tasks-completed-on-time")}(
+                          {t("Tasks-completed-on-time")} (
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.tasksCompletedOnTime || 0}
                           )
@@ -408,7 +411,7 @@ const EndOfComplianceReport = () => {
                       <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
                         <span className={styles.legendText}>
-                          {t("Tasks-completed-late")}(
+                          {t("Tasks-completed-late")} (
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.tasksCompletedLate || 0}
                           )
@@ -594,7 +597,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCreatedDate,
+                            ?.complianceCreatedDate
                         )}
                       </p>
                     </Col>
@@ -603,7 +606,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate,
+                            ?.complianceCompletionDate
                         )}
                       </p>
                     </Col>
@@ -613,7 +616,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMD(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate,
+                            ?.complianceDueDate
                         )}
                       </p>
                     </Col>
@@ -681,7 +684,7 @@ const EndOfComplianceReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p>{t("Checklists-in-this-report")}:</p>
+                  <p>{t("Checklists-in-this-report")}</p>
                 </Col>
 
                 <Col
@@ -692,7 +695,7 @@ const EndOfComplianceReport = () => {
                   <div className={styles.titleSection}>
                     <label>{t("Compliance-title")}:</label>
                     <p className={styles.longTitle}>
-                      {` ${
+                      {`1.${
                         GetEndOfComplianceReport?.complianceSummary
                           ?.complianceTitle || "No Compliance Title"
                       }`}
@@ -734,7 +737,7 @@ const EndOfComplianceReport = () => {
                             <Row>
                               <Col lg={4} xs="auto">
                                 <div
-                                  className={styles.insideAccordianSubHeading}
+                                  className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Assignee")}:</label>
                                   <p>{task.assigneeName || "-"}</p>
@@ -742,7 +745,7 @@ const EndOfComplianceReport = () => {
                               </Col>{" "}
                               <Col lg={2} xs="auto">
                                 <div
-                                  className={styles.insideAccordianSubHeading}
+                                  className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Due-date")}:</label>
                                   <p>{formatDateToYMD(task.taskDueDate)}</p>
@@ -750,7 +753,7 @@ const EndOfComplianceReport = () => {
                               </Col>
                               <Col lg={2} xs="auto">
                                 <div
-                                  className={styles.insideAccordianSubHeading}
+                                  className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Completed-on")}:</label>
                                   <p>
@@ -761,7 +764,7 @@ const EndOfComplianceReport = () => {
                               </Col>
                               <Col lg={2} xs="auto">
                                 <div
-                                  className={styles.insideAccordianSubHeading}
+                                  className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Completed")}:</label>
                                   <p>{task.taskStatus}</p>
@@ -769,7 +772,7 @@ const EndOfComplianceReport = () => {
                               </Col>
                               <Col lg={2} xs="auto">
                                 <div
-                                  className={styles.insideAccordianSubHeading}
+                                  className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Status")}:</label>
                                   <p>{task.taskStatus}</p>

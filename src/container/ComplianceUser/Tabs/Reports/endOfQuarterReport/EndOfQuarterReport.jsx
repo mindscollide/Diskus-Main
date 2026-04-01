@@ -10,7 +10,10 @@ import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
 import { useSelector } from "react-redux";
-import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  getDynamicFileName,
+} from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
 import generatePDF, { Margin, Resolution } from "react-to-pdf";
 
@@ -33,7 +36,8 @@ const donutOptions = {
 /** Static PDF generation options hoisted to module level. */
 const pdfOptions = {
   method: "save",
-  filename: "End of Quarter Report.pdf",
+  filename: getDynamicFileName("End of Quarter Report"),
+
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
@@ -93,14 +97,17 @@ const EndOfQuarterReport = () => {
         "Tasks Completed On Time",
         GetQuarterReport?.header?.tasksCompletedOnTime || 0,
       ],
-      ["Tasks Completed Late", GetQuarterReport?.header?.tasksCompletedLate || 0],
+      [
+        "Tasks Completed Late",
+        GetQuarterReport?.header?.tasksCompletedLate || 0,
+      ],
       ["Pending or Overdue Tasks", GetQuarterReport?.header?.tasksPending || 0],
     ],
     [
       GetQuarterReport?.header?.tasksCompletedOnTime,
       GetQuarterReport?.header?.tasksCompletedLate,
       GetQuarterReport?.header?.tasksPending,
-    ],
+    ]
   );
 
   const handleAutoDownload = async () => {
@@ -153,7 +160,7 @@ const EndOfQuarterReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -482,7 +489,7 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
@@ -615,7 +622,10 @@ const EndOfQuarterReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
                 >
-                  <p>{t("Compliances-in-this-report")}:</p>
+                  <p className={styles.complianceInThisReportTitleDownload}>
+                    {" "}
+                    {t("Compliances-in-this-report")}
+                  </p>
                 </Col>
                 {GetQuarterReport?.compliances?.map((compliance, index) => (
                   <Col
@@ -714,9 +724,7 @@ const EndOfQuarterReport = () => {
                                             }
                                           >
                                             <label>{t("Task-title")}:</label>
-                                            <Tooltip title={task.taskTitle}>
-                                              <p>{task.taskTitle}</p>
-                                            </Tooltip>
+                                            <p>{task.taskTitle}</p>
                                           </div>
                                         </Col>
                                       </Row>
@@ -724,7 +732,7 @@ const EndOfQuarterReport = () => {
                                         <Col lg={4} xs="auto">
                                           <div
                                             className={
-                                              styles.insideAccordianSubHeading
+                                              styles.insideAccordianMainHeading
                                             }
                                           >
                                             <label>{t("Assignee")}:</label>
@@ -734,7 +742,7 @@ const EndOfQuarterReport = () => {
                                         <Col lg={2} xs="auto">
                                           <div
                                             className={
-                                              styles.insideAccordianSubHeading
+                                              styles.insideAccordianMainHeading
                                             }
                                           >
                                             <label>{t("Due-date")}:</label>
@@ -748,7 +756,7 @@ const EndOfQuarterReport = () => {
                                         <Col lg={2} xs="auto">
                                           <div
                                             className={
-                                              styles.insideAccordianSubHeading
+                                              styles.insideAccordianMainHeading
                                             }
                                           >
                                             <label>{t("Completed-on")}:</label>
@@ -762,7 +770,7 @@ const EndOfQuarterReport = () => {
                                         <Col lg={2} xs="auto">
                                           <div
                                             className={
-                                              styles.insideAccordianSubHeading
+                                              styles.insideAccordianMainHeading
                                             }
                                           >
                                             <label>{t("Completed")}:</label>
@@ -772,7 +780,7 @@ const EndOfQuarterReport = () => {
                                         <Col lg={2} xs="auto">
                                           <div
                                             className={
-                                              styles.insideAccordianSubHeading
+                                              styles.insideAccordianMainHeading
                                             }
                                           >
                                             <label>{t("Status")}:</label>

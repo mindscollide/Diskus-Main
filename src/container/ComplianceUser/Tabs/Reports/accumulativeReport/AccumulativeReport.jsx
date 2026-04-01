@@ -11,7 +11,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import { formatDateToYMD, getDynamicFileName } from "../../../CommonComponents/commonFunctions";
 import generatePDF, { Margin, Resolution } from "react-to-pdf";
 
 const { Panel } = Collapse;
@@ -30,10 +30,20 @@ const donutOptions = {
   tooltip: { trigger: "none" },
 };
 
+// const getDynamicFileName = () => {
+//   const now = new Date();
+
+//   const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
+//   const time = now.toTimeString().slice(0, 8).replace(/:/g, "-"); // HH-MM-SS
+
+//   return `Accumulative Report ${date} ${time}.pdf`;
+// };
+
 /** Static PDF generation options hoisted to module level. */
 const pdfOptions = {
   method: "save",
-  filename: "Accumulative Report.pdf",
+  // filename: "Accumulative Report.pdf",
+  filename: getDynamicFileName("Accumulative Report"),
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
@@ -71,7 +81,7 @@ const AccumulativeReport = () => {
     setAutoPdfDownload,
   } = useComplianceContext();
   const GetAccumulativeReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport,
+    (state) => state.ComplainceSettingReducerReducer.GetAccumulativeReport
   );
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -106,7 +116,7 @@ const AccumulativeReport = () => {
       GetAccumulativeReport?.header?.tasksCompletedOnTime,
       GetAccumulativeReport?.header?.tasksCompletedLate,
       GetAccumulativeReport?.header?.tasksPending,
-    ],
+    ]
   );
 
   const handleAutoDownload = async () => {
@@ -195,7 +205,7 @@ const AccumulativeReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetAccumulativeReport?.header?.generatedOn,
+                        GetAccumulativeReport?.header?.generatedOn
                       ) || "-"}
                     </p>
                   </div>
@@ -226,7 +236,7 @@ const AccumulativeReport = () => {
                         <span>{t("Start-dates")}:</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           ) || "-"}
                         </p>
                       </div>
@@ -234,7 +244,7 @@ const AccumulativeReport = () => {
                         <span>{t("End-dates")}:</span>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           ) || "-"}
                         </p>
                       </div>
@@ -435,7 +445,7 @@ const AccumulativeReport = () => {
                                             <p>
                                               {" "}
                                               {formatDateToYMD(
-                                                taskItem.taskDueDate,
+                                                taskItem.taskDueDate
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -505,7 +515,7 @@ const AccumulativeReport = () => {
                 >
                   <div>
                     <label>{t("Quarter")}:</label>
-                    <p className={styles.longTitle}>
+                    <p className={styles.longTitleDownload}>
                       {GetAccumulativeReport?.header?.reportTitle}
                     </p>
                   </div>
@@ -537,7 +547,7 @@ const AccumulativeReport = () => {
                         <label>{t("Generated-date")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.generatedOn,
+                            GetAccumulativeReport?.header?.generatedOn
                           )}
                         </p>
                       </div>
@@ -556,7 +566,7 @@ const AccumulativeReport = () => {
                         <label>{t("Start-dates")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterStartDate,
+                            GetAccumulativeReport?.header?.quarterStartDate
                           )}
                         </p>
                       </div>
@@ -566,7 +576,7 @@ const AccumulativeReport = () => {
                         <label>{t("End-dates")}:</label>
                         <p>
                           {formatDateToYMD(
-                            GetAccumulativeReport?.header?.quarterEndDate,
+                            GetAccumulativeReport?.header?.quarterEndDate
                           )}
                         </p>
                       </div>
@@ -632,7 +642,7 @@ const AccumulativeReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-4`}
                 >
-                  <p>{t("Compliances-in-this-report")}:</p>
+                  <p>{t("Compliances-in-this-report")}</p>
                 </Col>
                 {GetAccumulativeReport?.compliances?.map(
                   (compliance, index) => (
@@ -702,7 +712,7 @@ const AccumulativeReport = () => {
                                           <Col lg={4} xs="auto">
                                             <div
                                               className={
-                                                styles.insideAccordianSubHeading
+                                                styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>{t("Assignee")}:</label>
@@ -712,7 +722,7 @@ const AccumulativeReport = () => {
                                           <Col lg={2} xs="auto">
                                             <div
                                               className={
-                                                styles.insideAccordianSubHeading
+                                                styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>{t("Due-date")}:</label>
@@ -726,7 +736,7 @@ const AccumulativeReport = () => {
                                           <Col lg={2} xs="auto">
                                             <div
                                               className={
-                                                styles.insideAccordianSubHeading
+                                                styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>
@@ -742,7 +752,7 @@ const AccumulativeReport = () => {
                                           <Col lg={2} xs="auto">
                                             <div
                                               className={
-                                                styles.insideAccordianSubHeading
+                                                styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>{t("Completed")}:</label>
@@ -752,7 +762,7 @@ const AccumulativeReport = () => {
                                           <Col lg={2} xs="auto">
                                             <div
                                               className={
-                                                styles.insideAccordianSubHeading
+                                                styles.insideAccordianMainHeading
                                               }
                                             >
                                               <label>{t("Status")}:</label>
