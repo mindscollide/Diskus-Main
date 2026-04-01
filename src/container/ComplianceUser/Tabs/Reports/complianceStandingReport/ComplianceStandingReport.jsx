@@ -179,7 +179,7 @@ const ComplianceStandingReport = () => {
       dispatch(
         GetComplianceStandingReportAPI(
           navigate,
-          { startDate: "", endDate: null },
+          { startDate: "", endDate: "" },
           t,
         ),
       );

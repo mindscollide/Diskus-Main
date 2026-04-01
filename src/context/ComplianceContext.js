@@ -95,10 +95,11 @@ export const ComlianceProvider = ({ children }) => {
         .GetUpcomingDealineComplianceDashboard,
   );
 
-  console.log(
-    complianceCreatedMqttData,
-    "complianceCreatedMqttDatacomplianceCreatedMqttData",
+  const taskStatusChangedMqttData = useSelector(
+    (state) => state.ComplainceSettingReducerReducer.taskStatusChangeUserMqtt,
   );
+
+  console.log(taskStatusChangedMqttData, "taskStatusChangedMqttData");
 
   const [createEditCompliance, setCreateEditComplaince] = useState(false);
   const [complianceInfo, setComplianceInfo] = useState({
@@ -955,6 +956,36 @@ export const ComlianceProvider = ({ children }) => {
       console.error("Error processing complianceReopenMqttData:", error);
     }
   }, [complianceReopenMqttData]);
+
+  // FOr Task Status Update
+  useEffect(() => {
+    if (!taskStatusChangedMqttData) return;
+
+    try {
+      console.log(taskStatusChangedMqttData, "MQTT TASK UPDATE IN CONTEXT");
+
+      const checklistList = taskStatusChangedMqttData?.checklistList;
+
+      if (!checklistList || checklistList.length === 0) return;
+
+      //  PRESERVE EXPANDED STATE + UPDATE DATA
+      setViewComplianceTasksContextData((prev) => {
+        return checklistList.map((newChecklist) => {
+          const oldChecklist = prev?.find(
+            (c) => c.checklistId === newChecklist.checklistId,
+          );
+
+          return {
+            ...newChecklist,
+            //  preserve expand state
+            isExpanded: oldChecklist?.isExpanded || false,
+          };
+        });
+      });
+    } catch (error) {
+      console.error("MQTT Task Update Error:", error);
+    }
+  }, [taskStatusChangedMqttData]);
 
   return (
     <ComplianceContext.Provider

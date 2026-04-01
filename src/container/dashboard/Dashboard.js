@@ -245,6 +245,7 @@ import {
   taskMappedChecklistMQTT,
   TasksDashboardFormManagerMqtt,
   TasksDashboardForUserMqtt,
+  taskStatusChangedUserMqtt,
   UpcomingDeadlineManagerDashboardMqtt,
   UpcomingDeadlineUserDashboardMqtt,
 } from "../../store/actions/ComplainSettingActions";
@@ -2367,14 +2368,13 @@ const Dashboard = () => {
           data.payload.message.toLowerCase() ===
           "USER_PROFILE_EDITED".toLowerCase()
         ) {
-          if(data.viewable) {
+          if (data.viewable) {
             setNotification({
               notificationShow: true,
               message: t("USER_PROFILE_EDITED"),
             });
             setNotificationID(id);
           }
-    
         } else if (
           data.payload.message.toLowerCase() ===
           "NEW_TODO_CREATION_RECENT_ACTIVITY".toLowerCase()
@@ -4910,6 +4910,14 @@ const Dashboard = () => {
         ) {
           console.log(data.payload, "REOPENCOMPLIANCE");
           dispatch(taskMappedChecklistMQTT(data.payload));
+        }
+
+        if (
+          data.message?.toLowerCase() ===
+          "TASK_STATUS_CHANGED_FOR_USER".toLocaleLowerCase()
+        ) {
+          console.log(data.payload, "REOPENCOMPLIANCE");
+          dispatch(taskStatusChangedUserMqtt(data.payload));
         }
       }
 

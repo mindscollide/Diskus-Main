@@ -451,14 +451,15 @@ const ViewComplianceDetails = () => {
     setComplianceStatusChangeReasonModal(false);
 
     if (statusChangeType === "checklist") {
-      // ✅ CHECKLIST API
+      //  CHECKLIST API
       let Data = {
         ChecklistID: selectedChecklistId,
         ComplianceID: complianceInfo?.complianceId,
         NewStatusID: tempSelectComplianceStatus?.value,
         StatusChangeReason: complianceOnHoldReasonState,
         UpdatedDueDate: `${selectedChecklistDueDate}185958`,
-        ApplyToAssociatedItems: complianceOnHoldSelectOption,
+        ApplyToAssociatedItems:
+          complianceOnHoldSelectOption || complianceCancelSelectOption,
       };
 
       dispatch(
@@ -473,13 +474,13 @@ const ViewComplianceDetails = () => {
         ),
       );
     } else {
-      // ✅ COMPLIANCE API (existing)
+      // COMPLIANCE API (existing)
       if (tempSelectComplianceStatus) {
         updateCompliance(tempSelectComplianceStatus);
       }
     }
 
-    // 🔥 RESET EVERYTHING
+    // RESET EVERYTHING
     setTempSelectedComplianceStatus(null);
     setStatusChangeType("");
     setSelectedChecklistId(null);

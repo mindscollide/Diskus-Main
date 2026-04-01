@@ -64,6 +64,7 @@ const initialState = {
   complianceReopenMqttData: null,
   taskMappedCheckListData: null,
   ComplianceListData: null,
+  taskStatusChangeUserMqtt: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -1439,6 +1440,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // For TASK STATUS CHANGED FOR USER
+    case actions.TASK_STATUS_CHANGED_FOR_USER_MQTT: {
+      return {
+        ...state,
+        taskStatusChangeUserMqtt: action.payload,
+      };
+    }
 
     // ================= DEFAULT =================
     default:
