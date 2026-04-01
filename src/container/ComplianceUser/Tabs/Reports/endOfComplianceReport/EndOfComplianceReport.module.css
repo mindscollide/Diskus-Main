@@ -333,10 +333,16 @@
 }
 .legendItem {
   display: flex;
+
   align-items: center;
   gap: 8px;
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 140%;
+  letter-spacing: 2%;
+  color: #5a5a5a;
 }
-
 .legendText {
   font-weight: 500;
 }
@@ -398,7 +404,7 @@
   padding: 0px 30px;
 }
 
-.ComplianceMainHeading label {
+.ComplianceMainHeading div label {
   font-family: "Montserrat";
   font-weight: 700;
   font-size: 8px;
@@ -407,7 +413,7 @@
   color: #5a5a5a;
 }
 
-.ComplianceMainHeading p {
+.ComplianceMainHeading div p {
   font-size: 24px;
   color: #6172d6;
   font-family: "Montserrat";
@@ -471,3 +477,27 @@
   display: flex;
   justify-content: center;
 }
+/* Download Report */
+.TextDownload p {
+  font-size: 30px;
+  color: #6172d6;
+  font-family: "Montserrat";
+  font-weight: 700;
+  margin: 0;
+  /* line-height: 140%; */
+  letter-spacing: 2%;
+  text-align: center;
+}
+.longTitleHeading {
+  color: #5a5a5a;
+  font-size: 30px;
+  font-weight: 500;
+  font-family: "Montserrat";
+  line-height: 1.4;
+  margin-bottom: 15px;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+}
+/* Download Report */

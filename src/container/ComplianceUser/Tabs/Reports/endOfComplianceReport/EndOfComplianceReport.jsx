@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./EndOfComplianceReport.module.css";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Tooltip } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import BackButton from "./../../../../../assets/images/backbutton.svg";
 import Verification from "./../../../../../assets/images/Verification.png";
@@ -49,7 +49,7 @@ const donutOptions = {
 /** Static PDF generation options hoisted to module level. */
 const pdfOptions = {
   method: "save",
-  filename: "End-Of-Compliance.pdf",
+  filename: "End Of Compliance.pdf",
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
@@ -240,7 +240,7 @@ const EndOfComplianceReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -322,7 +322,7 @@ const EndOfComplianceReport = () => {
 
                     <div className={styles.metaRow}>
                       <div>
-                        <span>{t("Created-on")}</span>
+                        <span>{t("Created-on")}:</span>
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
@@ -331,7 +331,7 @@ const EndOfComplianceReport = () => {
                         </p>
                       </div>
                       <div>
-                        <span>{t("Completion-date")}</span>
+                        <span>{t("Completion-date")}:</span>
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
@@ -340,7 +340,7 @@ const EndOfComplianceReport = () => {
                         </p>
                       </div>
                       <div>
-                        <span>{t("Due-date")}</span>
+                        <span>{t("Due-date")}:</span>
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
@@ -349,14 +349,14 @@ const EndOfComplianceReport = () => {
                         </p>
                       </div>
                       <div>
-                        <span>{t("Total-checklists")} </span>
+                        <span>{t("Total-checklists")}:</span>
                         <p className={styles["AlignCenterChecklist"]}>
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.totalChecklists || 0}
                         </p>
                       </div>
                       <div>
-                        <span>{t("Total-tasks")}</span>
+                        <span>{t("Total-tasks")}:</span>
                         <p className={styles["AlignCenterChecklist"]}>
                           {GetEndOfComplianceReport?.complianceSummary
                             ?.totalTasks || 0}
@@ -477,7 +477,7 @@ const EndOfComplianceReport = () => {
             </div>
           )}
 
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
@@ -517,25 +517,29 @@ const EndOfComplianceReport = () => {
                     </Col>
 
                     <Col lg={4} xs="auto">
-                      <label className={styles.ComplianceReportHeadings}>
-                        {t("Authority")}:{" "}
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.authorityName
-                        }
-                      </label>
-                      <div className={`${styles.iconTextWrapperPDFDownload} `}>
-                        <img
-                          src={ComplianceCalendar}
-                          alt="ComplianceCalendar"
-                        />
-                        <div>
-                          <label>{t("Generated-date")}:</label>
-                          <p>
-                            {formatDateToYMD(
-                              GetEndOfComplianceReport?.header?.generatedOn,
-                            )}
-                          </p>
+                      <div className="d-flex flex-column justify-content-between h-100">
+                        <label className={styles.ComplianceReportHeadings}>
+                          {t("Authority")}:{" "}
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.authorityName
+                          }
+                        </label>
+                        <div
+                          className={`${styles.iconTextWrapperPDFDownload} `}
+                        >
+                          <img
+                            src={ComplianceCalendar}
+                            alt="ComplianceCalendar"
+                          />
+                          <div>
+                            <label>{t("Generated-date")}:</label>
+                            <p>
+                              {formatDateToYMD(
+                                GetEndOfComplianceReport?.header?.generatedOn
+                              )}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </Col>
@@ -637,23 +641,27 @@ const EndOfComplianceReport = () => {
                     </div>
 
                     <div className={styles.customLegend}>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotBlue}></span>
-                        {t("Tasks-completed-on-time")} (
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.tasksCompletedOnTime
-                        }
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-on-time")} (
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.tasksCompletedOnTime
+                          }
+                          )
+                        </span>
                       </div>
-                      <div>
+                      <div className={styles.legendItem}>
                         <span className={styles.legendDotYellow}></span>
-                        {t("Tasks-completed-late")} (
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.tasksCompletedLate
-                        }
-                        )
+                        <span className={styles.legendText}>
+                          {t("Tasks-completed-late")} (
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.tasksCompletedLate
+                          }
+                          )
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -669,18 +677,100 @@ const EndOfComplianceReport = () => {
                   <p>{t("Checklists-in-this-report")}:</p>
                 </Col>
 
-                {GetEndOfComplianceReport?.checklists.map(
-                  (checklist, index) => (
-                    <Col
-                      key={checklist.checklistID}
-                      lg={12}
-                      xs="auto"
-                      className={styles.checklist_report}
-                    >
-                      {index + 1}. {checklist.checklistTitle}
-                    </Col>
-                  ),
-                )}
+                <Col lg={12} xs="auto">
+                  <div className={styles.titleSection}>
+                    <label>{t("Compliance-title")}:</label>
+                    <p className={styles.longTitle}>
+                      {` ${
+                        GetEndOfComplianceReport?.complianceSummary
+                          ?.complianceTitle || "No Compliance Title"
+                      }`}
+                    </p>
+                  </div>
+                </Col>
+
+                {GetEndOfComplianceReport?.checklists.map((checklist) => (
+                  <Col
+                    key={checklist.checklistID}
+                    lg={12}
+                    xs="auto"
+                    className={styles.checklist_report}
+                  >
+                    <div className={styles.panelContent}>
+                      <div className={styles.titleSection}>
+                        <label className={styles.ChecklistTitle}>
+                          {t("Checklists-title")}:
+                        </label>
+                        <p className={styles.longTitleHeading}>
+                          {checklist.checklistTitle}
+                        </p>
+                      </div>
+
+                      {checklist?.tasks?.map((task) => (
+                        <div key={task.taskID}>
+                          <div className={styles.insideAccordianTable}>
+                            <Row>
+                              <Col lg={12} xs="auto">
+                                <div
+                                  className={styles.insideAccordianMainHeading}
+                                >
+                                  <label>{t("Task-title")}:</label>
+
+                                  <p>{task.taskTitle}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={4} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Assignee")}:</label>
+                                  <p>{task.assigneeName || "-"}</p>
+                                </div>
+                              </Col>{" "}
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Due-date")}:</label>
+                                  <p>{formatDateToYMD(task.taskDueDate)}</p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Completed-on")}:</label>
+                                  <p>
+                                    {formatDateToYMD(task.taskCompletedOn) ||
+                                      "-"}
+                                  </p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Completed")}:</label>
+                                  <p>{task.taskStatus}</p>
+                                </div>
+                              </Col>
+                              <Col lg={2} xs="auto">
+                                <div
+                                  className={styles.insideAccordianSubHeading}
+                                >
+                                  <label>{t("Status")}:</label>
+                                  <p>{task.taskStatus}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </Col>
+                ))}
               </Row>
             </div>
           )}

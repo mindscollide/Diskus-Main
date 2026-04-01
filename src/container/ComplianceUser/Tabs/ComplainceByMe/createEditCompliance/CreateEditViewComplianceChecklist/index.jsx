@@ -421,6 +421,7 @@ const CreateEditViewComplianceChecklist = () => {
   const isLockedStatus =
     complianceDetailsState?.status?.value === 9 ||
     complianceDetailsState?.status?.value === 5 ||
+    complianceDetailsState?.status?.value === 6 ||
     complianceDetailsState?.status?.value === 3;
 
   console.log({ isLockedStatus, complianceDetailsState }, "isLockedStatus");
@@ -464,7 +465,6 @@ const CreateEditViewComplianceChecklist = () => {
   const editableStatuses = new Set([1, 2, 4, 7]);
 
   const isComplianceEditable =
-    complianceAddEditViewState === 2 &&
     editableStatuses.has(complianceDetailsState?.status?.value);
 
   console.log(isComplianceEditable, "isComplianceEditable");

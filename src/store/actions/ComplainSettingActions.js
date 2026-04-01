@@ -3277,7 +3277,13 @@ const EditComplianceFail = (message) => {
   };
 };
 
-const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
+const EditComplianceAPI = (
+  navigate,
+  Data,
+  t,
+  setChecklistTabs,
+  flag = null,
+) => {
   return (dispatch) => {
     dispatch(EditComplianceInit());
 
@@ -3290,7 +3296,9 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(EditComplianceAPI(navigate, Data, t, setChecklistTabs));
+          dispatch(
+            EditComplianceAPI(navigate, Data, t, setChecklistTabs, flag),
+          );
         } else if (response.data.responseCode === 200) {
           const message =
             response.data.responseResult?.responseMessage?.toLowerCase() || "";
@@ -3306,6 +3314,30 @@ const EditComplianceAPI = (navigate, Data, t, setChecklistTabs) => {
               );
 
               isFunction(setChecklistTabs) && setChecklistTabs(2);
+              console.log(ViewComplianceDetailsByViewTypeAPI, "Check Console");
+
+              if (flag === 3) {
+                console.log("Check Console");
+                // The new status is in Data.newStatusId
+                if (Data.newStatusId === 7 || Data.newStatusId === 9) {
+                  console.log(Data, "Check Console");
+
+                  await dispatch(
+                    ViewComplianceDetailsByViewTypeAPI(
+                      navigate,
+                      {
+                        complianceId: Data.complianceId,
+                        viewType: 1,
+                      },
+                      t,
+                      0,
+                      null,
+                      null,
+                      null,
+                    ),
+                  );
+                }
+              }
             } else if (
               message.includes(
                 "compliance_complianceservicemanager_editcompliance_02",
