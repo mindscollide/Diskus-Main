@@ -8,6 +8,27 @@ import { committeeStatusUpdate } from "../../../store/actions/Committee_actions"
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+/**
+ * @component CommitteeStatusModal
+ * @description Renders a confirmation modal that prompts the user before changing a
+ * committee's status. The confirmation message is dynamically composed from the
+ * `statusUpdateData.CommitteeStatusId` value: 1 = "In-active", 2 = "Archive", 3 = "Active".
+ * On confirmation the component dispatches the `committeeStatusUpdate` Redux action which
+ * handles the API call and subsequent navigation. On cancellation the modal is simply closed.
+ *
+ * @param {boolean} isActive - Controls modal visibility; `true` shows the modal.
+ * @param {Function} setIsActive - State setter used to open or close the modal.
+ * @param {Object} statusUpdateData - Data payload forwarded to the `committeeStatusUpdate` action.
+ * @param {number} statusUpdateData.CommitteeStatusId - Numeric status identifier:
+ *   `1` = In-active, `2` = Archive, `3` = Active.
+ *
+ * @example
+ * <CommitteeStatusModal
+ *   isActive={showModal}
+ *   setIsActive={setShowModal}
+ *   statusUpdateData={{ CommitteeStatusId: 2, CommitteeID: 10 }}
+ * />
+ */
 const CommitteeStatusModal = ({ isActive, setIsActive, statusUpdateData }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();

@@ -18,6 +18,15 @@ import {
 } from "../../../../../store/actions/Talk_action";
 import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
 
+/**
+ * @component CreateNewShoutAll
+ * @description Renders the "Create a new Shout" screen within the Talk module.
+ * Fetches all organisation users on mount, allows the user to enter a
+ * broadcast list name, search for recipients by name, and select members via
+ * checkboxes. On submission, dispatches the CreateShoutAll action and resets
+ * the Talk UI back to the shout-all list view. Displays a validation warning
+ * when no participants are selected before submission.
+ */
 const CreateNewShoutAll = () => {
   const { talkStateData } = useSelector((state) => state);
 

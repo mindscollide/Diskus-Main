@@ -22,6 +22,16 @@ import TimerIcon from "../../../../../assets/images/Timer-Icon.png";
 import PrivateGroupIcon from "../../../../../assets/images/Private-Group.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component PrivateGroups
+ * @description Renders the list of private group conversations in the Talk
+ * sidebar. Filters all user chats to show only message type 'G' (group)
+ * entries. Handles real-time Socket.io events for new group creation and group
+ * leave (automatically removing a group from the list when the current user
+ * leaves). Supports inline search/filtering, shows the last message preview
+ * with delivery status tick icons, and displays unread message counts.
+ * Clicking a row loads the full group message history and opens the chat box.
+ */
 const PrivateGroups = () => {
   const dispatch = useDispatch();
 

@@ -51,6 +51,31 @@ import ChangeResolutionVoter from "../../../../assets/NotificationIcon/Change th
 import { WebNotificationDateFormatter } from "../../../../commen/functions/date_formater";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component WebNotificationCard
+ * @description Renders a single web notification item showing a context-aware
+ * icon, a truncated message, and a formatted timestamp. The displayed message
+ * is constructed dynamically from the `NotificationMessege` payload object
+ * based on the numeric `NotificaitonID` (IDs 1-51 are supported, covering
+ * meeting, group, committee, resolution, poll, and file-sharing events).
+ * A separator line is rendered between cards unless the card is the last item
+ * in the list.
+ *
+ * @param {Object} NotificationMessege - Payload object containing dynamic
+ *   fields such as `NotifierName`, `MeetingTitle`, `GroupTitle`,
+ *   `CommitteeTitle`, `ResolutionTitle`, `PollTitle`, `FileName`, and
+ *   `FolderName` used to build the notification message string.
+ * @param {string|Date} NotificationTime - Timestamp of the notification,
+ *   formatted via `WebNotificationDateFormatter`.
+ * @param {number} [maxCharacters=101] - Maximum number of characters to
+ *   display before the message is truncated with an ellipsis.
+ * @param {number} index - Zero-based index of this card in the notification
+ *   list, used to decide whether to render the separator line.
+ * @param {number} length - Total number of notifications in the list.
+ * @param {number} NotificaitonID - Numeric identifier that maps to a specific
+ *   notification action type and determines both the icon displayed and the
+ *   message template used.
+ */
 const WebNotificationCard = ({
   NotificationMessege,
   NotificationTime,

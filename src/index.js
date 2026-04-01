@@ -1,3 +1,18 @@
+/**
+ * @file index.js
+ * @description Application entry point.
+ *
+ * Bootstraps two React roots:
+ *  1. `#mainSpinner` — global loading spinner (Redux-connected, shown via store state)
+ *  2. `#root`        — main application tree wrapped in the full provider stack
+ *
+ * Provider nesting order (outer → inner):
+ *   GoogleOAuthProvider → Redux Provider → AuthProvider → TalkProvider →
+ *   MeetingProvider → GroupsProvider → CommitteeProvider → DataroomProvider →
+ *   PollsProvider → NotesProvider → ResolutionProvider → ComlianceProvider → App
+ *
+ * AuthProvider is near the top because downstream providers may depend on auth state.
+ */
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";

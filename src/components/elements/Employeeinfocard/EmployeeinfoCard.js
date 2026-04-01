@@ -2,6 +2,30 @@ import { Col, Row } from "react-bootstrap";
 import styles from "./EmployeeinfoCard.module.css";
 import { isBase64 } from "../../../commen/functions/validations";
 
+/**
+ * @component EmployeeinfoCard
+ * @description Displays an employee's profile picture, name, email, and an action
+ * icon in a horizontal card layout. Used in participant or attendee lists where
+ * employee details need to be shown alongside a contextual action (e.g. add/remove).
+ * The profile image is only rendered when the provided picture string is a valid
+ * base64-encoded value; otherwise the image src is set to null.
+ *
+ * @param {string} props.Employeename - Full name of the employee.
+ * @param {string} props.Employeeemail - Email address of the employee.
+ * @param {React.ReactNode} props.Icon - An icon element (e.g. add/remove button)
+ *   displayed at the end of the card row.
+ * @param {string} [props.EmployeePic] - Base64-encoded JPEG string for the employee's
+ *   profile picture. Validated via `isBase64()` before use; falls back to no image
+ *   if undefined or not valid base64.
+ *
+ * @example
+ * <EmployeeinfoCard
+ *   Employeename="Sara Ahmed"
+ *   Employeeemail="sara@company.com"
+ *   Icon={<AddIcon />}
+ *   EmployeePic={base64String}
+ * />
+ */
 const EmployeeinfoCard = ({
   Employeename,
   Employeeemail,

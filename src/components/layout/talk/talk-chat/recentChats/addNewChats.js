@@ -19,6 +19,15 @@ import {
 } from "../../../../../store/actions/Talk_action";
 import CloseChatIcon from "../../../../../assets/images/Cross-Chat-Icon.png";
 
+/**
+ * @component AddNewChat
+ * @description Renders the "New Conversation" user-picker screen in the Talk
+ * module. Fetches all organisation users from the API on mount and displays
+ * them in an alphabetically sorted list with a live search field. Selecting a
+ * user dispatches actions to load their OTO message history, set them as the
+ * active chat, and return the UI to the recent-chats view with the chat box
+ * open. Closing the screen restores the default Talk sidebar state.
+ */
 const AddNewChat = () => {
   const { talkStateData } = useSelector((state) => state);
 

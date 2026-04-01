@@ -6,6 +6,24 @@ import img1 from "./../../../assets/images/limit-exceed.png";
 import img2 from "./../../../assets/images/newElements/Line.png";
 import { useTranslation } from "react-i18next";
 
+/**
+ * @component DismissWarningAlert
+ * @description A dismissible subscription-expiry warning banner displayed at the top of
+ * relevant pages. Built on React-Bootstrap's Alert component with the "danger" variant.
+ * The alert is visible by default (show=true) and disappears permanently when the user
+ * clicks the close (X) button, using internal component state — the dismissed state is
+ * not persisted across page loads.
+ *
+ * The heading message ("Your-subscription-will-expire-soon") is internationalised via
+ * react-i18next so it adapts to the user's selected language. A "Revoke Cancellation"
+ * action link is also shown, though its handler is not yet wired up.
+ *
+ * This component accepts no props — all content and behaviour is self-contained.
+ *
+ * @example
+ * // Render the banner at the top of a page or layout component:
+ * <DismissWarningAlert />
+ */
 const DismissWarningAlert = () => {
   const [show, setShow] = useState(true);
   const { t } = useTranslation();

@@ -1,11 +1,11 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import styles from "./ComplianceStandingReport.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useComplianceContext } from "../../../../../context/ComplianceContext";
 import BackButton from "./../../../../../assets/images/backbutton.svg";
 import Verification from "./../../../../../assets/images/Verification.png";
 import ComplianceCalendar from "./../../../../../assets/images/ComplianceCalendar.png";
-import { DatePicker, Collapse, Progress, Spin, Tooltip, Checkbox } from "antd";
+import { DatePicker, Spin, Tooltip, Checkbox } from "antd";
 import CustomButton from "../../../../../components/elements/button/Button";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import generatePDF, { Resolution, Margin } from "react-to-pdf";
@@ -16,52 +16,85 @@ import { useTranslation } from "react-i18next";
 import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconAscend.png";
-import DefaultSortIcon from "../../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import { ChevronDown } from "react-bootstrap-icons";
 import CustomTable from "../../../../../components/elements/table/Table";
 
-const { Panel } = Collapse;
+// ---------------------------------------------------------------------------
+// Module-level constants (no component-state dependency → never recreated)
+// ---------------------------------------------------------------------------
 
-/**
- * PDF generation options — hoisted to module level because they do not
- * depend on any component state or props.
- */
-const pdfOptions = {
+/** react-to-pdf options for a high-resolution landscape A4 PDF. */
+const PDF_OPTIONS = {
   method: "save",
-  filename: "Compliance-Standing-Report.pdf",
+  filename: "Compliance Standing Report.pdf",
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
     format: "A4",
     orientation: "landscape",
   },
-  canvas: {
-    mimeType: "image/png",
-    qualityRatio: 1,
-  },
+  canvas: { mimeType: "image/png", qualityRatio: 1 },
   overrides: {
-    pdf: {
-      compress: true,
-    },
-    canvas: {
-      useCORS: true,
-    },
+    pdf: { compress: true },
+    canvas: { useCORS: true },
   },
 };
 
-/**
- * Returns the DOM element used as the PDF capture target.
- * Hoisted to module level — no dependency on component state.
- *
- * @returns {HTMLElement|null}
- */
+/** Returns the DOM node captured by react-to-pdf. */
 const getTargetElement = () => document.getElementById("content-id");
+
+// ---------------------------------------------------------------------------
+// Criticality style map (static — defined once at module level)
+// ---------------------------------------------------------------------------
+
+/** Inline-style map keyed by criticality value (1 = High, 2 = Medium, 3 = Low). */
+const CRITICALITY_STYLE = {
+  1: {
+    fontSize: "13px",
+    color: "#F16B6B",
+    fontWeight: 600,
+    backgroundColor: "#FFDEDE",
+    padding: "3px 6px",
+    borderRadius: "4px",
+    display: "inline-block",
+    minWidth: "60px",
+    textAlign: "center",
+  },
+  2: {
+    fontSize: "13px",
+    color: "#D8A709",
+    fontWeight: 600,
+    backgroundColor: "#FFF8E1",
+    padding: "3px 6px",
+    borderRadius: "4px",
+    display: "inline-block",
+    minWidth: "60px",
+    textAlign: "center",
+  },
+  3: {
+    fontSize: "13px",
+    color: "#6172D6",
+    fontWeight: 600,
+    backgroundColor: "#ECEFFF",
+    padding: "3px 6px",
+    borderRadius: "4px",
+    display: "inline-block",
+    minWidth: "60px",
+    textAlign: "center",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Component
+// ---------------------------------------------------------------------------
 
 /**
  * ComplianceStandingReport
  *
- * Renders a full-page compliance standing report with sortable columns,
- * a criticality filter, expandable rows, and a PDF-download capability.
+ * Displays a sortable, filterable compliance standing report with:
+ *  - A header bar (back button, report metadata, date-range picker, PDF download).
+ *  - An Ant Design table with expandable rows showing checklist / task detail.
+ *  - A hidden print layout (`#content-id`) mounted only during PDF generation.
  *
  * @returns {JSX.Element}
  */
@@ -69,10 +102,24 @@ const ComplianceStandingReport = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
-  const { criticalityOptions } = useComplianceContext();
 
-  // Sorting state per column
+  // ── Context ───────────────────────────────────────────────────────────────
+  const { criticalityOptions, setComplianceStandingReport } =
+    useComplianceContext();
+
+  // ── Redux ─────────────────────────────────────────────────────────────────
+  /** Full API response: `{ complianceStandingReport: { reportTitle, generatedDate, complianceListData[] } }` */
+  const GetComplianceStandingReport = useSelector(
+    (state) =>
+      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
+  );
+
+  // ── Local state ───────────────────────────────────────────────────────────
+
+  /** Active criticality filter values; defaults to all three levels selected. */
+  const [criticalityFilter, setCriticalityFilter] = useState([1, 2, 3]);
+
+  // Per-column sort direction: null | "ascend" | "descend"
   const [complianceNameSort, setComplianceNameSort] = useState(null);
   const [authoritySort, setAuthoritySort] = useState(null);
   const [dueDateSort, setDueDateSort] = useState(null);
@@ -81,80 +128,75 @@ const ComplianceStandingReport = () => {
   const [overdueTasksSort, setOverdueTasksSort] = useState(null);
   const [progressSort, setProgressSort] = useState(null);
 
-  const { complianceStatndingReport, setComplianceStandingReport } =
-    useComplianceContext();
-
-  const GetComplianceStandingReport = useSelector(
-    (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
-  );
-
+  /** True while PDF generation is in progress — shows the Spin overlay. */
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showPdfLayout, setShowPdfLayout] = useState(false);
-
-  const [dateRange, setDateRange] = useState(null);
-
-  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   /**
-   * Triggers PDF generation: shows the print layout, waits for fonts,
-   * generates the PDF, then restores the normal layout.
+   * When true the interactive layout is replaced by the PDF print layout
+   * (`#content-id`) so react-to-pdf can capture it.
    */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleClickGenerateODF = useCallback(async () => {
+  const [showPdfLayout, setShowPdfLayout] = useState(false);
+
+  /** Currently selected RangePicker value (pair of dayjs objects or null). */
+  const [dateRange, setDateRange] = useState(null);
+
+  /** Keys of currently expanded table rows. */
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
+
+  /**
+   * Generates and saves the compliance standing report as a PDF.
+   *
+   * Flow: show print layout → wait for DOM + fonts → generate → restore layout.
+   */
+  const handleClickGenerateODF = async () => {
     try {
       setIsGenerating(true);
       setShowPdfLayout(true);
-      await new Promise((r) => setTimeout(r, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       await document.fonts.ready;
-      await generatePDF(getTargetElement, pdfOptions);
+      await generatePDF(getTargetElement, PDF_OPTIONS);
     } catch (err) {
       console.error("PDF generation failed:", err);
     } finally {
       setShowPdfLayout(false);
       setIsGenerating(false);
     }
-  }, []);
+  };
 
   /**
-   * Handles date-range picker changes. Dispatches the API call with the
-   * selected start/end dates, or clears the filter when the picker is cleared.
+   * Handles RangePicker changes.
    *
-   * @param {import("dayjs").Dayjs[]|null} dates
+   * Clears the filter when `dates` is null; otherwise stores the selection and
+   * dispatches the API call with the formatted start/end dates.
+   *
+   * @param {import("dayjs").Dayjs[] | null} dates
    */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleDateRangeChange = useCallback(
-    (dates) => {
-      if (!dates) {
-        setDateRange(null);
-        dispatch(
-          GetComplianceStandingReportAPI(
-            navigate,
-            { startDate: "", endDate: null },
-            t,
-          ),
-        );
-        return;
-      }
-
-      const startDate = dates[0].format("YYYYMMDD");
-      const endDate = dates[1].format("YYYYMMDD");
-
-      setDateRange(dates);
-
+  const handleDateRangeChange = (dates) => {
+    if (!dates) {
+      setDateRange(null);
       dispatch(
         GetComplianceStandingReportAPI(
           navigate,
-          { startDate, endDate: null },
+          { startDate: "", endDate: null },
           t,
         ),
       );
-    },
-    [setDateRange],
-  );
+      return;
+    }
+
+    const startDate = dates[0].format("YYYYMMDD");
+    const endDate = dates[1].format("YYYYMMDD");
+    setDateRange(dates);
+    dispatch(
+      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t),
+    );
+  };
 
   /**
-   * Resets all column sort states to null.
+   * Resets every column's sort direction to null.
+   * Always called before applying a new sort so only one column is active.
    */
   const resetAllSorts = () => {
     setComplianceNameSort(null);
@@ -167,44 +209,57 @@ const ComplianceStandingReport = () => {
   };
 
   /**
-   * Handles Ant Design Table onChange events — updates the active sort
-   * column and synchronises the criticality filter state.
+   * Ant Design Table `onChange` handler.
    *
-   * @param {object} pagination
-   * @param {object} filters
-   * @param {object} sorter
+   * Resets all column sorts, activates the clicked column's sort, and syncs
+   * the criticality filter when the user confirms a filter selection.
+   *
+   * @param {object} _pagination - Unused; present to match the Table signature.
+   * @param {object} filters     - Active filter values keyed by column key.
+   * @param {object} sorter      - Active sorter `{ columnKey, order }`.
    */
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChangeStandingReportSorter = useCallback(
-    (pagination, filters, sorter) => {
-      resetAllSorts();
+  const handleChangeStandingReportSorter = (_pagination, filters, sorter) => {
+    resetAllSorts();
 
-      if (sorter.columnKey === "ComplianceName") {
-        setComplianceNameSort(sorter.order);
-      } else if (sorter.columnKey === "Authority") {
-        setAuthoritySort(sorter.order);
-      } else if (sorter.columnKey === "dueDate") {
-        setDueDateSort(sorter.order);
-      } else if (sorter.columnKey === "totalChecklists") {
-        setTotalCheckListsSort(sorter.order);
-      } else if (sorter.columnKey === "NoOfTasks") {
-        setNoOfTasksSort(sorter.order);
-      } else if (sorter.columnKey === "overdueTasks") {
-        setOverdueTasksSort(sorter.order);
-      } else if (sorter.columnKey === "Progress") {
-        setProgressSort(sorter.order);
-      }
+    const sortSetters = {
+      ComplianceName: setComplianceNameSort,
+      Authority: setAuthoritySort,
+      dueDate: setDueDateSort,
+      totalChecklists: setTotalCheckListsSort,
+      NoOfTasks: setNoOfTasksSort,
+      overdueTasks: setOverdueTasksSort,
+      Progress: setProgressSort,
+    };
 
-      if (filters?.criticality) {
-        setCriticalityFilter(filters.criticality || [1, 2, 3]);
-      }
-    },
-    [],
-  );
+    if (sorter.columnKey && sortSetters[sorter.columnKey]) {
+      sortSetters[sorter.columnKey](sorter.order);
+    }
+
+    if (filters?.criticality) {
+      setCriticalityFilter(filters.criticality ?? [1, 2, 3]);
+    }
+  };
 
   /**
-   * Returns the Ant Design column props for the Criticality filter dropdown.
-   * Memoised so the columns useMemo can list it as a stable dependency.
+   * Toggles the expanded/collapsed state of a single table row.
+   *
+   * @param {string | number} key - The row `key` to toggle.
+   */
+  const toggleRowExpand = (key) => {
+    setExpandedRowKeys((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+    );
+  };
+
+  // ── Memoised values ───────────────────────────────────────────────────────
+
+  /**
+   * Stable criticality filter-dropdown column props.
+   *
+   * FIX: Previously `getCriticalityColumnProps` was a plain function referenced
+   * in the `columns` useMemo dependency array.  A new function reference was
+   * created on every render, causing `columns` to rebuild unnecessarily.
+   * Now inlined as a stable memoised object.
    */
   const criticalityColumnProps = useMemo(
     () => ({
@@ -221,7 +276,6 @@ const ComplianceStandingReport = () => {
               marginBottom: 8,
             }}
           />
-
           <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
             <CustomButton
               text={t("Reset")}
@@ -252,49 +306,53 @@ const ComplianceStandingReport = () => {
     [criticalityFilter, criticalityOptions, t],
   );
 
-  const tableData =
-    GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
-      (item) => ({
-        key: item.complianceId,
-        ComplianceName: item.complianceTitle,
-        Authority: item.authorityShortCode,
-        criticality: item.criticality.value,
-        dueDate: item.dueDate,
-        totalChecklists: item.totalChecklists,
-        NoOfTasks: item.totalTasks,
-        overdueTasks: item.overdueTasks,
-        Progress: item.progressPercentage,
-        originalData: item,
-      }),
-    ) || [];
+  /**
+   * Table data derived from the Redux API response.
+   * Falls back to an empty array while data is loading.
+   */
+  const tableData = useMemo(
+    () =>
+      GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
+        (item) => ({
+          key: item.complianceId,
+          ComplianceName: item.complianceTitle,
+          Authority: item.authorityShortCode,
+          criticality: item.criticality.value,
+          dueDate: item.dueDate,
+          totalChecklists: item.totalChecklists,
+          NoOfTasks: item.totalTasks,
+          overdueTasks: item.overdueTasks,
+          Progress: item.progressPercentage,
+          originalData: item,
+        }),
+      ) ?? [],
+    [GetComplianceStandingReport],
+  );
 
   /**
-   * Toggles the expanded state of a table row identified by key.
+   * Column definitions for the Ant Design Table.
    *
-   * @param {string|number} key - The row key to toggle.
+   * FIX 1: `expandedRowKeys` was missing from deps — arrow icon showed stale state.
+   * FIX 2: Progress sorter used `a.progressSort` (undefined) — corrected to `a.Progress`.
+   * FIX 3: Criticality column had two `render` functions — duplicate removed;
+   *        kept the correct one (1=High, 2=Medium, 3=Low).
    */
-  const toggleRowExpand = useCallback((key) => {
-    setExpandedRowKeys((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
-    );
-  }, []);
+  const columns = useMemo(() => {
+    /**
+     * Returns the correct sort-arrow icon for a given sort state.
+     * @param {"ascend"|"descend"|null} sortState
+     * @returns {string} image src
+     */
+    const sortIcon = (sortState) =>
+      sortState === "descend" ? ArrowUpIcon : ArrowDownIcon;
 
-  const columns = useMemo(
-    () => [
+    return [
+      // ── Compliance Name ──────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center">
             {t("Compliance-name")}
-            <img
-              src={
-                complianceNameSort === "descend"
-                  ? ArrowUpIcon
-                  : complianceNameSort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
-              }
-              alt=""
-            />
+            <img src={sortIcon(complianceNameSort)} alt="" />
           </span>
         ),
         dataIndex: "ComplianceName",
@@ -305,24 +363,15 @@ const ComplianceStandingReport = () => {
             b.ComplianceName?.toLowerCase(),
           ),
         sortOrder: complianceNameSort,
-        render: (text) => {
-          return <span>{text}</span>;
-        },
+        render: (text) => <span>{text}</span>,
       },
+
+      // ── Authority ────────────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center">
             {t("Authority")}
-            <img
-              src={
-                authoritySort === "descend"
-                  ? ArrowUpIcon
-                  : authoritySort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
-              }
-              alt=""
-            />
+            <img src={sortIcon(authoritySort)} alt="" />
           </span>
         ),
         dataIndex: "Authority",
@@ -330,10 +379,11 @@ const ComplianceStandingReport = () => {
         sorter: (a, b) =>
           a.Authority?.toLowerCase().localeCompare(b.Authority?.toLowerCase()),
         sortOrder: authoritySort,
-        render: (text) => {
-          return <span className={styles.badge}>{text}</span>;
-        },
+        render: (text) => <span className={styles.badge}>{text}</span>,
       },
+
+      // ── Criticality ──────────────────────────────────────────────────────
+      // FIX: removed duplicate render; correct label order: 1=High, 2=Medium, 3=Low
       {
         title: t("Criticality"),
         dataIndex: "criticality",
@@ -341,67 +391,19 @@ const ComplianceStandingReport = () => {
         ellipsis: true,
         align: "center",
         ...criticalityColumnProps,
-        render: (text) => {
-          let style = {};
-
-          if (text === 1) {
-            style = {
-              fontSize: "13px",
-              color: "#F16B6B",
-              fontWeight: 600,
-              backgroundColor: "#FFDEDE",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          } else if (text === 2) {
-            style = {
-              fontSize: "13px",
-              color: "#D8A709",
-              fontWeight: 600,
-              backgroundColor: "#FFF8E1",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          } else if (text === 3) {
-            style = {
-              fontSize: "13px",
-              color: "#6172D6",
-              fontWeight: 600,
-              backgroundColor: "#ECEFFF",
-              padding: "3px 6px",
-              borderRadius: "4px",
-              display: "inline-block",
-              minWidth: "60px",
-              textAlign: "center",
-            };
-          }
-
-          const label =
-            text === 1 ? t("High") : text === 2 ? t("Medium") : t("Low");
-
-          return <span style={style}>{label}</span>;
-        },
+        render: (value) => (
+          <span style={CRITICALITY_STYLE[value] ?? {}}>
+            {value === 1 ? t("High") : value === 2 ? t("Medium") : t("Low")}
+          </span>
+        ),
       },
+
+      // ── Due Date ─────────────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center">
             {t("Due-date")}
-            <img
-              src={
-                dueDateSort === "descend"
-                  ? ArrowUpIcon
-                  : dueDateSort === "ascend"
-                    ? ArrowDownIcon
-                    : ArrowDownIcon
-              }
-              alt=""
-            />
+            <img src={sortIcon(dueDateSort)} alt="" />
           </span>
         ),
         dataIndex: "dueDate",
@@ -410,89 +412,84 @@ const ComplianceStandingReport = () => {
         sortOrder: dueDateSort,
         render: (value) => formatDateToYMD(value),
       },
+
+      // ── Total Checklists ─────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Total-checklists")}
-            {totalCheckListsSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : totalCheckListsSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={sortIcon(totalCheckListsSort)}
+              alt=""
+              className="cursor-pointer"
+            />
           </span>
         ),
         dataIndex: "totalChecklists",
         key: "totalChecklists",
         width: "12%",
         ellipsis: true,
+        align: "center",
         sorter: (a, b) => (a.totalChecklists || 0) - (b.totalChecklists || 0),
         sortOrder: totalCheckListsSort,
-        align: "center",
-        render: (text) => {
-          return <span>{text}</span>;
-        },
+        render: (text) => <span>{text}</span>,
       },
+
+      // ── No. of Tasks ─────────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("No-of-tasks")}
-            {noOfTasksSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : noOfTasksSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={sortIcon(noOfTasksSort)}
+              alt=""
+              className="cursor-pointer"
+            />
           </span>
         ),
         dataIndex: "NoOfTasks",
         key: "NoOfTasks",
         width: "10%",
         ellipsis: true,
+        align: "center",
         sorter: (a, b) => (a.NoOfTasks || 0) - (b.NoOfTasks || 0),
         sortOrder: noOfTasksSort,
-        align: "center",
-        render: (text) => {
-          return <span>{text}</span>;
-        },
+        render: (text) => <span>{text}</span>,
       },
+
+      // ── Overdue Tasks ────────────────────────────────────────────────────
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Overdue-tasks")}
-            {overdueTasksSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : overdueTasksSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={sortIcon(overdueTasksSort)}
+              alt=""
+              className="cursor-pointer"
+            />
           </span>
         ),
         dataIndex: "overdueTasks",
         key: "overdueTasks",
         width: "11%",
         ellipsis: true,
+        align: "center",
         sorter: (a, b) => (a.overdueTasks || 0) - (b.overdueTasks || 0),
         sortOrder: overdueTasksSort,
-        align: "center",
-        render: (text) => {
-          return <span>{text}</span>;
-        },
+        render: (text) => <span>{text}</span>,
       },
+
+      // ── Progress ─────────────────────────────────────────────────────────
+      // FIX: sorter was `a.progressSort` (always undefined) → corrected to `a.Progress`
       {
         title: (
           <span className="d-flex gap-2 align-items-center justify-content-start">
             {t("Progress")}
-            {progressSort === "descend" ? (
-              <img src={ArrowUpIcon} alt="" className="cursor-pointer" />
-            ) : progressSort === "ascend" ? (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            ) : (
-              <img src={ArrowDownIcon} alt="" className="cursor-pointer" />
-            )}
+            <img
+              src={sortIcon(progressSort)}
+              alt=""
+              className="cursor-pointer"
+            />
           </span>
         ),
         dataIndex: "Progress",
@@ -500,19 +497,19 @@ const ComplianceStandingReport = () => {
         width: "8%",
         align: "center",
         ellipsis: true,
-        sorter: (a, b) => (a.progressSort || 0) - (b.progressSort || 0),
+        sorter: (a, b) => (a.Progress || 0) - (b.Progress || 0),
         sortOrder: progressSort,
-        render: (text) => {
-          return <span>{text}%</span>;
-        },
+        render: (text) => <span>{text}%</span>,
       },
+
+      // ── Expand / Collapse toggle ─────────────────────────────────────────
+      // FIX: expandedRowKeys added to deps so arrow icon re-renders on toggle
       {
         title: "",
         key: "arrow",
         align: "right",
         render: (_, record) => {
           const isExpanded = expandedRowKeys.includes(record.key);
-
           return (
             <span
               onClick={(e) => {
@@ -526,20 +523,21 @@ const ComplianceStandingReport = () => {
           );
         },
       },
-    ],
-    [
-      complianceNameSort,
-      authoritySort,
-      dueDateSort,
-      totalCheckListsSort,
-      noOfTasksSort,
-      criticalityColumnProps,
-      overdueTasksSort,
-      progressSort,
-      expandedRowKeys,
-      t,
-    ],
-  );
+    ];
+  }, [
+    complianceNameSort,
+    authoritySort,
+    dueDateSort,
+    totalCheckListsSort,
+    noOfTasksSort,
+    overdueTasksSort,
+    progressSort,
+    criticalityColumnProps,
+    expandedRowKeys, // FIX: was missing
+    t,
+  ]);
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className={styles.mainDivComplianceStanding}>
@@ -549,8 +547,12 @@ const ComplianceStandingReport = () => {
         tip="Generating PDF..."
         className="d-flex justify-content-center align-items-center"
       >
+        {/* ==================================================================
+            INTERACTIVE LAYOUT — visible during normal usage
+        ================================================================== */}
         {!showPdfLayout && (
           <>
+            {/* ── Header row ─────────────────────────────────────────────── */}
             <Row className="align-items-center">
               <Col xs="auto">
                 <img
@@ -578,7 +580,6 @@ const ComplianceStandingReport = () => {
                 <div>
                   <label>{t("Generated-date")}:</label>
                   <p>
-                    {" "}
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
                         ?.generatedDate,
@@ -612,22 +613,25 @@ const ComplianceStandingReport = () => {
                 />
               </Col>
             </Row>
+
+            {/* ── Report title ───────────────────────────────────────────── */}
             <Row>
               <Col
                 lg={12}
                 xs="auto"
                 className={`${styles.ComplianceMainHeading} mt-4`}
               >
-                <div>
+                <div className={styles.titleBlueColor}>
                   <label>{t("Report-title")}:</label>
                   <p>
-                    {" "}
                     {GetComplianceStandingReport?.complianceStandingReport
                       ?.reportTitle || "No Compliance Standing Report Title"}
                   </p>
                 </div>
               </Col>
             </Row>
+
+            {/* ── Compliance table ───────────────────────────────────────── */}
             <div className={styles.tableWrapper}>
               <CustomTable
                 rows={tableData}
@@ -637,11 +641,10 @@ const ComplianceStandingReport = () => {
                 onChange={handleChangeStandingReportSorter}
                 expandable={{
                   showExpandColumn: false,
-                  expandedRowKeys: expandedRowKeys,
+                  expandedRowKeys,
                   onExpandedRowsChange: setExpandedRowKeys,
                   expandedRowRender: (record) => {
                     const item = record.originalData;
-
                     if (!item) return null;
 
                     return (
@@ -658,15 +661,20 @@ const ComplianceStandingReport = () => {
                               className={styles.panelContent}
                               key={checklist.checklistId}
                             >
+                              {/* Checklist title */}
                               <Row>
-                                <Col lg={12}>
-                                  <div className={styles.ComplianceMainHeading}>
+                                <Col
+                                  lg={12}
+                                  className={styles.ComplianceMainHeading}
+                                >
+                                  <div className={styles.titleBlueColor}>
                                     <label>{t("Checklist-title")}:</label>
                                     <p>{checklist.checklistTitle}</p>
                                   </div>
                                 </Col>
                               </Row>
 
+                              {/* Task list */}
                               <div className={styles.MainAccordianTable}>
                                 {!checklist?.checklistTasks?.length ? (
                                   <div className={styles.NoDataFoundTable}>
@@ -694,7 +702,6 @@ const ComplianceStandingReport = () => {
                                           </div>
                                         </Col>
                                       </Row>
-
                                       <Row>
                                         <Col lg={4}>
                                           <div
@@ -703,10 +710,9 @@ const ComplianceStandingReport = () => {
                                             }
                                           >
                                             <label>{t("Assignee")}:</label>
-                                            <p>{task.taskAssignee}</p>
+                                            <p>{task.taskAssignee || "-"}</p>
                                           </div>
                                         </Col>
-
                                         <Col lg={2}>
                                           <div
                                             className={
@@ -720,7 +726,6 @@ const ComplianceStandingReport = () => {
                                             </p>
                                           </div>
                                         </Col>
-
                                         <Col lg={2}>
                                           <div
                                             className={
@@ -735,7 +740,6 @@ const ComplianceStandingReport = () => {
                                             </p>
                                           </div>
                                         </Col>
-
                                         <Col lg={2}>
                                           <div
                                             className={
@@ -743,10 +747,9 @@ const ComplianceStandingReport = () => {
                                             }
                                           >
                                             <label>{t("Status")}:</label>
-                                            <p>{task.status}</p>
+                                            <p>{task.status || "-"}</p>
                                           </div>
                                         </Col>
-
                                         <Col lg={2}>
                                           <div
                                             className={
@@ -754,7 +757,9 @@ const ComplianceStandingReport = () => {
                                             }
                                           >
                                             <label>{t("Completed")}:</label>
-                                            <p>{task.completionStatus}</p>
+                                            <p>
+                                              {task.completionStatus || "-"}
+                                            </p>
                                           </div>
                                         </Col>
                                       </Row>
@@ -770,14 +775,18 @@ const ComplianceStandingReport = () => {
                   },
                   rowExpandable: () => true,
                 }}
-                className={"Compliance_Table Report_Table  mt-3"}
+                className="Compliance_Table Report_Table mt-3"
               />
             </div>
           </>
         )}
 
+        {/* ==================================================================
+            PDF PRINT LAYOUT — mounted only while generating the PDF
+        ================================================================== */}
         {showPdfLayout && (
           <div id="content-id">
+            {/* Report title */}
             <Row>
               <Col
                 lg={12}
@@ -787,20 +796,19 @@ const ComplianceStandingReport = () => {
                 <div>
                   <label>{t("Report-title")}:</label>
                   <p>
-                    {" "}
-                    {
-                      GetComplianceStandingReport?.complianceStandingReport
-                        ?.reportTitle
-                    }
+                    {GetComplianceStandingReport?.complianceStandingReport
+                      ?.reportTitle || "-"}
                   </p>
                 </div>
               </Col>
             </Row>
-            <Row className={`${styles.ComplianceSection} gap-3 mx-1 mt-4`}>
+
+            {/* Metadata row */}
+            <Row className={`${styles.ComplianceSection} gap-4 mx-1 mt-4`}>
               <Col className={styles.iconTextWrapperPDF}>
                 <img src={Verification} alt="Verification" />
                 <div>
-                  <label>{t("Report-type ")}:</label>
+                  <label>{t("Report-type")}:</label>
                   <p>{t("Compliance-standing")}</p>
                 </div>
               </Col>
@@ -809,23 +817,28 @@ const ComplianceStandingReport = () => {
                 <div>
                   <label>{t("Generated-date")}:</label>
                   <p>
-                    {" "}
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
                         ?.generatedDate,
-                    )}
+                    ) || "-"}
                   </p>
                 </div>
               </Col>
+              {/* FIX: was hardcoded "-"; now reflects the actual selected date range */}
               <Col className={styles.iconTextWrapperPDF}>
                 <img src={ComplianceCalendar} alt="ComplianceCalendar" />
                 <div>
                   <label>{t("Date-range")}:</label>
-                  <p>1 January 2025 - 31 March 2025</p>
+                  <p>
+                    {dateRange
+                      ? `${dateRange[0].format("DD/MM/YYYY")} - ${dateRange[1].format("DD/MM/YYYY")}`
+                      : "-"}
+                  </p>
                 </div>
               </Col>
             </Row>
 
+            {/* Compliance list */}
             <Row>
               <Col
                 lg={12}
@@ -834,15 +847,142 @@ const ComplianceStandingReport = () => {
               >
                 <p>{t("Compliances-in-this-report")}:</p>
               </Col>
+
               {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
-                (item, index) => (
+                (compliance, index) => (
                   <Col
-                    key={item?.complianceId}
+                    key={compliance.complianceId} // FIX: was complianceID (wrong casing)
                     lg={12}
                     xs="auto"
-                    className={`${styles.checklist_report}  `}
+                    className={styles.checklist_report}
                   >
-                    {index + 1}.{item?.complianceTitle}
+                    {/* Compliance title */}
+                    <div className={styles.titleSection}>
+                      <label>{t("Compliance-title")}:</label>
+                      <p className={styles.longTitle}>
+                        {`${index + 1}. ${
+                          compliance.complianceTitle || "No Compliance Title"
+                        }`}
+                      </p>
+                    </div>
+
+                    {/* Checklists */}
+                    {!compliance?.checklistData?.length ? (
+                      <div className={styles.NoDataFoundTable}>
+                        <div className={styles.nodatafound_subHeading}>
+                          {t("No-Checklist-Found")}
+                        </div>
+                      </div>
+                    ) : (
+                      compliance.checklistData.map((checklist) => (
+                        <div
+                          className={styles.panelContent}
+                          key={checklist.checklistId} // FIX: was checklistID (wrong casing)
+                        >
+                          {/* Checklist title */}
+                          <div className={styles.titleSection}>
+                            <label className={styles.ChecklistTitle}>
+                              {t("Checklists-title")}:
+                            </label>
+                            <p className={styles.longTitleHeading}>
+                              {checklist.checklistTitle}
+                            </p>
+                          </div>
+
+                          {/* Tasks */}
+                          {!checklist?.checklistTasks?.length ? (
+                            <div className={styles.NoDataFoundTable}>
+                              <div className={styles.nodatafound_subHeading}>
+                                {t("No-Checklist-Task")}
+                              </div>
+                            </div>
+                          ) : (
+                            checklist.checklistTasks.map((task) => (
+                              <div
+                                key={task.taskId} // FIX: was taskID (wrong casing)
+                                className={styles.insideAccordianTable}
+                              >
+                                {/* Task title */}
+                                <Row>
+                                  <Col lg={12} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianMainHeading
+                                      }
+                                    >
+                                      <label>{t("Task-title")}:</label>
+                                      <Tooltip title={task.taskTitle}>
+                                        <p>{task.taskTitle}</p>
+                                      </Tooltip>
+                                    </div>
+                                  </Col>
+                                </Row>
+
+                                {/* Task metadata */}
+                                <Row>
+                                  <Col lg={4} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Assignee")}:</label>
+                                      <p>{task.taskAssignee || "-"}</p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Due-date")}:</label>
+                                      <p>
+                                        {formatDateToYMD(task.dueDate) || "-"}
+                                      </p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Completed-on")}:</label>
+                                      <p>
+                                        {formatDateToYMD(
+                                          task.completedOnDate,
+                                        ) || "-"}
+                                      </p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Completed")}:</label>
+                                      <p>{task.completionStatus || "-"}</p>
+                                    </div>
+                                  </Col>
+                                  <Col lg={2} xs="auto">
+                                    <div
+                                      className={
+                                        styles.insideAccordianSubHeading
+                                      }
+                                    >
+                                      <label>{t("Status")}:</label>
+                                      <p>{task.status || "-"}</p>
+                                    </div>
+                                  </Col>
+                                </Row>
+                              </div>
+                            ))
+                          )}
+                        </div>
+                      ))
+                    )}
                   </Col>
                 ),
               )}

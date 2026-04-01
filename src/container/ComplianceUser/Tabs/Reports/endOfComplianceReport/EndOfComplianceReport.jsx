@@ -496,17 +496,20 @@ const EndOfComplianceReport = () => {
                   </div>
                 </Col>
               </Row>
-              <Row className={`${styles.ComplianceSection} mt-4`}>
-                <Col lg={8}>
-                  <Row className="align-items-center">
-                    <Col lg={5} xs="auto">
-                      <label className={styles.ComplianceReportHeadings}>
-                        {t("Criticalityy")}: {""}
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.criticality
-                        }
-                      </label>
+              <Row className={`${styles.ComplianceSection} mt-4 `}>
+                <Col lg={8} className="d-flex flex-column h-100">
+                  <Row className="align-items-stretch">
+                    <Col lg={5} xs="auto" className="d-flex flex-column ">
+                      <div className={styles.topLabel}>
+                        <label className={styles.ComplianceReportHeadings}>
+                          {t("Criticalityy")}: {""}
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.criticality
+                          }
+                        </label>
+                      </div>
+
                       <div className={styles.iconTextWrapperPDFDownload}>
                         <img src={Verification} alt="Verification" />
                         <div>
@@ -516,15 +519,17 @@ const EndOfComplianceReport = () => {
                       </div>
                     </Col>
 
-                    <Col lg={4} xs="auto">
-                      <div className="d-flex flex-column justify-content-between h-100">
-                        <label className={styles.ComplianceReportHeadings}>
-                          {t("Authority")}:{" "}
-                          {
-                            GetEndOfComplianceReport?.complianceSummary
-                              ?.authorityName
-                          }
-                        </label>
+                    <Col lg={4} xs="auto" className="d-flex flex-column ">
+                      <div className="d-flex flex-column h-100">
+                        <div className={styles.topLabel}>
+                          <label className={styles.ComplianceReportHeadings}>
+                            {t("Authority")}:{" "}
+                            {
+                              GetEndOfComplianceReport?.complianceSummary
+                                ?.authorityName
+                            }
+                          </label>
+                        </div>
                         <div
                           className={`${styles.iconTextWrapperPDFDownload} `}
                         >
@@ -543,16 +548,18 @@ const EndOfComplianceReport = () => {
                         </div>
                       </div>
                     </Col>
-                    <Col lg={3}>
+                    <Col lg={3} className="d-flex flex-column ">
                       {" "}
-                      <label className={styles.ComplianceReportHeadings}>
-                        {t("Reopen")}:{" "}
-                        {
-                          GetEndOfComplianceReport?.complianceSummary
-                            ?.reopenCount
-                        }{" "}
-                        {t("Times")}
-                      </label>
+                      <div className={styles.topLabel}>
+                        <label className={styles.ComplianceReportHeadings}>
+                          {t("Reopen")}:{" "}
+                          {
+                            GetEndOfComplianceReport?.complianceSummary
+                              ?.reopenCount
+                          }{" "}
+                          {t("Times")}
+                        </label>
+                      </div>
                       <div className={`${styles.iconTextWrapperPDFDownload} `}>
                         <div>
                           <label>{t("Total-checklists")}:</label>
@@ -577,7 +584,7 @@ const EndOfComplianceReport = () => {
                   </Row>
                   {/*  */}
                   <Row
-                    className={`${styles.iconTextWrapperPDFDownload} mx-1  mt-4`}
+                    className={`${styles.iconTextWrapperPDFDownloadRowTwo} mx-1  mt-4`}
                   >
                     <Col xs="auto" lg={1}>
                       <img src={ComplianceCalendar} alt="ComplianceCalendar" />
@@ -672,12 +679,16 @@ const EndOfComplianceReport = () => {
                 <Col
                   lg={12}
                   xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4`}
+                  className={`${styles.ComplianceMainHeading} mt-3`}
                 >
                   <p>{t("Checklists-in-this-report")}:</p>
                 </Col>
 
-                <Col lg={12} xs="auto">
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-3`}
+                >
                   <div className={styles.titleSection}>
                     <label>{t("Compliance-title")}:</label>
                     <p className={styles.longTitle}>
