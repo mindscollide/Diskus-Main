@@ -514,9 +514,7 @@ const EndOfQuarterReport = () => {
                     >
                       <img src={ComplianceCalendar} alt="ComplianceCalendar" />
                       <div>
-                        <label className={styles.ComplianceReportHeadings}>
-                          {t("Generated-date")}:{" "}
-                        </label>
+                        <label>{t("Generated-date")}: </label>
                         <p>
                           {formatDateToYMD(
                             GetQuarterReport?.header?.generatedOn

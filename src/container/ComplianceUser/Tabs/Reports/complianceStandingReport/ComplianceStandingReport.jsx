@@ -568,7 +568,7 @@ const ComplianceStandingReport = () => {
           tip="Generating PDF..."
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -823,7 +823,7 @@ const ComplianceStandingReport = () => {
             </>
           )}
 
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               {/* Compliance Standing report */}
               <Row>

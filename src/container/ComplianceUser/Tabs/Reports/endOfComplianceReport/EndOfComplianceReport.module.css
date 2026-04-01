@@ -344,6 +344,7 @@
   color: #5a5a5a;
 }
 .legendText {
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -357,12 +358,39 @@
 }
 
 .legendDotBlue {
-  background: #5b6bff;
+  background: #6172d6;
 }
 .legendDotYellow {
-  background: #f2c94c;
+  background: #f16b6b;
+}
+.goBackButton {
+  cursor: pointer;
+}
+.nodatafound_subHeading {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  color: #e1e1e1;
+}
+.NoDataFoundTable {
+  height: 150px;
+  padding: 10px 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background: #ffffff;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.AlignCenterChecklist {
+  display: flex;
+  justify-content: center;
+}
+/* DownLoad Report */
 .ComplianceSection {
   padding: 0px 16px;
   display: flex;
@@ -376,26 +404,39 @@
   white-space: nowrap;
   background: #ecefff;
   border-radius: 8px;
-  padding: 24px 18px;
-  justify-content: center; /*  */
+  padding: 24px;
+  justify-content: flex flex-start;
+  margin-top: auto;
 }
 
-.iconTextWrapperPDFDownload label {
-  font-size: 10px;
+.iconTextWrapperPDFDownload label,
+.iconTextWrapperPDFDownloadRowTwo label {
+  font-size: 8px;
   color: #6172d6;
   font-family: "Montserrat";
   font-weight: 700;
 }
 
 .iconTextWrapperPDFDownload p,
+.iconTextWrapperPDFDownloadRowTwo p,
 .ComplianceReportHeadings {
-  font-size: 20px;
+  font-size: 12px;
   color: #5a5a5a;
   font-family: "Montserrat";
   margin: 0;
   font-weight: 600;
 }
-
+.iconTextWrapperPDFDownloadRowTwo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 24px;
+  justify-content: center;
+  margin-top: auto;
+}
 .ComplianceMainHeading {
   display: flex;
   align-items: center;
@@ -414,7 +455,7 @@
 }
 
 .ComplianceMainHeading div p {
-  font-size: 24px;
+  font-size: 16px;
   color: #6172d6;
   font-family: "Montserrat";
   line-height: 100%;
@@ -450,34 +491,6 @@
   margin-top: 16px;
 }
 
-.goBackButton {
-  cursor: pointer;
-}
-.nodatafound_subHeading {
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 100%;
-  letter-spacing: 0%;
-  text-align: center;
-  color: #e1e1e1;
-}
-.NoDataFoundTable {
-  height: 150px;
-  padding: 10px 20px;
-  border: 1px solid #e1e1e1;
-  border-radius: 8px;
-  background: #ffffff;
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.AlignCenterChecklist {
-  display: flex;
-  justify-content: center;
-}
-/* Download Report */
 .TextDownload p {
   font-size: 30px;
   color: #6172d6;
@@ -490,7 +503,7 @@
 }
 .longTitleHeading {
   color: #5a5a5a;
-  font-size: 30px;
+  font-size: 16px;
   font-weight: 500;
   font-family: "Montserrat";
   line-height: 1.4;
@@ -499,5 +512,11 @@
   /* 🔥 Important */
   word-break: break-word;
   max-width: 95%;
+}
+
+.topLabel {
+  min-height: 48px;
+  display: flex;
+  align-items: flex-start;
 }
 /* Download Report */
