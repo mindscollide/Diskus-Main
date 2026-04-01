@@ -2755,5 +2755,11 @@
   "Mark-checklist-only": "Mark checklist only",
   "Mark-checklist-with-associated-items": "Mark Fchecklist with associated items",
   "generated-on": "Generated On",
-  "times": "times"
+  "times": "times",
+  "Once-cancelled,-this-checklist-cannot-be-Re-opened-or-moved-back-to-In-Progress": "Once cancelled, this checklist cannot be Re-opened or moved back to In Progress",
+  "Cancel-Checklist-only": "Cancel Checklist only",
+  "Cancel-Checklist-with-associated-items": "Cancel Checklist with associated items",
+  "Mark-Checklist-only": "Mark Checklist only",
+  "Mark-Checklist-with-associated-items": "Mark Checklist with associated items",
+  "Cancel-checklist": "Cancel checklist?"
 }

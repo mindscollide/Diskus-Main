@@ -251,6 +251,10 @@ export const ComlianceProvider = ({ children }) => {
   const [isEditComplianceTrue, setIsEditComplianceTrue] = useState(false);
   const [isComplianceCreatOrEdit, setIsComplianceCreateOrEdit] = useState(0);
 
+  const [statusChangeType, setStatusChangeType] = useState("");
+  const [selectedChecklistId, setSelectedChecklistId] = useState(null);
+  const [selectedChecklistDueDate, setSelectedChecklistDueDate] = useState("");
+
   console.log(
     complianceCreatedMqttData,
     complianceByMeList,
@@ -442,7 +446,8 @@ export const ComlianceProvider = ({ children }) => {
 
   // True when user clicks the Upcoming Compliance Deadline dashboard card.
   // ComplainceByMe reads this on mount to pre-select active statuses, then resets it.
-  const [upcomingDeadlineFilterFlag, setUpcomingDeadlineFilterFlag] = useState(false);
+  const [upcomingDeadlineFilterFlag, setUpcomingDeadlineFilterFlag] =
+    useState(false);
 
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [pendingNavigation, setPendingNavigation] = useState(null);
@@ -1053,6 +1058,12 @@ export const ComlianceProvider = ({ children }) => {
         setIsEditComplianceTrue,
         isComplianceCreatOrEdit,
         setIsComplianceCreateOrEdit,
+        statusChangeType,
+        setStatusChangeType,
+        selectedChecklistId,
+        setSelectedChecklistId,
+        selectedChecklistDueDate,
+        setSelectedChecklistDueDate,
       }}
     >
       {children}

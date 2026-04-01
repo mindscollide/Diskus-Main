@@ -19,6 +19,7 @@ import {
   AddReopenComplianceAPI,
   CheckComplianceTitleExistsAPI,
   clearAuthorityMessage,
+  clearComplianceDetailsTab,
   EditComplianceAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
@@ -325,6 +326,7 @@ const ComplainceDetails = () => {
         } else {
           setCheckAnyTaskInProgress(false);
         }
+        dispatch(clearComplianceDetailsTab())
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
@@ -869,11 +871,11 @@ const ComplainceDetails = () => {
     // Status chnage to In Progress
     else if (event.value === 2) {
       resetModalStates();
-      setComplianceDetailsState((prev) => ({
-        ...prev,
-        status: event,
-      }));
     }
+    setComplianceDetailsState((prev) => ({
+      ...prev,
+      status: event,
+    }));
   };
 
   const isFormDisabled = isChecklistTitleExist === true;
