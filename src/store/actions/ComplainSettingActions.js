@@ -2120,6 +2120,12 @@ const viewComplianceByMeDetails_fail = (response) => {
   };
 };
 
+const clearComplianceDetailsTab = () => {
+  return {
+    type: actions.CLEAR_COMPLIANCEDETAILS_TAB,
+  };
+};
+
 // const ViewComplianceByMeDetailsAPI = (
 //   navigate,
 //   Data,
@@ -3319,7 +3325,11 @@ const EditComplianceAPI = (
               if (flag === 3) {
                 console.log("Check Console");
                 // The new status is in Data.newStatusId
-                if (Data.newStatusId === 7 || Data.newStatusId === 9) {
+                if (
+                  Data.newStatusId === 7 ||
+                  Data.newStatusId === 9 ||
+                  Data.newStatusId === 6
+                ) {
                   console.log(Data, "Check Console");
 
                   await dispatch(
@@ -4364,6 +4374,7 @@ const SaveComplianceDocumentsAndMappingsAPI = (
                   editComplianceData,
                   t,
                   setChecklistTabs,
+                  3,
                 ),
               );
             } else if (
@@ -5639,4 +5650,5 @@ export {
   ReopenedComplianceManagerMqtt,
   GetComplianceByAuthorityAPI,
   updateCheckListStatusApi,
+  clearComplianceDetailsTab,
 };

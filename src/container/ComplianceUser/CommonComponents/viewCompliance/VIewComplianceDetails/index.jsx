@@ -27,6 +27,7 @@ import {
   EditComplianceAPI,
   SaveComplianceDocumentsAndMappingsAPI,
   SaveComplianceFilesAPI,
+  updateCheckListStatusApi,
 } from "../../../../../store/actions/ComplainSettingActions.js";
 import { uploadDocumentsTaskApi } from "../../../../../store/actions/ToDoList_action.js";
 import ComplianceStatusChangeResonReasonModal from "../../StatusChangeModals/ComplianceStatusOnHoldReasonModal/index.jsx";
@@ -66,6 +67,15 @@ const ViewComplianceDetails = () => {
     complianceStatusChangeReasonModal,
     complianceAddEditViewState,
     ViewComplianceDetailsByViewTypeAPI,
+    statusChangeType,
+    setComplianceAddEditViewState,
+    setCreateEditComplaince,
+    setShowViewCompliance,
+    setStatusChangeType,
+    setSelectedChecklistId,
+    setSelectedChecklistDueDate,
+    selectedChecklistDueDate,
+    selectedChecklistId,
     // complianceOnHoldReasonState,
   } = useComplianceContext();
 
@@ -312,6 +322,8 @@ const ViewComplianceDetails = () => {
 
   const handleChangeComplianceStatus = (event) => {
     console.log(event, "CompliaceStatusOnHoldModal");
+    //  ALWAYS RESET TYPE WHEN COMING FROM COMPLIANCE
+    setStatusChangeType("compliance");
 
     // if compliance status is changed to Complete check any task still in In Progress or Pending status
     if (event.value === 3) {
@@ -436,19 +448,49 @@ const ViewComplianceDetails = () => {
   ]);
 
   const handleClickOnHoldOrCancelReasonModal = useCallback(() => {
-    console.log(complianceOnHoldReasonState, "complianceOnHoldReasonState");
-    // setComplianceOnHoldModal(false);
     setComplianceStatusChangeReasonModal(false);
 
-    if (tempSelectComplianceStatus) {
-      updateCompliance(tempSelectComplianceStatus, true);
+    if (statusChangeType === "checklist") {
+      // ✅ CHECKLIST API
+      let Data = {
+        ChecklistID: selectedChecklistId,
+        ComplianceID: complianceInfo?.complianceId,
+        NewStatusID: tempSelectComplianceStatus?.value,
+        StatusChangeReason: complianceOnHoldReasonState,
+        UpdatedDueDate: `${selectedChecklistDueDate}185958`,
+        ApplyToAssociatedItems: complianceOnHoldSelectOption,
+      };
+
+      dispatch(
+        updateCheckListStatusApi(
+          navigate,
+          Data,
+          t,
+          1,
+          setComplianceAddEditViewState,
+          setCreateEditComplaince,
+          setShowViewCompliance,
+        ),
+      );
+    } else {
+      // ✅ COMPLIANCE API (existing)
+      if (tempSelectComplianceStatus) {
+        updateCompliance(tempSelectComplianceStatus);
+      }
     }
+
+    // 🔥 RESET EVERYTHING
+    setTempSelectedComplianceStatus(null);
+    setStatusChangeType("");
+    setSelectedChecklistId(null);
+    setSelectedChecklistDueDate("");
+
     resetModalStates();
   }, [
+    statusChangeType,
     tempSelectComplianceStatus,
     complianceOnHoldReasonState,
     complianceOnHoldSelectOption,
-    complianceCancelSelectOption,
   ]);
 
   const handleClickCancelModal = useCallback(() => {

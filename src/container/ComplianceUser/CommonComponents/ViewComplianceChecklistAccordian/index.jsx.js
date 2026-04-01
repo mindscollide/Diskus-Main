@@ -43,6 +43,10 @@ const ViewComplianceChecklistAccordian = () => {
     setComplianceAddEditViewState,
     setCreateEditComplaince,
     setShowViewCompliance,
+    setTempSelectedComplianceStatus,
+    setSelectedChecklistId,
+    setSelectedChecklistDueDate,
+    setStatusChangeType,
   } = useComplianceContext();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -199,8 +203,23 @@ const ViewComplianceChecklistAccordian = () => {
     //  NEW: Handle On Hold selection
     if (selectedStatus.label === "On Hold") {
       setComplianceOnHoldModal(true); // Open On Hold modal
-      setComplianceCompleteModalType("checklist"); // Set type
+      setStatusChangeType("checklist"); // Set type
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
       return; // Stop here to prevent API call
+    }
+
+    // 🔥 CANCEL
+    if (selectedStatus.label === "Cancelled") {
+      setStatusChangeType("checklist");
+
+      setTempSelectedComplianceStatus(selectedStatus);
+      setSelectedChecklistId(checklistId);
+      setSelectedChecklistDueDate(dueDate);
+
+      setComplianceCancelModal(true);
+      return;
     }
 
     let Data = {
