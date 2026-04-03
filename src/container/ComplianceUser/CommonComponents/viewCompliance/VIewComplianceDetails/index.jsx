@@ -229,6 +229,7 @@ const ViewComplianceDetails = () => {
             editComplianceData,
             t,
             ViewComplianceDetailsByViewTypeAPI,
+            3
             // setChecklistTabs
           ),
         );
