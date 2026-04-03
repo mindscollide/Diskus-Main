@@ -50,6 +50,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
     comlianceStatusReopenedModal,
     setComlianceStatusReopenedModal,
     complianceAddEditViewState,
+    setIsReopenConfirmed,
   } = useComplianceContext();
   console.log(
     complianceReopenDetailsState,
@@ -94,6 +95,7 @@ const ComplianceStatusReopenedModal = ({ view, handleProceedButtonView }) => {
   };
 
   const handleProceedButton = () => {
+    setIsReopenConfirmed(true);
     console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
     setComlianceStatusReopenedModal(false);
     setComplianceDetailsState((prev) => ({

@@ -25,6 +25,9 @@ import ArrowDownIcon from "../../../../assets/images/sortingIcons/SorterIconAsce
 import DefaultSortIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 import NoComplianceImg from "../../../../assets/images/NoComplianceImg.png";
 import styles from "./complianceByMe.module.css";
+import { getFiscalQuarterDetails } from "../../../../commen/functions/validations";
+import { dateConverterIntoUTCForDataroom } from "../../../../commen/functions/date_formater";
+import moment from "moment";
 
 /**
  * ComplianceByMe
@@ -93,12 +96,37 @@ const ComplianceByMe = () => {
    */
   useEffect(() => {
     const payload = { ...searchCompliancePayload };
+    if (upcomingDeadlineFilterFlag) {
+      let startFiscalMonth = localStorage.getItem("fiscalStartMonth");
+      let startFiscalDay = localStorage.getItem("fiscalYearStartDay");
+
+      const getStartAndEndDate = getFiscalQuarterDetails({
+        fiscalStartMonth: Number(startFiscalMonth),
+        fiscalStartDay: Number(startFiscalDay),
+      });
+      const upcomingDeadlineComplaincePayload = {
+        ...payload,
+        dueDateFrom: moment(getStartAndEndDate.startDate).format("YYYYMMDD"),
+        dueDateTo: moment(getStartAndEndDate.endDate).format("YYYYMMDD"),
+      };
+
+      dispatch(
+        listOfComplianceByCreatorApi(
+          navigate,
+          upcomingDeadlineComplaincePayload,
+          t,
+        ),
+      );
+      setUpcomingDeadlineFilterFlag(false);
+      return;
+    }
 
     if (viewAllReopenDashboardButtonFlag) {
       const reopenPayload = { ...payload, statusIds: [6] };
       dispatch(listOfComplianceByCreatorApi(navigate, reopenPayload, t));
       setViewAllReopenDashboardButtonFlag(false);
     } else {
+      console.log("payload", payload);
       dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
       dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
     }

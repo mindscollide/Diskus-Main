@@ -205,6 +205,8 @@ export const ComlianceProvider = ({ children }) => {
   const [complianceReportList, setComplianceReportList] = useState([]);
   const [complianceReportTotal, setComplianceReportTotal] = useState(0);
 
+  const [isReopenConfirmed, setIsReopenConfirmed] = useState(false);
+
   // Search Context for compliance By me
 
   const [searchCompliancePayload, setSearchCompliancePayload] = useState({
@@ -1138,6 +1140,8 @@ export const ComlianceProvider = ({ children }) => {
         setSelectedChecklistId,
         selectedChecklistDueDate,
         setSelectedChecklistDueDate,
+        isReopenConfirmed,
+        setIsReopenConfirmed,
       }}
     >
       {children}
