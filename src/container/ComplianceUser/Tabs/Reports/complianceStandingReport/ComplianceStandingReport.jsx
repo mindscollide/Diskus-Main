@@ -13,7 +13,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { GetComplianceStandingReportAPI } from "../../../../../store/actions/ComplainSettingActions";
 import { useTranslation } from "react-i18next";
-import { formatDateToYMD } from "../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  getDynamicFileName,
+} from "../../../CommonComponents/commonFunctions";
 import ArrowUpIcon from "../../../../../assets/images/sortingIcons/SorterIconDescend.png";
 import ArrowDownIcon from "../../../../../assets/images/sortingIcons/SorterIconAscend.png";
 import { ChevronDown } from "react-bootstrap-icons";
@@ -26,7 +29,8 @@ import CustomTable from "../../../../../components/elements/table/Table";
 /** react-to-pdf options for a high-resolution landscape A4 PDF. */
 const PDF_OPTIONS = {
   method: "save",
-  filename: "Compliance Standing Report.pdf",
+
+  filename: getDynamicFileName("Compliance Standing Report"),
   resolution: Resolution.HIGH,
   page: {
     margin: Margin.SMALL,
@@ -179,7 +183,7 @@ const ComplianceStandingReport = () => {
       dispatch(
         GetComplianceStandingReportAPI(
           navigate,
-          { startDate: "", endDate: null },
+          { startDate: "", endDate: "" },
           t,
         ),
       );
@@ -831,7 +835,9 @@ const ComplianceStandingReport = () => {
                   <label>{t("Date-range")}:</label>
                   <p>
                     {dateRange
-                      ? `${dateRange[0].format("DD/MM/YYYY")} - ${dateRange[1].format("DD/MM/YYYY")}`
+                      ? `${dateRange[0].format(
+                          "DD/MM/YYYY",
+                        )} - ${dateRange[1].format("DD/MM/YYYY")}`
                       : "-"}
                   </p>
                 </div>
@@ -845,7 +851,7 @@ const ComplianceStandingReport = () => {
                 xs="auto"
                 className={`${styles.ComplianceMainHeading} mt-3`}
               >
-                <p>{t("Compliances-in-this-report")}:</p>
+                <p>{t("Compliances-in-this-report")}</p>
               </Col>
 
               {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
@@ -923,7 +929,7 @@ const ComplianceStandingReport = () => {
                                   <Col lg={4} xs="auto">
                                     <div
                                       className={
-                                        styles.insideAccordianSubHeading
+                                        styles.insideAccordianMainHeading
                                       }
                                     >
                                       <label>{t("Assignee")}:</label>
@@ -933,7 +939,7 @@ const ComplianceStandingReport = () => {
                                   <Col lg={2} xs="auto">
                                     <div
                                       className={
-                                        styles.insideAccordianSubHeading
+                                        styles.insideAccordianMainHeading
                                       }
                                     >
                                       <label>{t("Due-date")}:</label>
@@ -945,7 +951,7 @@ const ComplianceStandingReport = () => {
                                   <Col lg={2} xs="auto">
                                     <div
                                       className={
-                                        styles.insideAccordianSubHeading
+                                        styles.insideAccordianMainHeading
                                       }
                                     >
                                       <label>{t("Completed-on")}:</label>
@@ -959,7 +965,7 @@ const ComplianceStandingReport = () => {
                                   <Col lg={2} xs="auto">
                                     <div
                                       className={
-                                        styles.insideAccordianSubHeading
+                                        styles.insideAccordianMainHeading
                                       }
                                     >
                                       <label>{t("Completed")}:</label>
@@ -969,7 +975,7 @@ const ComplianceStandingReport = () => {
                                   <Col lg={2} xs="auto">
                                     <div
                                       className={
-                                        styles.insideAccordianSubHeading
+                                        styles.insideAccordianMainHeading
                                       }
                                     >
                                       <label>{t("Status")}:</label>

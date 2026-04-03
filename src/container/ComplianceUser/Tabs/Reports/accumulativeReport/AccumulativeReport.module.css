@@ -2,6 +2,7 @@
   width: 100%;
   padding: 10px 20px;
   overflow-x: auto; /* prevents breaking on smaller screens */
+  background: #fff;
 }
 
 .iconTextWrapper {
@@ -64,7 +65,7 @@
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   font-weight: 600;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   padding: 12px 16px;
   border-bottom: 1px solid #e5e5e5;
   color: #6172d6;
@@ -77,7 +78,7 @@
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   align-items: center;
 
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   font-family: "Montserrat";
   color: #5a5a5a;
@@ -127,6 +128,7 @@
 }
 
 .panelContent {
+  border-radius: 8px;
   padding: 16px;
   background: #f6f9fc !important;
 }
@@ -213,24 +215,53 @@
 
 .reportTitleRow {
   align-items: center;
-  padding: 0px 20px;
+  margin: 0px 10px;
+  padding: 20px 30px;
+  background: #f6f9fc;
+  border-radius: 8px;
 }
-
 .titleSection label {
   font-size: 10px;
+  /* font-size: 8px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSection p {
+  font-size: 24px;
+  /* font-size: 16px; */
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  line-height: 20px;
+  letter-spacing: 0%;
 }
 .titleSection label.ChecklistTitle {
   font-size: 10px;
+  /* font-size: 8px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
 }
+/* .titleSectionDownload label {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #5a5a5a;
+} */
+
+/* .titleSectionDownload label.ChecklistTitleDownload {
+  font-size: 8px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  border: 2px solid black;
+} */
 
 .longTitle {
-  font-size: 30px;
+  font-size: 16px;
   font-weight: 500;
   color: #6172d6;
   font-family: "Montserrat";
@@ -267,9 +298,7 @@
   display: flex;
   justify-content: end;
   gap: 10px;
-  background: #ecefff;
   border-radius: 8px;
-  padding: 24px 30px;
 }
 
 .chartWrapper {
@@ -386,7 +415,7 @@
 }
 
 .ComplianceMainHeading p {
-  font-size: 24px;
+  font-size: 16px;
   color: #6172d6;
   font-family: "Montserrat";
   line-height: 100%;
@@ -407,7 +436,7 @@
 }
 
 .iconTextWrapperDownload label {
-  font-size: 10px;
+  font-size: 8px;
   color: #6172d6;
   font-family: "Montserrat";
   font-weight: 700;
@@ -415,7 +444,7 @@
 
 .iconTextWrapperDownload p,
 .ComplianceReportHeadings {
-  font-size: 20px;
+  font-size: 12px;
   color: #5a5a5a;
   font-family: "Montserrat";
   margin: 0;

@@ -34,7 +34,7 @@ const ComplianceForMe = () => {
   const { criticalityOptions } = useComplianceContext();
 
   const SearchComplianceForMe = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe
+    (state) => state.ComplainceSettingReducerReducer.SearchComplianceForMe,
   );
   // const [totalRecords, setTotalRecords] = useState(0);
 
@@ -64,7 +64,7 @@ const ComplianceForMe = () => {
   } = useComplianceContext();
   console.log(
     { statusFilter, allComplianceStatusForFilter, complianceForMeList },
-    "setComplianceForMeList"
+    "setComplianceForMeList",
   );
 
   useEffect(() => {
@@ -128,8 +128,8 @@ const ComplianceForMe = () => {
         2,
         setComplianceAddEditViewState,
         setCreateEditComplaince,
-        setShowViewCompliance
-      )
+        setShowViewCompliance,
+      ),
     );
   };
 
@@ -233,7 +233,7 @@ const ComplianceForMe = () => {
               className={styles["ResetButtonFilter"]}
               onClick={() => {
                 const all = allComplianceStatusForFilter.map(
-                  (s) => s.statusTitle
+                  (s) => s.statusTitle,
                 );
                 setSelectedKeys(all);
                 setStatusFilter(all);
@@ -276,11 +276,19 @@ const ComplianceForMe = () => {
             ?.toLowerCase()
             .localeCompare(b.authorityShortCode?.toLowerCase());
 
-        case "dueDate":
-          return (
-            getDueDateTimeNumber(a.dueDate, a.dueTime) -
-            getDueDateTimeNumber(b.dueDate, b.dueTime)
-          );
+        case "dueDate": {
+          // ✅ PRIMARY SORT → Due Date
+          const dateA = getDueDateTimeNumber(a.dueDate, a.dueTime);
+          const dateB = getDueDateTimeNumber(b.dueDate, b.dueTime);
+
+          if (dateA !== dateB) {
+            return dateA - dateB;
+          }
+
+          // ✅ SECONDARY SORT → Criticality
+          // High (1) → Medium (2) → Low (3)
+          return a.criticality - b.criticality;
+        }
 
         default:
           return 0;
@@ -298,8 +306,8 @@ const ComplianceForMe = () => {
       order === "ascend"
         ? ArrowUpIcon
         : order === "descend"
-        ? ArrowDownIcon
-        : ArrowDownIcon;
+          ? ArrowDownIcon
+          : ArrowDownIcon;
 
     return (
       <img
@@ -388,8 +396,8 @@ const ComplianceForMe = () => {
             {renderSortIcon("dueDate")}
           </span>
         ),
-        dataIndex: "DueDate",
-        key: "DueDate",
+        dataIndex: "dueDate",
+        key: "dueDate",
         width: "10%",
         ellipsis: true,
         align: "center",
@@ -447,7 +455,7 @@ const ComplianceForMe = () => {
       complianceTitleSort,
       getCriticalityColumnProps,
       getStatusColumnProps,
-    ]
+    ],
   );
 
   useAntTableScrollBottomVirtual(() => {

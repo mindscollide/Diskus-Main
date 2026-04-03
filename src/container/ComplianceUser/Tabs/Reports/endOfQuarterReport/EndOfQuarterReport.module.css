@@ -126,7 +126,7 @@
 }
 
 .panelContent {
-  padding: 16px;
+  /* padding: 16px; */
   background: #f6f9fc !important;
 }
 .MainAccordianTable {
@@ -145,14 +145,14 @@
 
 .insideAccordianMainHeading label {
   color: #5a67d8;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
 }
 
 .insideAccordianMainHeading p {
   color: #5a5a5a;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 600;
   font-family: "Montserrat";
   /*  */
@@ -164,14 +164,14 @@
 
 .insideAccordianSubHeading label {
   color: #5a67d8;
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
 }
 
 .insideAccordianSubHeading p {
   color: #5a5a5a;
-  font-size: 20px;
+  font-size: 12px;
   font-weight: 600;
   font-family: "Montserrat";
 }
@@ -215,20 +215,20 @@
   padding: 0px 20px;
 }
 .titleSection label {
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
 }
 .titleSection label.ChecklistTitle {
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
 }
 
 .longTitle {
-  font-size: 30px;
+  font-size: 16px;
   font-weight: 500;
   color: #6172d6;
   font-family: "Montserrat";
@@ -388,12 +388,23 @@
   font-size: 8px;
   line-height: 8px;
   letter-spacing: 0%;
+
   color: #5a5a5a;
 }
 
 .ComplianceMainHeading div p {
-  font-size: 24px;
-  color: #6172d6;
+  font-size: 16px !important;
+  color: #6172d6 !important;
+  font-family: "Montserrat";
+  line-height: 100%;
+  letter-spacing: 0%;
+  margin: 0;
+  font-weight: 600;
+}
+
+.complianceInThisReportTitleDownload {
+  font-size: 16px !important;
+  color: #6172d6 !important;
   font-family: "Montserrat";
   line-height: 100%;
   letter-spacing: 0%;

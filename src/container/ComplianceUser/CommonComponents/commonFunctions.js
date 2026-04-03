@@ -14,7 +14,7 @@ export const parseUTCDateString = (dateStr) => {
     Number(day),
     Number(hour),
     Number(minute),
-    Number(second),
+    Number(second)
   );
 };
 
@@ -40,7 +40,34 @@ export const formatDateToYMD = (value) => {
 
   return date.toLocaleDateString("en-GB", {
     day: "2-digit",
-    month:"short",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+export const formatDateToYMDLong = (value) => {
+  if (!value) return "";
+
+  let date;
+
+  // ✅ If it's already a Date instance
+  if (value instanceof Date && !isNaN(value)) {
+    date = value;
+  }
+  // ✅ If it's a yyyymmdd string
+  else if (typeof value === "string" && value.length >= 8) {
+    const year = value.substring(0, 4);
+    const month = value.substring(4, 6);
+    const day = value.substring(6, 8);
+
+    date = new Date(`${year}-${month}-${day}`);
+  } else {
+    return "";
+  }
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
     year: "numeric",
   });
 };
@@ -180,4 +207,20 @@ export const parseBackendDate = (dateStr) => {
   const seconds = +dateStr.slice(12, 14);
 
   return new Date(year, month, day, hours, minutes, seconds);
+};
+
+export const getDynamicFileName = (name) => {
+  const now = new Date();
+
+  // YYYYMMDD format
+  const date = now.toISOString().slice(0, 10).replace(/-/g, "");
+
+  // HHMMSS format (using padStart to ensure 2 digits for each)
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const time = `${hours}${minutes}${seconds}`;
+
+  return `${name}_${date}_${time}.pdf`;
 };

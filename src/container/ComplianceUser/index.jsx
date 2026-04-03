@@ -117,6 +117,8 @@ const MainCompliance = () => {
     fiscalStartMonth: MqttOrganizationSettingUpdated?.fiscalStartMonth,
   });
 
+  console.log(fiscalYearRange, "fiscalYearRange");
+
   // ── Effects ───────────────────────────────────────────────────────────────
 
   /** Fetch compliance + task statuses once on mount. */

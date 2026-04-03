@@ -5575,6 +5575,16 @@ const updateCheckListStatusApi = (navigate, Data, t) => {
 //   };
 // };
 
+// For TASK STATUS CHANGED FOR USER
+const taskStatusChangedUserMqtt = (mqttData) => {
+  console.log(mqttData, "REOPENCOMPLIANCE");
+
+  return {
+    type: actions.TASK_STATUS_CHANGED_FOR_USER_MQTT,
+    payload: mqttData,
+  };
+};
+
 export {
   clearAuthorityMessage,
   initialAddEditAuthority,
@@ -5651,4 +5661,5 @@ export {
   GetComplianceByAuthorityAPI,
   updateCheckListStatusApi,
   clearComplianceDetailsTab,
+  taskStatusChangedUserMqtt,
 };
