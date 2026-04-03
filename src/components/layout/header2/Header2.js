@@ -15,6 +15,8 @@ import { useTranslation } from "react-i18next";
 import { userLogOutApiFunc } from "../../../store/actions/Auth_Sign_Out";
 import {
   LeaveMeetingVideo,
+  ProposedMeetingViewFlagAction,
+  searchNewUserMeeting,
   showCancelModalmeetingDeitals,
   showEndMeetingModal,
   uploadGlobalFlag,
@@ -69,6 +71,9 @@ const Header2 = ({ isVideo }) => {
   console.log(remainingDays, "remainingDaysremainingDays");
   const scheduleMeetingPageFlagReducer = useSelector(
     (state) => state.NewMeetingreducer.scheduleMeetingPageFlag
+  );
+  const proposedMeetingViewFlag = useSelector(
+    (state) => state.NewMeetingreducer.ProposedMeetingViewFlag
   );
   const { createNotesModal, setCreateNotesModal } = useNotesContext();
   const {
@@ -721,7 +726,7 @@ const Header2 = ({ isVideo }) => {
     setShowWebNotification(!showWebNotification);
   };
 
-  const handleClickLogo = (e) => {
+  const handleClickLogo = async (e) => {
     console.log("Checking route");
     e.preventDefault();
 
@@ -736,13 +741,42 @@ const Header2 = ({ isVideo }) => {
           console.log("Checking route", activeCall);
 
           // Check if activeCall exists and is a valid JSON
-          if (activeCall !== null) {
+          if (activeCall !== false && activeCall !== null) {
             console.log("Checking route");
 
             const parsedActiveCall = JSON.parse(activeCall);
 
             // Explicitly evaluate activeCall
             if (parsedActiveCall === false) {
+              console.log(
+                "When User is in Proposed Meeting View",
+                proposedMeetingViewFlag
+              );
+              // dispatch(ProposedMeetingViewFlagAction(false));
+
+              if (proposedMeetingViewFlag) {
+                let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                let meetingPageCurrent =
+                  localStorage.getItem("MeetingPageCurrent");
+                let userID = localStorage.getItem("userID");
+                let searchData = {
+                  Date: "",
+                  Title: "",
+                  HostName: "",
+                  UserID: Number(userID),
+                  PageNumber: Number(meetingPageCurrent),
+                  Length: Number(meetingpageRow),
+                  PublishedMeetings: false,
+                  ProposedMeetings: true,
+                };
+
+                console.log("chek search meeting");
+                await dispatch(
+                  searchNewUserMeeting(navigate, searchData, t, 1)
+                );
+
+                return;
+              }
               homePageDashboardClickNoCall();
             } else {
               homePageDashboardClick();
@@ -763,7 +797,6 @@ const Header2 = ({ isVideo }) => {
           );
         }
       }
-
       console.log("Checking route", viewAdvanceMeetingModal, editorRole);
     } else {
       navigate("/Admin");
