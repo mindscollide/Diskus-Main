@@ -31,12 +31,10 @@ import Select from "react-select";
 import TaskDetailsViewModal from "../../../../taskViewDetailsModal";
 import { ViewToDoList } from "../../../../../store/actions/ToDoList_action";
 import { Checkbox } from "antd";
-import { updateTodoStatusFunc } from "../../../../../store/actions/GetTodos";
 
 const ViewComplianceTasks = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [viewComplianceTasksData, setViewComplianceTasksData] = useState([]);
   const accordionContainerRef = useRef();
   const { t } = useTranslation();
   const [addChecklistCloseState, setAddChecklistCloseState] = useState(false);
@@ -88,6 +86,7 @@ const ViewComplianceTasks = () => {
   );
   console.log(expandChecklistOnTasksPage, "expandChecklistOnTasksPage");
   console.log(viewComplianceTasksContextData, "viewComplianceTasksContextData");
+  
 
   const getAllComplianceChecklistTask = useSelector(
     (state) =>
