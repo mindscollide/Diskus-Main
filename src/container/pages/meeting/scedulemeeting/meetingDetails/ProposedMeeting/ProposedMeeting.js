@@ -1122,7 +1122,6 @@ const UnpublishedProposedMeeting = ({
 
         // ⭐ REQUIRED: actual filtering logic
         onFilter: (value, record) => {
-          console.log(value, record, "onFilteronFilter");
           return Number(record.meetingType) === Number(value);
         },
 
