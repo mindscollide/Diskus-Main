@@ -453,3 +453,37 @@
   thead.ant-table-thead {
   background: none !important;
 }
+
+/* End Of Compliance Table */
+
+.ant-table-wrapper.End_of_compliance_table
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th {
+  background: #f6f9fc !important;
+  border-bottom: 3px solid #ffffff !important;
+  padding: 0 !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  color: #5a67d8 !important;
+  font-family: "Montserrat" !important;
+}
+.ant-table-wrapper.End_of_compliance_table .ant-table .ant-table-tbody {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.ant-table-wrapper.End_of_compliance_table
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > td {
+  background: #f6f9fc !important;
+  padding: 12px 0px !important;
+  border-radius: 4px !important;
+  border-right: none;
+  border-left: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #5a5a5a;
+}

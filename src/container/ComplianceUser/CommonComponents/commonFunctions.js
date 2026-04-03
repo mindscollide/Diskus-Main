@@ -185,9 +185,15 @@ export const parseBackendDate = (dateStr) => {
 export const getDynamicFileName = (name) => {
   const now = new Date();
 
-  const date = now.toISOString().slice(0, 10); // YYYY-MM-DD
-  // const time = now.toTimeString().slice(0, 8).replace(/:/g, "-"); // HH-MM-SS
+  // YYYYMMDD format
+  const date = now.toISOString().slice(0, 10).replace(/-/g, "");
 
-  // return `Compliance Standing Report ${date} ${time}.pdf`;
-  return `${name} (${date}).pdf`;
+  // HHMMSS format (using padStart to ensure 2 digits for each)
+  const hours = String(now.getHours()).padStart(2, "0");
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+
+  const time = `${hours}${minutes}${seconds}`;
+
+  return `${name}_${date}_${time}.pdf`;
 };

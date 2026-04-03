@@ -114,7 +114,7 @@ const EndOfComplianceReport = () => {
         title: t("Task-name"),
         dataIndex: "taskName",
         key: "taskName",
-        width: "12%",
+        width: "30%",
         ellipsis: true,
         align: "left",
         render: (text) => <span>{text}</span>,
@@ -123,9 +123,9 @@ const EndOfComplianceReport = () => {
         title: t("Assignee"),
         dataIndex: "assignee",
         key: "assignee",
-        width: "35%",
+        width: "20%",
         ellipsis: true,
-        align: "start",
+        align: "left",
         render: (text) => <span>{text}</span>,
       },
 
@@ -133,27 +133,27 @@ const EndOfComplianceReport = () => {
         title: t("Due-date"),
         dataIndex: "dueDate",
         key: "dueDate",
-        width: "13%",
+        width: "15%",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text) => <span>{text}</span>,
       },
       {
         title: t("Completed-on"),
         dataIndex: "completedOn",
         key: "completedOn",
-        width: "13%",
+        width: "15%",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text) => <span>{text}</span>,
       },
       {
         title: t("Completed"),
         dataIndex: "completed",
         key: "completed",
-        width: "13%",
+        width: "10%",
         ellipsis: true,
-        align: "left",
+        align: "center",
         render: (text) => <span>{text}</span>,
       },
     ],
@@ -427,9 +427,9 @@ const EndOfComplianceReport = () => {
                 {/* STATIC HEADER */}
                 <div className={styles.tableHeader}>
                   <div>{t("Checklist-name")}</div>
-                  <div> {t("Due-date")}</div>
-                  <div> {t("No-of-tasks")}</div>
-                  <div> {t("Overdue-tasks")}</div>
+                  <div>{t("Due-date")}</div>
+                  <div>{t("No-of-tasks")}</div>
+                  <div>{t("Overdue-tasks")}</div>
                 </div>
 
                 {/* COLLAPSE ROWS */}
@@ -469,6 +469,10 @@ const EndOfComplianceReport = () => {
                               rows={mapTasksToRows(item?.tasks)}
                               column={columns}
                               pagination={false}
+                              // className={"Compliance_Table Report_Table  mt-3"}
+                              className={
+                                "End_of_compliance_table  End_of_compliance_Report   mt-3"
+                              }
                             />
                           </div>
                         </div>
@@ -688,15 +692,29 @@ const EndOfComplianceReport = () => {
                     {t("Checklists-in-this-report")}
                   </p>
                 </Col>
-
                 <Col
                   lg={12}
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <div className={styles.titleSection}>
+                  <p className={styles.checklistTitleList}>
+                    {GetEndOfComplianceReport?.checklists.map(
+                      (check, index) => (
+                        <p>
+                          {index + 1}. {check.checklistTitle}
+                        </p>
+                      )
+                    )}
+                  </p>
+                </Col>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-3`}
+                >
+                  <div className={styles.titleSectionDownload}>
                     <label>{t("Compliance-title")}:</label>
-                    <p className={styles.longTitle}>
+                    <p className={styles.longTitleDownload}>
                       {`1.${
                         GetEndOfComplianceReport?.complianceSummary
                           ?.complianceTitle || "No Compliance Title"
@@ -713,7 +731,7 @@ const EndOfComplianceReport = () => {
                     className={styles.checklist_report}
                   >
                     <div className={styles.panelContent}>
-                      <div className={styles.titleSection}>
+                      <div className={styles.titleSectionDownload}>
                         <label className={styles.ChecklistTitle}>
                           {t("Checklists-title")}:
                         </label>
