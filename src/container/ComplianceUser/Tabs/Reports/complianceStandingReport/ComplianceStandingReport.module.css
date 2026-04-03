@@ -153,6 +153,7 @@
 }
 
 .badge {
+  white-space: nowrap;
   background: #ecefff;
   color: #6172d6;
   padding: 2px 8px;
@@ -188,7 +189,7 @@
 }
 
 .panelContent {
-  /* padding: 16px; */
+  padding: 16px;
   background: #f6f9fc !important;
 }
 .MainAccordianTable {
