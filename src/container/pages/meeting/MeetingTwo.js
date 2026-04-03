@@ -3618,7 +3618,7 @@ const NewMeeting = () => {
             className={`status-filter-chevron ${filtered ? "active" : ""}`}
           />
         ),
-        defaultFilteredValue: ["10", "1", "9", "8", "4"],
+        defaultFilteredValue: selectedValues.map((value) => value),
         filterResetToDefaultFilteredValue: true,
         onFilter: (value, record) => record.status === value,
         render: (text) => (
@@ -3999,7 +3999,7 @@ const NewMeeting = () => {
     DoubleArrowIcon,
     SortIconAscend,
     SortIconDescend,
-    startMeetingButton
+    startMeetingButton,
   ]);
 
   // Handle table sorting and filtering changes
@@ -5458,6 +5458,11 @@ const NewMeeting = () => {
                           className={styles["MainMeetingTablePublished"]}>
                           <>
                             <Table
+                              key={
+                                isMeetingTypeFilter.length > 0
+                                  ? "loaded"
+                                  : "loading"
+                              }
                               getPopupContainer={(node) =>
                                 node.closest(".ant-table")
                               }
