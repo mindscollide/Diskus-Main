@@ -564,7 +564,7 @@ export const ComlianceProvider = ({ children }) => {
           },
           criticality: selectedCriticality,
           dueDate: `${dueDate}235958`,
-          tags: tags,
+          tags: Array.isArray(tags) && tags.length > 0 ? tags : prev.tags,
           status: {
             value: complianceStatus.statusId,
             label: complianceStatus.statusName,
@@ -814,6 +814,7 @@ export const ComlianceProvider = ({ children }) => {
           progressPercent,
           showProgressBar,
           tags,
+          tagsCSV,
           totalTasks,
           newStatusId,
         } = requestData || {};
@@ -831,9 +832,16 @@ export const ComlianceProvider = ({ children }) => {
 
         const { currentStatus, allowedStatuses } =
           getAllowedStatuses(newStatusId);
-        console.log(currentStatus, allowedStatuses, "requestDatarequestData");
 
-        // ✅ Set state directly, no remap
+        const formattedTags = Array.isArray(tags)
+          ? tags.map((tag) =>
+              typeof tag === "string" ? { tagTitle: tag, tagID: tag } : tag,
+            )
+          : [];
+
+        console.log(formattedTags, "formattedTagsformattedTags");
+
+        // Set state directly, no remap
         setComplianceDetailsViewState((prev) => ({
           ...prev,
           complianceTitle,
@@ -847,11 +855,11 @@ export const ComlianceProvider = ({ children }) => {
           dueDate: prev.dueDate
             ? prev.dueDate
             : parseYYYYMMDDToEndOfDay(dueDate),
-          tags,
+          tags: formattedTags.length > 0 ? formattedTags : prev.tags,
           status: currentStatus, // value & label format expected by UI
         }));
 
-        // ✅ ADD THIS
+        //  ADD THIS
         setComplianceDetailsState((prev) => ({
           ...prev,
           complianceTitle,
@@ -865,11 +873,11 @@ export const ComlianceProvider = ({ children }) => {
           dueDate: prev.dueDate
             ? prev.dueDate
             : parseYYYYMMDDToEndOfDay(dueDate),
-          tags,
+          tags: formattedTags.length > 0 ? formattedTags : prev.tags,
           status: currentStatus,
         }));
 
-        // ✅ Set allowed status options directly
+        //  Set allowed status options directly
         setAllowedComplianceStatusOptions(allowedStatuses);
 
         // if (allowedStatuses && allowedStatuses.length > 0) {
