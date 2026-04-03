@@ -813,7 +813,17 @@ const EndOfComplianceReport = () => {
                               </Col>
                             </Row>
                             <Row>
-                              <Col lg={4} xs="auto">
+                              <Col>
+                                <div
+                                  className={styles.insideAccordianMainHeading}
+                                >
+                                  <label>{t("Description")}:</label>
+                                  <p>{task.taskDescription || "-"}</p>
+                                </div>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={3} xs="auto">
                                 <div
                                   className={styles.insideAccordianMainHeading}
                                 >
@@ -821,39 +831,32 @@ const EndOfComplianceReport = () => {
                                   <p>{task.assigneeName || "-"}</p>
                                 </div>
                               </Col>{" "}
-                              <Col lg={2} xs="auto">
+                              <Col lg={3} xs="auto">
                                 <div
                                   className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Due-date")}:</label>
-                                  <p>{formatDateToYMD(task.taskDueDate)}</p>
+                                  <p>{formatDateToYMDLong(task.taskDueDate)}</p>
                                 </div>
                               </Col>
-                              <Col lg={2} xs="auto">
+                              <Col lg={3} xs="auto">
                                 <div
                                   className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Completed-on")}:</label>
                                   <p>
-                                    {formatDateToYMD(task.taskCompletedOn) ||
-                                      "-"}
+                                    {formatDateToYMDLong(
+                                      task.taskCompletedOn
+                                    ) || "-"}
                                   </p>
                                 </div>
                               </Col>
-                              <Col lg={2} xs="auto">
+                              <Col lg={3} xs="auto">
                                 <div
                                   className={styles.insideAccordianMainHeading}
                                 >
                                   <label>{t("Completed")}:</label>
-                                  <p>{task.taskStatus}</p>
-                                </div>
-                              </Col>
-                              <Col lg={2} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Status")}:</label>
-                                  <p>{task.taskStatus}</p>
+                                  <p>{task.completionStatus}</p>
                                 </div>
                               </Col>
                             </Row>
