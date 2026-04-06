@@ -163,7 +163,7 @@ const EndOfQuarterReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -492,7 +492,7 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
@@ -796,7 +796,7 @@ const EndOfQuarterReport = () => {
                                             }
                                           >
                                             <label>{t("Completed")}:</label>
-                                            <p>{task.taskStatus}</p>
+                                            <p>{task.completionStatus}</p>
                                           </div>
                                         </Col>
                                         <Col lg={2} xs="auto">
