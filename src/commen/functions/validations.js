@@ -114,3 +114,60 @@ export const isBase64 = (str) => {
   // Validate using regex
   return base64Regex.test(str);
 };
+
+
+export const getFiscalQuarterDetails = ({
+  fiscalStartMonth,
+  fiscalStartDay = 1,
+  currentDate = new Date(),
+}) => {
+
+  const date = new Date(currentDate);
+
+  // Step 1: Get fiscal year start for current year
+  let fiscalYearStart = new Date(
+    date.getFullYear(),
+    fiscalStartMonth - 1,
+    fiscalStartDay
+  );
+
+  // If current date is before fiscal start → go to previous year
+  if (date < fiscalYearStart) {
+    fiscalYearStart = new Date(
+      date.getFullYear() - 1,
+      fiscalStartMonth - 1,
+      fiscalStartDay
+    );
+  }
+
+  // Step 2: Calculate months passed since fiscal start
+  const monthsDiff =
+    (date.getFullYear() - fiscalYearStart.getFullYear()) * 12 +
+    (date.getMonth() - fiscalYearStart.getMonth());
+
+  // Adjust if day is before start day
+  const dayAdjustment = date.getDate() < fiscalStartDay ? -1 : 0;
+
+  const adjustedMonths = monthsDiff + dayAdjustment;
+
+  // Step 3: Get quarter
+  const quarter = Math.floor(adjustedMonths / 3) + 1;
+
+  // Step 4: Quarter start date
+  const quarterStart = new Date(fiscalYearStart);
+  quarterStart.setMonth(
+    fiscalYearStart.getMonth() + (quarter - 1) * 3
+  );
+
+  // Step 5: Quarter end date
+  const quarterEnd = new Date(quarterStart);
+  quarterEnd.setMonth(quarterStart.getMonth() + 3);
+  quarterEnd.setDate(quarterEnd.getDate() - 1);
+
+  return {
+    quarter: `Q${quarter}`,
+    quarterNumber: quarter,
+    startDate: quarterStart,
+    endDate: quarterEnd,
+  };
+};

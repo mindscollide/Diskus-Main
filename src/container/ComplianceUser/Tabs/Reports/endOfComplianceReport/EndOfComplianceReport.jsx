@@ -18,62 +18,9 @@ import {
   getDynamicFileName,
 } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
-import ReopenOrOnHoldDetailsModal from "../../../CommonComponents/ReopenOrOnHoldDetailsModal";
 import ReopenOrOnHoldDetailsModalECR from "./ReopenOrOnHoldDetailsModalECR";
 
 const { Panel } = Collapse;
-
-/** Static donut chart data — values are fixed and do not depend on any state. */
-const donutData = [
-  ["Task Status", "Count"],
-  ["Tasks Completed On Time", 100],
-  ["Tasks Completed Late", 0],
-];
-
-/** Static donut chart display options hoisted to module level. */
-const donutOptions = {
-  pieHole: 0.7,
-  legend: {
-    position: "right",
-    textStyle: { fontSize: 12 },
-  },
-  pieSliceText: "none",
-  backgroundColor: "transparent",
-  chartArea: { width: "100%", height: "100%" },
-  colors: ["#6272D6"],
-  tooltip: { trigger: "none" },
-  pieSliceBorderColor: "transparent",
-  pieSliceTextStyle: { fontSize: 0 },
-  slices: {
-    0: { offset: 0 },
-    1: { offset: 0 },
-  },
-};
-
-/** Static PDF generation options hoisted to module level. */
-const pdfOptions = {
-  method: "save",
-  filename: getDynamicFileName("End Of Compliance"),
-
-  resolution: Resolution.HIGH,
-  page: {
-    margin: Margin.SMALL,
-    format: "A4",
-    orientation: "landscape",
-  },
-  canvas: {
-    mimeType: "image/png",
-    qualityRatio: 1,
-  },
-  overrides: {
-    pdf: {
-      compress: true,
-    },
-    canvas: {
-      useCORS: true,
-    },
-  },
-};
 
 /** Returns the DOM element used as the PDF render target. */
 const getTargetElement = () => document.getElementById("content-id");
@@ -98,6 +45,9 @@ const EndOfComplianceReport = () => {
   const GetEndOfComplianceReport = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
   );
+
+  console.log(GetEndOfComplianceReport, "GetEndOfComplianceReport");
+
   const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -160,6 +110,66 @@ const EndOfComplianceReport = () => {
     ],
     [t],
   );
+
+  /** Static donut chart data — values are fixed and do not depend on any state. */
+  const donutData = useMemo(() => {
+    const onTime =
+      GetEndOfComplianceReport?.complianceSummary?.tasksCompletedOnTime || 0;
+
+    const late =
+      GetEndOfComplianceReport?.complianceSummary?.tasksCompletedLate || 0;
+
+    return [
+      ["Task Status", "Count"],
+      ["Tasks Completed On Time", onTime],
+      ["Tasks Completed Late", late],
+    ];
+  }, [GetEndOfComplianceReport]);
+
+  /** Static donut chart display options hoisted to module level. */
+  const donutOptions = {
+    pieHole: 0.7,
+    legend: {
+      position: "right",
+      textStyle: { fontSize: 12 },
+    },
+    pieSliceText: "none",
+    backgroundColor: "transparent",
+    chartArea: { width: "100%", height: "100%" },
+    colors: ["#6272D6", "#FFC107"],
+    tooltip: { trigger: "none" },
+    pieSliceBorderColor: "transparent",
+    pieSliceTextStyle: { fontSize: 0 },
+    slices: {
+      0: { offset: 0 },
+      1: { offset: 0 },
+    },
+  };
+
+  /** Static PDF generation options hoisted to module level. */
+  const pdfOptions = {
+    method: "save",
+    filename: getDynamicFileName("End Of Compliance"),
+
+    resolution: Resolution.HIGH,
+    page: {
+      margin: Margin.SMALL,
+      format: "A4",
+      orientation: "landscape",
+    },
+    canvas: {
+      mimeType: "image/png",
+      qualityRatio: 1,
+    },
+    overrides: {
+      pdf: {
+        compress: true,
+      },
+      canvas: {
+        useCORS: true,
+      },
+    },
+  };
 
   /**
    * Maps raw task objects from the API into table row shape.
