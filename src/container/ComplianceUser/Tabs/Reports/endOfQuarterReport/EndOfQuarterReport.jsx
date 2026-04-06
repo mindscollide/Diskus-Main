@@ -348,7 +348,7 @@ const EndOfQuarterReport = () => {
                               {item.tasksOverdue}
                             </div>
                             <div className="text-center">
-                              {item.progressPercent}
+                              {`${item.progressPercent}${"%"}`}
                             </div>
                           </div>
                         }
@@ -395,7 +395,7 @@ const EndOfQuarterReport = () => {
                                             <Col lg={12} xs="auto">
                                               <div
                                                 className={
-                                                  styles.insideAccordianMainHeading
+                                                  styles.insideAccordianMain
                                                 }
                                               >
                                                 <label>
@@ -467,7 +467,7 @@ const EndOfQuarterReport = () => {
                                                 }
                                               >
                                                 <label>{t("Completed")}:</label>
-                                                <p>{task.taskStatus}</p>
+                                                <p>{task.completionStatus}</p>
                                               </div>
                                             </Col>
                                           </Row>
@@ -692,7 +692,7 @@ const EndOfQuarterReport = () => {
                         </div>
                       ) : (
                         compliance?.checklists.map((checklist) => (
-                          <div className={styles.panelContent}>
+                          <div className={styles.panelContentDownload}>
                             <div className={styles.titleSection}>
                               <label className={styles.ChecklistTitle}>
                                 {t("Checklists-title")}:
