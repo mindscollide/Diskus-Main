@@ -64,6 +64,7 @@ const initialState = {
   complianceReopenMqttData: null,
   taskMappedCheckListData: null,
   ComplianceListData: null,
+  taskStatusChangeUserMqtt: null,
 };
 
 const ComplainceSettingReducerReducer = (state = initialState, action) => {
@@ -626,7 +627,11 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         GetComplianceChecklistsByComplianceId: null,
         ViewComplianceByMeDetails: null,
       };
-
+    case actions.CLEAR_COMPLIANCEDETAILS_TAB:
+      return {
+        ...state,
+        ViewComplianceByMeDetails: null,
+      };
     case actions.LIST_OF_COMPLIANCE_BY_CREATOR_INIT:
       return {
         ...state,
@@ -1435,6 +1440,14 @@ const ComplainceSettingReducerReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
         severity: "error",
       };
+
+    // For TASK STATUS CHANGED FOR USER
+    case actions.TASK_STATUS_CHANGED_FOR_USER_MQTT: {
+      return {
+        ...state,
+        taskStatusChangeUserMqtt: action.payload,
+      };
+    }
 
     // ================= DEFAULT =================
     default:

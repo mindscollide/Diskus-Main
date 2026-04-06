@@ -125,7 +125,11 @@ const Reports = () => {
 
       dispatch(ComplianceReportListingAPI(navigate, nextPayload, t));
     }
-  }, [complianceReportList.length, complianceReportTotal, searchComplianceReportPayload]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [
+    complianceReportList.length,
+    complianceReportTotal,
+    searchComplianceReportPayload,
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useAntTableScrollBottomVirtual(handleScrollBottom, 10);
 
@@ -135,124 +139,142 @@ const Reports = () => {
    * reportTypeFilter when a filter is applied.
    */
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleChangeComplianceSorter = useCallback((pagination, filters, sorter) => {
-    setReportTitleSort(null);
-    setGeneratedOnSort(null);
-    setStartDateSort(null);
-    setEndDateSort(null);
+  const handleChangeComplianceSorter = useCallback(
+    (pagination, filters, sorter) => {
+      setReportTitleSort(null);
+      setGeneratedOnSort(null);
+      setStartDateSort(null);
+      setEndDateSort(null);
 
-    if (sorter.columnKey === "reportTitle") {
-      setReportTitleSort(sorter.order);
-    } else if (sorter.columnKey === "generatedOn") {
-      setGeneratedOnSort(sorter.order);
-    } else if (sorter.columnKey === "startDate") {
-      setStartDateSort(sorter.order);
-    } else if (sorter.columnKey === "endDate") {
-      setEndDateSort(sorter.order);
-    }
+      if (sorter.columnKey === "reportTitle") {
+        setReportTitleSort(sorter.order);
+      } else if (sorter.columnKey === "generatedOn") {
+        setGeneratedOnSort(sorter.order);
+      } else if (sorter.columnKey === "startDate") {
+        setStartDateSort(sorter.order);
+      } else if (sorter.columnKey === "endDate") {
+        setEndDateSort(sorter.order);
+      }
 
-    if (filters?.type) {
-      setReportTypeFilter(filters.type || [1, 2, 3]);
-    }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      if (filters?.type) {
+        setReportTypeFilter(filters.type || [1, 2, 3]);
+      }
+    },
+    []
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Returns the Ant Design column props for the report type filter column.
    * Memoized to avoid unnecessary recomputation of the columns array.
    */
-  const reportTypeColumnProps = useMemo(() => ({
-    filteredValue: reportTypeFilter,
-    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
-      <div style={{ padding: 8 }}>
-        <Checkbox.Group
-          options={reportTypeOptions}
-          value={selectedKeys}
-          onChange={(checkedValues) => setSelectedKeys(checkedValues)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginBottom: 8,
-          }}
-        />
-
-        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-          {/* Reset */}
-          <CustomButton
-            text={t("Reset")}
-            className={styles["ResetButtonFilter"]}
-            onClick={() => {
-              const all = reportTypeOptions.map((c) => c.value);
-              setSelectedKeys(all);
-              setReportTypeFilter(all);
-              confirm();
+  const reportTypeColumnProps = useMemo(
+    () => ({
+      filteredValue: reportTypeFilter,
+      filterDropdown: ({ setSelectedKeys, selectedKeys, confirm }) => (
+        <div style={{ padding: 8 }}>
+          <Checkbox.Group
+            options={reportTypeOptions}
+            value={selectedKeys}
+            onChange={(checkedValues) => setSelectedKeys(checkedValues)}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginBottom: 8,
             }}
           />
 
-          {/* OK */}
-          <CustomButton
-            text={t("Ok")}
-            className={styles["ResetButtonFilter"]}
-            onClick={() => {
-              setReportTypeFilter(selectedKeys);
-              confirm();
-            }}
-          />
+          <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+            {/* Reset */}
+            <CustomButton
+              text={t("Reset")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                const all = reportTypeOptions.map((c) => c.value);
+                setSelectedKeys(all);
+                setReportTypeFilter(all);
+                confirm();
+              }}
+            />
+
+            {/* OK */}
+            <CustomButton
+              text={t("Ok")}
+              className={styles["ResetButtonFilter"]}
+              onClick={() => {
+                setReportTypeFilter(selectedKeys);
+                confirm();
+              }}
+            />
+          </div>
         </div>
-      </div>
-    ),
-    onFilter: (value, record) => value === record.reportTypeId,
-    filterIcon: () => <ChevronDown className="filter-chevron-icon-todolist" />,
-  }), [reportTypeFilter]); // eslint-disable-line react-hooks/exhaustive-deps
+      ),
+      onFilter: (value, record) => value === record.reportTypeId,
+      filterIcon: () => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+    }),
+    [reportTypeFilter]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Fetches or downloads a compliance report.
    * @param {object} record - The report row record from the table.
    * @param {boolean} isDownload - Whether to trigger a PDF download (true) or view (false).
    */
-  const fetchReport = useCallback((record, isDownload = false) => {
-    const data = {
-      reportId: Number(record?.reportId),
-      reportTypeId: record?.reportTypeId,
-    };
+  const fetchReport = useCallback(
+    (record, isDownload = false) => {
+      const data = {
+        reportId: Number(record?.reportId),
+        reportTypeId: record?.reportTypeId,
+      };
 
-    if (isDownload) {
-      setAutoPdfDownload(true);
+      if (isDownload) {
+        setAutoPdfDownload(true);
 
-      // Store old payload
-      const oldPayload = { ...searchComplianceReportPayload };
+        // Store old payload
+        const oldPayload = { ...searchComplianceReportPayload };
 
-      // Reset sRow temporarily
-      setSearchComplianceReportPayload({ ...oldPayload, sRow: 0 });
+        // Reset sRow temporarily
+        setSearchComplianceReportPayload({ ...oldPayload, sRow: 0 });
 
-      if (record?.reportTypeId === 1) {
-        setEndOfComplianceReport(true);
-        dispatch(GetEndOfComplianceReportAPI(navigate, data, t, false));
-      } else if (record?.reportTypeId === 2) {
-        setEndOfQuarterReport(true);
-        dispatch(GetQuarterReportAPI(navigate, data, t, false));
-      } else if (record?.reportTypeId === 3) {
-        setAccumulativeReport(true);
-        dispatch(GetAccumulativeReportAPI(navigate, data, t, false));
+        if (record?.reportTypeId === 1) {
+          setEndOfComplianceReport(true);
+          dispatch(GetEndOfComplianceReportAPI(navigate, data, t, false));
+        } else if (record?.reportTypeId === 2) {
+          setEndOfQuarterReport(true);
+          dispatch(GetQuarterReportAPI(navigate, data, t, false));
+        } else if (record?.reportTypeId === 3) {
+          setAccumulativeReport(true);
+          dispatch(GetAccumulativeReportAPI(navigate, data, t, false));
+        }
+
+        // Restore the original payload immediately after dispatch
+        setSearchComplianceReportPayload(oldPayload);
+      } else {
+        // Normal View Report
+        setAutoPdfDownload(false);
+
+        if (record?.reportTypeId === 1) {
+          setEndOfComplianceReport(true);
+          dispatch(GetEndOfComplianceReportAPI(navigate, data, t, true));
+        } else if (record?.reportTypeId === 2) {
+          setEndOfQuarterReport(true);
+          dispatch(GetQuarterReportAPI(navigate, data, t, true));
+        } else if (record?.reportTypeId === 3) {
+          setAccumulativeReport(true);
+          dispatch(GetAccumulativeReportAPI(navigate, data, t, true));
+        }
       }
-
-      // Restore the original payload immediately after dispatch
-      setSearchComplianceReportPayload(oldPayload);
-    } else {
-      // Normal View Report
-      setAutoPdfDownload(false);
-
-      if (record?.reportTypeId === 1) {
-        setEndOfComplianceReport(true);
-        dispatch(GetEndOfComplianceReportAPI(navigate, data, t, true));
-      } else if (record?.reportTypeId === 2) {
-        setEndOfQuarterReport(true);
-        dispatch(GetQuarterReportAPI(navigate, data, t, true));
-      } else if (record?.reportTypeId === 3) {
-        setAccumulativeReport(true);
-        dispatch(GetAccumulativeReportAPI(navigate, data, t, true));
-      }
-    }
-  }, [searchComplianceReportPayload, setAutoPdfDownload, setEndOfComplianceReport, setEndOfQuarterReport, setAccumulativeReport, setSearchComplianceReportPayload]); // eslint-disable-line react-hooks/exhaustive-deps
+    },
+    [
+      searchComplianceReportPayload,
+      setAutoPdfDownload,
+      setEndOfComplianceReport,
+      setEndOfQuarterReport,
+      setAccumulativeReport,
+      setSearchComplianceReportPayload,
+    ]
+  ); // eslint-disable-line react-hooks/exhaustive-deps
 
   /**
    * Opens the organisation-wide compliance standing report view.
@@ -305,7 +327,7 @@ const Reports = () => {
         ),
         dataIndex: "reportTitle",
         key: "reportTitle",
-        width: "23%",
+        width: "27%",
         ellipsis: true,
         sorter: (a, b) =>
           reportTitleSort === "descend"
@@ -343,7 +365,7 @@ const Reports = () => {
         ),
         dataIndex: "generatedOn",
         key: "generatedOn",
-        width: "17%",
+        width: "15%",
         ellipsis: true,
         align: "left",
         sortDirections: ["descend", "ascend"],
@@ -398,7 +420,7 @@ const Reports = () => {
         ),
         dataIndex: "startDate",
         key: "startDate",
-        width: "13%",
+        width: "12%",
         ellipsis: true,
         align: "left",
         render: (_, record) => <span>{formatDateToYMD(record.startDate)}</span>,
@@ -427,7 +449,7 @@ const Reports = () => {
         ),
         dataIndex: "endDate",
         key: "endDate",
-        width: "13%",
+        width: "12%",
         ellipsis: true,
         align: "left",
         render: (_, record) => <span>{formatDateToYMD(record.endDate)}</span>,
@@ -480,7 +502,15 @@ const Reports = () => {
         },
       },
     ],
-    [reportTitleSort, reportTypeColumnProps, generatedOnSort, startDateSort, endDateSort, fetchReport, t]
+    [
+      reportTitleSort,
+      reportTypeColumnProps,
+      generatedOnSort,
+      startDateSort,
+      endDateSort,
+      fetchReport,
+      t,
+    ]
   );
 
   return (
@@ -518,7 +548,7 @@ const Reports = () => {
           rows={complianceReportList}
           column={columns}
           className={"Compliance_Table Report_Table  mt-3"}
-          scroll={{ x: "max-content", y: 400 }}
+          scroll={{ y: 400 }}
           pagination={false}
           onChange={handleChangeComplianceSorter}
         />

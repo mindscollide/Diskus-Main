@@ -465,6 +465,14 @@
   color: #5a5a5a;
 }
 
+.ComplianceReportHeadingsLabel {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  color: #5a5a5a;
+  letter-spacing: 2%;
+}
+
 .ComplianceMainHeading div p {
   font-size: 16px;
   color: #6172d6;
@@ -568,9 +576,11 @@
   letter-spacing: 2%;
   color: #5a5a5a;
 }
+
 .TextDownloadWrapper {
   display: flex;
   gap: 30px;
+  margin: 1px !important;
 }
 .TextDownload {
   display: flex;
@@ -604,4 +614,29 @@
   /* line-height: 140%; */
   letter-spacing: 2%;
   text-align: center;
+}
+
+.checklistDueDateInternalLabel {
+  font-family: "Montserrat";
+  font-weight: 700 !important;
+  font-size: 8px !important;
+  color: #6172d6 !important;
+  margin-left: 10px !important;
+}
+.checklistDueDateInternal {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  margin-left: 10px !important;
+}
+.longTitleHeading {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: "Montserrat";
+  line-height: 1.4;
+  margin-bottom: 15px;
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+  color: #6172d6;
 }

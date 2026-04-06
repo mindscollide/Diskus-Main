@@ -19,6 +19,7 @@ import {
   AddReopenComplianceAPI,
   CheckComplianceTitleExistsAPI,
   clearAuthorityMessage,
+  clearComplianceDetailsTab,
   EditComplianceAPI,
   GetAllAuthoritiesWithoutPaginationAPI,
   GetAllTagsByOrganizationIDAPI,
@@ -86,10 +87,11 @@ const ComplainceDetails = () => {
     complianceReopenDetailsState,
     criticalityOptions,
     comlianceStatusReopenedModal,
-    setIsEditComplianceTrue,
+    isReopenConfirmed,
+    setIsReopenConfirmed,
   } = useComplianceContext();
 
-  console.log(complianceDetailsState, "complianceDetailsState121212");
+  console.log(comlianceStatusReopenedModal, "comlianceStatusReopenedModal");
   const complianceDataroomFolderId = useSelector(
     (state) =>
       state.ComplainceSettingReducerReducer.ComplianceDataRoomMapFolderId,
@@ -325,6 +327,7 @@ const ComplainceDetails = () => {
         } else {
           setCheckAnyTaskInProgress(false);
         }
+        dispatch(clearComplianceDetailsTab());
       } catch (error) {}
     }
   }, [viewComplianceByMeDetails]);
@@ -560,9 +563,9 @@ const ComplainceDetails = () => {
               ? complianceCancelSelectOption
               : 0, // On Hold Compliance Including Checklist and Task
       };
-      if (complianceDetailsState.status.value === 6) {
+      if (complianceDetailsState.status.value === 6 && isReopenConfirmed) {
         // There should we use update with repopend compliancere
-
+        console.log("CHeck Issue 606");
         let DataReOpenCompliance = {
           complianceId: Data.complianceId,
           updatedDueDate: createConvert(complianceReopenDetailsState?.dueDate),
@@ -587,6 +590,7 @@ const ComplainceDetails = () => {
             reopenDataroomMap,
           ),
         );
+        setIsReopenConfirmed(false);
         return;
       }
       console.log("complianceByMeList");
@@ -869,11 +873,11 @@ const ComplainceDetails = () => {
     // Status chnage to In Progress
     else if (event.value === 2) {
       resetModalStates();
-      setComplianceDetailsState((prev) => ({
-        ...prev,
-        status: event,
-      }));
     }
+    setComplianceDetailsState((prev) => ({
+      ...prev,
+      status: event,
+    }));
   };
 
   const isFormDisabled = isChecklistTitleExist === true;

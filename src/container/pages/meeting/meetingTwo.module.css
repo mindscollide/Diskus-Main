@@ -1,5 +1,7 @@
 .NewMeeting_container {
   max-width: 100% !important;
+  max-height: 100%;
+  height: auto;
 }
 
 .NewMeetinHeading {
@@ -221,7 +223,7 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: 100% !important;
   height: auto !important;
   position: relative;
-  padding: 20px 20px !important;
+  padding: 20px 20px 0 20px !important;
   border-radius: 8px !important;
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
@@ -432,7 +434,7 @@ body[dir="rtl"] .ResetOkBtn {
   color: #5a5a5a !important;
 }
 .Meeting_Wrapper {
-  padding: 10px 20px 20px 10px !important;
+  padding: 10px 20px 10px 10px !important;
   height: calc(100% - 89px);
 }
 
@@ -628,6 +630,10 @@ body[dir="rtl"] .ResetOkBtn {
 }
 
 .MainMeetingTablePublished {
-  height: auto !important;
-  min-height: 60vh !important;
+  min-height: 63vh !important;
+  margin-bottom: 70px;
+}
+.PublishMeeting_Pagination {
+  position: absolute;
+  bottom: 10px;
 }

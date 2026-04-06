@@ -107,6 +107,8 @@ const CreateEditViewComplianceTask = () => {
         .GetComplianceChecklistsWithTasksByComplianceId,
   );
 
+  console.log(getAllComplianceChecklistTask, "getAllComplianceChecklistTask");
+
   useEffect(() => {
     if (
       authorityRespnseMessage !== null &&
@@ -124,46 +126,32 @@ const CreateEditViewComplianceTask = () => {
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
   useEffect(() => {
-    if (
-      getAllComplianceChecklistTask &&
-      getAllComplianceChecklistTask !== null
-    ) {
-      try {
-        const checklistList = getAllComplianceChecklistTask.checklistList;
+    if (getAllComplianceChecklistTask === null) {
+      // 🔥 CLEAR UI when API returns null
+      setComplianceCheckListData([]);
+      setTaskCount(0);
+      return;
+    }
 
-        // ✅ set main data
+    if (getAllComplianceChecklistTask) {
+      try {
+        const checklistList = getAllComplianceChecklistTask.checklistList || [];
+
         setComplianceCheckListData(checklistList);
 
-        // ✅ FIRST LOAD → expand all
+        // expand logic
         if (isFirstLoad.current) {
           setExpandedCheckListIds(
             checklistList.map((data) => data.checklistId),
           );
           isFirstLoad.current = false;
-        } else {
-          // ✅ AFTER FIRST LOAD → preserve + expand only updated checklist
-          setExpandedCheckListIds((prev) => {
-            let updated = [...prev];
-
-            // 👉 expand only the checklist where task was added
-            if (lastUpdatedChecklistId.current) {
-              if (!updated.includes(lastUpdatedChecklistId.current)) {
-                updated.push(lastUpdatedChecklistId.current);
-              }
-            }
-
-            return updated;
-          });
-
-          // ✅ reset after use (important)
-          lastUpdatedChecklistId.current = null;
         }
 
-        // ✅ update task count
         const totalTaskCount = checklistList.reduce(
           (sum, checklist) => sum + (checklist.taskList?.length || 0),
           0,
         );
+
         setTaskCount(totalTaskCount);
       } catch (error) {
         console.log(error);
@@ -177,6 +165,7 @@ const CreateEditViewComplianceTask = () => {
   );
   const handleDeleteTask = (TaskId) => {
     console.log(TaskId, "TaskId");
+
     let complianceId = complianceInfo?.complianceId;
     const Data = {
       TaskID: TaskId,
@@ -240,7 +229,7 @@ const CreateEditViewComplianceTask = () => {
               const isAddEnabled = isAddTaskEnabled(data.checklistId);
 
               return (
-                <div key={index}>
+                <div key={data.checklistId}>
                   <CustomAccordion
                     isExpand={isExpanded}
                     isCompliance={true}

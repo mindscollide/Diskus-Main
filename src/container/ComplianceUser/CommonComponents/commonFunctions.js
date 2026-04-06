@@ -45,6 +45,33 @@ export const formatDateToYMD = (value) => {
   });
 };
 
+export const formatDateToYMDLong = (value) => {
+  if (!value) return "";
+
+  let date;
+
+  // ✅ If it's already a Date instance
+  if (value instanceof Date && !isNaN(value)) {
+    date = value;
+  }
+  // ✅ If it's a yyyymmdd string
+  else if (typeof value === "string" && value.length >= 8) {
+    const year = value.substring(0, 4);
+    const month = value.substring(4, 6);
+    const day = value.substring(6, 8);
+
+    date = new Date(`${year}-${month}-${day}`);
+  } else {
+    return "";
+  }
+
+  return date.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 export const parseYYYYMMDDToEndOfDay = (dateString) => {
   try {
     if (!dateString || dateString.length < 8) return null;
