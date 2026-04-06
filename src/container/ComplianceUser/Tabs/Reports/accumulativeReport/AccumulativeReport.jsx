@@ -172,7 +172,7 @@ const AccumulativeReport = () => {
           tip="Generating PDF..."
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -508,7 +508,7 @@ const AccumulativeReport = () => {
           )}
 
           {/*Accumulative Report Download     */}
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
