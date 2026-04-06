@@ -1733,7 +1733,7 @@ const WebNotfication = ({
                 </Row>
               )
             }
-            height="68vh"
+            height="50vh"
             style={{ overflowX: "hidden" }}
           >
             {/* Render "Today" Notifications */}

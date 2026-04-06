@@ -2113,9 +2113,16 @@ export const SideBarGlobalNavigationFunction = async (
       console.log("Checking");
     }
   } else if (sceduleMeeting) {
+    console.log(
+      { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
+      "Checking",
+    );
     setGoBackCancelModal(true);
   } else {
-    console.log("Checking");
+    console.log(
+      { viewAdvanceMeetingModal, sceduleMeeting, editorRole, currentView },
+      "Checking",
+    );
     navigate(navigateValue);
   }
 };

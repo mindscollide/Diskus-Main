@@ -1039,7 +1039,7 @@ const UnpublishedProposedMeeting = ({
                       setSceduleMeeting,
                       setDataroomMapFolderId,
                       0,
-                      2
+                      6 /*When User click on title from proposed Tab  */
                     )
                   );
                   dispatch(GetAllSavedparticipantsAPI(Data, navigate, t, true));
