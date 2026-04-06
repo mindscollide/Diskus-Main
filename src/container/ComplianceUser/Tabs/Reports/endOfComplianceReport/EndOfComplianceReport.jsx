@@ -19,6 +19,7 @@ import {
 } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
 import ReopenOrOnHoldDetailsModalECR from "./ReopenOrOnHoldDetailsModalECR";
+import { AttachmentViewer } from "../../../../../components/elements";
 
 const { Panel } = Collapse;
 
@@ -43,10 +44,8 @@ const EndOfComplianceReport = () => {
   } = useComplianceContext();
 
   const GetEndOfComplianceReport = useSelector(
-    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport,
+    (state) => state.ComplainceSettingReducerReducer.GetEndOfComplianceReport
   );
-
-  console.log(GetEndOfComplianceReport, "GetEndOfComplianceReport");
 
   const count = GetEndOfComplianceReport?.complianceSummary?.reopenCount || 0;
 
@@ -108,7 +107,7 @@ const EndOfComplianceReport = () => {
         render: (text) => <span>{text}</span>,
       },
     ],
-    [t],
+    [t]
   );
 
   /** Static donut chart data — values are fixed and do not depend on any state. */
@@ -234,8 +233,7 @@ const EndOfComplianceReport = () => {
     if (!Array.isArray(history) || history.length === 0) return false;
 
     return history.some(
-      (item) =>
-        item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7,
+      (item) => item?.toStatus?.statusId === 6 || item?.toStatus?.statusId === 7
     );
   }, [GetEndOfComplianceReport?.complianceStatusChangeHistory]);
 
@@ -255,7 +253,7 @@ const EndOfComplianceReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -291,7 +289,7 @@ const EndOfComplianceReport = () => {
                     <label>{t("Generated-date")}:</label>
                     <p>
                       {formatDateToYMD(
-                        GetEndOfComplianceReport?.header?.generatedOn,
+                        GetEndOfComplianceReport?.header?.generatedOn
                       ) || "-"}
                     </p>
                   </div>
@@ -341,7 +339,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCreatedDate,
+                              ?.complianceCreatedDate
                           ) || "-"}
                         </p>
                       </div>
@@ -350,7 +348,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceCompletionDate,
+                              ?.complianceCompletionDate
                           ) || "-"}
                         </p>
                       </div>
@@ -359,7 +357,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {formatDateToYMD(
                             GetEndOfComplianceReport?.complianceSummary
-                              ?.complianceDueDate,
+                              ?.complianceDueDate
                           ) || "-"}
                         </p>
                       </div>
@@ -496,7 +494,7 @@ const EndOfComplianceReport = () => {
             </div>
           )}
 
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               {/* Complaince Title */}
               <Row>
@@ -519,8 +517,10 @@ const EndOfComplianceReport = () => {
 
               {/* Boxes of Report/Generate/Checklist/task */}
               <Row className={`${styles.ComplianceSection} mt-4 `}>
-                <Col lg={8} className="d-flex flex-column h-100">
-                  <Row className="d-flex align-items-end">
+                <Col lg={8} xs="auto" className="d-flex flex-column h-100">
+                  <Row
+                    className={`${styles.titleAboveBoxRow} d-flex align-items-end`}
+                  >
                     {/* Criticality table */}
                     <Col lg={5} xs="auto" className={styles.titleAboveBox}>
                       <p className={styles.ComplianceReportHeadingsLabel}>
@@ -530,6 +530,7 @@ const EndOfComplianceReport = () => {
                         }`}
                       </p>
                     </Col>
+
                     {/* Authoirty label */}
                     <Col lg={4} xs="auto" className={styles.titleAboveBox}>
                       <p className={styles.ComplianceReportHeadingsLabel}>
@@ -550,7 +551,8 @@ const EndOfComplianceReport = () => {
                       </p>
                     </Col>
                   </Row>
-                  <Row className="align-items-stretch">
+
+                  <Row className={`align-items-stretch`}>
                     {/* Report Type */}
                     <Col lg={5} xs="auto" className="d-flex flex-column ">
                       <div className={styles.iconTextWrapperPDFDownload}>
@@ -576,7 +578,7 @@ const EndOfComplianceReport = () => {
                             <label>{t("Generated-date")}:</label>
                             <p>
                               {formatDateToYMDLong(
-                                GetEndOfComplianceReport?.header?.generatedOn,
+                                GetEndOfComplianceReport?.header?.generatedOn
                               )}
                             </p>
                           </div>
@@ -625,7 +627,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCreatedDate,
+                            ?.complianceCreatedDate
                         )}
                       </p>
                     </Col>
@@ -636,7 +638,7 @@ const EndOfComplianceReport = () => {
                       <p>
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceCompletionDate,
+                            ?.complianceCompletionDate
                         )}
                       </p>
                     </Col>
@@ -647,7 +649,7 @@ const EndOfComplianceReport = () => {
                         {" "}
                         {formatDateToYMDLong(
                           GetEndOfComplianceReport?.complianceSummary
-                            ?.complianceDueDate,
+                            ?.complianceDueDate
                         )}
                       </p>
                     </Col>
@@ -730,7 +732,7 @@ const EndOfComplianceReport = () => {
                         <p>
                           {index + 1}. {check.checklistTitle}
                         </p>
-                      ),
+                      )
                     )}
                   </p>
                 </Col>
@@ -768,116 +770,197 @@ const EndOfComplianceReport = () => {
                         </p>
                       </div>
 
-                      {GetEndOfComplianceReport?.checklists.map(
-                        (checlist, index) => (
-                          <Row className={styles.TextDownloadWrapper}>
-                            <Col className={styles.TextDownload}>
-                              <img
-                                src={ComplianceCalendar}
-                                alt="ComplianceCalendar"
-                              />
-                              <div className="d-flex flex-column align-items-start justify-content-start">
-                                <label
-                                  className={
-                                    styles.checklistDueDateInternalLabel
-                                  }
-                                >
-                                  {t("Due-date")}:
-                                </label>
-                                <p className={styles.checklistDueDateInternal}>
-                                  {formatDateToYMDLong(
-                                    checlist?.checklistDueDate,
-                                  ) || "-"}
-                                </p>
-                              </div>
-                            </Col>
-
-                            <Col className={`${styles.TextDownload} `}>
-                              <div>
-                                <p>{checlist?.totalTasks}</p>
-                                <label>{t("Total-tasks")}</label>
-                              </div>
-                            </Col>
-
-                            <Col className={styles.TextDownload}>
-                              <div>
-                                <p>{checlist?.overdueTasks}</p>
-                                <label>{t("Overdue-tasks")}</label>
-                              </div>
-                            </Col>
-                          </Row>
-                        ),
-                      )}
-
-                      {checklist?.tasks?.map((task) => (
-                        <div key={task.taskID}>
-                          <div className={styles.insideAccordianTable}>
-                            <Row>
-                              <Col lg={12} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Task-title")}:</label>
-
-                                  <p>{task.taskTitle}</p>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col>
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Description")}:</label>
-                                  <p>{task.taskDescription || "-"}</p>
-                                </div>
-                              </Col>
-                            </Row>
-                            <Row>
-                              <Col lg={3} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Assignee")}:</label>
-                                  <p>{task.assigneeName || "-"}</p>
-                                </div>
-                              </Col>{" "}
-                              <Col lg={3} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Due-date")}:</label>
-                                  <p>{formatDateToYMDLong(task.taskDueDate)}</p>
-                                </div>
-                              </Col>
-                              <Col lg={3} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Completed-on")}:</label>
-                                  <p>
-                                    {formatDateToYMDLong(
-                                      task.taskCompletedOn,
-                                    ) || "-"}
-                                  </p>
-                                </div>
-                              </Col>
-                              <Col lg={3} xs="auto">
-                                <div
-                                  className={styles.insideAccordianMainHeading}
-                                >
-                                  <label>{t("Completed")}:</label>
-                                  <p>{task.completionStatus}</p>
-                                </div>
-                              </Col>
-                            </Row>
+                      <Row className={styles.TextDownloadWrapper}>
+                        <Col className={styles.TextDownload}>
+                          <img
+                            src={ComplianceCalendar}
+                            alt="ComplianceCalendar"
+                          />
+                          <div className="d-flex flex-column align-items-start justify-content-start">
+                            <label
+                              className={styles.checklistDueDateInternalLabel}
+                            >
+                              {t("Due-date")}:
+                            </label>
+                            <p className={styles.checklistDueDateInternal}>
+                              {formatDateToYMDLong(
+                                checklist?.checklistDueDate
+                              ) || "-"}
+                            </p>
                           </div>
-                        </div>
-                      ))}
+                        </Col>
+
+                        <Col className={`${styles.TextDownload} `}>
+                          <div>
+                            <p>{checklist?.totalTasks}</p>
+                            <label>{t("Total-tasks")}</label>
+                          </div>
+                        </Col>
+
+                        <Col className={styles.TextDownload}>
+                          <div>
+                            <p>{checklist?.overdueTasks}</p>
+                            <label>{t("Overdue-tasks")}</label>
+                          </div>
+                        </Col>
+                      </Row>
+
+                      {checklist?.tasks.length > 0 &&
+                        checklist?.tasks?.map((task) => (
+                          <div key={task.taskID}>
+                            <div className={styles.insideAccordianTable}>
+                              <Row>
+                                <Col lg={12} xs="auto">
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Task-title")}:</label>
+
+                                    <p>{task.taskTitle}</p>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col>
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Description")}:</label>
+                                    <p>{task.taskDescription || "-"}</p>
+                                  </div>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col lg={3} xs="auto">
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Assignee")}:</label>
+                                    <p>{task.assigneeName || "-"}</p>
+                                  </div>
+                                </Col>{" "}
+                                <Col lg={3} xs="auto">
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Due-date")}:</label>
+                                    <p>
+                                      {formatDateToYMDLong(task.taskDueDate)}
+                                    </p>
+                                  </div>
+                                </Col>
+                                <Col lg={3} xs="auto">
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Completed-on")}:</label>
+                                    <p>
+                                      {formatDateToYMDLong(
+                                        task.taskCompletedOn
+                                      ) || "-"}
+                                    </p>
+                                  </div>
+                                </Col>
+                                <Col lg={3} xs="auto">
+                                  <div
+                                    className={
+                                      styles.insideAccordianMainHeading
+                                    }
+                                  >
+                                    <label>{t("Completed")}:</label>
+                                    <p>{task.completionStatus}</p>
+                                  </div>
+                                </Col>
+                              </Row>
+                            </div>
+                          </div>
+                        ))}
                     </div>
                   </Col>
                 ))}
               </Row>
+              {GetEndOfComplianceReport?.complianceStatusChangeHistory.length >
+                0 && (
+                <div className={styles.reopenComplianceDetails}>
+                  <Row className="mt-3">
+                    <Col>
+                      <span className={styles.reopenTitle}>
+                        {t("Reopen-details")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      {GetEndOfComplianceReport?.complianceStatusChangeHistory?.map(
+                        (item) => (
+                          <div
+                            className={styles.reopneDetailsBlock}
+                            key={item.historyId}
+                          >
+                            <Row>
+                              <Col sm={12} md={12} lg={12}>
+                                <div className={styles.reopenTextLabel}>{`${t(
+                                  "Reason"
+                                )}:`}</div>
+                                <div className={styles.reopenTextVaue}>
+                                  {item.statusChangeReason || "-"}
+                                </div>
+                              </Col>
+
+                              <Row className="mt-3">
+                                <Col sm={12} md={10} lg={10}>
+                                  <div className={styles.reopenTextLabel}>
+                                    {t("Attachments")}
+                                  </div>
+                                  <div
+                                    className={`d-flex flex-col ${styles.attachmentsDiv}`}
+                                  >
+                                    {item.attachments?.length > 0
+                                      ? item.attachments.map((file) => (
+                                          <AttachmentViewer
+                                            data={file}
+                                            name={file.displayFileName}
+                                            id={0}
+                                            key={file.fileId}
+                                          />
+                                        ))
+                                      : ""}
+                                  </div>
+                                </Col>
+
+                                <Col
+                                  sm={12}
+                                  md={2}
+                                  lg={2}
+                                  className="d-flex flex-column justify-content-end"
+                                >
+                                  <div className={styles.reopenTextLabel}>{`${t(
+                                    "Due-date"
+                                  )}:`}</div>
+                                  <div className={styles.reopenTextVaue}>
+                                    {formatDateToYMDLong(item.updatedDueDate) ||
+                                      "-"}
+                                  </div>
+                                </Col>
+                              </Row>
+                            </Row>
+                          </div>
+                        )
+                      )}
+                    </Col>
+                  </Row>
+                </div>
+              )}
             </div>
           )}
         </Spin>
