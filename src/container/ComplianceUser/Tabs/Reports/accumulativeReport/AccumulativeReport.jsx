@@ -11,7 +11,10 @@ import { DownOutlined } from "@ant-design/icons";
 import { Chart } from "react-google-charts";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { formatDateToYMD, getDynamicFileName } from "../../../CommonComponents/commonFunctions";
+import {
+  formatDateToYMD,
+  getDynamicFileName,
+} from "../../../CommonComponents/commonFunctions";
 import generatePDF, { Margin, Resolution } from "react-to-pdf";
 
 const { Panel } = Collapse;
@@ -169,7 +172,7 @@ const AccumulativeReport = () => {
           tip="Generating PDF..."
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -362,7 +365,7 @@ const AccumulativeReport = () => {
                               {item.tasksOverdue}
                             </div>
                             <div className="text-center">
-                              {item.progressPercent}
+                              {`${item.progressPercent}${"%"}`}
                             </div>
                           </div>
                         }
@@ -461,7 +464,7 @@ const AccumulativeReport = () => {
                                               {" "}
                                               {formatDateToYMD(
                                                 taskItem.taskCompletedOn
-                                              ) || 0}
+                                              ) || "-"}
                                             </p>
                                           </div>
                                         </Col>
@@ -484,7 +487,7 @@ const AccumulativeReport = () => {
                                             <label>{t("Completed")}:</label>
                                             <p>
                                               {" "}
-                                              {taskItem.completedTasks || 0}
+                                              {taskItem.completionStatus || "-"}
                                             </p>
                                           </div>
                                         </Col>
@@ -505,7 +508,7 @@ const AccumulativeReport = () => {
           )}
 
           {/*Accumulative Report Download     */}
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
@@ -643,6 +646,17 @@ const AccumulativeReport = () => {
                   className={`${styles.ComplianceMainHeading} mt-4`}
                 >
                   <p>{t("Compliances-in-this-report")}</p>
+                </Col>
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-4`}
+                >
+                  {GetAccumulativeReport?.compliances?.map((comp, index) => (
+                    <p className={styles.complianceTitleList}>
+                      {index + 1 + "."} {comp.complianceTitle}
+                    </p>
+                  ))}
                 </Col>
                 {GetAccumulativeReport?.compliances?.map(
                   (compliance, index) => (
