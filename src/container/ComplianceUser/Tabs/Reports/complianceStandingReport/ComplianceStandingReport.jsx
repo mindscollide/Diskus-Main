@@ -341,6 +341,7 @@ const ComplianceStandingReport = () => {
    * FIX 3: Criticality column had two `render` functions — duplicate removed;
    *        kept the correct one (1=High, 2=Medium, 3=Low).
    */
+
   const columns = useMemo(() => {
     /**
      * Returns the correct sort-arrow icon for a given sort state.
@@ -361,7 +362,7 @@ const ComplianceStandingReport = () => {
         ),
         dataIndex: "ComplianceName",
         key: "ComplianceName",
-        width: "25%",
+        width: "27%",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
             b.ComplianceName?.toLowerCase(),
@@ -512,6 +513,7 @@ const ComplianceStandingReport = () => {
         title: "",
         key: "arrow",
         align: "right",
+        width: "5%",
         render: (_, record) => {
           const isExpanded = expandedRowKeys.includes(record.key);
           return (
@@ -540,7 +542,6 @@ const ComplianceStandingReport = () => {
     expandedRowKeys, // FIX: was missing
     t,
   ]);
-
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
@@ -652,7 +653,7 @@ const ComplianceStandingReport = () => {
                     if (!item) return null;
 
                     return (
-                      <div className="p-3">
+                      <div className="">
                         {!item?.checklistData?.length ? (
                           <div className={styles.NoDataFoundTable}>
                             <div className={styles.nodatafound_subHeading}>
@@ -669,7 +670,7 @@ const ComplianceStandingReport = () => {
                               <Row>
                                 <Col
                                   lg={12}
-                                  className={styles.ComplianceMainHeading}
+                                  className={styles.ChecklistMainHeading}
                                 >
                                   <div className={styles.titleBlueColor}>
                                     <label>{t("Checklist-title")}:</label>
@@ -698,7 +699,7 @@ const ComplianceStandingReport = () => {
                                         <Col lg={12}>
                                           <div
                                             className={
-                                              styles.insideAccordianMainHeading
+                                              styles.insideAccordianMain
                                             }
                                           >
                                             <label>{t("Task-title")}:</label>
@@ -832,12 +833,21 @@ const ComplianceStandingReport = () => {
               <Col className={styles.iconTextWrapperPDF}>
                 <img src={ComplianceCalendar} alt="ComplianceCalendar" />
                 <div>
-                  <label>{t("Date-range")}:</label>
+                  {/* <label>{t("Date-range")}:</label>
                   <p>
                     {dateRange
                       ? `${dateRange[0].format(
                           "DD/MM/YYYY",
                         )} - ${dateRange[1].format("DD/MM/YYYY")}`
+                      : "-"}
+                  </p> */}
+
+                  <label>{t("Date-range")}:</label>
+                  <p>
+                    {dateRange
+                      ? `${dateRange[0].format(
+                          "DD MMM YYYY"
+                        )} - ${dateRange[1].format("DD MMM YYYY")}`
                       : "-"}
                   </p>
                 </div>
@@ -853,7 +863,19 @@ const ComplianceStandingReport = () => {
               >
                 <p>{t("Compliances-in-this-report")}</p>
               </Col>
-
+              <Col
+                lg={12}
+                xs="auto"
+                className={`${styles.ComplianceMainHeading} mt-3`}
+              >
+                {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
+                  (comp, index) => (
+                    <p className={styles.complianceTitleList}>
+                      {index + 1 + "."} {comp.complianceTitle}
+                    </p>
+                  )
+                )}
+              </Col>
               {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
                 (compliance, index) => (
                   <Col
@@ -865,7 +887,7 @@ const ComplianceStandingReport = () => {
                     {/* Compliance title */}
                     <div className={styles.titleSection}>
                       <label>{t("Compliance-title")}:</label>
-                      <p className={styles.longTitle}>
+                      <p className={styles.complianceTitle}>
                         {`${index + 1}. ${
                           compliance.complianceTitle || "No Compliance Title"
                         }`}
@@ -882,7 +904,7 @@ const ComplianceStandingReport = () => {
                     ) : (
                       compliance.checklistData.map((checklist) => (
                         <div
-                          className={styles.panelContent}
+                          className={styles.panelContentDownload}
                           key={checklist.checklistId} // FIX: was checklistID (wrong casing)
                         >
                           {/* Checklist title */}
@@ -906,7 +928,7 @@ const ComplianceStandingReport = () => {
                             checklist.checklistTasks.map((task) => (
                               <div
                                 key={task.taskId} // FIX: was taskID (wrong casing)
-                                className={styles.insideAccordianTable}
+                                className={styles.insideAccordianTableTasks}
                               >
                                 {/* Task title */}
                                 <Row>

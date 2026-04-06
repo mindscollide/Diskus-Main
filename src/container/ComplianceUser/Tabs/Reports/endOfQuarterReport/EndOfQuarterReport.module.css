@@ -66,7 +66,7 @@
   font-weight: 600;
   font-size: 14px;
   padding: 12px 16px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #a2a2a2;
   color: #6172d6;
   font-family: "Montserrat";
 }
@@ -76,7 +76,7 @@
   display: grid;
   grid-template-columns: 5fr 1.5fr 1fr 1fr 1fr 0.5fr 2fr;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   font-family: "Montserrat";
   color: #5a5a5a;
@@ -112,7 +112,7 @@
 
 .collapseWrapper :global(.ant-collapse-item) {
   background: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #e1e1e1;
 }
 
 .collapseWrapper :global(.ant-collapse-header) {
@@ -124,11 +124,11 @@
   background: #fff; /* your normal bg */
   border: none;
 }
-
 .panelContent {
-  /* padding: 16px; */
+  padding: 16px;
   background: #f6f9fc !important;
 }
+
 .MainAccordianTable {
   max-height: 300px;
   overflow: hidden;
@@ -141,39 +141,6 @@
   border-radius: 8px;
   background-color: #fff;
   margin-top: 10px;
-}
-
-.insideAccordianMainHeading label {
-  color: #5a67d8;
-  font-size: 8px;
-  font-weight: 700;
-  font-family: "Montserrat";
-}
-
-.insideAccordianMainHeading p {
-  color: #5a5a5a;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: "Montserrat";
-  /*  */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 800px;
-}
-
-.insideAccordianSubHeading label {
-  color: #5a67d8;
-  font-size: 8px;
-  font-weight: 700;
-  font-family: "Montserrat";
-}
-
-.insideAccordianSubHeading p {
-  color: #5a5a5a;
-  font-size: 12px;
-  font-weight: 600;
-  font-family: "Montserrat";
 }
 
 .reportDetailsBar {
@@ -214,7 +181,7 @@
   align-items: center;
   padding: 0px 20px;
 }
-.titleSection label {
+/* .titleSection label {
   font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
@@ -225,19 +192,29 @@
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-}
-
-.longTitle {
-  font-size: 16px;
-  font-weight: 500;
-  color: #6172d6;
+} */
+.titleSection label {
+  font-size: 10px;
+  font-weight: 700;
   font-family: "Montserrat";
-  line-height: 1.4;
-  margin-bottom: 15px;
-
-  /* 🔥 Important */
-  word-break: break-word;
-  max-width: 95%;
+  color: #5a5a5a;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSection p {
+  font-size: 24px;
+  /* font-size: 16px; */
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSection label.ChecklistTitle {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
 }
 
 .metaRow {
@@ -505,6 +482,7 @@ p {
 .TextDownloadWrapper {
   display: flex;
   gap: 30px;
+  margin: 1px 0;
 }
 .TextDownload {
   display: flex;
@@ -528,6 +506,41 @@ p {
   text-align: center;
   margin-top: 5px;
 }
+
+/* view report */
+.panelContent {
+  padding: 16px;
+  background: #f6f9fc !important;
+}
+.insideAccordianMain label {
+  color: #5a67d8;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Montserrat";
+}
+.insideAccordianMain p {
+  color: #5a5a5a;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+
+.insideAccordianSubHeading label {
+  color: #5a67d8;
+  font-size: 10px;
+  font-family: "Montserrat";
+  font-weight: 700;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+
+.insideAccordianSubHeading p {
+  color: #5a5a5a;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: "Montserrat";
+}
+/* view report */
 /* Download Report */
 .TextDownload p {
   font-size: 30px;
@@ -552,3 +565,76 @@ p {
   max-width: 95%;
 }
 /* Download Report */
+
+/* Download Report */
+.panelContentDownload {
+  background: #f6f9fc !important;
+}
+.insideAccordianMainHeading label {
+  color: #5a67d8;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+
+.insideAccordianMainHeading p {
+  color: #5a5a5a;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: "Montserrat";
+  line-height: 100%;
+  letter-spacing: 0%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 800px;
+}
+/* Download Report */
+.complianceTitleList {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a;
+}
+.complainceTitleHeading {
+  font-weight: 700;
+  font-size: 8px;
+  color: #5a5a5a;
+}
+
+.complainceTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: #6172d6;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+}
+.ChecklistTitleHeading {
+  font-weight: 700 !important;
+  font-size: 8px !important;
+  line-height: 8px !important;
+  color: #6172d6 !important;
+}
+
+.longTitleHeading {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+
+  /* 🔥 Important */
+  word-break: break-word !important;
+  max-width: 95% !important;
+}
+.insideAccordianTableDownload {
+  padding: 10px 20px 0 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 10px;
+}

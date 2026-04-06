@@ -12,6 +12,7 @@ import { Chart } from "react-google-charts";
 import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
+  formatDateToYMDLong,
   getDynamicFileName,
 } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
@@ -77,6 +78,8 @@ const EndOfQuarterReport = () => {
   const GetQuarterReport = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
+
+  console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -160,7 +163,7 @@ const EndOfQuarterReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -348,7 +351,7 @@ const EndOfQuarterReport = () => {
                               {item.tasksOverdue}
                             </div>
                             <div className="text-center">
-                              {item.progressPercent}
+                              {`${item.progressPercent}${"%"}`}
                             </div>
                           </div>
                         }
@@ -395,7 +398,7 @@ const EndOfQuarterReport = () => {
                                             <Col lg={12} xs="auto">
                                               <div
                                                 className={
-                                                  styles.insideAccordianMainHeading
+                                                  styles.insideAccordianMain
                                                 }
                                               >
                                                 <label>
@@ -467,7 +470,7 @@ const EndOfQuarterReport = () => {
                                                 }
                                               >
                                                 <label>{t("Completed")}:</label>
-                                                <p>{task.taskStatus}</p>
+                                                <p>{task.completionStatus}</p>
                                               </div>
                                             </Col>
                                           </Row>
@@ -489,7 +492,7 @@ const EndOfQuarterReport = () => {
           )}
 
           {/*End of quarter Report Download     */}
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div id="content-id">
               <Row>
                 <Col
@@ -530,7 +533,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("Generated-date")}: </label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.generatedOn
                           )}
                         </p>
@@ -549,7 +552,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("Start-dates")}:</label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.quarterStartDate
                           )}
                         </p>
@@ -559,7 +562,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("End-dates")}:</label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.quarterEndDate
                           )}
                         </p>
@@ -623,10 +626,25 @@ const EndOfQuarterReport = () => {
                   className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
                 >
                   <p className={styles.complianceInThisReportTitleDownload}>
-                    {" "}
                     {t("Compliances-in-this-report")}
                   </p>
                 </Col>
+
+                {/* list of Compliances */}
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-3`}
+                >
+                  <p className={styles.complianceTitleList}>
+                    {GetQuarterReport?.compliances.map((title, index) => (
+                      <p>
+                        {index + 1}. {title.complianceTitle}
+                      </p>
+                    ))}
+                  </p>
+                </Col>
+
                 {GetQuarterReport?.compliances?.map((compliance, index) => (
                   <Col
                     key={compliance.complianceID}
@@ -635,22 +653,24 @@ const EndOfQuarterReport = () => {
                     className={styles.checklist_report}
                   >
                     <div className={styles.titleSection}>
-                      <label>{t("Compliance-title")}:</label>
-                      <p className={styles.longTitle}>
-                        {`${index + 1}. ${
+                      <label className={styles.complainceTitleHeading}>
+                        {t("Compliance-title")}:
+                      </label>
+                      <p className={styles.complainceTitle}>
+                        {`${
                           compliance.complianceTitle || "No Compliance Title"
                         }`}
                       </p>
                     </div>
 
-                    {/* <div className={`${styles.dueDate} `}>
+                    <div className={`${styles.dueDate} `}>
                       <label>{t("Due-date")}:</label>
                       <p>
                         {formatDateToYMD(compliance?.complianceDueDate) || "-"}
                       </p>
-                    </div> */}
+                    </div>
 
-                    {/* <Row className={styles.TextDownloadWrapper}>
+                    <Row className={styles.TextDownloadWrapper}>
                       <Col className={styles.TextDownload}>
                         <div>
                           <p>{compliance?.progressPercent || "0"}%</p>
@@ -681,7 +701,7 @@ const EndOfQuarterReport = () => {
                           <label>{t("Overdue-tasks")}</label>
                         </div>
                       </Col>
-                    </Row> */}
+                    </Row>
 
                     <div>
                       {!compliance?.checklists?.length ? (
@@ -692,9 +712,9 @@ const EndOfQuarterReport = () => {
                         </div>
                       ) : (
                         compliance?.checklists.map((checklist) => (
-                          <div className={styles.panelContent}>
-                            <div className={styles.titleSection}>
-                              <label className={styles.ChecklistTitle}>
+                          <div className={styles.panelContentDownload}>
+                            <div className={`${styles.titleSection} mt-3`}>
+                              <label className={styles.ChecklistTitleHeading}>
                                 {t("Checklists-title")}:
                               </label>
                               <p className={styles.longTitleHeading}>
@@ -714,7 +734,9 @@ const EndOfQuarterReport = () => {
                                 checklist?.tasks?.map((task) => (
                                   <div key={task.taskID}>
                                     <div
-                                      className={styles.insideAccordianTable}
+                                      className={
+                                        styles.insideAccordianTableDownload
+                                      }
                                     >
                                       <Row>
                                         <Col lg={12} xs="auto">
