@@ -253,7 +253,7 @@ const EndOfComplianceReport = () => {
           tip={autoPdfDownload ? "Downloading PDF..." : "Generating PDF..."}
           className="d-flex justify-content-center align-items-center"
         >
-          {showPdfLayout && (
+          {!showPdfLayout && (
             <div>
               <Row className="align-items-center">
                 {/* Back Button */}
@@ -494,7 +494,7 @@ const EndOfComplianceReport = () => {
             </div>
           )}
 
-          {!showPdfLayout && (
+          {showPdfLayout && (
             <div id="content-id">
               {/* Complaince Title */}
               <Row>

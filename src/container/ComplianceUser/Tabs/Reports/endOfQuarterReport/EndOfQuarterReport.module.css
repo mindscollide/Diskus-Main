@@ -216,18 +216,6 @@
   font-family: "Montserrat";
   color: #6172d6;
 }
-.longTitle {
-  font-size: 16px;
-  font-weight: 500;
-  color: #6172d6;
-  font-family: "Montserrat";
-  line-height: 1.4;
-  margin-bottom: 15px;
-
-  /* 🔥 Important */
-  word-break: break-word;
-  max-width: 95%;
-}
 
 .metaRow {
   display: flex;
@@ -494,6 +482,7 @@ p {
 .TextDownloadWrapper {
   display: flex;
   gap: 30px;
+  margin: 1px 0;
 }
 .TextDownload {
   display: flex;
@@ -603,3 +592,49 @@ p {
   max-width: 800px;
 }
 /* Download Report */
+.complianceTitleList {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a;
+}
+.complainceTitleHeading {
+  font-weight: 700;
+  font-size: 8px;
+  color: #5a5a5a;
+}
+
+.complainceTitle {
+  font-weight: 600;
+  font-size: 16px;
+  color: #6172d6;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+}
+.ChecklistTitleHeading {
+  font-weight: 700 !important;
+  font-size: 8px !important;
+  line-height: 8px !important;
+  color: #6172d6 !important;
+}
+
+.longTitleHeading {
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+
+  /* 🔥 Important */
+  word-break: break-word !important;
+  max-width: 95% !important;
+}
+.insideAccordianTableDownload {
+  padding: 10px 20px 0 20px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  background-color: #fff;
+  margin-top: 10px;
+}
