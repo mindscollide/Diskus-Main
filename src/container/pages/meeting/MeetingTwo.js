@@ -3266,7 +3266,7 @@ const NewMeeting = () => {
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
       viewMinutes:
-        (status === STATUS.ENDED && !record.isQuickMeeting && isParticipant) ||
+        (status === STATUS.ENDED && !record.isQuickMeeting && isParticipant && record.isMinutePublished) ||
         (isAgendaContributor &&
           !record.isQuickMeeting &&
           status === STATUS.ENDED),
