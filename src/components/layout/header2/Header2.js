@@ -755,25 +755,26 @@ const Header2 = ({ isVideo }) => {
               // dispatch(ProposedMeetingViewFlagAction(false));
 
               if (proposedMeetingViewFlag) {
-                let meetingpageRow = localStorage.getItem("MeetingPageRows");
-                let meetingPageCurrent =
-                  localStorage.getItem("MeetingPageCurrent");
-                let userID = localStorage.getItem("userID");
-                let searchData = {
-                  Date: "",
-                  Title: "",
-                  HostName: "",
-                  UserID: Number(userID),
-                  PageNumber: Number(meetingPageCurrent),
-                  Length: Number(meetingpageRow),
-                  PublishedMeetings: false,
-                  ProposedMeetings: true,
-                };
+                navigate("/Diskus")
+                // let meetingpageRow = localStorage.getItem("MeetingPageRows");
+                // let meetingPageCurrent =
+                //   localStorage.getItem("MeetingPageCurrent");
+                // let userID = localStorage.getItem("userID");
+                // let searchData = {
+                //   Date: "",
+                //   Title: "",
+                //   HostName: "",
+                //   UserID: Number(userID),
+                //   PageNumber: Number(meetingPageCurrent),
+                //   Length: Number(meetingpageRow),
+                //   PublishedMeetings: false,
+                //   ProposedMeetings: true,
+                // };
 
-                console.log("chek search meeting");
-                await dispatch(
-                  searchNewUserMeeting(navigate, searchData, t, 1)
-                );
+                // console.log("chek search meeting");
+                // await dispatch(
+                //   searchNewUserMeeting(navigate, searchData, t, 1)
+                // );
 
                 return;
               }

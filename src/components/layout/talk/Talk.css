@@ -254,6 +254,7 @@ body[dir="rtl"] .talk_subIcon.with-hover {
 }
 .talk_subIcon.with-hover {
   filter: #fff;
+
 }
 
 .talk_subIcon.with-hover svg path {
@@ -272,6 +273,9 @@ body[dir="rtl"] .talk_subIcon.with-hover {
 
 .talk_subIcon.with-hover svg rect#Rectangle_832 {
   fill: #fff !important;
+}
+.talk_subIcon.with-hover .TalkIconPannelLabels {
+  color: #fff !important;
 }
 
 .TalkIconPannelLabels {
