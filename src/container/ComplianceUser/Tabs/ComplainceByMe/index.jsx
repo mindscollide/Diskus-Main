@@ -97,7 +97,7 @@ const ComplianceByMe = () => {
   useEffect(() => {
     const payload = { ...searchCompliancePayload };
 
-    // ✅ UPCOMING DEADLINE FLOW
+    //  UPCOMING DEADLINE FLOW
     if (upcomingDeadlineFilterFlag) {
       let startFiscalMonth = localStorage.getItem("fiscalStartMonth");
       let startFiscalDay = localStorage.getItem("fiscalYearStartDay");
@@ -109,23 +109,23 @@ const ComplianceByMe = () => {
 
       const upcomingPayload = {
         ...payload,
-        statusIds: [2, 6, 7], // ✅ KEEP FILTERS
+        statusIds: [1, 2, 4, 6, 7], //  KEEP FILTERS
         dueDateFrom: moment(startDate).format("YYYYMMDD"),
         dueDateTo: moment(endDate).format("YYYYMMDD"),
         pageNumber: 0,
       };
 
-      // ✅ IMPORTANT: SAVE FILTERED PAYLOAD (DO NOT RESET)
+      //  IMPORTANT: SAVE FILTERED PAYLOAD (DO NOT RESET)
       setSearchCompliancePayload(upcomingPayload);
 
-      // ✅ API CALL
+      //  API CALL
       dispatch(listOfComplianceByCreatorApi(navigate, upcomingPayload, t));
 
       setUpcomingDeadlineFilterFlag(false);
       return;
     }
 
-    // ✅ REOPEN FLOW
+    //  REOPEN FLOW
     if (viewAllReopenDashboardButtonFlag) {
       const reopenPayload = {
         ...payload,
@@ -133,14 +133,14 @@ const ComplianceByMe = () => {
         pageNumber: 0,
       };
 
-      // ✅ SAVE PAYLOAD
+      //  SAVE PAYLOAD
       setSearchCompliancePayload(reopenPayload);
 
       dispatch(listOfComplianceByCreatorApi(navigate, reopenPayload, t));
 
       setViewAllReopenDashboardButtonFlag(false);
     } else {
-      // ✅ NORMAL FLOW
+      //  NORMAL FLOW
       setSearchCompliancePayload(payload);
 
       dispatch(listOfComplianceByCreatorApi(navigate, payload, t));

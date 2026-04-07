@@ -107,6 +107,7 @@ const ComplainceDetails = () => {
   );
 
   console.log(complianceReopenDetailsState, "complianceReopenDetailsState");
+  console.log(complianceDetailsState, "complianceDetailsState");
 
   const { t } = useTranslation();
   const [tagsOptions, setTagsOptions] = useState([]);
@@ -148,6 +149,7 @@ const ComplainceDetails = () => {
   const authorityseverityMessage = useSelector(
     (state) => state.ComplainceSettingReducerReducer.severity,
   );
+  console.log(complianceDetailsState, "complianceDetailsState");
 
   console.log(viewComplianceByMeDetails, "viewComplianceByMeDetails");
 
@@ -652,7 +654,7 @@ const ComplainceDetails = () => {
     const authorityId = complianceDetailsState.authority.value;
     if (!authorityId) return;
     const title = complianceDetailsState.complianceTitle;
-    // 🆕 CREATE MODE → always check
+    // CREATE MODE → always check
     if (complianceAddEditViewState === 1) {
       const Data = {
         ComplianceTitle: title,
@@ -671,7 +673,7 @@ const ComplainceDetails = () => {
       return;
     }
 
-    // ✏️ EDIT MODE
+    //  EDIT MODE
     if (complianceAddEditViewState === 2 && viewComplianceByMeDetails) {
       const originalAuthorityId =
         viewComplianceByMeDetails.authority.authorityId;
