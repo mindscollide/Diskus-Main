@@ -14,7 +14,7 @@ export const parseUTCDateString = (dateStr) => {
     Number(day),
     Number(hour),
     Number(minute),
-    Number(second)
+    Number(second),
   );
 };
 
@@ -127,11 +127,13 @@ const allStatuses = [
   { statusId: 6, statusName: "Reopened" },
   { statusId: 7, statusName: "On Hold" },
   { statusId: 9, statusName: "Cancelled" },
+  { statusId: 4, statusName: "Overdue" },
 ];
 const statusTransitions = {
   1: [2, 7], // Not Started → In Progress, On Hold
   2: [5, 7, 9], // In Progress → Submitted, On Hold, Cancelled
   7: [2, 9], // On Hold → In Progress, Cancelled
+  4: [5, 7, 9],
   5: [3, 6, 7], // Submitted → Completed, Reopened, On Hold
   6: [5, 7, 9], // Reopened → Submitted, On Hold, Cancelled
   3: [6], // Completed → Reopened

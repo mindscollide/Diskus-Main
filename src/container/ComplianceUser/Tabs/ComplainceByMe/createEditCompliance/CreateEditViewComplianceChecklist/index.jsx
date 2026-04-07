@@ -462,11 +462,15 @@ const CreateEditViewComplianceChecklist = () => {
 
   const editableStatuses = new Set([1, 2, 4, 7]);
 
-  const isComplianceEditable = editableStatuses.has(
-    complianceDetailsState?.status?.value,
-  );
+  const statusValue = complianceDetailsState?.status?.value;
 
-  console.log(isComplianceEditable, "isComplianceEditable");
+  const isComplianceEditable =
+    statusValue !== undefined && editableStatuses.has(statusValue);
+
+  console.log(
+    { isComplianceEditable, editableStatuses, statusValue },
+    "isComplianceEditable",
+  );
 
   return (
     <>
