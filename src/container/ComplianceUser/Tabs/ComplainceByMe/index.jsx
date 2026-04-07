@@ -96,37 +96,53 @@ const ComplianceByMe = () => {
    */
   useEffect(() => {
     const payload = { ...searchCompliancePayload };
+
+    // ✅ UPCOMING DEADLINE FLOW
     if (upcomingDeadlineFilterFlag) {
       let startFiscalMonth = localStorage.getItem("fiscalStartMonth");
       let startFiscalDay = localStorage.getItem("fiscalYearStartDay");
 
-      const getStartAndEndDate = getFiscalQuarterDetails({
+      const { startDate, endDate } = getFiscalQuarterDetails({
         fiscalStartMonth: Number(startFiscalMonth),
         fiscalStartDay: Number(startFiscalDay),
       });
-      const upcomingDeadlineComplaincePayload = {
+
+      const upcomingPayload = {
         ...payload,
-        dueDateFrom: moment(getStartAndEndDate.startDate).format("YYYYMMDD"),
-        dueDateTo: moment(getStartAndEndDate.endDate).format("YYYYMMDD"),
+        statusIds: [2, 6, 7], // ✅ KEEP FILTERS
+        dueDateFrom: moment(startDate).format("YYYYMMDD"),
+        dueDateTo: moment(endDate).format("YYYYMMDD"),
+        pageNumber: 0,
       };
 
-      dispatch(
-        listOfComplianceByCreatorApi(
-          navigate,
-          upcomingDeadlineComplaincePayload,
-          t,
-        ),
-      );
+      // ✅ IMPORTANT: SAVE FILTERED PAYLOAD (DO NOT RESET)
+      setSearchCompliancePayload(upcomingPayload);
+
+      // ✅ API CALL
+      dispatch(listOfComplianceByCreatorApi(navigate, upcomingPayload, t));
+
       setUpcomingDeadlineFilterFlag(false);
       return;
     }
 
+    // ✅ REOPEN FLOW
     if (viewAllReopenDashboardButtonFlag) {
-      const reopenPayload = { ...payload, statusIds: [6] };
+      const reopenPayload = {
+        ...payload,
+        statusIds: [6],
+        pageNumber: 0,
+      };
+
+      // ✅ SAVE PAYLOAD
+      setSearchCompliancePayload(reopenPayload);
+
       dispatch(listOfComplianceByCreatorApi(navigate, reopenPayload, t));
+
       setViewAllReopenDashboardButtonFlag(false);
     } else {
-      console.log("payload", payload);
+      // ✅ NORMAL FLOW
+      setSearchCompliancePayload(payload);
+
       dispatch(listOfComplianceByCreatorApi(navigate, payload, t));
       dispatch(GetComplianceAndTaskStatusesAPI(navigate, t));
     }
@@ -171,15 +187,9 @@ const ComplianceByMe = () => {
    * the flag. Otherwise select all statuses (default behaviour).
    */
   useEffect(() => {
-    if (statusFilter.length === 0) {
-      if (upcomingDeadlineFilterFlag) {
-        setStatusFilter(["Not Started", "In Progress", "On Hold", "Reopened"]);
-        setUpcomingDeadlineFilterFlag(false);
-      } else if (allComplianceStatusForFilter?.length > 0) {
-        setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
-      }
+    if (allComplianceStatusForFilter?.length > 0 && statusFilter.length === 0) {
+      setStatusFilter(allComplianceStatusForFilter.map((s) => s.statusTitle));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allComplianceStatusForFilter]);
 
   // ── Handlers ──────────────────────────────────────────────────────────────

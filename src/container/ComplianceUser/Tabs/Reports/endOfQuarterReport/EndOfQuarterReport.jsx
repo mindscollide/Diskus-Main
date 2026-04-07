@@ -12,6 +12,7 @@ import { Chart } from "react-google-charts";
 import { useSelector } from "react-redux";
 import {
   formatDateToYMD,
+  formatDateToYMDLong,
   getDynamicFileName,
 } from "../../../CommonComponents/commonFunctions";
 import { useTranslation } from "react-i18next";
@@ -77,6 +78,8 @@ const EndOfQuarterReport = () => {
   const GetQuarterReport = useSelector(
     (state) => state.ComplainceSettingReducerReducer.GetQuarterReport
   );
+
+  console.log(GetQuarterReport, "GetQuarterReportGetQuarterReport");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [showPdfLayout, setShowPdfLayout] = useState(false);
@@ -530,7 +533,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("Generated-date")}: </label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.generatedOn
                           )}
                         </p>
@@ -549,7 +552,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("Start-dates")}:</label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.quarterStartDate
                           )}
                         </p>
@@ -559,7 +562,7 @@ const EndOfQuarterReport = () => {
                       <div>
                         <label>{t("End-dates")}:</label>
                         <p>
-                          {formatDateToYMD(
+                          {formatDateToYMDLong(
                             GetQuarterReport?.header?.quarterEndDate
                           )}
                         </p>
@@ -623,7 +626,6 @@ const EndOfQuarterReport = () => {
                   className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
                 >
                   <p className={styles.complianceInThisReportTitleDownload}>
-                    {" "}
                     {t("Compliances-in-this-report")}
                   </p>
                 </Col>
@@ -647,22 +649,24 @@ const EndOfQuarterReport = () => {
                     className={styles.checklist_report}
                   >
                     <div className={styles.titleSection}>
-                      <label>{t("Compliance-title")}:</label>
-                      <p className={styles.longTitle}>
-                        {`${index + 1}. ${
+                      <label className={styles.complainceTitleHeading}>
+                        {t("Compliance-title")}:
+                      </label>
+                      <p className={styles.complainceTitle}>
+                        {`${
                           compliance.complianceTitle || "No Compliance Title"
                         }`}
                       </p>
                     </div>
 
-                    {/* <div className={`${styles.dueDate} `}>
+                    <div className={`${styles.dueDate} `}>
                       <label>{t("Due-date")}:</label>
                       <p>
                         {formatDateToYMD(compliance?.complianceDueDate) || "-"}
                       </p>
-                    </div> */}
+                    </div>
 
-                    {/* <Row className={styles.TextDownloadWrapper}>
+                    <Row className={styles.TextDownloadWrapper}>
                       <Col className={styles.TextDownload}>
                         <div>
                           <p>{compliance?.progressPercent || "0"}%</p>
@@ -693,7 +697,7 @@ const EndOfQuarterReport = () => {
                           <label>{t("Overdue-tasks")}</label>
                         </div>
                       </Col>
-                    </Row> */}
+                    </Row>
 
                     <div>
                       {!compliance?.checklists?.length ? (
@@ -705,8 +709,8 @@ const EndOfQuarterReport = () => {
                       ) : (
                         compliance?.checklists.map((checklist) => (
                           <div className={styles.panelContentDownload}>
-                            <div className={styles.titleSection}>
-                              <label className={styles.ChecklistTitle}>
+                            <div className={`${styles.titleSection} mt-3`}>
+                              <label className={styles.ChecklistTitleHeading}>
                                 {t("Checklists-title")}:
                               </label>
                               <p className={styles.longTitleHeading}>
@@ -726,7 +730,9 @@ const EndOfQuarterReport = () => {
                                 checklist?.tasks?.map((task) => (
                                   <div key={task.taskID}>
                                     <div
-                                      className={styles.insideAccordianTable}
+                                      className={
+                                        styles.insideAccordianTableDownload
+                                      }
                                     >
                                       <Row>
                                         <Col lg={12} xs="auto">
@@ -786,7 +792,7 @@ const EndOfQuarterReport = () => {
                                             }
                                           >
                                             <label>{t("Completed")}:</label>
-                                            <p>{task.taskStatus}</p>
+                                            <p>{task.completionStatus}</p>
                                           </div>
                                         </Col>
                                         <Col lg={2} xs="auto">
