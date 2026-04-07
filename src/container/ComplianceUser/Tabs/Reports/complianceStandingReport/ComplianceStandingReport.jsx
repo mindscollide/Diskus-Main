@@ -114,8 +114,7 @@ const ComplianceStandingReport = () => {
   // ── Redux ─────────────────────────────────────────────────────────────────
   /** Full API response: `{ complianceStandingReport: { reportTitle, generatedDate, complianceListData[] } }` */
   const GetComplianceStandingReport = useSelector(
-    (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
+    (state) => state.ComplainceSettingReducerReducer.GetComplianceStandingReport
   );
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -184,8 +183,8 @@ const ComplianceStandingReport = () => {
         GetComplianceStandingReportAPI(
           navigate,
           { startDate: "", endDate: "" },
-          t,
-        ),
+          t
+        )
       );
       return;
     }
@@ -194,7 +193,7 @@ const ComplianceStandingReport = () => {
     const endDate = dates[1].format("YYYYMMDD");
     setDateRange(dates);
     dispatch(
-      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t),
+      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t)
     );
   };
 
@@ -251,7 +250,7 @@ const ComplianceStandingReport = () => {
    */
   const toggleRowExpand = (key) => {
     setExpandedRowKeys((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
@@ -307,7 +306,7 @@ const ComplianceStandingReport = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
     }),
-    [criticalityFilter, criticalityOptions, t],
+    [criticalityFilter, criticalityOptions, t]
   );
 
   /**
@@ -328,9 +327,9 @@ const ComplianceStandingReport = () => {
           overdueTasks: item.overdueTasks,
           Progress: item.progressPercentage,
           originalData: item,
-        }),
+        })
       ) ?? [],
-    [GetComplianceStandingReport],
+    [GetComplianceStandingReport]
   );
 
   /**
@@ -365,7 +364,7 @@ const ComplianceStandingReport = () => {
         width: "27%",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
-            b.ComplianceName?.toLowerCase(),
+            b.ComplianceName?.toLowerCase()
           ),
         sortOrder: complianceNameSort,
         render: (text) => <span>{text}</span>,
@@ -587,7 +586,7 @@ const ComplianceStandingReport = () => {
                   <p>
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
-                        ?.generatedDate,
+                        ?.generatedDate
                     ) || "-"}
                   </p>
                 </div>
@@ -740,7 +739,7 @@ const ComplianceStandingReport = () => {
                                             <label>{t("Completed-on")}:</label>
                                             <p>
                                               {formatDateToYMD(
-                                                task.completedOnDate,
+                                                task.completedOnDate
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -824,7 +823,7 @@ const ComplianceStandingReport = () => {
                   <p>
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
-                        ?.generatedDate,
+                        ?.generatedDate
                     ) || "-"}
                   </p>
                 </div>
@@ -979,7 +978,7 @@ const ComplianceStandingReport = () => {
                                       <label>{t("Completed-on")}:</label>
                                       <p>
                                         {formatDateToYMD(
-                                          task.completedOnDate,
+                                          task.completedOnDate
                                         ) || "-"}
                                       </p>
                                     </div>
@@ -1012,7 +1011,7 @@ const ComplianceStandingReport = () => {
                       ))
                     )}
                   </Col>
-                ),
+                )
               )}
             </Row>
           </div>

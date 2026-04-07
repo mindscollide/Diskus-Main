@@ -627,6 +627,18 @@ const EndOfQuarterReport = () => {
                     {t("Compliances-in-this-report")}
                   </p>
                 </Col>
+
+                <Col
+                  lg={12}
+                  xs="auto"
+                  className={`${styles.ComplianceMainHeading} mt-3`}
+                >
+                  {GetQuarterReport?.compliances?.map((comp, index) => (
+                    <p className={styles.complianceTitleList}>
+                      {index + 1 + "."} {comp.complianceTitle}
+                    </p>
+                  ))}
+                </Col>
                 {GetQuarterReport?.compliances?.map((compliance, index) => (
                   <Col
                     key={compliance.complianceID}
