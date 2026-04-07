@@ -114,8 +114,7 @@ const ComplianceStandingReport = () => {
   // ── Redux ─────────────────────────────────────────────────────────────────
   /** Full API response: `{ complianceStandingReport: { reportTitle, generatedDate, complianceListData[] } }` */
   const GetComplianceStandingReport = useSelector(
-    (state) =>
-      state.ComplainceSettingReducerReducer.GetComplianceStandingReport,
+    (state) => state.ComplainceSettingReducerReducer.GetComplianceStandingReport
   );
 
   // ── Local state ───────────────────────────────────────────────────────────
@@ -184,8 +183,8 @@ const ComplianceStandingReport = () => {
         GetComplianceStandingReportAPI(
           navigate,
           { startDate: "", endDate: "" },
-          t,
-        ),
+          t
+        )
       );
       return;
     }
@@ -194,7 +193,7 @@ const ComplianceStandingReport = () => {
     const endDate = dates[1].format("YYYYMMDD");
     setDateRange(dates);
     dispatch(
-      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t),
+      GetComplianceStandingReportAPI(navigate, { startDate, endDate }, t)
     );
   };
 
@@ -251,7 +250,7 @@ const ComplianceStandingReport = () => {
    */
   const toggleRowExpand = (key) => {
     setExpandedRowKeys((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
@@ -307,7 +306,7 @@ const ComplianceStandingReport = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
     }),
-    [criticalityFilter, criticalityOptions, t],
+    [criticalityFilter, criticalityOptions, t]
   );
 
   /**
@@ -328,9 +327,9 @@ const ComplianceStandingReport = () => {
           overdueTasks: item.overdueTasks,
           Progress: item.progressPercentage,
           originalData: item,
-        }),
+        })
       ) ?? [],
-    [GetComplianceStandingReport],
+    [GetComplianceStandingReport]
   );
 
   /**
@@ -365,7 +364,7 @@ const ComplianceStandingReport = () => {
         width: "27%",
         sorter: (a, b) =>
           a.ComplianceName?.toLowerCase().localeCompare(
-            b.ComplianceName?.toLowerCase(),
+            b.ComplianceName?.toLowerCase()
           ),
         sortOrder: complianceNameSort,
         render: (text) => <span>{text}</span>,
@@ -587,7 +586,7 @@ const ComplianceStandingReport = () => {
                   <p>
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
-                        ?.generatedDate,
+                        ?.generatedDate
                     ) || "-"}
                   </p>
                 </div>
@@ -740,7 +739,7 @@ const ComplianceStandingReport = () => {
                                             <label>{t("Completed-on")}:</label>
                                             <p>
                                               {formatDateToYMD(
-                                                task.completedOnDate,
+                                                task.completedOnDate
                                               ) || "-"}
                                             </p>
                                           </div>
@@ -824,7 +823,7 @@ const ComplianceStandingReport = () => {
                   <p>
                     {formatDateToYMD(
                       GetComplianceStandingReport?.complianceStandingReport
-                        ?.generatedDate,
+                        ?.generatedDate
                     ) || "-"}
                   </p>
                 </div>
@@ -870,7 +869,7 @@ const ComplianceStandingReport = () => {
               >
                 {GetComplianceStandingReport?.complianceStandingReport?.complianceListData?.map(
                   (comp, index) => (
-                    <p className={styles.complianceTitleList}>
+                    <p className={styles.complianceTitleListDownload}>
                       {index + 1 + "."} {comp.complianceTitle}
                     </p>
                   )
@@ -894,125 +893,182 @@ const ComplianceStandingReport = () => {
                       </p>
                     </div>
 
-                    {/* Checklists */}
-                    {!compliance?.checklistData?.length ? (
-                      <div className={styles.NoDataFoundTable}>
-                        <div className={styles.nodatafound_subHeading}>
-                          {t("No-Checklist-Found")}
+                    <Row>
+                      <Col
+                        lg={12}
+                        xs="auto"
+                        className={`${styles.titleAboveBoxRow}`}
+                      >
+                        <div className={styles.dueDate}>
+                          <label>{t("Due-date")}:</label>
+                          <p>{formatDateToYMD(compliance?.dueDate) || "-"}</p>
                         </div>
-                      </div>
-                    ) : (
-                      compliance.checklistData.map((checklist) => (
-                        <div
-                          className={styles.panelContentDownload}
-                          key={checklist.checklistId} // FIX: was checklistID (wrong casing)
-                        >
-                          {/* Checklist title */}
-                          <div className={styles.titleSection}>
-                            <label className={styles.ChecklistTitle}>
-                              {t("Checklists-title")}:
-                            </label>
-                            <p className={styles.longTitleHeading}>
-                              {checklist.checklistTitle}
-                            </p>
+
+                        <div className={styles.dueDate}>
+                          <label>{t("Criticalityy")}:</label>
+                          <p>{compliance?.criticality?.label || "-"}</p>
+                        </div>
+
+                        <div className={styles.dueDate}>
+                          <label>{t("Authority")}:</label>
+                          <p>{compliance?.authorityShortCode || "-"}</p>
+                        </div>
+                      </Col>
+                    </Row>
+
+                    <Row className={styles.TextDownloadWrapper}>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.progressPercent || "0"}%</p>
+                          <label>{t("Completed")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.totalChecklists}</p>
+                          <label>{t("Total-checklists")}</label>
+                        </div>
+                      </Col>
+                      <Col className={`${styles.TextDownload} `}>
+                        <div>
+                          <p>{compliance?.totalTasks}</p>
+                          <label>{t("Total-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.completedTasks}</p>
+                          <label>{t("Completed-tasks")}</label>
+                        </div>
+                      </Col>
+                      <Col className={styles.TextDownload}>
+                        <div>
+                          <p>{compliance?.overdueTasks}</p>
+                          <label>{t("Overdue-tasks")}</label>
+                        </div>
+                      </Col>
+                    </Row>
+                    <div>
+                      {/* Checklists */}
+                      {!compliance?.checklistData?.length ? (
+                        <div className={styles.NoDataFoundTable}>
+                          <div className={styles.nodatafound_subHeading}>
+                            {t("No-Checklist-Found")}
                           </div>
-
-                          {/* Tasks */}
-                          {!checklist?.checklistTasks?.length ? (
-                            <div className={styles.NoDataFoundTable}>
-                              <div className={styles.nodatafound_subHeading}>
-                                {t("No-Checklist-Task")}
-                              </div>
-                            </div>
-                          ) : (
-                            checklist.checklistTasks.map((task) => (
-                              <div
-                                key={task.taskId} // FIX: was taskID (wrong casing)
-                                className={styles.insideAccordianTableTasks}
-                              >
-                                {/* Task title */}
-                                <Row>
-                                  <Col lg={12} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Task-title")}:</label>
-                                      <Tooltip title={task.taskTitle}>
-                                        <p>{task.taskTitle}</p>
-                                      </Tooltip>
-                                    </div>
-                                  </Col>
-                                </Row>
-
-                                {/* Task metadata */}
-                                <Row>
-                                  <Col lg={4} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Assignee")}:</label>
-                                      <p>{task.taskAssignee || "-"}</p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Due-date")}:</label>
-                                      <p>
-                                        {formatDateToYMD(task.dueDate) || "-"}
-                                      </p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Completed-on")}:</label>
-                                      <p>
-                                        {formatDateToYMD(
-                                          task.completedOnDate,
-                                        ) || "-"}
-                                      </p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Completed")}:</label>
-                                      <p>{task.completionStatus || "-"}</p>
-                                    </div>
-                                  </Col>
-                                  <Col lg={2} xs="auto">
-                                    <div
-                                      className={
-                                        styles.insideAccordianMainHeading
-                                      }
-                                    >
-                                      <label>{t("Status")}:</label>
-                                      <p>{task.status || "-"}</p>
-                                    </div>
-                                  </Col>
-                                </Row>
-                              </div>
-                            ))
-                          )}
                         </div>
-                      ))
-                    )}
+                      ) : (
+                        compliance.checklistData.map((checklist) => (
+                          <div
+                            className={styles.panelContentDownload}
+                            key={checklist.checklistId} // FIX: was checklistID (wrong casing)
+                          >
+                            {/* Checklist title */}
+                            <div className={styles.titleSection}>
+                              <label className={styles.ChecklistTitle}>
+                                {t("Checklists-title")}:
+                              </label>
+                              <p className={styles.longTitleHeading}>
+                                {checklist.checklistTitle}
+                              </p>
+                            </div>
+
+                            {/* Tasks */}
+                            {!checklist?.checklistTasks?.length ? (
+                              <div className={styles.NoDataFoundTable}>
+                                <div className={styles.nodatafound_subHeading}>
+                                  {t("No-Checklist-Task")}
+                                </div>
+                              </div>
+                            ) : (
+                              checklist.checklistTasks.map((task) => (
+                                <div
+                                  key={task.taskId} // FIX: was taskID (wrong casing)
+                                  className={styles.insideAccordianTableTasks}
+                                >
+                                  {/* Task title */}
+                                  <Row>
+                                    <Col lg={12} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Task-title")}:</label>
+                                        <Tooltip title={task.taskTitle}>
+                                          <p>{task.taskTitle}</p>
+                                        </Tooltip>
+                                      </div>
+                                    </Col>
+                                  </Row>
+
+                                  {/* Task metadata */}
+                                  <Row>
+                                    <Col lg={4} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Assignee")}:</label>
+                                        <p>{task.taskAssignee || "-"}</p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Due-date")}:</label>
+                                        <p>
+                                          {formatDateToYMD(task.dueDate) || "-"}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Completed-on")}:</label>
+                                        <p>
+                                          {formatDateToYMD(
+                                            task.completedOnDate
+                                          ) || "-"}
+                                        </p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Completed")}:</label>
+                                        <p>{task.completionStatus || "-"}</p>
+                                      </div>
+                                    </Col>
+                                    <Col lg={2} xs="auto">
+                                      <div
+                                        className={
+                                          styles.insideAccordianMainHeading
+                                        }
+                                      >
+                                        <label>{t("Status")}:</label>
+                                        <p>{task.status || "-"}</p>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </div>
+                              ))
+                            )}
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </Col>
-                ),
+                )
               )}
             </Row>
           </div>

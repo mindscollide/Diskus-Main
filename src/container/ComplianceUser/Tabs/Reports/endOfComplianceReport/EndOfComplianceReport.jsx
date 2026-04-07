@@ -717,9 +717,7 @@ const EndOfComplianceReport = () => {
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p className={styles.complianceInThisReportTitleDownload}>
-                    {t("Checklists-in-this-report")}
-                  </p>
+                  <p>{t("Checklists-in-this-report")}</p>
                 </Col>
                 <Col
                   lg={12}
@@ -808,7 +806,9 @@ const EndOfComplianceReport = () => {
                       {checklist?.tasks.length > 0 &&
                         checklist?.tasks?.map((task) => (
                           <div key={task.taskID}>
-                            <div className={styles.insideAccordianTable}>
+                            <div
+                              className={styles.insideAccordianTableDownload}
+                            >
                               <Row>
                                 <Col lg={12} xs="auto">
                                   <div
@@ -823,13 +823,13 @@ const EndOfComplianceReport = () => {
                                 </Col>
                               </Row>
                               <Row>
-                                <Col>
+                                <Col lg={12} xs="auto">
                                   <div
                                     className={
                                       styles.insideAccordianMainHeading
                                     }
                                   >
-                                    <label>{t("Description")}:</label>
+                                    <label>{t("Task-description")}:</label>
                                     <p>{task.taskDescription || "-"}</p>
                                   </div>
                                 </Col>
