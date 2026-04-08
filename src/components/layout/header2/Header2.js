@@ -735,6 +735,7 @@ const Header2 = ({ isVideo }) => {
       if (viewAdvanceMeetingModal && Number(editorRole.status) === 10) {
         // Check if user is in advance meeting modal and meeting is ongoing
         dispatch(showEndMeetingModal(true));
+        localStorage.setItem("navigateLocation", "MainDashBoard");
       } else {
         try {
           const activeCall = localStorage.getItem("activeCall");
@@ -755,7 +756,7 @@ const Header2 = ({ isVideo }) => {
               // dispatch(ProposedMeetingViewFlagAction(false));
 
               if (proposedMeetingViewFlag) {
-                navigate("/Diskus")
+                navigate("/Diskus");
                 // let meetingpageRow = localStorage.getItem("MeetingPageRows");
                 // let meetingPageCurrent =
                 //   localStorage.getItem("MeetingPageCurrent");

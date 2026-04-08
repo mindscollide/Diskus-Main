@@ -3020,10 +3020,10 @@ const NewMeeting = () => {
   //   },
   // ];
 
-  const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
-  const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
-  const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
-  const [meetingDateSort, setMeetingDateSort] = useState("ascend");
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
   const [duplicatedRows, setDuplicatedRows] = useState([]);
 
   console.log(meetingTitleSort, "meetingTitleSortmeetingTitleSort");
@@ -3266,10 +3266,15 @@ const NewMeeting = () => {
       recording:
         status === STATUS.ENDED && isOrganizer && record.isRecordingAvailable,
       viewMinutes:
-        (status === STATUS.ENDED && !record.isQuickMeeting && isParticipant && record.isMinutePublished) ||
-        (isAgendaContributor &&
+        (status === STATUS.ENDED &&
           !record.isQuickMeeting &&
-          status === STATUS.ENDED),
+          isParticipant &&
+          record.isMinutePublished) ||
+        (status === STATUS.ENDED &&
+          isAgendaContributor &&
+          !record.isQuickMeeting &&
+          status === STATUS.ENDED &&
+          record.isMinutePublished),
     };
     const hasAnyAction = Object.values(canShow).some(Boolean);
 
@@ -3556,7 +3561,11 @@ const NewMeeting = () => {
 
             <img
               src={
-                meetingTitleSort === "ascend" ? SortIconAscend : SortIconDescend
+                meetingTitleSort === null
+                  ? DoubleArrowIcon
+                  : meetingTitleSort === "ascend"
+                  ? SortIconAscend
+                  : SortIconDescend
               }
               alt='Sort Icon'
             />
@@ -3637,7 +3646,9 @@ const NewMeeting = () => {
             <span>{t("Organizer")}</span>
             <img
               src={
-                organizerNameSort === "ascend"
+                organizerNameSort === null
+                  ? DoubleArrowIcon
+                  : organizerNameSort === "ascend"
                   ? SortIconAscend
                   : SortIconDescend
               }
@@ -3662,7 +3673,13 @@ const NewMeeting = () => {
           <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Time")}</span>
             <img
-              src={meetingTimeSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+              src={
+                meetingTimeSort === null
+                  ? DoubleArrowIcon
+                  : meetingTimeSort === "ascend"
+                  ? ArrowDownIcon
+                  : ArrowUpIcon
+              }
               alt='Sort Icon'
             />
           </div>
@@ -3704,7 +3721,13 @@ const NewMeeting = () => {
           <div className='d-flex align-items-center justify-content-center gap-2'>
             <span>{t("Date")}</span>
             <img
-              src={meetingDateSort === "ascend" ? ArrowDownIcon : ArrowUpIcon}
+              src={
+                meetingDateSort === null
+                  ? DoubleArrowIcon
+                  : meetingDateSort === "ascend"
+                  ? ArrowDownIcon
+                  : ArrowUpIcon
+              }
               alt='Sort Icon'
             />
           </div>
@@ -3962,7 +3985,9 @@ const NewMeeting = () => {
         render: (_, record) => {
           let checkifCancelledAndNotConducted =
             (Number(record.status) === 4 || Number(record.status) === 8) &&
-            record.isParticipant;
+            (record.isParticipant ||
+              record.isOrganizer ||
+              record.isAgendaContributor);
 
           return (
             !checkifCancelledAndNotConducted && (
@@ -5458,11 +5483,11 @@ const NewMeeting = () => {
                           className={styles["MainMeetingTablePublished"]}>
                           <>
                             <Table
-                              key={
-                                isMeetingTypeFilter.length > 0
-                                  ? "loaded"
-                                  : "loading"
-                              }
+                              // key={
+                              //   isMeetingTypeFilter.length > 0
+                              //     ? "loaded"
+                              //     : "loading"
+                              // }
                               getPopupContainer={(node) =>
                                 node.closest(".ant-table")
                               }

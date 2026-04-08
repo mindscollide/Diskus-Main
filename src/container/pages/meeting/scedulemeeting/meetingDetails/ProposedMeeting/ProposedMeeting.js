@@ -10,6 +10,8 @@ import SortIconDescend from "../../../../../../assets/images/sortingIcons/Sorter
 import EditIcon from "../../../../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import ChevronDownIcon from "../../../../../../assets/images/dropdown-icon.png";
+import DoubleArrowIcon from "../../../../../../assets/images/sortingIcons/Double Arrow2.svg";
+
 import {
   Button,
   ResultMessage,
@@ -1006,7 +1008,9 @@ const UnpublishedProposedMeeting = ({
           <>
             <div className='d-flex align-items-center gap-2'>
               <span>{t("Meeting-title")}</span>
-              {meetingTitleSort === "ascend" ? (
+              {meetingTitleSort === null ? (
+                <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+              ) : meetingTitleSort === "ascend" ? (
                 <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
                 <img src={SortIconDescend} alt='SortIconDescend' />
@@ -1062,7 +1066,9 @@ const UnpublishedProposedMeeting = ({
           <>
             <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Deadline")}</span>
-              {meetingDateSort === "ascend" ? (
+              {meetingDateSort === null ? (
+                <img src={DoubleArrowIcon} alt='DoubleArrowIcon' />
+              ) : meetingDateSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
                 <img src={ArrowUpIcon} alt='ArrowDownIcon' />

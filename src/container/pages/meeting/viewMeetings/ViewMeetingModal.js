@@ -105,23 +105,23 @@ const ViewMeetingModal = ({
   const { setResultresolution } = useResolutionContext();
   //Voting Poll Started in Agenda Intimination Modal
   const votingStartedAgendaIntiminationModalState = useSelector(
-    (state) => state.NewMeetingreducer.agendavotingPollStartedData,
+    (state) => state.NewMeetingreducer.agendavotingPollStartedData
   );
   //Agenda Voting Started PayLoad Data Fetching
   const AgendaVotingModalStartedData = useSelector(
-    (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData,
+    (state) => state.MeetingAgendaReducer.MeetingAgendaStartedData
   );
 
   const presenterViewFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewFlag,
+    (state) => state.videoFeatureReducer.presenterViewFlag
   );
 
   const presenterViewHostFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewHostFlag,
+    (state) => state.videoFeatureReducer.presenterViewHostFlag
   );
 
   const presenterViewJoinFlag = useSelector(
-    (state) => state.videoFeatureReducer.presenterViewJoinFlag,
+    (state) => state.videoFeatureReducer.presenterViewJoinFlag
   );
   console.log(typeof advanceMeetingOperations);
   const {
@@ -165,7 +165,7 @@ const ViewMeetingModal = ({
   let CallType = Number(localStorage.getItem("CallType"));
   let isZoomEnabled = JSON.parse(localStorage.getItem("isZoomEnabled"));
   let isMeetingVideoHostChecker = JSON.parse(
-    localStorage.getItem("isMeetingVideoHostCheck"),
+    localStorage.getItem("isMeetingVideoHostCheck")
   );
 
   console.log(iframeRef, "iframeRefiframeRef");
@@ -176,31 +176,31 @@ const ViewMeetingModal = ({
     useSelector((state) => state);
 
   const leaveMeetingOnLogoutResponse = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse,
+    (state) => state.videoFeatureReducer.leaveMeetingOnLogoutResponse
   );
 
   const leaveMeetingOnEndStatusMqttFlag = useSelector(
-    (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag,
+    (state) => state.videoFeatureReducer.leaveMeetingOnEndStatusMqttFlag
   );
 
   const globalFunctionWebnotificationFlag = useSelector(
-    (state) => state.settingReducer.globalFunctionWebnotificationFlag,
+    (state) => state.settingReducer.globalFunctionWebnotificationFlag
   );
 
   const webNotifactionDataRoutecheckFlag = JSON.parse(
-    localStorage.getItem("webNotifactionDataRoutecheckFlag"),
+    localStorage.getItem("webNotifactionDataRoutecheckFlag")
   );
 
   const webNotificationData = useSelector(
-    (state) => state.settingReducer.webNotificationDataVideoIntimination,
+    (state) => state.settingReducer.webNotificationDataVideoIntimination
   );
 
   const getJoinMeetingParticipantorHostrequest = useSelector(
-    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest,
+    (state) => state.videoFeatureReducer.getJoinMeetingParticipantorHostrequest
   );
 
   const globallyScreenShare = useSelector(
-    (state) => state.videoFeatureReducer.globallyScreenShare,
+    (state) => state.videoFeatureReducer.globallyScreenShare
   );
 
   console.log(
@@ -217,12 +217,14 @@ const ViewMeetingModal = ({
       meetingDetails,
       meetingMaterial,
     },
-    "routeIDrouteID",
+    "routeIDrouteID"
   );
 
   useEffect(() => {
     if (
-      (Number(editorRole?.status) === 10 || Number(editorRole?.status) === 9) &&
+      (Number(editorRole?.status) === 10 ||
+        Number(editorRole?.status) === 9 ||
+        Number(editorRole?.status) === 1) &&
       editorRole.role !== ""
     ) {
       if (routeID !== null && routeID !== 0) {
@@ -359,18 +361,18 @@ const ViewMeetingModal = ({
         }
       }
     } else {
-      // setMeetingMaterial(false);
-      // setAgendaContributors(false);
-      // setorganizers(false);
-      // setmeetingDetails(false);
-      // setMinutes(false);
-      // setAttendance(false);
-      // setAgenda(false);
-      // setParticipants(false);
-      // setPolls(false);
-      // setAttendees(false);
-      // setactionsPage(false);
-      // setRecording(false);
+      setMeetingMaterial(false);
+      setAgendaContributors(false);
+      setorganizers(false);
+      setmeetingDetails(true);
+      setMinutes(false);
+      setAttendance(false);
+      setAgenda(false);
+      setParticipants(false);
+      setPolls(false);
+      setAttendees(false);
+      setactionsPage(false);
+      setRecording(false);
     }
 
     return () => {
@@ -433,7 +435,7 @@ const ViewMeetingModal = ({
       localStorage.setItem("isMeetingVideo", false);
       let newName = localStorage.getItem("name");
       let currentMeetingID = JSON.parse(
-        localStorage.getItem("currentMeetingID"),
+        localStorage.getItem("currentMeetingID")
       );
       const meetHostFlag = localStorage.getItem("meetinHostInfo");
       console.log(meetHostFlag, "meetHostFlagmeetHostFlag");
@@ -450,13 +452,13 @@ const ViewMeetingModal = ({
 
           // For Stop Screen Share If Host Stop in Meeting Video
           let isSharedSceenEnable = JSON.parse(
-            localStorage.getItem("isSharedSceenEnable"),
+            localStorage.getItem("isSharedSceenEnable")
           );
           if (isZoomEnabled) {
             if (isSharedSceenEnable && !globallyScreenShare) {
               console.log("busyCall");
               let isMeetingVideoHostCheck = JSON.parse(
-                localStorage.getItem("isMeetingVideoHostCheck"),
+                localStorage.getItem("isMeetingVideoHostCheck")
               );
               let newRoomID = localStorage.getItem("newRoomId");
               let isGuid = localStorage.getItem("isGuid");
@@ -503,13 +505,13 @@ const ViewMeetingModal = ({
               false,
               setEditorRole,
               setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
-            ),
+              setViewAdvanceMeetingModal
+            )
           );
         } else {
           // For Stop Screen Share If Non Host Stop in Meeting Video
           let isSharedSceenEnable = JSON.parse(
-            localStorage.getItem("isSharedSceenEnable"),
+            localStorage.getItem("isSharedSceenEnable")
           );
           if (isZoomEnabled) {
             if (isSharedSceenEnable && !globallyScreenShare) {
@@ -558,8 +560,8 @@ const ViewMeetingModal = ({
               false,
               setEditorRole,
               setAdvanceMeetingModalID,
-              setViewAdvanceMeetingModal,
-            ),
+              setViewAdvanceMeetingModal
+            )
           );
         }
       }
@@ -604,8 +606,8 @@ const ViewMeetingModal = ({
           false,
           setEditorRole,
           setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
-        ),
+          setViewAdvanceMeetingModal
+        )
       );
     }
   };
@@ -621,7 +623,7 @@ const ViewMeetingModal = ({
       let meetingVideoID = localStorage.getItem("currentMeetingID");
       let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
       let isMeetingVideoHostCheck = JSON.parse(
-        localStorage.getItem("isMeetingVideoHostCheck"),
+        localStorage.getItem("isMeetingVideoHostCheck")
       );
       if (isMeeting) {
         console.log("cacacacacacacacacc");
@@ -630,7 +632,7 @@ const ViewMeetingModal = ({
         if (isWaiting || isMeetingVideo) {
           let Data = {
             RoomID: String(
-              isMeetingVideoHostCheck ? newRoomId : participantRoomId,
+              isMeetingVideoHostCheck ? newRoomId : participantRoomId
             ),
             UserGUID: String(isMeetingVideoHostCheck ? isGuid : participantUID),
             Name: String(newName),
@@ -647,7 +649,7 @@ const ViewMeetingModal = ({
           const emptyArray = [];
           localStorage.setItem(
             "callerStatusObject",
-            JSON.stringify(emptyArray),
+            JSON.stringify(emptyArray)
           );
           sessionStorage.removeItem("StopPresenterViewAwait");
           sessionStorage.removeItem("participantUID");
@@ -978,7 +980,7 @@ const ViewMeetingModal = ({
           const emptyArray = [];
           localStorage.setItem(
             "callerStatusObject",
-            JSON.stringify(emptyArray),
+            JSON.stringify(emptyArray)
           );
           localStorage.setItem("activeCall", false);
           sessionStorage.setItem("activeCallSessionforOtoandGroup", false);
@@ -1012,7 +1014,7 @@ const ViewMeetingModal = ({
     let meetingVideoID = localStorage.getItem("currentMeetingID");
     let isMeeting = JSON.parse(localStorage.getItem("isMeeting"));
     let isMeetingVideoHostCheck = JSON.parse(
-      localStorage.getItem("isMeetingVideoHostCheck"),
+      localStorage.getItem("isMeetingVideoHostCheck")
     );
     if (isMeeting) {
       console.log("cacacacacacacacacc");
@@ -1091,8 +1093,8 @@ const ViewMeetingModal = ({
           false,
           setEditorRole,
           setAdvanceMeetingModalID,
-          setViewAdvanceMeetingModal,
-        ),
+          setViewAdvanceMeetingModal
+        )
       );
     }
     // let leaveMeetingData = {
@@ -1154,7 +1156,7 @@ const ViewMeetingModal = ({
         ) {
           console.log(
             AgendaVotingModalStartedData,
-            "AgendaVotingModalStartedDataAgendaVotingModalStartedData",
+            "AgendaVotingModalStartedDataAgendaVotingModalStartedData"
           );
           dispatch(AgendaPollVotingStartedAction(true));
         }
@@ -1188,7 +1190,7 @@ const ViewMeetingModal = ({
             setAdvanceMeetingModalID,
             setResultresolution,
             isMeeting,
-            setPolls,
+            setPolls
           );
           dispatch(webnotificationGlobalFlag(false));
         }
@@ -1206,7 +1208,7 @@ const ViewMeetingModal = ({
       showMessage(
         t("Thank-you-for-participanting-in-voting"),
         "success",
-        setOpen,
+        setOpen
       );
       dispatch(clearResponseMessage(""));
     }
@@ -1214,14 +1216,13 @@ const ViewMeetingModal = ({
 
   return (
     <>
-      <section className="position-relative">
-        <Row className="my-2">
+      <section className='position-relative'>
+        <Row className='my-2'>
           <Col
             lg={12}
             md={12}
             sm={12}
-            className="d-flex justify-content-between"
-          >
+            className='d-flex justify-content-between'>
             <span className={styles["Scedule_newMeeting_Heading"]}>
               {meetingTitle ? meetingTitle : ""}
             </span>
@@ -1236,8 +1237,8 @@ const ViewMeetingModal = ({
                       ? presenterViewHostFlag
                         ? true
                         : presenterViewJoinFlag
-                          ? true
-                          : false
+                        ? true
+                        : false
                       : false
                   }
                 />
@@ -1246,10 +1247,10 @@ const ViewMeetingModal = ({
           </Col>
         </Row>
         <Row>
-          <Col lg={12} md={12} sm={12} className="mb-4">
+          <Col lg={12} md={12} sm={12} className='mb-4'>
             <span className={styles["Scedule_meeting_paper"]}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2 flex-wrap">
+                <Col lg={12} md={12} sm={12} className='d-flex gap-2 flex-wrap'>
                   <Button
                     text={t("Meeting-details")}
                     className={
@@ -1403,9 +1404,9 @@ const ViewMeetingModal = ({
                           unPublish
                             ? true
                             : Number(editorRole.status) === 10 &&
-                                editorRole.role === "Organizer"
-                              ? false
-                              : true
+                              editorRole.role === "Organizer"
+                            ? false
+                            : true
                         }
                       />
                     ) : null}
