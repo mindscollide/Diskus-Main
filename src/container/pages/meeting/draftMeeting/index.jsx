@@ -17,6 +17,7 @@ import SortIconDescend from "../../../../assets/images/sortingIcons/SorterIconDe
 import ArrowUpIcon from "../../../../assets/images/sortingIcons/Arrow-up.png";
 import CancelMeetingIcon from "../../../../assets/images/New Meeting Listing Icons/CancelMeeting.png";
 import ChevronDownIcon from "../../../../assets/images/dropdown-icon.png";
+import DoubleArrowIcon from "../../../../assets/images/sortingIcons/Double Arrow2.svg";
 
 import EditIcon from "../../../../assets/images/New Meeting Listing Icons/EditMeeting.png";
 import ArrowDownIcon from "../../../../assets/images/sortingIcons/Arrow-down.png";
@@ -444,7 +445,9 @@ const DraftMeeting = () => {
           <>
             <div className='d-flex align-items-center gap-2'>
               <span>{t("Meeting-title")}</span>
-              {meetingTitleSort === "ascend" ? (
+              {meetingTitleSort === null ? (
+                DoubleArrowIcon
+              ) : meetingTitleSort === "ascend" ? (
                 <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
                 <img src={SortIconDescend} alt='SortIconDescend' />
@@ -473,7 +476,9 @@ const DraftMeeting = () => {
           <>
             <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Organizer")}</span>
-              {organizerNameSort === "ascend" ? (
+              {organizerNameSort === null ? (
+                DoubleArrowIcon
+              ) : organizerNameSort === "ascend" ? (
                 <img src={SortIconAscend} alt='SortIconAscend' />
               ) : (
                 <img src={SortIconDescend} alt='SortIconDescend' />
@@ -497,7 +502,9 @@ const DraftMeeting = () => {
           <>
             <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Time")}</span>
-              {meetingTimeSort === "ascend" ? (
+              {meetingTimeSort === null ? (
+                DoubleArrowIcon
+              ) : meetingTimeSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
                 <img src={ArrowUpIcon} alt='ArrowDownIcon' />
@@ -537,7 +544,9 @@ const DraftMeeting = () => {
           <>
             <div className='d-flex align-items-center justify-content-center gap-2'>
               <span>{t("Date")}</span>
-              {meetingDateSort === "ascend" ? (
+              {meetingDateSort === null ? (
+                DoubleArrowIcon
+              ) : meetingDateSort === "ascend" ? (
                 <img src={ArrowDownIcon} alt='ArrowUpIcon' />
               ) : (
                 <img src={ArrowUpIcon} alt='ArrowDownIcon' />
