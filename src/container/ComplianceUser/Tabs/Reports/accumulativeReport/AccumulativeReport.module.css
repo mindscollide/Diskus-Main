@@ -130,7 +130,10 @@
 .panelContent {
   border-radius: 8px;
   padding: 16px;
-  background: #f6f9fc !important;
+}
+
+.panelContentDownload {
+  padding: 14px 0px;
 }
 .MainAccordianTable {
   max-height: 300px;
@@ -220,6 +223,14 @@
   background: #f6f9fc;
   border-radius: 8px;
 }
+.ComplianceMainHeading P.complianceTitleListDownload {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a !important;
+}
 .titleSection label {
   font-size: 10px;
   /* font-size: 8px; */
@@ -231,7 +242,6 @@
 }
 .titleSection p {
   font-size: 24px;
-  /* font-size: 16px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
@@ -240,26 +250,44 @@
 }
 .titleSection label.ChecklistTitle {
   font-size: 10px;
-  /* font-size: 8px; */
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
 }
-/* .titleSectionDownload label {
+.titleSectionDownload label {
   font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #5a5a5a;
-} */
-
-/* .titleSectionDownload label.ChecklistTitleDownload {
+}
+.titleSectionDownload p {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #6172d6;
+  line-height: 20px;
+  letter-spacing: 0%;
+}
+.titleSectionDownload label.ChecklistTitleDownload {
   font-size: 8px;
   font-weight: 700;
   font-family: "Montserrat";
   color: #6172d6;
-  border: 2px solid black;
-} */
+}
 
+.titleSectionDownload p.longTitleHeadingDownload {
+  color: #5a5a5a;
+  margin-bottom: 15px;
+
+  /* 🔥 Important */
+  word-break: break-word;
+  max-width: 95%;
+
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
 .longTitle {
   font-size: 16px;
   font-weight: 500;
@@ -399,9 +427,9 @@
 }
 .ComplianceMainHeading {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  flex-direction: column; /* ✅ IMPORTANT */
+  align-items: flex-start; /* align left */
+  gap: 4px;
   padding: 0px 30px;
 }
 
@@ -510,3 +538,111 @@
   max-width: 95%;
 }
 /* Download Report */
+
+/* Header and footer */
+/* HEADER */
+.reportHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #f6f9fc;
+}
+
+.headerRight p {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
+}
+
+.headerLine {
+  height: 3px;
+  background: linear-gradient(to right, #6172d6, #4adede);
+  margin-bottom: 10px;
+}
+
+/* FOOTER */
+.reportFooter {
+  width: 100%;
+  background: #6172d6;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.reportFooter div {
+  font-family: "Montserrat";
+  color: #ffffff;
+  font-weight: 700;
+  font-style: Bold;
+  font-size: 10px;
+  line-height: 100%;
+  letter-spacing: 0%;
+}
+
+/* #content-id {
+  padding-bottom: 60px; 
+} */
+
+@media print {
+  .reportFooter {
+    position: fixed;
+    bottom: 0;
+  }
+
+  .reportHeader {
+    position: fixed;
+    top: 0;
+  }
+
+  #content-id {
+    margin-top: 80px;
+    margin-bottom: 60px;
+  }
+}
+.dueDate {
+  display: flex;
+  gap: 4px;
+}
+
+.dueDate label,
+p {
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 600;
+}
+.TextDownloadWrapper {
+  display: flex;
+  gap: 30px;
+  margin: 1px 0;
+}
+.TextDownload {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  white-space: nowrap;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  justify-content: center;
+  height: 130px;
+}
+
+.TextDownload label {
+  font-size: 10px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 700;
+  /* line-height: 140%; */
+  /* letter-spacing: 2%; */
+  text-align: center;
+  margin-top: 5px;
+}

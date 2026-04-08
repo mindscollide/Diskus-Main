@@ -345,10 +345,10 @@ const EndOfQuarterReport = () => {
                             </div>
                             <div className="text-center">{item.totalTasks}</div>
                             <div className="text-center">
-                              {item.completedTasks}
+                              {item.tasksCompletedOnTime}
                             </div>
                             <div className="text-center">
-                              {item.tasksOverdue}
+                              {item.tasksCompletedLate}
                             </div>
                             <div className="text-center">
                               {`${item.progressPercent}${"%"}`}
@@ -623,26 +623,20 @@ const EndOfQuarterReport = () => {
                 <Col
                   lg={12}
                   xs="auto"
-                  className={`${styles.ComplianceMainHeading} mt-4 mb-2`}
+                  className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p className={styles.complianceInThisReportTitleDownload}>
-                    {t("Compliances-in-this-report")}
-                  </p>
+                  <p>{t("Compliances-in-this-report")}</p>
                 </Col>
-
-                {/* list of Compliances */}
                 <Col
                   lg={12}
                   xs="auto"
                   className={`${styles.ComplianceMainHeading} mt-3`}
                 >
-                  <p className={styles.complianceTitleList}>
-                    {GetQuarterReport?.compliances.map((title, index) => (
-                      <p>
-                        {index + 1}. {title.complianceTitle}
-                      </p>
-                    ))}
-                  </p>
+                  {GetQuarterReport?.compliances?.map((comp, index) => (
+                    <p className={styles.complianceTitleListDownload}>
+                      {index + 1 + "."} {comp.complianceTitle}
+                    </p>
+                  ))}
                 </Col>
 
                 {GetQuarterReport?.compliances?.map((compliance, index) => (

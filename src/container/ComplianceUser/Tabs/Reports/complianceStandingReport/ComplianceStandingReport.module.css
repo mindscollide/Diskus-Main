@@ -152,7 +152,7 @@
   font-weight: 600;
   font-size: 14px;
   padding: 12px 16px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #a2a2a2;
   color: #6172d6;
   font-family: "Montserrat";
 }
@@ -199,7 +199,7 @@
 
 .collapseWrapper :global(.ant-collapse-item) {
   background: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 2px solid #e1e1e1;
 }
 
 .collapseWrapper :global(.ant-collapse-header) {
@@ -349,6 +349,7 @@
   color: #5a5a5a;
   line-height: 100%;
   letter-spacing: 2%;
+  margin-bottom: 7px;
 }
 .titleSection label.ChecklistTitle {
   font-size: 8px;
@@ -371,10 +372,10 @@
   word-break: break-word;
   max-width: 95%;
 }
-.complianceTitleList {
+.ComplianceMainHeading p.complianceTitleListDownload {
   font-family: "Montserrat";
   font-weight: 600;
-  font-size: 12px;
+  font-size: 12px !important;
   line-height: 100%;
   letter-spacing: 2%;
   color: #5a5a5a !important;
@@ -388,6 +389,7 @@
   letter-spacing: 0%;
 }
 .panelContentDownload {
+  padding: 10px 0px;
   background: #f6f9fc !important;
 }
 .insideAccordianMainHeading label {
@@ -408,3 +410,52 @@
   letter-spacing: 0%;
 }
 /* Download report */
+.dueDate {
+  display: flex;
+  gap: 4px;
+}
+
+.dueDate label,
+p {
+  font-size: 14px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 600;
+  line-height: 100%;
+}
+.TextDownloadWrapper {
+  display: flex;
+  gap: 30px;
+  margin: 1px 0;
+}
+.TextDownload {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  white-space: nowrap;
+  background: #ecefff;
+  border-radius: 8px;
+  padding: 10px 20px;
+  justify-content: center;
+  height: 130px;
+}
+
+.TextDownload label {
+  font-size: 10px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 700;
+  /* line-height: 140%; */
+  /* letter-spacing: 2%; */
+  text-align: center;
+  margin-top: 5px;
+}
+
+.titleAboveBoxRow {
+  display: flex;
+  justify-content: space-between !important;
+  font-size: 14px;
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-weight: 700;
+}

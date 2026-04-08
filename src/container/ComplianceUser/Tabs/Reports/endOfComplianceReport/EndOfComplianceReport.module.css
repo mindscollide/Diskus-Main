@@ -118,7 +118,7 @@
 
 .collapseWrapper :global(.ant-collapse-item) {
   background: #fff;
-  border-bottom: 1px solid #e1e1e1;
+  border-bottom: 2px solid #e1e1e1;
 }
 
 .collapseWrapper :global(.ant-collapse-header) {
@@ -138,11 +138,11 @@
 
 .insideAccordianTable {
   max-height: 160px;
-  padding: 10px 20px 0 20px;
+  padding: 0px 20px 0 20px;
   border-radius: 8px;
-  border: 1px solid #e1e1e1e1 !important;
-  /* background: #f6f9fc !important;
-   */
+  /* border: 1px solid #e1e1e1e1 !important; */
+  background: #f6f9fc !important;
+
   margin-top: 10px;
   overflow: hidden;
   overflow-y: auto;
@@ -467,7 +467,7 @@
   color: #5a5a5a;
 }
 
-.ComplianceReportHeadingsLabel {
+.ComplianceReportHeadings Label {
   font-family: "Montserrat";
   font-weight: 600;
   font-size: 12px;
@@ -541,7 +541,25 @@
   align-items: flex-start;
 }
 /* Download Report */
-.complianceInThisReportTitleDownload {
+.ComplianceMainHeading {
+  display: flex;
+  flex-direction: column; /* ✅ IMPORTANT */
+  align-items: flex-start; /* align left */
+  gap: 4px;
+  padding: 0px 30px;
+}
+
+.ComplianceMainHeading label {
+  font-family: "Montserrat";
+  font-weight: 700;
+  font-size: 8px;
+  line-height: 8px;
+  letter-spacing: 0%;
+
+  color: #5a5a5a;
+}
+
+.ComplianceMainHeading p {
   font-size: 16px !important;
   color: #6172d6 !important;
   font-family: "Montserrat";
@@ -550,6 +568,16 @@
   margin: 0;
   font-weight: 600;
 }
+
+.ComplianceMainHeading p.complianceTitleListDownload {
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 12px !important;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a !important;
+}
+
 .titleSectionDownload label {
   font-size: 10px;
   font-weight: 700;
@@ -569,14 +597,13 @@
   word-break: break-word;
   max-width: 95%;
 }
-
-.checklistTitleList {
+.checklistTitleList p {
   font-family: "Montserrat";
   font-weight: 600;
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 2%;
-  color: #5a5a5a;
+  color: #5a5a5a !important;
 }
 
 .TextDownloadWrapper {
@@ -674,4 +701,16 @@
 .attachmentsDiv {
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.insideAccordianTableDownload {
+  max-height: 160px;
+  padding: 10px 20px 0 20px;
+  border-radius: 8px;
+  border: 1px solid #e1e1e1e1 !important;
+  /* background: #f6f9fc !important;
+   */
+  margin-top: 10px;
+  overflow: hidden;
+  overflow-y: auto;
 }

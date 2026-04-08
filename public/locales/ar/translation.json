@@ -1636,6 +1636,7 @@
   "Created": "مخلوق",
   "Add-description": "اضف وصفا",
   "Owner": "مالك",
+  "Task-description": "Task Description",
   "MEETING_STATUS_EDITED_PROPOSED": "لقد تم اقتراح [Meeting Title].",
   "MEETING_STATUS_EDITED_PUBLISHED": "تم نشر [Meeting Title].",
   "Folder-details": "تفاصيل المجلد",

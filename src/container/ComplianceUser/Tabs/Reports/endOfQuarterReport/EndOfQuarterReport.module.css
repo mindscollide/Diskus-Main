@@ -353,9 +353,9 @@
 
 .ComplianceMainHeading {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  white-space: nowrap;
+  flex-direction: column; /* ✅ IMPORTANT */
+  align-items: flex-start; /* align left */
+  gap: 4px;
   padding: 0px 30px;
 }
 
@@ -369,7 +369,7 @@
   color: #5a5a5a;
 }
 
-.ComplianceMainHeading div p {
+.ComplianceMainHeading p {
   font-size: 16px !important;
   color: #6172d6 !important;
   font-family: "Montserrat";
@@ -378,15 +378,13 @@
   margin: 0;
   font-weight: 600;
 }
-
-.complianceInThisReportTitleDownload {
-  font-size: 16px !important;
-  color: #6172d6 !important;
+.ComplianceMainHeading p.complianceTitleListDownload {
   font-family: "Montserrat";
-  line-height: 100%;
-  letter-spacing: 0%;
-  margin: 0;
   font-weight: 600;
+  font-size: 12px !important;
+  line-height: 100%;
+  letter-spacing: 2%;
+  color: #5a5a5a !important;
 }
 
 .iconTextWrapperDownload {
@@ -592,13 +590,14 @@ p {
   max-width: 800px;
 }
 /* Download Report */
+
 .complianceTitleList {
   font-family: "Montserrat";
   font-weight: 600;
   font-size: 12px;
   line-height: 100%;
   letter-spacing: 2%;
-  color: #5a5a5a;
+  color: #5a5a5a !important;
 }
 .complainceTitleHeading {
   font-weight: 700;
