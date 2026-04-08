@@ -4912,11 +4912,15 @@ const Dashboard = () => {
           dispatch(taskMappedChecklistMQTT(data.payload));
         }
 
-        if (
-          data.message?.toLowerCase() ===
-          "TASK_STATUS_CHANGED_FOR_USER".toLocaleLowerCase()
-        ) {
-          console.log(data.payload, "REOPENCOMPLIANCE");
+        const viewType = Number(localStorage.getItem("viewType"));
+        const mqttMap = {
+          1: "task_status_changed_for_manager",
+          2: "task_status_changed_for_user",
+        };
+        console.log(mqttMap, "mqttMapmqttMapmqttMapmqttMap");
+        if (data.message?.toLowerCase() === mqttMap[viewType]) {
+          console.log("mqttMapmqttMapmqttMapmqttMap");
+
           dispatch(taskStatusChangedUserMqtt(data.payload));
         }
       }

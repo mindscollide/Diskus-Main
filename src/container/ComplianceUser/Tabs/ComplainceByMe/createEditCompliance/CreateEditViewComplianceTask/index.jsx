@@ -50,6 +50,7 @@ const CreateEditViewComplianceTask = () => {
   const [expandedCheckListIds, setExpandedCheckListIds] = useState([]);
   const [ComplianceChecklistData, setComplianceCheckListData] = useState([]);
   const [taskView, setTaskView] = useState(false);
+  console.log("ComplianceChecklistData", ComplianceChecklistData);
 
   const [open, setOpen] = useState({
     open: false,
@@ -126,14 +127,10 @@ const CreateEditViewComplianceTask = () => {
   }, [authorityRespnseMessage, authorityseverityMessage]);
 
   useEffect(() => {
-    if (getAllComplianceChecklistTask === null) {
-      // 🔥 CLEAR UI when API returns null
-      setComplianceCheckListData([]);
-      setTaskCount(0);
-      return;
-    }
-
-    if (getAllComplianceChecklistTask) {
+    if (
+      getAllComplianceChecklistTask &&
+      getAllComplianceChecklistTask !== null
+    ) {
       try {
         const checklistList = getAllComplianceChecklistTask.checklistList || [];
 
@@ -156,6 +153,12 @@ const CreateEditViewComplianceTask = () => {
       } catch (error) {
         console.log(error);
       }
+    } else {
+      //  CLEAR UI when API returns null
+      console.log("Check Check");
+      setComplianceCheckListData([]);
+      setTaskCount(0);
+      return;
     }
   }, [getAllComplianceChecklistTask]);
 

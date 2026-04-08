@@ -159,7 +159,7 @@ const SearchComplianceBoxModal = () => {
             ? searchCompliancePayload?.tagsCSV.join(", ")
             : "",
         criticalityIds: [],
-        statusIds: [],
+        statusIds: searchCompliancePayload.statusIds || [],
         pageNumber: 0,
         length: 10,
       };
@@ -174,7 +174,7 @@ const SearchComplianceBoxModal = () => {
         authorityShortCode: searchCompliancePayload.authorityShortCode,
         tagsCSV: "",
         criticalityIds: [],
-        statusIds: [],
+        statusIds: searchCompliancePayload.statusIds || [],
         pageNumber: 0,
         length: 10,
       };

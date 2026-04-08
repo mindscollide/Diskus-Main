@@ -361,6 +361,11 @@ const ComplainceDetails = () => {
         );
         setTaskCount(totalTaskCount);
       } catch (error) {}
+    } else {
+      console.log("Check Check");
+      //  CLEAR UI when API returns null
+      setTaskCount(0);
+      return;
     }
   }, [getAllComplianceChecklistTask]);
 

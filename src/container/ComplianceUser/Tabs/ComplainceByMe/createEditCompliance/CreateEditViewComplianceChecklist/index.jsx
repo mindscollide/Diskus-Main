@@ -96,6 +96,7 @@ const CreateEditViewComplianceChecklist = () => {
     setDeleteChecklistId,
     newChecklistIds,
     setNewChecklistIds,
+    setTaskCount,
   } = useComplianceContext();
   console.log(checkListData, "checkListData");
   console.log(newChecklistIds, "newChecklistIds");
@@ -107,6 +108,11 @@ const CreateEditViewComplianceChecklist = () => {
     (state) =>
       state.ComplainceSettingReducerReducer
         .GetComplianceChecklistsByComplianceId,
+  );
+
+  console.log(
+    GetComplianceChecklistsByComplianceId,
+    "GetComplianceChecklistsByComplianceId",
   );
 
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -265,6 +271,7 @@ const CreateEditViewComplianceChecklist = () => {
       setChecklistCount(0);
       setGetCheckListData([]); // ✅ IMPORTANT FIX
       setExpandedCheckListIds([]); // optional but clean
+      setTaskCount(0);
     }
   }, [GetComplianceChecklistsByComplianceId]);
 
