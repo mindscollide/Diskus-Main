@@ -3020,10 +3020,10 @@ const NewMeeting = () => {
   //   },
   // ];
 
-  const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
-  const [organizerNameSort, setOrganizerNameSort] = useState("ascend");
-  const [meetingTimeSort, setMeetingTimeSort] = useState("ascend");
-  const [meetingDateSort, setMeetingDateSort] = useState("ascend");
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [organizerNameSort, setOrganizerNameSort] = useState(null);
+  const [meetingTimeSort, setMeetingTimeSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
   const [duplicatedRows, setDuplicatedRows] = useState([]);
 
   console.log(meetingTitleSort, "meetingTitleSortmeetingTitleSort");
@@ -3962,7 +3962,7 @@ const NewMeeting = () => {
         render: (_, record) => {
           let checkifCancelledAndNotConducted =
             (Number(record.status) === 4 || Number(record.status) === 8) &&
-            record.isParticipant;
+            (record.isParticipant || record.isOrganizer || record.isAgendaContributor);
 
           return (
             !checkifCancelledAndNotConducted && (
@@ -5458,11 +5458,11 @@ const NewMeeting = () => {
                           className={styles["MainMeetingTablePublished"]}>
                           <>
                             <Table
-                              key={
-                                isMeetingTypeFilter.length > 0
-                                  ? "loaded"
-                                  : "loading"
-                              }
+                              // key={
+                              //   isMeetingTypeFilter.length > 0
+                              //     ? "loaded"
+                              //     : "loading"
+                              // }
                               getPopupContainer={(node) =>
                                 node.closest(".ant-table")
                               }
