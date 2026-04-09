@@ -2754,5 +2754,6 @@
   "Are-you-sure-you-want-to-delete-this-authority": "Are you sure you want to delete this authority ?",
   "Mark-checklist-only": "Mark checklist only",
   "Mark-checklist-with-associated-items": "Mark Fchecklist with associated items",
-  "generated-on": "Generated On"
+  "generated-on": "Generated On",
+  "All-participants-must-have-at-least-one-field-assigned": "All participants must have at least one field assigned"
 }
