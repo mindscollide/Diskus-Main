@@ -540,7 +540,6 @@ const Talk = () => {
 
         <div className={subIcons ? "talk-nav-icons" : "border-0"}>
           {/* {checkFeatureID(77) && ( */}
-          {/* {checkFeatureIDAvailability(4) ? ( */}
           {process.env.REACT_APP_COMPLIANCE_MODULE === "TRUE" && (
             <Tooltip placement='leftTop' title={t("Compliance")}>
               <div
