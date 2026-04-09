@@ -327,6 +327,15 @@ const SignatureViewer = () => {
   const pdfDataRef = useRef(pdfData);
 
   /**
+   * Handler refs — kept in sync with the latest useCallback versions so that
+   * the one-time WebViewer button closures always invoke the current handler
+   * (avoids the stale-closure problem where `instance` is null at init time).
+   */
+  const handleSaveRef = useRef(null);
+  const handleSendClickRef = useRef(null);
+  const handlePublishRef = useRef(null);
+
+  /**
    * Ref to the <select> element rendered inside the custom left panel.
    * We update it imperatively so we never have to tear down and recreate
    * the entire WebViewer panel when participants change.
@@ -746,6 +755,11 @@ const SignatureViewer = () => {
     );
   }, [collectPayload, dispatch, navigate, sendMessage, t]);
 
+  // ─── Keep handler refs in sync with latest useCallback references ─────────
+  useEffect(() => { handleSaveRef.current = handleSave; }, [handleSave]);
+  useEffect(() => { handleSendClickRef.current = handleSendClick; }, [handleSendClick]);
+  useEffect(() => { handlePublishRef.current = handlePublish; }, [handlePublish]);
+
   // ─── WebViewer initialisation ────────────────────────────────────────────
   //
   // Guarded by `viewerInitialized` ref so this block runs EXACTLY ONCE even
@@ -818,8 +832,8 @@ const SignatureViewer = () => {
         dataElement: "saveButton",
         label: t("Save"),
         title: t("Save"),
-        // Reads handleSave through a stable closure — no re-init needed
-        onClick: () => handleSave(),
+        // Always calls the latest handleSave via ref — avoids stale closure
+        onClick: () => handleSaveRef.current?.(),
         style: {
           background: "#fff",
           border: "1px solid #e1e1e1",
@@ -834,8 +848,8 @@ const SignatureViewer = () => {
         dataElement: "publishButton",
         label: t("Send"),
         title: t("Send"),
-        // Reads handleSendClick through a stable closure — validation runs at call time
-        onClick: () => handleSendClick(),
+        // Always calls the latest handleSendClick via ref — avoids stale closure
+        onClick: () => handleSendClickRef.current?.(),
         style: {
           background: "#6172d6",
           border: "1px solid #6172d6",
