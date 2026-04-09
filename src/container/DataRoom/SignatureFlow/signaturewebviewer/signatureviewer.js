@@ -690,7 +690,10 @@ const SignatureViewer = () => {
   // ─── Action handlers ─────────────────────────────────────────────────────
 
   const handleSave = useCallback(async () => {
+    console.log("handleSave");
     const payload = await collectPayload();
+    console.log("handleSave", payload);
+
     if (!payload) return;
     dispatch(
       saveWorkflowApi(
