@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import "./Talk.css";
-import { Triangle } from "react-bootstrap-icons";
 import {
   GetAllUsers,
   GetAllUsersGroupsRoomsList,
-  getAllUserChatsSuccess,
   GetAllUserChats,
 } from "../../../store/actions/Talk_action";
 import {
@@ -35,18 +33,14 @@ import {
   privateChatFlag,
 } from "../../../store/actions/Talk_Feature_actions";
 import {
-  participantPopup,
   videoChatPanel,
   recentVideoFlag,
   contactVideoFlag,
   videoChatSearchFlag,
 } from "../../../store/actions/VideoFeature_actions";
 import { getCurrentDateTimeUTC } from "../../../commen/functions/date_formater.js";
-import PendingApprovalIcon from "../../../assets/images/Pending-approval.png";
-import PendingApprovalWhiteIcon from "../../../assets/images/Pending-Approval-White.png";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
-import TalkChat from "./talk-chat/Talk-Chat";
 import TalkNew from "./talk-chat/Talk-New";
 import TalkVideo from "./talk-Video/TalkVideo";
 import { useTranslation } from "react-i18next";
@@ -176,7 +170,6 @@ const Talk = () => {
   // const [activeChatBox, setActiveChatBox] = useState(false);
 
   //for video menu
-  const [videoIcon, setVideoIcon] = useState(false);
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0);
 
@@ -248,26 +241,22 @@ const Talk = () => {
   };
 
   //Setting state data of global response all chat to chatdata
-  useEffect(
-    () => {
-      if (
-        presenterViewHostFlag ||
-        presenterViewJoinFlag ||
-        isMeetingVideo ||
-        isWaiting
-      ) {
-        dispatch(videoChatPanel(false));
-        setActiveVideoIcon(false);
-        dispatch(activeChatBoxGS(false));
-        dispatch(contactVideoFlag(false));
-        dispatch(recentVideoFlag(false));
-        dispatch(globalChatsSearchFlag(false));
-        dispatch(videoChatSearchFlag(false));
-      }
-    },
-    [presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting],
-    dispatch
-  );
+  useEffect(() => {
+    if (
+      presenterViewHostFlag ||
+      presenterViewJoinFlag ||
+      isMeetingVideo ||
+      isWaiting
+    ) {
+      dispatch(videoChatPanel(false));
+      setActiveVideoIcon(false);
+      dispatch(activeChatBoxGS(false));
+      dispatch(contactVideoFlag(false));
+      dispatch(recentVideoFlag(false));
+      dispatch(globalChatsSearchFlag(false));
+      dispatch(videoChatSearchFlag(false));
+    }
+  }, [presenterViewHostFlag, presenterViewJoinFlag, isMeetingVideo, isWaiting]);
   const handleMeetingPendingApprovals = async () => {
     console.log("Check Publish Scenario's");
     console.log(createEditCompliance, "Check Publish Scenario's");
@@ -339,11 +328,6 @@ const Talk = () => {
   };
 
   //function for opening add notes modal
-
-  const handleOpenAddNotesModal = () => {
-    setNotesModal(true);
-    // dispatch(openAddNotesModal(true));
-  };
 
   const iconClick = () => {
     setActiveVideoIcon(false);
@@ -478,10 +462,10 @@ const Talk = () => {
       } else if (checkFeatureIDAvailability(3)) {
         totalValue = Number(unreadMessageCount);
       }
-    } catch {}
-  }, []);
-
-  console.log("totalValueTotalValue", totalValue);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [missedCallCount, unreadMessageCount]);
 
   useEffect(() => {
     if (VideoChatPanelReducer === false) {
@@ -518,20 +502,9 @@ const Talk = () => {
     }
   }, [activeCall]);
 
-  // useEffect(() => {
-  //   if (ActiveChatBoxGS === true) {
-  //     setSubIcons(true)
-  //   }
-  // }, [ActiveChatBoxGS])
-
-  console.log(
-    pendingApprovalsTabCount.pendingMinutes,
-    pendingApprovalsTabCount.pendingSignature,
-    "IOS"
-  );
   return (
     <>
-      <div ref={videoPanelRef} className={"talk_nav" + " " + currentLang}>
+      <div ref={videoPanelRef} className={`talk_nav ${currentLang}`}>
         {ActiveChatBoxGS === true ? (
           <TalkNew />
         ) : activeVideoIcon === true ? (
