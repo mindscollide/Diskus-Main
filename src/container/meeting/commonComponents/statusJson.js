@@ -83,10 +83,10 @@ export const StatusValue = (t, statusValue) => {
     case "9":
       return (
         <>
-          <div className="d-flex align-items-center justify-content-start ">
-            <span className="status-color-end"></span>
-            <p className={"meeting-status-value  my-0 ms-1"}>{t("Ended")}</p>
-          </div>
+          <span className="d-inline-flex align-items-center">
+            <span className="status-color-end d-block "></span>
+            <p className={"meeting-status-value   m-0 mx-1"}>{t("Ended")}</p>
+          </span>
         </>
       );
     case "10":

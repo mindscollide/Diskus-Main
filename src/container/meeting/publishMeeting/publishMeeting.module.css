@@ -142,4 +142,12 @@
   text-overflow: ellipsis;
   font-weight: 600;
   cursor: pointer;
+  font-size: 12px;
+  color: #505050 !important;
+
+}
+.columnValue {
+  font-size: 12px;
+  font-weight: 400;
+  color: #505050 !important;
 }

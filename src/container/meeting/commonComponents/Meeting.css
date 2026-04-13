@@ -565,6 +565,7 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   width: 14px;
   height: 14px;
   border-radius: 50%;
+  display: inline-block !important;
 }
 .status-color-active {
   background-color: #81db86 !important;
