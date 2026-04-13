@@ -841,8 +841,8 @@ const UnpublishedProposedMeeting = ({
   //     },
   //   },
   // ];
-  const [meetingTitleSort, setMeetingTitleSort] = useState("ascend");
-  const [meetingDateSort, setMeetingDateSort] = useState("ascend");
+  const [meetingTitleSort, setMeetingTitleSort] = useState(null);
+  const [meetingDateSort, setMeetingDateSort] = useState(null);
   const [duplicatedRows, setDuplicatedRows] = useState([]);
 
   // Meeting Type Filter State
