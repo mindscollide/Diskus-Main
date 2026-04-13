@@ -47,6 +47,7 @@ import { showShareViaDataRoomPathConfirmation } from "./NewMeetingActions";
 import { type } from "@testing-library/user-event/dist/cjs/utility/index.js";
 import axiosInstance from "../../commen/functions/axiosInstance";
 import axios from "axios";
+import diskusLogo from "../../assets/images/diskus-logo.png";
 
 // Save Files Success
 const saveFiles_success = (response, message) => {
@@ -3212,16 +3213,74 @@ const DataRoomDownloadFileWithFooterApiFunc = (navigate, data, t, Name) => {
             );
           }
 
-          // Step 2: stamp footer on every page using pdf-lib
+          // Step 2: stamp footer (logo + text) on every page using pdf-lib
           const pdfDoc = await PDFDocument.load(pdfBytes);
           const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
 
+          // ── Embed logo ──────────────────────────────────────────────────────
+          // Fetch the PNG bytes from the webpack-resolved asset URL, embed
+          // once into the document, then reuse the same embedded image on
+          // every page (pdf-lib does not re-encode it for each page).
+          let embeddedLogo = null;
+          let logoPdfWidth = 0;
+          const logoPdfHeight = 18; // points — fits neatly in a 24pt footer bar
+
+          try {
+            const logoResponse = await fetch(diskusLogo);
+            const logoArrayBuffer = await logoResponse.arrayBuffer();
+            embeddedLogo = await pdfDoc.embedPng(new Uint8Array(logoArrayBuffer));
+            // Scale proportionally to the target height
+            const scaled = embeddedLogo.scaleToFit(9999, logoPdfHeight);
+            logoPdfWidth = scaled.width;
+          } catch (_) {
+            // Logo is not critical — footer still renders with text only
+          }
+
+          // Footer strip height in PDF points.
+          // This defines the area we fully own — anything that existed here
+          // (same footer from a previous download, document's own page-number
+          // footer, or any other content) is erased before we draw ours.
+          const FOOTER_HEIGHT = 38;
+
           for (const page of pdfDoc.getPages()) {
             const { width } = page.getSize();
+
+            // ── 1. Erase existing footer ──────────────────────────────────
+            // A solid white rectangle spanning the full page width and the
+            // reserved footer height wipes whatever was there — same or
+            // different — so our footer is always clean and never stacked.
+            page.drawRectangle({
+              x: 0,
+              y: 0,
+              width,
+              height: FOOTER_HEIGHT,
+              color: rgb(1, 1, 1),
+              opacity: 1,
+            });
+
+            // ── 2. Separator line ─────────────────────────────────────────
+            page.drawLine({
+              start: { x: 10, y: FOOTER_HEIGHT - 4 },
+              end: { x: width - 10, y: FOOTER_HEIGHT - 4 },
+              thickness: 0.5,
+              color: rgb(0.85, 0.85, 0.85),
+            });
+
+            // ── 3. Logo — bottom-left ─────────────────────────────────────
+            if (embeddedLogo) {
+              page.drawImage(embeddedLogo, {
+                x: 10,
+                y: 8,
+                width: logoPdfWidth,
+                height: logoPdfHeight,
+              });
+            }
+
+            // ── 4. Text — centred on full page width ──────────────────────
             const textWidth = font.widthOfTextAtSize(footerText, 8);
             page.drawText(footerText, {
               x: (width - textWidth) / 2,
-              y: 12,
+              y: 14,
               size: 8,
               font,
               color: rgb(0.4, 0.4, 0.4),
