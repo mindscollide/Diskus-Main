@@ -72,11 +72,11 @@ const Agenda = ({
   const navigate = useNavigate();
 
   const { NewMeetingreducer, MeetingAgendaReducer } = useSelector(
-    (state) => state
+    (state) => state,
   );
 
   const getAllMeetingDetails = useSelector(
-    (state) => state.NewMeetingreducer.getAllMeetingDetails
+    (state) => state.NewMeetingreducer.getAllMeetingDetails,
   );
 
   const MeetingAgendaData =
@@ -86,11 +86,11 @@ const Agenda = ({
     useContext(MeetingContext);
 
   const ShowCancelAgendaBuilderModal = useSelector(
-    (state) => state.NewMeetingreducer.cancelAgendaSavedModal
+    (state) => state.NewMeetingreducer.cancelAgendaSavedModal,
   );
 
   let folderDataRoomMeeting = Number(
-    localStorage.getItem("folderDataRoomMeeting")
+    localStorage.getItem("folderDataRoomMeeting"),
   );
 
   let currentMeetingIDLS = Number(localStorage.getItem("currentMeetingLS"));
@@ -101,6 +101,14 @@ const Agenda = ({
   const [isPublishedState, setIsPublishedState] = useState(false);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [allSavedPresenters, setAllSavedPresenters] = useState([]);
+
+  console.log(
+    isPublishedState,
+    editorRole,
+    currentMeeting,
+    MeetingAgendaData,
+    "isPublishedStateisPublishedStateisPublishedState",
+  );
 
   console.log(allSavedPresenters, "allSavedPresentersallSavedPresenters");
   const [allUsersRC, setAllUsersRC] = useState([]);
@@ -175,19 +183,19 @@ const Agenda = ({
       if (allPresentersReducer.length > 0) {
         console.log(
           allPresentersReducer,
-          "allPresentersReducerallPresentersReducer"
+          "allPresentersReducerallPresentersReducer",
         );
         const mappedPresenters = allPresentersReducer.map((presenter) => ({
           value: presenter.userID,
           name: presenter.userName,
           label: (
             <Row>
-              <Col lg={12} md={12} sm={12} className='d-flex gap-2'>
+              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <img
-                  alt=''
+                  alt=""
                   src={`data:image/jpeg;base64,${presenter.userProfilePicture.displayProfilePictureName}`}
-                  width='17px'
-                  height='17px'
+                  width="17px"
+                  height="17px"
                   className={styles["Image_class_Agenda"]}
                 />
                 <span className={styles["Name_Class"]}>
@@ -310,8 +318,8 @@ const Agenda = ({
             newData,
             folderDataRoomMeeting,
             newFolder,
-            newfile
-          )
+            newfile,
+          ),
         );
       });
       console.log("uploadPromisesuploadPromises", uploadPromises);
@@ -323,8 +331,8 @@ const Agenda = ({
           t,
           newfile,
           folderDataRoomMeeting,
-          newFolder
-        )
+          newFolder,
+        ),
       );
     }
     // await Promise.all(
@@ -366,7 +374,7 @@ const Agenda = ({
     let cleanedData = removeProperties(convertedRows);
     console.log(
       { newFolder, cleanedData },
-      "newFoldernewFoldernewFoldernewFolder"
+      "newFoldernewFoldernewFoldernewFolder",
     );
     let mappingObject = {};
     newFolder.forEach((folder) => {
@@ -393,7 +401,7 @@ const Agenda = ({
     }));
     console.log(
       { newFolder, cleanedData, mappingObject, updatedData },
-      "newFoldernewFoldernewFoldernewFolder"
+      "newFoldernewFoldernewFoldernewFolder",
     );
     // Clear fileForSend array
     setFileForSend([]);
@@ -424,8 +432,8 @@ const Agenda = ({
         setPublishState,
         setCalendarViewModal,
         setMeetingMaterial,
-        setAgenda
-      )
+        setAgenda,
+      ),
     );
   };
   const saveAgendaData = async (flag) => {
@@ -438,7 +446,7 @@ const Agenda = ({
         showMessage(
           t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -449,7 +457,7 @@ const Agenda = ({
         showMessage(
           t("Title-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -460,7 +468,7 @@ const Agenda = ({
         showMessage(
           t("tart-time-is-missing-in-agenda", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -471,7 +479,7 @@ const Agenda = ({
         showMessage(
           t("End-time-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -482,7 +490,7 @@ const Agenda = ({
         showMessage(
           t("Presenter-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -497,7 +505,7 @@ const Agenda = ({
         showMessage(
           t("URL-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -511,7 +519,7 @@ const Agenda = ({
         showMessage(
           t("UserID/Note-is-missing-in-agenda ", { rowIndex: rowIndex + 1 }),
           "error",
-          setOpen
+          setOpen,
         );
 
         isValid = false;
@@ -528,7 +536,7 @@ const Agenda = ({
             showMessage(
               t("Files-should-not-more-than-10", { rowIndex: rowIndex + 1 }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -542,7 +550,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -556,7 +564,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -570,7 +578,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -584,7 +592,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -603,7 +611,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -621,7 +629,7 @@ const Agenda = ({
                 subIndex: subIndex + 1,
               }),
               "error",
-              setOpen
+              setOpen,
             );
 
             isValid = false;
@@ -672,20 +680,20 @@ const Agenda = ({
             const { id, presenterID, userID, subAgenda, files, ...rest } =
               agendaItem;
             const matchingPresenter = allSavedPresenters.find(
-              (presenter) => presenter.value === presenterID
+              (presenter) => presenter.value === presenterID,
             );
             const matchinguserID = allUsersRC.find(
-              (rcuser) => rcuser.value === userID
+              (rcuser) => rcuser.value === userID,
             );
             const updatedSubAgenda = subAgenda
               ? subAgenda.map((subAgendaItem) => {
                   const { subAgendaID, presenterID, userID, ...subAgendaRest } =
                     subAgendaItem;
                   const matchingSubPresenter = allSavedPresenters.find(
-                    (subPresenter) => subPresenter.value === presenterID
+                    (subPresenter) => subPresenter.value === presenterID,
                   );
                   const matchingSubUserID = allUsersRC.find(
-                    (subRcuser) => subRcuser.value === userID
+                    (subRcuser) => subRcuser.value === userID,
                   );
                   return {
                     subAgendaID,
@@ -761,10 +769,12 @@ const Agenda = ({
         };
         console.log("add newMainAgenda", newData);
         setRows([newData]);
+        setIsPublishedState(false);
       }
+    } else {
     }
   }, [
-    MeetingAgendaReducer.GetAdvanceMeetingAgendabyMeetingIDData,
+    MeetingAgendaData,
     // allSavedPresenters,
     // allUsersRC,
   ]);
@@ -936,7 +946,7 @@ const Agenda = ({
           console.log(
             "result agenda empty non empty",
             isAgendaEmpty,
-            areSubAgendasEmpty
+            areSubAgendasEmpty,
           );
           // Include only non-empty items
           return !(isAgendaEmpty && areSubAgendasEmpty);
@@ -994,7 +1004,7 @@ const Agenda = ({
           console.log(
             "result agenda empty non empty",
             isAgendaEmptyCR,
-            areSubAgendasEmptyCR
+            areSubAgendasEmptyCR,
           );
 
           // Include only non-empty items
@@ -1027,13 +1037,13 @@ const Agenda = ({
       showMessage(
         t("Agenda-voting-details-saved-successfully"),
         "success",
-        setOpen
+        setOpen,
       );
     } else if (MeetingAgendaReducer.ResponseMessage === t("Voting-updated")) {
       showMessage(
         t("Agenda-voting-details-updated-successfully"),
         "success",
-        setOpen
+        setOpen,
       );
     }
     dispatch(clearResponseMessage(""));
@@ -1062,7 +1072,7 @@ const Agenda = ({
           MeetingID: currentMeetingIDLS,
         };
         dispatch(
-          GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t)
+          GetAdvanceMeetingAgendabyMeetingID(getMeetingData, navigate, t),
         );
       }
     }
@@ -1112,7 +1122,8 @@ const Agenda = ({
             rows.length > 0 &&
             rows[0]?.title === "" ? null : (
               <DragDropContext
-                onDragEnd={(result) => onDragEnd(result, rows, setRows)}>
+                onDragEnd={(result) => onDragEnd(result, rows, setRows)}
+              >
                 {emptyStateRows === true &&
                 (editorRole.role === "Agenda Contributor" ||
                   editorRole.role === "Participant") ? null : (
@@ -1125,21 +1136,24 @@ const Agenda = ({
                         rows.length > 1
                           ? `${styles["Scroller_Agenda"]} d-flex flex-column-reverse`
                           : styles["Scroller_Agenda"]
-                      }>
+                      }
+                    >
                       <Droppable
                         //  key={`main-agenda-${rows.id}`}
                         //  droppableId={`main-agenda-${rows.id}`}
-                        droppableId='board'
-                        type='PARENT'>
+                        droppableId="board"
+                        type="PARENT"
+                      >
                         {(provided) => (
                           <div
                             ref={provided.innerRef}
-                            {...provided.droppableProps}>
+                            {...provided.droppableProps}
+                          >
                             {rows.length > 0
                               ? rows.map((data, index) => {
                                   console.log(
                                     data,
-                                    "datadatadatadata Checking"
+                                    "datadatadatadata Checking",
                                   );
                                   return (
                                     <>
@@ -1151,7 +1165,8 @@ const Agenda = ({
                                             "Agenda Contributor"
                                             ? "d-none"
                                             : styles["agenda-border-class"]
-                                        }>
+                                        }
+                                      >
                                         <ParentAgenda
                                           fileForSend={fileForSend}
                                           setFileForSend={setFileForSend}
@@ -1210,13 +1225,14 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <img
                       draggable={false}
                       src={emptyContributorState}
-                      width='274.05px'
-                      alt=''
-                      height='230.96px'
+                      width="274.05px"
+                      alt=""
+                      height="230.96px"
                       className={styles["Image-Add-Agenda"]}
                     />
                   </Col>
@@ -1226,7 +1242,8 @@ const Agenda = ({
                     lg={12}
                     md={12}
                     sm={12}
-                    className='d-flex justify-content-center mt-3'>
+                    className="d-flex justify-content-center mt-3"
+                  >
                     <span className={styles["Empty_state_heading"]}>
                       {t("No-agenda-availabe-to-discuss").toUpperCase()}
                     </span>
@@ -1239,7 +1256,7 @@ const Agenda = ({
             editorRole.role === "Agenda Contributor" ||
             editorRole.status === "9" ||
             editorRole.status === 9 ? null : (
-              <Row className='mt-3'>
+              <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   <Button
                     text={
@@ -1249,13 +1266,14 @@ const Agenda = ({
                             lg={12}
                             md={12}
                             sm={12}
-                            className='d-flex justify-content-center gap-2 align-items-center'>
+                            className="d-flex justify-content-center gap-2 align-items-center"
+                          >
                             <img
                               draggable={false}
                               src={plusFaddes}
-                              height='10.77px'
-                              width='10.77px'
-                              alt=''
+                              height="10.77px"
+                              width="10.77px"
+                              alt=""
                             />
                             <span className={styles["Add_Agen_Heading"]}>
                               {t("Add-agenda")}
@@ -1276,12 +1294,13 @@ const Agenda = ({
                 </Col>
               </Row>
             )}
-            <Row className='mt-4'>
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className='d-flex justify-content-end gap-2'>
+                className="d-flex justify-content-end gap-2"
+              >
                 {editorRole.status === "9" ||
                 editorRole.status === 9 ||
                 editorRole.role === "Agenda Contributor" ? null : (

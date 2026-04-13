@@ -714,3 +714,9 @@
   overflow: hidden;
   overflow-y: auto;
 }
+
+.mainDivHeader {
+  background-color: #f6f9fc;
+  margin: 0;
+  padding: 10px;
+}
