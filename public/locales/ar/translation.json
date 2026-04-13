@@ -2567,5 +2567,7 @@
   "Cancel-Checklist-with-associated-items": "Cancel Checklist with associated items",
   "Mark-Checklist-only": "Mark Checklist only",
   "Mark-Checklist-with-associated-items": "Mark Checklist with associated items",
-  "Cancel-checklist": "Cancel checklist?"
+  "Cancel-checklist": "Cancel checklist?",
+  "All-participants-must-have-at-least-one-field-assigned": "يجب أن يكون لجميع المشاركين حقل واحد على الأقل معيَّن",
+  "Document-save-successfully": "تم حفظ المستند بنجاح"
 }
